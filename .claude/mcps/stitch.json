@@ -1,0 +1,12 @@
+{
+  "server": {
+    "name": "google-stitch",
+    "transportType": "stdio",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-google-stitch@latest"],
+    "env": {
+      "GOOGLE_STITCH_API_KEY": "REPLACE_WITH_YOUR_KEY"
+    }
+  },
+  "note": "Google's Stitch AI for real-time web search and information retrieval."
+}

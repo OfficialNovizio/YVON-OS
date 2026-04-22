@@ -1,0 +1,14 @@
+[
+  {
+    "id": "feedback_1775671938482_1aawajusf",
+    "timestamp": "2026-04-08T18:12:18.482Z",
+    "query": "Build API endpoint",
+    "selectedAgents": [
+      "dev-lead",
+      "raj-backend"
+    ],
+    "feedback": "good",
+    "confidence": 1,
+    "notes": "Test feedback"
+  }
+]

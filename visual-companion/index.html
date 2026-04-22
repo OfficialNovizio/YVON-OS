@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YVON — Spatial Intelligence v3.1</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'></script>
+    <style>
+        body { 
+            margin: 0; background: #000; color: #fff; 
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; 
+            height: 100vh; width: 100vw; overflow: hidden;
+        }
+        .canvas { 
+            position: relative; width: 100%; height: 100%; 
+            background: radial-gradient(circle at 50% 50%, #001a35 0%, #000 80%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        
+        .hero-title { font-size: 100px; font-weight: 800; letter-spacing: -5px; line-height: 0.85; margin-bottom: 50px; text-align: center; }
+
+        /* ── FIXED CONTROLS LAYER ── */
+        .controls-layer {
+            position: fixed; 
+            bottom: 40px; 
+            left: 0; 
+            right: 0;
+            display: flex; 
+            justify-content: center;
+            align-items: center; 
+            gap: 20px; 
+            z-index: 9999;
+            padding: 0 40px;
+        }
+
+        /* THE BRAND PILL */
+        .brand-pill {
+            background: rgba(255, 255, 255, 0.12); /* Increased opacity */
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px; 
+            padding: 0 24px;
+            display: flex; 
+            align-items: center; 
+            gap: 14px;
+            height: 64px; /* Matches Dock Height */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .brand-pill:hover { background: rgba(255, 255, 255, 0.18); transform: translateY(-4px); }
+
+        .brand-dot { width: 10px; height: 10px; border-radius: 50%; background: #34c759; box-shadow: 0 0 12px #34c759; flex-shrink: 0; }
+        .brand-text { display: flex; flex-direction: column; white-space: nowrap; }
+        .brand-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
+        .brand-name { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; color: #fff; }
+
+        /* THE DOCK */
+        .dock { 
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 24px; 
+            padding: 8px; 
+            display: flex; 
+            gap: 8px; 
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            height: 64px;
+            box-sizing: border-box;
+        }
+        .dock-item { 
+            width: 48px; height: 48px; border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #fff; transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+            position: relative; cursor: pointer;
+            background: rgba(255,255,255,0.05);
+        }
+        .dock-item.active { background: #0071e3; box-shadow: 0 0 15px rgba(0,113,227,0.4); }
+        .dock-item:hover { transform: scale(1.3) translateY(-10px); background: rgba(255,255,255,0.15); }
+        
+        .divider { width: 1px; height: 32px; background: rgba(255,255,255,0.15); margin: 0 4px; }
+
+    </style>
+</head>
+<body>
+    <div class="canvas">
+        <h1 class="hero-title">Redefined.</h1>
+    </div>
+
+    <!-- WRAPPED CONTROLS -->
+    <div class="controls-layer">
+        
+        <!-- THE DOCK -->
+        <div class="dock">
+            <div class="dock-item active">⬡</div>
+            <div class="dock-item">◫</div>
+            <div class="dock-item">◉</div>
+            <div class="dock-item">◈</div>
+            <div class="divider"></div>
+            <div class="dock-item">✉</div>
+            <div class="dock-item">◷</div>
+            <div class="dock-item">⚙</div>
+        </div>
+
+        <!-- THE BRAND SELECTOR (Right next to dock) -->
+        <div class="brand-pill">
+            <div class="brand-dot"></div>
+            <div class="brand-text">
+                <span class="brand-label">Active Venture</span>
+                <span class="brand-name">Novizio Brand</span>
+            </div>
+            <div style="font-size: 14px; opacity: 0.5; margin-left: 10px;">▾</div>
+        </div>
+
+    </div>
+
+    <script>
+        gsap.from('.controls-layer', { 
+            opacity: 0, 
+            y: 100, 
+            duration: 1.5, 
+            ease: 'elastic.out(1, 0.75)',
+            delay: 0.5 
+        });
+    </script>
+</body>
+</html>

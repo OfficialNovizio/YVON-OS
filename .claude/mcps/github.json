@@ -1,0 +1,9 @@
+{
+  "server": {
+    "name": "code-review-graph",
+    "transportType": "stdio",
+    "command": "uvx",
+    "args": ["code-review-graph", "--platform", "claude-code"]
+  },
+  "note": "Build code review graph for this project - reduces token usage by up to 8.2x"
+}

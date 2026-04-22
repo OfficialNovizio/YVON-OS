@@ -1,0 +1,29 @@
+{
+  "crons": [
+    {
+      "path": "/api/trending",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/briefing",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/competitor-content",
+      "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/calendar-verify",
+      "schedule": "0 6 * * 0"
+    }
+  ],
+  "functions": {
+    "app/api/scrape/route.ts":      { "maxDuration": 30 },
+    "app/api/trending/route.ts":    { "maxDuration": 30 },
+    "app/api/instagram/route.ts":   { "maxDuration": 30 },
+    "app/api/linkedin/route.ts":    { "maxDuration": 30 },
+    "app/api/team-chat/route.ts":   { "maxDuration": 60 },
+    "app/api/briefing/route.ts":    { "maxDuration": 60 },
+    "app/api/calendar-verify/route.ts": { "maxDuration": 60 }
+  }
+}

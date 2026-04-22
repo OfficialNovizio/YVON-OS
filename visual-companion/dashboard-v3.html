@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YVON CEO Dashboard — Design Mockup</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js'></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .page {
+            background: radial-gradient(circle at 50% 20%, #001a35 0%, #000 80%);
+            min-height: 100vh;
+            padding-bottom: 140px;
+        }
+
+        /* ── Anomaly Ticker ── */
+        .anomaly-ticker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 40px;
+            height: 36px;
+            background: linear-gradient(90deg, rgba(0,200,83,0.06) 0%, rgba(0,200,83,0.02) 100%);
+            border-bottom: 1px solid rgba(0,200,83,0.12);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .anomaly-ticker .pulse {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #00E676; box-shadow: 0 0 8px #00E676; flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .anomaly-ticker .label {
+            font-size: 10px; font-weight: 700; color: #00E676;
+            text-transform: uppercase; letter-spacing: 0.1em; flex-shrink: 0;
+        }
+        .anomaly-ticker .scroll-track {
+            display: flex; gap: 32px;
+            animation: scroll 30s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .anomaly-ticker .item {
+            font-size: 11px; color: rgba(255,255,255,0.65); letter-spacing: -0.01em;
+        }
+        .anomaly-ticker .item strong { color: #00E676; font-weight: 700; }
+        .anomaly-ticker .item .red { color: #EF4444; font-weight: 700; }
+
+        /* ── Hero Section ── */
+        .hero {
+            text-align: center;
+            padding: 48px 40px 24px;
+        }
+        .hero h1 {
+            font-size: 90px;
+            font-weight: 800;
+            letter-spacing: -5px;
+            line-height: 0.85;
+            background: linear-gradient(180deg, #fff 30%, rgba(255,255,255,0.4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero .sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 12px;
+            letter-spacing: -0.2px;
+        }
+
+        /* ── Content Wrapper ── */
+        .content {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ── Glass Card ── */
+        .glass {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px;
+            padding: 24px;
+            transition: border-color 0.3s;
+        }
+        .glass:hover { border-color: rgba(255,255,255,0.14); }
+
+        /* ── KPI Strip ── */
+        .kpi-strip {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+        }
+        .kpi-card {
+            padding: 20px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .kpi-card.active {
+            border-color: rgba(0,113,227,0.4);
+            background: rgba(0,113,227,0.08);
+            box-shadow: 0 0 20px rgba(0,113,227,0.15);
+        }
+        .kpi-card .kpi-icon {
+            width: 28px; height: 28px; margin: 0 auto 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.06);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+        .kpi-card .kpi-label {
+            font-size: 10px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.08em; color: rgba(255,255,255,0.35);
+        }
+        .kpi-card .kpi-value {
+            font-size: 26px; font-weight: 700; margin-top: 4px;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -1.5px;
+        }
+        .kpi-card .kpi-delta {
+            font-size: 11px; font-weight: 600; margin-top: 6px;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .kpi-delta.positive { color: #34c759; background: rgba(52,199,89,0.1); }
+        .kpi-delta.negative { color: #ff3b30; background: rgba(255,59,48,0.1); }
+
+        /* ── Bento Grid Layout ── */
+        .bento {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .bento.wide { grid-template-columns: 2fr 1fr; }
+        .bento.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+        /* ── Section Headers ── */
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .section-head h3 {
+            font-size: 15px; font-weight: 700; letter-spacing: -0.3px;
+            text-transform: uppercase;
+        }
+        .section-head .badge {
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; padding: 3px 8px;
+            border-radius: 12px;
+        }
+        .badge-live { background: rgba(0,200,83,0.12); color: #00E676; }
+        .badge-waiting { background: rgba(245,158,11,0.12); color: #F59E0B; }
+        .badge-blue { background: rgba(0,113,227,0.12); color: #0071e3; }
+
+        /* ── Briefing Card ── */
+        .brief-agent {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .brief-avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg, #0071e3, #0051a8);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700;
+        }
+        .brief-agent-info { flex: 1; }
+        .brief-agent-info .name { font-size: 13px; font-weight: 600; }
+        .brief-agent-info .role { font-size: 10px; color: rgba(255,255,255,0.35); }
+        .brief-badge {
+            font-size: 9px; background: rgba(255,255,255,0.08);
+            padding: 2px 8px; border-radius: 10px; color: rgba(255,255,255,0.5);
+        }
+        .brief-headline {
+            font-size: 20px; font-weight: 700; letter-spacing: -0.5px;
+            line-height: 1.35; margin-bottom: 12px;
+        }
+        .brief-body {
+            font-size: 13px; line-height: 1.65;
+            color: rgba(255,255,255,0.5);
+        }
+        .brief-body strong { color: rgba(255,255,255,0.8); }
+        .brief-footer {
+            margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .brief-tag {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #0071e3;
+        }
+        .btn-live {
+            font-size: 11px; font-weight: 600; padding: 6px 16px;
+            border-radius: 20px; border: 1px solid rgba(0,113,227,0.4);
+            background: rgba(0,113,227,0.12); color: #0071e3;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-live:hover { background: #0071e3; color: #fff; }
+
+        /* ── Decision Queue ── */
+        .decision-item {
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 10px;
+        }
+        .decision-item:last-child { margin-bottom: 0; }
+        .decision-urgency {
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; margin-bottom: 6px;
+        }
+        .urgency-red { color: #ff3b30; }
+        .urgency-orange { color: #ff9f0a; }
+        .urgency-blue { color: #0071e3; }
+        .decision-q {
+            font-size: 13px; font-weight: 600; letter-spacing: -0.2px;
+            line-height: 1.4; margin-bottom: 12px;
+        }
+        .decision-actions { display: flex; gap: 8px; }
+        .decision-actions button {
+            padding: 5px 14px; border-radius: 16px; font-size: 11px;
+            font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .btn-primary { background: #0071e3; color: #fff; }
+        .btn-primary:hover { background: #0077ed; }
+        .btn-ghost { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+        .btn-green { background: rgba(52,199,89,0.2); color: #34c759; }
+        .btn-green:hover { background: #34c759; color: #fff; }
+        .btn-orange { background: rgba(255,159,10,0.15); color: #ff9f0a; }
+
+        /* ── Brand Pulse Chart ── */
+        .pulse-scores {
+            display: flex; gap: 16px; margin-bottom: 16px;
+        }
+        .pulse-score-card {
+            flex: 1; padding: 14px; border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .pulse-score-card .vent-name {
+            font-size: 10px; text-transform: uppercase;
+            letter-spacing: 0.06em; color: rgba(255,255,255,0.35);
+        }
+        .pulse-score-card .score {
+            font-size: 30px; font-weight: 800; letter-spacing: -2px;
+        }
+        .pulse-score-card .score.blue { color: #0071e3; }
+        .pulse-score-card .score.gray { color: rgba(255,255,255,0.6); }
+        .pulse-score-card .score-delta {
+            font-size: 11px; color: #34c759; font-weight: 600;
+        }
+        .chart-area {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-area svg { width: 100%; height: 100%; }
+
+        /* ── Activity Feed ── */
+        .activity-item {
+            display: flex; gap: 10px; padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #0071e3; margin-top: 5px; flex-shrink: 0;
+        }
+        .activity-dot.gray { background: rgba(255,255,255,0.25); }
+        .activity-text {
+            font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.45;
+        }
+        .activity-text strong { color: rgba(255,255,255,0.9); }
+        .activity-time {
+            font-size: 9px; color: rgba(255,255,255,0.2); margin-top: 2px;
+        }
+
+        /* ── Customer Voice ── */
+        .cv-quote {
+            padding: 14px; border-radius: 14px;
+            background: rgba(255,255,255,0.02); margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5;
+        }
+        .cv-source {
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; color: rgba(255,255,255,0.25); margin-top: 6px;
+        }
+        .cv-source.reddit { color: #ff4500; }
+        .cv-source.tiktok { color: #25f4ee; }
+        .cv-source.ig { color: #e4405f; }
+        .cv-alert {
+            margin-top: 12px; padding: 10px 14px; border-radius: 12px;
+            background: rgba(255,159,10,0.08); border: 1px solid rgba(255,159,10,0.2);
+            font-size: 11px; color: #ff9f0a; font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* ── Team Bar ── */
+        .team-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .team-bar-head h3 {
+            font-size: 13px; font-weight: 700; letter-spacing: -0.2px;
+        }
+        .team-bar-head p {
+            font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 2px;
+        }
+        .team-members { display: flex; gap: 16px; }
+        .team-member {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 16px; border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .team-member:hover { background: rgba(255,255,255,0.07); }
+        .team-member .tm-avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+        }
+        .tm-avatar.blue { background: rgba(0,113,227,0.2); color: #0071e3; }
+        .tm-avatar.green { background: rgba(52,199,89,0.2); color: #34c759; }
+        .tm-avatar.orange { background: rgba(255,159,10,0.2); color: #ff9f0a; }
+        .tm-avatar.purple { background: rgba(175,82,222,0.2); color: #af52de; }
+        .team-member .tm-info .name { font-size: 12px; font-weight: 600; }
+        .team-member .tm-info .task { font-size: 10px; color: rgba(255,255,255,0.35); }
+        .team-member .tm-status {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .tm-status.flight { background: #0071e3; box-shadow: 0 0 8px rgba(0,113,227,0.4); }
+        .tm-status.pending { background: #ff9f0a; box-shadow: 0 0 8px rgba(255,159,10,0.4); }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <!-- ── ANOMALY TICKER ── -->
+        <div class="anomaly-ticker">
+            <span class="pulse"></span>
+            <span class="label">Anomalies</span>
+            <div class="scroll-track" id="tickerTrack">
+                <span class="item"><strong>Instagram</strong> engagement dropped <span class="red">-18%</span> vs 7-day avg</span>
+                <span class="item">·</span>
+                <span class="item"><strong>YouTube</strong> views up <strong>+34%</strong> — spike detected</span>
+                <span class="item">·</span>
+                <span class="item"><strong>Stripe</strong> revenue best day <strong>+$1.4K</strong></span>
+                <span class="item">·</span>
+                <span class="item"><strong>TikTok</strong> CAC dropped <strong>-22%</strong> this week</span>
+                <span class="item">·</span>
+                <span class="item"><strong>Novizio</strong> brand search +31% MoM</span>
+                <span class="item">·</span>
+                <!-- duplicate for seamless scroll -->
+                <span class="item"><strong>Instagram</strong> engagement dropped <span class="red">-18%</span> vs 7-day avg</span>
+                <span class="item">·</span>
+                <span class="item"><strong>YouTube</strong> views up <strong>+34%</strong> — spike detected</span>
+                <span class="item">·</span>
+                <span class="item"><strong>Stripe</strong> revenue best day <strong>+$1.4K</strong></span>
+                <span class="item">·</span>
+                <span class="item"><strong>TikTok</strong> CAC dropped <strong>-22%</strong> this week</span>
+                <span class="item">·</span>
+                <span class="item"><strong>Novizio</strong> brand search +31% MoM</span>
+            </div>
+        </div>
+
+        <!-- ── HERO ─ -->
+        <div class="hero" id="hero">
+            <h1>Command<br>Excellence.</h1>
+            <p class="sub">Refining YVON Intelligence through precision spatial design and luxury editorial standards.</p>
+        </div>
+
+        <!-- ── CONTENT ── -->
+        <div class="content">
+
+            <!-- KPI Strip -->
+            <div class="kpi-strip" id="kpiStrip">
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i data-lucide="activity" style="width:14px;height:14px;color:#fff"></i></div>
+                    <div class="kpi-label">KPI Score</div>
+                    <div class="kpi-value">3.78</div>
+                    <span class="kpi-delta negative">-5.4%</span>
+                </div>
+                <div class="kpi-card active">
+                    <div class="kpi-icon"><i data-lucide="check-circle" style="width:14px;height:14px;color:#fff"></i></div>
+                    <div class="kpi-label">Tasks Finished</div>
+                    <div class="kpi-value">94%</div>
+                    <span class="kpi-delta positive">+3.1%</span>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i data-lucide="heart" style="width:14px;height:14px;color:#fff"></i></div>
+                    <div class="kpi-label">Brand Health</div>
+                    <div class="kpi-value">74</div>
+                    <span class="kpi-delta positive">+2 pts</span>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i data-lucide="users" style="width:14px;height:14px;color:#fff"></i></div>
+                    <div class="kpi-label">Combined Reach</div>
+                    <div class="kpi-value">284K</div>
+                    <span class="kpi-delta positive">+8%</span>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i data-lucide="dollar-sign" style="width:14px;height:14px;color:#fff"></i></div>
+                    <div class="kpi-label">Blended CAC</div>
+                    <div class="kpi-value">$8.20</div>
+                    <span class="kpi-delta negative">-12%</span>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i data-lucide="trending-up" style="width:14px;height:14px;color:#fff"></i></div>
+                    <div class="kpi-label">Blended ROAS</div>
+                    <div class="kpi-value">3.8×</div>
+                    <span class="kpi-delta positive">+0.4</span>
+                </div>
+            </div>
+
+            <!-- Bento Row 1: Briefing + Decision Queue -->
+            <div class="bento wide">
+
+                <!-- Briefing (2/3 width) -->
+                <div class="glass" id="briefing">
+                    <div class="section-head">
+                        <h3>Premium Briefing</h3>
+                        <span class="badge badge-live">Live</span>
+                    </div>
+                    <div class="brief-agent">
+                        <div class="brief-avatar">M</div>
+                        <div class="brief-agent-info">
+                            <div class="name">Marcus · CEO Agent</div>
+                            <div class="role">Daily intelligence read</div>
+                        </div>
+                        <span class="brief-badge">sonnet-4-6</span>
+                    </div>
+                    <div class="brief-headline">Hourbour is gaining ground — Founder Voice content outperforms every other pillar by 2.4×</div>
+                    <div class="brief-body">
+                        Target content strategy confirmed and positive across operations.
+                        <strong>IG Saves are up 31%</strong> — the algorithm is responding to
+                        authentic founder-led posts. Revenue attribution from Friday's drop link
+                        is clean and verified via Stripe. The IG Reach dip is a platform fluctuation,
+                        not a brand health concern. <strong>Biggest leverage today:</strong> approve
+                        the 3 Campaign Studio captions before the 12 PM posting window.
+                    </div>
+                    <div class="brief-footer">
+                        <span class="brief-tag">◆ Insight</span>
+                        <button class="btn-live">Get Live →</button>
+                    </div>
+                </div>
+
+                <!-- Decision Queue (1/3 width) -->
+                <div class="glass" id="decisions">
+                    <div class="section-head">
+                        <h3>Decision Queue</h3>
+                        <span class="badge badge-waiting">3 Waiting</span>
+                    </div>
+                    <div class="decision-item">
+                        <div class="decision-urgency urgency-red">⚡ Act Now</div>
+                        <div class="decision-q">Approve new Novizio Q3 campaign budget?</div>
+                        <div class="decision-actions">
+                            <button class="btn-ghost">Decline</button>
+                            <button class="btn-primary">Approve</button>
+                        </div>
+                    </div>
+                    <div class="decision-item">
+                        <div class="decision-urgency urgency-orange">⏰ Today</div>
+                        <div class="decision-q">Sign off on Hourbour product launch timeline?</div>
+                        <div class="decision-actions">
+                            <button class="btn-ghost">Review</button>
+                            <button class="btn-green">Sign Off</button>
+                        </div>
+                    </div>
+                    <div class="decision-item">
+                        <div class="decision-urgency urgency-blue">📅 This Week</div>
+                        <div class="decision-q">Evaluate Reformotion partnership opportunity?</div>
+                        <div class="decision-actions">
+                            <button class="btn-ghost">Analyze</button>
+                            <button class="btn-live">Discuss</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bento Row 2: Brand Pulse / Activity + Market / Customer Voice -->
+            <div class="bento triple">
+
+                <!-- Brand Pulse -->
+                <div class="glass" id="brandPulse">
+                    <div class="section-head">
+                        <h3>Brand Pulse</h3>
+                        <span class="badge badge-blue">8-week trend</span>
+                    </div>
+                    <div class="pulse-scores">
+                        <div class="pulse-score-card">
+                            <div class="vent-name">Novizio</div>
+                            <div class="score blue">74</div>
+                            <div class="score-delta">+2 pts</div>
+                        </div>
+                        <div class="pulse-score-card">
+                            <div class="vent-name">Hourbour</div>
+                            <div class="score gray">67</div>
+                            <div class="score-delta">+5 pts</div>
+                        </div>
+                    </div>
+                    <div class="chart-area">
+                        <svg viewBox="0 0 400 120" fill="none">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="30" x2="400" y2="30" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4 4"/>
+                            <line x1="0" y1="60" x2="400" y2="60" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4 4"/>
+                            <line x1="0" y1="90" x2="400" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4 4"/>
+                            <!-- Novizio (blue solid) -->
+                            <polyline points="10,85 60,78 110,82 160,70 210,65 260,55 310,50 360,42"
+                                stroke="#0071e3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <!-- Novizio area -->
+                            <polygon points="10,85 60,78 110,82 160,70 210,65 260,55 310,50 360,42 360,120 10,120"
+                                fill="url(#blueGrad)" opacity="0.15"/>
+                            <!-- Hourbour (gray dashed) -->
+                            <polyline points="10,95 60,90 110,88 160,85 210,78 260,72 310,68 360,60"
+                                stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="6 4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <defs>
+                                <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#0071e3"/>
+                                    <stop offset="1" stop-color="#0071e3" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Activity + Market (stacked inside glass) -->
+                <div class="glass" id="activity" style="display:flex;flex-direction:column;gap:16px;">
+                    <div>
+                        <div class="section-head">
+                            <h3>Activity Feed</h3>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot" style="background:#00E676"></div>
+                            <div>
+                                <div class="activity-text"><strong>Kai</strong> flagged IG engagement drop — pulling 30-day data</div>
+                                <div class="activity-time">09:14 AM</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot" style="background:#0071e3"></div>
+                            <div>
+                                <div class="activity-text"><strong>Lena</strong> delivered morning brief — 3 insights</div>
+                                <div class="activity-time">07:00 AM</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-dot gray"></div>
+                            <div>
+                                <div class="activity-text"><strong>Marcus</strong> updated brand voice guidelines</div>
+                                <div class="activity-time">Yesterday</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)">
+                        <div class="section-head">
+                            <h3>Market Intel</h3>
+                            <span class="badge badge-blue">1 Insight</span>
+                        </div>
+                        <div style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)">
+                            <div style="font-size:12px;font-weight:600;margin-bottom:4px">Reformotion owns transparency</div>
+                            <div style="font-size:10px;color:rgba(255,255,255,0.35)">Their ingredient-first messaging won 3 feature comparisons this week</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Voice -->
+                <div class="glass" id="customerVoice">
+                    <div class="section-head">
+                        <h3>Customer Voice</h3>
+                    </div>
+                    <div class="cv-quote">
+                        "Honestly the texture is insane, but where's the size guide? I'm a XL and sizing up blindly isn't my thing."
+                        <div class="cv-source reddit">/r/MensSkincare</div>
+                    </div>
+                    <div class="cv-quote">
+                        "The founder video sold me. I wish they did more of those."
+                        <div class="cv-source tiktok">@glowcheck</div>
+                    </div>
+                    <div class="cv-quote">
+                        "Packaging is premium AF but took 8 days to ship. Fix logistics."
+                        <div class="cv-source ig">@beautybyalex</div>
+                    </div>
+                    <div class="cv-alert">
+                        ⚠ Size guide missing in Instagram bio link
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Bar -->
+            <div class="team-bar" id="teamBar">
+                <div class="team-bar-head">
+                    <h3>Team Working On It</h3>
+                    <p>4 active · 1 pending review</p>
+                </div>
+                <div class="team-members">
+                    <div class="team-member">
+                        <div class="tm-avatar blue">K</div>
+                        <div class="tm-info">
+                            <div class="name">Kai</div>
+                            <div class="task">IG anomaly report</div>
+                        </div>
+                        <div class="tm-status flight"></div>
+                    </div>
+                    <div class="team-member">
+                        <div class="tm-avatar green">L</div>
+                        <div class="tm-info">
+                            <div class="name">Lena</div>
+                            <div class="task">Campaign captions</div>
+                        </div>
+                        <div class="tm-status flight"></div>
+                    </div>
+                    <div class="team-member">
+                        <div class="tm-avatar orange">N</div>
+                        <div class="tm-info">
+                            <div class="name">Nate</div>
+                            <div class="task">TikTok A/B test</div>
+                        </div>
+                        <div class="tm-status flight"></div>
+                    </div>
+                    <div class="team-member">
+                        <div class="tm-avatar purple">F</div>
+                        <div class="tm-info">
+                            <div class="name">Felix</div>
+                            <div class="task">Budget reconciliation</div>
+                        </div>
+                        <div class="tm-status pending"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Floating Dock (matching visual companion) ── -->
+    <div class="controls-layer" id="controls" style="display:flex;justify-content:center;position:fixed;bottom:40px;left:0;right:0;z-index:9999;gap:20px;padding:0 40px;pointer-events:none">
+        <div class="dock" id="theDock" style="background:rgba(255,255,255,0.08);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:8px;display:flex;gap:8px;align-items:center;height:64px;box-shadow:0 20px 50px rgba(0,0,0,0.5);box-sizing:border-box;pointer-events:auto">
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;position:relative;background:#0071e3;box-shadow:0 0 15px rgba(0,113,227,0.4)">
+                <i data-lucide="hexagon" style="width:24px;height:24px"></i>
+            </div>
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;position:relative;background:rgba(255,255,255,0.05);transition:all 0.2s cubic-bezier(0.2,0,0.2,1)"
+                 onmouseenter="this.style.transform='scale(1.3) translateY(-10px)';this.style.background='rgba(255,255,255,0.15)'"
+                 onmouseleave="this.style.transform='scale(1) translateY(0)';this.style.background='rgba(255,255,255,0.05)'"
+            ><i data-lucide="layout-dashboard" style="width:24px;height:24px"></i></div>
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;position:relative;background:rgba(255,255,255,0.05);transition:all 0.2s cubic-bezier(0.2,0,0.2,1)"
+                 onmouseenter="this.style.transform='scale(1.3) translateY(-10px)';this.style.background='rgba(255,255,255,0.15)'"
+                 onmouseleave="this.style.transform='scale(1) translateY(0)';this.style.background='rgba(255,255,255,0.05)'"
+            ><i data-lucide="radar" style="width:24px;height:24px"></i></div>
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;cursor:pointer;position:relative;background:rgba(255,255,255,0.05);transition:all 0.2s cubic-bezier(0.2,0,0.2,1)"
+                 onmouseenter="this.style.transform='scale(1.3) translateY(-10px)';this.style.background='rgba(255,255,255,0.15)'"
+                 onmouseleave="this.style.transform='scale(1) translateY(0)';this.style.background='rgba(255,255,255,0.05)'"
+            >◈</div>
+            <div style="width:1px;height:32px;background:rgba(255,255,255,0.15);margin:0 4px"></div>
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;position:relative;background:rgba(255,255,255,0.05);transition:all 0.2s cubic-bezier(0.2,0,0.2,1)"
+                 onmouseenter="this.style.transform='scale(1.3) translateY(-10px)';this.style.background='rgba(255,255,255,0.15)'"
+                 onmouseleave="this.style.transform='scale(1) translateY(0)';this.style.background='rgba(255,255,255,0.05)'"
+            ><i data-lucide="mail" style="width:24px;height:24px"></i></div>
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;position:relative;background:rgba(255,255,255,0.05);transition:all 0.2s cubic-bezier(0.2,0,0.2,1)"
+                 onmouseenter="this.style.transform='scale(1.3) translateY(-10px)';this.style.background='rgba(255,255,255,0.15)'"
+                 onmouseleave="this.style.transform='scale(1) translateY(0)';this.style.background='rgba(255,255,255,0.05)'"
+            ><i data-lucide="clock" style="width:24px;height:24px"></i></div>
+            <div class="dock-item" style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;position:relative;background:rgba(255,255,255,0.05);transition:all 0.2s cubic-bezier(0.2,0,0.2,1)"
+                 onmouseenter="this.style.transform='scale(1.3) translateY(-10px)';this.style.background='rgba(255,255,255,0.15)'"
+                 onmouseleave="this.style.transform='scale(1) translateY(0)';this.style.background='rgba(255,255,255,0.05)'"
+            ><i data-lucide="settings" style="width:24px;height:24px"></i></div>
+        </div>
+
+        <div class="brand-pill" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,0.2);border-radius:24px;padding:0 24px;display:flex;align-items:center;gap:14px;height:64px;box-shadow:0 20px 50px rgba(0,0,0,0.5);cursor:pointer;pointer-events:auto;transition:all 0.3s ease"
+             onmouseenter="this.style.background='rgba(255,255,255,0.18)';this.style.transform='translateY(-4px)'"
+             onmouseleave="this.style.background='rgba(255,255,255,0.12)';this.style.transform='translateY(0)'"
+        >
+            <div style="width:10px;height:10px;border-radius:50%;background:#34c759;box-shadow:0 0 12px #34c759;flex-shrink:0"></div>
+            <div style="display:flex;flex-direction:column;white-space:nowrap">
+                <span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:2px;line-height:1">Active Venture</span>
+                <span style="font-size:17px;font-weight:700;letter-spacing:-0.2px;color:#fff;line-height:1">Novizio Brand</span>
+            </div>
+            <div style="font-size:14px;opacity:0.5;margin-left:10px"><i data-lucide="chevron-down" style="width:14px;height:14px"></i></div>
+        </div>
+    </div>
+
+    <script>
+        // Init lucide icons
+        lucide.createIcons();
+
+        // GSAP animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero entrance
+        gsap.from('#hero h1', { opacity: 0, y: 40, duration: 1.2, ease: 'expo.out' });
+        gsap.from('#hero .sub', { opacity: 0, y: 20, duration: 1, ease: 'expo.out', delay: 0.3 });
+
+        // KPI stagger
+        gsap.from('#kpiStrip .kpi-card', {
+            opacity: 0,
+            scale: 0.95,
+            y: 30,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: 'expo.out',
+            scrollTrigger: { trigger: '#kpiStrip', start: 'top 90%', toggleActions: 'play none none reverse' }
+        });
+
+        // Bento sections
+        ['#briefing,#decisions', '#brandPulse,#activity,#customerVoice', '#teamBar'].forEach(sel => {
+            gsap.from(sel, {
+                opacity: 0,
+                scale: 0.95,
+                y: 30,
+                duration: 1,
+                ease: 'expo.out',
+                scrollTrigger: { trigger: sel, start: 'top 90%', toggleActions: 'play none none reverse' }
+            });
+        });
+
+        // Controls layer
+        gsap.from('#controls', {
+            opacity: 0, y: 100, duration: 1.5, ease: 'elastic.out(1, 0.75)', delay: 0.5
+        });
+
+        // Number count-up animation for KPI values
+        document.querySelectorAll('.kpi-value').forEach(el => {
+            const text = el.textContent;
+            const val = parseFloat(text.replace(/[^0-9.]/g, ''));
+            const prefix = text.match(/[^0-9.]/) ? text.match(/^([^0-9.]+)/)?.[1] || '' : '';
+            const suffix = text.match(/([^0-9.]+)$/) ? text.match(/([^0-9.]+)$/)?.[1] || '' : '';
+            if (isNaN(val)) return;
+            const obj = { val: 0 };
+            gsap.to(obj, {
+                val: val,
+                duration: 1.5,
+                ease: 'power4.out',
+                delay: 0.5 + Math.random() * 0.3,
+                onUpdate: () => {
+                    const rounded = val % 1 !== 0 ? obj.val.toFixed(2) : Math.round(obj.val);
+                    el.textContent = prefix + rounded + suffix;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YVON — Content Hub</title>
+<style>
+
+@font-face { font-family:'SF Pro Display'; src:url('./fonts/SFPRODISPLAYREGULAR.OTF') format('opentype'); font-weight:400; }
+@font-face { font-family:'SF Pro Display'; src:url('./fonts/SFPRODISPLAYMEDIUM.OTF') format('opentype'); font-weight:500; }
+@font-face { font-family:'SF Pro Display'; src:url('./fonts/SFPRODISPLAYBOLD.OTF') format('opentype'); font-weight:700; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+
+:root {
+  --black:    #000000;
+  --gray-bg:  #f5f5f7;
+  --white:    #ffffff;
+
+  --card-dark:  #1c1c1e;
+  --card-dark2: #2c2c2e;
+  --card-dark3: #3a3a3c;
+
+  --on-dark:    #f5f5f7;
+  --on-dark-2:  rgba(245,245,247,.68);
+  --on-dark-3:  rgba(245,245,247,.38);
+  --on-dark-4:  rgba(245,245,247,.18);
+
+  --on-light:   #1d1d1f;
+  --on-light-2: rgba(29,29,31,.58);
+  --on-light-3: rgba(29,29,31,.34);
+  --on-light-4: rgba(29,29,31,.10);
+
+  --blue:       #0071e3;
+  --blue-h:     #0077ed;
+  --blue-dark:  #2997ff;
+  --blue-link:  #0066cc;
+  --blue-bg:    rgba(0,113,227,.09);
+  --blue-bd:    rgba(0,113,227,.22);
+
+  --data-g:  #34c759;
+  --data-r:  #ff3b30;
+  --data-y:  #ff9f0a;
+
+  --shadow:    rgba(0,0,0,0.14) 0 2px 20px 0;
+  --shadow-lg: rgba(0,0,0,0.22) 3px 5px 30px 0px;
+
+  --r6:  6px;
+  --r8:  8px;
+  --r10: 10px;
+  --r12: 12px;
+  --r16: 16px;
+  --r980: 980px;
+
+  --sidebar-w: 240px;
+  --header-h:  48px;
+
+  --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --mono: 'SF Mono', 'Courier New', monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--gray-bg);
+  color: var(--on-light);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════════════ */
+.sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--sidebar-w); height: 100vh;
+  background: #0a0a0a;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex; flex-direction: column;
+  z-index: 300;
+}
+.sb-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+}
+.sb-logo-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+.sb-logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.5px; color: var(--on-dark); }
+.sb-body {
+  flex: 1; overflow-y: auto; padding: 8px 10px;
+  scrollbar-width: none;
+}
+.sb-body::-webkit-scrollbar { display: none; }
+.sb-group-label {
+  font-size: 10px; font-weight: 400; letter-spacing: 0.03em;
+  color: rgba(245,245,247,.18); padding: 14px 10px 5px; text-transform: uppercase;
+}
+.sb-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--r8); cursor: pointer;
+  transition: background 80ms; margin-bottom: 1px;
+}
+.sb-row:hover { background: rgba(255,255,255,.05); }
+.sb-row.active { background: var(--blue-bg); }
+.sb-row-icon { width: 16px; text-align: center; font-size: 14px; color: rgba(245,245,247,.30); flex-shrink: 0; }
+.sb-row.active .sb-row-icon { color: var(--blue-dark); }
+.sb-row-label { font-size: 13px; font-weight: 400; color: rgba(245,245,247,.60); letter-spacing: -0.2px; flex: 1; }
+.sb-row.active .sb-row-label { color: var(--on-dark); font-weight: 500; }
+.sb-badge { font-size: 10px; font-weight: 600; background: var(--blue); color: #fff; min-width: 17px; height: 17px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+.sb-agent-row { display: flex; align-items: center; gap: 9px; padding: 6px 10px; border-radius: var(--r8); cursor: pointer; transition: background 80ms; margin-bottom: 1px; }
+.sb-agent-row:hover { background: rgba(255,255,255,.04); }
+.sb-av { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.sb-agent-name { font-size: 12px; color: rgba(245,245,247,.55); letter-spacing: -0.1px; flex: 1; }
+.sb-agent-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.sb-ventures { border-top: 1px solid rgba(255,255,255,.05); padding: 12px 10px; flex-shrink: 0; }
+.sb-venture-label { font-size: 10px; color: rgba(245,245,247,.18); letter-spacing: 0.04em; text-transform: uppercase; padding: 0 10px; margin-bottom: 6px; }
+.sb-v-pill { display: flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: var(--r8); cursor: pointer; transition: background 80ms; }
+.sb-v-pill:hover { background: rgba(255,255,255,.05); }
+.sb-v-pill.active { background: rgba(255,255,255,.06); }
+.sb-v-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sb-v-name { font-size: 12px; font-weight: 500; color: rgba(245,245,247,.50); letter-spacing: -0.1px; }
+.sb-v-pill.active .sb-v-name { color: var(--on-dark); }
+
+/* ══════════════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════════════ */
+.main { margin-left: var(--sidebar-w); display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ══════════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════════ */
+.header {
+  position: sticky; top: 0; z-index: 200;
+  height: var(--header-h);
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center;
+  padding: 0 28px; gap: 16px;
+}
+.hdr-title { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; color: var(--on-dark); flex-shrink: 0; }
+.hdr-search {
+  flex: 1; max-width: 400px;
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.09);
+  border-radius: var(--r980); padding: 0 14px; height: 30px;
+  cursor: text; transition: border-color 150ms;
+}
+.hdr-search:hover { border-color: rgba(255,255,255,.16); }
+.hdr-search-icon { font-size: 11px; color: rgba(255,255,255,.28); }
+.hdr-search-ph { font-size: 13px; color: rgba(255,255,255,.28); letter-spacing: -0.1px; }
+.hdr-gap { flex: 1; }
+.hdr-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--blue); border-radius: var(--r980);
+  padding: 0 15px; height: 30px;
+  font-size: 12px; font-weight: 600; color: #fff; letter-spacing: -0.1px;
+  cursor: pointer; transition: background 80ms;
+}
+.hdr-btn:hover { background: var(--blue-h); }
+.hdr-icon-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: transparent; border: 1px solid rgba(255,255,255,.09);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: rgba(255,255,255,.45);
+  cursor: pointer; position: relative; transition: all 80ms;
+}
+.hdr-icon-btn:hover { background: rgba(255,255,255,.08); color: var(--on-dark); }
+.hdr-notif-dot { position: absolute; top: 5px; right: 5px; width: 7px; height: 7px; background: var(--data-g); border-radius: 50%; border: 1.5px solid #000; }
+.hdr-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#1c3a6e,var(--blue)); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; cursor: pointer; }
+
+/* ══════════════════════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════════════════════ */
+.page-head {
+  background: var(--white);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 0 36px;
+}
+.page-head-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0 0; gap: 16px;
+}
+.page-title { font-size: 34px; font-weight: 700; letter-spacing: -0.8px; color: var(--on-light); line-height: 1.1; }
+.page-title-sub { font-size: 15px; color: var(--on-light-2); letter-spacing: -0.2px; margin-top: 4px; font-weight: 400; }
+.page-head-right { display: flex; align-items: center; gap: 10px; }
+
+.period-group {
+  display: flex; align-items: center; gap: 3px;
+  background: rgba(0,0,0,0.05); border-radius: var(--r980); padding: 3px;
+}
+.period-btn {
+  padding: 5px 14px; border-radius: var(--r980);
+  font-size: 12px; font-weight: 400;
+  color: var(--on-light-2); background: transparent; border: none;
+  cursor: pointer; transition: all 100ms; letter-spacing: -0.1px;
+}
+.period-btn.active { background: var(--white); color: var(--on-light); font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+.period-btn:hover:not(.active) { color: var(--on-light); }
+
+.page-cta {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--blue); border-radius: var(--r980);
+  padding: 0 18px; height: 34px;
+  font-size: 13px; font-weight: 600; color: #fff; letter-spacing: -0.15px;
+  cursor: pointer; transition: background 80ms; border: none;
+}
+.page-cta:hover { background: var(--blue-h); }
+
+/* ══════════════════════════════════════════════════════
+   TAB BAR
+══════════════════════════════════════════════════════ */
+.tab-bar { display: flex; align-items: flex-end; gap: 0; margin-top: 20px; position: relative; }
+
+.tab-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 20px 12px;
+  font-size: 14px; font-weight: 400;
+  color: var(--on-light-2); background: transparent; border: none;
+  cursor: pointer; position: relative; letter-spacing: -0.2px;
+  transition: color 120ms; border-bottom: 2px solid transparent;
+}
+.tab-btn:hover { color: var(--on-light); }
+.tab-btn.active { color: var(--blue); font-weight: 500; border-bottom: 2px solid var(--blue); }
+
+.tab-icon { font-size: 15px; opacity: 0.5; transition: opacity 120ms; }
+.tab-btn.active .tab-icon { opacity: 1; }
+
+.tab-count {
+  font-size: 11px; font-weight: 500;
+  padding: 1px 6px; border-radius: var(--r980);
+  background: rgba(0,0,0,0.06); color: var(--on-light-3);
+}
+.tab-btn.active .tab-count { background: var(--blue-bg); color: var(--blue); }
+
+/* ══════════════════════════════════════════════════════
+   TAB CONTENT
+══════════════════════════════════════════════════════ */
+.tab-content { display: none; flex: 1; }
+.tab-content.visible { display: flex; flex-direction: column; }
+
+/* SPLIT LAYOUT */
+.split { display: grid; grid-template-columns: 1fr 380px; gap: 0; flex: 1; align-items: start; }
+.split-left { padding: 28px 28px 36px 36px; display: flex; flex-direction: column; gap: 22px; border-right: 1px solid rgba(0,0,0,0.07); }
+.split-right {
+  padding: 28px 32px 36px 24px;
+  display: flex; flex-direction: column; gap: 18px;
+  position: sticky; top: var(--header-h);
+  max-height: calc(100vh - var(--header-h));
+  overflow-y: auto; scrollbar-width: none;
+}
+.split-right::-webkit-scrollbar { display: none; }
+
+/* ══════════════════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════════════════ */
+.card { background: var(--white); border-radius: var(--r12); box-shadow: var(--shadow); overflow: hidden; }
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 20px 13px; border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.card-title { font-size: 14px; font-weight: 600; color: var(--on-light); letter-spacing: -0.25px; }
+.card-meta { font-size: 12px; color: var(--on-light-3); letter-spacing: -0.1px; }
+.card-link { font-size: 13px; color: var(--blue-link); cursor: pointer; letter-spacing: -0.15px; }
+.card-link:hover { text-decoration: underline; }
+.card-tag {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+  padding: 2px 8px; border-radius: var(--r980);
+  background: rgba(0,0,0,0.05); color: var(--on-light-3);
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO METRIC
+══════════════════════════════════════════════════════ */
+.hero-metric { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.hm-label { font-size: 11px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-light-3); margin-bottom: 5px; }
+.hm-value { font-size: 52px; font-weight: 700; letter-spacing: -2px; color: var(--on-light); line-height: 1; font-family: var(--mono); }
+.hm-delta {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: var(--r980);
+  font-size: 13px; font-weight: 600; font-family: var(--mono);
+  margin-bottom: 8px; margin-left: 4px;
+}
+.hm-delta.pos { background: rgba(52,199,89,.12); color: #1a7a36; }
+.hm-delta.neg { background: rgba(255,59,48,.12); color: #c0271a; }
+.hm-period { font-size: 13px; color: var(--on-light-3); letter-spacing: -0.1px; margin-left: 2px; }
+
+.hm-secondaries { display: flex; gap: 24px; margin-top: 4px; flex-wrap: wrap; }
+.hm-sec-label { font-size: 11px; color: var(--on-light-3); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 3px; }
+.hm-sec-value { font-size: 20px; font-weight: 700; letter-spacing: -0.6px; color: var(--on-light); font-family: var(--mono); }
+.hm-sec-delta { font-size: 11px; font-weight: 600; margin-top: 2px; }
+.hm-sec-delta.pos { color: #1a7a36; }
+.hm-sec-delta.neg { color: #c0271a; }
+
+/* ══════════════════════════════════════════════════════
+   CHART
+══════════════════════════════════════════════════════ */
+.chart-container { background: var(--white); border-radius: var(--r12); box-shadow: var(--shadow); padding: 20px 20px 14px; }
+.chart-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.chart-title { font-size: 13px; font-weight: 600; color: var(--on-light); letter-spacing: -0.2px; }
+.chart-legend { display: flex; align-items: center; gap: 14px; }
+.chart-leg-item { display: flex; align-items: center; gap: 5px; }
+.chart-leg-line { width: 16px; height: 2px; border-radius: 1px; }
+.chart-leg-text { font-size: 11px; color: var(--on-light-2); letter-spacing: -0.1px; }
+.chart-area { position: relative; height: 200px; }
+.chart-area svg { width: 100%; height: 100%; overflow: visible; }
+
+/* ══════════════════════════════════════════════════════
+   DATA TABLE
+══════════════════════════════════════════════════════ */
+.table-wrap { overflow: hidden; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table thead tr { border-bottom: 1px solid rgba(0,0,0,0.07); }
+.data-table thead th {
+  padding: 10px 16px; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--on-light-3); text-align: left;
+  background: rgba(0,0,0,0.015);
+}
+.data-table thead th.right { text-align: right; }
+.data-table tbody tr { border-bottom: 1px solid rgba(0,0,0,0.05); transition: background 80ms; cursor: pointer; }
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table tbody tr:hover { background: rgba(0,0,0,0.025); }
+.data-table tbody td { padding: 12px 16px; font-size: 13px; color: var(--on-light); letter-spacing: -0.1px; vertical-align: middle; }
+.td-rank { font-family: var(--mono); font-size: 12px; color: var(--on-light-3); width: 28px; }
+.td-thumb { display: flex; align-items: center; gap: 10px; }
+.thumb-img { width: 40px; height: 40px; border-radius: var(--r6); background: var(--gray-bg); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.06); }
+.thumb-caption { font-size: 13px; color: var(--on-light); letter-spacing: -0.15px; line-height: 1.4; max-width: 200px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.td-num { font-family: var(--mono); font-size: 13px; text-align: right; }
+.td-num.muted { color: var(--on-light-2); }
+.score-cell { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.score-val { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--on-light); min-width: 28px; text-align: right; }
+.score-bar-wrap { width: 52px; height: 4px; background: rgba(0,0,0,0.07); border-radius: 2px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 2px; background: var(--blue); }
+.td-delta { font-family: var(--mono); font-size: 12px; font-weight: 600; text-align: right; }
+.td-delta.pos { color: #1a7a36; }
+.td-delta.neg { color: #c0271a; }
+
+.format-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: var(--r980);
+  font-size: 10px; font-weight: 500;
+}
+.fmt-reel  { background: rgba(255,59,48,.10); color: #c0271a; }
+.fmt-story { background: rgba(255,159,10,.10); color: #8a5600; }
+.fmt-carousel { background: rgba(0,113,227,.09); color: var(--blue); }
+.fmt-static { background: rgba(0,0,0,0.06); color: var(--on-light-2); }
+
+/* ══════════════════════════════════════════════════════
+   RIGHT PANEL — KPI MINI
+══════════════════════════════════════════════════════ */
+.kpi-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpi-mini {
+  background: var(--white); border-radius: var(--r10); box-shadow: var(--shadow);
+  padding: 14px 14px 12px; cursor: pointer; transition: box-shadow 120ms, transform 120ms;
+}
+.kpi-mini:hover { transform: translateY(-1px); box-shadow: rgba(0,0,0,0.20) 2px 4px 20px; }
+.kpi-mini-label { font-size: 10px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-light-3); margin-bottom: 6px; }
+.kpi-mini-val { font-size: 22px; font-weight: 700; letter-spacing: -0.8px; color: var(--on-light); font-family: var(--mono); line-height: 1; margin-bottom: 4px; }
+.kpi-mini-delta { font-size: 11px; font-weight: 600; font-family: var(--mono); }
+.kpi-mini-delta.pos { color: #1a7a36; }
+.kpi-mini-delta.neg { color: #c0271a; }
+
+/* ══════════════════════════════════════════════════════
+   RIGHT PANEL — INTEL CARD (dark)
+══════════════════════════════════════════════════════ */
+.intel-card { background: var(--card-dark); border-radius: var(--r12); overflow: hidden; }
+.intel-head { display: flex; align-items: center; gap: 8px; padding: 14px 16px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.intel-agent-av { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.intel-agent-name { font-size: 12px; font-weight: 600; color: var(--on-dark); letter-spacing: -0.15px; }
+.intel-model-tag { margin-left: auto; font-size: 9px; padding: 2px 7px; border-radius: var(--r980); background: var(--blue-bg); color: var(--blue-dark); border: 1px solid var(--blue-bd); }
+.intel-body { padding: 14px 16px; }
+.intel-label { font-size: 9px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: rgba(245,245,247,.35); margin-bottom: 6px; }
+.intel-text { font-size: 13px; color: rgba(245,245,247,.72); line-height: 1.60; letter-spacing: -0.15px; margin-bottom: 12px; }
+.intel-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: var(--r980); background: var(--blue-bg); border: 1px solid var(--blue-bd); font-size: 11px; font-weight: 500; color: var(--blue-dark); }
+.intel-divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 12px 0; }
+
+/* ══════════════════════════════════════════════════════
+   BRAND SCORE GAUGE (right panel)
+══════════════════════════════════════════════════════ */
+.score-gauge-card { background: var(--white); border-radius: var(--r12); box-shadow: var(--shadow); overflow: hidden; }
+.score-gauge-head { padding: 14px 18px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; }
+.score-gauge-label { font-size: 12px; font-weight: 600; color: var(--on-light); letter-spacing: -0.15px; }
+.score-gauge-period { font-size: 11px; color: var(--on-light-3); }
+.gauge-body { padding: 14px 18px 16px; }
+.gauge-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.gauge-row:last-child { margin-bottom: 0; }
+.gauge-pillar { font-size: 12px; color: var(--on-light-2); letter-spacing: -0.1px; width: 90px; flex-shrink: 0; }
+.gauge-track { flex: 1; height: 5px; background: rgba(0,0,0,0.07); border-radius: 3px; overflow: hidden; }
+.gauge-fill { height: 100%; border-radius: 3px; transition: width 600ms ease; }
+.gauge-score { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--on-light); min-width: 26px; text-align: right; }
+
+/* ══════════════════════════════════════════════════════
+   TRENDING PIPELINE — TAB 2
+══════════════════════════════════════════════════════ */
+.trend-list { display: flex; flex-direction: column; }
+.trend-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px; border-bottom: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer; transition: background 80ms;
+}
+.trend-row:last-child { border-bottom: none; }
+.trend-row:hover { background: rgba(0,0,0,0.025); }
+.trend-rank { font-family: var(--mono); font-size: 11px; color: var(--on-light-3); width: 20px; flex-shrink: 0; }
+.trend-icon { font-size: 20px; flex-shrink: 0; }
+.trend-body { flex: 1; min-width: 0; }
+.trend-topic { font-size: 14px; font-weight: 500; color: var(--on-light); letter-spacing: -0.2px; margin-bottom: 3px; }
+.trend-meta { font-size: 11px; color: var(--on-light-3); letter-spacing: -0.1px; }
+.trend-bar-col { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.trend-momentum { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--on-light); }
+.trend-bar-wrap { width: 80px; height: 3px; background: rgba(0,0,0,0.07); border-radius: 2px; overflow: hidden; }
+.trend-bar-fill { height: 100%; border-radius: 2px; }
+.velocity-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--r980);
+  font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+}
+.vel-hot  { background: rgba(255,59,48,.10); color: #c0271a; }
+.vel-rise { background: rgba(255,159,10,.10); color: #8a5600; }
+.vel-new  { background: rgba(0,113,227,.09); color: var(--blue); }
+
+/* Hook template library */
+.hook-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 18px 20px; }
+.hook-card {
+  background: var(--gray-bg); border-radius: var(--r10);
+  padding: 14px 16px; cursor: pointer;
+  border: 1.5px solid transparent; transition: all 120ms;
+}
+.hook-card:hover { background: var(--white); border-color: var(--blue-bd); box-shadow: var(--shadow); }
+.hook-type { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--on-light-3); margin-bottom: 7px; }
+.hook-text { font-size: 13px; color: var(--on-light); line-height: 1.5; letter-spacing: -0.15px; margin-bottom: 8px; }
+.hook-stats { font-size: 11px; font-family: var(--mono); color: var(--on-light-3); }
+.hook-stats span { color: #1a7a36; font-weight: 600; }
+
+/* Format performance bar chart */
+.format-bars { padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 12px; }
+.fmt-bar-row { display: flex; align-items: center; gap: 12px; }
+.fmt-bar-label { font-size: 12px; color: var(--on-light-2); width: 76px; flex-shrink: 0; letter-spacing: -0.1px; }
+.fmt-bar-track { flex: 1; height: 8px; background: rgba(0,0,0,0.07); border-radius: 4px; overflow: hidden; }
+.fmt-bar-fill { height: 100%; border-radius: 4px; background: var(--blue); transition: width 600ms ease; }
+.fmt-bar-val { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--on-light); min-width: 36px; text-align: right; }
+.fmt-bar-delta { font-family: var(--mono); font-size: 11px; min-width: 38px; text-align: right; }
+
+/* Velocity card (right panel — trending) */
+.vel-card { background: var(--white); border-radius: var(--r12); box-shadow: var(--shadow); overflow: hidden; }
+.vel-head { padding: 14px 18px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; }
+.vel-title { font-size: 12px; font-weight: 600; color: var(--on-light); }
+.vel-body { padding: 14px 18px 16px; }
+.vel-stat-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.vel-stat-row:last-child { margin-bottom: 0; }
+.vel-stat-k { font-size: 12px; color: var(--on-light-2); letter-spacing: -0.1px; }
+.vel-stat-v { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--on-light); }
+.vel-stat-v.up { color: #1a7a36; }
+
+/* ══════════════════════════════════════════════════════
+   CAMPAIGN STUDIO — TAB 3
+══════════════════════════════════════════════════════ */
+.pipeline-scroll { overflow-x: auto; padding: 0 36px 0; scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.12) transparent; }
+.pipeline-scroll::-webkit-scrollbar { height: 4px; }
+.pipeline-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
+.pipeline-board { display: flex; gap: 0; min-width: max-content; padding-bottom: 4px; }
+
+.pipeline-col { width: 210px; flex-shrink: 0; }
+.pipeline-col + .pipeline-col { border-left: 1px solid rgba(0,0,0,0.06); }
+.pipeline-col-head {
+  padding: 12px 16px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06);
+  position: sticky; top: 0; z-index: 10;
+}
+.pipeline-stage { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-light-2); }
+.pipeline-count { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--on-light-3); background: rgba(0,0,0,0.05); padding: 1px 6px; border-radius: var(--r980); }
+.pipeline-col-body { padding: 12px 10px; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.012); min-height: 400px; }
+
+.camp-card {
+  background: var(--white); border-radius: var(--r10);
+  box-shadow: rgba(0,0,0,0.08) 0 1px 8px 0;
+  padding: 12px 14px; cursor: pointer;
+  transition: box-shadow 120ms, transform 120ms;
+  border: 1.5px solid transparent;
+}
+.camp-card:hover { transform: translateY(-2px); box-shadow: rgba(0,0,0,0.18) 0 4px 16px 0; border-color: var(--blue-bd); }
+.camp-venture { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-light-3); margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+.camp-v-dot { width: 5px; height: 5px; border-radius: 50%; }
+.camp-name { font-size: 13px; font-weight: 500; color: var(--on-light); letter-spacing: -0.15px; line-height: 1.35; margin-bottom: 8px; }
+.camp-footer { display: flex; align-items: center; justify-content: space-between; }
+.camp-platform-dots { display: flex; gap: 3px; }
+.camp-p-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--gray-bg); display: flex; align-items: center; justify-content: center; font-size: 7px; border: 1px solid rgba(0,0,0,0.06); }
+.camp-due { font-size: 10px; font-family: var(--mono); color: var(--on-light-3); }
+.camp-due.urgent { color: #c0271a; }
+.camp-assignee-row { display: flex; gap: 3px; margin-top: 8px; }
+.camp-av { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 700; color: #fff; }
+
+/* Campaign summary KPIs */
+.camp-kpi-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.camp-kpi-tile {
+  background: var(--white); border-radius: var(--r10); box-shadow: var(--shadow);
+  padding: 13px 14px 11px;
+}
+.camp-kpi-label { font-size: 10px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-light-3); margin-bottom: 5px; }
+.camp-kpi-val { font-size: 22px; font-weight: 700; letter-spacing: -0.8px; color: var(--on-light); font-family: var(--mono); line-height: 1; margin-bottom: 2px; }
+.camp-kpi-sub { font-size: 11px; color: var(--on-light-3); }
+
+/* Agent workload card */
+.workload-card { background: var(--white); border-radius: var(--r12); box-shadow: var(--shadow); overflow: hidden; }
+.workload-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.workload-row:last-child { border-bottom: none; }
+.workload-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.workload-agent { flex: 1; }
+.workload-name { font-size: 13px; font-weight: 500; color: var(--on-light); letter-spacing: -0.15px; }
+.workload-task { font-size: 11px; color: var(--on-light-3); letter-spacing: -0.1px; margin-top: 1px; }
+.workload-count { font-family: var(--mono); font-size: 12px; font-weight: 600; background: rgba(0,113,227,.09); color: var(--blue); padding: 2px 8px; border-radius: var(--r980); }
+.workload-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* Approval queue */
+.approval-card { background: var(--card-dark); border-radius: var(--r12); overflow: hidden; }
+.approval-item { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 80ms; }
+.approval-item:last-child { border-bottom: none; }
+.approval-item:hover { background: rgba(255,255,255,0.04); }
+.approval-icon { width: 26px; height: 26px; border-radius: var(--r6); background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.approval-body { flex: 1; min-width: 0; }
+.approval-name { font-size: 12px; font-weight: 500; color: var(--on-dark); letter-spacing: -0.15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.approval-from { font-size: 10px; color: rgba(245,245,247,.40); margin-top: 1px; }
+.approval-cta {
+  font-size: 11px; font-weight: 600; color: var(--blue-dark);
+  background: var(--blue-bg); border: 1px solid var(--blue-bd);
+  padding: 3px 10px; border-radius: var(--r980); cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════════════════════════ */
+.section-label {
+  font-size: 12px; font-weight: 600; letter-spacing: -0.15px;
+  color: var(--on-light-2); margin-bottom: 2px;
+}
+
+/* ══════════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════════ */
+.footer {
+  background: var(--card-dark);
+  padding: 14px 36px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto;
+}
+.ft-logo { font-size: 12px; font-weight: 700; letter-spacing: -0.3px; color: rgba(245,245,247,.30); }
+.ft-links { display: flex; gap: 20px; }
+.ft-link { font-size: 12px; color: rgba(245,245,247,.30); cursor: pointer; transition: color 80ms; }
+.ft-link:hover { color: rgba(245,245,247,.55); }
+.ft-right { display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(245,245,247,.25); }
+.ft-status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--data-g); display: inline-block; margin-right: 4px; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════ SIDEBAR ═══════ -->
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-mark">Y</div>
+    <span class="sb-logo-name">YVON</span>
+  </div>
+  <div class="sb-body">
+    <div class="sb-group-label">Dashboards</div>
+    <div class="sb-row"><span class="sb-row-icon">⬡</span><span class="sb-row-label">CEO Command</span></div>
+    <div class="sb-row"><span class="sb-row-icon">◫</span><span class="sb-row-label">Analytics</span></div>
+    <div class="sb-row active"><span class="sb-row-icon">◉</span><span class="sb-row-label">Content Hub</span></div>
+    <div class="sb-row"><span class="sb-row-icon">◈</span><span class="sb-row-label">Market Radar</span></div>
+    <div class="sb-row"><span class="sb-row-icon">◧</span><span class="sb-row-label">Ads</span></div>
+    <div class="sb-row"><span class="sb-row-icon">⊙</span><span class="sb-row-label">Finance</span></div>
+    <div class="sb-group-label">AI Team — Novizio</div>
+    <div class="sb-agent-row"><div class="sb-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div><span class="sb-agent-name">Atlas — Art Director</span><div class="sb-agent-dot" style="background:var(--data-g);"></div></div>
+    <div class="sb-agent-row"><div class="sb-av" style="background:#3a3a3c;">L</div><span class="sb-agent-name">Lena — Brand</span><div class="sb-agent-dot" style="background:var(--data-g);"></div></div>
+    <div class="sb-agent-row"><div class="sb-av" style="background:#2c2c2e;">Px</div><span class="sb-agent-name">Pixel — Production</span><div class="sb-agent-dot" style="background:var(--data-y);"></div></div>
+    <div class="sb-agent-row"><div class="sb-av" style="background:linear-gradient(135deg,#1c3a6e,#0071e3);">M</div><span class="sb-agent-name">Marcus — CEO</span><div class="sb-agent-dot" style="background:var(--blue-dark);"></div></div>
+    <div class="sb-agent-row"><div class="sb-av" style="background:#3a3a3c;">D</div><span class="sb-agent-name">Diana — COO</span><div class="sb-agent-dot" style="background:var(--data-y);"></div></div>
+    <div class="sb-group-label">Quick</div>
+    <div class="sb-row"><span class="sb-row-icon">✉</span><span class="sb-row-label">CEO Inbox</span><span class="sb-badge">3</span></div>
+    <div class="sb-row"><span class="sb-row-icon">◷</span><span class="sb-row-label">Team</span></div>
+    <div class="sb-row"><span class="sb-row-icon">⊙</span><span class="sb-row-label">Settings</span></div>
+  </div>
+  <div class="sb-ventures">
+    <div class="sb-venture-label">Active Venture</div>
+    <div class="sb-v-pill active"><div class="sb-v-dot" style="background:#0071e3;"></div><span class="sb-v-name">Novizio</span></div>
+    <div class="sb-v-pill"><div class="sb-v-dot" style="background:rgba(255,255,255,.25);"></div><span class="sb-v-name">Hourbour</span></div>
+  </div>
+</nav>
+
+<!-- ═══════ MAIN ═══════ -->
+<div class="main">
+
+  <!-- HEADER -->
+  <header class="header">
+    <span class="hdr-title">Content Hub</span>
+    <div class="hdr-search">
+      <span class="hdr-search-icon">⌕</span>
+      <span class="hdr-search-ph">Search content, campaigns…</span>
+    </div>
+    <div class="hdr-gap"></div>
+    <div class="hdr-btn">+ New Campaign</div>
+    <div class="hdr-icon-btn">🔔<span class="hdr-notif-dot"></span></div>
+    <div class="hdr-avatar">S</div>
+  </header>
+
+  <!-- PAGE HEAD -->
+  <div class="page-head">
+    <div class="page-head-top">
+      <div>
+        <div class="page-title">Content Hub</div>
+        <div class="page-title-sub">Brand output, trending topics & campaign pipeline — Novizio</div>
+      </div>
+      <div class="page-head-right">
+        <div class="period-group">
+          <button class="period-btn">7D</button>
+          <button class="period-btn active">30D</button>
+          <button class="period-btn">90D</button>
+          <button class="period-btn">YTD</button>
+        </div>
+        <button class="page-cta">+ New Campaign</button>
+      </div>
+    </div>
+
+    <!-- TAB BAR -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('pulse')">
+        <span class="tab-icon">◉</span> Brand Pulse
+        <span class="tab-count">84</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('trending')">
+        <span class="tab-icon">↑</span> Trending
+        <span class="tab-count">12</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('studio')">
+        <span class="tab-icon">◧</span> Campaign Studio
+        <span class="tab-count">9</span>
+      </button>
+    </div>
+  </div><!-- /page-head -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       TAB 1 — BRAND PULSE
+  ═══════════════════════════════════════════════════════ -->
+  <div class="tab-content visible" id="tab-pulse">
+    <div class="split">
+
+      <!-- LEFT -->
+      <div class="split-left">
+
+        <!-- Hero metric -->
+        <div class="hero-metric">
+          <div class="hm-primary">
+            <div class="hm-label">Brand Score</div>
+            <div>
+              <span class="hm-value">84</span>
+              <span class="hm-delta pos">▲ +6</span>
+              <span class="hm-period">vs last month</span>
+            </div>
+          </div>
+          <div class="hm-secondaries">
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Total Reach</div>
+              <div class="hm-sec-value">2.4M</div>
+              <div class="hm-sec-delta pos">▲ 18.2%</div>
+            </div>
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Posts Published</div>
+              <div class="hm-sec-value">47</div>
+              <div class="hm-sec-delta pos">▲ 12</div>
+            </div>
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Avg Eng Rate</div>
+              <div class="hm-sec-value">4.8%</div>
+              <div class="hm-sec-delta pos">▲ 0.6pp</div>
+            </div>
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Brand Mentions</div>
+              <div class="hm-sec-value">1,247</div>
+              <div class="hm-sec-delta neg">▼ 3.1%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brand Score Chart -->
+        <div class="chart-container">
+          <div class="chart-top-row">
+            <span class="chart-title">Brand Score & Content Volume — 30 Days</span>
+            <div class="chart-legend">
+              <div class="chart-leg-item"><div class="chart-leg-line" style="background:var(--blue);"></div><span class="chart-leg-text">Brand Score</span></div>
+              <div class="chart-leg-item"><div class="chart-leg-line" style="background:rgba(52,199,89,0.5);"></div><span class="chart-leg-text">Posts</span></div>
+            </div>
+          </div>
+          <div class="chart-area">
+            <svg viewBox="0 0 700 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0071e3" stop-opacity="0.18"/>
+                  <stop offset="100%" stop-color="#0071e3" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#34c759" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#34c759" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="0" y1="40" x2="700" y2="40" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <line x1="0" y1="80" x2="700" y2="80" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <line x1="0" y1="120" x2="700" y2="120" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <line x1="0" y1="160" x2="700" y2="160" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <!-- Brand Score area -->
+              <path d="M0,140 C40,135 80,130 120,122 C160,115 200,110 240,105 C280,100 320,98 360,90 C400,82 440,78 480,72 C520,66 560,58 600,48 C640,38 670,32 700,28 L700,200 L0,200 Z" fill="url(#blueGrad)"/>
+              <path d="M0,140 C40,135 80,130 120,122 C160,115 200,110 240,105 C280,100 320,98 360,90 C400,82 440,78 480,72 C520,66 560,58 600,48 C640,38 670,32 700,28" fill="none" stroke="#0071e3" stroke-width="2" stroke-linejoin="round"/>
+              <!-- Posts volume area -->
+              <path d="M0,165 C40,160 80,155 120,150 C160,145 200,140 240,148 C280,155 320,142 360,138 C400,134 440,145 480,140 C520,135 560,128 600,122 C640,116 670,118 700,115 L700,200 L0,200 Z" fill="url(#greenGrad)"/>
+              <path d="M0,165 C40,160 80,155 120,150 C160,145 200,140 240,148 C280,155 320,142 360,138 C400,134 440,145 480,140 C520,135 560,128 600,122 C640,116 670,118 700,115" fill="none" stroke="#34c759" stroke-width="1.5" stroke-dasharray="4 3" stroke-linejoin="round"/>
+              <!-- Axis labels -->
+              <text x="0" y="196" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">Apr 1</text>
+              <text x="175" y="196" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">Apr 8</text>
+              <text x="350" y="196" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">Apr 15</text>
+              <text x="525" y="196" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">Apr 22</text>
+              <!-- Score labels -->
+              <text x="703" y="43" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">84</text>
+              <text x="703" y="83" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">72</text>
+              <text x="703" y="123" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">60</text>
+              <text x="703" y="163" font-size="9" fill="rgba(29,29,31,0.34)" font-family="SF Mono,monospace">48</text>
+              <!-- Data dots -->
+              <circle cx="700" cy="28" r="4" fill="#0071e3" stroke="#fff" stroke-width="2"/>
+              <circle cx="360" cy="90" r="3.5" fill="#0071e3" stroke="#fff" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Published Content Table -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Published Content — Last 30 Days</span>
+            <span class="card-link">View all 47 →</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width:28px;">#</th>
+                  <th>Content</th>
+                  <th>Format</th>
+                  <th>Platform</th>
+                  <th class="right">Reach</th>
+                  <th class="right">Eng%</th>
+                  <th class="right">Atlas Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="td-rank">1</td>
+                  <td class="td-thumb">
+                    <div class="thumb-img">🎬</div>
+                    <span class="thumb-caption">Behind the scenes: how we built the booking flow from scratch</span>
+                  </td>
+                  <td><span class="format-badge fmt-reel">Reel</span></td>
+                  <td><span class="format-badge fmt-static">IG</span></td>
+                  <td class="td-num">847K</td>
+                  <td class="td-num">6.4%</td>
+                  <td>
+                    <div class="score-cell">
+                      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:94%;"></div></div>
+                      <span class="score-val">94</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-rank">2</td>
+                  <td class="td-thumb">
+                    <div class="thumb-img">📊</div>
+                    <span class="thumb-caption">The hidden cost of manual scheduling — data thread</span>
+                  </td>
+                  <td><span class="format-badge fmt-carousel">Carousel</span></td>
+                  <td><span class="format-badge fmt-static">LI</span></td>
+                  <td class="td-num">312K</td>
+                  <td class="td-num">5.1%</td>
+                  <td>
+                    <div class="score-cell">
+                      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:88%;"></div></div>
+                      <span class="score-val">88</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-rank">3</td>
+                  <td class="td-thumb">
+                    <div class="thumb-img">🎵</div>
+                    <span class="thumb-caption">Day in the life: running 3 ventures simultaneously</span>
+                  </td>
+                  <td><span class="format-badge fmt-reel">Reel</span></td>
+                  <td><span class="format-badge fmt-static">TT</span></td>
+                  <td class="td-num">1.2M</td>
+                  <td class="td-num">8.9%</td>
+                  <td>
+                    <div class="score-cell">
+                      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:91%;"></div></div>
+                      <span class="score-val">91</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-rank">4</td>
+                  <td class="td-thumb">
+                    <div class="thumb-img">💡</div>
+                    <span class="thumb-caption">5 booking mistakes that are costing your business clients</span>
+                  </td>
+                  <td><span class="format-badge fmt-carousel">Carousel</span></td>
+                  <td><span class="format-badge fmt-static">IG</span></td>
+                  <td class="td-num">198K</td>
+                  <td class="td-num">4.2%</td>
+                  <td>
+                    <div class="score-cell">
+                      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:79%;"></div></div>
+                      <span class="score-val">79</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="td-rank">5</td>
+                  <td class="td-thumb">
+                    <div class="thumb-img">🚀</div>
+                    <span class="thumb-caption">Novizio is now live — what it means for service businesses</span>
+                  </td>
+                  <td><span class="format-badge fmt-story">Story</span></td>
+                  <td><span class="format-badge fmt-static">IG</span></td>
+                  <td class="td-num">94K</td>
+                  <td class="td-num">3.8%</td>
+                  <td>
+                    <div class="score-cell">
+                      <div class="score-bar-wrap"><div class="score-bar-fill" style="width:74%;"></div></div>
+                      <span class="score-val">74</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /split-left -->
+
+      <!-- RIGHT STICKY PANEL -->
+      <div class="split-right">
+
+        <!-- KPI Mini Grid -->
+        <div class="kpi-mini-grid">
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Total Posts</div>
+            <div class="kpi-mini-val">47</div>
+            <div class="kpi-mini-delta pos">▲ +12 vs prior</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Avg Reach</div>
+            <div class="kpi-mini-val">51K</div>
+            <div class="kpi-mini-delta pos">▲ 14.8%</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Saves</div>
+            <div class="kpi-mini-val">8.4K</div>
+            <div class="kpi-mini-delta pos">▲ 22.3%</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Share of Voice</div>
+            <div class="kpi-mini-val">18%</div>
+            <div class="kpi-mini-delta pos">▲ 3pp</div>
+          </div>
+        </div>
+
+        <!-- Brand Voice Consistency -->
+        <div class="score-gauge-card">
+          <div class="score-gauge-head">
+            <span class="score-gauge-label">Brand Voice Score</span>
+            <span class="score-gauge-period">Apr 2026</span>
+          </div>
+          <div class="gauge-body">
+            <div class="gauge-row">
+              <span class="gauge-pillar">Tone</span>
+              <div class="gauge-track"><div class="gauge-fill" style="width:92%;background:#0071e3;"></div></div>
+              <span class="gauge-score">92</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-pillar">Consistency</span>
+              <div class="gauge-track"><div class="gauge-fill" style="width:85%;background:#0071e3;"></div></div>
+              <span class="gauge-score">85</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-pillar">On-message</span>
+              <div class="gauge-track"><div class="gauge-fill" style="width:78%;background:#ff9f0a;"></div></div>
+              <span class="gauge-score">78</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-pillar">Sentiment</span>
+              <div class="gauge-track"><div class="gauge-fill" style="width:89%;background:#34c759;"></div></div>
+              <span class="gauge-score">89</span>
+            </div>
+            <div class="gauge-row">
+              <span class="gauge-pillar">Visual Align</span>
+              <div class="gauge-track"><div class="gauge-fill" style="width:94%;background:#0071e3;"></div></div>
+              <span class="gauge-score">94</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Atlas + Lena Intel -->
+        <div class="intel-card">
+          <div class="intel-head">
+            <div class="intel-agent-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+            <span class="intel-agent-name">Atlas + Lena</span>
+            <span class="intel-model-tag">Opus 4</span>
+          </div>
+          <div class="intel-body">
+            <div class="intel-label">Brand Synthesis</div>
+            <div class="intel-text">Reel performance is 3.1× above carousel baseline. The "behind the scenes" narrative arc is driving 40% more saves than product-forward content — signal to double down on founder POV formats this month.</div>
+            <div class="intel-chip">🎬 Prioritise founder Reels</div>
+            <hr class="intel-divider">
+            <div class="intel-label">Lena — Voice Drift Alert</div>
+            <div class="intel-text" style="margin-bottom:0;">Three posts last week used "solutions-driven" language that tests 22% below core audience resonance benchmarks. Flagged for Stark review before next content batch.</div>
+          </div>
+        </div>
+
+      </div><!-- /split-right -->
+    </div>
+  </div><!-- /tab-pulse -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       TAB 2 — TRENDING
+  ═══════════════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-trending">
+    <div class="split">
+
+      <!-- LEFT -->
+      <div class="split-left">
+
+        <!-- Hero metric -->
+        <div class="hero-metric">
+          <div class="hm-primary">
+            <div class="hm-label">Trending Opportunities</div>
+            <div>
+              <span class="hm-value">12</span>
+              <span class="hm-delta pos">▲ 5 new</span>
+              <span class="hm-period">today</span>
+            </div>
+          </div>
+          <div class="hm-secondaries">
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Hot Topics</div>
+              <div class="hm-sec-value">4</div>
+              <div class="hm-sec-delta neg">🔥 Act fast</div>
+            </div>
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Rising Sounds</div>
+              <div class="hm-sec-value">7</div>
+              <div class="hm-sec-delta pos">▲ 3 new</div>
+            </div>
+            <div class="hm-sec-item">
+              <div class="hm-sec-label">Avg Lift Used</div>
+              <div class="hm-sec-value">+34%</div>
+              <div class="hm-sec-delta pos">vs baseline</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trending Topics -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Trending Topics & Sounds</span>
+            <span class="card-meta">Updated 12 min ago</span>
+          </div>
+          <div class="trend-list">
+            <div class="trend-row">
+              <span class="trend-rank">1</span>
+              <span class="trend-icon">🔥</span>
+              <div class="trend-body">
+                <div class="trend-topic">#BookingMistakes — service businesses</div>
+                <div class="trend-meta">IG + TikTok · 2.1M views this week · <strong>matches Novizio positioning</strong></div>
+              </div>
+              <div class="trend-bar-col">
+                <span class="trend-momentum">97</span>
+                <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:97%;background:#ff3b30;"></div></div>
+                <span class="velocity-badge vel-hot">🔥 Hot</span>
+              </div>
+            </div>
+            <div class="trend-row">
+              <span class="trend-rank">2</span>
+              <span class="trend-icon">📈</span>
+              <div class="trend-body">
+                <div class="trend-topic">AI tools replacing manual ops — B2B SaaS thread</div>
+                <div class="trend-meta">LinkedIn · 890K impressions · high founder engagement</div>
+              </div>
+              <div class="trend-bar-col">
+                <span class="trend-momentum">88</span>
+                <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:88%;background:#ff9f0a;"></div></div>
+                <span class="velocity-badge vel-rise">↑ Rising</span>
+              </div>
+            </div>
+            <div class="trend-row">
+              <span class="trend-rank">3</span>
+              <span class="trend-icon">🎵</span>
+              <div class="trend-body">
+                <div class="trend-topic">"Empire State of Mind" remix — productivity content</div>
+                <div class="trend-meta">TikTok · Sound ID 889201 · 4.4M uses · 48h trending window</div>
+              </div>
+              <div class="trend-bar-col">
+                <span class="trend-momentum">84</span>
+                <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:84%;background:#ff9f0a;"></div></div>
+                <span class="velocity-badge vel-rise">↑ Rising</span>
+              </div>
+            </div>
+            <div class="trend-row">
+              <span class="trend-rank">4</span>
+              <span class="trend-icon">🆕</span>
+              <div class="trend-body">
+                <div class="trend-topic">Day-in-the-life entrepreneur format — authentic POV</div>
+                <div class="trend-meta">IG Reels · avg 220K reach · low competition window open</div>
+              </div>
+              <div class="trend-bar-col">
+                <span class="trend-momentum">79</span>
+                <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:79%;background:#0071e3;"></div></div>
+                <span class="velocity-badge vel-new">New</span>
+              </div>
+            </div>
+            <div class="trend-row">
+              <span class="trend-rank">5</span>
+              <span class="trend-icon">💼</span>
+              <div class="trend-body">
+                <div class="trend-topic">#ClientRetention — service industry positioning</div>
+                <div class="trend-meta">LinkedIn · 1.2M weekly reach · thought leadership slot open</div>
+              </div>
+              <div class="trend-bar-col">
+                <span class="trend-momentum">76</span>
+                <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:76%;background:#0071e3;"></div></div>
+                <span class="velocity-badge vel-new">New</span>
+              </div>
+            </div>
+            <div class="trend-row">
+              <span class="trend-rank">6</span>
+              <span class="trend-icon">🎵</span>
+              <div class="trend-body">
+                <div class="trend-topic">Lo-fi study beats — B2B work aesthetic content</div>
+                <div class="trend-meta">TikTok · Sound ID 774022 · 2.8M uses · stable plateau</div>
+              </div>
+              <div class="trend-bar-col">
+                <span class="trend-momentum">71</span>
+                <div class="trend-bar-wrap"><div class="trend-bar-fill" style="width:71%;background:#34c759;"></div></div>
+                <span class="velocity-badge vel-rise">Stable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Format Performance -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Format Performance — Avg Reach per Post</span>
+            <span class="card-meta">30D · Novizio</span>
+          </div>
+          <div class="format-bars">
+            <div class="fmt-bar-row">
+              <span class="fmt-bar-label">Reels</span>
+              <div class="fmt-bar-track"><div class="fmt-bar-fill" style="width:92%;background:#0071e3;"></div></div>
+              <span class="fmt-bar-val">148K</span>
+              <span class="fmt-bar-delta" style="color:#1a7a36;">▲ 31%</span>
+            </div>
+            <div class="fmt-bar-row">
+              <span class="fmt-bar-label">Carousels</span>
+              <div class="fmt-bar-track"><div class="fmt-bar-fill" style="width:64%;background:#0071e3;"></div></div>
+              <span class="fmt-bar-val">82K</span>
+              <span class="fmt-bar-delta" style="color:#1a7a36;">▲ 12%</span>
+            </div>
+            <div class="fmt-bar-row">
+              <span class="fmt-bar-label">Stories</span>
+              <div class="fmt-bar-track"><div class="fmt-bar-fill" style="width:38%;background:#0071e3;"></div></div>
+              <span class="fmt-bar-val">49K</span>
+              <span class="fmt-bar-delta" style="color:#c0271a;">▼ 5%</span>
+            </div>
+            <div class="fmt-bar-row">
+              <span class="fmt-bar-label">Statics</span>
+              <div class="fmt-bar-track"><div class="fmt-bar-fill" style="width:28%;background:#0071e3;"></div></div>
+              <span class="fmt-bar-val">36K</span>
+              <span class="fmt-bar-delta" style="color:#c0271a;">▼ 14%</span>
+            </div>
+            <div class="fmt-bar-row">
+              <span class="fmt-bar-label">LI Articles</span>
+              <div class="fmt-bar-track"><div class="fmt-bar-fill" style="width:54%;background:#0071e3;"></div></div>
+              <span class="fmt-bar-val">69K</span>
+              <span class="fmt-bar-delta" style="color:#1a7a36;">▲ 22%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hook Template Library -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Hook Template Library</span>
+            <span class="card-link">Add to campaign →</span>
+          </div>
+          <div class="hook-grid">
+            <div class="hook-card">
+              <div class="hook-type">Problem-First</div>
+              <div class="hook-text">"Most [service businesses] are losing clients because of this one hidden thing…"</div>
+              <div class="hook-stats">Avg lift: <span>+38%</span> · Used 12×</div>
+            </div>
+            <div class="hook-card">
+              <div class="hook-type">Data Shock</div>
+              <div class="hook-text">"[X]% of bookings are lost before the client even speaks to you. Here's why."</div>
+              <div class="hook-stats">Avg lift: <span>+44%</span> · Used 8×</div>
+            </div>
+            <div class="hook-card">
+              <div class="hook-type">Story Arc</div>
+              <div class="hook-text">"I built [product] after losing $30K to a single scheduling mistake. This is what I learned."</div>
+              <div class="hook-stats">Avg lift: <span>+52%</span> · Used 5×</div>
+            </div>
+            <div class="hook-card">
+              <div class="hook-type">Contrast</div>
+              <div class="hook-text">"Old way: [pain]. New way: [solution]. The difference? [Your insight]."</div>
+              <div class="hook-stats">Avg lift: <span>+29%</span> · Used 14×</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /split-left -->
+
+      <!-- RIGHT STICKY PANEL -->
+      <div class="split-right">
+
+        <!-- Trend Velocity card -->
+        <div class="vel-card">
+          <div class="vel-head">
+            <span class="vel-title">Trend Velocity This Week</span>
+            <span class="velocity-badge vel-hot">🔥 High</span>
+          </div>
+          <div class="vel-body">
+            <div class="vel-stat-row">
+              <span class="vel-stat-k">New opportunities</span>
+              <span class="vel-stat-v up">+5</span>
+            </div>
+            <div class="vel-stat-row">
+              <span class="vel-stat-k">Avg window open</span>
+              <span class="vel-stat-v">38 hrs</span>
+            </div>
+            <div class="vel-stat-row">
+              <span class="vel-stat-k">Created from trends</span>
+              <span class="vel-stat-v">3 campaigns</span>
+            </div>
+            <div class="vel-stat-row">
+              <span class="vel-stat-k">Hit-rate using trends</span>
+              <span class="vel-stat-v up">68%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Minis -->
+        <div class="kpi-mini-grid">
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Active Sounds</div>
+            <div class="kpi-mini-val">7</div>
+            <div class="kpi-mini-delta pos">▲ 3 new</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Hook Library</div>
+            <div class="kpi-mini-val">24</div>
+            <div class="kpi-mini-delta pos">▲ 6 added</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Template Uses</div>
+            <div class="kpi-mini-val">39</div>
+            <div class="kpi-mini-delta pos">▲ 14%</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Avg Eng Lift</div>
+            <div class="kpi-mini-val">+34%</div>
+            <div class="kpi-mini-delta pos">vs baseline</div>
+          </div>
+        </div>
+
+        <!-- Atlas Intel on Trending -->
+        <div class="intel-card">
+          <div class="intel-head">
+            <div class="intel-agent-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+            <span class="intel-agent-name">Atlas</span>
+            <span class="intel-model-tag">Opus 4</span>
+          </div>
+          <div class="intel-body">
+            <div class="intel-label">Trend Recommendation</div>
+            <div class="intel-text">#BookingMistakes has a 48–72 hour window before saturation. Recommend deploying a Reel using the "Story Arc" hook template by tomorrow morning — Pixel has a slot open at 09:00.</div>
+            <div class="intel-chip">⚡ Brief Pixel now</div>
+            <hr class="intel-divider">
+            <div class="intel-label">Pixel — Production Pipeline</div>
+            <div class="intel-text" style="margin-bottom:0;">3 trend-based briefs queued. Estimated output: 2 Reels + 1 Carousel. Avg delivery time from brief to publish-ready: 4.2 hours.</div>
+          </div>
+        </div>
+
+      </div><!-- /split-right -->
+    </div>
+  </div><!-- /tab-trending -->
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       TAB 3 — CAMPAIGN STUDIO
+  ═══════════════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-studio">
+
+    <!-- KPI strip above the board -->
+    <div style="padding: 22px 36px 0; display:grid; grid-template-columns: repeat(4,1fr); gap:12px;">
+      <div class="camp-kpi-tile">
+        <div class="camp-kpi-label">Ideating</div>
+        <div class="camp-kpi-val">3</div>
+        <div class="camp-kpi-sub">campaigns scoping</div>
+      </div>
+      <div class="camp-kpi-tile">
+        <div class="camp-kpi-label">In Production</div>
+        <div class="camp-kpi-val">4</div>
+        <div class="camp-kpi-sub">across 3 stages</div>
+      </div>
+      <div class="camp-kpi-tile">
+        <div class="camp-kpi-label">Scheduled</div>
+        <div class="camp-kpi-val">2</div>
+        <div class="camp-kpi-sub">pending publish</div>
+      </div>
+      <div class="camp-kpi-tile">
+        <div class="camp-kpi-label">Live This Month</div>
+        <div class="camp-kpi-val">11</div>
+        <div class="camp-kpi-sub" style="color:#1a7a36; font-weight:600;">▲ 4 vs last</div>
+      </div>
+    </div>
+
+    <!-- Pipeline Board -->
+    <div style="padding: 20px 0 0; display:grid; grid-template-columns:1fr 380px; gap:0; align-items:start; flex:1;">
+
+      <!-- Board -->
+      <div style="border-right:1px solid rgba(0,0,0,0.07);">
+        <div class="pipeline-scroll">
+          <div class="pipeline-board">
+
+            <!-- IDEATE -->
+            <div class="pipeline-col">
+              <div class="pipeline-col-head">
+                <span class="pipeline-stage">Ideate</span>
+                <span class="pipeline-count">3</span>
+              </div>
+              <div class="pipeline-col-body">
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">Product launch sequence — Booking v2.0 feature drop</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+                    <div class="camp-av" style="background:#3a3a3c;">L</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">IG</div>
+                      <div class="camp-p-dot">LI</div>
+                      <div class="camp-p-dot">TT</div>
+                    </div>
+                    <span class="camp-due">Due Apr 24</span>
+                  </div>
+                </div>
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">Founder story series — origin moment Reel</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">TT</div>
+                      <div class="camp-p-dot">IG</div>
+                    </div>
+                    <span class="camp-due">Due Apr 27</span>
+                  </div>
+                </div>
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:rgba(255,255,255,.25);"></div> Hourbour</div>
+                  <div class="camp-name">Client testimonial carousel — social proof batch</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:#3a3a3c;">L</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">LI</div>
+                      <div class="camp-p-dot">IG</div>
+                    </div>
+                    <span class="camp-due">Due Apr 28</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCRIPT -->
+            <div class="pipeline-col">
+              <div class="pipeline-col-head">
+                <span class="pipeline-stage">Script</span>
+                <span class="pipeline-count">2</span>
+              </div>
+              <div class="pipeline-col-body">
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">#BookingMistakes trend response — Reel script</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:#3a3a3c;">L</div>
+                    <div class="camp-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">TT</div>
+                    </div>
+                    <span class="camp-due urgent">Due Today</span>
+                  </div>
+                </div>
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">LinkedIn thought leadership — AI ops for SMBs</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:#3a3a3c;">L</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">LI</div>
+                    </div>
+                    <span class="camp-due">Due Apr 21</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DESIGN -->
+            <div class="pipeline-col">
+              <div class="pipeline-col-head">
+                <span class="pipeline-stage">Design</span>
+                <span class="pipeline-count">1</span>
+              </div>
+              <div class="pipeline-col-body">
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">Brand awareness carousel — 7-slide visual series</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+                    <div class="camp-av" style="background:#2c2c2e;">Px</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">IG</div>
+                      <div class="camp-p-dot">LI</div>
+                    </div>
+                    <span class="camp-due">Due Apr 22</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRODUCE -->
+            <div class="pipeline-col">
+              <div class="pipeline-col-head">
+                <span class="pipeline-stage">Produce</span>
+                <span class="pipeline-count">1</span>
+              </div>
+              <div class="pipeline-col-body">
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">Day-in-the-life Reel — founder edit + voiceover</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:#2c2c2e;">Px</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">TT</div>
+                      <div class="camp-p-dot">IG</div>
+                    </div>
+                    <span class="camp-due urgent">Due Apr 20</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCHEDULE -->
+            <div class="pipeline-col">
+              <div class="pipeline-col-head">
+                <span class="pipeline-stage">Schedule</span>
+                <span class="pipeline-count">2</span>
+              </div>
+              <div class="pipeline-col-body">
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#0071e3;"></div> Novizio</div>
+                  <div class="camp-name">Hidden cost of manual scheduling — data thread</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:#3a3a3c;">D</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">LI</div>
+                    </div>
+                    <span class="camp-due">Apr 21 · 9am</span>
+                  </div>
+                </div>
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:rgba(255,255,255,.25);"></div> Hourbour</div>
+                  <div class="camp-name">Q2 awareness campaign — new service areas launch</div>
+                  <div class="camp-assignee-row">
+                    <div class="camp-av" style="background:#3a3a3c;">D</div>
+                    <div class="camp-av" style="background:#2c2c2e;">Px</div>
+                  </div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots">
+                      <div class="camp-p-dot">IG</div>
+                      <div class="camp-p-dot">TT</div>
+                      <div class="camp-p-dot">LI</div>
+                    </div>
+                    <span class="camp-due">Apr 22 · 11am</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PUBLISH -->
+            <div class="pipeline-col">
+              <div class="pipeline-col-head">
+                <span class="pipeline-stage">Publish</span>
+                <span class="pipeline-count">✓ 11</span>
+              </div>
+              <div class="pipeline-col-body" style="opacity:0.65;">
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#34c759;"></div> Done</div>
+                  <div class="camp-name">Behind the scenes: booking flow build — Reel</div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots"><div class="camp-p-dot">IG</div></div>
+                    <span class="camp-due">Apr 14 · 847K reach</span>
+                  </div>
+                </div>
+                <div class="camp-card">
+                  <div class="camp-venture"><div class="camp-v-dot" style="background:#34c759;"></div> Done</div>
+                  <div class="camp-name">5 booking mistakes costing you clients — Carousel</div>
+                  <div class="camp-footer">
+                    <div class="camp-platform-dots"><div class="camp-p-dot">IG</div></div>
+                    <span class="camp-due">Apr 10 · 198K reach</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /pipeline-board -->
+        </div><!-- /pipeline-scroll -->
+      </div><!-- /board left -->
+
+      <!-- RIGHT STICKY PANEL — Studio -->
+      <div class="split-right" style="padding-left:24px;">
+
+        <!-- Approval Queue -->
+        <div>
+          <div class="section-label" style="margin-bottom:8px;">Awaiting Approval</div>
+          <div class="approval-card">
+            <div style="padding:12px 16px 10px; border-bottom:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:12px; font-weight:600; color:var(--on-dark);">Review Queue</span>
+              <span style="font-size:10px; font-weight:600; background:var(--blue-bg); color:var(--blue-dark); border:1px solid var(--blue-bd); padding:2px 8px; border-radius:980px;">2 pending</span>
+            </div>
+            <div class="approval-item">
+              <div class="approval-icon">📝</div>
+              <div class="approval-body">
+                <div class="approval-name">#BookingMistakes Reel script</div>
+                <div class="approval-from">From Lena · Needs Stark sign-off before shoot</div>
+              </div>
+              <div class="approval-cta">Review</div>
+            </div>
+            <div class="approval-item">
+              <div class="approval-icon">🎬</div>
+              <div class="approval-body">
+                <div class="approval-name">Day-in-the-life final edit</div>
+                <div class="approval-from">From Pixel · Ready to schedule after review</div>
+              </div>
+              <div class="approval-cta">Review</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Workload -->
+        <div>
+          <div class="section-label" style="margin-bottom:8px;">Agent Workload</div>
+          <div class="workload-card">
+            <div class="workload-row">
+              <div class="workload-av" style="background:linear-gradient(135deg,#5a3a8e,#7c4dcc);">At</div>
+              <div class="workload-agent">
+                <div class="workload-name">Atlas</div>
+                <div class="workload-task">7-slide carousel design · Ideating launch sequence</div>
+              </div>
+              <span class="workload-count">2</span>
+              <div class="workload-dot" style="background:var(--data-y);"></div>
+            </div>
+            <div class="workload-row">
+              <div class="workload-av" style="background:#3a3a3c;">L</div>
+              <div class="workload-agent">
+                <div class="workload-name">Lena</div>
+                <div class="workload-task">Scripting #BookingMistakes Reel · LI article draft</div>
+              </div>
+              <span class="workload-count">2</span>
+              <div class="workload-dot" style="background:var(--data-r);"></div>
+            </div>
+            <div class="workload-row">
+              <div class="workload-av" style="background:#2c2c2e;">Px</div>
+              <div class="workload-agent">
+                <div class="workload-name">Pixel</div>
+                <div class="workload-task">Producing Day-in-the-life edit · 3 briefs queued</div>
+              </div>
+              <span class="workload-count">1+3</span>
+              <div class="workload-dot" style="background:var(--data-y);"></div>
+            </div>
+            <div class="workload-row">
+              <div class="workload-av" style="background:#3a3a3c;">D</div>
+              <div class="workload-agent">
+                <div class="workload-name">Diana</div>
+                <div class="workload-task">Scheduling 2 campaigns · sprint review Apr 21</div>
+              </div>
+              <span class="workload-count">2</span>
+              <div class="workload-dot" style="background:var(--data-g);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign KPIs -->
+        <div>
+          <div class="section-label" style="margin-bottom:8px;">This Month's Output</div>
+          <div class="camp-kpi-strip">
+            <div class="camp-kpi-tile">
+              <div class="camp-kpi-label">Avg Reach</div>
+              <div class="camp-kpi-val">218K</div>
+              <div class="camp-kpi-sub" style="color:#1a7a36; font-weight:600;">▲ +31%</div>
+            </div>
+            <div class="camp-kpi-tile">
+              <div class="camp-kpi-label">Avg Eng Rate</div>
+              <div class="camp-kpi-val">5.2%</div>
+              <div class="camp-kpi-sub" style="color:#1a7a36; font-weight:600;">▲ +0.8pp</div>
+            </div>
+            <div class="camp-kpi-tile">
+              <div class="camp-kpi-label">Avg Time to Ship</div>
+              <div class="camp-kpi-val">4.2h</div>
+              <div class="camp-kpi-sub" style="color:#1a7a36; font-weight:600;">▼ 38 min</div>
+            </div>
+            <div class="camp-kpi-tile">
+              <div class="camp-kpi-label">Atlas Score</div>
+              <div class="camp-kpi-val">86</div>
+              <div class="camp-kpi-sub" style="color:#1a7a36; font-weight:600;">▲ +4</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /split-right studio -->
+    </div>
+
+  </div><!-- /tab-studio -->
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="ft-logo">YVON OS</span>
+    <div class="ft-links">
+      <span class="ft-link">CEO Command</span>
+      <span class="ft-link">Analytics</span>
+      <span class="ft-link">Content Hub</span>
+      <span class="ft-link">Market Radar</span>
+    </div>
+    <div class="ft-right">
+      <span class="ft-status-dot"></span>All systems nominal · Atlas processing 3 briefs · Last sync 2 min ago
+    </div>
+  </footer>
+
+</div><!-- /main -->
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('visible'));
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+  document.getElementById('tab-' + tab).classList.add('visible');
+
+  const map = { pulse: 0, trending: 1, studio: 2 };
+  document.querySelectorAll('.tab-btn')[map[tab]].classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Period pills — visual only
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.period-group').querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

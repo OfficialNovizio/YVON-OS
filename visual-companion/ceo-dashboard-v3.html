@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YVON — CEO Command</title>
+<style>
+
+@font-face { font-family:'SF Pro Display'; src:url('./fonts/SFPRODISPLAYREGULAR.OTF') format('opentype'); font-weight:400; }
+@font-face { font-family:'SF Pro Display'; src:url('./fonts/SFPRODISPLAYMEDIUM.OTF') format('opentype'); font-weight:500; }
+@font-face { font-family:'SF Pro Display'; src:url('./fonts/SFPRODISPLAYBOLD.OTF') format('opentype'); font-weight:700; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+button { font-family: inherit; cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+
+:root {
+  /* Apple backgrounds */
+  --black:   #000000;
+  --gray-bg: #f5f5f7;
+  --white:   #ffffff;
+
+  /* Dark surface cards (on black sections) */
+  --card-dark:  #1c1c1e;
+  --card-dark2: #2c2c2e;
+  --card-dark3: #3a3a3c;
+
+  /* Text — dark sections */
+  --on-dark:    #f5f5f7;
+  --on-dark-2:  rgba(245,245,247,0.70);
+  --on-dark-3:  rgba(245,245,247,0.40);
+  --on-dark-4:  rgba(245,245,247,0.20);
+
+  /* Text — light sections */
+  --on-light:   #1d1d1f;
+  --on-light-2: rgba(29,29,31,0.60);
+  --on-light-3: rgba(29,29,31,0.36);
+
+  /* Apple Blue — THE ONLY accent color in UI chrome */
+  --blue:       #0071e3;
+  --blue-h:     #0077ed;
+  --blue-dark:  #2997ff;   /* on dark backgrounds */
+  --blue-link:  #0066cc;   /* links on light */
+  --blue-bg:    rgba(0,113,227,0.10);
+  --blue-bd:    rgba(0,113,227,0.25);
+
+  /* Data-only semantic colors — never used in UI chrome */
+  --data-g:  #34c759;
+  --data-r:  #ff3b30;
+  --data-y:  #ff9f0a;
+
+  /* Shadows */
+  --shadow:      rgba(0,0,0,0.22) 3px 5px 30px 0px;
+  --shadow-sm:   rgba(0,0,0,0.14) 0 2px 12px 0;
+  --focus-ring:  0 0 0 3px rgba(0,113,227,0.40);
+
+  /* Geometry */
+  --r4:    4px;
+  --r6:    6px;
+  --r8:    8px;
+  --r10:  10px;
+  --r12:  12px;
+  --r980: 980px;
+
+  --sidebar-w: 240px;
+  --header-h:  48px;
+
+  --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', 'Courier New', monospace;
+}
+
+/* ─── BASE ───────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font);
+  background: var(--black);
+  color: var(--on-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SIDEBAR  — Ultra-clean Apple sidebar
+══════════════════════════════════════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: #0a0a0a;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  z-index: 300;
+}
+
+/* Logo */
+.sb-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+}
+.sb-logo-mark {
+  width: 28px; height: 28px;
+  background: var(--blue);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+  letter-spacing: -0.3px;
+}
+.sb-logo-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--on-dark);
+}
+
+/* Scroll body */
+.sb-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px;
+  scrollbar-width: none;
+}
+.sb-body::-webkit-scrollbar { display: none; }
+
+.sb-group-label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--on-dark-4);
+  padding: 14px 10px 5px;
+  text-transform: uppercase;
+}
+
+.sb-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r8);
+  cursor: pointer;
+  transition: background 80ms;
+  margin-bottom: 1px;
+}
+.sb-row:hover { background: rgba(255,255,255,0.05); }
+.sb-row.active { background: var(--blue-bg); }
+
+.sb-row-icon {
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--on-dark-3);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.sb-row.active .sb-row-icon { color: var(--blue-dark); }
+
+.sb-row-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--on-dark-2);
+  letter-spacing: -0.2px;
+  flex: 1;
+}
+.sb-row.active .sb-row-label { color: var(--on-dark); font-weight: 500; }
+
+.sb-badge {
+  font-size: 10px; font-weight: 600;
+  background: var(--blue);
+  color: #fff;
+  min-width: 17px; height: 17px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 4px;
+}
+
+/* Agents */
+.sb-agent-row {
+  display: flex; align-items: center; gap: 9px;
+  padding: 6px 10px;
+  border-radius: var(--r8);
+  cursor: pointer;
+  transition: background 80ms;
+  margin-bottom: 1px;
+}
+.sb-agent-row:hover { background: rgba(255,255,255,0.04); }
+.sb-av {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.sb-agent-name {
+  font-size: 12px; font-weight: 400;
+  color: var(--on-dark-2);
+  letter-spacing: -0.1px;
+}
+.sb-agent-dot {
+  margin-left: auto;
+  width: 5px; height: 5px; border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Venture picker — bottom */
+.sb-ventures {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 12px 10px;
+  flex-shrink: 0;
+}
+.sb-venture-label {
+  font-size: 10px; color: var(--on-dark-4);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0 10px; margin-bottom: 6px;
+}
+.sb-venture-pill {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 10px;
+  border-radius: var(--r8);
+  cursor: pointer;
+  transition: background 80ms;
+}
+.sb-venture-pill:hover { background: rgba(255,255,255,0.05); }
+.sb-venture-pill.active { background: rgba(255,255,255,0.06); }
+.sb-v-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sb-v-name { font-size: 12px; font-weight: 500; color: var(--on-dark-2); letter-spacing: -0.1px; }
+.sb-venture-pill.active .sb-v-name { color: var(--on-dark); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-w);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   HEADER — Apple glass nav
+══════════════════════════════════════════════════════════════════════ */
+.header {
+  position: sticky; top: 0; z-index: 200;
+  height: var(--header-h);
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+}
+
+.hdr-title {
+  font-size: 15px; font-weight: 600;
+  letter-spacing: -0.3px; color: var(--on-dark);
+  flex-shrink: 0;
+}
+
+.hdr-search {
+  flex: 1; max-width: 440px;
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: var(--r980);
+  padding: 0 14px;
+  height: 30px;
+  cursor: text;
+  transition: border-color 150ms;
+}
+.hdr-search:hover { border-color: rgba(255,255,255,0.15); }
+.hdr-search-icon { font-size: 11px; color: rgba(255,255,255,0.30); }
+.hdr-search-text { font-size: 13px; color: rgba(255,255,255,0.30); letter-spacing: -0.1px; }
+
+.hdr-gap { flex: 1; }
+
+/* Period selector — Apple filter pill style */
+.hdr-filter {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 0 12px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 12px; font-weight: 400;
+  color: rgba(255,255,255,0.70);
+  transition: all 80ms;
+}
+.hdr-filter:hover { background: rgba(255,255,255,0.12); }
+.hdr-filter-chevron { font-size: 9px; color: rgba(255,255,255,0.35); }
+
+/* Icon buttons */
+.hdr-icon-btn {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.09);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: rgba(255,255,255,0.50);
+  cursor: pointer; position: relative;
+  transition: all 80ms;
+}
+.hdr-icon-btn:hover { background: rgba(255,255,255,0.08); color: var(--on-dark); }
+
+.hdr-notif-dot {
+  position: absolute; top: 5px; right: 5px;
+  width: 7px; height: 7px;
+  background: var(--data-g);
+  border-radius: 50%;
+  border: 1.5px solid #000;
+}
+
+.hdr-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #1c3a6e, var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #fff;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ANOMALY BAR
+══════════════════════════════════════════════════════════════════════ */
+.anomaly-bar {
+  height: 34px;
+  background: #0a0a0a;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.anomaly-tag {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 16px;
+  height: 100%;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.anomaly-tag-pulse {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--data-r);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.25;} }
+.anomaly-tag-text {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--data-r);
+}
+
+.anomaly-scroll { flex: 1; overflow: hidden; position: relative; }
+.anomaly-track {
+  display: flex;
+  animation: scroll-left 32s linear infinite;
+  width: max-content;
+}
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.anomaly-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  height: 34px;
+  white-space: nowrap;
+}
+.anomaly-item-label { font-size: 12px; color: rgba(245,245,247,0.55); letter-spacing: -0.1px; }
+.anomaly-val { font-size: 12px; font-weight: 600; font-family: var(--mono); }
+.val-neg { color: var(--data-r); }
+.val-pos { color: var(--data-g); }
+.val-warn { color: var(--data-y); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   SECTION SYSTEM  — black / #f5f5f7 alternation
+══════════════════════════════════════════════════════════════════════ */
+.scene-dark  { background: var(--black); }
+.scene-light { background: var(--gray-bg); }
+
+.scene-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 52px 40px;
+}
+.scene-inner-sm { max-width: 1260px; margin: 0 auto; padding: 40px 40px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCENE 1 — HERO (black)
+══════════════════════════════════════════════════════════════════════ */
+.hero {
+  background: var(--black);
+  padding: 56px 40px 52px;
+  max-width: 1260px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  font-size: 12px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--blue-dark);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 14px; height: 1px; background: var(--blue-dark); }
+
+.hero-headline {
+  font-size: 56px; font-weight: 700;
+  line-height: 1.07; letter-spacing: -1.2px;
+  color: var(--on-dark);
+  margin-bottom: 14px;
+}
+
+.hero-sub {
+  font-size: 17px; font-weight: 400;
+  line-height: 1.47; letter-spacing: -0.374px;
+  color: var(--on-dark-2);
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+
+/* Stat chips — Apple info pills */
+.hero-pills {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.hero-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--r980);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.09);
+  font-size: 13px; font-weight: 400;
+  color: var(--on-dark-2);
+  letter-spacing: -0.15px;
+  white-space: nowrap;
+  cursor: default;
+}
+.hero-pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+/* Apple-style CTAs */
+.cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn-blue {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px;
+  border-radius: var(--r8);
+  background: var(--blue);
+  color: #fff;
+  font-size: 15px; font-weight: 400;
+  border: none; cursor: pointer;
+  letter-spacing: -0.1px;
+  transition: background 80ms;
+}
+.btn-blue:hover { background: var(--blue-h); }
+
+/* Apple "Learn more" pill link */
+.btn-pill-outline {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 9px 18px;
+  border-radius: var(--r980);
+  background: transparent;
+  color: var(--blue-dark);
+  font-size: 15px; font-weight: 400;
+  border: 1px solid rgba(41,151,255,0.35);
+  cursor: pointer;
+  letter-spacing: -0.1px;
+  transition: all 80ms;
+}
+.btn-pill-outline:hover { background: rgba(41,151,255,0.08); border-color: rgba(41,151,255,0.55); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   KPI STRIP (light section — white cards on #f5f5f7)
+══════════════════════════════════════════════════════════════════════ */
+.kpi-scene {
+  background: var(--gray-bg);
+  border-top: 1px solid rgba(0,0,0,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+
+.kpi-row {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+.kpi-card {
+  background: var(--white);
+  border-radius: var(--r12);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: box-shadow 150ms, transform 150ms;
+  position: relative;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: rgba(0,0,0,0.28) 3px 8px 36px 0px;
+}
+.kpi-card.active { border: 1.5px solid var(--blue); }
+
+.kpi-icon-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.kpi-icon-circle {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: #f5f5f5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: #6e6e73;
+}
+.kpi-card.active .kpi-icon-circle { background: var(--blue-bg); color: var(--blue); }
+
+.kpi-view-link {
+  font-size: 12px; color: var(--blue-link);
+  letter-spacing: -0.1px;
+  cursor: pointer;
+}
+.kpi-view-link:hover { text-decoration: underline; }
+
+.kpi-label {
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--on-light-3);
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-size: 30px; font-weight: 700;
+  letter-spacing: -1.2px;
+  color: var(--on-light);
+  line-height: 1;
+  font-family: var(--mono);
+  margin-bottom: 5px;
+}
+.kpi-delta-row {
+  display: flex; align-items: center; gap: 5px;
+}
+.kpi-delta-pill {
+  font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: var(--r980);
+  font-family: var(--mono);
+}
+.dp-pos { background: rgba(52,199,89,0.12); color: #1a7a36; }
+.dp-neg { background: rgba(255,59,48,0.12); color: #c0271a; }
+.kpi-period { font-size: 11px; color: var(--on-light-3); letter-spacing: -0.1px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCENE 2 — BRIEFING + DECISION QUEUE (black)
+══════════════════════════════════════════════════════════════════════ */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+/* Dark card — on black section */
+.dcard {
+  background: var(--card-dark);
+  border-radius: var(--r12);
+  overflow: hidden;
+}
+
+.dcard-head {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.dcard-title {
+  font-size: 15px; font-weight: 600;
+  letter-spacing: -0.3px; color: var(--on-dark);
+}
+.dcard-meta {
+  font-size: 12px; color: var(--on-dark-3); letter-spacing: -0.1px;
+}
+.dcard-body { padding: 18px 20px; }
+
+/* Apple-style link button */
+.link-btn {
+  font-size: 14px; color: var(--blue-dark);
+  letter-spacing: -0.15px;
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 5px 12px;
+  border-radius: var(--r980);
+  border: 1px solid rgba(41,151,255,0.28);
+  background: transparent;
+  cursor: pointer;
+  transition: all 80ms;
+}
+.link-btn:hover { background: rgba(41,151,255,0.08); }
+
+/* Briefing */
+.brief-agent {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.brief-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #1c3a6e, var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.brief-av-name { font-size: 13px; font-weight: 600; color: var(--on-dark); letter-spacing: -0.2px; }
+.brief-av-role { font-size: 11px; color: var(--on-dark-3); margin-top: 1px; }
+.brief-model-tag {
+  margin-left: auto;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.02em;
+  padding: 2px 8px; border-radius: var(--r980);
+  background: var(--blue-bg); color: var(--blue-dark);
+  border: 1px solid var(--blue-bd);
+}
+
+.brief-situaton-label {
+  font-size: 10px; font-weight: 400; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--on-dark-3);
+  margin-bottom: 4px;
+}
+.brief-situation-head {
+  font-size: 19px; font-weight: 700; letter-spacing: -0.5px;
+  color: var(--on-dark); line-height: 1.24;
+  margin-bottom: 12px;
+}
+.brief-body {
+  font-size: 14px; font-weight: 400;
+  color: var(--on-dark-2); line-height: 1.65;
+  letter-spacing: -0.15px;
+  margin-bottom: 16px;
+}
+
+/* Insight badge — Apple-style */
+.insight-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: var(--r980);
+  background: var(--blue-bg); border: 1px solid var(--blue-bd);
+  font-size: 11px; font-weight: 500;
+  color: var(--blue-dark); letter-spacing: -0.05px;
+}
+
+/* Decision queue */
+.dq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 16px 16px;
+}
+.dq-item {
+  background: var(--card-dark2);
+  border-radius: var(--r10);
+  padding: 13px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.dq-urgency {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.urg-now  { color: var(--data-r); }
+.urg-day  { color: var(--data-y); }
+.urg-week { color: rgba(90,200,250,0.90); }
+
+.dq-question {
+  font-size: 13px; font-weight: 400;
+  color: var(--on-dark); line-height: 1.45;
+  letter-spacing: -0.15px; flex: 1;
+}
+.dq-actions { display: flex; gap: 6px; }
+.dq-btn {
+  flex: 1; padding: 6px 0;
+  border-radius: var(--r980);
+  font-size: 11px; font-weight: 400; font-family: var(--font);
+  transition: all 80ms; border: none;
+  letter-spacing: -0.1px;
+}
+.dq-btn-ghost {
+  background: var(--card-dark3);
+  color: var(--on-dark-2);
+}
+.dq-btn-ghost:hover { background: rgba(255,255,255,0.12); }
+.dq-btn-blue {
+  background: var(--blue); color: #fff;
+}
+.dq-btn-blue:hover { background: var(--blue-h); }
+.dq-btn-confirm {
+  background: rgba(52,199,89,0.14);
+  color: var(--data-g);
+  border: 1px solid rgba(52,199,89,0.22);
+}
+.dq-btn-confirm:hover { background: rgba(52,199,89,0.22); }
+.dq-btn-teal {
+  background: rgba(90,200,250,0.10);
+  color: rgba(90,200,250,0.90);
+  border: 1px solid rgba(90,200,250,0.18);
+}
+.dq-btn-teal:hover { background: rgba(90,200,250,0.18); }
+
+/* Divider */
+.dq-count-badge {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: var(--r980);
+  background: rgba(255,59,48,0.14);
+  color: var(--data-r);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCENE 3 — BRAND PULSE + INTEL (light)
+══════════════════════════════════════════════════════════════════════ */
+
+/* Light card — on #f5f5f7 section */
+.lcard {
+  background: var(--white);
+  border-radius: var(--r12);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.lcard-head {
+  padding: 15px 20px 13px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.lcard-title { font-size: 15px; font-weight: 600; color: var(--on-light); letter-spacing: -0.3px; }
+.lcard-meta { font-size: 12px; color: var(--on-light-3); letter-spacing: -0.1px; }
+.lcard-body { padding: 16px 20px; }
+.lcard-link {
+  font-size: 13px; color: var(--blue-link);
+  display: inline-flex; align-items: center; gap: 3px;
+  cursor: pointer;
+}
+.lcard-link:hover { text-decoration: underline; }
+
+/* Brand Pulse chart */
+.chart-meta-row {
+  display: flex; align-items: center; gap: 20px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.chart-score-block {}
+.chart-score-venture {
+  font-size: 10px; font-weight: 400; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--on-light-3);
+  margin-bottom: 2px;
+}
+.chart-score-num {
+  font-size: 28px; font-weight: 700; letter-spacing: -1px;
+  color: var(--on-light); font-family: var(--mono); line-height: 1;
+}
+.chart-score-sub { font-size: 11px; color: var(--on-light-3); margin-top: 2px; }
+
+.chart-legend-row {
+  display: flex; gap: 14px; margin-left: auto;
+}
+.chart-leg-item { display: flex; align-items: center; gap: 5px; }
+.chart-leg-dot { width: 7px; height: 7px; border-radius: 50%; }
+.chart-leg-label { font-size: 12px; color: var(--on-light-2); }
+
+.chart-wrap {
+  padding: 8px 16px 12px;
+  height: 130px; position: relative;
+}
+.chart-wrap svg { width: 100%; height: 100%; overflow: visible; }
+
+/* Activity feed — light */
+.feed-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  transition: background 80ms; cursor: default;
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-item:hover { background: rgba(0,0,0,0.018); }
+.feed-av {
+  width: 22px; height: 22px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 700; color: #fff;
+}
+.feed-text { font-size: 13px; color: var(--on-light-2); line-height: 1.5; letter-spacing: -0.15px; flex: 1; }
+.feed-time { font-size: 11px; color: var(--on-light-3); margin-top: 3px; font-family: var(--mono); }
+
+/* Market intel — light */
+.mi-headline { font-size: 17px; font-weight: 700; color: var(--on-light); letter-spacing: -0.4px; line-height: 1.3; margin-bottom: 8px; }
+.mi-body { font-size: 13px; color: var(--on-light-2); line-height: 1.6; letter-spacing: -0.15px; margin-bottom: 12px; }
+.opp-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: var(--r980);
+  background: rgba(52,199,89,0.10);
+  border: 1px solid rgba(52,199,89,0.22);
+  font-size: 11px; color: #1a7a36;
+}
+.opp-pill-label { font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* Customer Voice — light */
+.cv-quote-item {
+  padding: 11px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.cv-quote-item:last-of-type { border-bottom: none; }
+.cv-quote-text {
+  font-size: 13px; font-style: italic;
+  color: var(--on-light-2); line-height: 1.5; letter-spacing: -0.15px;
+  margin-bottom: 4px;
+}
+.cv-quote-text::before { content: '\201C'; }
+.cv-quote-text::after  { content: '\201D'; }
+.cv-source { font-size: 11px; color: var(--on-light-3); }
+.action-flag-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 20px;
+  background: rgba(255,159,10,0.07);
+  border-top: 1px solid rgba(255,159,10,0.15);
+}
+.flag-label { font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--data-y); white-space: nowrap; }
+.flag-text  { font-size: 12px; color: var(--on-light-2); letter-spacing: -0.1px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   SCENE 4 — TEAM WORKING ON (black)
+══════════════════════════════════════════════════════════════════════ */
+.twon-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.twon-card {
+  background: var(--card-dark);
+  border-radius: var(--r12);
+  padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+  cursor: pointer; transition: background 100ms;
+}
+.twon-card:hover { background: var(--card-dark2); }
+.twon-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.twon-name { font-size: 13px; font-weight: 600; color: var(--on-dark); letter-spacing: -0.2px; }
+.twon-task-text { font-size: 12px; color: var(--on-dark-2); line-height: 1.5; letter-spacing: -0.1px; flex: 1; }
+.twon-status-row { display: flex; align-items: center; gap: 6px; }
+.twon-status-dot { width: 5px; height: 5px; border-radius: 50%; }
+.twon-status-label { font-size: 11px; color: var(--on-dark-3); }
+
+/* ══════════════════════════════════════════════════════════════════════
+   QUICK NAV  — full-width bar above footer
+══════════════════════════════════════════════════════════════════════ */
+.quick-nav-bar {
+  background: var(--gray-bg);
+  border-top: 1px solid rgba(0,0,0,0.08);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+}
+.qnav-item {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 13px 20px;
+  border-right: 1px solid rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition: background 80ms;
+  text-decoration: none;
+}
+.qnav-item:last-child { border-right: none; }
+.qnav-item:hover { background: rgba(0,0,0,0.04); }
+.qnav-icon { font-size: 14px; color: var(--on-light-3); }
+.qnav-label { font-size: 13px; font-weight: 400; color: var(--on-light-2); letter-spacing: -0.15px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════════════════════════ */
+.footer {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ft-left { display: flex; align-items: center; gap: 10px; }
+.ft-logo { font-size: 13px; font-weight: 700; letter-spacing: -0.3px; color: var(--on-dark-3); }
+.ft-sep  { color: rgba(255,255,255,0.12); }
+.ft-ver  { font-size: 11px; color: var(--on-dark-4); font-family: var(--mono); }
+.ft-links { display: flex; gap: 20px; }
+.ft-link  { font-size: 12px; color: var(--on-dark-3); cursor: pointer; transition: color 80ms; letter-spacing: -0.1px; }
+.ft-link:hover { color: var(--on-dark-2); }
+.ft-right { display: flex; align-items: center; gap: 10px; }
+.ft-status { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--on-dark-3); }
+.ft-status-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--data-g); }
+.ft-time { font-size: 11px; color: var(--on-dark-4); font-family: var(--mono); }
+
+/* ─── UTILITY ─────────────────────────────────────────────────────── */
+.scene-title-dark {
+  font-size: 40px; font-weight: 700; letter-spacing: -0.8px;
+  color: var(--on-dark); line-height: 1.10;
+}
+.scene-title-light {
+  font-size: 40px; font-weight: 700; letter-spacing: -0.8px;
+  color: var(--on-light); line-height: 1.10;
+}
+.scene-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<nav class="sidebar">
+
+  <div class="sb-logo">
+    <div class="sb-logo-mark">Y</div>
+    <span class="sb-logo-name">YVON</span>
+  </div>
+
+  <div class="sb-body">
+
+    <div class="sb-group-label">Dashboards</div>
+    <div class="sb-row active">
+      <span class="sb-row-icon">⬡</span>
+      <span class="sb-row-label">CEO Command</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">◫</span>
+      <span class="sb-row-label">Analytics</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">◉</span>
+      <span class="sb-row-label">Competitor</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">◈</span>
+      <span class="sb-row-label">Marketing</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">◧</span>
+      <span class="sb-row-label">Creative Studio</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">⊙</span>
+      <span class="sb-row-label">Technical</span>
+    </div>
+
+    <div class="sb-group-label">AI Team — Hourbour</div>
+
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:linear-gradient(135deg,#1c3a6e,#0071e3);">M</div>
+      <span class="sb-agent-name">Marcus — CEO</span>
+      <div class="sb-agent-dot" style="background:#0071e3;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#3a3a3c;">D</div>
+      <span class="sb-agent-name">Diana — COO</span>
+      <div class="sb-agent-dot" style="background:#ff9f0a;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#2c2c2e;">Ri</div>
+      <span class="sb-agent-name">Rio — Ads</span>
+      <div class="sb-agent-dot" style="background:#34c759;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#3a3a3c;">K</div>
+      <span class="sb-agent-name">Kai — Analyst</span>
+      <div class="sb-agent-dot" style="background:#34c759;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#2c2c2e;">F</div>
+      <span class="sb-agent-name">Felix — Finance</span>
+      <div class="sb-agent-dot" style="background:#34c759;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#3a3a3c;">N</div>
+      <span class="sb-agent-name">Nate — Growth</span>
+      <div class="sb-agent-dot" style="background:#ff9f0a;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#2c2c2e;">Dv</div>
+      <span class="sb-agent-name">Dev — Dev Lead</span>
+      <div class="sb-agent-dot" style="background:#34c759;"></div>
+    </div>
+    <div class="sb-agent-row">
+      <div class="sb-av" style="background:#3a3a3c;">Rj</div>
+      <span class="sb-agent-name">Raj — Backend</span>
+      <div class="sb-agent-dot" style="background:#34c759;"></div>
+    </div>
+
+    <div class="sb-group-label">Quick</div>
+    <div class="sb-row">
+      <span class="sb-row-icon">✉</span>
+      <span class="sb-row-label">CEO Inbox</span>
+      <span class="sb-badge">3</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">◷</span>
+      <span class="sb-row-label">Team</span>
+    </div>
+    <div class="sb-row">
+      <span class="sb-row-icon">⊙</span>
+      <span class="sb-row-label">Settings</span>
+    </div>
+
+  </div>
+
+  <div class="sb-ventures">
+    <div class="sb-venture-label">Active Venture</div>
+    <div class="sb-venture-pill active">
+      <div class="sb-v-dot" style="background:#0071e3;"></div>
+      <span class="sb-v-name">Novizio</span>
+    </div>
+    <div class="sb-venture-pill">
+      <div class="sb-v-dot" style="background:rgba(255,255,255,0.28);"></div>
+      <span class="sb-v-name">Hourbour</span>
+    </div>
+  </div>
+
+</nav>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="main">
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1 class="hdr-title">CEO Command</h1>
+    <div class="hdr-search">
+      <span class="hdr-search-icon">🔍</span>
+      <span class="hdr-search-text">Command or Search...</span>
+    </div>
+    <div class="hdr-gap"></div>
+    <div class="hdr-filter">
+      <span style="font-size:11px;">📅</span>
+      Monthly
+      <span class="hdr-filter-chevron">⌄</span>
+    </div>
+    <div class="hdr-icon-btn">
+      🔔
+      <div class="hdr-notif-dot"></div>
+    </div>
+    <div class="hdr-avatar">S</div>
+  </header>
+
+  <!-- ANOMALY BAR -->
+  <div class="anomaly-bar">
+    <div class="anomaly-tag">
+      <div class="anomaly-tag-pulse"></div>
+      <span class="anomaly-tag-text">Anomalies</span>
+    </div>
+    <div class="anomaly-scroll">
+      <div class="anomaly-track">
+        <div class="anomaly-item"><span class="anomaly-item-label">Instagram engagement dropped vs 7-day avg</span><span class="anomaly-val val-neg">−18%</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">YouTube views — spike detected</span><span class="anomaly-val val-pos">+34%</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">Meta CPM above 30-day baseline</span><span class="anomaly-val val-warn">+12%</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">Stripe revenue — best day this month</span><span class="anomaly-val val-pos">+$1.4K</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">IG Saves — Founder Voice pillar up</span><span class="anomaly-val val-pos">+31%</span></div>
+        <!-- duplicate for seamless loop -->
+        <div class="anomaly-item"><span class="anomaly-item-label">Instagram engagement dropped vs 7-day avg</span><span class="anomaly-val val-neg">−18%</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">YouTube views — spike detected</span><span class="anomaly-val val-pos">+34%</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">Meta CPM above 30-day baseline</span><span class="anomaly-val val-warn">+12%</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">Stripe revenue — best day this month</span><span class="anomaly-val val-pos">+$1.4K</span></div>
+        <div class="anomaly-item"><span class="anomaly-item-label">IG Saves — Founder Voice pillar up</span><span class="anomaly-val val-pos">+31%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 1: HERO (black) ══ -->
+  <section class="scene-dark">
+    <div class="hero">
+      <div class="hero-eyebrow">CEO Command Center</div>
+      <h1 class="hero-headline">Hi. Let's make<br>today count.</h1>
+      <p class="hero-sub">CEO Command Center &nbsp;·&nbsp; 19 April 2026 &nbsp;·&nbsp; 3 decisions waiting</p>
+      <div class="hero-pills">
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#34c759;"></div>Brand Health — 74/100</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#2997ff;"></div>Reach — 284K</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:rgba(255,255,255,0.35);"></div>Content — 14 pcs</div>
+        <div class="hero-pill"><div class="hero-pill-dot" style="background:#ff9f0a;"></div>36 decisions waiting</div>
+      </div>
+      <div class="cta-row">
+        <button class="btn-blue">Get Live Briefing</button>
+        <button class="btn-pill-outline">Week in review ›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ KPI STRIP (light) ══ -->
+  <section class="kpi-scene">
+    <div class="kpi-row">
+
+      <div class="kpi-card">
+        <div class="kpi-icon-row">
+          <div class="kpi-icon-circle">◈</div>
+          <span class="kpi-view-link">View all</span>
+        </div>
+        <div class="kpi-label">KPI Score</div>
+        <div class="kpi-value">3.78</div>
+        <div class="kpi-delta-row">
+          <span class="kpi-delta-pill dp-neg">−5.4%</span>
+          <span class="kpi-period">from prev. weeks</span>
+        </div>
+      </div>
+
+      <div class="kpi-card active">
+        <div class="kpi-icon-row">
+          <div class="kpi-icon-circle">✓</div>
+          <span class="kpi-view-link">View all</span>
+        </div>
+        <div class="kpi-label">Tasks Finished</div>
+        <div class="kpi-value">94%</div>
+        <div class="kpi-delta-row">
+          <span class="kpi-delta-pill dp-pos">+3.1%</span>
+          <span class="kpi-period">from prev. weeks</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-row">
+          <div class="kpi-icon-circle">♡</div>
+        </div>
+        <div class="kpi-label">Brand Health</div>
+        <div class="kpi-value">74</div>
+        <div class="kpi-delta-row">
+          <span class="kpi-delta-pill dp-pos">+2 pts</span>
+          <span class="kpi-period">this week</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-row">
+          <div class="kpi-icon-circle">◎</div>
+        </div>
+        <div class="kpi-label">Combined Reach</div>
+        <div class="kpi-value">284K</div>
+        <div class="kpi-delta-row">
+          <span class="kpi-delta-pill dp-pos">+8%</span>
+          <span class="kpi-period">MoM</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-row">
+          <div class="kpi-icon-circle">$</div>
+        </div>
+        <div class="kpi-label">Blended CAC</div>
+        <div class="kpi-value">$8.20</div>
+        <div class="kpi-delta-row">
+          <span class="kpi-delta-pill dp-pos">−12%</span>
+          <span class="kpi-period">MoM</span>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-row">
+          <div class="kpi-icon-circle">↗</div>
+        </div>
+        <div class="kpi-label">Blended ROAS</div>
+        <div class="kpi-value">3.8×</div>
+        <div class="kpi-delta-row">
+          <span class="kpi-delta-pill dp-pos">+0.4</span>
+          <span class="kpi-period">MoM</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SCENE 2: BRIEFING + DECISION QUEUE (black) ══ -->
+  <section class="scene-dark">
+    <div class="scene-inner">
+      <div class="two-col">
+
+        <!-- Premium Briefing -->
+        <div class="dcard">
+          <div class="dcard-head">
+            <div>
+              <div class="dcard-title">Premium Briefing</div>
+            </div>
+            <button class="link-btn">GET LIVE →</button>
+          </div>
+          <div class="dcard-body">
+            <div class="brief-agent">
+              <div class="brief-av">M</div>
+              <div>
+                <div class="brief-av-name">Marcus · CEO Agent</div>
+                <div class="brief-av-role">Daily intelligence read</div>
+              </div>
+              <span class="brief-model-tag">claude-sonnet-4-6</span>
+            </div>
+
+            <div class="brief-situaton-label">The Situation</div>
+            <div class="brief-situation-head">Hourbour is gaining ground — Founder Voice content outperforms every other pillar by 2.4×.</div>
+            <div class="brief-body">Target content strategy confirmed and positive across operations. IG Saves are up 31% — the algorithm is responding to authentic founder-led posts. Revenue attribution from Friday's drop link is clean and verified via Stripe. The IG Reach dip is a platform fluctuation, not a brand health concern. Biggest leverage today: approve the 3 Campaign Studio captions before the 12 PM posting window.</div>
+            <span class="insight-chip">✦ INSIGHT</span>
+          </div>
+        </div>
+
+        <!-- Decision Queue -->
+        <div class="dcard">
+          <div class="dcard-head">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="dcard-title">Decision Queue</span>
+              <span class="dq-count-badge">3 waiting</span>
+            </div>
+            <span class="dcard-meta">Needs your input</span>
+          </div>
+
+          <div class="dq-grid">
+            <div class="dq-item">
+              <div class="dq-urgency urg-now">ACT NOW</div>
+              <div class="dq-question">Approve new Novizio Q3 campaign budget?</div>
+              <div class="dq-actions">
+                <button class="dq-btn dq-btn-ghost">Decline</button>
+                <button class="dq-btn dq-btn-blue">Approve</button>
+              </div>
+            </div>
+            <div class="dq-item">
+              <div class="dq-urgency urg-day">TODAY</div>
+              <div class="dq-question">Sign off on Hourbour product launch timeline?</div>
+              <div class="dq-actions">
+                <button class="dq-btn dq-btn-ghost">Review</button>
+                <button class="dq-btn dq-btn-confirm">Sign Off</button>
+              </div>
+            </div>
+            <div class="dq-item">
+              <div class="dq-urgency urg-week">THIS WEEK</div>
+              <div class="dq-question">Evaluate Reformotion partnership opportunity?</div>
+              <div class="dq-actions">
+                <button class="dq-btn dq-btn-ghost">Analyze</button>
+                <button class="dq-btn dq-btn-teal">Discuss</button>
+              </div>
+            </div>
+            <div class="dq-item">
+              <div class="dq-urgency urg-day">TODAY</div>
+              <div class="dq-question">Approve Rio's Meta → TikTok budget shift of $200?</div>
+              <div class="dq-actions">
+                <button class="dq-btn dq-btn-ghost">Hold</button>
+                <button class="dq-btn dq-btn-blue">Approve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SCENE 3: BRAND PULSE + INTELLIGENCE (light) ══ -->
+  <section class="scene-light">
+    <div class="scene-inner">
+
+      <div class="scene-header">
+        <h2 class="scene-title-light">Intelligence &amp; Pulse</h2>
+        <span style="font-size:14px;color:var(--on-light-3);">Live · Updated 9:14 AM</span>
+      </div>
+
+      <div class="three-col">
+
+        <!-- Brand Pulse Chart -->
+        <div class="lcard">
+          <div class="lcard-head">
+            <div class="lcard-title">Brand Pulse</div>
+            <span class="lcard-meta">8 Weeks</span>
+          </div>
+
+          <div class="chart-meta-row">
+            <div class="chart-score-block">
+              <div class="chart-score-venture" style="color:#0066cc;">Novizio</div>
+              <div class="chart-score-num">74<span style="font-size:15px;font-weight:400;color:var(--on-light-3);">/100</span></div>
+              <div class="chart-score-sub">+2 pts this week</div>
+            </div>
+            <div class="chart-score-block">
+              <div class="chart-score-venture" style="color:rgba(29,29,31,0.45);">Hourbour</div>
+              <div class="chart-score-num" style="color:var(--on-light);">67<span style="font-size:15px;font-weight:400;color:var(--on-light-3);">/100</span></div>
+              <div class="chart-score-sub">+5 pts this week</div>
+            </div>
+            <div class="chart-legend-row">
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#0071e3;"></div><span class="chart-leg-label">Novizio</span></div>
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:rgba(29,29,31,0.28);"></div><span class="chart-leg-label">Hourbour</span></div>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <svg viewBox="0 0 380 110" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="gN" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0071e3" stop-opacity="0.18"/>
+                  <stop offset="100%" stop-color="#0071e3" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="gH" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1d1d1f" stop-opacity="0.10"/>
+                  <stop offset="100%" stop-color="#1d1d1f" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid -->
+              <line x1="0" y1="22" x2="380" y2="22" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <line x1="0" y1="55" x2="380" y2="55" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <line x1="0" y1="88" x2="380" y2="88" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+              <!-- Y labels -->
+              <text x="0" y="20" fill="rgba(0,0,0,0.22)" font-size="8" font-family="monospace">100</text>
+              <text x="4" y="53" fill="rgba(0,0,0,0.22)" font-size="8" font-family="monospace">60</text>
+              <text x="4" y="86" fill="rgba(0,0,0,0.22)" font-size="8" font-family="monospace">20</text>
+              <!-- Novizio fill -->
+              <path d="M30,82 C80,74 120,55 160,48 C200,41 240,30 280,22 C310,16 345,19 370,21 L370,110 L30,110 Z" fill="url(#gN)"/>
+              <!-- Novizio line -->
+              <path d="M30,82 C80,74 120,55 160,48 C200,41 240,30 280,22 C310,16 345,19 370,21" stroke="#0071e3" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Hourbour fill -->
+              <path d="M30,90 C80,84 120,72 160,65 C200,58 240,50 280,42 C310,36 345,38 370,37 L370,110 L30,110 Z" fill="url(#gH)"/>
+              <!-- Hourbour line -->
+              <path d="M30,90 C80,84 120,72 160,65 C200,58 240,50 280,42 C310,36 345,38 370,37" stroke="rgba(29,29,31,0.30)" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="5,3"/>
+              <!-- Data point -->
+              <circle cx="280" cy="22" r="3.5" fill="#0071e3"/>
+              <!-- X labels -->
+              <text x="26" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">1</text>
+              <text x="83" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">2</text>
+              <text x="140" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">3</text>
+              <text x="197" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">4</text>
+              <text x="254" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">5</text>
+              <text x="311" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">6</text>
+              <text x="368" y="107" fill="rgba(0,0,0,0.22)" font-size="7.5" font-family="monospace" text-anchor="middle">7</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Activity + Market Intel stacked -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Activity -->
+          <div class="lcard">
+            <div class="lcard-head">
+              <span class="lcard-title">Activity</span>
+              <span class="lcard-meta">Today</span>
+            </div>
+            <div class="feed-item">
+              <div class="feed-av" style="background:linear-gradient(135deg,#1c3a6e,#0071e3);">K</div>
+              <div>
+                <div class="feed-text">Flagged Instagram engagement anomaly to 7-day avg</div>
+                <div class="feed-time">09:14 AM</div>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-av" style="background:#3a3a3c;">M</div>
+              <div>
+                <div class="feed-text">Delivered morning brief to Command Center</div>
+                <div class="feed-time">07:00 AM</div>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-av" style="background:#2c2c2e;">L</div>
+              <div>
+                <div class="feed-text">Updated brand voice guide across Hourbour assets</div>
+                <div class="feed-time">06:45 AM</div>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-av" style="background:#3a3a3c;">Rj</div>
+              <div>
+                <div class="feed-text">Pushed size guide page update to production</div>
+                <div class="feed-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Market Intelligence -->
+          <div class="lcard">
+            <div class="lcard-head">
+              <span class="lcard-title">Market Intelligence</span>
+              <span class="lcard-meta">Live</span>
+            </div>
+            <div class="lcard-body">
+              <div class="mi-headline">Reformotion owns "transparency"</div>
+              <div class="mi-body">Reformotion is gaining share of voice across founder-to-consumer brands by leading on transparency. Founder story + supply chain visibility is the gap — and your opportunity.</div>
+              <span class="opp-pill"><span class="opp-pill-label">Opportunity:</span> Founder story + supply chain</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Customer Voice -->
+        <div class="lcard">
+          <div class="lcard-head">
+            <span class="lcard-title">Customer Voice</span>
+            <span class="lcard-meta">This week</span>
+          </div>
+          <div class="cv-quote-item">
+            <div class="cv-quote-text">Reformotion owns transparency in the live positive space.</div>
+            <div class="cv-source">Reddit · r/founders · 2h ago</div>
+          </div>
+          <div class="cv-quote-item">
+            <div class="cv-quote-text">Friction friction even more positive faster.</div>
+            <div class="cv-source">TikTok comment · 5h ago</div>
+          </div>
+          <div class="cv-quote-item">
+            <div class="cv-quote-text">Hourmotion quality is awe-enthangement quality.</div>
+            <div class="cv-source">Instagram DM · Yesterday</div>
+          </div>
+          <div class="action-flag-bar">
+            <span class="flag-label">Action Flagged:</span>
+            <span class="flag-text">Size guide missing in Instagram bio link</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SCENE 4: TEAM WORKING ON (black) ══ -->
+  <section class="scene-dark">
+    <div class="scene-inner">
+      <div class="scene-header">
+        <h2 class="scene-title-dark">Team Working On</h2>
+        <span style="font-size:14px;color:var(--on-dark-3);">In Flight · 4 active tasks</span>
+      </div>
+      <div class="twon-grid">
+        <div class="twon-card">
+          <div class="twon-av" style="background:linear-gradient(135deg,#1c3a6e,#0071e3);">K</div>
+          <div class="twon-name">Kai — Analytics</div>
+          <div class="twon-task-text">Approve analytics tagging tasks for Hourbour campaign</div>
+          <div class="twon-status-row">
+            <div class="twon-status-dot" style="background:#0071e3;"></div>
+            <span class="twon-status-label">In Flight</span>
+          </div>
+        </div>
+        <div class="twon-card">
+          <div class="twon-av" style="background:#3a3a3c;">L</div>
+          <div class="twon-name">Lena — Brand</div>
+          <div class="twon-task-text">Refine brand voice for Hourbour product drops</div>
+          <div class="twon-status-row">
+            <div class="twon-status-dot" style="background:#0071e3;"></div>
+            <span class="twon-status-label">In Flight</span>
+          </div>
+        </div>
+        <div class="twon-card">
+          <div class="twon-av" style="background:#2c2c2e;">N</div>
+          <div class="twon-name">Nate — Growth</div>
+          <div class="twon-task-text">Finalising beat tap page growth experiment</div>
+          <div class="twon-status-row">
+            <div class="twon-status-dot" style="background:#ff9f0a;"></div>
+            <span class="twon-status-label">Pending review</span>
+          </div>
+        </div>
+        <div class="twon-card">
+          <div class="twon-av" style="background:#3a3a3c;">F</div>
+          <div class="twon-name">Felix — Finance</div>
+          <div class="twon-task-text">Push size guide P&L reconciliation</div>
+          <div class="twon-status-row">
+            <div class="twon-status-dot" style="background:#ff9f0a;"></div>
+            <span class="twon-status-label">Pending review</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ QUICK NAV ══ -->
+  <div class="quick-nav-bar">
+    <div class="qnav-item">
+      <span class="qnav-icon">◫</span>
+      <span class="qnav-label">Full Analytics</span>
+    </div>
+    <div class="qnav-item">
+      <span class="qnav-icon">◉</span>
+      <span class="qnav-label">Competitor Intel</span>
+    </div>
+    <div class="qnav-item">
+      <span class="qnav-icon">◈</span>
+      <span class="qnav-label">Marketing Hub</span>
+    </div>
+    <div class="qnav-item">
+      <span class="qnav-icon">◧</span>
+      <span class="qnav-label">Creative Studio</span>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="ft-left">
+      <span class="ft-logo">YVON</span>
+      <span class="ft-sep">·</span>
+      <span class="ft-ver">v2.0.0</span>
+    </div>
+    <div class="ft-links">
+      <span class="ft-link">Documentation</span>
+      <span class="ft-link">Agent Roster</span>
+      <span class="ft-link">System Logs</span>
+      <span class="ft-link">Support</span>
+    </div>
+    <div class="ft-right">
+      <div class="ft-status"><div class="ft-status-dot"></div> All systems operational</div>
+      <span class="ft-sep">·</span>
+      <span class="ft-time">Last sync 9:39 AM</span>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
