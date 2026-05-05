@@ -1,8 +1,8 @@
 ---
 project: yvon
 owner: Stark
-version: 2.0
-last-updated: 2026-04-20
+version: 3.0
+last-updated: 2026-05-02
 ---
 
 # CLAUDE.md — Official YVON
@@ -12,11 +12,15 @@ last-updated: 2026-04-20
 
 ## What is YVON
 
-YVON is a CLI-based AI operating system. It orchestrates 13 AI agents across 3 layers, manages brand workspaces, reads memory, and executes tasks across Novizio and Hourbour without reloading context from scratch every session.
+YVON is an AI operating system. It orchestrates **13 agents** across **4 departments**:
+- **CEO** (marcus-ceo, diana-coo) — Direction + Accountability
+- **Technical** (dev-lead, raj-backend, mia-frontend, quinn-qa) — Everything That Ships
+- **Marketing** (kai-analyst, lena-brand, rio-ads, nate-growth, atlas-art-director, pixel-production) — Revenue + Content
+- **Finance** (felix-finance) — Financial Intelligence
 
 **Current ventures:** Novizio (fashion e-commerce) · Hourbour (fintech SaaS)
 
-**Stack:** Next.js 15 · TypeScript strict · Tailwind CSS · Supabase · Vercel · LM Studio (local AI)
+**Stack:** Next.js 15 · TypeScript strict · Tailwind CSS · Supabase · Vercel
 
 ---
 
@@ -59,6 +63,14 @@ YVON is a CLI-based AI operating system. It orchestrates 13 AI agents across 3 l
 | React component, UI, Tailwind, layout, CSS, design system, wireframe, UX, screen design, visual design | 🎨 Mia | `agents/mia/MEMORY.md` |
 | Testing, bug, QA review, lint, build check, edge case, verification, code quality, Pulse | 🧪 Quinn | `agents/quinn/MEMORY.md` |
 
+### Layer 0 — PSYCHOLOGY (Behavioral Validation — cross-department)
+
+| Task Keywords | Agent | Read This File |
+|---|---|---|
+| Cognitive bias, framing check, System 1 filter, psychological audit, decision review, loss aversion, anchoring, overconfidence, A/B interpretation, lever selection, debiasing, calibration | 🧠 Kahneman | `agent-department/Psychology/Daniel_Kahneman/MEMORY.md` |
+
+> Kahneman is a **validator**, not a content producer. He reviews outputs from Lena, Rio, Kai, Nate, Felix, Marcus — not a primary content agent. Route TO him after another agent produces, or BEFORE any high-stakes financial/strategic decision.
+
 ### Layer 3 — GROW (Revenue + Insight)
 
 | Task Keywords | Agent | Read This File |
@@ -72,6 +84,36 @@ YVON is a CLI-based AI operating system. It orchestrates 13 AI agents across 3 l
 | Finance, budget, P&L, revenue, CAC, LTV, MRR, margin, ROI, runway | 💰 Felix | `agents/felix/MEMORY.md` |
 
 > Multi-agent task: read both MEMORY.md files. Never load agents not involved in the task.
+
+---
+
+## Task Protocol — Always Enforced
+
+**Every task received — regardless of phrasing — must follow this sequence. No exceptions. You do not need to say "Marcus" or "CEO" to trigger this.**
+
+### Step 1 — Route
+Identify agent(s) from the routing table. Name every agent involved before doing any work.
+
+### Step 2 — Plan (output this block before touching any code or content)
+```
+👑 MARCUS PLAN
+────────────────────────────────────────
+Objective:          [one sentence]
+Agents:             [list]
+Order:              parallel | sequential
+─ [Agent name]:     [their specific subtask]
+─ [Agent name]:     [their specific subtask]
+Definition of done: [binary — done or not done]
+────────────────────────────────────────
+```
+
+### Step 3 — Execute
+Work through each agent's task in their role. If sequential, pass prior agent's summary as context to next.
+
+### Step 4 — Synthesize
+Deliver the final output as Marcus. State what was completed, by whom, and confirm done/not done against the definition.
+
+**Do NOT skip Step 2 even for simple tasks. The plan is what makes the orchestration visible.**
 
 ---
 
@@ -151,14 +193,71 @@ Source of truth: `D:\Global Skills\yvon-skills\` — NEVER edit copies.
 | Master roadmap + priority list | `.yvon-os/ROADMAP.md` |
 | User preferences + working style | `.yvon-os/USER.md` |
 | Rolling session context | `.yvon-os/SESSION.md` |
-| Full agent registry (13 agents) | `reference/AGENTS.md` |
+| Full agent registry (13 agents, 4 departments) | `agent-department/DEPARTMENTS.md` |
 | Stack, architecture, services | `reference/STACK.md` |
 | Pages, routes, API endpoints | `reference/PAGES.md` |
 | Environment variables | `reference/ENV.md` |
 | Component + lib structure | `reference/ARCHITECTURE.md` |
 | SIP protocol detail | `reference/SIP.md` |
 | Troubleshooting guide | `reference/TROUBLESHOOTING.md` |
-| War Room spec | `reference/SPEC-war-room.md` |
-| Active venture brand profile | `agents/[brand-agent]/MEMORY.md` |
-| Shared benchmarks | Obsidian `brands/shared/benchmarks.md` |
-| YVON parent company overview | Obsidian `brands/shared/yvon-overview.md` |
+| Gatekeeper pre-flight validation | `reference/GATEKEEPER.md` |
+| Graphify knowledge graph | `reference/GRAPHIFY.md` |
+| open-design UI prototyping | `reference/OPEN-DESIGN.md` |
+| Active venture brand profile | `agent-department/[brand-agent]/MEMORY.md` |
+
+---
+
+## Knowledge Graphs
+
+### Graphify (`graphify-out/`)
+Knowledge graph for architecture and codebase questions.
+- Before answering architecture questions: read `graphify-out/GRAPH_REPORT.md`
+- Run `npm run graphify:build` after code changes (AST-only, no API cost)
+- Open `graphify-out/graph.html` in browser for interactive visualization
+- Query with `npm run graphify:query -- "<question>"`
+
+### Code Review Graph (`.code-review-graph/`)
+Dependency graph for efficient code reviews.
+- Run `npm run codegraph:build` to rebuild
+- Start web UI: `npm run codegraph:serve`
+- MCP tools available via Claude Code for: detect_changes, get_review_context, get_impact_radius
+
+---
+
+## Pre-Flight Validation (Gatekeeper)
+
+Before any agent call, messages route through `/api/gatekeeper` for intent classification.
+This lightweight layer:
+1. Classifies intent → selects target agent → validates context completeness
+2. Returns routing decision BEFORE LLM call (saves tokens on mis-routed queries)
+3. Identifies missing context and suggests reformulation
+
+Use `/api/gatekeeper` for:
+- Smart routing instead of keyword matching
+- Detecting ambiguous queries before expensive LLM calls
+- Ensuring messages include required context (brand, platform, etc.)
+
+---
+
+## Agent Departments (4 Departments)
+
+For department overview: read `agent-department/DEPARTMENTS.md`
+
+| Dept | Agents | Domain |
+|------|--------|--------|
+| CEO | marcus-ceo, diana-coo | Strategy, operations |
+| Technical | dev-lead, raj-backend, mia-frontend, quinn-qa | Code, infrastructure |
+| Marketing | kai, lena, rio, nate, atlas, pixel | Revenue, content |
+| Finance | felix-finance | Financial intelligence |
+
+---
+
+## Shared Skills
+
+All agents share critical skills from `agent-department/shared/`:
+- `skills/agents/01-memory.md` — Memory system rules
+- `skills/coding/01-karpathy.md` — Karpathy coding guidelines
+- `brands/novizio.md` — Novizio brand profile
+- `brands/hourbour.md` — Hourbour brand profile
+
+**Rule:** Edit shared skills in `agent-department/shared/` only. Individual agent copies are deprecated stubs.
