@@ -1,13 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { callSynthesis } from '@/lib/ai-client'
 import { getAgent } from '@/lib/agents'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { metrics?: Record<string, unknown>; ventureId?: string; ventureName?: string }
   try {
     body = await request.json() as typeof body
@@ -38,13 +32,8 @@ Return a JSON object with exactly these keys:
 Return ONLY valid JSON. No markdown, no explanation, no code fences.`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 300,
-      messages: [{ role: 'user', content: prompt }],
-    })
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 300 })
 
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
     let parsed: Record<string, unknown>
     try {
       parsed = JSON.parse(raw) as Record<string, unknown>

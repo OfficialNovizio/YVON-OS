@@ -2,7 +2,6 @@
 // GET: returns recommended channel for this venture
 
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
 import { getTopContent, getRevenueEvents } from '@/lib/db-phase1'
 import { supabase } from '@/lib/supabase'
 

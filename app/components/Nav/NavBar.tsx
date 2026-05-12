@@ -23,7 +23,7 @@ export function NavBar() {
   }
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-2xl border-b border-white/10">
+    <nav className="fixed top-0 w-full z-50 bg-[#0a0a0a] border-b border-white/[0.08]">
       <div className="flex items-center justify-between px-8 h-14 w-full max-w-screen-2xl mx-auto">
         {/* Left: Logo + Brand Switcher + Nav links */}
         <div className="flex items-center gap-6">

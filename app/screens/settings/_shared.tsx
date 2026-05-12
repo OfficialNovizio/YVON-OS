@@ -22,10 +22,11 @@ export const T = {
 } as const
 
 export const SC = {
-  venture:  '#ff6b6b',
-  agents:   '#bf5af2',
-  profile:  '#ff9f0a',
-  danger:   '#ff453a',
+  venture:   '#ff6b6b',
+  agents:    '#bf5af2',
+  profile:   '#ff9f0a',
+  providers: '#0071e3',
+  danger:    '#ff453a',
 } as const
 
 export const DC = {

@@ -1,15 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-const subTabs = [
-  { label: 'Overview',      href: '/screens/competitor' },
-  { label: 'Content Intel', href: '/screens/competitor/content-intel' },
-  { label: 'Content Gaps',  href: '/screens/competitor/content-gaps' },
-  { label: 'Keywords',      href: '/screens/competitor/keywords' },
-  { label: 'Alerts',        href: '/screens/competitor/alerts' },
-];
+import CompetitorSubNav from '../_subnav';
 
 const DOT = ({ color }: { color: 'green' | 'yellow' | 'blue' | 'none' }) => {
   const cls = {
@@ -22,53 +13,12 @@ const DOT = ({ color }: { color: 'green' | 'yellow' | 'blue' | 'none' }) => {
 };
 
 export default function CompetitorContentGapsPage() {
-  const pathname = usePathname();
-
   return (
-    <main className="min-h-screen bg-black text-[#f5f5f7] antialiased flex flex-col">
+    <main className="min-h-screen bg-black text-[#f5f5f7] antialiased flex flex-col pt-14">
 
-      {/* Sub-nav */}
-      <div className="bg-black/90 backdrop-blur-xl border-b border-white/5 sticky top-14 z-40 pt-14">
-        <div className="flex items-center gap-8 px-16 py-4 max-w-[1200px] mx-auto text-sm text-[#0071e3]">
-          {subTabs.map((t) => {
-            const isActive = pathname === t.href;
-            return (
-              <Link
-                key={t.href}
-                href={t.href}
-                className={isActive ? 'text-[#0071e3] font-medium transition-colors' : 'text-white/40 hover:text-white/80 transition-colors duration-200'}
-              >
-                {t.label}
-              </Link>
-            );
-          })}
-          <div className="ml-auto text-white/60 bg-[#1d1d1f] rounded-full px-4 py-2 text-[12px] font-medium flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-colors">
-            Last 30 Days
-            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>keyboard_arrow_down</span>
-          </div>
-        </div>
-      </div>
+      <CompetitorSubNav />
 
-      <div className="flex-grow pt-8 pb-32 px-16 max-w-[1200px] mx-auto w-full">
-
-        {/* Page Header */}
-        <div className="mb-16">
-          <div className="flex justify-between items-end mb-8">
-            <div>
-              <h1 className="text-[56px] font-bold text-white mb-2" style={{ lineHeight: '1.05', letterSpacing: '-0.015em' }}>
-                Competitor Intel
-              </h1>
-              <p className="text-[#86868b]">Competitive Intelligence · Fintech</p>
-            </div>
-            <div className="text-[#86868b] text-sm">Last updated 5 Apr 2026</div>
-          </div>
-          <div className="flex items-center gap-3 pt-4">
-            <span className="text-sm font-medium text-[#86868b] mr-2">Tracking:</span>
-            {['Revolut', 'Monzo', 'Wise', 'N26'].map((b) => (
-              <span key={b} className="bg-[#1d1d1f] rounded-full px-4 py-2 text-sm font-medium text-[#f5f5f7]">{b}</span>
-            ))}
-          </div>
-        </div>
+      <div className="flex-grow pt-8 pb-32 px-6 max-w-[1200px] mx-auto w-full">
 
         {/* Section 1: Hero Briefing */}
         <section className="mb-8">

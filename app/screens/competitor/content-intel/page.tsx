@@ -1,65 +1,18 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-const subTabs = [
-  { label: 'Overview',      href: '/screens/competitor' },
-  { label: 'Content Intel', href: '/screens/competitor/content-intel' },
-  { label: 'Content Gaps',  href: '/screens/competitor/content-gaps' },
-  { label: 'Keywords',      href: '/screens/competitor/keywords' },
-  { label: 'Alerts',        href: '/screens/competitor/alerts' },
-];
+import CompetitorSubNav from '../_subnav';
 
 const s1 = 'bg-[#272729]';
 const s2 = 'bg-[#262628]';
 const s3 = 'bg-[#28282a]';
 
 export default function CompetitorContentIntelPage() {
-  const pathname = usePathname();
-
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col antialiased">
+    <main className="min-h-screen bg-black text-white flex flex-col antialiased pt-14">
 
-      {/* Secondary sub-nav */}
-      <div className="bg-black/90 backdrop-blur-xl border-b border-white/5 sticky top-14 z-40 pt-14">
-        <div className="flex flex-col w-full px-6 py-4 max-w-[1200px] mx-auto gap-4">
-          <nav className="flex items-center gap-6 text-[13px]">
-            {subTabs.map((t) => {
-              const isActive = pathname === t.href;
-              return (
-                <Link
-                  key={t.href}
-                  href={t.href}
-                  className={isActive ? 'text-white font-semibold' : 'text-white/50 hover:text-white/80 transition-colors'}
-                >
-                  {t.label}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      </div>
+      <CompetitorSubNav />
 
       <div className="flex-1 w-full max-w-[1200px] mx-auto px-6 py-8 flex flex-col gap-8">
-
-        {/* Header & Status Strip */}
-        <section className="flex flex-col gap-2 border-b border-white/10 pb-6">
-          <div className="flex justify-between items-end">
-            <div>
-              <h2 className="text-white/60 text-[13px] uppercase tracking-wider mb-1">Competitive Intelligence · Fintech</h2>
-              <h1 className="text-[40px] font-semibold text-white" style={{ lineHeight: '1.10' }}>Competitor Intel</h1>
-            </div>
-            <div className="flex items-center gap-4 text-[12px]">
-              <div className="flex items-center gap-1.5 text-[#0071e3]">
-                <div className="w-2 h-2 rounded-full bg-[#0071e3] animate-pulse" />
-                <span className="font-medium">Live Tracking Active</span>
-              </div>
-              <span className="text-white/40">Last updated: 2 mins ago</span>
-              <span className="text-white/40">Filters: Top 5, 30 Days</span>
-            </div>
-          </div>
-        </section>
 
         {/* Intelligence Brief Hero */}
         <section className={`${s1} rounded-3xl p-10 flex flex-col lg:flex-row gap-10 items-start`}

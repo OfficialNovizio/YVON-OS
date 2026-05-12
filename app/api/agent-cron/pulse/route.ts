@@ -1,11 +1,9 @@
 import { NextRequest } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast } from '@/lib/ai-client'
 import { getAgentSessions } from '@/lib/db'
 
 export const maxDuration = 60
 import type { AgentId } from '@/lib/types'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // Quinn weekly Pulse — runs every Friday 17:00 via Vercel cron
 // Spot-checks one output per department from this week's agent_sessions
@@ -47,9 +45,7 @@ export async function GET(request: NextRequest): Promise<Response> {
         new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
       )[0]
 
-      const res = await client.messages.create({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 250,
+      const score = await callFast({
         messages: [{
           role: 'user',
           content: `You are Quinn, QA Engineer at YVON. Weekly Pulse check for ${dept} department.
@@ -66,9 +62,8 @@ Score this output:
 
 Respond in 80 words max: Score + one specific finding + one action item if Yellow/Red.`,
         }],
-      })
-
-      const score = res.content[0]?.type === 'text' ? res.content[0].text : '_Review failed_'
+        maxTokens: 250,
+      }).catch(() => '_Review failed_')
       deptReports.push(`### ${dept} — ${latest.agentId} (${latest.venture})\n${score}`)
     }
 

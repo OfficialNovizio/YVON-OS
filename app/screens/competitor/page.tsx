@@ -1,64 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-const subTabs = [
-  { label: 'Overview',      href: '/screens/competitor' },
-  { label: 'Content Intel', href: '/screens/competitor/content-intel' },
-  { label: 'Content Gaps',  href: '/screens/competitor/content-gaps' },
-  { label: 'Keywords',      href: '/screens/competitor/keywords' },
-  { label: 'Alerts',        href: '/screens/competitor/alerts' },
-];
+import CompetitorSubNav from './_subnav';
 
 export default function CompetitorPage() {
-  const pathname = usePathname();
-
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col antialiased pb-0">
+    <main className="min-h-screen bg-black text-white flex flex-col antialiased pb-0 pt-14">
 
-      {/* Secondary header — title + sub-tabs */}
-      <div className="bg-black border-b border-white/5 pt-14">
-        <div className="flex flex-col w-full px-6 py-4 max-w-[1200px] mx-auto gap-4">
-          <h1 className="text-2xl font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>
-            Competitor Overview
-          </h1>
-          <ul className="flex items-center gap-6 text-[14px]" style={{ letterSpacing: '-0.224px' }}>
-            {subTabs.map((t) => {
-              const isActive = pathname === t.href;
-              return (
-                <li key={t.href}>
-                  <Link
-                    href={t.href}
-                    className={isActive ? 'text-[#0071e3] font-medium transition-colors' : 'text-white/50 hover:text-white/80 transition-colors'}
-                  >
-                    {t.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-
-      {/* Tracking strip */}
-      <div className="w-full border-b border-white/5 bg-[#1d1d1f]">
-        <div className="max-w-[1200px] mx-auto px-6 py-2 flex items-center gap-6 text-xs text-white/60"
-          style={{ letterSpacing: '-0.374px' }}>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>Live Tracking Active</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[14px]">schedule</span>
-            <span>Last updated: 2 mins ago</span>
-          </div>
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="material-symbols-outlined text-[14px]">tune</span>
-            <span>Filters: Top 5, 30 Days</span>
-          </div>
-        </div>
-      </div>
+      <CompetitorSubNav />
 
       {/* Canvas */}
       <div className="flex-grow w-full max-w-[1200px] mx-auto px-6 py-12 flex flex-col gap-8">

@@ -3,7 +3,7 @@
 // POST: analyzes top content to learn/update brand voice
 
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
+import { callSynthesis } from '@/lib/ai-client'
 import { getBrandDNA, saveBrandDNA } from '@/lib/brand-dna'
 import { getTopContent } from '@/lib/db-phase1'
 
@@ -15,11 +15,7 @@ export async function GET(): Promise<Response> {
   return Response.json({ ventureId, brandDNA: dna })
 }
 
-export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
+export async function POST(): Promise<Response> {
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
 
@@ -27,8 +23,6 @@ export async function POST(request: Request): Promise<Response> {
   if (topContent.length < 3) {
     return Response.json({ error: 'Need at least 3 content items to learn brand voice' }, { status: 400 })
   }
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   const captions = topContent.map((c) => c.captionPreview).filter(Boolean)
 
@@ -49,12 +43,7 @@ Return the brand voice profile as ONLY valid JSON:
 }`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 2000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 2000 })
     const profile = JSON.parse(raw) as Record<string, unknown>
 
     await saveBrandDNA({

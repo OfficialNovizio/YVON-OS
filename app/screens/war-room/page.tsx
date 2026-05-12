@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import type { AgentId, ExecutionPlan, RoutingResult, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord } from '@/lib/types';
+import type { AgentId, ExecutionPlan, RoutingResult, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord, ConflictItem } from '@/lib/types';
+import { getActiveVentureSlugClient } from '@/lib/venture-context';
 
 // ─── Agent meta (display only — no runtime import of full agents.ts) ──────────
 
@@ -45,6 +46,7 @@ interface WarRoomState {
   synthesis: string;
   elapsed: number;
   confidence: number;
+  conflicts: ConflictItem[];
 }
 
 const INITIAL_STATE: WarRoomState = {
@@ -58,6 +60,7 @@ const INITIAL_STATE: WarRoomState = {
   synthesis: '',
   elapsed: 0,
   confidence: 0,
+  conflicts: [],
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -109,11 +112,28 @@ function AgentCard({
     : queued ? 'border-purple-400/20'
     : 'border-white/5';
 
+  const isActive = status === 'working' || status === 'retrying';
+
   return (
-    <div className={`glass-card rounded-xl p-4 border ${borderColor} transition-all duration-300`}>
+    <div className={`glass-card rounded-xl p-4 border ${borderColor} transition-all duration-300 ${isActive ? 'scale-[1.02]' : ''}`}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{meta.icon}</span>
+          {/* Avatar with animated ring when active */}
+          <div className="relative flex-shrink-0">
+            <div className={`w-9 h-9 rounded-full flex items-center justify-center text-lg transition-all ${
+              isActive ? 'bg-yellow-400/10' : status === 'done' ? 'bg-green-400/10' : 'bg-white/5'
+            }`}>
+              {meta.icon}
+            </div>
+            {isActive && (
+              <span className="absolute inset-0 rounded-full border-2 border-yellow-400/50 animate-ping" />
+            )}
+            {status === 'done' && (
+              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border border-[#0a0a0a] flex items-center justify-center">
+                <span className="text-[6px] text-black font-bold">✓</span>
+              </span>
+            )}
+          </div>
           <div>
             <p className="text-[13px] font-semibold text-white leading-none">{meta.name}</p>
             <p className="text-[10px] text-white/40 uppercase tracking-wider mt-0.5">{meta.role}</p>
@@ -129,6 +149,47 @@ function AgentCard({
       )}
     </div>
   );
+}
+
+// ─── Quick-start prompt chips ─────────────────────────────────────────────────
+
+const QUICK_PROMPTS = [
+  { label: 'Review open PRs & issues', icon: 'merge', prompt: 'Review our open GitHub PRs and issues — identify what needs attention most urgently and why.' },
+  { label: 'Weekly strategy brief', icon: 'insights', prompt: 'Give me a weekly executive brief — what should we focus on this week across marketing, tech, and growth?' },
+  { label: 'Find growth bottlenecks', icon: 'trending_up', prompt: 'Analyze our current growth funnel and identify the top 2 bottlenecks blocking us from scaling faster.' },
+  { label: 'Pre-launch checklist', icon: 'rocket_launch', prompt: 'We are preparing for a launch — run a pre-launch check across tech, marketing, and operations. What is missing?' },
+];
+
+function QuickPrompts({ onSelect }: { onSelect: (prompt: string) => void }) {
+  return (
+    <div className="flex flex-wrap gap-2 mt-3">
+      {QUICK_PROMPTS.map(q => (
+        <button
+          key={q.label}
+          onClick={() => onSelect(q.prompt)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.07] text-[11px] text-white/50 hover:text-white/80 hover:border-white/15 hover:bg-white/[0.07] transition-all"
+        >
+          <span className="material-symbols-outlined text-[13px]">{q.icon}</span>
+          {q.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Action items parser ──────────────────────────────────────────────────────
+
+function parseActionItems(synthesis: string): string[] {
+  const items: string[] = []
+  const lines = synthesis.split('\n')
+  for (const line of lines) {
+    const clean = line.trim()
+    if (/^[-*•]\s+/.test(clean) || /^\d+\.\s+/.test(clean)) {
+      const text = clean.replace(/^[-*•]\s+/, '').replace(/^\d+\.\s+/, '').trim()
+      if (text.length > 15 && text.length < 160) items.push(text)
+    }
+  }
+  return items.slice(0, 8)
 }
 
 function TimelineRow({ entry: e }: { entry: TimelineEntry }) {
@@ -157,13 +218,78 @@ function TimelineRow({ entry: e }: { entry: TimelineEntry }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
+type RepoStatus = 'idle' | 'loading' | 'ready' | 'error' | 'no-repo';
+
 export default function WarRoomPage() {
   const [input, setInput] = useState('');
   const [venture, setVenture] = useState('Novizio');
+  const [ventureSlug, setVentureSlug] = useState('');
   const [state, setState] = useState<WarRoomState>(INITIAL_STATE);
+  const [githubContext, setGithubContext] = useState('');
+  const [repoStatus, setRepoStatus] = useState<RepoStatus>('idle');
+  const [repoLabel, setRepoLabel] = useState('');
+  const [prStatus, setPrStatus] = useState<'idle' | 'creating' | 'done' | 'error'>('idle');
+  const [prUrl, setPrUrl] = useState('');
+  const [prError, setPrError] = useState('');
+  const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
+  const [issueStatus, setIssueStatus] = useState<'idle' | 'creating' | 'done' | 'error'>('idle');
+  const [issueCount, setIssueCount] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
   const synthRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+
+  // Load active venture + fetch GitHub context on mount
+  useEffect(() => {
+    const slug = getActiveVentureSlugClient();
+    if (!slug) return;
+    setVentureSlug(slug);
+
+    async function loadGitHubContext() {
+      setRepoStatus('loading');
+      try {
+        // Get venture name + repo URL
+        const ventureRes = await fetch('/api/ventures');
+        const ventures = await ventureRes.json() as Array<{ slug: string; name: string; repoUrl?: string }>;
+        const v = ventures.find(x => x.slug === slug) ?? ventures[0];
+        if (!v) return;
+        setVenture(v.name);
+
+        if (!v.repoUrl) { setRepoStatus('no-repo'); return; }
+
+        // Fetch repo snapshot in parallel
+        const [repoRes, commitsRes, issuesRes, prsRes] = await Promise.all([
+          fetch(`/api/github?venture=${slug}&action=repo`),
+          fetch(`/api/github?venture=${slug}&action=commits`),
+          fetch(`/api/github?venture=${slug}&action=issues`),
+          fetch(`/api/github?venture=${slug}&action=prs`),
+        ]);
+
+        if (!repoRes.ok) { setRepoStatus('error'); return; }
+
+        const repo    = await repoRes.json() as { name: string; defaultBranch: string; openIssues: number };
+        const commits = commitsRes.ok ? (await commitsRes.json() as { commits: Array<{ sha: string; message: string; author: string; date: string }> }).commits.slice(0, 10) : [];
+        const issues  = issuesRes.ok  ? (await issuesRes.json()  as { issues:  Array<{ number: number; title: string; labels: string[] }> }).issues.slice(0, 10)  : [];
+        const prs     = prsRes.ok     ? (await prsRes.json()     as { prs:     Array<{ number: number; title: string; head: string; base: string }> }).prs.slice(0, 5)      : [];
+
+        const ctx = [
+          `## GitHub Repo: ${repo.name} (branch: ${repo.defaultBranch})`,
+          `Open issues: ${repo.openIssues}`,
+          '',
+          commits.length > 0 ? `### Recent Commits\n${commits.map(c => `- [${c.sha}] ${c.message} (${c.author})`).join('\n')}` : '',
+          issues.length > 0  ? `### Open Issues\n${issues.map(i => `- #${i.number}: ${i.title}${i.labels.length ? ` [${i.labels.join(', ')}]` : ''}`).join('\n')}` : '',
+          prs.length > 0     ? `### Open PRs\n${prs.map(p => `- #${p.number}: ${p.title} (${p.head} → ${p.base})`).join('\n')}` : '',
+        ].filter(Boolean).join('\n');
+
+        setGithubContext(ctx);
+        setRepoLabel(repo.name);
+        setRepoStatus('ready');
+      } catch {
+        setRepoStatus('error');
+      }
+    }
+
+    void loadGitHubContext();
+  }, []);
 
   // Auto-scroll synthesis and timeline
   useEffect(() => {
@@ -189,7 +315,7 @@ export default function WarRoomPage() {
       const res = await fetch('/api/team-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input.trim(), ventureName: venture }),
+        body: JSON.stringify({ message: input.trim(), ventureName: venture, githubContext: githubContext || undefined }),
         signal: abortRef.current.signal,
       });
 
@@ -279,6 +405,13 @@ export default function WarRoomPage() {
               pushEntry(entry(`Retrying (attempt ${evt.attempt})`, 'retry', evt.agentId));
               break;
 
+            case 'conflicts':
+              if (evt.conflicts?.length > 0) {
+                setState(prev => ({ ...prev, conflicts: evt.conflicts }));
+                pushEntry(entry(`${evt.conflicts.length} conflict(s) detected between agents`, 'routing'));
+              }
+              break;
+
             case 'handoff':
               pushEntry(entry(
                 `Handoff → ${AGENT_META[evt.to]?.name ?? evt.to}: "${evt.summary}"`,
@@ -319,7 +452,70 @@ export default function WarRoomPage() {
     abortRef.current?.abort();
     setState(INITIAL_STATE);
     setInput('');
+    setPrStatus('idle');
+    setPrUrl('');
+    setPrError('');
+    setCheckedItems(new Set());
+    setIssueStatus('idle');
+    setIssueCount(0);
   };
+
+  const handleCreateIssues = useCallback(async (items: string[]) => {
+    const selected = items.filter((_, i) => checkedItems.has(i));
+    if (selected.length === 0 || !ventureSlug) return;
+    setIssueStatus('creating');
+    try {
+      const results = await Promise.all(
+        selected.map(title =>
+          fetch('/api/github', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ venture: ventureSlug, action: 'create-issue', title, body: `Created from YVON War Room session.\n\n**Venture:** ${venture}\n**Session prompt:** ${input}` }),
+          })
+        )
+      );
+      const created = results.filter(r => r.ok).length;
+      setIssueCount(created);
+      setIssueStatus('done');
+    } catch {
+      setIssueStatus('error');
+    }
+  }, [checkedItems, ventureSlug, venture, input]);
+
+  const handleCreatePr = useCallback(async () => {
+    if (!state.synthesis || !ventureSlug) return;
+    setPrStatus('creating');
+    setPrError('');
+    try {
+      const res = await fetch('/api/github/pr-from-session', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          venture:        ventureSlug,
+          synthesis:      state.synthesis,
+          sessionSummary: input || undefined,
+          agents:         state.activeAgents,
+        }),
+      });
+      const data = await res.json() as {
+        ok: boolean; prUrl?: string; reason?: string; message?: string; error?: string;
+        committed?: string[]; skipped?: string[];
+      };
+      if (!data.ok || data.reason === 'no-code-blocks') {
+        setPrStatus('error');
+        setPrError(data.message ?? data.error ?? 'No file paths found in agent output. Agents must prefix code blocks with `// path/to/file.ts`.');
+      } else if (data.prUrl) {
+        setPrUrl(data.prUrl);
+        setPrStatus('done');
+      } else {
+        setPrStatus('error');
+        setPrError(data.error ?? 'PR creation failed.');
+      }
+    } catch (err) {
+      setPrStatus('error');
+      setPrError(String(err));
+    }
+  }, [state.synthesis, state.activeAgents, ventureSlug, input]);
 
   const statusLabel: Record<SessionStatus, string> = {
     idle:        'READY',
@@ -411,18 +607,52 @@ export default function WarRoomPage() {
         </div>
       </div>
 
-      {/* Input + venture selector */}
-      <div className="glass-card rounded-2xl p-5 mb-6 border border-white/5">
-        <div className="flex gap-3 mb-3">
-          <select
-            value={venture}
-            onChange={e => setVenture(e.target.value)}
-            disabled={isRunning}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-[13px] text-white/70 focus:outline-none focus:border-white/20 disabled:opacity-40"
+      {/* GitHub context status bar */}
+      <div className={`flex items-center gap-3 mb-4 px-4 py-2.5 rounded-xl border text-[11px] font-medium transition-all ${
+        repoStatus === 'ready'   ? 'bg-green-500/5 border-green-500/20 text-green-400' :
+        repoStatus === 'loading' ? 'bg-white/[0.03] border-white/[0.06] text-white/40' :
+        repoStatus === 'error'   ? 'bg-red-500/5 border-red-500/20 text-red-400' :
+        repoStatus === 'no-repo' ? 'bg-white/[0.03] border-white/[0.06] text-white/30' :
+        'hidden'
+      }`}>
+        <span className="material-symbols-outlined text-[15px]">
+          {repoStatus === 'ready' ? 'check_circle' : repoStatus === 'loading' ? 'sync' : repoStatus === 'error' ? 'error' : 'code_off'}
+        </span>
+        {repoStatus === 'ready'   && <span>Repo context loaded — <span className="font-mono">{repoLabel}</span> · commits, issues &amp; PRs injected into technical agents</span>}
+        {repoStatus === 'loading' && <span>Fetching repo context from GitHub…</span>}
+        {repoStatus === 'error'   && <span>Could not load GitHub context — agents will run without repo awareness</span>}
+        {repoStatus === 'no-repo' && <span>No GitHub repo linked to this venture — add one in Settings → Venture Profile → Links</span>}
+        {repoStatus === 'ready' && (
+          <button
+            onClick={() => { setRepoStatus('loading'); setGithubContext(''); void (async () => {
+              setRepoStatus('loading');
+              try {
+                const [repoRes, commitsRes, issuesRes, prsRes] = await Promise.all([
+                  fetch(`/api/github?venture=${ventureSlug}&action=repo`),
+                  fetch(`/api/github?venture=${ventureSlug}&action=commits`),
+                  fetch(`/api/github?venture=${ventureSlug}&action=issues`),
+                  fetch(`/api/github?venture=${ventureSlug}&action=prs`),
+                ]);
+                if (!repoRes.ok) { setRepoStatus('error'); return; }
+                const repo    = await repoRes.json() as { name: string; defaultBranch: string; openIssues: number };
+                const commits = commitsRes.ok ? (await commitsRes.json() as { commits: Array<{ sha: string; message: string; author: string; date: string }> }).commits.slice(0, 10) : [];
+                const issues  = issuesRes.ok  ? (await issuesRes.json()  as { issues:  Array<{ number: number; title: string; labels: string[] }> }).issues.slice(0, 10)  : [];
+                const prs     = prsRes.ok     ? (await prsRes.json()     as { prs:     Array<{ number: number; title: string; head: string; base: string }> }).prs.slice(0, 5)      : [];
+                const ctx = [`## GitHub Repo: ${repo.name} (branch: ${repo.defaultBranch})`, `Open issues: ${repo.openIssues}`, '', commits.length > 0 ? `### Recent Commits\n${commits.map(c => `- [${c.sha}] ${c.message} (${c.author})`).join('\n')}` : '', issues.length > 0 ? `### Open Issues\n${issues.map(i => `- #${i.number}: ${i.title}${i.labels.length ? ` [${i.labels.join(', ')}]` : ''}`).join('\n')}` : '', prs.length > 0 ? `### Open PRs\n${prs.map(p => `- #${p.number}: ${p.title} (${p.head} → ${p.base})`).join('\n')}` : ''].filter(Boolean).join('\n');
+                setGithubContext(ctx); setRepoLabel(repo.name); setRepoStatus('ready');
+              } catch { setRepoStatus('error'); }
+            })(); }}
+            className="ml-auto flex items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
           >
-            <option value="Novizio">Novizio</option>
-            <option value="Hourbour">Hourbour</option>
-          </select>
+            <span className="material-symbols-outlined text-[13px]">refresh</span>
+            Refresh
+          </button>
+        )}
+      </div>
+
+      {/* Input */}
+      <div className="glass-card rounded-2xl p-5 mb-6 border border-white/5">
+        <div className="flex gap-3">
           <div className="flex-1 flex gap-3">
             <textarea
               value={input}
@@ -452,6 +682,10 @@ export default function WarRoomPage() {
             </div>
           </div>
         </div>
+        {/* Quick-start prompts — only shown when idle and input is empty */}
+        {state.status === 'idle' && !input && (
+          <QuickPrompts onSelect={p => setInput(p)} />
+        )}
       </div>
 
       {/* Plan banner */}
@@ -466,6 +700,42 @@ export default function WarRoomPage() {
                 Done when: {state.plan.definition_of_done}
               </p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Conflicts panel — shown when agents disagree */}
+      {state.conflicts.length > 0 && (
+        <div className="glass-card rounded-xl p-4 mb-5 border border-orange-400/20 bg-orange-500/[0.04]">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="material-symbols-outlined text-[16px] text-orange-400">warning</span>
+            <p className="text-[11px] font-bold tracking-widest text-orange-400 uppercase">
+              Agent Disagreements — {state.conflicts.length} conflict{state.conflicts.length > 1 ? 's' : ''} detected
+            </p>
+            <p className="text-[10px] text-white/30 ml-auto">Marcus will adjudicate in synthesis</p>
+          </div>
+          <div className="space-y-2">
+            {state.conflicts.map((c, i) => (
+              <div key={i} className="bg-white/[0.03] rounded-lg p-3">
+                <p className="text-[11px] font-semibold text-white/70 mb-2">{c.topic}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-start gap-2">
+                    <span className="text-sm flex-shrink-0">{AGENT_META[c.agentA as AgentId]?.icon ?? '?'}</span>
+                    <div>
+                      <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{AGENT_META[c.agentA as AgentId]?.name ?? c.agentA}</p>
+                      <p className="text-[11px] text-white/55 leading-relaxed">{c.positionA}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-sm flex-shrink-0">{AGENT_META[c.agentB as AgentId]?.icon ?? '?'}</span>
+                    <div>
+                      <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider">{AGENT_META[c.agentB as AgentId]?.name ?? c.agentB}</p>
+                      <p className="text-[11px] text-white/55 leading-relaxed">{c.positionB}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -577,6 +847,87 @@ export default function WarRoomPage() {
                     <span className="inline-block w-0.5 h-4 bg-white/60 ml-0.5 animate-pulse align-text-bottom" />
                   )}
                 </div>
+              </div>
+            )}
+
+            {/* Action items — parsed from synthesis when complete */}
+            {state.status === 'complete' && state.synthesis && (() => {
+              const items = parseActionItems(state.synthesis);
+              if (items.length === 0) return null;
+              return (
+                <div className="mt-5 pt-4 border-t border-white/[0.06]">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-[10px] font-bold tracking-widest text-white/30 uppercase">Action Items</p>
+                    {repoStatus === 'ready' && issueStatus === 'idle' && (
+                      <button
+                        onClick={() => handleCreateIssues(items)}
+                        disabled={checkedItems.size === 0}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.07] text-[11px] text-white/50 hover:text-white/80 hover:border-white/15 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                      >
+                        <span className="material-symbols-outlined text-[13px]">add_task</span>
+                        Create {checkedItems.size > 0 ? checkedItems.size : ''} GitHub Issue{checkedItems.size !== 1 ? 's' : ''}
+                      </button>
+                    )}
+                    {issueStatus === 'creating' && <span className="text-[11px] text-white/30">Creating issues…</span>}
+                    {issueStatus === 'done' && <span className="text-[11px] text-green-400">{issueCount} issue{issueCount !== 1 ? 's' : ''} created ✓</span>}
+                    {issueStatus === 'error' && <span className="text-[11px] text-red-400">Failed — retry</span>}
+                  </div>
+                  <div className="space-y-1.5">
+                    {items.map((item, i) => (
+                      <label key={i} className="flex items-start gap-2.5 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={checkedItems.has(i)}
+                          onChange={e => {
+                            const next = new Set(checkedItems);
+                            e.target.checked ? next.add(i) : next.delete(i);
+                            setCheckedItems(next);
+                          }}
+                          className="mt-0.5 flex-shrink-0 accent-[#0071e3]"
+                        />
+                        <span className="text-[12px] text-white/55 group-hover:text-white/75 leading-relaxed transition-colors">{item}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Draft PR button — shown after technical session completes with code blocks */}
+            {state.status === 'complete' && state.synthesis && repoStatus === 'ready' && (
+              <div className="mt-5 pt-4 border-t border-white/[0.06]">
+                {prStatus === 'idle' && (
+                  <button
+                    onClick={handleCreatePr}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[12px] text-white/60 hover:text-white hover:border-white/20 hover:bg-white/[0.07] transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">merge</span>
+                    Push to GitHub as Draft PR
+                    <span className="text-[10px] text-white/30 ml-1">— agents write, you review & merge</span>
+                  </button>
+                )}
+                {prStatus === 'creating' && (
+                  <div className="flex items-center gap-2 text-[12px] text-white/40">
+                    <span className="material-symbols-outlined text-[16px] animate-spin">sync</span>
+                    Creating branch, committing files, opening draft PR…
+                  </div>
+                )}
+                {prStatus === 'done' && prUrl && (
+                  <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-green-500/[0.06] border border-green-500/20">
+                    <span className="material-symbols-outlined text-[16px] text-green-400">check_circle</span>
+                    <span className="text-[12px] text-green-400">Draft PR created</span>
+                    <a href={prUrl} target="_blank" rel="noreferrer" className="text-[12px] text-[#0071e3] underline underline-offset-2 ml-auto">
+                      View PR →
+                    </a>
+                  </div>
+                )}
+                {prStatus === 'error' && (
+                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/[0.06] border border-red-500/20">
+                    <span className="material-symbols-outlined text-[16px] text-red-400">error</span>
+                    <span className="text-[12px] text-red-400">{prError}</span>
+                    <button onClick={() => setPrStatus('idle')} className="ml-auto text-[11px] text-white/30 hover:text-white/60">Retry</button>
+                  </div>
+                )}
               </div>
             )}
           </div>

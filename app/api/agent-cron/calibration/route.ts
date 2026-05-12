@@ -1,10 +1,8 @@
 import { NextRequest } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast } from '@/lib/ai-client'
 import { getStrategyLog, getLeverTracker, runSkillLifecycleTransitions } from '@/lib/db'
 
 export const maxDuration = 60
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // Kahneman weekly calibration — runs every Friday 08:00 via Vercel cron
 // Reads strategy_log + lever_tracker, detects calibration drift, saves report to DB
@@ -48,9 +46,7 @@ export async function GET(request: NextRequest): Promise<Response> {
           : 'No completed results yet.',
       ].join('\n')
 
-      const res = await client.messages.create({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 400,
+      const report = await callFast({
         messages: [{
           role: 'user',
           content: `You are Kahneman, YVON Behavioral Economist. Weekly calibration audit for ${brand}.
@@ -65,9 +61,8 @@ Produce a concise calibration report (150 words max):
 
 State explicitly: "The one thing I don't know here is..." before your recommendation.`,
         }],
-      })
-
-      const report = res.content[0]?.type === 'text' ? res.content[0].text : ''
+        maxTokens: 400,
+      }).catch(() => '')
       reports.push(`## ${brand} — Kahneman Calibration\n${report}`)
     }
 

@@ -8,10 +8,7 @@
 import { NextRequest } from 'next/server'
 import { skillsManager } from '@/lib/skills-manager'
 import { monitoring } from '@/lib/monitoring'
-import { sessionManager } from '@/lib/session-manager'
-import Anthropic from '@anthropic-ai/sdk'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+import { callFast } from '@/lib/ai-client'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +16,7 @@ interface EnhancedMemoryRequest {
   agentId: string
   task: string
   outcome: string
+  venture?: string
   errors?: Array<{
     message: string
     context?: string
@@ -48,10 +46,6 @@ interface EnhancedMemoryResponse {
 }
 
 export async function POST(request: NextRequest) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: EnhancedMemoryRequest
   try {
     body = await request.json()
@@ -59,7 +53,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { agentId, task, outcome, errors = [] } = body
+  const { agentId, task, outcome, venture, errors = [] } = body
 
   if (!agentId || !task || !outcome) {
     return Response.json({ error: 'agentId, task, and outcome are required' }, { status: 400 })
@@ -77,7 +71,7 @@ export async function POST(request: NextRequest) {
     const memoryResponse = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL ? '' : 'http://localhost:3000'}/api/memory`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ agentId, task, outcome })
+      body: JSON.stringify({ agentId, task, outcome, venture })
     })
 
     if (memoryResponse.ok) {
@@ -87,8 +81,7 @@ export async function POST(request: NextRequest) {
     // Step 2: Analyze errors and determine if SKILLS.md update needed
     let needsSkillsUpdate = errors.length > 0
 
-    if (!needsSkillsUpdate && client) {
-      // Use AI to determine if patterns emerged during session
+    if (!needsSkillsUpdate) {
       const analysis = await analyzeSessionPatterns(agentId, task, outcome)
       needsSkillsUpdate = analysis.needsUpdate
     }
@@ -121,17 +114,14 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * Analyze session patterns to determine if SKILLS.md update is needed
- */
 async function analyzeSessionPatterns(
   agentId: string,
   task: string,
   outcome: string
 ): Promise<{ needsUpdate: boolean; pattern?: string }> {
   try {
-    const analysisPrompt = `
-You are analyzing a session to determine if SKILLS.md needs updating.
+    const raw = await callFast({
+      messages: [{ role: 'user', content: `You are analyzing a session to determine if SKILLS.md needs updating.
 
 Agent: ${agentId}
 Task: ${task}
@@ -147,18 +137,10 @@ Return JSON:
   "needsUpdate": boolean,
   "pattern": string (optional - what pattern emerged),
   "reason": string (optional - why update is needed)
-}
-`
-
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 200,
-      messages: [{ role: 'user', content: analysisPrompt }]
+}` }],
+      maxTokens: 200,
     })
-
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
     const result = JSON.parse(raw)
-
     return { needsUpdate: result.needsUpdate || false, pattern: result.pattern }
   } catch (error) {
     monitoring.warn('Failed to analyze session patterns', { error: String(error) })
@@ -166,9 +148,6 @@ Return JSON:
   }
 }
 
-/**
- * Update SKILLS.md based on session analysis
- */
 async function updateSkillsBasedOnSession(
   agentId: string,
   task: string,
@@ -180,12 +159,10 @@ async function updateSkillsBasedOnSession(
   validation?: { valid: boolean; errors: string[]; warnings: string[] }
 }> {
   try {
-    // Analyze errors to extract patterns
     const errorPatterns = errors.map(e => e.message).join(', ')
 
-    // Generate SKILLS.md update based on session
-    const skillsPrompt = `
-You are generating a SKILLS.md update for agent ${agentId} based on recent session.
+    const raw = await callFast({
+      messages: [{ role: 'user', content: `You are generating a SKILLS.md update for agent ${agentId} based on recent session.
 
 Session details:
 - Task: ${task}
@@ -199,19 +176,11 @@ Return JSON:
   "addPattern": string (optional - pattern to add),
   "removePattern": string (optional - pattern to remove),
   "reason": string (explanation for changes)
-}
-`
-
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 300,
-      messages: [{ role: 'user', content: skillsPrompt }]
+}` }],
+      maxTokens: 300,
     })
-
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
     const result = JSON.parse(raw)
 
-    // Apply changes if any
     if (result.addPattern || result.removePattern) {
       const update = await skillsManager.applySipDistillation(agentId, result)
 
@@ -240,7 +209,6 @@ Return JSON:
 }
 
 export async function GET() {
-  // Return enhanced memory stats
   try {
     const health = await monitoring.checkSystemHealth()
     const validation = await skillsManager.batchValidate()

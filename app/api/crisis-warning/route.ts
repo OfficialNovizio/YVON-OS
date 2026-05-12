@@ -3,7 +3,7 @@
 // POST: scans for new crises
 
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast } from '@/lib/ai-client'
 import { supabase } from '@/lib/supabase'
 
 export async function GET(): Promise<Response> {
@@ -21,10 +21,6 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { brandName?: string; mentions?: string }
   try {
     body = await request.json() as typeof body
@@ -35,8 +31,6 @@ export async function POST(request: Request): Promise<Response> {
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
   const brandName = body.mentions ?? 'this brand'
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   const prompt = `You are a crisis early warning system. Scan these brand mentions and identify any potential PR crises, negative sentiment spikes, or customer complaints going viral.
 
@@ -59,12 +53,7 @@ For each alert found, return:
 Return ONLY a JSON array. If nothing concerning found, return [].`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '[]'
+    const raw = await callFast({ messages: [{ role: 'user', content: prompt }], maxTokens: 1000 })
     const alerts = JSON.parse(raw) as Array<{ alertType: string; severity: string; message: string; urgency: string }>
 
     for (const a of alerts) {

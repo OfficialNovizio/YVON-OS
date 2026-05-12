@@ -2,7 +2,7 @@
 // Same core idea, different hook, format, and platform optimization
 
 import 'server-only'
-import Anthropic from '@anthropic-ai/sdk'
+import { callSynthesis } from '@/lib/ai-client'
 
 export interface ContentMultiplierVariant {
   platform: string
@@ -18,12 +18,6 @@ export async function generateVariants(
   topContent: { caption: string; hook: string; topic: string },
   platforms = ['instagram', 'linkedin', 'tiktok', 'youtube', 'twitter', 'facebook', 'pinterest', 'reddit']
 ): Promise<ContentMultiplierVariant[]> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    throw new Error('ANTHROPIC_API_KEY not set')
-  }
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
   const prompt = `You are a content multiplier engine. Take this top-performing content and create 8 platform-optimized variants.
 
 CORE CONTENT:
@@ -46,12 +40,6 @@ Return ONLY valid JSON array:
   "bestTimeToPost": "e.g. Tuesday 9am EST"
 }]`
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4000,
-    messages: [{ role: 'user', content: prompt }],
-  })
-
-  const raw = response.content[0]?.type === 'text' ? response.content[0].text : '[]'
+  const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 4000 })
   return JSON.parse(raw) as ContentMultiplierVariant[]
 }

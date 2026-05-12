@@ -1,42 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-const tabs = [
-  { label: 'Overview',     href: '/screens/analytics' },
-  { label: 'Portfolio',    href: '/screens/analytics/portfolio' },
-  { label: 'Social Media', href: '/screens/analytics/social-media' },
-  { label: 'Content',      href: '/screens/analytics/content' },
-];
+import { useRouter } from 'next/navigation';
+import AnalyticsSubNav from '../_subnav';
 
 export default function AnalyticsPortfolioPage() {
-  const pathname = usePathname();
-
+  const router = useRouter();
   return (
     <main className="pt-14 pb-24 bg-black text-[#e2e2e2] min-h-screen">
-      {/* Secondary tab bar */}
-      <nav className="bg-black/90 backdrop-blur-xl sticky top-14 z-50 border-b border-white/5">
-        <div className="flex items-center gap-8 h-[52px] px-4 w-full max-w-[980px] mx-auto overflow-x-auto"
-          style={{ scrollbarWidth: 'none' }}>
-          {tabs.map((tab) => {
-            const isActive = pathname === tab.href;
-            return (
-              <Link
-                key={tab.href}
-                href={tab.href}
-                className={
-                  isActive
-                    ? 'text-white border-b border-white pb-2 -mb-[9px] whitespace-nowrap font-medium text-[14px] transition-colors'
-                    : 'text-white/40 hover:text-white/80 pb-2 whitespace-nowrap text-[14px] transition-colors'
-                }
-              >
-                {tab.label}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      <AnalyticsSubNav />
 
       {/* Signal Strip */}
       <div className="w-full bg-[#1c1c1e] border-b border-white/5">
@@ -73,7 +44,10 @@ export default function AnalyticsPortfolioPage() {
                 Overall brand health is stable. Novizio engagement offset by Delta&apos;s targeted ad fatigue.
                 Rebalancing recommended for optimal ROI.
               </p>
-              <button className="bg-[#0071e3] text-white px-6 py-2.5 rounded-full text-[14px] font-medium hover:bg-[#005cbb] transition-colors inline-flex items-center gap-2 active:scale-95">
+              <button
+                onClick={() => router.push('/screens/war-room?q=Marcus%2C+rebalance+the+portfolio+—+Novizio+is+overloaded+and+Hourbour+has+funnel+gaps.+What+are+the+top+3+reallocation+decisions%3F')}
+                className="bg-[#0071e3] text-white px-6 py-2.5 rounded-full text-[14px] font-medium hover:bg-[#005cbb] transition-colors inline-flex items-center gap-2 active:scale-95"
+              >
                 <span>Rebalance Portfolio</span>
                 <span className="material-symbols-outlined text-[16px]">tune</span>
               </button>
@@ -232,25 +206,29 @@ export default function AnalyticsPortfolioPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
-                icon: 'swap_horiz', iconBg: '#0071e3', badge: 'High Impact', badgeBg: 'bg-white/10', badgeText: 'text-white/80',
+                icon: 'swap_horiz', badge: 'High Impact', badgeBg: 'bg-white/10', badgeText: 'text-white/80',
                 title: 'Shift Weekly Content Capacity',
                 desc: 'Reallocate 2 posts/wk from Novizio to Hourbour to address funnel gaps.',
                 from: 'Novizio', to: 'Hourbour', highlight: true,
+                route: '/screens/war-room?q=Approve+decision%3A+shift+2+posts%2Fwk+from+Novizio+to+Hourbour+to+address+mid-funnel+gaps',
               },
               {
-                icon: 'payments', iconBg: 'rgba(255,255,255,0.06)', badge: 'Medium Impact', badgeBg: 'bg-white/5', badgeText: 'text-white/60',
+                icon: 'payments', badge: 'Medium Impact', badgeBg: 'bg-white/5', badgeText: 'text-white/60',
                 title: 'Reallocate Paid Support',
                 desc: 'Shift spend from LinkedIn awareness campaigns into TikTok and IG converters.',
                 from: 'LinkedIn', to: 'TikTok + IG', highlight: false,
+                route: '/screens/war-room?q=Approve+decision%3A+shift+LinkedIn+ad+spend+to+TikTok+%2B+IG+converters',
               },
               {
-                icon: 'rule', iconBg: 'rgba(255,255,255,0.06)', badge: 'Governance', badgeBg: 'bg-white/5', badgeText: 'text-white/60',
+                icon: 'rule', badge: 'Governance', badgeBg: 'bg-white/5', badgeText: 'text-white/60',
                 title: 'Raise Portfolio Threshold',
                 desc: 'Establish mandate that all active portfolio brands must maintain health score 70+.',
                 from: 'Current: 65', to: 'New: 70+', highlight: false,
+                route: '/screens/war-room?q=Approve+governance+decision%3A+raise+minimum+portfolio+health+score+threshold+to+70',
               },
             ].map((a) => (
               <div key={a.title}
+                onClick={() => router.push(a.route)}
                 className="rounded-[20px] p-6 hover:bg-white/[0.02] transition-colors cursor-pointer group"
                 style={{
                   background: 'rgba(31,31,31,0.4)', backdropFilter: 'blur(24px) saturate(180%)',

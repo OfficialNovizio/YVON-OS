@@ -1,16 +1,10 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { callSynthesis } from '@/lib/ai-client'
 import { createContentSuggestion } from '@/lib/db'
 import { logActivity } from '@/lib/activity'
 import { getAgent } from '@/lib/agents'
 import type { ContentType } from '@/lib/types'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { platform?: string; contentType?: string; topic?: string; ventureId?: string; ventureName?: string }
   try {
     body = await request.json() as typeof body
@@ -26,9 +20,6 @@ export async function POST(request: Request): Promise<Response> {
     ventureName = 'Novizio',
   } = body
 
-  // Pick agents based on platform
-  // LinkedIn: Lena writes copy, Kai handles platform analytics
-  // Instagram: Lena + Kai (same pairing, platform-native focus)
   const primaryAgent   = getAgent('lena-brand')
   const secondaryAgent = getAgent('kai-analyst')
 
@@ -59,13 +50,8 @@ Return a JSON object with these exact keys:
 Return ONLY valid JSON, no markdown, no explanation.`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }],
-    })
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 1024 })
 
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
     let parsed: Record<string, unknown>
     try {
       parsed = JSON.parse(raw) as Record<string, unknown>

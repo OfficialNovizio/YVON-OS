@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
 import { getAnomalyAlerts, getTopContent } from '@/lib/db-phase1'
 
 // GET returns top-performing posts by format

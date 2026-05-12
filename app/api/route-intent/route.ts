@@ -1,7 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast } from '@/lib/ai-client'
 import type { RoutingResult } from '@/lib/types'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 const CLASSIFIER_PROMPT = `You are a routing classifier for an AI team. Analyze the user's message and return JSON only — no explanation.
 
@@ -19,10 +17,6 @@ Return exactly: { "intent": "<intent>", "specialists": ["<id1>", "<id2>"], "reas
 Pick 2 specialists maximum unless the question clearly spans 3 domains. Always return valid JSON.`
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let message: string
   let ventureId: string
   let activeVentureName: string
@@ -44,18 +38,13 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 256,
-      messages: [
-        {
-          role: 'user',
-          content: `${CLASSIFIER_PROMPT}\n\nActive venture: ${activeVentureName} (id: ${ventureId})\n\nUser message: ${message}`,
-        },
-      ],
+    const text = await callFast({
+      messages: [{
+        role: 'user',
+        content: `${CLASSIFIER_PROMPT}\n\nActive venture: ${activeVentureName} (id: ${ventureId})\n\nUser message: ${message}`,
+      }],
+      maxTokens: 256,
     })
-
-    const text = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
     const result = JSON.parse(text) as RoutingResult
     return Response.json(result)
   } catch (err) {

@@ -2,7 +2,7 @@
 // POST: runs a scan and extracts audience signals
 
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast } from '@/lib/ai-client'
 import { upsertCommunitySignal, getCommunitySignals } from '@/lib/community-intelligence'
 
 // GET /api/community-scan
@@ -16,10 +16,6 @@ export async function GET(): Promise<Response> {
 
 // POST /api/community-scan
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { platform?: string; text?: string; brandName?: string }
   try {
     body = await request.json() as typeof body
@@ -30,12 +26,6 @@ export async function POST(request: Request): Promise<Response> {
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
   const platform = body.platform ?? 'reddit'
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
-  const scrapeRoutes: Record<string, string> = {
-    reddit: '/api/scrape',
-  }
 
   if (platform === 'reddit' && body.text) {
     const prompt = `Analyze this Reddit thread for audience signals about ${body.brandName ?? 'this brand'}:
@@ -56,12 +46,7 @@ Return ONLY valid JSON array of signals:
 }]`
 
     try {
-      const response = await client.messages.create({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }],
-      })
-      const raw = response.content[0]?.type === 'text' ? response.content[0].text : '[]'
+      const raw = await callFast({ messages: [{ role: 'user', content: prompt }], maxTokens: 1000 })
       const signals = JSON.parse(raw) as Array<{
         topic: string
         sentiment: string

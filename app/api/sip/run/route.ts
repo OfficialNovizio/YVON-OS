@@ -10,17 +10,11 @@ import { NextRequest } from 'next/server'
 import { resolveSip } from '@/lib/sip-manager'
 import { getAgent } from '@/lib/agents'
 import type { AgentId } from '@/lib/types'
-import Anthropic from '@anthropic-ai/sdk'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+import { callSynthesis } from '@/lib/ai-client'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { agentId?: string }
   try {
     body = await request.json()
@@ -35,13 +29,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Get agent configuration
     const agent = getAgent(agentId as AgentId)
     if (!agent) {
       return Response.json({ error: 'Agent not found' }, { status: 404 })
     }
 
-    // Generate SIP prompt
     const sipPrompt = `
 You are ${agent.name}, ${agent.role} at YVON.
 Your task is to distill recent session learnings into the SKILLS.md file.
@@ -76,19 +68,10 @@ Recent sessions should be analyzed for:
 - Stale references
 `
 
-    // Call Claude for distillation
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 500,
-      messages: [
-        {
-          role: 'user',
-          content: sipPrompt
-        }
-      ]
+    const rawContent = await callSynthesis({
+      messages: [{ role: 'user', content: sipPrompt }],
+      maxTokens: 500,
     })
-
-    const rawContent = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
 
     let distillation
     try {
@@ -97,7 +80,6 @@ Recent sessions should be analyzed for:
       distillation = { error: 'Could not parse response', raw: rawContent }
     }
 
-    // Resolve the SIP flag
     await resolveSip(agentId)
 
     return Response.json({
@@ -113,7 +95,6 @@ Recent sessions should be analyzed for:
 }
 
 export async function GET() {
-  // Return SIP status for all agents
   const { getPendingSips, getOverdueSips } = await import('@/lib/sip-manager')
 
   try {

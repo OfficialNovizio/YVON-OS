@@ -2,14 +2,10 @@
 // POST: generates a 4-week narrative arc plan
 
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
+import { callSynthesis } from '@/lib/ai-client'
 import { supabase } from '@/lib/supabase'
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { theme?: string; goal?: string; platform?: string }
   try {
     body = await request.json() as typeof body
@@ -19,8 +15,6 @@ export async function POST(request: Request): Promise<Response> {
 
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   const prompt = `You are a narrative arc planner. Create a 4-week connected content sequence for a brand.
 
@@ -47,12 +41,7 @@ Return ONLY valid JSON:
 }`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 4000 })
     const arc = JSON.parse(raw) as Record<string, unknown>
 
     await supabase.from('narrative_arcs').insert({

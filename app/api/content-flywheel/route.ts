@@ -1,15 +1,12 @@
 // Content Flywheel API — Identify → Mutate → Deploy → Learn → Compound
 // POST: generates 8 variants from a top-performing post
 import { cookies } from 'next/headers'
+import { callSynthesis } from '@/lib/ai-client'
 import { getTopContent } from '@/lib/db-phase1'
 import { supabase } from '@/lib/supabase'
 import type { ContentScoreCard } from '@/lib/types'
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
 
@@ -19,10 +16,6 @@ export async function POST(request: Request): Promise<Response> {
   } catch {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
-
-  const client = new (await import('@anthropic-ai/sdk')).default({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-  })
 
   // If no specific post ID, pick the top-scoring post
   const topPosts = await getTopContent(ventureId, 1)
@@ -81,15 +74,9 @@ Return ONLY valid JSON:
 }`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 4000 })
     const parsed = JSON.parse(raw) as { variants: Array<{ platform: string; hook: string; caption: string; format: string; hashtagCluster: string[] }>; whyItWorked: string[]; learnings: string }
 
-    // Store variants in content_variants table
     await supabase.from('content_variants').upsert(
       parsed.variants.map((v) => ({
         venture_id: ventureId,

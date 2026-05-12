@@ -78,6 +78,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const { agentId, entry, task, outcome } = body
+  const venture: string | undefined = (body as Record<string, unknown>).venture as string | undefined
 
   if (!agentId || !AGENT_MEMORY_PATHS[agentId]) {
     return Response.json({ error: 'Unknown agentId' }, { status: 400 })
@@ -85,11 +86,12 @@ export async function POST(request: Request): Promise<Response> {
 
   // Build the log entry — accept either a pre-formatted entry or task+outcome
   const today = new Date().toISOString().slice(0, 10)
+  const ventureTag = venture ? ` [venture:${venture.toLowerCase().replace(/\s+/g, '-')}]` : ''
   let logLine: string
   if (entry) {
-    logLine = entry.startsWith('[') ? entry : `[${today}] — ${entry}`
+    logLine = entry.startsWith('[') ? entry : `[${today}]${ventureTag} — ${entry}`
   } else if (task && outcome) {
-    logLine = `[${today}] — ${task} — ${outcome}`
+    logLine = `[${today}]${ventureTag} — ${task} — ${outcome}`
   } else {
     return Response.json({ error: 'Provide entry or task+outcome' }, { status: 400 })
   }

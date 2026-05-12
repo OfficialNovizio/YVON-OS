@@ -2,7 +2,7 @@
 // POST: discovers rising micro-creators (5K-50K) in niche
 
 import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
+import { callSynthesis } from '@/lib/ai-client'
 import { supabase } from '@/lib/supabase'
 
 interface CreatorProfile {
@@ -18,10 +18,6 @@ interface CreatorProfile {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { niche?: string; currentCreators?: string[] }
   try {
     body = await request.json() as typeof body
@@ -31,8 +27,6 @@ export async function POST(request: Request): Promise<Response> {
 
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   const prompt = `You are a creator discovery engine. Find 10 rising micro-creators (5K-50K followers) in the "${body.niche ?? 'this'}" niche who would be valuable collaboration partners.
 
@@ -58,15 +52,9 @@ Return ONLY valid JSON array:
 }]`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '[]'
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 4000 })
     const creators = JSON.parse(raw) as CreatorProfile[]
 
-    // Save to creator_profiles table
     await supabase.from('creator_profiles').upsert(
       creators.map((c) => ({
         venture_id: ventureId,

@@ -60,11 +60,20 @@ export async function PATCH(request: Request): Promise<Response> {
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
 
-  let body: { action: string; id?: string; missedId?: string; newDate?: string }
+  let body: { action: string; id?: string; missedId?: string; newDate?: string; status?: string }
   try {
     body = await request.json() as typeof body
   } catch {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 })
+  }
+
+  if (body.action === 'update_status' && body.id && body.status) {
+    const { error } = await supabase
+      .from('content_calendar')
+      .update({ status: body.status })
+      .eq('id', body.id)
+    if (error) return Response.json({ error: error.message }, { status: 500 })
+    return Response.json({ ok: true })
   }
 
   if (body.action === 'skip' && body.id) {

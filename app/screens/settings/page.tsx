@@ -32,6 +32,14 @@ const HUB_CARDS = [
     tags:  ['Display Name', 'Avatar'],
   },
   {
+    key:   'providers',
+    color: SC.providers,
+    icon:  'key',
+    title: 'AI Providers',
+    desc:  'Connect Anthropic, OpenAI, Google Gemini, or Mistral. Keys stored securely in your database — never in code.',
+    tags:  ['API Keys', 'Models', 'Providers'],
+  },
+  {
     key:   'danger',
     color: SC.danger,
     icon:  'warning',

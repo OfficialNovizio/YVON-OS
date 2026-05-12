@@ -355,6 +355,205 @@ function SocialsTab({ ventureId, socials, onSocialsChange }: {
   )
 }
 
+// ─── GitHub Integration Card ──────────────────────────────────────────────────
+
+function GitHubCard({ venture }: { venture: VentureConfig }) {
+  const [expanded,  setExpanded]  = useState(false)
+  const [repoInfo,  setRepoInfo]  = useState<{ name: string; description: string | null; private: boolean; defaultBranch: string; stars: number; openIssues: number; url: string; updatedAt: string } | null>(null)
+  const [commits,   setCommits]   = useState<{ sha: string; message: string; author: string; date: string; url: string }[]>([])
+  const [issues,    setIssues]    = useState<{ number: number; title: string; state: string; labels: string[]; url: string }[]>([])
+  const [loading,   setLoading]   = useState(false)
+  const [error,     setError]     = useState('')
+  const [newIssue,  setNewIssue]  = useState(false)
+  const [issueTitle, setIssueTitle] = useState('')
+  const [issueBody,  setIssueBody]  = useState('')
+  const [creating,  setCreating]  = useState(false)
+
+  const hasRepo = Boolean(venture.repoUrl)
+  const connected = hasRepo && !error && repoInfo !== null
+
+  async function loadRepo() {
+    if (!hasRepo || loading) return
+    setLoading(true); setError('')
+    try {
+      const [repoRes, commitsRes, issuesRes] = await Promise.all([
+        fetch(`/api/github?venture=${venture.slug}&action=repo`),
+        fetch(`/api/github?venture=${venture.slug}&action=commits`),
+        fetch(`/api/github?venture=${venture.slug}&action=issues`),
+      ])
+      if (!repoRes.ok) { const e = await repoRes.json() as { error: string }; throw new Error(e.error); }
+      setRepoInfo(await repoRes.json() as typeof repoInfo)
+      if (commitsRes.ok) { const d = await commitsRes.json() as { commits: typeof commits }; setCommits(d.commits.slice(0, 5)) }
+      if (issuesRes.ok)  { const d = await issuesRes.json() as { issues: typeof issues };   setIssues(d.issues.slice(0, 5))  }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to connect')
+    } finally { setLoading(false) }
+  }
+
+  function handleToggle() {
+    const next = !expanded
+    setExpanded(next)
+    if (next && !repoInfo && !loading) void loadRepo()
+  }
+
+  async function handleCreateIssue() {
+    if (!issueTitle.trim()) return
+    setCreating(true)
+    try {
+      const res = await fetch('/api/github', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ venture: venture.slug, action: 'create-issue', title: issueTitle.trim(), bodyText: issueBody.trim() }),
+      })
+      const data = await res.json() as { number: number; url: string; title: string }
+      setIssues(prev => [{ number: data.number, title: data.title, state: 'open', labels: [], url: data.url }, ...prev])
+      setNewIssue(false); setIssueTitle(''); setIssueBody('')
+    } catch { /* silent */ }
+    finally { setCreating(false) }
+  }
+
+  const badge = (
+    <span style={{
+      display: 'flex', alignItems: 'center', gap: 6,
+      fontSize: 10, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.06em',
+      padding: '3px 10px', borderRadius: 20,
+      background: !hasRepo ? 'rgba(255,255,255,0.05)' : error ? 'rgba(255,69,58,0.1)' : loading ? 'rgba(255,255,255,0.05)' : connected ? 'rgba(48,209,88,0.1)' : 'rgba(255,255,255,0.05)',
+      color: !hasRepo ? T.text3 : error ? '#ff453a' : loading ? T.text3 : connected ? '#30d158' : T.text3,
+      border: `1px solid ${!hasRepo ? T.border : error ? 'rgba(255,69,58,0.2)' : loading ? T.border : connected ? 'rgba(48,209,88,0.2)' : T.border}`,
+    }}>
+      <span style={{ width: 6, height: 6, borderRadius: '50%', flexShrink: 0, background: !hasRepo ? T.text3 : error ? '#ff453a' : loading ? T.text3 : connected ? '#30d158' : T.text3 }} />
+      {!hasRepo ? 'No repo set' : error ? 'Error' : loading ? 'Connecting…' : connected ? 'Connected' : 'Not tested'}
+    </span>
+  )
+
+  return (
+    <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 12, overflow: 'hidden' }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', cursor: 'pointer' }} onClick={handleToggle}>
+        <span className="material-symbols-outlined" style={{ fontSize: 22, color: T.text2 }}>code</span>
+        <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: T.text1 }}>GitHub</p>
+          <p style={{ fontSize: 11, color: T.text3, marginTop: 2 }}>
+            {hasRepo ? venture.repoUrl : 'Set a GitHub Repo URL in the Profile tab to connect'}
+          </p>
+        </div>
+        {badge}
+        <span className="material-symbols-outlined" style={{ fontSize: 16, color: T.text3, transition: 'transform 0.2s', transform: expanded ? 'rotate(180deg)' : 'none' }}>expand_more</span>
+      </div>
+
+      {/* Expanded content */}
+      {expanded && (
+        <div style={{ borderTop: `1px solid ${T.border}`, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {!hasRepo && (
+            <p style={{ fontSize: 12, color: T.text3, lineHeight: 1.6 }}>
+              Go to the <strong style={{ color: T.text2 }}>Profile tab</strong> → Links → GitHub Repo URL and paste your repository URL (e.g. <code style={{ fontFamily: 'monospace', fontSize: 11, color: T.accent }}>https://github.com/your-org/your-repo</code>).
+            </p>
+          )}
+
+          {hasRepo && loading && (
+            <p style={{ fontSize: 12, color: T.text3 }}>Connecting to GitHub…</p>
+          )}
+
+          {hasRepo && error && (
+            <div style={{ background: 'rgba(255,69,58,0.08)', border: '1px solid rgba(255,69,58,0.2)', borderRadius: 10, padding: '10px 14px', fontSize: 12, color: '#ff453a' }}>
+              {error}
+            </div>
+          )}
+
+          {repoInfo && (
+            <>
+              {/* Repo summary */}
+              <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: '12px 14px', display: 'flex', gap: 24 }}>
+                <div>
+                  <p style={{ fontSize: 10, color: T.text3, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Repository</p>
+                  <a href={repoInfo.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, fontWeight: 600, color: T.accent, textDecoration: 'none' }}>{repoInfo.name}</a>
+                  {repoInfo.description && <p style={{ fontSize: 11, color: T.text3, marginTop: 3 }}>{repoInfo.description}</p>}
+                </div>
+                <div style={{ display: 'flex', gap: 20, marginLeft: 'auto', alignItems: 'flex-start' }}>
+                  {[
+                    { icon: 'star', val: repoInfo.stars },
+                    { icon: 'bug_report', val: repoInfo.openIssues },
+                    { icon: repoInfo.private ? 'lock' : 'public', val: repoInfo.private ? 'Private' : 'Public' },
+                  ].map(({ icon, val }) => (
+                    <div key={icon} style={{ textAlign: 'center' }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 16, color: T.text3 }}>{icon}</span>
+                      <p style={{ fontSize: 11, color: T.text2, marginTop: 2 }}>{val}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recent commits */}
+              {commits.length > 0 && (
+                <div>
+                  <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: T.text3, marginBottom: 8 }}>Recent Commits</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    {commits.map(c => (
+                      <div key={c.sha} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <code style={{ fontSize: 10, color: T.accent, fontFamily: 'monospace', minWidth: 48 }}>{c.sha}</code>
+                        <span style={{ fontSize: 12, color: T.text2, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.message}</span>
+                        <span style={{ fontSize: 11, color: T.text3, whiteSpace: 'nowrap' }}>{c.author}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Open issues */}
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: T.text3 }}>Open Issues</p>
+                  <button
+                    onClick={() => setNewIssue(v => !v)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'none', border: `1px solid ${T.border}`, borderRadius: 8, padding: '4px 10px', cursor: 'pointer', fontSize: 11, color: T.text2, fontFamily: T.font }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>{newIssue ? 'close' : 'add'}</span>
+                    {newIssue ? 'Cancel' : 'New Issue'}
+                  </button>
+                </div>
+
+                {newIssue && (
+                  <div style={{ background: 'rgba(255,255,255,0.03)', border: `1px solid ${T.border}`, borderRadius: 10, padding: 14, marginBottom: 10, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <FF label="Issue Title">
+                      <FInput value={issueTitle} onChange={e => setIssueTitle(e.target.value)} placeholder="Bug: login page crashes on mobile" />
+                    </FF>
+                    <FF label="Description (optional)">
+                      <FTextArea value={issueBody} onChange={e => setIssueBody(e.target.value)} placeholder="Steps to reproduce…" rows={3} />
+                    </FF>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Btn small disabled={!issueTitle.trim() || creating} onClick={() => { void handleCreateIssue() }}>
+                        {creating ? 'Creating…' : 'Create Issue'}
+                      </Btn>
+                    </div>
+                  </div>
+                )}
+
+                {issues.length === 0 && !newIssue && (
+                  <p style={{ fontSize: 12, color: T.text3 }}>No open issues.</p>
+                )}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {issues.map(i => (
+                    <a key={i.number} href={i.url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.02)', textDecoration: 'none', transition: 'background 0.15s' }}
+                      onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.02)')}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 14, color: '#30d158' }}>circle</span>
+                      <span style={{ fontSize: 12, color: T.text1, flex: 1 }}>#{i.number} {i.title}</span>
+                      {i.labels.map(l => (
+                        <span key={l} style={{ fontSize: 10, padding: '2px 6px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', color: T.text3 }}>{l}</span>
+                      ))}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Integrations Tab ─────────────────────────────────────────────────────────
 
 function IntegrationsTab({ venture, socials }: { venture: VentureConfig; socials: VentureSocial[] }) {
@@ -362,6 +561,10 @@ function IntegrationsTab({ venture, socials }: { venture: VentureConfig; socials
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {/* GitHub — live connection card */}
+      <GitHubCard venture={venture} />
+
+      {/* Other integrations */}
       {INTEGRATIONS.map(item => {
         const isGA4    = item.key === 'ga4'
         const isApify  = item.key === 'apify'

@@ -1,16 +1,14 @@
 // Archive Intelligence — cross-reference old content with current trends
 // Resurrects relevant old content that align with emerging trends
 import 'server-only'
-import Anthropic from '@anthropic-ai/sdk'
-import { getTopContent, getContentScores } from '@/lib/db-phase1'
+import { callFast } from '@/lib/ai-client'
+import { getContentScores } from '@/lib/db-phase1'
 import type { ContentScoreCard } from '@/lib/types'
 
 export async function getArchiveRecommendations(ventureId: string, currentTrends: string[], limit = 5): Promise<Array<{ post: ContentScoreCard; whyResurface: string; newAngle: string; suggestedPlatform: string }>> {
-  if (!process.env.ANTHROPIC_API_KEY) return []
   const scores = await getContentScores(ventureId, undefined, Math.max(limit * 5, 20))
   if (scores.length === 0) return []
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   const prompt = `You are an archive intelligence engine. Match old content with current trends to find resurface opportunities.
 
 OLD CONTENT (already performed well):
@@ -33,8 +31,7 @@ Return ONLY valid JSON array:
 }]`
 
   try {
-    const response = await client.messages.create({ model: 'claude-haiku-4-5-20251001', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '[]'
+    const raw = await callFast({ messages: [{ role: 'user', content: prompt }], maxTokens: 2000 })
     const matches = JSON.parse(raw) as Array<Record<string, string>>
 
     const results: Array<{ post: ContentScoreCard; whyResurface: string; newAngle: string; suggestedPlatform: string }> = []

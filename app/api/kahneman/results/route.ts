@@ -1,11 +1,9 @@
 import { NextRequest } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast } from '@/lib/ai-client'
 import { getStrategyLog, updateStrategyLogResult, appendLearnedActivation } from '@/lib/db'
 
 export const maxDuration = 30
 import type { LearnedActivation } from '@/lib/types'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // POST /api/kahneman/results
 // Triggered by @kahneman results command when Stark fills in strategy log results.
@@ -41,10 +39,8 @@ export async function POST(request: NextRequest): Promise<Response> {
       return Response.json({ error: 'Strategy log entry not found' }, { status: 404 })
     }
 
-    // Kahneman extracts mechanism via Haiku
-    const res = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 200,
+    // Kahneman extracts mechanism via fast model
+    const mechanismNote = await callFast({
       messages: [{
         role: 'user',
         content: `You are Kahneman. A strategy log entry has completed. Extract the psychological mechanism.
@@ -62,9 +58,8 @@ In 2 sentences, state:
 
 Be precise. No hedging.`,
       }],
-    })
-
-    const mechanismNote = res.content[0]?.type === 'text' ? res.content[0].text.trim() : ''
+      maxTokens: 200,
+    }).then(t => t.trim()).catch(() => '')
     const mechanismConfirmed = result.toLowerCase().includes('work') ||
                                result.toLowerCase().includes('success') ||
                                result.toLowerCase().includes('positive')

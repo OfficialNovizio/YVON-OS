@@ -878,6 +878,7 @@ export async function getContentCalendar(
     headline: r.headline ?? undefined,
     brief: r.brief ?? undefined,
     status: r.status as CalendarStatus,
+    assetUrl: r.asset_url ?? undefined,
     createdAt: r.created_at,
   }))
 }
@@ -895,6 +896,7 @@ export async function createContentCalendarEntry(
       headline: data.headline ?? null,
       brief: data.brief ?? null,
       status: data.status,
+      asset_url: data.assetUrl ?? null,
     })
     .select()
     .single()
@@ -908,6 +910,7 @@ export async function createContentCalendarEntry(
     headline: row.headline ?? undefined,
     brief: row.brief ?? undefined,
     status: row.status as CalendarStatus,
+    assetUrl: row.asset_url ?? undefined,
     createdAt: row.created_at,
   }
 }
@@ -974,6 +977,7 @@ function mapCalendarRow(r: Record<string, unknown>): ContentCalendarEntry {
     headline: (r.headline as string | null) ?? undefined,
     brief: (r.brief as string | null) ?? undefined,
     status: r.status as CalendarStatus,
+    assetUrl: (r.asset_url as string | null) ?? undefined,
     postUrl: (r.post_url as string | null) ?? undefined,
     verifiedAt: (r.verified_at as string | null) ?? undefined,
     originalId: (r.original_id as string | null) ?? undefined,

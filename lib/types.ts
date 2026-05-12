@@ -263,9 +263,18 @@ export type WarRoomEvent =
   | { type: 'handoff';        from: AgentId; to: AgentId; summary: string }
   | { type: 'autonomy';       agentId: AgentId; level: number; action: string }
   | { type: 'collaboration';  primaryAgent: AgentId; recommendedPartners: AgentId[]; note: string }
+  | { type: 'conflicts';      conflicts: ConflictItem[] }
   | { type: 'text';           content: string }
   | { type: 'plan_complete';  elapsed: number }
   | { type: 'error';          message: string }
+
+export interface ConflictItem {
+  topic: string
+  agentA: string
+  positionA: string
+  agentB: string
+  positionB: string
+}
 
 // ─── Hermes: Structured Handoff (Phase 0) ────────────────────────────────────
 
@@ -469,7 +478,7 @@ export interface CompetitorContent {
 
 export type CalendarPlatform = 'IG' | 'TT' | 'LI' | 'YT'
 export type CalendarContentType = 'Reel' | 'Short' | 'Carousel' | 'Post' | 'Article' | 'Static'
-export type CalendarStatus = 'planned' | 'in-production' | 'posted' | 'missed' | 'skipped' | 'replanned'
+export type CalendarStatus = 'planned' | 'in-production' | 'posted' | 'missed' | 'skipped' | 'replanned' | 'auto_post' | 'draft'
 
 export interface ContentCalendarEntry {
   id: string
@@ -480,6 +489,7 @@ export interface ContentCalendarEntry {
   headline?: string
   brief?: string
   status: CalendarStatus
+  assetUrl?: string
   postUrl?: string
   verifiedAt?: string
   originalId?: string

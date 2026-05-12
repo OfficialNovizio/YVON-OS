@@ -3,6 +3,7 @@
 // POST: runs full territory scout analysis
 
 import { cookies } from 'next/headers'
+import { callFast } from '@/lib/ai-client'
 import { getTerritoryClusters, upsertTerritoryClusters, identifyUnclaimedTerritory } from '@/lib/market-radar'
 import type { TerritoryCluster } from '@/lib/market-radar'
 
@@ -26,10 +27,6 @@ export async function GET(): Promise<Response> {
 
 // POST /api/territory-scout — Run territory scout (AI analysis)
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
 
@@ -39,10 +36,6 @@ export async function POST(request: Request): Promise<Response> {
   } catch {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
-
-  const client = new (await import('@anthropic-ai/sdk')).default({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-  })
 
   const prompt = `You are a content territory scout. Analyze the content landscape for a brand in this space: ${body.brandName ?? 'Novizio'} ${body.industry ?? ''}.
 
@@ -59,13 +52,7 @@ Identify 10-15 topic clusters in this niche. For each cluster provide:
 Return ONLY a JSON array of objects with these exact keys. No markdown, no explanation.`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '[]'
+    const raw = await callFast({ messages: [{ role: 'user', content: prompt }], maxTokens: 4000 })
     const match = raw.match(/\[[\s\S]*\]/)
     const clusters = match ? JSON.parse(match[0]) as Record<string, unknown>[] : []
 
@@ -90,7 +77,6 @@ Return ONLY a JSON array of objects with these exact keys. No markdown, no expla
     })
 
     await upsertTerritoryClusters(ventureId, mapped)
-
     const unclaimed = identifyUnclaimedTerritory(mapped)
 
     return Response.json({

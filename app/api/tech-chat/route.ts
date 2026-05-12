@@ -11,11 +11,9 @@
 //   { type: 'error',   message }
 //   [DONE]
 
-import Anthropic from '@anthropic-ai/sdk'
+import { streamSynthesis } from '@/lib/ai-client'
 import { getAgent } from '@/lib/agents'
 import type { AgentId } from '@/lib/types'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // ── Routing table ─────────────────────────────────────────────────────────────
 // Each entry: { keywords[], agentId, weight }
@@ -115,10 +113,6 @@ IMPORTANT INSTRUCTIONS FOR THIS CHAT:
 
 // ── POST handler ───────────────────────────────────────────────────────────────
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: { message?: string; projectId?: string; projectName?: string; projectStack?: string; history?: Array<{ role: 'user' | 'assistant'; content: string }> }
   try {
     body = await request.json()
@@ -159,24 +153,13 @@ export async function POST(request: Request): Promise<Response> {
           emoji:     meta.emoji,
         })
 
-        // Build messages array including history
-        const messages: Anthropic.MessageParam[] = [
-          ...history.map(h => ({ role: h.role, content: h.content })),
-          { role: 'user', content: message },
+        const messages = [
+          ...history.map(h => ({ role: h.role as 'user' | 'assistant', content: h.content })),
+          { role: 'user' as const, content: message },
         ]
 
-        // Stream response from chosen agent
-        const sseStream = client.messages.stream({
-          model: agent?.model ?? 'claude-sonnet-4-6',
-          max_tokens: 2048,
-          system: [{ type: 'text', text: sysPrompt, cache_control: { type: 'ephemeral' } }],
-          messages,
-        })
-
-        for await (const event of sseStream) {
-          if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-            emit('text', { content: event.delta.text })
-          }
+        for await (const chunk of streamSynthesis({ system: sysPrompt, messages, maxTokens: 2048 })) {
+          emit('text', { content: chunk })
         }
 
         controller.enqueue(encoder.encode('data: [DONE]\n\n'))

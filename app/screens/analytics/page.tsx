@@ -1,14 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-const tabs = [
-  { label: 'Overview',    href: '/screens/analytics' },
-  { label: 'Portfolio',   href: '/screens/analytics/portfolio' },
-  { label: 'Social Media', href: '/screens/analytics/social-media' },
-  { label: 'Content',     href: '/screens/analytics/content' },
-];
+import { useRouter } from 'next/navigation';
+import AnalyticsSubNav from './_subnav';
 
 const anomalies = [
   {
@@ -156,55 +149,19 @@ const followerLines = [
   { color: '#4ade80', points: [5, 8, 12, 18, 24, 32, 42, 56] },
 ];
 
+const ANOMALY_ROUTES = [
+  '/screens/analytics/social-media',
+  '/screens/analytics/social-media',
+  '/screens/war-room?q=Explore+panoramic+conversion+shift+and+recommend+next+action',
+];
+
 export default function AnalyticsPage() {
-  const pathname = usePathname();
-
+  const router = useRouter();
   return (
-    <main className="pt-20 pb-24 px-8 max-w-screen-xl mx-auto">
+    <main className="pt-14 pb-24 bg-black text-white min-h-screen">
+      <AnalyticsSubNav />
 
-      {/* Page Header */}
-      <div className="flex items-center justify-between pt-10 pb-8">
-        <div>
-          <p className="text-[10px] font-bold tracking-[0.3em] text-white/30 uppercase mb-1">Novizio</p>
-          <h1
-            className="text-[40px] font-semibold text-white"
-            style={{ letterSpacing: '-0.28px', lineHeight: '1.1' }}
-          >
-            Analytical Dashboard
-          </h1>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-white/5 border border-white/[0.06] px-4 py-2 rounded-full cursor-pointer hover:bg-white/[0.08] transition-colors">
-            <span className="text-[12px] font-semibold text-white/60">Last 30 days</span>
-            <span className="material-symbols-outlined text-[14px] text-white/40">expand_more</span>
-          </div>
-          <button className="flex items-center gap-2 bg-[#0066cc] text-white px-5 py-2 rounded-full text-[12px] font-bold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all">
-            Landscape
-            <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Sub-Nav Tabs */}
-      <div className="flex items-center gap-1 mb-8 border-b border-white/[0.06] pb-0">
-        {tabs.map((tab) => {
-          const isActive = pathname === tab.href;
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`px-5 py-3 text-[13px] font-semibold transition-all relative ${
-                isActive ? 'text-white' : 'text-white/30 hover:text-white/60'
-              }`}
-            >
-              {tab.label}
-              {isActive && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0066cc] rounded-full" />
-              )}
-            </Link>
-          );
-        })}
-      </div>
+      <div className="px-6 max-w-[1200px] mx-auto pt-8">
 
       {/* Anomaly Alert Strip */}
       <div className="bg-[#111111] border border-white/[0.06] rounded-[18px] divide-y divide-white/[0.04] mb-8">
@@ -217,11 +174,13 @@ export default function AnalyticsPage() {
               }`} />
               <p className="text-[13px] text-white/70" style={{ lineHeight: '1.5' }}>{item.text}</p>
             </div>
-            <button className={`flex-shrink-0 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border transition-colors hover:opacity-80 ${
-              item.color === 'red' ? 'text-red-400 border-red-400/20 bg-red-400/5' :
-              item.color === 'green' ? 'text-green-400 border-green-400/20 bg-green-400/5' :
-              'text-amber-400 border-amber-400/20 bg-amber-400/5'
-            }`}>
+            <button
+              onClick={() => router.push(ANOMALY_ROUTES[item.id - 1])}
+              className={`flex-shrink-0 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border transition-colors hover:opacity-80 active:scale-95 ${
+                item.color === 'red' ? 'text-red-400 border-red-400/20 bg-red-400/5' :
+                item.color === 'green' ? 'text-green-400 border-green-400/20 bg-green-400/5' :
+                'text-amber-400 border-amber-400/20 bg-amber-400/5'
+              }`}>
               {item.cta}
             </button>
           </div>
@@ -309,7 +268,10 @@ export default function AnalyticsPage() {
               Audiences engaging with supply chain and founder transparency content show 89% higher purchase intent across all cohorts.
             </p>
           </div>
-          <button className="mt-8 self-start flex items-center gap-2 bg-[#0066cc] text-white px-5 py-2.5 rounded-full text-[12px] font-bold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all">
+          <button
+            onClick={() => router.push('/screens/analytics/content')}
+            className="mt-8 self-start flex items-center gap-2 bg-[#0066cc] text-white px-5 py-2.5 rounded-full text-[12px] font-bold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all"
+          >
             Explore
             <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
           </button>
@@ -390,7 +352,10 @@ export default function AnalyticsPage() {
             <h2 className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/30 mb-1">Intelligence Synthesis</h2>
             <p className="text-[12px] text-white/20 font-medium">Kai · Today · 3 notes</p>
           </div>
-          <button className="flex items-center gap-2 bg-white/5 border border-white/[0.06] text-white/60 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-white/[0.08] transition-colors active:scale-95">
+          <button
+            onClick={() => router.push('/screens/war-room?q=Kai%2C+give+me+an+intelligence+synthesis+on+current+analytics+and+top+3+actions+I+should+take+this+week')}
+            className="flex items-center gap-2 bg-white/5 border border-white/[0.06] text-white/60 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-white/[0.08] transition-colors active:scale-95"
+          >
             <span className="material-symbols-outlined text-[14px]">add</span>
             Ask Kai
           </button>
@@ -414,6 +379,7 @@ export default function AnalyticsPage() {
           ))}
         </div>
       </footer>
+      </div>
     </main>
   );
 }

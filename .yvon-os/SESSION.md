@@ -7,11 +7,13 @@
 ---
 
 ## Active Right Now
-- **Status:** CEO 3.1 SHIPPED ✅ — Spatial UX verified
+- **Status:** Creative Studio full flow SHIPPED ✅ — 6-step AI pipeline + Krea.ai image generation
 - **In Progress:** None
-- **Waiting for Stark:** 
-  1. Review CEO v3 spatial layout and scroll animations
-- **Next session should start with:** Check for user feedback on CEO 3.1 transition
+- **Waiting for Stark:**
+  1. Add `KREA_API_KEY` to `.env.local` — get key from krea.ai/settings/api-tokens
+  2. Test full Creative Studio flow: Brief → Mood → Script → Captions → Prompts → Assets
+  3. Verify Krea.ai image generation works end-to-end (check model billing on Krea dashboard)
+- **Next session should start with:** Creative Studio UX feedback + any Krea API edge cases
 
 ---
 
@@ -26,7 +28,9 @@
 
 | Date | Agent(s) | Task | Outcome | Next Step |
 |------|---------|------|---------|-----------|
-| 2026-04-19 | Mia, Dev | CEO 3.1 Verification & Fixes | Fixed scroll reveals, background visibility, and glassวัสดุ | Monitor feedback |
+| 2026-05-10 | Mia, Raj, Atlas, Kahneman, Pixel | Creative Studio full flow + Krea.ai integration | 6-step state machine (Brief→Mood→Script→Captions→Prompts→Assets), /api/creative-studio, /api/krea/generate, /api/krea/status, psychology levers visible in UI, Refine works, build clean | User to add KREA_API_KEY and test end-to-end |
+| 2026-05-10 | Dev, Raj, Mia | GitHub integration, venture memory isolation, autonomous PR creation | Supabase fixed, icons fixed, NavBar fixed, GitHub API route, War Room PR button, agent memory venture-tagged, SIP loop closed | User to test Draft PR flow end-to-end |
+| 2026-04-19 | Mia, Dev | CEO 3.1 Verification & Fixes | Fixed scroll reveals, background visibility, and glass | Monitor feedback |
 | 2026-04-08 | Dev, System | Enhanced systems implementation | All 19 tests passed, 4 new systems created | Monitor first 7 days of production |
 | 2026-04-08 | Dev, System | Memory system overhaul | 17/17 tests passed, 22 files optimized | Implement recommendations |
 | 2026-04-02 | All (system) | All 13 roadmap points implemented | Build clean, TypeScript zero errors | Run Supabase migrations |

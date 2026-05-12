@@ -2,10 +2,7 @@
 // POST: Runs a stage of the campaign builder pipeline
 // Stages: ideas → scripts → captions → voiceover → image_prompts → krea_generate
 
-import { cookies } from 'next/headers'
-import Anthropic from '@anthropic-ai/sdk'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+import { callSynthesis } from '@/lib/ai-client'
 
 interface CampaignBrief {
   goal: string
@@ -17,10 +14,6 @@ interface CampaignBrief {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
-
   let body: {
     stage: 'ideas' | 'scripts' | 'captions' | 'voiceover' | 'image_prompts'
     brief: CampaignBrief
@@ -33,7 +26,6 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
-  const cookieStore = await cookies()
   const ventureName = body.brief.ventureName ?? 'Novizio'
   const brandVoice = body.brief.brandVoice ?? 'confident, innovative, action-oriented'
 
@@ -51,13 +43,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-    })
-
-    const raw = response.content[0]?.type === 'text' ? response.content[0].text : '{}'
+    const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 4000 })
     return Response.json({ stage: body.stage, result: raw })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

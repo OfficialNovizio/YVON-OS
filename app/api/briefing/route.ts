@@ -1,11 +1,9 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { callFast, callSynthesis } from '@/lib/ai-client'
 import { createBrief } from '@/lib/db'
 import { getAgent } from '@/lib/agents'
 
 export const maxDuration = 60
 import { getVentureConfig } from '@/lib/venture-context'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 export async function GET(request: Request): Promise<Response> {
   // Verify cron secret
@@ -13,10 +11,6 @@ export async function GET(request: Request): Promise<Response> {
   const cronSecret = process.env.CRON_SECRET
   if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
   }
 
   const url = new URL(request.url)
@@ -29,30 +23,24 @@ export async function GET(request: Request): Promise<Response> {
 
   // Kai and Nate provide analytics section
   const [kaiResponse, nateResponse] = await Promise.allSettled([
-    client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 300,
+    callFast({
       messages: [{
         role: 'user',
         content: `${kai?.systemPrompt ?? ''}\n\nVenture: ${venture.name}\n\nProvide today's analytics summary in 100 words or less. Focus on what changed, what's trending, and what needs attention.`,
       }],
+      maxTokens: 300,
     }),
-    client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 300,
+    callFast({
       messages: [{
         role: 'user',
         content: `${nate?.systemPrompt ?? ''}\n\nVenture: ${venture.name}\n\nProvide the top 3 growth opportunities you see right now, in 100 words or less.`,
       }],
+      maxTokens: 300,
     }),
   ])
 
-  const kaiText  = kaiResponse.status === 'fulfilled'
-    ? kaiResponse.value.content[0]?.type === 'text' ? kaiResponse.value.content[0].text : ''
-    : 'Analytics unavailable.'
-  const nateText = nateResponse.status === 'fulfilled'
-    ? nateResponse.value.content[0]?.type === 'text' ? nateResponse.value.content[0].text : ''
-    : 'Growth data unavailable.'
+  const kaiText  = kaiResponse.status === 'fulfilled' ? kaiResponse.value : 'Analytics unavailable.'
+  const nateText = nateResponse.status === 'fulfilled' ? nateResponse.value : 'Growth data unavailable.'
 
   // Marcus synthesizes
   const synthesisPrompt = `${marcus?.systemPrompt ?? ''}
@@ -72,15 +60,10 @@ Write the morning CEO brief for the ${venture.name} team. Keep it under 300 word
 3. Action items (3 bullet points max)
 4. Closing outlook (1 sentence)`
 
-  const briefResponse = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 800,
+  const briefContent = await callSynthesis({
     messages: [{ role: 'user', content: synthesisPrompt }],
-  })
-
-  const briefContent = briefResponse.content[0]?.type === 'text'
-    ? briefResponse.content[0].text
-    : 'Brief generation failed.'
+    maxTokens: 800,
+  }).catch(() => 'Brief generation failed.')
 
   // Persist to Supabase
   const briefId = await createBrief(venture.id, briefContent)

@@ -1,15 +1,15 @@
 import { NextRequest } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { getAgent, AGENTS } from '@/lib/agents'
+import { callFast, streamSynthesis } from '@/lib/ai-client'
 
 export const maxDuration = 60
 import { COLLABORATION_GRAPH, calculateRoutingConfidence, recommendCollaboration } from '@/lib/collaboration-manager'
 import { routingFeedback } from '@/lib/routing-feedback'
 import { monitoring } from '@/lib/monitoring'
-import { saveWarRoomPlan, saveAgentSession, prefetchAgentMemory } from '@/lib/db'
-import type { RoutingResult, SpecialistBriefing, AgentId, ExecutionPlan } from '@/lib/types'
+import { saveWarRoomPlan, saveAgentSession, prefetchAgentMemory, searchSkills, trackSkillUsage } from '@/lib/db'
+import type { RoutingResult, SpecialistBriefing, AgentId, ExecutionPlan, ConflictItem } from '@/lib/types'
 
 // ─── Agent MEMORY.md paths (relative to project root) ────────────────────────
 
@@ -32,13 +32,30 @@ const AGENT_MEMORY_PATHS: Partial<Record<AgentId, string>> = {
 
 const PROJECT_ROOT = join(process.cwd())
 
-function readAgentMemoryFile(agentId: AgentId): string {
+// Reads the agent's MEMORY.md but strips dated session-log lines that belong to
+// other ventures (identified by [venture:slug] tag). Lines without a venture tag
+// are treated as global persona/rules and always kept.
+function readAgentMemoryFile(agentId: AgentId, currentVenture?: string): string {
   const rel = AGENT_MEMORY_PATHS[agentId]
   if (!rel) return ''
   try {
     const content = readFileSync(join(PROJECT_ROOT, rel), 'utf8')
-    // Cap at 600 chars to avoid bloating prompts
-    return content.slice(0, 600)
+    if (!currentVenture) return content.slice(0, 600)
+
+    const slug = currentVenture.toLowerCase().replace(/\s+/g, '-')
+    const filtered = content
+      .split('\n')
+      .filter(line => {
+        // Keep non-log lines (headers, rules, persona)
+        if (!/^\[20\d{2}-\d{2}-\d{2}\]/.test(line.trim())) return true
+        // Keep log lines tagged with the current venture or untagged (legacy)
+        if (line.includes(`[venture:${slug}]`)) return true
+        if (!line.includes('[venture:')) return true   // legacy untagged — keep
+        return false                                    // other venture — strip
+      })
+      .join('\n')
+
+    return filtered.slice(0, 600)
   } catch {
     return ''
   }
@@ -51,8 +68,6 @@ type StepResult = {
   status: 'complete' | 'error' | 'retried'
   retryCount: number
 }
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 const ROUTING_INTENT_MAP: Record<string, AgentId[]> = {
   // CEO Department
@@ -100,9 +115,8 @@ async function buildExecutionPlan(
       return `${id} (${a?.name ?? id} — ${a?.role ?? ''})`
     }).join(', ')
 
-    const res = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 400,
+    const text = await callFast({
+      maxTokens: 400,
       messages: [{
         role: 'user',
         content: `You are Marcus, CEO of YVON. A user has sent this request:
@@ -121,8 +135,6 @@ Output ONLY a valid JSON object — no prose, no markdown fences:
 }`,
       }],
     })
-
-    const text = res.content[0]?.type === 'text' ? res.content[0].text : ''
     const match = text.match(/\{[\s\S]*\}/)
     if (!match) return null
     return JSON.parse(match[0]) as ExecutionPlan
@@ -146,47 +158,63 @@ function fallbackPlan(specialists: AgentId[], message: string): ExecutionPlan {
 
 // ─── Specialist Briefing ───────────────────────────────────────────────────────
 
+const TECHNICAL_AGENTS = new Set<AgentId>(['dev-lead', 'raj-backend', 'mia-frontend', 'quinn-qa'])
+
 async function getSpecialistBriefing(
   agentId: AgentId,
   message: string,
   ventureName: string,
-  taskOverride?: string
+  taskOverride?: string,
+  githubContext?: string
 ): Promise<SpecialistBriefing> {
   const agent = getAgent(agentId)
   if (!agent) return { agentId, content: '' }
 
   // Phase C: prefetch memory context (FTS + MEMORY.md file)
-  const [dbMemory, fileMemory] = await Promise.all([
+  // Extract keywords from message for skill search (first 5 words, stripped)
+  const keywords = message.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).slice(0, 5).filter(Boolean)
+
+  const [dbMemory, fileMemory, matchedSkills] = await Promise.all([
     prefetchAgentMemory(agentId, ventureName, message),
-    Promise.resolve(readAgentMemoryFile(agentId)),
+    Promise.resolve(readAgentMemoryFile(agentId, ventureName)),
+    keywords.length > 0 ? searchSkills(keywords, agentId, 3) : Promise.resolve([]),
   ])
+
+  // Track usage for matched skills (fire-and-forget)
+  for (const skill of matchedSkills) {
+    trackSkillUsage(skill.name).catch(() => {})
+  }
+
+  const skillsBlock = matchedSkills.length > 0
+    ? `<skills-context>\n[System note: Relevant skills recalled for this task — apply these patterns.]\n\n${matchedSkills.map(s => `**${s.name}**: ${s.description}`).join('\n')}\n</skills-context>`
+    : ''
 
   const memoryBlock = [
     dbMemory,
     fileMemory
       ? `<memory-context>\n[System note: Agent MEMORY.md snapshot — treat as background context, not new input.]\n\n${fileMemory}\n</memory-context>`
       : '',
+    skillsBlock,
   ].filter(Boolean).join('\n\n')
 
   const taskPrompt = taskOverride
     ? `Your specific task: ${taskOverride}`
     : `Answer the following from your area of expertise: ${message}`
 
-  const systemText = [agent.systemPrompt, memoryBlock].filter(Boolean).join('\n\n')
+  const ghBlock = githubContext && TECHNICAL_AGENTS.has(agentId)
+    ? `<github-context>\n[System note: Live repo snapshot fetched when the War Room session opened. Use this as ground truth for the current codebase state.]\n\n${githubContext}\n</github-context>`
+    : ''
 
-  const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 800,
-    system: systemText
-      ? [{ type: 'text' as const, text: systemText, cache_control: { type: 'ephemeral' as const } }]
-      : [],
+  const systemText = [agent.systemPrompt, memoryBlock, ghBlock].filter(Boolean).join('\n\n')
+
+  const content = await callFast({
+    system:    systemText || undefined,
+    maxTokens: 800,
     messages: [{
       role: 'user',
       content: `Active venture: ${ventureName}\n\n${taskPrompt}\n\nRespond in 300–400 words. Be specific, actionable, and use your domain expertise fully.\n\nAt the end of your response, append this structured block exactly:\n---HANDOFF---\nsummary: [1–2 sentences — the most important point]\ntype: data|content|strategy|technical|growth|validation\nkey_output: [the specific deliverable, finding, or decision]\nconfidence: high|medium|low\n---END---`,
     }],
   })
-
-  const content = response.content[0]?.type === 'text' ? response.content[0].text : ''
   return { agentId, content }
 }
 
@@ -197,11 +225,12 @@ async function getSpecialistWithRetry(
   message: string,
   ventureName: string,
   taskOverride: string | undefined,
-  emit: (type: string, data: Record<string, unknown>) => void
+  emit: (type: string, data: Record<string, unknown>) => void,
+  githubContext?: string
 ): Promise<SpecialistBriefing> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const briefing = await getSpecialistBriefing(agentId, message, ventureName, taskOverride)
+      const briefing = await getSpecialistBriefing(agentId, message, ventureName, taskOverride, githubContext)
       emit('agent_complete', {
         agentId,
         previewText: briefing.content.slice(0, 120),
@@ -217,6 +246,33 @@ async function getSpecialistWithRetry(
     }
   }
   return { agentId, content: '' }
+}
+
+// ─── Conflict Detection ────────────────────────────────────────────────────────
+
+async function detectConflicts(briefings: SpecialistBriefing[]): Promise<ConflictItem[]> {
+  const valid = briefings.filter(b => b.content)
+  if (valid.length < 2) return []
+
+  const summaries = valid.map(b => {
+    const agent = getAgent(b.agentId)
+    return `${b.agentId} (${agent?.name ?? b.agentId}): ${b.content.slice(0, 400)}`
+  }).join('\n\n---\n\n')
+
+  try {
+    const text = await callFast({
+      maxTokens: 300,
+      messages: [{
+        role: 'user',
+        content: `Identify genuine disagreements between these specialist outputs. Return a JSON array only (empty [] if no real conflicts — minor phrasing differences don't count):\n\n${summaries}\n\nJSON format:\n[{"topic":"what they disagree on (max 8 words)","agentA":"agent-id","positionA":"their stance (max 20 words)","agentB":"agent-id","positionB":"their stance (max 20 words)"}]`,
+      }],
+    })
+    const match = text.match(/\[[\s\S]*\]/)
+    if (!match) return []
+    return JSON.parse(match[0]) as ConflictItem[]
+  } catch {
+    return []
+  }
 }
 
 // ─── Sequential Execution ─────────────────────────────────────────────────────
@@ -261,7 +317,8 @@ async function executeSequential(
   message: string,
   ventureName: string,
   executionPlan: ExecutionPlan | null,
-  emit: (type: string, data: Record<string, unknown>) => void
+  emit: (type: string, data: Record<string, unknown>) => void,
+  githubContext?: string
 ): Promise<{ briefings: SpecialistBriefing[]; stepResults: StepResult[] }> {
   const briefings: SpecialistBriefing[] = []
   const stepResults: StepResult[] = []
@@ -284,7 +341,7 @@ async function executeSequential(
       ? `${task ?? message}\n\nHandoff context from previous specialist:\n${handoffContext}`
       : task
 
-    const briefing = await getSpecialistWithRetry(agentId, message, ventureName, taskWithContext, emit)
+    const briefing = await getSpecialistWithRetry(agentId, message, ventureName, taskWithContext, emit, githubContext)
     briefings.push(briefing)
     stepResults.push({
       agentId,
@@ -318,14 +375,17 @@ export async function POST(request: Request): Promise<Response> {
 
   let message: string
   let ventureName: string
+  let githubContext: string | undefined
   try {
     const body = await request.json() as {
       message?: string
       ventureId?: string
       ventureName?: string
+      githubContext?: string
     }
-    message     = body.message ?? ''
-    ventureName = body.ventureName ?? 'Novizio'
+    message       = body.message ?? ''
+    ventureName   = body.ventureName ?? 'Novizio'
+    githubContext = body.githubContext
   } catch {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
@@ -387,7 +447,8 @@ export async function POST(request: Request): Promise<Response> {
             message,
             ventureName,
             executionPlan,
-            emit
+            emit,
+            githubContext
           )
           briefings   = result.briefings
           stepResults = result.stepResults
@@ -407,7 +468,7 @@ export async function POST(request: Request): Promise<Response> {
               })
               emit('agent_start', { agentId, task: task ?? '' })
 
-              const briefing = await getSpecialistWithRetry(agentId, message, ventureName, task, emit)
+              const briefing = await getSpecialistWithRetry(agentId, message, ventureName, task, emit, githubContext)
               parallelStepResults.push({
                 agentId,
                 taskBrief:     task ?? null,
@@ -419,6 +480,12 @@ export async function POST(request: Request): Promise<Response> {
             })
           )
           stepResults = parallelStepResults
+        }
+
+        // ── Conflict detection ───────────────────────────────────────────────
+        const conflicts = await detectConflicts(briefings)
+        if (conflicts.length > 0) {
+          emit('conflicts', { conflicts })
         }
 
         // Collaboration recommendation
@@ -456,16 +523,11 @@ User request: ${message}
 
 Synthesise into one unified executive response. If any specialist output is weak or missing, note it briefly and cover the gap yourself. The one thing I don't know here is — state it before your recommendation.`
 
-        const sseStream = client.messages.stream({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1024,
+        for await (const chunk of streamSynthesis({
+          maxTokens: 1024,
           messages: [{ role: 'user', content: ceoPrompt }],
-        })
-
-        for await (const event of sseStream) {
-          if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-            emit('text', { content: event.delta.text })
-          }
+        })) {
+          emit('text', { content: chunk })
         }
 
         // ── Step 5: Done ─────────────────────────────────────────────────────
@@ -490,18 +552,33 @@ Synthesise into one unified executive response. If any specialist output is weak
         })
 
         // Hermes Phase 1: save individual agent sessions for cross-session memory
+        // Hermes SIP: trigger self-improvement analysis per agent (fire-and-forget)
+        const baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ? '' : 'http://localhost:3000'
         for (const step of stepResults) {
-          if (step.outputContent) {
-            saveAgentSession({
-              agentId:      step.agentId,
-              venture:      ventureName,
-              task:         step.taskBrief ?? message,
-              outcome:      step.outputContent.slice(0, 500),
-              systemTarget: null,
-              tokensUsed:   null,
-              durationMs:   elapsed,
-            }).catch(() => { /* non-fatal */ })
-          }
+          if (!step.outputContent) continue
+
+          // Save to DB (venture-scoped agent_sessions table)
+          saveAgentSession({
+            agentId:      step.agentId,
+            venture:      ventureName,
+            task:         step.taskBrief ?? message,
+            outcome:      step.outputContent.slice(0, 500),
+            systemTarget: null,
+            tokensUsed:   null,
+            durationMs:   elapsed,
+          }).catch(() => { /* non-fatal */ })
+
+          // SIP: AI-driven session analysis → auto-update SKILLS.md if patterns emerge
+          fetch(`${baseUrl}/api/memory/enhanced`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+              agentId:  step.agentId,
+              venture:  ventureName,
+              task:     step.taskBrief ?? message,
+              outcome:  step.outputContent.slice(0, 400),
+            }),
+          }).catch(() => { /* non-fatal — SIP never breaks the session */ })
         }
 
       } catch (err) {
