@@ -56,7 +56,8 @@ export async function POST(request: NextRequest) {
 
     const testModel = fastModel?.trim() || 'gpt-4o-mini'
     const headers: Record<string, string> = { 'Content-Type': 'application/json' }
-    if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`
+    // Only add auth header if API key is provided (local servers don't need it)
+    if (apiKey && apiKey !== 'none') headers['Authorization'] = `Bearer ${apiKey}`
 
     const res = await fetch(`${resolvedBase}/chat/completions`, {
       method:  'POST',

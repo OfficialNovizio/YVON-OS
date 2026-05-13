@@ -7,6 +7,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest } from 'next/server'
 import { PROVIDER_MODELS } from '@/lib/providers'
+import { bustProviderCache } from '@/lib/ai-client'
 
 function getServiceClient() {
   const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
@@ -27,7 +28,7 @@ export async function GET() {
     const sb = getServiceClient()
     const { data, error } = await sb
       .from('ai_provider_keys')
-      .select('id, provider, fast_model, synthesis_model, is_active, updated_at')
+      .select('id, provider, fast_model, synthesis_model, tertiary_model, is_active, updated_at')
       .order('updated_at', { ascending: false })
 
     if (error) return Response.json({ error: error.message }, { status: 500 })
@@ -67,14 +68,14 @@ export async function GET() {
 // ─── POST — upsert a provider key ────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
-  let body: { provider?: string; apiKey?: string; fastModel?: string; synthesisModel?: string; isActive?: boolean; baseUrl?: string }
+  let body: { provider?: string; apiKey?: string; fastModel?: string; synthesisModel?: string; tertiaryModel?: string; isActive?: boolean; baseUrl?: string }
   try {
     body = await request.json()
   } catch {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { provider, apiKey, fastModel, synthesisModel, isActive, baseUrl } = body
+  const { provider, apiKey, fastModel, synthesisModel, tertiaryModel, isActive, baseUrl } = body
 
   // Accept any provider key (anthropic, custom, or legacy named providers)
   const meta = provider ? PROVIDER_MODELS[provider as keyof typeof PROVIDER_MODELS] : null
@@ -90,13 +91,18 @@ export async function POST(request: NextRequest) {
       api_key:         apiKey ?? '',
       fast_model:      fastModel ?? '',
       synthesis_model: synthesisModel ?? '',
+      tertiary_model:  tertiaryModel ?? '',
       is_active:       isActive ?? true,
       base_url:        baseUrl ?? null,
       updated_at:      new Date().toISOString(),
     }, { onConflict: 'provider' })
 
-    if (error) return Response.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error('[ai-keys POST] upsert error:', error.message, error.details)
+      return Response.json({ error: error.message, details: error.details }, { status: 500 })
+    }
 
+    bustProviderCache()
     return Response.json({
       ok:           true,
       provider,
@@ -124,6 +130,7 @@ export async function DELETE(request: NextRequest) {
     const sb = getServiceClient()
     const { error } = await sb.from('ai_provider_keys').delete().eq('provider', provider)
     if (error) return Response.json({ error: error.message }, { status: 500 })
+    bustProviderCache()
     return Response.json({ ok: true, provider })
   } catch (err) {
     return Response.json({ error: String(err) }, { status: 500 })
@@ -133,15 +140,14 @@ export async function DELETE(request: NextRequest) {
 // ─── PATCH — toggle active / update models only (no key change) ──────────────
 
 export async function PATCH(request: NextRequest) {
-  let body: { provider?: string; fastModel?: string; synthesisModel?: string; isActive?: boolean }
+  let body: { provider?: string; fastModel?: string; synthesisModel?: string; tertiaryModel?: string; isActive?: boolean; baseUrl?: string }
   try {
     body = await request.json()
   } catch {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { provider, fastModel, synthesisModel, isActive } = body
-  const baseUrl = (body as Record<string, unknown>).baseUrl as string | undefined
+  const { provider, fastModel, synthesisModel, tertiaryModel, isActive, baseUrl } = body
   if (!provider) return Response.json({ error: 'provider is required' }, { status: 400 })
 
   try {
@@ -149,11 +155,16 @@ export async function PATCH(request: NextRequest) {
     const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
     if (fastModel !== undefined)      updates.fast_model      = fastModel
     if (synthesisModel !== undefined) updates.synthesis_model = synthesisModel
+    if (tertiaryModel !== undefined)  updates.tertiary_model  = tertiaryModel
     if (isActive !== undefined)       updates.is_active       = isActive
     if (baseUrl !== undefined)        updates.base_url        = baseUrl || null
 
     const { error } = await sb.from('ai_provider_keys').update(updates).eq('provider', provider)
-    if (error) return Response.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error('[ai-keys PATCH] update error:', error.message, error.details)
+      return Response.json({ error: error.message, details: error.details }, { status: 500 })
+    }
+    bustProviderCache()
     return Response.json({ ok: true, provider })
   } catch (err) {
     return Response.json({ error: String(err) }, { status: 500 })

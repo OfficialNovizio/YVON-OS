@@ -101,6 +101,14 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
   const [saving, setSaving]     = useState(false)
   const [saved, setSaved]       = useState(false)
 
+  // Sync fields when row arrives from async DB load
+  useEffect(() => {
+    if (!row) return
+    setPrimary(row.fast_model || 'claude-haiku-4-5-20251001')
+    setSecondary(row.synthesis_model || 'claude-sonnet-4-6')
+    setTertiary(row.tertiary_model || '')
+  }, [row?.provider, row?.fast_model, row?.synthesis_model, row?.tertiary_model])
+
   const isConfigured = !!row
   const testColor = testStatus === 'ok' ? '#30d158' : testStatus === 'fail' ? '#ff453a' : '#ff9f0a'
 
@@ -222,9 +230,19 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
   const [testErr, setTestErr]       = useState('')
   const [saving, setSaving]         = useState(false)
   const [saved, setSaved]           = useState(false)
+  const [saveErr, setSaveErr]       = useState('')
 
   const isConfigured = !!row
   const testColor    = testStatus === 'ok' ? '#30d158' : testStatus === 'fail' ? '#ff453a' : '#ff9f0a'
+
+  // Sync fields when row loads from DB (page load is async — row arrives after mount)
+  useEffect(() => {
+    if (!row) return
+    setBaseUrl(row.base_url || '')
+    setPrimary(row.fast_model || '')
+    setSecondary(row.synthesis_model || '')
+    setTertiary(row.tertiary_model || '')
+  }, [row?.provider, row?.base_url, row?.fast_model, row?.synthesis_model, row?.tertiary_model])
 
   // Auto-detect on URL change (debounced)
   useEffect(() => {
@@ -255,10 +273,16 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
   }
 
   async function save() {
-    setSaving(true)
-    await onSave({ baseUrl, apiKey, primary, secondary, tertiary })
-    setSaving(false); setSaved(true); setApiKey('')
-    setTimeout(() => setSaved(false), 3000)
+    setSaving(true); setSaveErr('')
+    try {
+      await onSave({ baseUrl, apiKey, primary, secondary, tertiary })
+      setSaved(true); setApiKey('')
+      setTimeout(() => setSaved(false), 3000)
+    } catch (e) {
+      setSaveErr(e instanceof Error ? e.message : String(e))
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -362,6 +386,7 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
                 {saving ? 'Saving…' : isConfigured ? 'Update' : 'Save & Activate'}
               </Btn>
               {saved && <span style={{ fontFamily: T.font, fontSize: 13, color: '#30d158' }}>✓ Saved</span>}
+              {saveErr && <span style={{ fontFamily: T.font, fontSize: 12, color: '#ff453a' }}>✗ {saveErr}</span>}
               {isConfigured && (
                 <>
                   <Btn onClick={onToggle} variant="ghost" small>{row.is_active ? 'Deactivate' : 'Set Active'}</Btn>
@@ -387,9 +412,13 @@ export default function ProvidersPage() {
   async function load() {
     try {
       const res  = await fetch('/api/ai-keys')
-      const data = await res.json() as { providers: SavedRow[] }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json() as { providers?: SavedRow[]; error?: string }
+      if (data.error) throw new Error(data.error)
       setRows(data.providers ?? [])
-    } catch { /* silent */ } finally {
+    } catch (err) {
+      console.error('[ai-keys] load failed:', err)
+    } finally {
       setLoading(false)
     }
   }
@@ -410,11 +439,14 @@ export default function ProvidersPage() {
 
   async function saveCustom({ baseUrl, apiKey, primary, secondary, tertiary }: { baseUrl: string; apiKey: string; primary: string; secondary: string; tertiary: string }) {
     const row = getRow('custom')
-    if (row && !apiKey.trim()) {
-      await fetch('/api/ai-keys', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: 'custom', fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, baseUrl }) })
-    } else {
-      await fetch('/api/ai-keys', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: 'custom', apiKey: apiKey || 'none', fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, baseUrl, isActive: true }) })
-    }
+    const method = (row && !apiKey.trim()) ? 'PATCH' : 'POST'
+    const body = method === 'PATCH'
+      ? { provider: 'custom', fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, baseUrl }
+      : { provider: 'custom', apiKey: apiKey || 'none', fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, baseUrl, isActive: true }
+
+    const res  = await fetch('/api/ai-keys', { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    const data = await res.json() as { ok?: boolean; error?: string; details?: string }
+    if (!res.ok || data.error) throw new Error(data.error ?? `HTTP ${res.status}`)
     await load()
   }
 

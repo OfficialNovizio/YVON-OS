@@ -161,6 +161,8 @@ const CONTEXT_REQUIREMENTS: Record<RoutingIntent, string[]> = {
   product_roadmap: [],
   advertising: ['product or offer', 'budget'],
   strategy: [],
+  finance: [],
+  direct: [],
 }
 
 export function validateContext(
@@ -244,6 +246,8 @@ function generateReasoning(
     operations: 'Operations and process management',
     product_roadmap: 'Product planning and roadmap',
     advertising: 'Paid advertising and campaigns',
+    finance: 'Financial analysis and planning',
+    direct: 'Direct response from Marcus',
   }
 
   let reasoning = `${intentDescriptions[intent]} → routing to ${agent}`

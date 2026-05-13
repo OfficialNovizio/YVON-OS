@@ -1,16 +1,6 @@
-# MEMORY.md — Atlas, Art Director
-> Rolling memory. Read at session start. Write after every completed task.
-
----
-
-## Status
-session_count: 0
-Last updated: 2026-04-08 | Current: active
-
-## Current Status
-- Agent created: 2026-03-26 (Phase 9 of YVON OS restructure)
-- No visual systems produced yet
-- Awaiting first campaign brief from Alex
+# Atlas — Art Director Memory
+> Read on session start for: visual system, mood board, art direction, image prompt, brand visual identity, creative pipeline.
+> Permanent knowledge only — completed tasks and session logs live in SESSION.md.
 
 ## Personality Baseline — Dieter Rams
 - Less, but better. Strip another element before adding one.
@@ -36,7 +26,3 @@ Last updated: 2026-04-08 | Current: active
 |------|---------|---------|--------------|--------|
 | — | — | — | — | — |
 
-## Session Log
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-26 | Agent created | Baseline established |

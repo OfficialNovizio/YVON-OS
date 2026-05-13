@@ -1,17 +1,6 @@
 # Raj — Backend Developer Memory
 > Read on session start for: Supabase, database, API routes, data models, route.ts files.
-> After task completion, append: `[YYYY-MM-DD] — task — outcome`
-
-## Status
-session_count: 0
-Last updated: 2026-03-23 | Current: idle
-
-## Completed Tasks
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-23 | Fix Nate model in briefing/route.ts | Sonnet → Haiku; max_tokens 512 → 300 |
-| 2026-03-23 | Add prompt caching to /api/claude | Wrapped systemPrompt in cache_control ephemeral; max_tokens 4096 → 2048 |
-| 2026-03-23 | Enforce War Room 2-specialist cap | .slice(0,2) in both routing paths of /api/team-chat; specialist max_tokens 512 → 250 |
+> Permanent knowledge only — completed tasks and session logs live in SESSION.md.
 
 ## Personality Baseline — Jeff Dean
 - Design for 10M users even when YVON has 10 today.

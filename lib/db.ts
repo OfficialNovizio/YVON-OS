@@ -1533,6 +1533,343 @@ export async function runSkillLifecycleTransitions(): Promise<{ staled: number; 
   return { staled: staleIds.length, archived: archiveIds.length }
 }
 
+// ─── Growth Intelligence: Snapshots + Baselines ───────────────────────────────
+
+export interface SocialSnapshot {
+  id: string
+  ventureId: string
+  platform: 'instagram' | 'youtube' | 'linkedin'
+  capturedAt: string
+  data: Record<string, unknown>
+}
+
+export interface AnalyticsSnapshot {
+  id: string
+  ventureId: string
+  capturedAt: string
+  periodStart: string | null
+  periodEnd: string | null
+  data: Record<string, unknown>
+}
+
+export interface CompetitorSnapshot {
+  id: string
+  ventureId: string
+  platform: string
+  competitorUrl: string | null
+  capturedAt: string
+  rawContent: Record<string, unknown>
+  kaiAnalysis: Record<string, unknown> | null
+}
+
+export interface GrowthBaseline {
+  id: string
+  ventureId: string
+  platform: string
+  metricKey: string
+  baselineValue: number
+  baselineDate: string
+  setBy: string
+  notes: string | null
+  createdAt: string
+}
+
+export interface GrowthPoint {
+  capturedAt: string
+  value: number
+}
+
+export interface GrowthMetric {
+  platform: string
+  metricKey: string
+  baseline: Pick<GrowthBaseline, 'baselineValue' | 'baselineDate' | 'setBy'> | null
+  currentValue: number | null
+  currentCapturedAt: string | null
+  growthPct: number | null
+  history: GrowthPoint[]
+}
+
+// Extract the primary trackable metric from a social payload
+function extractSocialMetric(
+  platform: 'instagram' | 'youtube' | 'linkedin',
+  data: Record<string, unknown>
+): { metricKey: string; value: number } | null {
+  switch (platform) {
+    case 'instagram': {
+      const v = data.followersCount ?? data.followers ?? data.follower_count
+      return typeof v === 'number' ? { metricKey: 'followers', value: v } : null
+    }
+    case 'youtube': {
+      const v = data.subscriberCount ?? data.subscribers
+      return typeof v === 'number' ? { metricKey: 'subscribers', value: v } : null
+    }
+    case 'linkedin': {
+      const v = data.followerCount ?? data.followers ?? data.followersCount
+      return typeof v === 'number' ? { metricKey: 'followers', value: v } : null
+    }
+  }
+}
+
+function extractAnalyticsMetric(data: Record<string, unknown>): number | null {
+  const v = data.sessions ?? data.totalSessions
+  return typeof v === 'number' ? v : null
+}
+
+// ─── Social Snapshots ─────────────────────────────────────────────────────────
+
+export async function insertSocialSnapshot(
+  ventureId: string,
+  platform: 'instagram' | 'youtube' | 'linkedin',
+  data: Record<string, unknown>
+): Promise<void> {
+  await supabase.from('social_snapshots').insert({
+    venture_id:  ventureId,
+    platform,
+    data,
+    captured_at: new Date().toISOString(),
+  })
+
+  // Auto-set baseline on first snapshot only (ignoreDuplicates = ON CONFLICT DO NOTHING)
+  const metric = extractSocialMetric(platform, data)
+  if (metric) {
+    await supabase.from('growth_baselines').upsert(
+      {
+        venture_id:     ventureId,
+        platform,
+        metric_key:     metric.metricKey,
+        baseline_value: metric.value,
+        baseline_date:  new Date().toISOString().split('T')[0],
+        set_by:         'auto',
+      },
+      { onConflict: 'venture_id,platform,metric_key', ignoreDuplicates: true }
+    )
+  }
+}
+
+export async function getSocialHistory(
+  ventureId: string,
+  platform: 'instagram' | 'youtube' | 'linkedin',
+  days = 30
+): Promise<SocialSnapshot[]> {
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+  const { data } = await supabase
+    .from('social_snapshots')
+    .select('*')
+    .eq('venture_id', ventureId)
+    .eq('platform', platform)
+    .gte('captured_at', since)
+    .order('captured_at', { ascending: true })
+  return (data ?? []).map(r => ({
+    id:         r.id as string,
+    ventureId:  r.venture_id as string,
+    platform:   r.platform as SocialSnapshot['platform'],
+    capturedAt: r.captured_at as string,
+    data:       r.data as Record<string, unknown>,
+  }))
+}
+
+// ─── Analytics Snapshots ──────────────────────────────────────────────────────
+
+export async function insertAnalyticsSnapshot(
+  ventureId: string,
+  data: Record<string, unknown>,
+  periodStart?: string,
+  periodEnd?: string
+): Promise<void> {
+  await supabase.from('analytics_snapshots').insert({
+    venture_id:   ventureId,
+    data,
+    period_start: periodStart ?? null,
+    period_end:   periodEnd ?? null,
+    captured_at:  new Date().toISOString(),
+  })
+
+  // Auto-set baseline on first snapshot only
+  const sessions = extractAnalyticsMetric(data)
+  if (sessions != null) {
+    await supabase.from('growth_baselines').upsert(
+      {
+        venture_id:     ventureId,
+        platform:       'ga4',
+        metric_key:     'sessions',
+        baseline_value: sessions,
+        baseline_date:  new Date().toISOString().split('T')[0],
+        set_by:         'auto',
+      },
+      { onConflict: 'venture_id,platform,metric_key', ignoreDuplicates: true }
+    )
+  }
+}
+
+export async function getAnalyticsHistory(
+  ventureId: string,
+  days = 30
+): Promise<AnalyticsSnapshot[]> {
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+  const { data } = await supabase
+    .from('analytics_snapshots')
+    .select('*')
+    .eq('venture_id', ventureId)
+    .gte('captured_at', since)
+    .order('captured_at', { ascending: true })
+  return (data ?? []).map(r => ({
+    id:          r.id as string,
+    ventureId:   r.venture_id as string,
+    capturedAt:  r.captured_at as string,
+    periodStart: (r.period_start as string | null) ?? null,
+    periodEnd:   (r.period_end as string | null) ?? null,
+    data:        r.data as Record<string, unknown>,
+  }))
+}
+
+// ─── Competitor Snapshots ─────────────────────────────────────────────────────
+
+export async function insertCompetitorSnapshot(
+  ventureId: string,
+  platform: string,
+  rawContent: Record<string, unknown>,
+  competitorUrl?: string,
+  kaiAnalysis?: Record<string, unknown>
+): Promise<void> {
+  await supabase.from('competitor_snapshots').insert({
+    venture_id:     ventureId,
+    platform,
+    competitor_url: competitorUrl ?? null,
+    raw_content:    rawContent,
+    kai_analysis:   kaiAnalysis ?? null,
+    captured_at:    new Date().toISOString(),
+  })
+}
+
+export async function getCompetitorHistory(
+  ventureId: string,
+  platform: string,
+  days = 90
+): Promise<CompetitorSnapshot[]> {
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+  const { data } = await supabase
+    .from('competitor_snapshots')
+    .select('*')
+    .eq('venture_id', ventureId)
+    .eq('platform', platform)
+    .gte('captured_at', since)
+    .order('captured_at', { ascending: false })
+    .limit(50)
+  return (data ?? []).map(r => ({
+    id:            r.id as string,
+    ventureId:     r.venture_id as string,
+    platform:      r.platform as string,
+    competitorUrl: (r.competitor_url as string | null) ?? null,
+    capturedAt:    r.captured_at as string,
+    rawContent:    r.raw_content as Record<string, unknown>,
+    kaiAnalysis:   (r.kai_analysis as Record<string, unknown> | null) ?? null,
+  }))
+}
+
+// ─── Growth Baselines ─────────────────────────────────────────────────────────
+
+export async function getGrowthBaselines(ventureId: string): Promise<GrowthBaseline[]> {
+  const { data } = await supabase
+    .from('growth_baselines')
+    .select('*')
+    .eq('venture_id', ventureId)
+    .order('platform')
+  return (data ?? []).map(r => ({
+    id:            r.id as string,
+    ventureId:     r.venture_id as string,
+    platform:      r.platform as string,
+    metricKey:     r.metric_key as string,
+    baselineValue: r.baseline_value as number,
+    baselineDate:  r.baseline_date as string,
+    setBy:         r.set_by as string,
+    notes:         (r.notes as string | null) ?? null,
+    createdAt:     r.created_at as string,
+  }))
+}
+
+export async function setGrowthBaseline(
+  ventureId: string,
+  platform: string,
+  metricKey: string,
+  value: number,
+  notes?: string
+): Promise<void> {
+  await supabase.from('growth_baselines').upsert(
+    {
+      venture_id:     ventureId,
+      platform,
+      metric_key:     metricKey,
+      baseline_value: value,
+      baseline_date:  new Date().toISOString().split('T')[0],
+      set_by:         'stark',
+      notes:          notes ?? null,
+    },
+    { onConflict: 'venture_id,platform,metric_key' }
+  )
+}
+
+// ─── Growth Summary ───────────────────────────────────────────────────────────
+
+export async function getGrowthSummary(ventureId: string): Promise<GrowthMetric[]> {
+  const baselines = await getGrowthBaselines(ventureId)
+  if (baselines.length === 0) return []
+
+  const metrics: GrowthMetric[] = []
+
+  for (const baseline of baselines) {
+    if (baseline.platform === 'ga4') {
+      const history = await getAnalyticsHistory(ventureId, 30)
+      const points: GrowthPoint[] = history
+        .map(s => {
+          const val = extractAnalyticsMetric(s.data)
+          return val != null ? { capturedAt: s.capturedAt, value: val } : null
+        })
+        .filter((p): p is GrowthPoint => p !== null)
+
+      const latest = points.at(-1) ?? null
+      const growthPct = latest != null && baseline.baselineValue !== 0
+        ? Math.round(((latest.value - baseline.baselineValue) / baseline.baselineValue) * 1000) / 10
+        : null
+
+      metrics.push({
+        platform:          'ga4',
+        metricKey:         baseline.metricKey,
+        baseline:          { baselineValue: baseline.baselineValue, baselineDate: baseline.baselineDate, setBy: baseline.setBy },
+        currentValue:      latest?.value ?? null,
+        currentCapturedAt: latest?.capturedAt ?? null,
+        growthPct,
+        history:           points,
+      })
+    } else {
+      const platform = baseline.platform as 'instagram' | 'youtube' | 'linkedin'
+      const history = await getSocialHistory(ventureId, platform, 30)
+      const points: GrowthPoint[] = history
+        .map(s => {
+          const metric = extractSocialMetric(platform, s.data)
+          return metric ? { capturedAt: s.capturedAt, value: metric.value } : null
+        })
+        .filter((p): p is GrowthPoint => p !== null)
+
+      const latest = points.at(-1) ?? null
+      const growthPct = latest != null && baseline.baselineValue !== 0
+        ? Math.round(((latest.value - baseline.baselineValue) / baseline.baselineValue) * 1000) / 10
+        : null
+
+      metrics.push({
+        platform:          baseline.platform,
+        metricKey:         baseline.metricKey,
+        baseline:          { baselineValue: baseline.baselineValue, baselineDate: baseline.baselineDate, setBy: baseline.setBy },
+        currentValue:      latest?.value ?? null,
+        currentCapturedAt: latest?.capturedAt ?? null,
+        growthPct,
+        history:           points,
+      })
+    }
+  }
+
+  return metrics
+}
+
 // ─── Hermes: Insights ─────────────────────────────────────────────────────────
 // Phase G: Aggregates agent session data for the /api/insights endpoint.
 

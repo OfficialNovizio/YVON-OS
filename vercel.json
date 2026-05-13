@@ -24,6 +24,10 @@
     {
       "path": "/api/agent-cron/pulse",
       "schedule": "0 17 * * 5"
+    },
+    {
+      "path": "/api/growth/cleanup",
+      "schedule": "0 3 * * 1"
     }
   ]
 }

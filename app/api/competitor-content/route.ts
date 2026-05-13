@@ -1,4 +1,4 @@
-import { getCompetitorContent, upsertCompetitorContent } from '@/lib/db'
+import { getCompetitorContent, upsertCompetitorContent, insertCompetitorSnapshot } from '@/lib/db'
 
 const CACHE_DAYS = 14
 
@@ -36,14 +36,14 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  let body: { ventureId?: string; platform?: string; items?: Array<Record<string, string>> }
+  let body: { ventureId?: string; platform?: string; competitorUrl?: string; items?: Array<Record<string, string>> }
   try {
     body = await request.json() as typeof body
   } catch {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
-  const { ventureId = 'novizio', platform = 'instagram', items = [] } = body
+  const { ventureId = 'novizio', platform = 'instagram', competitorUrl, items = [] } = body
 
   if (items.length === 0) {
     return Response.json({ stored: 0 })
@@ -62,6 +62,15 @@ export async function POST(request: Request): Promise<Response> {
         fetchedAt: now,
       }))
     )
+    // Append-only snapshot for growth tracking (non-fatal)
+    try {
+      await insertCompetitorSnapshot(
+        ventureId,
+        platform,
+        { items, fetchedAt: now } as Record<string, unknown>,
+        competitorUrl ?? items[0]?.sourceUrl
+      )
+    } catch { /* snapshot failure must not fail the response */ }
     return Response.json({ stored: items.length })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

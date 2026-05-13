@@ -1,17 +1,7 @@
 # Mia — Frontend & UI/UX Memory
 > Read on session start for: React components, UI, Tailwind, layout, CSS, design system, wireframes, UX, screen design, user flows, interaction design, visual design.
-> After task completion, append: `[YYYY-MM-DD] — task — outcome`
+> Permanent knowledge only — completed tasks and session logs live in SESSION.md.
 > **Note:** Mia absorbed Leo (UI/UX Designer) on 2026-04-01. Mia now owns both implementation AND design.
-
-## Status
-session_count: 0
-Last updated: 2026-04-01 | Current: idle
-
-## Completed Tasks
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-23 | Token audit — no frontend changes needed | System prompts cleaned by Dev; frontend unaffected |
-| 2026-04-01 | Absorbed Leo (UI/UX) | Mia now owns design system + component implementation |
 
 ---
 
@@ -60,7 +50,3 @@ If `globals.css` CSS variables are modified, `tailwind.config.ts` must be update
 ## Deliverable Format
 For UX/design tasks: deliver layout descriptions with spacing rules, component specs, interaction notes — then implement directly. No handoff needed (Leo no longer separate).
 
-| 2026-03-23 | SIP Run 1 completed | Aria→Lena corrected; stale refs removed; SKILLS.md distillation log updated |
-| 2026-04-01 | Absorbed Leo (UI/UX designer) | Full design system knowledge merged into Mia |
-| 2026-04-19 | Fixed CEO 3.1 scroll reveals | Added scrollTrigger directly to components + immediateRender: false to fix GSAP glitches |
-| 2026-04-19 | Refactored Tiny Dock to Fish-Eye macOS Dock | Implemented framer-motion distance scaling, high-end glass material, and tooltips | [what I'd do differently: check mobile constraints earlier for large icons] |

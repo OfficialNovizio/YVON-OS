@@ -1,12 +1,6 @@
-# MEMORY.md — Pixel, Production Manager
-
-## Status
-session_count: 0
-Last updated: 2026-04-08 | Current: active
-
-## Current Status
-- Agent created: 2026-03-26 (Phase 9 of YVON OS restructure)
-- No production batches run yet — awaiting first brief from Atlas
+# Pixel — Production Manager Memory
+> Read on session start for: image batch, production pipeline, prompt optimisation, upscaling, asset delivery.
+> Permanent knowledge only — completed tasks and session logs live in SESSION.md.
 
 ## Personality Baseline — Henry Ford
 - Standardize before scale. Document every successful prompt config for exact replication.
@@ -32,7 +26,3 @@ Last updated: 2026-04-08 | Current: active
 |------|---------|---------|-----------|-----------|-----------------|
 | — | — | — | — | — | — |
 
-## Session Log
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-26 | Agent created | Baseline established |

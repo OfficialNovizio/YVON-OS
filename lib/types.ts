@@ -199,6 +199,8 @@ export type RoutingIntent =
   | 'operations'
   | 'product_roadmap'
   | 'advertising'
+  | 'finance'
+  | 'direct'
 
 export interface RoutingResult {
   intent: RoutingIntent

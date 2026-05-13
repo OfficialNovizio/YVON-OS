@@ -304,7 +304,7 @@ export default function WarRoomPage() {
   }, []);
 
   const run = useCallback(async () => {
-    if (!input.trim() || state.status !== 'idle') return;
+    if (!input.trim() || (state.status !== 'idle' && state.status !== 'complete' && state.status !== 'error')) return;
 
     abortRef.current?.abort();
     abortRef.current = new AbortController();
@@ -334,6 +334,7 @@ export default function WarRoomPage() {
         buffer = lines.pop() ?? '';
 
         for (const line of lines) {
+          if (line.startsWith(':')) continue; // heartbeat ping
           if (!line.startsWith('data:')) continue;
           const raw = line.slice(5).trim();
           if (raw === '[DONE]') {
@@ -353,7 +354,9 @@ export default function WarRoomPage() {
                 activeAgents: evt.routing.specialists as AgentId[],
               }));
               pushEntry(entry(
-                `Intent: ${evt.routing.intent} — routing to ${evt.routing.specialists.join(', ')}`,
+                evt.routing.intent === 'direct'
+                  ? 'Marcus responding directly'
+                  : `Routing to: ${(evt.routing.specialists as string[]).map(id => AGENT_META[id as AgentId]?.name ?? id).join(', ')}`,
                 'routing'
               ));
               break;
@@ -364,9 +367,9 @@ export default function WarRoomPage() {
                 status: 'executing',
                 plan: evt.plan,
               }));
-              if (evt.plan) {
+              if (evt.plan && evt.routing?.intent !== 'direct') {
                 pushEntry(entry(
-                  `Plan: ${evt.plan.objective}`,
+                  `Objective: ${evt.plan.objective}`,
                   'plan'
                 ));
               }
@@ -429,7 +432,7 @@ export default function WarRoomPage() {
               break;
 
             case 'plan_complete':
-              setState(prev => ({ ...prev, elapsed: evt.elapsed }));
+              setState(prev => ({ ...prev, status: 'complete', elapsed: evt.elapsed }));
               pushEntry(entry(`Complete — ${(evt.elapsed / 1000).toFixed(1)}s`, 'complete'));
               break;
 
@@ -442,11 +445,17 @@ export default function WarRoomPage() {
       }
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
-        setState(prev => ({ ...prev, status: 'error' }));
-        pushEntry(entry(`Connection error: ${String(err)}`, 'error'));
+        // If we already received text, treat as complete (stream just closed early)
+        setState(prev => ({
+          ...prev,
+          status: prev.synthesis ? 'complete' : 'error',
+        }));
+        if (!state.synthesis) {
+          pushEntry(entry(`Connection error: ${String(err)}`, 'error'));
+        }
       }
     }
-  }, [input, venture, state.status, pushEntry]);
+  }, [input, venture, state.status, state.synthesis, pushEntry]);
 
   const reset = () => {
     abortRef.current?.abort();
@@ -534,7 +543,7 @@ export default function WarRoomPage() {
     error:       'text-red-400',
   };
 
-  const isRunning = state.status !== 'idle' && state.status !== 'complete' && state.status !== 'error';
+  const isRunning = state.status === 'planning' || state.status === 'executing' || state.status === 'synthesizing';
 
   // ── Plan History ────────────────────────────────────────────────────────────
   const [history, setHistory] = useState<WarRoomPlanRecord[]>([]);
@@ -749,7 +758,11 @@ export default function WarRoomPage() {
           <div className="space-y-3">
             {state.activeAgents.length === 0 ? (
               <div className="glass-card rounded-xl p-4 border border-white/5">
-                <p className="text-[12px] text-white/20 text-center">Awaiting routing...</p>
+                <p className="text-[12px] text-white/20 text-center">
+                  {state.status === 'synthesizing' || state.status === 'complete'
+                    ? '👑 Marcus responding directly'
+                    : state.status === 'idle' ? 'Awaiting message...' : 'Routing...'}
+                </p>
               </div>
             ) : (
               state.activeAgents.map((id, i) => {

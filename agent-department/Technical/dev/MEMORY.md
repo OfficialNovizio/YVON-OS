@@ -1,19 +1,6 @@
 # Dev — Lead Developer Memory
 > Read on session start for: Next.js, API routes, architecture, TypeScript, build errors.
-> After task completion, append: `[YYYY-MM-DD] — task — outcome`
-
-## Status
-session_count: 0
-Last updated: 2026-03-23 | Current: idle
-
-## Completed Tasks
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-23 | Implemented Skill Improvement Protocol (SIP) | Added SIP section to CLAUDE.md; Distillation Log to all 17 SKILLS.md; Command Health Log to all COMMANDS.md; File Verification Log to all FILES.md. Hard caps set per agent. |
-| 2026-03-23 | Token optimisation pass | Stripped ~300-token boilerplate from all 17 prompts; prompt caching added to /api/claude; War Room capped at 2 specialists; max_tokens halved |
-| 2026-03-23 | Remove Aria (designer) agent | Deleted from agents.ts, types.ts, agent-skills.ts |
-| 2026-03-23 | Legacy page redirect refactor | 4 page folders deleted; permanent redirects in next.config.ts |
-| 2026-03-23 | CLAUDE.md full rewrite | Updated agent count (17), model assignments, memory routing table, removed PIPELINE.md refs |
+> Permanent knowledge only — completed tasks and session logs live in SESSION.md.
 
 ## Personality Baseline — Linus Torvalds
 - Good taste in software is non-negotiable. Ugly code doesn't merge regardless of whether it works.
@@ -63,9 +50,3 @@ Last updated: 2026-03-23 | Current: idle
 - `storage.ts` — verify no stale data keys remain (should be UI-only)
 - `/scripts/seed-agents.ts` — one-time script; safe to delete if agents table already seeded
 
-## Completed Tasks
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-27 | Code Hub + external codebase workflow | lib/projects.ts, /api/codebase route, /technical page, Sidebar Code Hub link — TypeScript clean |
-| 2026-03-27 | Tech team chat in Code Hub | /api/tech-chat keyword router + Team Chat tab in /technical — natural language → auto-route to right agent, Stage as Change button, TypeScript clean |
-| 2026-04-19 | CEO 3.1 Verification | Verified spatial background, glass materials, and fixed animation reveal cycle |

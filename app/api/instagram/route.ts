@@ -1,5 +1,5 @@
 import { runInstagramScraper } from '@/lib/apify'
-import { setSocialStats } from '@/lib/db'
+import { setSocialStats, insertSocialSnapshot } from '@/lib/db'
 
 export const maxDuration = 30
 
@@ -26,6 +26,10 @@ export async function POST(request: Request): Promise<Response> {
     const stats = await runInstagramScraper(handle)
     if (ventureId) {
       await setSocialStats(ventureId, 'instagram', stats)
+      // Append-only snapshot for growth tracking (non-fatal)
+      try {
+        await insertSocialSnapshot(ventureId, 'instagram', stats as unknown as Record<string, unknown>)
+      } catch { /* snapshot failure must not fail the response */ }
     }
     return Response.json(stats)
   } catch (err) {

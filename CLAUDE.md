@@ -31,17 +31,18 @@ YVON is an AI operating system. It orchestrates **13 agents** across **4 departm
 3. Read that brand's `memory/brands/[name]/INDEX.md` — always first, never skip
 4. Read `memory/brands/[name]/known-issues.md` — required before touching code
 5. Identify the correct agent from the routing table below
-6. Read that agent's `MEMORY.md` for continuity
-7. First session of the day: also read `.yvon-os/USER.md`
+6. Read that agent's `SESSION.md` first (current task, last 3 sessions, open items), then `MEMORY.md` (permanent rules, architecture decisions, never again patterns)
+7. First session of the day: also read `.yvon-os/USER.md` and `.yvon-os/CONTEXT.md`
 8. Do not make changes until you have 95% confidence in what's needed — ask first
 
 ## Session End Protocol
 
-1. Append one-line log to the active agent's `MEMORY.md`: `[YYYY-MM-DD] — [task] — [outcome]`
+1. Update the active agent's `SESSION.md` — add one row to Last 3 Sessions, drop oldest if 4th entry, update Current Status
 2. Update brand's `INDEX.md` Last 3 Changes
 3. Update `.yvon-os/SESSION.md` — note what was done + what's next
 4. If task had 3+ tool calls: run SIP → see `reference/SIP.md`
-5. If any error occurred twice: add it to that agent's Never Again section in MEMORY.md
+5. If any error occurred twice: add it to that agent's Never Again section in `MEMORY.md`
+6. If a strategic decision was locked permanently: add it to `.yvon-os/CONTEXT.md`
 
 ---
 
@@ -204,6 +205,7 @@ Source of truth: `D:\Global Skills\yvon-skills\` — NEVER edit copies.
 | Master roadmap + priority list | `.yvon-os/ROADMAP.md` |
 | User preferences + working style | `.yvon-os/USER.md` |
 | Rolling session context | `.yvon-os/SESSION.md` |
+| Permanent project context (architecture locks, ventures, open decisions) | `.yvon-os/CONTEXT.md` |
 | Full agent registry (13 agents, 4 departments) | `agent-department/DEPARTMENTS.md` |
 | Stack, architecture, services | `reference/STACK.md` |
 | Pages, routes, API endpoints | `reference/PAGES.md` |

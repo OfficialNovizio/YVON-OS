@@ -1,17 +1,7 @@
 # Kai — Lead Analyst Memory
 > Read on session start for: analytics, metrics, stats, GA4, trends, data, KPIs, insights, competitor research, rival brands, market gaps, scraping, competitor intel.
-> After task completion, append: `[YYYY-MM-DD] — task — outcome`
+> Permanent knowledge only — completed tasks and session logs live in SESSION.md.
 > **Note:** Kai absorbed Zara (Competitor Intel) on 2026-04-01. Kai now owns all analytics AND competitor intelligence.
-
-## Status
-session_count: 0
-Last updated: 2026-04-01 | Current: idle
-
-## Completed Tasks
-| Date | Task | Outcome |
-|------|------|---------|
-| 2026-03-23 | Memory system initialised | File seeded with YVON analytics context |
-| 2026-04-01 | Absorbed Zara (competitor intel) | Kai now owns analytics + competitor scope |
 
 ---
 

@@ -4,7 +4,7 @@ import { join } from 'path'
 import { getAgent, AGENTS } from '@/lib/agents'
 import { callFast, streamSynthesis } from '@/lib/ai-client'
 
-export const maxDuration = 60
+export const maxDuration = 300
 import { COLLABORATION_GRAPH, calculateRoutingConfidence, recommendCollaboration } from '@/lib/collaboration-manager'
 import { routingFeedback } from '@/lib/routing-feedback'
 import { monitoring } from '@/lib/monitoring'
@@ -116,23 +116,12 @@ async function buildExecutionPlan(
     }).join(', ')
 
     const text = await callFast({
-      maxTokens: 400,
+      maxTokens: 600,
       messages: [{
         role: 'user',
-        content: `You are Marcus, CEO of YVON. A user has sent this request:
-"${message}"
-Active venture: ${ventureName}
-Assigned specialists: ${agentNames}
-
-Use "sequential" order ONLY when Agent B explicitly needs Agent A's output as direct input context (e.g. research first then write copy based on findings). Use "parallel" when agents work on independent aspects simultaneously.
-Output ONLY a valid JSON object — no prose, no markdown fences:
-{
-  "objective": "<one sentence goal>",
-  "agents": [${specialists.map(s => `"${s}"`).join(', ')}],
-  "order": "<parallel|sequential>",
-  "each_agent_task": { ${specialists.map(s => `"${s}": "<specific task for this agent>"`).join(', ')} },
-  "definition_of_done": "<binary success criteria — done or not done>"
-}`,
+        content: `Marcus CEO. Request: "${message}" Venture: ${ventureName} Specialists: ${agentNames}
+Output ONLY valid JSON, no prose:
+{"objective":"<goal>","agents":[${specialists.map(s => `"${s}"`).join(',')}],"order":"parallel","each_agent_task":{${specialists.map(s => `"${s}":"<task>"`).join(',')}},"definition_of_done":"<done criteria>"}`,
       }],
     })
     const match = text.match(/\{[\s\S]*\}/)
@@ -212,7 +201,7 @@ async function getSpecialistBriefing(
     maxTokens: 800,
     messages: [{
       role: 'user',
-      content: `Active venture: ${ventureName}\n\n${taskPrompt}\n\nRespond in 300–400 words. Be specific, actionable, and use your domain expertise fully.\n\nAt the end of your response, append this structured block exactly:\n---HANDOFF---\nsummary: [1–2 sentences — the most important point]\ntype: data|content|strategy|technical|growth|validation\nkey_output: [the specific deliverable, finding, or decision]\nconfidence: high|medium|low\n---END---`,
+      content: `Venture: ${ventureName}\n\n${taskPrompt}\n\nRespond in 100–150 words max. Be specific and actionable.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: strategy\nkey_output: [deliverable]\nconfidence: high\n---END---`,
     }],
   })
   return { agentId, content }
@@ -369,9 +358,7 @@ async function executeSequential(
 // ─── POST Handler ──────────────────────────────────────────────────────────────
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 500 })
-  }
+  // Removed ANTHROPIC_API_KEY check — now uses saved provider keys from Supabase
 
   let message: string
   let ventureName: string
@@ -405,7 +392,64 @@ export async function POST(request: Request): Promise<Response> {
         )
       }
 
+      // Heartbeat — keeps the connection alive during long Qwen3 thinking phases
+      const heartbeat = setInterval(() => {
+        try { controller.enqueue(encoder.encode(': ping\n\n')) } catch { /* stream closed */ }
+      }, 15_000)
+
       try {
+        // ── Step 0: Direct-response check ───────────────────────────────────
+        // No LLM call — instant heuristic. Short messages or no domain keywords
+        // go straight to Marcus. Only explicit task/domain keywords trigger the pipeline.
+        const TASK_KEYWORDS = /\b(analys|strateg|campaign|budget|revenue|content|copy|ad\b|post|instagram|tiktok|youtube|linkedin|competitor|market|launch|product|feature|bug|deploy|build|code|database|seo|funnel|roas|cac|ltv|mrr|p&l|roi|sprint|okr|brief|report|audit|research|growth|email|brand)\b/i
+        const isDirect = message.trim().length < 80 && !TASK_KEYWORDS.test(message)
+
+        if (isDirect) {
+          // Marcus answers directly — stream straight to the client
+          emit('routing', {
+            routing: { intent: 'direct', specialists: [], reasoning: 'Direct Marcus response' },
+            confidence: 1,
+          })
+          emit('plan', {
+            plan: {
+              objective: message,
+              agents: [],
+              order: 'parallel',
+              each_agent_task: {},
+              definition_of_done: 'Marcus responds directly.',
+            },
+            routing: { intent: 'direct', specialists: [] },
+          })
+
+          let directSynthesis = ''
+          for await (const chunk of streamSynthesis({
+            maxTokens: 1500,
+            messages: [{ role: 'user', content: `You are Marcus, CEO of YVON (venture: ${ventureName}). The user said: "${message}"\n\nReply naturally and concisely as Marcus. No agent delegation needed.` }],
+          })) {
+            directSynthesis += chunk
+            emit('text', { content: chunk })
+          }
+
+          const elapsed = Date.now() - startTime
+          emit('plan_complete', { elapsed })
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+
+          saveWarRoomPlan({
+            ventureName,
+            userPrompt:  message,
+            intent:      'direct',
+            plan:        null,
+            agentsUsed:  [],
+            status:      'complete',
+            synthesis:   directSynthesis,
+            elapsedMs:   elapsed,
+            steps:       [],
+          }).catch(() => {})
+
+          controller.close()
+          return
+        }
+
         // ── Step 1: Classify intent ──────────────────────────────────────────
         let routing: RoutingResult
         try {
@@ -482,11 +526,7 @@ export async function POST(request: Request): Promise<Response> {
           stepResults = parallelStepResults
         }
 
-        // ── Conflict detection ───────────────────────────────────────────────
-        const conflicts = await detectConflicts(briefings)
-        if (conflicts.length > 0) {
-          emit('conflicts', { conflicts })
-        }
+        // Conflict detection skipped — saves one LLM call on local models
 
         // Collaboration recommendation
         if (routing.specialists.length > 0) {
@@ -511,22 +551,21 @@ export async function POST(request: Request): Promise<Response> {
           ? `\nExecution objective: ${executionPlan.objective}\nDefinition of done: ${executionPlan.definition_of_done}\n`
           : ''
 
-        const ceoPrompt = `${ceo?.systemPrompt ?? ''}
+        const ceoPrompt = `You are Marcus, CEO of YVON. Venture: ${ventureName}
 
-Active venture: ${ventureName}${planContext}
-
-Your specialists have delivered:
-
+Specialists delivered:
 ${briefingText}
 
-User request: ${message}
+User: ${message}
 
-Synthesise into one unified executive response. If any specialist output is weak or missing, note it briefly and cover the gap yourself. The one thing I don't know here is — state it before your recommendation.`
+Give a concise unified response in 150 words max. Start with: "The one thing I don't know here is..." then your recommendation.`
 
+        let ceoSynthesis = ''
         for await (const chunk of streamSynthesis({
-          maxTokens: 1024,
+          maxTokens: 2000,
           messages: [{ role: 'user', content: ceoPrompt }],
         })) {
+          ceoSynthesis += chunk
           emit('text', { content: chunk })
         }
 
@@ -544,7 +583,7 @@ Synthesise into one unified executive response. If any specialist output is weak
           plan:        executionPlan,
           agentsUsed:  routing.specialists as AgentId[],
           status:      hasErrors ? 'partial' : 'complete',
-          synthesis:   briefingText,
+          synthesis:   ceoSynthesis || briefingText,
           elapsedMs:   elapsed,
           steps:       stepResults,
         }).catch(err => {
@@ -585,6 +624,7 @@ Synthesise into one unified executive response. If any specialist output is weak
         const msg = err instanceof Error ? err.message : String(err)
         emit('error', { message: msg })
       } finally {
+        clearInterval(heartbeat)
         controller.close()
       }
     },

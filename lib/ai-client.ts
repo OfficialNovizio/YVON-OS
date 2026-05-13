@@ -35,6 +35,12 @@ interface ProviderConfig {
 let _cache:  ProviderConfig | null = null
 let _expiry: number = 0
 
+/** Call after saving a provider key so the next request loads fresh config. */
+export function bustProviderCache() {
+  _cache  = null
+  _expiry = 0
+}
+
 async function loadConfig(): Promise<ProviderConfig> {
   if (_cache && Date.now() < _expiry) return _cache
 
@@ -114,8 +120,9 @@ async function oaiCall(
     body:    JSON.stringify({ model, max_tokens: maxTokens, messages: msgs }),
   })
   if (!res.ok) throw new Error(`${baseUrl} ${res.status}: ${await res.text()}`)
-  const data = await res.json() as { choices: Array<{ message: { content: string } }> }
-  return data.choices[0]?.message?.content ?? ''
+  const data = await res.json() as { choices: Array<{ message: { content?: string; reasoning_content?: string } }> }
+  // Prefer content; fall back to reasoning_content for Qwen3/local models that blend thinking+reply
+  return data.choices[0]?.message?.content || data.choices[0]?.message?.reasoning_content || ''
 }
 
 async function* oaiStream(
@@ -138,6 +145,12 @@ async function* oaiStream(
   const reader  = res.body.getReader()
   const decoder = new TextDecoder()
   let buf = ''
+  let sawContent = false
+
+  // Two-pass approach: buffer reasoning_content chunks until we see real content.
+  // If real content appears, discard buffered reasoning and stream content only.
+  // If stream ends with no real content (some llama.cpp builds), yield the reasoning as fallback.
+  const reasoningBuf: string[] = []
 
   while (true) {
     const { done, value } = await reader.read()
@@ -150,11 +163,23 @@ async function* oaiStream(
       const raw = line.slice(6).trim()
       if (raw === '[DONE]') return
       try {
-        const chunk = JSON.parse(raw) as { choices: Array<{ delta: { content?: string } }> }
-        const text  = chunk.choices[0]?.delta?.content
-        if (text) yield text
+        const chunk = JSON.parse(raw) as { choices: Array<{ delta: { content?: string; reasoning_content?: string } }> }
+        const content   = chunk.choices[0]?.delta?.content
+        const reasoning = chunk.choices[0]?.delta?.reasoning_content
+        if (content) {
+          sawContent = true
+          yield content
+        } else if (reasoning && !sawContent) {
+          // Buffer silently — only emit if no real content ever arrives
+          reasoningBuf.push(reasoning)
+        }
       } catch { /* skip malformed */ }
     }
+  }
+
+  // If the model only produced reasoning tokens (no content field ever set), yield them as fallback
+  if (!sawContent && reasoningBuf.length > 0) {
+    yield reasoningBuf.join('')
   }
 }
 

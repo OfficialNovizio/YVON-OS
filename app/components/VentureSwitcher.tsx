@@ -42,6 +42,7 @@ export default function VentureSwitcher() {
     setActiveVentureSlugClient(slug);
     setActiveSlug(slug);
     setOpen(false);
+    window.dispatchEvent(new CustomEvent('venturechange', { detail: { slug } }));
     router.refresh();
   }
 

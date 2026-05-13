@@ -1,21 +1,40 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabaseClient } from '@/lib/supabase-client';
+import { getActiveVentureSlugClient } from '@/lib/venture-context';
 import VentureSwitcher from '@/app/components/VentureSwitcher';
 
 const navItems = [
   { href: '/screens/ceo-command-dashboard', label: 'Command' },
   { href: '/screens/analytics', label: 'Analytics' },
   { href: '/screens/competitor', label: 'Competitor' },
+  { href: '/screens/marketing', label: 'Marketing' },
   { href: '/screens/creative-studio', label: 'Creative Studio' },
   { href: '/screens/war-room', label: 'War Room' },
+];
+
+const novizioNavItems = [
+  { href: '/screens/merchandize', label: 'Merchandize' },
 ];
 
 export function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [activeVenture, setActiveVenture] = useState<string>('novizio');
+
+  useEffect(() => {
+    setActiveVenture(getActiveVentureSlugClient());
+
+    function onVentureChange(e: Event) {
+      const slug = (e as CustomEvent<{ slug: string }>).detail.slug;
+      setActiveVenture(slug);
+    }
+    window.addEventListener('venturechange', onVentureChange);
+    return () => window.removeEventListener('venturechange', onVentureChange);
+  }, []);
 
   async function handleLogout() {
     await supabaseClient.auth.signOut();
@@ -41,6 +60,22 @@ export function NavBar() {
                   className={
                     isActive
                       ? 'text-white border-b-2 border-[#0071e3] pb-1'
+                      : 'text-white/50 hover:text-white transition-colors'
+                  }
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            {activeVenture === 'novizio' && novizioNavItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={
+                    isActive
+                      ? 'text-white border-b-2 border-[#E94560] pb-1'
                       : 'text-white/50 hover:text-white transition-colors'
                   }
                 >

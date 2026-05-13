@@ -1,5 +1,5 @@
 import { getChannelStats } from '@/lib/youtube'
-import { setSocialStats } from '@/lib/db'
+import { setSocialStats, insertSocialSnapshot } from '@/lib/db'
 
 export async function POST(request: Request): Promise<Response> {
   if (!process.env.YOUTUBE_API_KEY) {
@@ -24,6 +24,10 @@ export async function POST(request: Request): Promise<Response> {
     const stats = await getChannelStats(channelId)
     if (ventureId) {
       await setSocialStats(ventureId, 'youtube', stats)
+      // Append-only snapshot for growth tracking (non-fatal)
+      try {
+        await insertSocialSnapshot(ventureId, 'youtube', stats as unknown as Record<string, unknown>)
+      } catch { /* snapshot failure must not fail the response */ }
     }
     return Response.json(stats)
   } catch (err) {
