@@ -9,7 +9,7 @@ export default function CompetitorPage() {
       <CompetitorSubNav />
 
       {/* Canvas */}
-      <div className="flex-grow w-full max-w-[1200px] mx-auto px-6 py-12 flex flex-col gap-8">
+      <div className="flex-grow w-full max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 py-12 flex flex-col gap-8">
 
         {/* Hero Brief Card */}
         <div className="relative overflow-hidden rounded-[2rem] bg-[#272729]/60 backdrop-blur-2xl border border-white/10 p-10 flex flex-col gap-6 group">
@@ -214,7 +214,7 @@ export default function CompetitorPage() {
       </div>
 
       {/* Footer */}
-      <footer className="w-full py-8 px-6 flex justify-between items-center max-w-[1200px] mx-auto border-t border-white/10 mt-auto">
+      <footer className="w-full py-8 px-6 flex justify-between items-center max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto border-t border-white/10 mt-auto">
         <div className="text-white/40 font-bold text-[12px]">© 2024 YVON Intelligence. All rights reserved.</div>
         <ul className="flex items-center gap-6 text-[12px] text-white/40">
           {['Privacy Policy', 'Terms of Service', 'Support'].map((l) => (

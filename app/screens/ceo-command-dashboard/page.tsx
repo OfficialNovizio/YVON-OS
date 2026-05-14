@@ -108,29 +108,32 @@ export default function CEOCommandDashboardPage() {
 
   return (
     <>
-      {/* Background — 70% deep black base */}
-      <div className="fixed inset-0 -z-10" style={{ background: '#07090f' }} />
+      {/* Pure black background */}
+      <div className="fixed inset-0 -z-10" style={{ background: '#000' }} />
 
-      {/* Color splashes — concentrated, not spread */}
+      {/* Glass figures scattered across screen */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        {/* Sky blue splash — top-left corner */}
-        <div className="absolute -left-24 -top-24 w-[480px] h-[480px] rounded-full"
-          style={{ background: 'radial-gradient(circle at 35% 35%, #38bdf8 0%, #0ea5e9 30%, transparent 65%)', filter: 'blur(72px)', opacity: 0.45 }} />
-        {/* Cream splash — bottom-right corner */}
-        <div className="absolute -right-20 -bottom-20 w-[420px] h-[420px] rounded-full"
-          style={{ background: 'radial-gradient(circle at 60% 60%, #fde68a 0%, #fcd34d 25%, transparent 62%)', filter: 'blur(80px)', opacity: 0.22 }} />
+        <img src="/glass1.png" alt=""
+          className="absolute select-none"
+          style={{ width: '380px', height: 'auto', top: '4%', left: '12%', opacity: 0.5 }} />
+        <img src="/glass2.png" alt=""
+          className="absolute select-none"
+          style={{ width: '320px', height: 'auto', top: '30%', right: '6%', opacity: 0.4 }} />
+        <img src="/glass3.png" alt=""
+          className="absolute select-none"
+          style={{ width: '400px', height: 'auto', bottom: '2%', left: '30%', opacity: 0.45 }} />
       </div>
 
       {/* NavBar is rendered by layout.tsx above this — we account for its height (56px) */}
-      <div className="max-w-[1480px] mx-auto px-7 pb-10 pt-[72px]">
+      <div className="max-w-[1480px] 2xl:max-w-[min(92vw,2000px)] mx-auto px-7 pb-10 pt-[72px]">
         <CeoHeader active={active} onChange={setActive} actCount={DECISIONS_COUNT} />
 
         <div className="mt-[18px]">
-          {active === 'overview'  && <OverviewTab  onJump={setActive} actCount={DECISIONS_COUNT} />}
+          {active === 'overview' && <OverviewTab onJump={setActive} actCount={DECISIONS_COUNT} />}
           {active === 'situation' && <SituationTab />}
-          {active === 'act'       && <ActTab onWarRoom={() => setWarRoom(true)} />}
-          {active === 'done'      && <DoneTab />}
-          {active === 'context'   && <ContextTab />}
+          {active === 'act' && <ActTab onWarRoom={() => setWarRoom(true)} />}
+          {active === 'done' && <DoneTab />}
+          {active === 'context' && <ContextTab />}
         </div>
 
         <div className="mt-[18px]">

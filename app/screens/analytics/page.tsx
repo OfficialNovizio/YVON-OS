@@ -137,7 +137,7 @@ export default function AnalyticsPage() {
     <main className="pt-14 pb-24 min-h-screen" style={{ color: '#eef0f8' }}>
       <AnalyticsSubNav />
 
-      <div className="px-6 max-w-[1200px] mx-auto pt-8 space-y-8">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto pt-8 space-y-8">
 
         {/* ── 1. Signal Strip ───────────────────────────────────────────────── */}
         <section className="ana-glass divide-y" style={{ divideColor: 'rgba(255,255,255,0.05)' }}>

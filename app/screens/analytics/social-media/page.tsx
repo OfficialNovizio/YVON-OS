@@ -119,7 +119,7 @@ export default function SocialMediaPage() {
     <main className="pt-14 pb-24 min-h-screen antialiased" style={{ color: '#eef0f8' }}>
       <AnalyticsSubNav />
 
-      <div className="px-6 max-w-[1200px] mx-auto pt-8 flex flex-col gap-12">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto pt-8 flex flex-col gap-12">
 
         {/* ── SECTION 1: Kai Situation Report ───────────────────────────────── */}
         <section className="flex flex-col gap-4">
@@ -546,7 +546,7 @@ export default function SocialMediaPage() {
 
       </div>
 
-      <footer className="mt-12 border-t border-white/[0.04] py-8 px-6 max-w-[1200px] mx-auto flex justify-between items-center text-[12px] text-white/20">
+      <footer className="mt-12 border-t border-white/[0.04] py-8 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto flex justify-between items-center text-[12px] text-white/20">
         <span style={{ fontFamily: 'InstrumentSans, Inter, sans-serif' }}>© 2026 YVON Analytics. All rights reserved.</span>
         <div className="flex gap-6">
           {['Privacy', 'Terms', 'Support'].map(l => (

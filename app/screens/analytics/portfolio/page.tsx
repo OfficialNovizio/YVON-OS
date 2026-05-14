@@ -11,7 +11,7 @@ export default function AnalyticsPortfolioPage() {
 
       {/* Signal Strip */}
       <div className="w-full bg-[#1c1c1e] border-b border-white/5">
-        <div className="max-w-[980px] mx-auto px-4 py-2.5 flex items-center gap-3 overflow-x-auto"
+        <div className="max-w-[980px] 2xl:max-w-[min(90vw,1400px)] mx-auto px-4 py-2.5 flex items-center gap-3 overflow-x-auto"
           style={{ scrollbarWidth: 'none' }}>
           <div className="flex items-center gap-2 bg-black/40 rounded-full px-3 py-1 border border-white/5 whitespace-nowrap">
             <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] animate-pulse" />
@@ -24,7 +24,7 @@ export default function AnalyticsPortfolioPage() {
         </div>
       </div>
 
-      <div className="max-w-[980px] mx-auto px-4 pt-10 pb-20 flex flex-col gap-8">
+      <div className="max-w-[980px] 2xl:max-w-[min(90vw,1400px)] mx-auto px-4 pt-10 pb-20 flex flex-col gap-8">
 
         {/* Intelligence Hero */}
         <section className="rounded-[24px] overflow-hidden relative min-h-[380px] flex flex-col justify-between p-8 md:p-12"
@@ -452,7 +452,7 @@ export default function AnalyticsPortfolioPage() {
 
       {/* Footer */}
       <footer className="w-full border-t border-white/10 bg-black/50 py-8">
-        <div className="max-w-[980px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="max-w-[980px] 2xl:max-w-[min(90vw,1400px)] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-[12px] text-white/40">© 2026 YVON Intelligence. All rights reserved.</div>
           <div className="flex items-center gap-6 text-[12px] text-white/40">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

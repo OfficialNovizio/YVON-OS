@@ -40,7 +40,7 @@ const SEED_REPORTS: KaiReport[] = [
     diagnosis: {
       title: 'Diagnosis',
       body:
-        'Novizio's TikTok spike is causally linked to one creative format: factory-floor process content. The effect is short-window — typical half-life is 10–14 days before replication dilutes novelty. The Instagram reach plateau is a distribution issue, not a content quality issue; hashtag strategy is stale (avg tag age: 112 days). Hourbour's email conversion regression traces directly to the May 7 copy change — the new headline buries the primary value proposition below the fold on mobile (68% of opens). CAC on paid is holding at $8.20 — below the $12 target, which is healthy, but Hourbour's acquisition spend is 34% under-paced against the Q2 plan.',
+        "Novizio's TikTok spike is causally linked to one creative format: factory-floor process content. The effect is short-window — typical half-life is 10–14 days before replication dilutes novelty. The Instagram reach plateau is a distribution issue, not a content quality issue; hashtag strategy is stale (avg tag age: 112 days). Hourbour's email conversion regression traces directly to the May 7 copy change — the new headline buries the primary value proposition below the fold on mobile (68% of opens). CAC on paid is holding at $8.20 — below the $12 target, which is healthy, but Hourbour's acquisition spend is 34% under-paced against the Q2 plan.",
     },
     action: {
       title: 'Action',
@@ -50,7 +50,7 @@ const SEED_REPORTS: KaiReport[] = [
     prescription: {
       title: 'Kai Prescription',
       body:
-        'This week's highest-leverage action is the Hourbour email headline fix — it is the only change that is a pure regression fix with near-zero execution risk and recovers measurable revenue within 48 hours. TikTok brief is second priority; delay past 14 days and the format window closes. Instagram hashtag refresh is a low-cost background task — assign to Lena alongside next caption batch. The Hourbour spend increase should be approved by Stark before execution.',
+        "This week's highest-leverage action is the Hourbour email headline fix — it is the only change that is a pure regression fix with near-zero execution risk and recovers measurable revenue within 48 hours. TikTok brief is second priority; delay past 14 days and the format window closes. Instagram hashtag refresh is a low-cost background task — assign to Lena alongside next caption batch. The Hourbour spend increase should be approved by Stark before execution.",
     },
     keyMetrics: [
       { label: 'ROAS', value: '3.8×', delta: '+0.4× vs prior week', positive: true },
@@ -68,12 +68,12 @@ const SEED_REPORTS: KaiReport[] = [
     situation: {
       title: 'Situation',
       body:
-        'Novizio Q2 opening week performance came in at 3.4× ROAS — on target but not breakthrough. TikTok is the standout channel: $4.20 CAC, 22% engagement rate on top post. Instagram reach fell 11% WoW, likely tied to the algorithm's shift toward Reels-first distribution. Content calendar has 3 posts missed this week — all scheduled IG carousels.',
+        "Novizio Q2 opening week performance came in at 3.4× ROAS — on target but not breakthrough. TikTok is the standout channel: $4.20 CAC, 22% engagement rate on top post. Instagram reach fell 11% WoW, likely tied to the algorithm's shift toward Reels-first distribution. Content calendar has 3 posts missed this week — all scheduled IG carousels.",
     },
     diagnosis: {
       title: 'Diagnosis',
       body:
-        'The 3 missed IG posts represent a production gap, not a strategy gap. Carousel production time is currently 4.5 hours per post; target is 2.5 hours. TikTok's performance validates the process-transparency positioning. The ROAS plateau at 3.4× is likely a creative fatigue signal — top ad set has been running 22 days with no refresh.',
+        "The 3 missed IG posts represent a production gap, not a strategy gap. Carousel production time is currently 4.5 hours per post; target is 2.5 hours. TikTok's performance validates the process-transparency positioning. The ROAS plateau at 3.4× is likely a creative fatigue signal — top ad set has been running 22 days with no refresh.",
     },
     action: {
       title: 'Action',
@@ -83,7 +83,7 @@ const SEED_REPORTS: KaiReport[] = [
     prescription: {
       title: 'Kai Prescription',
       body:
-        'Highest-leverage action: ad creative refresh. Running a 22-day-old creative on a $X00/day budget is burning margin. Even a 10% ROAS improvement on refreshed creative returns more than any other action this week. Production bottleneck is a Week 2 problem — do not let it block this week's paid performance fix.',
+        "Highest-leverage action: ad creative refresh. Running a 22-day-old creative on a $X00/day budget is burning margin. Even a 10% ROAS improvement on refreshed creative returns more than any other action this week. Production bottleneck is a Week 2 problem — do not let it block this week's paid performance fix.",
     },
     keyMetrics: [
       { label: 'ROAS', value: '3.4×', delta: 'Flat vs prior week', positive: true },
@@ -284,7 +284,7 @@ export default function AnalyticsReportsPage() {
     <>
       <AnalyticsSubNav />
 
-      <main className="max-w-[1200px] mx-auto px-6 py-8">
+      <main className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 py-8">
 
         {/* ── Header row ─────────────────────────────────────── */}
         <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">

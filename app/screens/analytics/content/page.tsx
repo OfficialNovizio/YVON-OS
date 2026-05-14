@@ -426,7 +426,7 @@ export default function AnalyticsContentPage() {
     <main className="pt-14 pb-16 min-h-screen" style={{ color: '#eef0f8' }}>
       <AnalyticsSubNav />
 
-      <div className="px-6 max-w-[1200px] mx-auto pt-8 space-y-10">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto pt-8 space-y-10">
 
         {/* ── 1. Content Health Summary ────────────────────────────────────── */}
         <section className="ana-glass p-6">

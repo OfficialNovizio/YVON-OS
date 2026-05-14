@@ -16,7 +16,7 @@ export default function AnalyticsSubNav() {
 
   return (
     <div className="ana-subnav sticky top-14 z-40">
-      <div className="max-w-[1200px] mx-auto px-6">
+      <div className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6">
         {/* Title + meta */}
         <div className="flex items-center justify-between pt-4 pb-3">
           <h1

@@ -71,7 +71,7 @@ export default function MarketingPage() {
 
   return (
     <main className="pt-14 pb-24 bg-[#131313] text-white min-h-screen">
-      <div className="pt-8 px-6 max-w-[1200px] mx-auto space-y-6">
+      <div className="pt-8 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto space-y-6">
 
         {/* ── Page Header ── */}
         <header className="flex items-end justify-between pb-4">

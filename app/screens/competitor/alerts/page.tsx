@@ -90,7 +90,7 @@ export default function CompetitorAlertsPage() {
     <main className="min-h-screen bg-black text-[#f5f5f7] antialiased flex flex-col pt-14">
       <CompetitorSubNav />
 
-      <div className="flex-grow pt-8 pb-24 px-6 max-w-[1200px] mx-auto w-full flex flex-col gap-8">
+      <div className="flex-grow pt-8 pb-24 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto w-full flex flex-col gap-8">
 
         {/* Summary KPIs */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -225,7 +225,7 @@ export default function CompetitorAlertsPage() {
 
       </div>
 
-      <footer className="border-t border-white/10 py-8 px-6 max-w-[1200px] mx-auto w-full flex justify-between items-center text-[12px] text-white/30">
+      <footer className="border-t border-white/10 py-8 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto w-full flex justify-between items-center text-[12px] text-white/30">
         <span>© 2026 YVON Intelligence. All rights reserved.</span>
         <div className="flex gap-6">
           {['Privacy', 'Terms', 'Support'].map((l) => (

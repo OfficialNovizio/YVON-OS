@@ -390,7 +390,7 @@ export default function CreativeStudioPage() {
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <main className="pt-20 pb-24 px-8 max-w-[900px] mx-auto">
+    <main className="pt-20 pb-24 px-8 max-w-[900px] 2xl:max-w-[min(90vw,1200px)] mx-auto">
 
       {/* Header */}
       <div className="text-center pt-14 pb-10">

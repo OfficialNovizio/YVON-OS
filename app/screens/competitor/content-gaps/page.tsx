@@ -18,7 +18,7 @@ export default function CompetitorContentGapsPage() {
 
       <CompetitorSubNav />
 
-      <div className="flex-grow pt-8 pb-32 px-6 max-w-[1200px] mx-auto w-full">
+      <div className="flex-grow pt-8 pb-32 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto w-full">
 
         {/* Section 1: Hero Briefing */}
         <section className="mb-8">
@@ -368,7 +368,7 @@ export default function CompetitorContentGapsPage() {
 
       {/* Footer */}
       <footer className="bg-[#1d1d1f] border-t border-white/10 py-12 px-16 mt-auto">
-        <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <span className="text-xl font-bold tracking-tight text-white">YVON</span>
             <span className="text-[#86868b] text-sm">© 2026 Strategy Platform. All rights reserved.</span>

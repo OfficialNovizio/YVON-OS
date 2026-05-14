@@ -12,7 +12,7 @@ export default function CompetitorContentIntelPage() {
 
       <CompetitorSubNav />
 
-      <div className="flex-1 w-full max-w-[1200px] mx-auto px-6 py-8 flex flex-col gap-8">
+      <div className="flex-1 w-full max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 py-8 flex flex-col gap-8">
 
         {/* Intelligence Brief Hero */}
         <section className={`${s1} rounded-3xl p-10 flex flex-col lg:flex-row gap-10 items-start`}
@@ -475,7 +475,7 @@ export default function CompetitorContentIntelPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 py-8 mt-12 w-full max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[13px]">
+      <footer className="border-t border-white/10 py-8 mt-12 w-full max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-[13px]">
         <div className="text-white/40">© 2024 YVON Intelligence. All rights reserved.</div>
         <div className="flex gap-6">
           {['Privacy', 'Terms', 'Support'].map((l) => (

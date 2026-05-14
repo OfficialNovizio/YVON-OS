@@ -16,7 +16,7 @@ export default function CompetitorSubNav() {
 
   return (
     <div className="sticky top-14 z-40 bg-black/95 backdrop-blur-xl border-b border-white/5">
-      <div className="max-w-[1200px] mx-auto px-6">
+      <div className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6">
         {/* Title + tracking strip */}
         <div className="flex items-center justify-between pt-5 pb-3">
           <h1 className="text-[22px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>
