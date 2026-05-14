@@ -2,19 +2,19 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-const INK   = '#0c0d10';
-const INK_2 = '#2a2c33';
-const INK_3 = 'rgba(12,13,16,0.62)';
-const INK_4 = 'rgba(12,13,16,0.42)';
-const INK_5 = 'rgba(12,13,16,0.22)';
-const INK_LINE = 'rgba(12,13,16,0.07)';
+const INK   = '#eef0f8';
+const INK_2 = '#b8c2d8';
+const INK_3 = 'rgba(220,228,248,0.75)';
+const INK_4 = 'rgba(220,228,248,0.45)';
+const INK_5 = 'rgba(220,228,248,0.22)';
+const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
 const GREEN  = '#059669';
 const VIOLET = '#6c5ce7';
 
 function SysPanel({ title, right, children }: { title: string; right?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div style={{ padding: 18, borderRadius: 16, background: 'rgba(255,255,255,0.55)', border: `1px solid ${INK_LINE}` }}>
+    <div style={{ padding: 18, borderRadius: 16, background: 'rgba(255,255,255,0.06)', border: `1px solid ${INK_LINE}` }}>
       <h5 style={{ margin: '0 0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {title}
         {right && <span style={{ fontSize: 9, color: INK_4, letterSpacing: '0.18em' }}>{right}</span>}
@@ -26,7 +26,7 @@ function SysPanel({ title, right, children }: { title: string; right?: React.Rea
 
 function Chip({ label, value }: { label: string; value: string }) {
   return (
-    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', padding: '6px 10px', borderRadius: 999, background: 'rgba(12,13,16,0.05)', color: INK_2, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', padding: '6px 10px', borderRadius: 999, background: 'rgba(255,255,255,0.10)', color: INK_2, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
       {label} <span style={{ color: INK, fontWeight: 800 }}>{value}</span>
     </span>
   );
@@ -118,12 +118,12 @@ function ProjectGraphPanel() {
           <div style={{ width: 20, height: 20, border: `2px solid ${INK_LINE}`, borderTopColor: ACCENT, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         </div>
       ) : (
-        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display: 'block', borderRadius: 10, background: 'rgba(12,13,16,0.03)' }}>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display: 'block', borderRadius: 10, background: 'rgba(255,255,255,0.04)' }}>
           {edges.map((e, i) => {
             const s = nodeIdx[e.source], t = nodeIdx[e.target];
             if (!s || !t) return null;
             const active = hovered === s.id || hovered === t.id;
-            return <line key={i} x1={s.x} y1={s.y} x2={t.x} y2={t.y} stroke={active ? commColor(s.community) : 'rgba(12,13,16,0.15)'} strokeWidth={active ? 1.2 : 0.7} />;
+            return <line key={i} x1={s.x} y1={s.y} x2={t.x} y2={t.y} stroke={active ? commColor(s.community) : 'rgba(255,255,255,0.20)'} strokeWidth={active ? 1.2 : 0.7} />;
           })}
           {nodes.map(node => {
             const r   = 3 + (node.degree / maxDeg) * 5;

@@ -2,9 +2,9 @@
 
 import type { TabId } from './page';
 
-const INK    = '#0c0d10';
-const INK_2  = 'rgba(12,13,16,0.62)';
-const INK_4  = 'rgba(12,13,16,0.42)';
+const INK    = '#eef0f8';
+const INK_2  = 'rgba(220,228,248,0.75)';
+const INK_4  = 'rgba(220,228,248,0.45)';
 const ACCENT = '#0066cc';
 const GREEN  = '#059669';
 
@@ -26,16 +26,16 @@ function Ticker() {
       className="relative flex items-center overflow-hidden"
       style={{
         height: 38, borderRadius: 999,
-        background: 'rgba(255,255,255,0.55)',
-        backdropFilter: 'blur(22px) saturate(180%)',
-        border: '1px solid rgba(255,255,255,0.65)',
-        boxShadow: '0 1px 0 rgba(255,255,255,0.9) inset, 0 0 0 1px rgba(255,255,255,0.5) inset, 0 4px 12px -4px rgba(20,24,40,0.10)',
+        background: 'rgba(255,255,255,0.08)',
+        backdropFilter: 'blur(28px) saturate(160%) brightness(1.1)',
+        border: '1px solid rgba(255,255,255,0.14)',
+        boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 20px 40px -18px rgba(0,0,0,0.50), 0 4px 10px -4px rgba(0,0,0,0.30)',
       }}
     >
       {/* Live badge */}
       <div
         className="flex-none flex items-center gap-2 px-4"
-        style={{ height: '100%', borderRight: '1px solid rgba(12,13,16,0.07)', fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_2 }}
+        style={{ height: '100%', borderRight: '1px solid rgba(255,255,255,0.12)', fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_2 }}
       >
         <span className="ceo-live-dot" />
         <span>Live</span>
@@ -48,14 +48,14 @@ function Ticker() {
       >
         <div
           className="ceo-ticker-track flex items-center gap-7 h-full"
-          style={{ width: 'max-content', paddingInline: 28, fontSize: 12, color: '#2a2c33', fontWeight: 500 }}
+          style={{ width: 'max-content', paddingInline: 28, fontSize: 12, color: 'rgba(220,228,248,0.80)', fontWeight: 500 }}
         >
           {items.map((it, i) => (
             <span key={i} className="inline-flex items-center gap-1">
               <span>{it.text} </span>
               <span style={{ color: it.dir === 'neg' ? '#dc2626' : GREEN, fontWeight: 600 }}>{it.delta}</span>
               <span style={{ opacity: 0.5 }}> · {it.sub}</span>
-              <span className="mx-3.5 w-1 h-1 rounded-full flex-none" style={{ background: 'rgba(12,13,16,0.22)' }} />
+              <span className="mx-3.5 w-1 h-1 rounded-full flex-none" style={{ background: 'rgba(255,255,255,0.28)' }} />
             </span>
           ))}
         </div>
@@ -64,9 +64,9 @@ function Ticker() {
       {/* Right label */}
       <div
         className="flex-none flex items-center gap-2.5 px-4"
-        style={{ height: '100%', borderLeft: '1px solid rgba(12,13,16,0.07)', fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: INK_4, textTransform: 'uppercase' }}
+        style={{ height: '100%', borderLeft: '1px solid rgba(255,255,255,0.12)', fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: INK_4, textTransform: 'uppercase' }}
       >
-        <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(12,13,16,0.06)', color: '#2a2c33', letterSpacing: '0.14em' }}>13 sources</span>
+        <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{ background: 'rgba(255,255,255,0.14)', color: 'rgba(220,228,248,0.90)', letterSpacing: '0.14em' }}>13 sources</span>
         <span>06:42 AM PT</span>
       </div>
     </div>
@@ -87,7 +87,7 @@ function PageHead() {
         </h1>
       </div>
       <div className="text-right flex flex-col gap-1">
-        <p style={{ fontSize: 14, fontWeight: 500, color: '#2a2c33' }}>{today}</p>
+        <p style={{ fontSize: 14, fontWeight: 500, color: 'rgba(220,228,248,0.80)' }}>{today}</p>
         <p className="flex items-center justify-end gap-1.5" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: GREEN }}>
           <span className="ceo-live-dot" style={{ background: GREEN }} />
           Next refresh 06:00 AM
@@ -110,11 +110,11 @@ function TabStrip({ active, onChange, actCount }: { active: TabId; onChange: (t:
     <nav
       className="flex items-center gap-1.5 mt-[22px] p-1.5 w-fit"
       style={{
-        background: 'rgba(255,255,255,0.55)',
-        backdropFilter: 'blur(22px) saturate(180%)',
-        border: '1px solid rgba(255,255,255,0.65)',
+        background: 'rgba(255,255,255,0.08)',
+        backdropFilter: 'blur(28px) saturate(160%) brightness(1.1)',
+        border: '1px solid rgba(255,255,255,0.14)',
         borderRadius: 999,
-        boxShadow: '0 1px 0 rgba(255,255,255,0.9) inset, 0 0 0 1px rgba(255,255,255,0.5) inset, 0 4px 12px -4px rgba(20,24,40,0.10)',
+        boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 20px 40px -18px rgba(0,0,0,0.50), 0 4px 10px -4px rgba(0,0,0,0.30)',
       }}
     >
       {TABS.map(t => (
@@ -124,7 +124,7 @@ function TabStrip({ active, onChange, actCount }: { active: TabId; onChange: (t:
           aria-selected={active === t.id}
           onClick={() => onChange(t.id)}
           className={`flex items-center gap-2 px-[18px] py-[9px] rounded-full text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-200 ${active === t.id ? 'ceo-tab-active' : ''}`}
-          style={{ color: active === t.id ? '#fff' : INK_4, border: 'none', background: active === t.id ? INK : 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ color: active === t.id ? '#0c0d10' : INK_4, border: 'none', background: active === t.id ? 'rgba(255,255,255,0.92)' : 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
         >
           {t.label}
           {t.badge && actCount > 0 && (

@@ -1,22 +1,22 @@
 'use client';
 
-const INK   = '#0c0d10';
-const INK_2 = '#2a2c33';
-const INK_3 = 'rgba(12,13,16,0.62)';
-const INK_4 = 'rgba(12,13,16,0.42)';
-const INK_5 = 'rgba(12,13,16,0.22)';
-const INK_LINE = 'rgba(12,13,16,0.07)';
+const INK   = '#eef0f8';
+const INK_2 = '#b8c2d8';
+const INK_3 = 'rgba(220,228,248,0.75)';
+const INK_4 = 'rgba(220,228,248,0.45)';
+const INK_5 = 'rgba(220,228,248,0.22)';
+const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
 const GREEN  = '#059669';
 const VIOLET = '#6c5ce7';
 
 const GLASS: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.55)',
-  backdropFilter: 'blur(24px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-  border: '1px solid rgba(255,255,255,0.65)',
+  background: 'rgba(255,255,255,0.07)',
+  backdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
+  WebkitBackdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: 22,
-  boxShadow: '0 1px 0 rgba(255,255,255,0.9) inset, 0 0 0 1px rgba(255,255,255,0.5) inset, 0 10px 30px -12px rgba(20,24,40,0.18), 0 2px 6px -2px rgba(20,24,40,0.08)',
+  boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 0 0 1px rgba(255,255,255,0.07) inset, 0 20px 60px -20px rgba(0,0,0,0.55), 0 4px 12px -4px rgba(0,0,0,0.30)',
 };
 
 function CardLabel({ children }: { children: React.ReactNode }) {
@@ -45,7 +45,7 @@ function StrategicBriefing() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         {BRIEFING_BLOCKS.map(b => (
-          <div key={b.label} style={{ padding: 16, borderRadius: 14, background: 'rgba(255,255,255,0.65)', border: `1px solid ${INK_LINE}` }}>
+          <div key={b.label} style={{ padding: 16, borderRadius: 14, background: 'rgba(255,255,255,0.07)', border: `1px solid ${INK_LINE}` }}>
             <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: b.color, margin: '0 0 8px' }}>{b.label}</p>
             <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: INK_2, fontWeight: 400 }}>{b.body}</p>
           </div>
@@ -179,8 +179,8 @@ function CeoReadout() {
     <div style={{
       ...GLASS,
       padding: 22,
-      background: 'linear-gradient(135deg, rgba(221,214,254,0.55), rgba(255,255,255,0.55))',
-      border: '1px solid rgba(108,92,231,0.25)',
+      background: 'linear-gradient(135deg, rgba(108,92,231,0.22), rgba(255,255,255,0.06))',
+      border: '1px solid rgba(108,92,231,0.30)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

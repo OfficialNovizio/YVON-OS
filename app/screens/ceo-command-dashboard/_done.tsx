@@ -2,24 +2,24 @@
 
 import { useState, useEffect } from 'react';
 
-const INK   = '#0c0d10';
-const INK_2 = '#2a2c33';
-const INK_3 = 'rgba(12,13,16,0.62)';
-const INK_4 = 'rgba(12,13,16,0.42)';
-const INK_5 = 'rgba(12,13,16,0.22)';
-const INK_LINE = 'rgba(12,13,16,0.07)';
+const INK   = '#eef0f8';
+const INK_2 = '#b8c2d8';
+const INK_3 = 'rgba(220,228,248,0.75)';
+const INK_4 = 'rgba(220,228,248,0.45)';
+const INK_5 = 'rgba(220,228,248,0.22)';
+const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
 const GREEN  = '#059669';
 const AMBER  = '#d97706';
 const RED    = '#dc2626';
 
 const GLASS: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.55)',
-  backdropFilter: 'blur(24px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-  border: '1px solid rgba(255,255,255,0.65)',
+  background: 'rgba(255,255,255,0.07)',
+  backdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
+  WebkitBackdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: 22,
-  boxShadow: '0 1px 0 rgba(255,255,255,0.9) inset, 0 0 0 1px rgba(255,255,255,0.5) inset, 0 10px 30px -12px rgba(20,24,40,0.18), 0 2px 6px -2px rgba(20,24,40,0.08)',
+  boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 0 0 1px rgba(255,255,255,0.07) inset, 0 20px 60px -20px rgba(0,0,0,0.55), 0 4px 12px -4px rgba(0,0,0,0.30)',
 };
 
 function CardLabel({ children }: { children: React.ReactNode }) {

@@ -108,20 +108,17 @@ export default function CEOCommandDashboardPage() {
 
   return (
     <>
-      {/* Light background — page-level override */}
-      <div
-        className="fixed inset-0 -z-10"
-        style={{ background: 'linear-gradient(180deg, #f6f7fa 0%, #eef0f5 60%, #f4f5f8 100%)' }}
-      />
+      {/* Background — 70% deep black base */}
+      <div className="fixed inset-0 -z-10" style={{ background: '#07090f' }} />
 
-      {/* Ambient orbs */}
+      {/* Color splashes — concentrated, not spread */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute -left-44 -top-48 w-[720px] h-[720px] rounded-full"
-          style={{ background: 'radial-gradient(circle at 40% 40%, #c4d8ff 0%, transparent 70%)', filter: 'blur(80px)', opacity: 0.55 }} />
-        <div className="absolute -right-28 top-[10%] w-[640px] h-[640px] rounded-full"
-          style={{ background: 'radial-gradient(circle at 50% 50%, #ffd8ec 0%, transparent 70%)', filter: 'blur(80px)', opacity: 0.45 }} />
-        <div className="absolute left-[30%] -bottom-64 w-[760px] h-[760px] rounded-full"
-          style={{ background: 'radial-gradient(circle at 50% 50%, #cef3df 0%, transparent 70%)', filter: 'blur(80px)', opacity: 0.40 }} />
+        {/* Sky blue splash — top-left corner */}
+        <div className="absolute -left-24 -top-24 w-[480px] h-[480px] rounded-full"
+          style={{ background: 'radial-gradient(circle at 35% 35%, #38bdf8 0%, #0ea5e9 30%, transparent 65%)', filter: 'blur(72px)', opacity: 0.45 }} />
+        {/* Cream splash — bottom-right corner */}
+        <div className="absolute -right-20 -bottom-20 w-[420px] h-[420px] rounded-full"
+          style={{ background: 'radial-gradient(circle at 60% 60%, #fde68a 0%, #fcd34d 25%, transparent 62%)', filter: 'blur(80px)', opacity: 0.22 }} />
       </div>
 
       {/* NavBar is rendered by layout.tsx above this — we account for its height (56px) */}

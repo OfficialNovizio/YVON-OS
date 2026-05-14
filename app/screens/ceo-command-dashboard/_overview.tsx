@@ -2,12 +2,12 @@
 
 import type { TabId } from './page';
 
-const INK   = '#0c0d10';
-const INK_2 = '#2a2c33';
-const INK_3 = 'rgba(12,13,16,0.62)';
-const INK_4 = 'rgba(12,13,16,0.42)';
-const INK_5 = 'rgba(12,13,16,0.22)';
-const INK_LINE = 'rgba(12,13,16,0.07)';
+const INK   = '#eef0f8';
+const INK_2 = '#b8c2d8';
+const INK_3 = 'rgba(220,228,248,0.75)';
+const INK_4 = 'rgba(220,228,248,0.45)';
+const INK_5 = 'rgba(220,228,248,0.22)';
+const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
 const GREEN  = '#059669';
 const VIOLET = '#6c5ce7';
@@ -16,12 +16,12 @@ const ACTIVE_AGENTS = ['Kai', 'Rio', 'Dev'];
 const IDLE_AGENTS   = ['Diana', 'Raj', 'Mia', 'Lena', 'Nate', 'Quinn', 'Atlas', 'Pixel', 'Felix', 'Marcus'];
 
 const GLASS_CARD: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.55)',
-  backdropFilter: 'blur(24px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-  border: '1px solid rgba(255,255,255,0.65)',
+  background: 'rgba(255,255,255,0.07)',
+  backdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
+  WebkitBackdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: 22,
-  boxShadow: '0 1px 0 rgba(255,255,255,0.9) inset, 0 0 0 1px rgba(255,255,255,0.5) inset, 0 10px 30px -12px rgba(20,24,40,0.18), 0 2px 6px -2px rgba(20,24,40,0.08)',
+  boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 0 0 1px rgba(255,255,255,0.07) inset, 0 20px 60px -20px rgba(0,0,0,0.55), 0 4px 12px -4px rgba(0,0,0,0.30)',
 };
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -71,7 +71,7 @@ function OverviewSituation({ onGoFull }: { onGoFull: () => void }) {
       <div className="flex items-center gap-4 flex-wrap">
         <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4, marginRight: 4 }}>Active</span>
         {ACTIVE_AGENTS.map(name => (
-          <span key={name} className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.65)', border: `1px solid ${INK_LINE}`, fontSize: 12, fontWeight: 600, color: INK_2 }}>
+          <span key={name} className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.10)', border: `1px solid ${INK_LINE}`, fontSize: 12, fontWeight: 600, color: INK_2 }}>
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 0 3px rgba(16,185,129,0.18)', display: 'inline-block' }} />
             {name}
           </span>
@@ -81,12 +81,12 @@ function OverviewSituation({ onGoFull }: { onGoFull: () => void }) {
       <div className="flex items-center gap-3 flex-wrap mt-2.5">
         <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4, marginRight: 4 }}>Idle</span>
         {IDLE_AGENTS.slice(0, 6).map(name => (
-          <span key={name} className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: 'transparent', border: `1px solid rgba(12,13,16,0.06)`, fontSize: 12, fontWeight: 500, color: INK_4 }}>
+          <span key={name} className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: 'transparent', border: `1px solid rgba(255,255,255,0.10)`, fontSize: 12, fontWeight: 500, color: INK_4 }}>
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: INK_5, display: 'inline-block' }} />
             {name}
           </span>
         ))}
-        <span className="px-3 py-1 rounded-full" style={{ background: 'transparent', border: `1px dashed rgba(12,13,16,0.06)`, fontSize: 12, fontWeight: 500, color: INK_4 }}>
+        <span className="px-3 py-1 rounded-full" style={{ background: 'transparent', border: `1px dashed rgba(255,255,255,0.10)`, fontSize: 12, fontWeight: 500, color: INK_4 }}>
           +{IDLE_AGENTS.length - 6}
         </span>
       </div>
