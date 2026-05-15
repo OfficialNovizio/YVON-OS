@@ -12,7 +12,10 @@
     "graphify:watch": "C:/Users/Novy/AppData/Roaming/Python/Python314/Scripts/graphify.exe watch .",
     "graphify:query": "C:/Users/Novy/AppData/Roaming/Python/Python314/Scripts/graphify.exe query",
     "codegraph:build": "node scripts/codegraph-build.mjs",
-    "codegraph:serve": "C:/Users/Novy/AppData/Roaming/Python/Python314/Scripts/code-review-graph.exe serve"
+    "codegraph:serve": "C:/Users/Novy/AppData/Roaming/Python/Python314/Scripts/code-review-graph.exe serve",
+    "curator": "node scripts/curator.mjs",
+    "insights": "node scripts/insights.mjs",
+    "reflect": "node scripts/self-reflect.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

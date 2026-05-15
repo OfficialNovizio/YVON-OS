@@ -1,17 +1,103 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Local Fonts: SF Pro Display ─────────────────────────────────────────── */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYREGULAR.OTF') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYMEDIUM.OTF') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYBOLD.OTF') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYSEMIBOLDITALIC.OTF') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYHEAVYITALIC.OTF') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYBLACKITALIC.OTF') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYLIGHTITALIC.OTF') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYTHINITALIC.OTF') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/SFPRODISPLAYULTRALIGHTITALIC.OTF') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design System Tokens ─────────────────────────────────────────────────── */
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  --glass-ease: cubic-bezier(.22,.61,.36,1);
+
+  /* Background */
+  --page-bg-image: url('/Background Image.jpg');
+
+  /* Glass variant ink (text) colors */
+  --glass-v1-ink:    #0c2c52;   /* Clear Ice  — deep navy */
+  --glass-v2-ink:    #f4f8ff;   /* Azure Tint — near-white */
+  --glass-v3-ink:    #f1f5fb;   /* Obsidian   — off-white */
+  --glass-v4-ink:    #2a1240;   /* Prism      — dark plum */
+}
+
 @layer base {
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #000000;
     color: #e2e2e2;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+  }
+
+  /* Page-level background — apply .page-bg to root wrapper */
+  .page-bg {
+    background: var(--page-bg-image) center / cover no-repeat fixed, #4a90d9;
+    min-height: 100vh;
   }
 
   .material-symbols-outlined {
@@ -47,6 +133,118 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
     background-size: 200% 100%;
     animation: shimmer 3s infinite;
+  }
+
+  /* ── Glass Design System — 4 Variants ────────────────────────────────────
+     All share the same physical contract: translucent fill, edge highlight,
+     soft drop shadow, backdrop blur. Only tint + text color differ.
+     Position: relative; isolation: isolate — required when using ::before sheen.
+  ─────────────────────────────────────────────────────────────────────────── */
+
+  /* Variant 1 — Clear Ice: frosted white, deep navy text */
+  .glass-v1 {
+    position: relative;
+    isolation: isolate;
+    background: rgba(255,255,255,0.32);
+    backdrop-filter: blur(32px) saturate(160%);
+    -webkit-backdrop-filter: blur(32px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.70),
+      inset 0 -1px 0 rgba(255,255,255,0.10),
+      0 18px 50px -10px rgba(20,60,120,0.28);
+    color: var(--glass-v1-ink);
+  }
+
+  /* Variant 2 — Azure Tint: saturated blue glass, light text */
+  .glass-v2 {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(135deg, rgba(36,99,180,0.42), rgba(20,70,140,0.55));
+    backdrop-filter: blur(30px) saturate(190%);
+    -webkit-backdrop-filter: blur(30px) saturate(190%);
+    border: 1px solid rgba(180,210,255,0.40);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.40),
+      inset 0 -1px 0 rgba(0,30,80,0.25),
+      0 18px 50px -10px rgba(10,40,100,0.40);
+    color: var(--glass-v2-ink);
+  }
+
+  /* Variant 3 — Obsidian: dark smoke glass, near-white text */
+  .glass-v3 {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(135deg, rgba(15,22,38,0.55), rgba(8,14,28,0.70));
+    backdrop-filter: blur(34px) saturate(140%);
+    -webkit-backdrop-filter: blur(34px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.30),
+      0 22px 60px -12px rgba(0,10,40,0.55);
+    color: var(--glass-v3-ink);
+  }
+
+  /* Variant 4 — Prism: iridescent pink+cyan glass, dark plum text */
+  .glass-v4 {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(120% 80% at 0% 0%,   rgba(255,150,200,0.32), transparent 55%),
+      radial-gradient(120% 80% at 100% 100%, rgba(120,200,255,0.40), transparent 55%),
+      linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0.12));
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.50);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.60),
+      inset 0 -1px 0 rgba(255,255,255,0.10),
+      0 18px 50px -10px rgba(180,80,160,0.30);
+    color: var(--glass-v4-ink);
+  }
+
+  /* Specular sheen overlay — shared across all 4 variants */
+  .glass-v1::before,
+  .glass-v2::before,
+  .glass-v3::before,
+  .glass-v4::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.55) 0%,
+      rgba(255,255,255,0.05) 38%,
+      rgba(255,255,255,0.00) 60%,
+      rgba(255,255,255,0.18) 100%
+    );
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
+
+  /* ── Floating Glass NavBar ──────────────────────────────────────────────── */
+  .glass-nav {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 1480px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.55),
+      inset 0 -1px 0 rgba(255,255,255,0.08),
+      0 8px 32px rgba(20,60,120,0.18);
   }
 }
 
@@ -146,9 +344,10 @@
 }
 
 .ceo-agent-card {
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(12,13,16,0.07);
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(12,13,16,0.09);
   border-radius: 16px;
+  color: #0c2c52;
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 .ceo-agent-card:hover {
@@ -160,11 +359,12 @@
 .ceo-agent-card.done   { opacity: 0.85; }
 
 .ceo-report-card {
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(12,13,16,0.07);
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.30);
   border-left-width: 3px;
   border-radius: 16px;
   padding: 14px 16px;
+  color: #f1f5fb;
 }
 .ceo-report-card.analytics  { border-left-color: #0066cc; }
 .ceo-report-card.marketing  { border-left-color: #d97706; }
@@ -185,14 +385,15 @@
 .ceo-priority-row:last-child { border-bottom: 0; }
 
 .ceo-source-card {
-  background: rgba(255,255,255,0.72);
-  border: 1px solid rgba(12,13,16,0.07);
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
   border-top-width: 3px;
   border-radius: 16px;
   padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  color: #f4f8ff;
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 .ceo-source-card:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -14px rgba(20,24,40,0.20); }
@@ -206,12 +407,12 @@
   gap: 12px;
   padding: 12px 14px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(12,13,16,0.07);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
   cursor: pointer;
   transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
 }
-.ceo-act-row:hover { transform: translateY(-1px); background: rgba(255,255,255,0.85); box-shadow: 0 8px 20px -10px rgba(20,24,40,0.18); }
+.ceo-act-row:hover { transform: translateY(-1px); background: rgba(255,255,255,0.16); box-shadow: 0 8px 20px -10px rgba(0,10,40,0.40); }
 
 .ceo-system-strip {
   border-radius: 22px;
@@ -252,3 +453,40 @@
   transition: all 220ms ease;
 }
 .ceo-war-room-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -10px rgba(108,92,231,0.65); }
+
+/* ── Analytics Glass Classes ─────────────────────────────────────────────────── */
+.ana-glass {
+  background: rgba(255,255,255,0.32);
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.70), inset 0 -1px 0 rgba(255,255,255,0.10), 0 18px 50px -10px rgba(20,60,120,0.28);
+}
+.ana-glass-v2 {
+  background: linear-gradient(135deg,rgba(36,99,180,0.42),rgba(20,70,140,0.55));
+  backdrop-filter: blur(30px) saturate(190%);
+  -webkit-backdrop-filter: blur(30px) saturate(190%);
+  border: 1px solid rgba(180,210,255,0.40);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), inset 0 -1px 0 rgba(0,30,80,0.25), 0 18px 50px -10px rgba(10,40,100,0.40);
+}
+.ana-glass-v3 {
+  background: linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72));
+  backdrop-filter: blur(34px) saturate(140%);
+  -webkit-backdrop-filter: blur(34px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.30), 0 22px 60px -12px rgba(0,10,40,0.55);
+}
+.ana-glass-hover { transition: transform 160ms ease, box-shadow 160ms ease; cursor: pointer; }
+.ana-glass-hover:hover { transform: translateY(-2px); box-shadow: 0 22px 48px -12px rgba(20,60,120,0.35); }
+
+.ana-glass-v4 {
+  background: radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12));
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.50);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.60), inset 0 -1px 0 rgba(255,255,255,0.10), 0 18px 50px -10px rgba(180,80,160,0.30);
+}

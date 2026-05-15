@@ -1,3 +1,0 @@
-**Rule**: Never initiate plan mode or use `EnterPlanMode` unless explicitly requested by the user to design an implementation plan.
-**Why:** The user finds that planning steps are unnecessary overhead if they can proceed with direct, simple instructions and prefer immediate action over multi-stage architectural deliberation.
-**How to apply:** If the user's request is straightforward (e.g., "Change X line to Y," or "Fix this bug"), skip the planning phase entirely and move straight to execution after confirming the task scope.

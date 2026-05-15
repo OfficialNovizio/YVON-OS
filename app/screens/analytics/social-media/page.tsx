@@ -41,6 +41,9 @@ const AGENT_META: Record<string, { label: string; color: string }> = {
   kai:   { label: 'Kai · Analytics',  color: 'bg-[#0066cc]/15 text-[#0066cc]'    },
 };
 
+// ─── Glass variant helpers ─────────────────────────────────────────────────────
+const I3d='rgba(241,245,251,0.45)', L3='rgba(255,255,255,0.10)';
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function fmt(n: number) {
@@ -116,10 +119,10 @@ export default function SocialMediaPage() {
   const priorityStyle = { critical: 'bg-red-500/15 text-red-400', high: 'bg-orange-500/15 text-orange-400', medium: 'bg-white/10 text-white/60' };
 
   return (
-    <main className="pt-14 pb-24 min-h-screen antialiased" style={{ color: '#eef0f8' }}>
+    <main className="min-h-screen pb-24 antialiased">
       <AnalyticsSubNav />
 
-      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto pt-8 flex flex-col gap-12">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px] flex flex-col gap-12">
 
         {/* ── SECTION 1: Kai Situation Report ───────────────────────────────── */}
         <section className="flex flex-col gap-4">
@@ -138,7 +141,7 @@ export default function SocialMediaPage() {
           </div>
 
           {briefLoading && (
-            <div className="ana-glass rounded-[20px] p-8 flex flex-col gap-4">
+            <div className="ana-glass-v2 rounded-[20px] p-8 flex flex-col gap-4">
               <Shimmer className="h-4 w-3/4" />
               <Shimmer className="h-4 w-2/3" />
               <Shimmer className="h-4 w-1/2" />
@@ -152,7 +155,7 @@ export default function SocialMediaPage() {
           )}
 
           {!briefLoading && !briefError && brief && (
-            <div className="ana-glass rounded-[20px] p-8 flex flex-col gap-6">
+            <div className="ana-glass-v2 rounded-[20px] p-8 flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
                   { label: 'Situation', icon: 'analytics',   text: brief.brief?.situation ?? '…',  accent: 'text-white' },
@@ -185,14 +188,14 @@ export default function SocialMediaPage() {
         {/* ── SECTION 2: Platform Health Matrix ────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div>
-            <h2 className="text-[18px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>Platform Health Matrix</h2>
-            <p className="text-[12px] text-white/40 mt-0.5">Novizio baseline vs competitor benchmarks · connect a platform to start tracking</p>
+            <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Platform Health Matrix</h2>
+            <p className="text-[12px] mt-0.5" style={{ color: 'rgba(0,0,0,0.55)' }}>Novizio baseline vs competitor benchmarks · connect a platform to start tracking</p>
           </div>
 
-          <div className="ana-glass rounded-[20px] overflow-hidden">
-            <table className="w-full text-left text-[13px]">
-              <thead className="border-b border-white/5">
-                <tr className="text-[10px] font-bold uppercase tracking-wider text-white/30">
+          <div className="ana-glass-v2 rounded-[20px] overflow-hidden">
+            <table className="w-full text-left text-[13px]" style={{ color: '#000000' }}>
+              <thead className="border-b" style={{ borderColor: 'rgba(0,0,0,0.12)' }}>
+                <tr className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'rgba(0,0,0,0.55)' }}>
                   <th className="px-6 py-4">Platform</th>
                   <th className="px-5 py-4">Your Status</th>
                   <th className="px-5 py-4">Your Target</th>
@@ -202,43 +205,43 @@ export default function SocialMediaPage() {
                   <th className="px-5 py-4"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y" style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
                 {PLATFORMS.map((p) => {
                   const topComp = COMPETITORS[0];
                   const bench = topComp[p.key as PlatformKey] as { followers: number; engRate: number };
                   return (
-                    <tr key={p.name} className="hover:bg-white/[0.02] transition-colors group">
+                    <tr key={p.name} className="transition-colors group">
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">
                           <span className="material-symbols-outlined text-[20px]" style={{ color: p.iconColor }}>{p.icon}</span>
-                          <span className="text-white font-medium" style={{ fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.name}</span>
+                          <span className="font-semibold" style={{ fontFamily: 'InstrumentSans, Inter, sans-serif', color: '#000000' }}>{p.name}</span>
                         </div>
                       </td>
                       <td className="px-5 py-5">
                         <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full"
-                          style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(238,240,248,0.35)', border: '1px solid rgba(255,255,255,0.08)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                          style={{ background: 'rgba(0,0,0,0.06)', color: 'rgba(0,0,0,0.55)', border: '1px solid rgba(0,0,0,0.10)' }}>
                           Not started
                         </span>
                       </td>
                       <td className="px-5 py-5">
-                        <span className="text-[13px] font-medium" style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: 'rgba(238,240,248,0.55)' }}>
+                        <span className="text-[13px] font-medium" style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: 'rgba(0,0,0,0.80)' }}>
                           {fmt(bench.followers)}
                         </span>
-                        <span className="text-[10px] block mt-0.5" style={{ color: 'rgba(238,240,248,0.25)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Zara target</span>
+                        <span className="text-[10px] block mt-0.5" style={{ color: 'rgba(0,0,0,0.50)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Zara target</span>
                       </td>
                       <td className="px-5 py-5">
-                        <span className="text-[13px] font-medium" style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: 'rgba(238,240,248,0.55)' }}>
+                        <span className="text-[13px] font-medium" style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: 'rgba(0,0,0,0.80)' }}>
                           {bench.engRate}%
                         </span>
-                        <span className="text-[10px] block mt-0.5" style={{ color: 'rgba(238,240,248,0.25)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Zara benchmark</span>
+                        <span className="text-[10px] block mt-0.5" style={{ color: 'rgba(0,0,0,0.50)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Zara benchmark</span>
                       </td>
                       <td className="px-5 py-5">
-                        <span className="text-[12px]" style={{ color: 'rgba(238,240,248,0.40)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Zara</span>
+                        <span className="text-[12px]" style={{ color: 'rgba(0,0,0,0.60)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Zara</span>
                       </td>
                       <td className="px-5 py-5 text-center">
                         <div className="flex flex-col items-center gap-1">
                           <HealthDot score="empty" />
-                          <span className="text-[9px]" style={{ color: 'rgba(238,240,248,0.25)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Connect</span>
+                          <span className="text-[9px]" style={{ color: 'rgba(0,0,0,0.50)' }}>Connect</span>
                         </div>
                       </td>
                       <td className="px-5 py-5">
@@ -254,15 +257,15 @@ export default function SocialMediaPage() {
             </table>
           </div>
 
-          {/* Competitive Pulse Strip */}
+          {/* Competitive Pulse Strip — V1 Clear Ice */}
           <div className="ana-glass rounded-[16px] px-6 py-4 flex items-center gap-6 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-white/30 shrink-0">Competitor Pulse</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider shrink-0" style={{ color: 'rgba(0,0,0,0.55)' }}>Competitor Pulse</span>
             {COMPETITORS.map(c => (
               <div key={c.name} className="flex items-center gap-3 shrink-0">
-                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold text-white">{c.name[0]}</div>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ background: 'rgba(0,0,0,0.10)', color: '#000000' }}>{c.name[0]}</div>
                 <div>
-                  <span className="text-white text-[12px] font-medium">{c.name}</span>
-                  <div className="flex items-center gap-2 text-[10px] text-white/40">
+                  <span className="text-[12px] font-medium" style={{ color: '#000000' }}>{c.name}</span>
+                  <div className="flex items-center gap-2 text-[10px]" style={{ color: 'rgba(0,0,0,0.55)' }}>
                     <span>IG {fmt(c.ig.followers)}</span>
                     <span>·</span>
                     <span>TT {fmt(c.tt.followers)}</span>
@@ -281,72 +284,44 @@ export default function SocialMediaPage() {
         <section className="flex flex-col gap-4">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-[18px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>Content Intelligence Feed</h2>
-              <p className="text-[12px] text-white/40 mt-0.5">Posts ranked by Intelligence Score = (Eng × 0.3) + (Conv × 0.4) + (Voice × 0.2) + (Diff × 0.1)</p>
+              <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Content Intelligence Feed</h2>
+              <p className="text-[12px] mt-0.5" style={{ color: 'rgba(0,0,0,0.55)' }}>Posts ranked by Intelligence Score = (Eng × 0.3) + (Conv × 0.4) + (Voice × 0.2) + (Diff × 0.1)</p>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
               {['All', 'Instagram', 'TikTok', 'LinkedIn'].map((f, i) => (
-                <button key={f} className={`px-3 py-1.5 rounded-full transition-colors ${i === 0 ? 'bg-[#0066cc] text-white' : 'bg-white/5 text-white/40 hover:text-white hover:bg-white/10'}`}>
+                <button key={f} className={`px-3 py-1.5 rounded-full transition-colors ${i === 0 ? 'bg-[#0066cc] text-white' : ''}`}
+                  style={i !== 0 ? { background: 'rgba(0,0,0,0.06)', color: 'rgba(0,0,0,0.60)', border: '1px solid rgba(0,0,0,0.10)' } : {}}>
                   {f}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Empty state — ghost cards showing what tracked posts will look like */}
-          <div className="flex flex-col gap-3">
-            <div className="border-2 border-dashed border-white/10 rounded-[18px] p-6 flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-[16px] text-white/20">photo_camera</span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="h-3 w-32 bg-white/5 rounded" />
-                    <div className="h-2.5 w-20 bg-white/[0.03] rounded" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <div className="h-4 w-8 bg-white/5 rounded mx-auto mb-1" />
-                    <div className="h-2 w-10 bg-white/[0.03] rounded" />
-                  </div>
-                  <div className="text-center">
-                    <div className="h-4 w-8 bg-white/5 rounded mx-auto mb-1" />
-                    <div className="h-2 w-10 bg-white/[0.03] rounded" />
-                  </div>
-                  <div className="h-7 w-20 bg-white/5 rounded-lg" />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 pt-2 border-t border-white/5">
-                <div className="h-5 w-28 bg-white/[0.03] rounded-full" />
-                <div className="h-5 w-24 bg-white/[0.03] rounded-full" />
-              </div>
+          {/* Empty state — V1 Clear Ice */}
+          <div className="ana-glass p-6 flex flex-col items-center gap-4 text-center">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.06)' }}>
+              <span className="material-symbols-outlined text-[24px]" style={{ color: 'rgba(0,0,0,0.35)' }}>insert_chart</span>
             </div>
-
-            <div className="border border-white/[0.04] rounded-[18px] p-8 flex flex-col items-center gap-3 text-center bg-[#111111]/50">
-              <span className="material-symbols-outlined text-[32px] text-white/15">insert_chart</span>
-              <p className="text-white/40 text-[13px] max-w-xs">
-                Connect your first social platform above and your top posts will appear here, ranked by Intelligence Score.
-              </p>
-              <button className="mt-2 bg-[#0066cc] hover:bg-[#0066cc]/90 text-white text-[12px] font-medium px-5 py-2 rounded-full active:scale-95 transition-all">
-                Connect Instagram first
-              </button>
-            </div>
+            <p className="text-[13px] max-w-xs" style={{ color: 'rgba(0,0,0,0.70)' }}>
+              Connect your first social platform above and your top posts will appear here, ranked by Intelligence Score.
+            </p>
+            <button className="bg-[#0066cc] hover:bg-[#0066cc]/90 text-white text-[12px] font-medium px-5 py-2 rounded-full active:scale-95 transition-all">
+              Connect Instagram first
+            </button>
           </div>
         </section>
 
         {/* ── SECTION 4: Format × Platform Grid ────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div>
-            <h2 className="text-[18px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>Format × Platform Performance</h2>
-            <p className="text-[12px] text-white/40 mt-0.5">Your data (—) vs competitor benchmark · green cell = high opportunity for you</p>
+            <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Format × Platform Performance</h2>
+            <p className="text-[12px] mt-0.5" style={{ color: 'rgba(0,0,0,0.55)' }}>Your data (—) vs competitor benchmark · green cell = high opportunity for you</p>
           </div>
 
-          <div className="ana-glass rounded-[20px] overflow-hidden">
+          <div className="ana-glass-v3 rounded-[20px] overflow-hidden">
             <table className="w-full text-[12px] text-left">
-              <thead className="border-b border-white/5">
-                <tr className="text-[10px] font-bold uppercase tracking-wider text-white/30">
+              <thead className="border-b" style={{ borderColor: L3 }}>
+                <tr className="text-[10px] font-bold uppercase tracking-wider" style={{ color: I3d }}>
                   <th className="px-6 py-4">Format</th>
                   {PLATFORM_KEYS.map(k => (
                     <th key={k} className="px-5 py-4">{PLATFORM_LABELS[k]}</th>
@@ -356,7 +331,7 @@ export default function SocialMediaPage() {
               <tbody className="divide-y divide-white/[0.04]">
                 {Object.entries(FORMAT_BENCH).map(([format, cells]) => (
                   <tr key={format} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="px-6 py-4 text-white/80 font-medium">{format}</td>
+                    <td className="px-6 py-4 text-white font-medium">{format}</td>
                     {PLATFORM_KEYS.map(k => {
                       const cell = cells[k];
                       return (
@@ -380,13 +355,13 @@ export default function SocialMediaPage() {
           </div>
 
           {/* Nate recommendation */}
-          <div className="bg-emerald-500/5 border border-emerald-500/15 rounded-[16px] px-6 py-4 flex items-start gap-3">
-            <span className="material-symbols-outlined text-emerald-400 text-[18px] mt-0.5">trending_up</span>
+          <div className="ana-glass rounded-[16px] px-6 py-4 flex items-start gap-4">
+            <span className="material-symbols-outlined text-[#059669] text-[18px] mt-0.5">trending_up</span>
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block mb-1">Nate · Budget Recommendation</span>
-              <p className="text-[13px] text-white/70">
+              <span className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: '#059669' }}>Nate · Budget Recommendation</span>
+              <p className="text-[13px] leading-relaxed" style={{ color: 'rgba(0,0,0,0.80)' }}>
                 TikTok Reels show the highest engagement-to-conversion ratio (8.4% / 2.9%) across all competitor data.
-                Start here — lowest CAC at <strong className="text-white">$4.20</strong> vs Instagram <strong className="text-white">$12.40</strong>. Once you reach 1K followers, shift 30% budget to Instagram Carousels for conversion optimisation.
+                Start here — lowest CAC at <strong style={{ color: '#000000' }}>$4.20</strong> vs Instagram <strong style={{ color: '#000000' }}>$12.40</strong>. Once you reach 1K followers, shift 30% budget to Instagram Carousels for conversion optimisation.
               </p>
             </div>
           </div>
@@ -395,8 +370,8 @@ export default function SocialMediaPage() {
         {/* ── SECTION 5: Audience Momentum ─────────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div>
-            <h2 className="text-[18px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>Audience Momentum</h2>
-            <p className="text-[12px] text-white/40 mt-0.5">Quality over quantity — are you building the right audience?</p>
+            <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Audience Momentum</h2>
+            <p className="text-[12px] mt-0.5" style={{ color: 'rgba(0,0,0,0.55)' }}>Quality over quantity — are you building the right audience?</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -420,17 +395,17 @@ export default function SocialMediaPage() {
                 benchLeader: 'ASOS: 22% overlap',
               },
             ].map(card => (
-              <div key={card.label} className="ana-glass rounded-[18px] p-6 flex flex-col gap-4">
+          <div key={card.label} className="ana-glass rounded-[18px] p-6 flex flex-col gap-4">
                 <div className="flex justify-between items-start">
                   <span className="material-symbols-outlined text-[22px] text-[#0066cc]">{card.icon}</span>
-                  <span className="text-[10px] text-white/25 bg-white/5 px-2 py-1 rounded-full">target: {card.target}</span>
+                  <span className="text-[10px] px-2 py-1 rounded-full" style={{ background: 'rgba(0,0,0,0.08)', color: 'rgba(0,0,0,0.55)' }}>target: {card.target}</span>
                 </div>
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-white/40 mb-1">{card.label}</div>
-                  <div className="text-[32px] font-semibold text-white/20 leading-none">{card.you}</div>
+                  <div className="text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(0,0,0,0.55)' }}>{card.label}</div>
+                  <div className="text-[32px] font-semibold leading-none" style={{ color: '#000000' }}>{card.you}</div>
                 </div>
-                <p className="text-[12px] text-white/40 leading-relaxed">{card.desc}</p>
-                <div className="text-[11px] text-white/25 border-t border-white/5 pt-3">Best: {card.benchLeader}</div>
+                <p className="text-[12px] leading-relaxed" style={{ color: 'rgba(0,0,0,0.70)' }}>{card.desc}</p>
+                <div className="text-[11px] pt-3" style={{ color: 'rgba(0,0,0,0.50)', borderTop: '1px solid rgba(0,0,0,0.10)' }}>Best: {card.benchLeader}</div>
               </div>
             ))}
           </div>
@@ -439,8 +414,8 @@ export default function SocialMediaPage() {
         {/* ── SECTION 6: Revenue Bridge ─────────────────────────────────────── */}
         <section className="flex flex-col gap-4">
           <div>
-            <h2 className="text-[18px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>Revenue Bridge</h2>
-            <p className="text-[12px] text-white/40 mt-0.5">Social → business outcome attribution · Felix + Rio</p>
+            <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Revenue Bridge</h2>
+            <p className="text-[12px] mt-0.5" style={{ color: 'rgba(0,0,0,0.55)' }}>Social → business outcome attribution · Felix + Rio</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -450,29 +425,29 @@ export default function SocialMediaPage() {
               { label: 'Social CAC (Organic)',       you: '—', bench: 'TikTok best: $4.20',    icon: 'price_check',   color: 'text-white/20' },
               { label: 'Content ROI',                you: '—', bench: 'H&M: $1.80/1K views',  icon: 'show_chart',    color: 'text-white/20' },
             ].map(m => (
-              <div key={m.label} className="bg-[#111111] border border-dashed border-white/[0.08] rounded-[18px] p-6 flex flex-col gap-3">
-                <div className="flex justify-between items-center text-white/30">
+              <div key={m.label} className="ana-glass rounded-[18px] p-6 flex flex-col gap-3" style={{ borderStyle: 'dashed' }}>
+                <div className="flex justify-between items-center" style={{ color: 'rgba(0,0,0,0.55)' }}>
                   <span className="text-[11px] uppercase tracking-wider font-bold">{m.label}</span>
                   <span className="material-symbols-outlined text-[18px]">{m.icon}</span>
                 </div>
-                <div className={`text-[30px] font-semibold leading-none ${m.color}`}>{m.you}</div>
-                <div className="text-[11px] text-white/20 border-t border-white/5 pt-3">{m.bench}</div>
+                <div className="text-[30px] font-semibold leading-none" style={{ color: 'rgba(0,0,0,0.35)' }}>{m.you}</div>
+                <div className="text-[11px] pt-3" style={{ color: 'rgba(0,0,0,0.50)', borderTop: '1px solid rgba(0,0,0,0.10)' }}>{m.bench}</div>
               </div>
             ))}
           </div>
 
           {/* Projection card */}
-          <div className="bg-gradient-to-r from-[#0066cc]/10 to-[#111111] border border-[#0066cc]/20 rounded-[18px] p-6 flex items-start gap-4">
+          <div className="ana-glass rounded-[18px] p-6 flex items-start gap-4">
             <span className="material-symbols-outlined text-[#0066cc] text-[24px] mt-0.5 shrink-0">insights</span>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#0066cc]">Felix · Month-6 Projection</span>
-                <span className="text-[10px] text-white/25 bg-white/5 px-2 py-0.5 rounded-full">based on competitor benchmarks</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.08)', color: 'rgba(0,0,0,0.50)' }}>based on competitor benchmarks</span>
               </div>
-              <p className="text-[14px] text-white/70 leading-relaxed">
+              <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(0,0,0,0.80)' }}>
                 If Novizio follows the TikTok-first launch sequence with consistent founder-led content,
-                competitor benchmarks suggest <strong className="text-white">$18K–$42K/mo</strong> in social-influenced
-                revenue by Month 6 — at a blended CAC of <strong className="text-white">~$6.80</strong>.
+                competitor benchmarks suggest <strong style={{ color: '#000000' }}>$18K–$42K/mo</strong> in social-influenced
+                revenue by Month 6 — at a blended CAC of <strong style={{ color: '#000000' }}>~$6.80</strong>.
                 This assumes 3 posts/week and a 1.5% organic conversion rate.
               </p>
             </div>
@@ -483,8 +458,8 @@ export default function SocialMediaPage() {
         <section className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-[18px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>Kai&apos;s Weekly Prescription</h2>
-              <p className="text-[12px] text-white/40 mt-0.5">3 ranked actions · updated every Monday</p>
+              <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Kai&apos;s Weekly Prescription</h2>
+              <p className="text-[12px] mt-0.5" style={{ color: 'rgba(0,0,0,0.55)' }}>3 ranked actions · updated every Monday</p>
             </div>
             <button className="flex items-center gap-2 bg-white/5 border border-white/[0.06] text-white/60 px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-white/[0.08] transition-colors active:scale-95">
               <span className="material-symbols-outlined text-[14px]">refresh</span>
@@ -499,7 +474,7 @@ export default function SocialMediaPage() {
           )}
 
           {!briefLoading && !briefError && brief?.prescription && (
-            <div className="ana-glass rounded-[20px] p-3 flex flex-col divide-y divide-white/[0.04]">
+            <div className="ana-glass-v3 rounded-[20px] p-3 flex flex-col divide-y divide-white/[0.04]">
               {brief.prescription.map((action) => (
                 <div key={action.rank} className="p-5 flex flex-col md:flex-row items-start md:items-center gap-5 hover:bg-white/[0.02] transition-colors rounded-xl group">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-[13px] shrink-0 ${
@@ -537,7 +512,7 @@ export default function SocialMediaPage() {
           )}
 
           {!briefLoading && (briefError || !brief?.prescription) && (
-            <div className="ana-glass rounded-[20px] p-8 flex flex-col items-center gap-3 text-center">
+            <div className="ana-glass-v3 rounded-[20px] p-8 flex flex-col items-center gap-3 text-center">
               <span className="material-symbols-outlined text-[32px] text-white/20">auto_awesome</span>
               <p className="text-white/40 text-[13px]">Kai&apos;s prescription is unavailable. Check your AI provider in Settings.</p>
             </div>

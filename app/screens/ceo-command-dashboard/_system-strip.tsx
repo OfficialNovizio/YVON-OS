@@ -2,22 +2,23 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 
-const INK   = '#eef0f8';
-const INK_2 = '#b8c2d8';
-const INK_3 = 'rgba(220,228,248,0.75)';
-const INK_4 = 'rgba(220,228,248,0.45)';
-const INK_5 = 'rgba(220,228,248,0.22)';
-const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
-const GREEN  = '#059669';
-const VIOLET = '#6c5ce7';
+const GREEN  = '#047857';
+const VIOLET = '#4f46e5';
+
+// V1: Clear Ice — white frosted, navy text  (inner SysPanel cards)
+const I1='#0c2c52', I1b='#1a3e6e', I1d='rgba(12,44,82,0.48)', L1='rgba(12,44,82,0.10)';
+
+// V4: Prism — iridescent pink+cyan, dark plum text  (outer strip)
+const G4: React.CSSProperties = { background: "radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))", backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
+const I4c='rgba(42,18,64,0.68)', I4d='rgba(42,18,64,0.48)';
 
 function SysPanel({ title, right, children }: { title: string; right?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div style={{ padding: 18, borderRadius: 16, background: 'rgba(255,255,255,0.06)', border: `1px solid ${INK_LINE}` }}>
-      <h5 style={{ margin: '0 0 12px', fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_3, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div style={{ padding: 18, borderRadius: 16, background: 'rgba(255,255,255,0.55)', border: `1px solid rgba(255,255,255,0.72)`, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.80)' }}>
+      <h5 style={{ margin: '0 0 12px', fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {title}
-        {right && <span style={{ fontSize: 9, color: INK_4, letterSpacing: '0.18em' }}>{right}</span>}
+        {right && <span style={{ fontSize: 11, color: I1d, letterSpacing: '0.16em' }}>{right}</span>}
       </h5>
       {children}
     </div>
@@ -26,17 +27,16 @@ function SysPanel({ title, right, children }: { title: string; right?: React.Rea
 
 function Chip({ label, value }: { label: string; value: string }) {
   return (
-    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', padding: '6px 10px', borderRadius: 999, background: 'rgba(255,255,255,0.10)', color: INK_2, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-      {label} <span style={{ color: INK, fontWeight: 800 }}>{value}</span>
+    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', padding: '6px 10px', borderRadius: 999, background: 'rgba(12,44,82,0.08)', color: I1b, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+      {label} <span style={{ color: I1, fontWeight: 800 }}>{value}</span>
     </span>
   );
 }
 
-// ── Project Graph (static from API or snapshot) ────────────────────────────────
+// ── Project Graph ──────────────────────────────────────────────────────────────
 interface GraphNode { id: string; label: string; community: number; degree: number }
 interface GraphEdge { source: string; target: string }
 interface GraphData  { nodes: GraphNode[]; edges: GraphEdge[]; totalNodes: number; totalEdges: number; totalCommunities: number }
-
 interface SimNode extends GraphNode { x: number; y: number; vx: number; vy: number }
 
 const W = 400, H = 170;
@@ -115,15 +115,15 @@ function ProjectGraphPanel() {
     <SysPanel title="Project Graph" right={<a href="/api/graph-html" target="_blank" rel="noreferrer" style={{ color: ACCENT }}>Full view →</a>}>
       {!meta ? (
         <div style={{ height: 170, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: 20, height: 20, border: `2px solid ${INK_LINE}`, borderTopColor: ACCENT, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+          <div style={{ width: 20, height: 20, border: `2px solid ${L1}`, borderTopColor: ACCENT, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         </div>
       ) : (
-        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display: 'block', borderRadius: 10, background: 'rgba(255,255,255,0.04)' }}>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display: 'block', borderRadius: 10, background: 'rgba(12,44,82,0.04)' }}>
           {edges.map((e, i) => {
             const s = nodeIdx[e.source], t = nodeIdx[e.target];
             if (!s || !t) return null;
             const active = hovered === s.id || hovered === t.id;
-            return <line key={i} x1={s.x} y1={s.y} x2={t.x} y2={t.y} stroke={active ? commColor(s.community) : 'rgba(255,255,255,0.20)'} strokeWidth={active ? 1.2 : 0.7} />;
+            return <line key={i} x1={s.x} y1={s.y} x2={t.x} y2={t.y} stroke={active ? commColor(s.community) : 'rgba(12,44,82,0.15)'} strokeWidth={active ? 1.2 : 0.7} />;
           })}
           {nodes.map(node => {
             const r   = 3 + (node.degree / maxDeg) * 5;
@@ -133,7 +133,7 @@ function ProjectGraphPanel() {
                 {hovered === node.id && <circle cx={node.x} cy={node.y} r={r + 5} fill={col} opacity="0.18" />}
                 <circle cx={node.x} cy={node.y} r={r} fill={col} opacity={hovered === node.id ? 1 : 0.85} />
                 {hovered === node.id && (
-                  <text x={node.x + r + 3} y={node.y + 3.5} fontSize="7" fill={INK_2} style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                  <text x={node.x + r + 3} y={node.y + 3.5} fontSize="7" fill={I1b} style={{ pointerEvents: 'none', userSelect: 'none' }}>
                     {node.label.slice(0, 20)}
                   </text>
                 )}
@@ -153,7 +153,7 @@ function ProjectGraphPanel() {
   );
 }
 
-// ── Token Usage (real API) ─────────────────────────────────────────────────────
+// ── Token Usage ────────────────────────────────────────────────────────────────
 interface TokenTotals { inputTokens: number; outputTokens: number; totalTokens: number; cacheReadTokens: number; costUsd: number; requests: number }
 interface ModelRow    { model: string; inputTokens: number; outputTokens: number; costUsd: number; requests: number }
 interface DailyRow    { date: string; costUsd: number }
@@ -185,7 +185,7 @@ function TokenUsagePanel() {
     return (
       <SysPanel title="Token / AI Usage" right="7D · 30D · 90D">
         <div style={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: 20, height: 20, border: `2px solid ${INK_LINE}`, borderTopColor: ACCENT, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+          <div style={{ width: 20, height: 20, border: `2px solid ${L1}`, borderTopColor: ACCENT, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         </div>
       </SysPanel>
     );
@@ -193,27 +193,24 @@ function TokenUsagePanel() {
 
   return (
     <SysPanel title="Token / AI Usage" right="30D">
-      {/* Daily bars */}
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 90, margin: '6px 0 12px' }}>
         {bars.map((b, i) => (
           <div key={i} title={fmtCost(b.costUsd)} style={{ flex: 1, height: `${b.pct}%`, background: i === bars.length - 1 ? VIOLET : `linear-gradient(180deg, ${ACCENT}, ${VIOLET})`, borderRadius: '3px 3px 0 0', opacity: i === bars.length - 1 ? 1 : 0.7 }} />
         ))}
       </div>
-      {/* KPIs */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 6 }}>
         {[
-          { label: 'Total cost', v: fmtCost(data.totals.costUsd), c: INK },
-          { label: 'Tokens',     v: fmt(data.totals.totalTokens), c: INK },
+          { label: 'Total cost', v: fmtCost(data.totals.costUsd), c: I1 },
+          { label: 'Tokens',     v: fmt(data.totals.totalTokens), c: I1 },
           { label: 'Cache hit',  v: `${data.cacheHitRate}%`,      c: data.cacheHitRate > 30 ? GREEN : '#d97706' },
-          { label: 'Requests',   v: data.totals.requests.toLocaleString(), c: INK },
+          { label: 'Requests',   v: data.totals.requests.toLocaleString(), c: I1 },
         ].map(k => (
           <div key={k.label}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4 }}>{k.label}</div>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d }}>{k.label}</div>
             <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em', color: k.c }}>{k.v}</div>
           </div>
         ))}
       </div>
-      {/* Model breakdown */}
       {data.byModel.length > 0 && (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
           {data.byModel.slice(0, 3).map(m => (
@@ -235,7 +232,7 @@ const WORKLOAD = [
 ];
 
 function calColor(v: number) {
-  if (v === 0) return 'rgba(12,13,16,0.06)';
+  if (v === 0) return 'rgba(12,44,82,0.06)';
   if (v === 1) return 'rgba(16,185,129,0.30)';
   if (v === 2) return 'rgba(16,185,129,0.50)';
   if (v === 3) return 'rgba(16,185,129,0.75)';
@@ -247,10 +244,10 @@ function WorkloadCalendarPanel() {
     <SysPanel title="Workload Calendar" right="May 2026">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, margin: '6px 0 10px' }}>
         {['M','T','W','T','F','S','S'].map((d, i) => (
-          <div key={i} style={{ fontSize: 9, color: INK_4, fontWeight: 700, textAlign: 'center', letterSpacing: '0.1em' }}>{d}</div>
+          <div key={i} style={{ fontSize: 9, color: I1d, fontWeight: 700, textAlign: 'center', letterSpacing: '0.1em' }}>{d}</div>
         ))}
         {WORKLOAD.map((v, i) => (
-          <div key={i} style={{ aspectRatio: '1/1', borderRadius: 5, background: calColor(v), border: '1px solid rgba(255,255,255,0.6)' }} />
+          <div key={i} style={{ aspectRatio: '1/1', borderRadius: 5, background: calColor(v), border: `1px solid rgba(12,44,82,0.10)` }} />
         ))}
       </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -258,33 +255,33 @@ function WorkloadCalendarPanel() {
         <Chip label="Busy days" value="22" />
         <Chip label="Peak"      value="May 12" />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 9, color: INK_4, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 9, color: I1d, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
         Less {[0,1,2,3,4].map(v => (
-          <span key={v} style={{ width: 10, height: 10, borderRadius: 3, background: calColor(v), border: '1px solid rgba(255,255,255,0.6)', display: 'inline-block' }} />
+          <span key={v} style={{ width: 10, height: 10, borderRadius: 3, background: calColor(v), border: `1px solid rgba(12,44,82,0.10)`, display: 'inline-block' }} />
         ))} More
       </div>
     </SysPanel>
   );
 }
 
-// ── System Strip ───────────────────────────────────────────────────────────────
+// ── System Strip — outer V4, inner V1 ─────────────────────────────────────────
 export default function SystemStrip() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className={`ceo-system-strip`}>
+    <div style={{ ...G4, overflow: 'hidden' }}>
       {/* Toggle bar */}
       <div
         style={{ padding: '14px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', transition: 'background 180ms ease' }}
         onClick={() => setOpen(o => !o)}
-        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.25)'; }}
+        onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.18)'; }}
         onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'transparent'; }}
       >
-        <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_3 }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I4c }}>
           <span style={{ width: 8, height: 8, borderRadius: '50%', background: VIOLET, display: 'inline-block' }} />
           System
         </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontSize: 11, fontWeight: 500, color: INK_3 }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontSize: 13, fontWeight: 600, color: I4c }}>
           <span>Project Graph · Token Usage · Workload Calendar</span>
           <span style={{ display: 'inline-flex', alignItems: 'center', transition: 'transform 240ms ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
         </span>
@@ -292,7 +289,7 @@ export default function SystemStrip() {
 
       {/* Expandable content */}
       <div style={{ maxHeight: open ? 520 : 0, overflow: 'hidden', transition: 'max-height 320ms ease', padding: open ? '0 14px 14px' : '0 14px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, paddingTop: open ? 0 : 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
           <ProjectGraphPanel />
           <TokenUsagePanel />
           <WorkloadCalendarPanel />

@@ -9,6 +9,13 @@ out/
 .env*.local
 .env
 
+# Agent proposals — operational data, not code
+requests/pending/*
+requests/approved/*
+requests/rejected/*
+!requests/README.md
+!requests/pending/EXAMPLE.md
+
 # Build outputs
 dist/
 

@@ -2,35 +2,20 @@
 
 import { useState, useEffect } from 'react';
 
-const INK   = '#eef0f8';
-const INK_2 = '#b8c2d8';
-const INK_3 = 'rgba(220,228,248,0.75)';
-const INK_4 = 'rgba(220,228,248,0.45)';
-const INK_5 = 'rgba(220,228,248,0.22)';
-const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
-const GREEN  = '#059669';
+const GREEN  = '#047857';
 const AMBER  = '#d97706';
 const RED    = '#dc2626';
 
-const GLASS: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.07)',
-  backdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
-  WebkitBackdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  borderRadius: 22,
-  boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 0 0 1px rgba(255,255,255,0.07) inset, 0 20px 60px -20px rgba(0,0,0,0.55), 0 4px 12px -4px rgba(0,0,0,0.30)',
-};
+// V1: Clear Ice — white frosted, navy text  (ActivityLog)
+const G1: React.CSSProperties = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
+const I1='#0c2c52', I1b='#1a3e6e', I1d='rgba(12,44,82,0.48)', I1e='rgba(12,44,82,0.26)', L1='rgba(12,44,82,0.10)';
 
-function CardLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, margin: 0 }}>
-      {children}
-    </p>
-  );
-}
+// V2: Azure Tint — blue gradient, light text  (SourceReportsPanel)
+const G2: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(36,99,180,0.42),rgba(20,70,140,0.55))', backdropFilter: 'blur(30px) saturate(190%)', WebkitBackdropFilter: 'blur(30px) saturate(190%)', border: '1px solid rgba(180,210,255,0.40)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.40),inset 0 -1px 0 rgba(0,30,80,0.25),0 18px 50px -10px rgba(10,40,100,0.40)' };
+const I2b='rgba(244,248,255,0.85)', I2c='rgba(244,248,255,0.68)', I2d='rgba(244,248,255,0.48)', I2e='rgba(244,248,255,0.25)', L2='rgba(255,255,255,0.14)';
 
-// ── Activity Log ───────────────────────────────────────────────────────────────
+// ── Activity Log — V1: Clear Ice ───────────────────────────────────────────────
 const ACTIVITY = [
   { name: 'Kai',    task: 'Analytics report delivered',      when: '4h ago',          day: 'today' },
   { name: 'Marcus', task: 'Morning CEO brief published',     when: '6h ago',          day: 'today' },
@@ -42,15 +27,14 @@ function ActivityLog() {
   const [filter, setFilter] = useState<'today' | 'yesterday' | '7d'>('today');
   const today     = ACTIVITY.filter(a => a.day === 'today');
   const yesterday = ACTIVITY.filter(a => a.day === 'yesterday');
-
-  const dayLabel = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const dayLabel  = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
   return (
-    <div style={{ ...GLASS, padding: 22 }}>
+    <div style={{ ...G1, padding: 22 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <CardLabel>Agent Activity Log</CardLabel>
-          <span style={{ fontSize: 9, color: INK_5, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700 }}>({filter})</span>
+          <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, margin: 0 }}>Agent Activity Log</p>
+          <span style={{ fontSize: 11, color: I1e, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 800 }}>({filter})</span>
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
           {(['today', 'yesterday', '7d'] as const).map(k => (
@@ -58,7 +42,7 @@ function ActivityLog() {
               key={k}
               onClick={() => setFilter(k)}
               className="ceo-ghost-btn"
-              style={{ padding: '5px 10px', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', background: filter === k ? INK : 'rgba(255,255,255,0.6)', color: filter === k ? '#fff' : INK_2 }}
+              style={{ padding: '6px 12px', fontSize: 12, letterSpacing: '0.10em', textTransform: 'uppercase', background: filter === k ? I1 : 'rgba(255,255,255,0.6)', color: filter === k ? '#fff' : I1b }}
             >
               {k === '7d' ? 'Last 7' : k}
             </button>
@@ -66,49 +50,47 @@ function ActivityLog() {
         </div>
       </div>
 
-      {/* Day divider */}
-      <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, padding: '14px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, padding: '14px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
         Today · {dayLabel}
-        <span style={{ flex: 1, height: 1, background: INK_LINE, display: 'inline-block' }} />
+        <span style={{ flex: 1, height: 1, background: L1, display: 'inline-block' }} />
       </div>
 
       {today.map((a, i) => (
-        <div key={i} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${INK_LINE}` }}>
+        <div key={i} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${L1}` }}>
           <span style={{ width: 18, height: 18, borderRadius: '50%', background: GREEN, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>✓</span>
-          <span style={{ fontSize: 13, fontWeight: 600, color: INK }}>{a.name}</span>
-          <span style={{ fontSize: 13, color: INK_2 }}>{a.task}</span>
-          <span style={{ fontSize: 11, color: INK_4, fontWeight: 500 }}>{a.when}</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: I1 }}>{a.name}</span>
+          <span style={{ fontSize: 14, color: I1b, fontWeight: 500 }}>{a.task}</span>
+          <span style={{ fontSize: 12, color: I1d, fontWeight: 600 }}>{a.when}</span>
         </div>
       ))}
 
       {filter !== 'today' && yesterday.length > 0 && (
         <>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, padding: '14px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, padding: '14px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
             Yesterday
-            <span style={{ flex: 1, height: 1, background: INK_LINE, display: 'inline-block' }} />
+            <span style={{ flex: 1, height: 1, background: L1, display: 'inline-block' }} />
           </div>
           {yesterday.map((a, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${INK_LINE}` }}>
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${L1}` }}>
               <span style={{ width: 18, height: 18, borderRadius: '50%', background: GREEN, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>✓</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: INK }}>{a.name}</span>
-              <span style={{ fontSize: 13, color: INK_2 }}>{a.task}</span>
-              <span style={{ fontSize: 11, color: INK_4, fontWeight: 500 }}>{a.when}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: I1 }}>{a.name}</span>
+              <span style={{ fontSize: 13, color: I1b }}>{a.task}</span>
+              <span style={{ fontSize: 11, color: I1d, fontWeight: 500 }}>{a.when}</span>
             </div>
           ))}
         </>
       )}
 
-      {/* Stats strip */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginTop: 16, paddingTop: 16, borderTop: `1px solid ${INK_LINE}` }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginTop: 16, paddingTop: 16, borderTop: `1px solid ${L1}` }}>
         {[
-          { label: 'Today',     v: '4',   c: INK },
-          { label: 'This Week', v: '26',  c: INK },
-          { label: 'Avg / Day', v: '5.2', c: INK },
+          { label: 'Today',     v: '4',   c: I1 },
+          { label: 'This Week', v: '26',  c: I1 },
+          { label: 'Avg / Day', v: '5.2', c: I1 },
           { label: 'SLA Hit',   v: '96%', c: GREEN },
         ].map(s => (
           <div key={s.label}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4 }}>{s.label}</div>
-            <div style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, color: s.c }}>{s.v}</div>
+            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d }}>{s.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1, color: s.c }}>{s.v}</div>
           </div>
         ))}
       </div>
@@ -116,7 +98,7 @@ function ActivityLog() {
   );
 }
 
-// ── Source Reports (real API) ──────────────────────────────────────────────────
+// ── Source Reports — V2: Azure Tint ───────────────────────────────────────────
 interface SourceReportItem {
   id: string;
   title: string;
@@ -140,7 +122,7 @@ function timeAgo(dateStr: string): string {
 }
 
 function tsColor(dateStr: string | null): string {
-  if (!dateStr) return INK_4;
+  if (!dateStr) return I2d;
   const h = (Date.now() - new Date(dateStr).getTime()) / 3600000;
   if (h < 12) return GREEN;
   if (h < 24) return AMBER;
@@ -172,10 +154,10 @@ const REPORT_META: Record<string, string> = {
 };
 
 function SourceCard({ kind, report }: { kind: 'analytics' | 'marketing' | 'competitor'; report: SourceReportItem | null }) {
-  const ts   = report ? timeAgo(report.createdAt) : FALLBACK_TS[kind];
-  const body = report ? report.summary.slice(0, 220) : FALLBACK_BODIES[kind];
-  const num  = report ? `Report #${report.reportNumber}` : 'Pending first run';
-  const color = report ? tsColor(report.createdAt) : INK_4;
+  const ts    = report ? timeAgo(report.createdAt) : FALLBACK_TS[kind];
+  const body  = report ? report.summary.slice(0, 220) : FALLBACK_BODIES[kind];
+  const num   = report ? `Report #${report.reportNumber}` : 'Pending first run';
+  const color = report ? tsColor(report.createdAt) : I2d;
 
   return (
     <div className={`ceo-source-card ${kind}`} style={{ minHeight: 200 }}>
@@ -184,19 +166,19 @@ function SourceCard({ kind, report }: { kind: 'analytics' | 'marketing' | 'compe
           <span style={{ width: 26, height: 26, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>
             {ICONS[kind]}
           </span>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_3 }}>
+          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I2c }}>
             {{ analytics: 'Analytics', marketing: 'Marketing', competitor: 'Competitor' }[kind]}
           </span>
         </div>
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', color }}>{ts}</span>
       </div>
 
-      <p style={{ fontSize: 10, color: INK_5, fontWeight: 600, margin: 0 }}>{num}</p>
-      <p style={{ fontSize: 12.5, lineHeight: 1.55, color: INK_2, flex: 1, margin: 0, overflow: 'hidden' }}>{body}</p>
+      <p style={{ fontSize: 10, color: I2e, fontWeight: 600, margin: 0 }}>{num}</p>
+      <p style={{ fontSize: 12.5, lineHeight: 1.55, color: I2b, flex: 1, margin: 0, overflow: 'hidden' }}>{body}</p>
 
-      <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: `1px dashed ${INK_LINE}`, fontSize: 10, color: INK_4, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: `1px dashed ${L2}`, fontSize: 10, color: I2d, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', justifyContent: 'space-between' }}>
         <span>{REPORT_META[kind]}</span>
-        <span style={{ color: ACCENT }}>Open ›</span>
+        <span style={{ color: '#7eb8ff' }}>Open ›</span>
       </div>
     </div>
   );
@@ -215,13 +197,13 @@ function SourceReportsPanel() {
   }, []);
 
   return (
-    <div style={{ ...GLASS, padding: 22 }}>
+    <div style={{ ...G2, padding: 22 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <CardLabel>Source Reports</CardLabel>
-          <span style={{ fontSize: 9, color: INK_5, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 700 }}>· Auto-pull every 24h</span>
+          <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I2d, margin: 0 }}>Source Reports</p>
+          <span style={{ fontSize: 11, color: I2e, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 800 }}>· Auto-pull every 24h</span>
         </div>
-        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4 }}>Last pull · 04:00</span>
+        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I2d }}>Last pull · 04:00</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>

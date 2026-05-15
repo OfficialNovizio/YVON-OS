@@ -7,6 +7,18 @@ import type { ContentCalendarEntry, CalendarContentType, CalendarPlatform, Calen
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
+// V1: Clear Ice — white frosted, navy text
+const I1='rgba(0,0,0,0.85)', I1b='rgba(0,0,0,0.70)', I1c='rgba(0,0,0,0.55)', I1d='rgba(0,0,0,0.45)', L1='rgba(0,0,0,0.10)';
+// V2: Azure Tint — blue gradient, light text
+const I2='#ffffff', I2c='rgba(255,255,255,0.72)', I2d='rgba(255,255,255,0.50)', L2='rgba(255,255,255,0.15)';
+// V3: Obsidian — dark smoke, light text
+const I3='#ffffff', I3c='rgba(255,255,255,0.70)', I3d='rgba(255,255,255,0.45)', L3='rgba(255,255,255,0.10)';
+// V4: Prism — iridescent pink+cyan, plum text
+const I4='rgba(42,18,64,0.90)', I4b='rgba(42,18,64,0.65)', I4d='rgba(42,18,64,0.45)', L4='rgba(42,18,64,0.10)';
+
+const ACCENT = '#0066cc';
+const GREEN  = '#10b981';
+
 const PLATFORM_CFG: Record<CalendarPlatform, { label: string; color: string; bgStyle: React.CSSProperties }> = {
   IG: { label: 'IG', color: '#bc1888', bgStyle: { background: 'linear-gradient(135deg,#f09433,#e6683c,#bc1888)' } },
   TT: { label: 'TT', color: '#ffffff', bgStyle: { background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.2)' } },
@@ -218,7 +230,7 @@ function PostModal({ mode, initial, saving, onSave, onClose }: {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative ana-glass w-full max-w-[420px] z-10 shadow-2xl" style={{ borderRadius: 20 }}>
+      <div className="ana-glass-v2 w-full max-w-[420px] z-10 shadow-2xl" style={{ borderRadius: 20 }}>
         <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
           <div>
             <h3 className="text-[15px] font-semibold text-white" style={{ fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
@@ -423,23 +435,23 @@ export default function AnalyticsContentPage() {
   const execPct   = planned > 0 ? Math.round((published / planned) * 100) : 0;
 
   return (
-    <main className="pt-14 pb-16 min-h-screen" style={{ color: '#eef0f8' }}>
+    <main className="min-h-screen pb-24">
       <AnalyticsSubNav />
 
-      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto pt-8 space-y-10">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px] space-y-10">
 
-        {/* ── 1. Content Health Summary ────────────────────────────────────── */}
+        {/* ── 1. Content Health Summary — V1 Clear Ice ──────────────────────── */}
         <section className="ana-glass p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <p className="ana-label mb-1">Content Health</p>
-              <p style={{ fontSize: 11, color: 'rgba(238,240,248,0.35)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: 0 }}>Content Health</p>
+              <p style={{ fontSize: 11, color: I1c, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
                 May 2026 · calendar execution rate
               </p>
             </div>
             <button
               onClick={() => router.push('/screens/analytics/social-media')}
-              style={{ fontSize: 11, color: 'rgba(91,168,255,0.75)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}
+              style={{ fontSize: 11, color: ACCENT, fontFamily: 'InstrumentSans, Inter, sans-serif' }}
               className="flex items-center gap-1 hover:opacity-80 transition-opacity"
             >
               See platform data →
@@ -447,23 +459,23 @@ export default function AnalyticsContentPage() {
           </div>
           <div className="grid grid-cols-4 gap-4 mb-5">
             {[
-              { label: 'Posts Planned', value: String(planned || 16), color: 'rgba(238,240,248,0.85)' },
+              { label: 'Posts Planned', value: String(planned || 16), color: I1 },
               { label: 'Published',     value: String(published || 11), color: '#10b981' },
               { label: 'Missed',        value: String(missed || 3),     color: '#f87171' },
               { label: 'Auto-Queued',   value: String(autoCount || 2),  color: '#34c759' },
             ].map(s => (
               <div key={s.label} className="text-center">
                 <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 32, fontWeight: 700, letterSpacing: '-0.04em', color: s.color, lineHeight: 1 }}>{s.value}</p>
-                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(238,240,248,0.35)', marginTop: 6, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{s.label}</p>
+                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: I1d, marginTop: 6, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{s.label}</p>
               </div>
             ))}
           </div>
           <div className="space-y-1.5">
-            <div className="flex justify-between text-[11px]" style={{ color: 'rgba(238,240,248,0.40)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+            <div className="flex justify-between text-[11px]" style={{ color: I1c, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
               <span>Execution rate</span>
               <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: '#10b981', fontWeight: 700 }}>{execPct || 69}%</span>
             </div>
-            <div className="w-full h-2 rounded-full" style={{ background: 'rgba(255,255,255,0.08)' }}>
+            <div className="w-full h-2 rounded-full" style={{ background: L1 }}>
               <div className="h-2 rounded-full transition-all duration-700" style={{ width: `${execPct || 69}%`, background: 'linear-gradient(90deg, #0066cc, #10b981)' }} />
             </div>
           </div>
@@ -474,38 +486,38 @@ export default function AnalyticsContentPage() {
           <div className="flex items-center justify-between mb-5">
             <div>
               <p className="ana-label mb-1">What to Create Next</p>
-              <p style={{ fontSize: 11, color: 'rgba(238,240,248,0.35)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>AI-driven recommendations — based on content gaps and keyword momentum</p>
+              <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>AI-driven recommendations — based on content gaps and keyword momentum</p>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-5">
             {SUGGESTIONS.map(card => (
-              <div key={card.title} className="ana-glass ana-glass-hover p-6 flex flex-col gap-4"
+              <div className="ana-glass-v2 rounded-[22px] p-6 flex flex-col gap-4"
                 style={{ borderLeft: `3px solid ${card.brandColor}` }}>
                 <div className="flex items-center justify-between">
                   <span className="text-[9px] font-bold px-2 py-0.5 rounded"
-                    style={{ background: `${card.brandColor}20`, color: card.brandColor, letterSpacing: '0.10em', textTransform: 'uppercase', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                    style={{ background: `${card.brandColor}25`, color: card.brandColor, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
                     {card.brand}
                   </span>
-                  <span className="text-[11px]" style={{ color: 'rgba(238,240,248,0.38)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{card.priority}</span>
+                  <span className="text-[11px]" style={{ color: I2d }}>{card.priority}</span>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: '#eef0f8', marginBottom: 6, letterSpacing: '-0.015em', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{card.title}</h3>
-                  <p style={{ fontSize: 12, color: 'rgba(238,240,248,0.55)', lineHeight: '1.6', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{card.desc}</p>
+                  <h3 style={{ fontSize: 15, fontWeight: 700, color: I2, marginBottom: 6, letterSpacing: '-0.015em' }}>{card.title}</h3>
+                  <p style={{ fontSize: 12, color: I2c, lineHeight: '1.6' }}>{card.desc}</p>
                 </div>
-                <div className="flex items-start gap-2 p-3 rounded-xl" style={{ background: 'rgba(0,102,204,0.10)', border: '1px solid rgba(0,102,204,0.15)' }}>
-                  <span className="material-symbols-outlined text-[#0066cc] text-[14px] mt-0.5 shrink-0">trending_up</span>
-                  <p style={{ fontSize: 11, color: 'rgba(91,168,255,0.85)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{card.why}</p>
+                <div className="flex items-start gap-2 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.12)', border: `1px solid ${L2}` }}>
+                  <span className="material-symbols-outlined text-[#5ba8ff] text-[14px] mt-0.5 shrink-0">trending_up</span>
+                  <p style={{ fontSize: 11, color: '#b8d4ff' }}>{card.why}</p>
                 </div>
                 <div className="flex gap-2 mt-auto">
                   <button
                     onClick={() => router.push(card.agentRoute)}
                     className="flex-1 py-2 rounded-full bg-[#0066cc] text-white hover:opacity-90 active:scale-95 transition-all text-center"
-                    style={{ fontSize: 11, fontWeight: 700, fontFamily: 'InstrumentSans, Inter, sans-serif' }}
+                    style={{ fontSize: 11, fontWeight: 700 }}
                   >{card.agent}</button>
                   <button
                     onClick={() => openAdd({ headline: card.title, platform: card.platform, contentType: card.contentType, planDate: isoDate(addDays(new Date(), 3)), status: 'planned' })}
-                    className="px-3 py-2 rounded-full hover:bg-white/[0.06] transition-colors"
-                    style={{ fontSize: 11, color: 'rgba(238,240,248,0.40)', border: '1px solid rgba(255,255,255,0.08)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}
+                    className="px-3 py-2 rounded-full transition-colors"
+                    style={{ fontSize: 11, color: I2d, border: `1px solid ${L2}` }}
                   >
                     <span className="material-symbols-outlined text-[14px] align-middle">calendar_add_on</span>
                   </button>
@@ -515,53 +527,54 @@ export default function AnalyticsContentPage() {
           </div>
         </section>
 
-        {/* ── 3. Top Posts This Month ──────────────────────────────────────── */}
+        {/* ── 3. Top Posts This Month — V1 Clear Ice ────────────────────────── */}
         <section>
-          <p className="ana-label mb-5">Top Posts This Month</p>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: '0 0 20px' }}>Top Posts This Month</p>
           <div className="ana-glass overflow-hidden">
             {TOP_POSTS.map((p, i) => (
               <div key={p.n} className="flex items-center justify-between px-6 py-5 hover:bg-white/[0.02] transition-colors"
                 style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
                 <div className="flex items-center gap-5">
-                  <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 20, fontWeight: 300, color: 'rgba(238,240,248,0.25)', width: 28 }}>{p.n}</span>
+                  <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 20, fontWeight: 300, color: 'rgba(0,0,0,0.30)', width: 28 }}>{p.n}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
                       style={{ background: 'rgba(0,102,204,0.20)', color: '#5ba8ff', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.brand}</span>
                     {(() => { const cfg = PLATFORM_CFG[p.platform as CalendarPlatform]; return <span className="inline-flex items-center justify-center w-5 h-5 rounded text-[8px] font-bold text-white" style={cfg.bgStyle}>{cfg.label}</span>; })()}
                   </div>
                   <div>
-                    <h3 style={{ fontSize: 14, fontWeight: 600, color: '#eef0f8', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.title}</h3>
-                    <p style={{ fontSize: 11, color: 'rgba(238,240,248,0.35)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.type} · May 2026</p>
+                    <h3 style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.90)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.title}</h3>
+                    <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.type} · May 2026</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-8">
                   <div className="text-right">
                     <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 16, fontWeight: 700, color: p.positive ? '#10b981' : '#eef0f8' }}>{p.views}</p>
-                    <p style={{ fontSize: 10, color: 'rgba(238,240,248,0.35)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>views</p>
+                    <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>views</p>
                   </div>
                   <div className="text-right">
                     <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 16, fontWeight: 700, color: '#10b981' }}>{p.eng}</p>
-                    <p style={{ fontSize: 10, color: 'rgba(238,240,248,0.35)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>eng rate</p>
+                    <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>eng rate</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 11, color: 'rgba(238,240,248,0.28)', marginTop: 10, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+          <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.35)', marginTop: 10, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
             Pattern: transparency &amp; behind-the-scenes content outperforms product posts 2:1. Double down.
           </p>
         </section>
 
-        {/* ── 4. Platform Priority ─────────────────────────────────────────── */}
+        {/* ── 4. Platform Priority — V1 / Format Conv — V4 ──────────────────── */}
         <section className="grid grid-cols-2 gap-6">
           <div>
-            <p className="ana-label mb-4">Platform Priority</p>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: '0 0 16px' }}>Platform Priority</p>
             <div className="ana-glass overflow-hidden">
               {PLATFORM_PRIORITY.map((p, i) => (
-                <div key={p.label} className={`flex justify-between items-center px-5 py-4 hover:bg-white/[0.02] transition-colors ${i > 0 ? 'border-t border-white/[0.05]' : ''}`}>
+                <div key={p.label} className="flex justify-between items-center px-5 py-4 transition-colors"
+                  style={{ borderTop: i > 0 ? `1px solid ${L1}` : 'none' }}>
                   <div className="flex items-center gap-3">
-                    <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 11, color: 'rgba(238,240,248,0.30)' }}>{String(i + 1).padStart(2, '0')}</span>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: '#eef0f8', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.label}</span>
+                    <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 11, color: I1d }}>{String(i + 1).padStart(2, '0')}</span>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: I1 }}>{p.label}</span>
                   </div>
                   <span className={`px-3 py-1 rounded-full border text-[10px] font-semibold ${p.cls}`}
                     style={{ fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.badge}</span>
@@ -570,19 +583,19 @@ export default function AnalyticsContentPage() {
             </div>
           </div>
           <div>
-            <p className="ana-label mb-4">Format Conversion Rate</p>
-            <div className="ana-glass p-5 flex flex-col gap-5">
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I4d, margin: '0 0 16px' }}>Format Conversion Rate</p>
+            <div className="ana-glass-v4 p-5 flex flex-col gap-5">
               {[
                 { label: 'Short-form Video (TikTok)', pct: '9.1%', width: '91%', color: '#10b981' },
                 { label: 'Carousel (Instagram)',       pct: '6.8%', width: '68%', color: '#0066cc' },
-                { label: 'Text Posts (LinkedIn)',      pct: '4.1%', width: '41%', color: 'rgba(255,255,255,0.35)' },
+                { label: 'Text Posts (LinkedIn)',      pct: '4.1%', width: '41%', color: I4b },
               ].map(f => (
                 <div key={f.label}>
                   <div className="flex justify-between mb-1.5">
-                    <span style={{ fontSize: 12, color: 'rgba(238,240,248,0.65)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{f.label}</span>
+                    <span style={{ fontSize: 12, color: I4b }}>{f.label}</span>
                     <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 12, fontWeight: 700, color: f.color }}>{f.pct}</span>
                   </div>
-                  <div className="w-full h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                  <div className="w-full h-1.5 rounded-full" style={{ background: L4 }}>
                     <div className="h-1.5 rounded-full" style={{ width: f.width, background: f.color }} />
                   </div>
                 </div>
@@ -591,24 +604,24 @@ export default function AnalyticsContentPage() {
           </div>
         </section>
 
-        {/* ── 5. Content Operations Calendar ───────────────────────────────── */}
-        <section ref={calendarRef as React.RefObject<HTMLElement>} className="space-y-4">
+        {/* ── 5. Content Operations Calendar — V2 Azure Tint ────────────────── */}
+        <section ref={calendarRef as React.RefObject<HTMLElement>} className="ana-glass-v2 p-6 space-y-4">
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="ana-label mb-1">Content Operations</p>
-              <p style={{ fontSize: 11, color: 'rgba(238,240,248,0.35)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Live calendar — synced to Supabase · auto-post enabled</p>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I2d, margin: '0 0 4px' }}>Content Operations</p>
+              <p style={{ fontSize: 11, color: I2c, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>Live calendar — synced to Supabase · auto-post enabled</p>
             </div>
             <div className="flex items-center gap-2">
               {/* View toggle */}
-              <div className="flex rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="flex rounded-xl overflow-hidden" style={{ border: `1px solid ${L1}` }}>
                 {(['week', 'month'] as const).map(v => (
                   <button key={v} onClick={() => setCalView(v)}
                     className="px-3 py-1.5 text-[11px] font-semibold transition-colors"
                     style={{
                       fontFamily: 'InstrumentSans, Inter, sans-serif',
                       background: calView === v ? 'rgba(0,102,204,0.25)' : 'transparent',
-                      color: calView === v ? '#5ba8ff' : 'rgba(238,240,248,0.40)',
+                      color: calView === v ? '#7ec8ff' : I2d,
                     }}>
                     {v.charAt(0).toUpperCase() + v.slice(1)}
                   </button>
@@ -625,7 +638,7 @@ export default function AnalyticsContentPage() {
 
           {/* Missed entries */}
           {missedEntries.length > 0 && (
-            <div className="ana-glass-red p-4 flex items-center justify-between gap-4" style={{ borderRadius: 14 }}>
+            <div className="p-4 flex items-center justify-between gap-4" style={{ borderRadius: 14, background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.15)' }}>
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-red-400 text-[18px]">warning</span>
                 <p style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,180,180,0.90)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
@@ -634,11 +647,11 @@ export default function AnalyticsContentPage() {
               </div>
               <div className="flex gap-2">
                 {missedEntries.slice(0, 2).map(e => (
-                  <div key={e.id} className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div key={e.id} className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)' }}>
                     <PlatformBadge p={e.platform as CalendarPlatform} />
-                    <span style={{ fontSize: 11, color: 'rgba(238,240,248,0.75)', fontFamily: 'InstrumentSans, Inter, sans-serif' }} className="max-w-[120px] truncate">{e.headline}</span>
+                    <span style={{ fontSize: 11, color: I1 }} className="max-w-[120px] truncate">{e.headline}</span>
                     <button onClick={() => handleSkip(e.id)}
-                      style={{ fontSize: 9, color: 'rgba(238,240,248,0.40)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}
+                      style={{ fontSize: 9, color: I2d, fontFamily: 'InstrumentSans, Inter, sans-serif' }}
                       className="hover:text-white/70 transition-colors">Skip</button>
                     <button onClick={() => openEdit(e)}
                       style={{ fontSize: 9, color: '#5ba8ff', fontFamily: 'InstrumentSans, Inter, sans-serif' }}
@@ -659,7 +672,7 @@ export default function AnalyticsContentPage() {
                   <div key={e.id} className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg shrink-0"
                     style={{ background: 'rgba(52,199,89,0.10)', border: '1px solid rgba(52,199,89,0.20)' }}>
                     <PlatformBadge p={e.platform as CalendarPlatform} />
-                    <span style={{ fontSize: 11, color: 'rgba(238,240,248,0.80)', fontFamily: 'InstrumentSans, Inter, sans-serif' }} className="max-w-[100px] truncate">{e.headline}</span>
+                    <span style={{ fontSize: 11, color: I1 }} className="max-w-[100px] truncate">{e.headline}</span>
                     <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 10, color: 'rgba(52,199,89,0.80)' }}>{e.planDate}</span>
                   </div>
                 ))}
@@ -672,14 +685,14 @@ export default function AnalyticsContentPage() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <button onClick={() => setWeekStart(d => addDays(d, -7))}
-                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: 'rgba(238,240,248,0.40)' }}>
+                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: I2d }}>
                   <span className="material-symbols-outlined text-[16px]">chevron_left</span>
                 </button>
                 <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(238,240,248,0.60)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
                   {fmtShortDate(weekStart)} – {fmtShortDate(addDays(weekStart, 6))}
                 </span>
                 <button onClick={() => setWeekStart(d => addDays(d, 7))}
-                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: 'rgba(238,240,248,0.40)' }}>
+                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: I2d }}>
                   <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                 </button>
               </div>
@@ -689,12 +702,12 @@ export default function AnalyticsContentPage() {
                   const dayEntries = entries.filter(e => e.planDate === isoDate(day));
                   return (
                     <div key={isoDate(day)} className="rounded-xl p-2 flex flex-col gap-1.5 min-h-[120px]"
-                      style={{ background: isToday ? 'rgba(0,102,204,0.10)' : 'rgba(255,255,255,0.03)', border: `1px solid ${isToday ? 'rgba(0,102,204,0.25)' : 'rgba(255,255,255,0.06)'}` }}>
+                      style={{ background: isToday ? 'rgba(0,102,204,0.15)' : 'rgba(255,255,255,0.06)', border: `1px solid ${isToday ? 'rgba(0,102,204,0.30)' : 'rgba(255,255,255,0.10)'}` }}>
                       <div className="flex items-center justify-between mb-1">
-                        <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: isToday ? '#5ba8ff' : 'rgba(238,240,248,0.30)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                        <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: isToday ? '#7ec8ff' : I2d }}>
                           {DAY_NAMES[day.getDay()]}
                         </span>
-                        <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 11, fontWeight: isToday ? 700 : 400, color: isToday ? '#5ba8ff' : 'rgba(238,240,248,0.45)' }}>
+                        <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 11, fontWeight: isToday ? 700 : 400, color: isToday ? '#7ec8ff' : I2c }}>
                           {day.getDate()}
                         </span>
                       </div>
@@ -707,7 +720,7 @@ export default function AnalyticsContentPage() {
                           ))}
                           <button onClick={() => openAdd({ planDate: isoDate(day), status: 'planned' })}
                             className="text-[9px] mt-auto opacity-0 hover:opacity-100 transition-opacity text-center py-1 rounded"
-                            style={{ color: '#5ba8ff', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>+ Add</button>
+                            style={{ color: '#7ec8ff' }}>+ Add</button>
                         </>
                       )}
                     </div>
@@ -722,20 +735,20 @@ export default function AnalyticsContentPage() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <button onClick={() => setViewMonth(d => new Date(d.getFullYear(), d.getMonth() - 1, 1))}
-                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: 'rgba(238,240,248,0.40)' }}>
+                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: I2d }}>
                   <span className="material-symbols-outlined text-[16px]">chevron_left</span>
                 </button>
                 <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(238,240,248,0.60)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
                   {viewMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                 </span>
                 <button onClick={() => setViewMonth(d => new Date(d.getFullYear(), d.getMonth() + 1, 1))}
-                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: 'rgba(238,240,248,0.40)' }}>
+                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors" style={{ color: I2d }}>
                   <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                 </button>
               </div>
               <div className="grid grid-cols-7 gap-1 mb-1">
                 {DAY_NAMES.map(d => (
-                  <div key={d} className="text-center py-1" style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'rgba(238,240,248,0.28)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{d}</div>
+                  <div key={d} className="text-center py-1" style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: I2d }}>{d}</div>
                 ))}
               </div>
               <div className="grid grid-cols-7 gap-1">
@@ -745,15 +758,15 @@ export default function AnalyticsContentPage() {
                   const dayEntries = entries.filter(e => e.planDate === isoDate(day));
                   return (
                     <div key={isoDate(day)} className="rounded-lg p-1.5 min-h-[72px] flex flex-col gap-1"
-                      style={{ background: isToday ? 'rgba(0,102,204,0.08)' : 'rgba(255,255,255,0.02)', border: `1px solid ${isToday ? 'rgba(0,102,204,0.20)' : 'rgba(255,255,255,0.05)'}` }}>
-                      <span className="text-right block" style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 10, color: isToday ? '#5ba8ff' : 'rgba(238,240,248,0.35)', fontWeight: isToday ? 700 : 400 }}>
+                      style={{ background: isToday ? 'rgba(0,102,204,0.15)' : 'rgba(255,255,255,0.05)', border: `1px solid ${isToday ? 'rgba(0,102,204,0.30)' : 'rgba(255,255,255,0.08)'}` }}>
+                      <span className="text-right block" style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 10, color: isToday ? '#7ec8ff' : I2d, fontWeight: isToday ? 700 : 400 }}>
                         {day.getDate()}
                       </span>
                       {dayEntries.slice(0, 2).map(e => (
                         <CalendarCard key={e.id} entry={e} onEdit={openEdit} onDelete={handleDelete} onStatusChange={handleStatusChange} />
                       ))}
                       {dayEntries.length > 2 && (
-                        <span style={{ fontSize: 9, color: 'rgba(238,240,248,0.30)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>+{dayEntries.length - 2} more</span>
+                        <span style={{ fontSize: 9, color: I2d }}>+{dayEntries.length - 2} more</span>
                       )}
                     </div>
                   );
@@ -764,16 +777,16 @@ export default function AnalyticsContentPage() {
 
           {/* Quality check */}
           <div className="flex items-center justify-between px-5 py-3 rounded-xl"
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            style={{ background: 'rgba(255,255,255,0.06)', border: `1px solid ${L2}` }}>
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[16px]" style={{ color: 'rgba(238,240,248,0.35)' }}>verified</span>
-              <span style={{ fontSize: 12, color: 'rgba(238,240,248,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+              <span className="material-symbols-outlined text-[16px]" style={{ color: I2d }}>verified</span>
+              <span style={{ fontSize: 12, color: I2c }}>
                 {verifyDone ? 'Quinn reviewed — no scheduling conflicts found.' : 'Run Quinn quality check on this week\'s calendar'}
               </span>
             </div>
             <button onClick={handleVerify} disabled={verifying || verifyDone}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors hover:bg-white/[0.06] disabled:opacity-40"
-              style={{ fontSize: 11, color: verifyDone ? '#10b981' : 'rgba(238,240,248,0.50)', border: '1px solid rgba(255,255,255,0.08)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+              style={{ fontSize: 11, color: verifyDone ? '#10b981' : I2d, border: `1px solid ${L2}` }}>
               {verifying
                 ? <><span className="material-symbols-outlined text-[13px] animate-spin">progress_activity</span>Checking…</>
                 : verifyDone
@@ -784,11 +797,11 @@ export default function AnalyticsContentPage() {
           </div>
         </section>
 
-        <footer className="border-t flex items-center justify-between py-6" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-          <p style={{ fontSize: 11, color: 'rgba(238,240,248,0.22)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>© 2026 YVON Analytics. Built for Excellence.</p>
+        <footer className="border-t flex items-center justify-between py-6" style={{ borderColor: L1 }}>
+          <p style={{ fontSize: 11, color: I1c }}>© 2026 YVON Analytics. Built for Excellence.</p>
           <div className="flex items-center gap-5">
             {['Privacy', 'Terms', 'Support'].map(l => (
-              <a key={l} href="#" style={{ fontSize: 11, color: 'rgba(238,240,248,0.28)', fontFamily: 'InstrumentSans, Inter, sans-serif' }} className="hover:text-white/60 transition-colors">{l}</a>
+              <a key={l} href="#" style={{ fontSize: 11, color: I1c }} className="hover:opacity-70 transition-opacity">{l}</a>
             ))}
           </div>
         </footer>

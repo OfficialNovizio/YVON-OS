@@ -3,6 +3,12 @@
 import { useState, useEffect } from 'react';
 import AnalyticsSubNav from '../_subnav';
 
+// ── Glass constants ──────────────────────────────────────────────────────────
+const I1='rgba(0,0,0,0.85)', I1b='rgba(0,0,0,0.65)', I1c='rgba(0,0,0,0.50)', I1d='rgba(0,0,0,0.40)', L1='rgba(0,0,0,0.10)';
+const I2='#ffffff', I2b='rgba(255,255,255,0.85)', I2c='rgba(255,255,255,0.68)', I2d='rgba(255,255,255,0.45)', L2='rgba(255,255,255,0.14)';
+const I3='#ffffff', I3c='rgba(255,255,255,0.72)', I3d='rgba(255,255,255,0.45)', L3='rgba(255,255,255,0.10)';
+const ACCENT = '#0066cc';
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 interface ReportSection {
@@ -155,8 +161,8 @@ function MetricPill({ metric }: { metric: KaiReport['keyMetrics'][0] }) {
         background: metric.positive ? 'rgba(0,102,204,0.12)' : 'rgba(239,68,68,0.10)',
         border: `1px solid ${metric.positive ? 'rgba(0,102,204,0.22)' : 'rgba(239,68,68,0.20)'}`,
       }}>
-      <span className="ana-label">{metric.label}</span>
-      <span className="text-[22px] font-bold text-white" style={{ fontFamily: 'GeistMono, "Geist Mono", monospace', letterSpacing: '-0.02em' }}>
+      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: I2d }}>{metric.label}</span>
+      <span className="text-[22px] font-bold" style={{ color: I2, fontFamily: 'GeistMono, "Geist Mono", monospace', letterSpacing: '-0.02em' }}>
         {metric.value}
       </span>
       <span className="text-[11px]" style={{ color: metric.positive ? 'rgba(52,211,153,0.9)' : 'rgba(239,68,68,0.85)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
@@ -168,9 +174,9 @@ function MetricPill({ metric }: { metric: KaiReport['keyMetrics'][0] }) {
 
 function SectionBlock({ section, accent }: { section: ReportSection; accent: string }) {
   return (
-    <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-      <p className="ana-label mb-2" style={{ color: accent }}>{section.title}</p>
-      <p className="text-[14px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.72)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+    <div className="rounded-2xl p-5" style={{ background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' }}>
+      <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: accent, letterSpacing: '0.22em' }}>{section.title}</p>
+      <p className="text-[14px] leading-[1.7]" style={{ color: I3c }}>
         {section.body}
       </p>
     </div>
@@ -195,20 +201,20 @@ function HistoryCard({
       onClick={onClick}
       className="w-full text-left rounded-2xl p-4 transition-all duration-200 cursor-pointer"
       style={{
-        background: isActive ? 'rgba(0,102,204,0.14)' : 'rgba(255,255,255,0.04)',
-        border: isActive ? '1px solid rgba(0,102,204,0.35)' : '1px solid rgba(255,255,255,0.07)',
+        background: isActive ? 'rgba(0,102,204,0.10)' : 'rgba(0,0,0,0.04)',
+        border: isActive ? '1px solid rgba(0,102,204,0.30)' : `1px solid ${L1}`,
         outline: 'none',
       }}
     >
       <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="text-[12px] font-semibold" style={{ color: isActive ? '#5ba8ff' : 'rgba(255,255,255,0.55)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+        <span className="text-[12px] font-semibold" style={{ color: isActive ? ACCENT : I1b }}>
           {report.venture}
         </span>
-        <span className="text-[10px] font-mono shrink-0" style={{ color: 'rgba(255,255,255,0.28)', fontFamily: 'GeistMono, "Geist Mono", monospace' }}>
+        <span className="text-[10px] font-mono shrink-0" style={{ color: I1d }}>
           {formatted} · {time}
         </span>
       </div>
-      <p className="text-[11px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+      <p className="text-[11px] leading-[1.55]" style={{ color: I1c }}>
         {report.summary.length > 100 ? report.summary.slice(0, 100) + '…' : report.summary}
       </p>
     </button>
@@ -281,18 +287,17 @@ export default function AnalyticsReportsPage() {
   });
 
   return (
-    <>
+    <main className="min-h-screen pb-24">
       <AnalyticsSubNav />
-
-      <main className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 py-8">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px]">
 
         {/* ── Header row ─────────────────────────────────────── */}
         <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
           <div>
-            <h2 className="text-[22px] font-bold text-white mb-1" style={{ letterSpacing: '-0.024em' }}>
+            <h2 className="text-[22px] font-bold mb-1" style={{ letterSpacing: '-0.024em', color: '#0c2c52' }}>
               Intelligence Reports
             </h2>
-            <p className="text-[13px]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+            <p className="text-[13px]" style={{ color: I1c }}>
               Kai analyses all venture signals and produces a prioritised action brief. Up to 10 reports stored locally.
             </p>
           </div>
@@ -332,8 +337,8 @@ export default function AnalyticsReportsPage() {
           {/* ── Active report ──────────────────────────────── */}
           <div className="flex-1 min-w-0 flex flex-col gap-5">
 
-            {/* Report header */}
-            <div className="ana-glass p-6">
+            {/* Report header — V2 Azure Tint */}
+            <div className="ana-glass-v2 p-6">
               <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
@@ -343,7 +348,7 @@ export default function AnalyticsReportsPage() {
                     >
                       {activeReport.venture.toUpperCase()}
                     </span>
-                    <span className="ana-label">{activeReport.period}</span>
+                    <span style={{ fontSize: 10, color: I2d, letterSpacing: '0.06em', fontWeight: 600 }}>{activeReport.period}</span>
                   </div>
                   <p className="text-[17px] font-semibold leading-[1.45]" style={{ color: 'rgba(255,255,255,0.92)', fontFamily: 'InstrumentSans, Inter, sans-serif', maxWidth: 540 }}>
                     {activeReport.summary}
@@ -444,45 +449,44 @@ export default function AnalyticsReportsPage() {
 
           </div>
 
-          {/* ── History sidebar ────────────────────────────── */}
-          <div className="w-[280px] shrink-0 flex flex-col gap-3 sticky top-[calc(theme(spacing.14)+80px)]">
-            <div className="flex items-center justify-between mb-1">
-              <p className="ana-label">Report History</p>
-              <span
-                className="text-[11px] font-mono"
-                style={{ color: 'rgba(255,255,255,0.28)', fontFamily: 'GeistMono, "Geist Mono", monospace' }}
-              >
-                {reports.length}/10
-              </span>
+          {/* ── History sidebar — V1 Clear Ice ──────────────── */}
+          <div className="w-[280px] shrink-0 flex flex-col gap-3" style={{ position: 'sticky', top: 180 }}>
+            <div className="ana-glass p-5 flex flex-col gap-3">
+              <div className="flex items-center justify-between mb-1">
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: 0 }}>Report History</p>
+                <span className="text-[11px] font-mono" style={{ color: I1d }}>
+                  {reports.length}/10
+                </span>
+              </div>
+
+              {reports.map((r) => (
+                <HistoryCard
+                  key={r.id}
+                  report={r}
+                  isActive={r.id === activeId}
+                  onClick={() => setActiveId(r.id)}
+                />
+              ))}
+
+              {reports.length >= 10 && (
+                <p className="text-center text-[11px] pt-1" style={{ color: I1c }}>
+                  Max 10 reports stored. Oldest removed on next generation.
+                </p>
+              )}
+
+              {reports.length < 10 && (
+                <p className="text-center text-[11px] pt-1" style={{ color: I1c }}>
+                  {10 - reports.length} slot{10 - reports.length !== 1 ? 's' : ''} remaining
+                </p>
+              )}
             </div>
-
-            {reports.map((r) => (
-              <HistoryCard
-                key={r.id}
-                report={r}
-                isActive={r.id === activeId}
-                onClick={() => setActiveId(r.id)}
-              />
-            ))}
-
-            {reports.length >= 10 && (
-              <p className="text-center text-[11px] pt-1" style={{ color: 'rgba(255,255,255,0.22)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-                Max 10 reports stored. Oldest removed on next generation.
-              </p>
-            )}
-
-            {reports.length < 10 && (
-              <p className="text-center text-[11px] pt-1" style={{ color: 'rgba(255,255,255,0.22)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-                {10 - reports.length} slot{10 - reports.length !== 1 ? 's' : ''} remaining
-              </p>
-            )}
           </div>
         </div>
 
-        <p className="text-center text-[11px] mt-12" style={{ color: 'rgba(255,255,255,0.18)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+        <p className="text-center text-[11px] mt-12" style={{ color: I1c }}>
           © 2026 YVON · Reports stored locally. Supabase persistence coming in Phase 2.
         </p>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

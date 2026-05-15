@@ -108,24 +108,20 @@ export default function CEOCommandDashboardPage() {
 
   return (
     <>
-      {/* Pure black background */}
-      <div className="fixed inset-0 -z-10" style={{ background: '#000' }} />
+      {/* Background image — fixed, contained (no stretch/crop) */}
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: "url('/Background Image.jpg')",
+          backgroundSize: 'cover',        /* ← changed from cover: shows full image, no crop */
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#ffffff',       /* navy fallback for letterbox areas */
+        }}
+      />
 
-      {/* Glass figures scattered across screen */}
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <img src="/glass1.png" alt=""
-          className="absolute select-none"
-          style={{ width: '380px', height: 'auto', top: '4%', left: '12%', opacity: 0.5 }} />
-        <img src="/glass2.png" alt=""
-          className="absolute select-none"
-          style={{ width: '320px', height: 'auto', top: '30%', right: '6%', opacity: 0.4 }} />
-        <img src="/glass3.png" alt=""
-          className="absolute select-none"
-          style={{ width: '400px', height: 'auto', bottom: '2%', left: '30%', opacity: 0.45 }} />
-      </div>
-
-      {/* NavBar is rendered by layout.tsx above this — we account for its height (56px) */}
-      <div className="max-w-[1480px] 2xl:max-w-[min(92vw,2000px)] mx-auto px-7 pb-10 pt-[72px]">
+      {/* NavBar is rendered by layout.tsx — account for floating nav height + offset */}
+      <div className="max-w-[1480px] 2xl:max-w-[min(92vw,2000px)] mx-auto px-7 pb-10 pt-[96px]">
         <CeoHeader active={active} onChange={setActive} actCount={DECISIONS_COUNT} />
 
         <div className="mt-[18px]">

@@ -7,20 +7,21 @@
 ---
 
 ## Active Right Now
-- **Status:** Creative Studio full flow SHIPPED ✅ — 6-step AI pipeline + Krea.ai image generation
-- **In Progress:** None
+- **Status:** Health check system BUILT ✅ — `/api/health` runs every 6h, dash at `/screens/health`
+- **In Progress:** Security hardening (CSP headers done, rate limiting pending)
 - **Waiting for Stark:**
-  1. Add `KREA_API_KEY` to `.env.local` — get key from krea.ai/settings/api-tokens
-  2. Test full Creative Studio flow: Brief → Mood → Script → Captions → Prompts → Assets
-  3. Verify Krea.ai image generation works end-to-end (check model billing on Krea dashboard)
-- **Next session should start with:** Creative Studio UX feedback + any Krea API edge cases
+  1. Add `GITHUB_TOKEN` to `.env.local` — for repo health check (PRs, commit status)
+  2. Set up Upstash Redis for rate limiting (`@upstash/ratelimit`)
+  3. Review `reference/SECURITY.md` → assign Phase 1 tasks to Dev, Raj, Quinn, Mia
+  4. Design auth provider decision (Supabase Auth? OAuth providers?)
+- **Next session should start with:** Health dashboard feedback + security phase 1 assignments
 
 ---
 
 ## Open Decisions (not yet resolved)
-- [ ] Which agents to enable auto-SKILLS.md updates first (recommend: dev-lead, raj-backend, mia-frontend)
-- [ ] Routing feedback collection strategy (how to collect user ratings)
-- [ ] Alert escalation process (who handles critical alerts)
+- [ ] Auth provider — Supabase Auth built-in vs custom OAuth?
+- [ ] Alert notification channel — email via Resend first or dashboard panel?
+- [ ] Rate limiting — Upstash Redis required (free tier available)
 
 ---
 
@@ -28,7 +29,7 @@
 
 | Date | Agent(s) | Task | Outcome | Next Step |
 |------|---------|------|---------|-----------|
-| 2026-05-10 | Mia, Raj, Atlas, Kahneman, Pixel | Creative Studio full flow + Krea.ai integration | 6-step state machine (Brief→Mood→Script→Captions→Prompts→Assets), /api/creative-studio, /api/krea/generate, /api/krea/status, psychology levers visible in UI, Refine works, build clean | User to add KREA_API_KEY and test end-to-end |
+| 2026-05-14 | Dev, Mia, System | Health check system + security hardening + agent workflow redesign | `/api/health` built (DB/website/spend/repo), `/screens/health` dashboard, CSP headers, Tuckman execution model, autonomous agent workflow with requests/pending/, SECURITY.md reference | Assign Phase 1 tasks to Dev/Raj/Mia/Quinn per SECURITY.md |
 | 2026-05-10 | Dev, Raj, Mia | GitHub integration, venture memory isolation, autonomous PR creation | Supabase fixed, icons fixed, NavBar fixed, GitHub API route, War Room PR button, agent memory venture-tagged, SIP loop closed | User to test Draft PR flow end-to-end |
 | 2026-04-19 | Mia, Dev | CEO 3.1 Verification & Fixes | Fixed scroll reveals, background visibility, and glass | Monitor feedback |
 | 2026-04-08 | Dev, System | Enhanced systems implementation | All 19 tests passed, 4 new systems created | Monitor first 7 days of production |

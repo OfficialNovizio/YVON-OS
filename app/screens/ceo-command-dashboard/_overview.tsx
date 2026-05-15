@@ -2,187 +2,173 @@
 
 import type { TabId } from './page';
 
-const INK   = '#eef0f8';
-const INK_2 = '#b8c2d8';
-const INK_3 = 'rgba(220,228,248,0.75)';
-const INK_4 = 'rgba(220,228,248,0.45)';
-const INK_5 = 'rgba(220,228,248,0.22)';
-const INK_LINE = 'rgba(255,255,255,0.10)';
 const ACCENT = '#0066cc';
-const GREEN  = '#059669';
-const VIOLET = '#6c5ce7';
+const GREEN  = '#047857';
+const VIOLET = '#4f46e5';
 
-const ACTIVE_AGENTS = ['Kai', 'Rio', 'Dev'];
-const IDLE_AGENTS   = ['Diana', 'Raj', 'Mia', 'Lena', 'Nate', 'Quinn', 'Atlas', 'Pixel', 'Felix', 'Marcus'];
+// ── Glass Variant Styles ───────────────────────────────────────────────────────
+// V1: Clear Ice — frosted white, deep navy text
+const G1: React.CSSProperties = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
+const I1='#0c2c52', I1b='#1a3e6e', I1c='rgba(12,44,82,0.65)', I1d='rgba(12,44,82,0.48)', I1e='rgba(12,44,82,0.26)', L1='rgba(12,44,82,0.10)';
 
-const GLASS_CARD: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.07)',
-  backdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
-  WebkitBackdropFilter: 'blur(32px) saturate(160%) brightness(1.1)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  borderRadius: 22,
-  boxShadow: '0 1px 0 rgba(255,255,255,0.15) inset, 0 0 0 1px rgba(255,255,255,0.07) inset, 0 20px 60px -20px rgba(0,0,0,0.55), 0 4px 12px -4px rgba(0,0,0,0.30)',
-};
+// V2: Azure Tint — blue gradient, white text
+const G2: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(36,99,180,0.42),rgba(20,70,140,0.55))', backdropFilter: 'blur(30px) saturate(190%)', WebkitBackdropFilter: 'blur(30px) saturate(190%)', border: '1px solid rgba(180,210,255,0.40)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.40),inset 0 -1px 0 rgba(0,30,80,0.25),0 18px 50px -10px rgba(10,40,100,0.40)' };
+const I2='#f4f8ff', I2b='rgba(244,248,255,0.85)', I2c='rgba(244,248,255,0.68)', I2d='rgba(244,248,255,0.48)', I2e='rgba(244,248,255,0.25)', L2='rgba(255,255,255,0.14)';
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-      {children}
-    </p>
-  );
-}
+// V3: Obsidian — dark smoke, near-white text
+const G3: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const I3='#f1f5fb', I3b='#ccd6eb', I3c='rgba(241,245,251,0.75)', I3d='rgba(241,245,251,0.45)', L3='rgba(255,255,255,0.10)';
 
-function FullViewLink({ onClick }: { onClick: () => void }) {
-  return (
-    <a onClick={onClick} className="cursor-pointer flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: ACCENT, textDecoration: 'none', letterSpacing: '0.04em' }}>
-      Full view →
-    </a>
-  );
-}
+// V4: Prism — iridescent pink+cyan, dark plum text
+const G4: React.CSSProperties = { background: "radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))", backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
+const I4='#2a1240', I4b='#4a2060', I4c='rgba(42,18,64,0.68)', I4d='rgba(42,18,64,0.48)', I4e='rgba(42,18,64,0.26)', L4='rgba(42,18,64,0.10)';
 
-function Sparkline({ values, color = ACCENT, width = 100, height = 32 }: { values: number[]; color?: string; width?: number; height?: number }) {
-  const max = Math.max(...values), min = Math.min(...values);
-  const range = max - min || 1;
+// ── Sparkline (bigger) ─────────────────────────────────────────────────────────
+function Sparkline({ values, color = ACCENT, width = 220, height = 64 }: { values: number[]; color?: string; width?: number; height?: number }) {
+  const max = Math.max(...values), min = Math.min(...values), range = max - min || 1;
   const pts = values.map((v, i) => {
     const x = (i / (values.length - 1)) * (width - 2) + 1;
     const y = height - 2 - ((v - min) / range) * (height - 4);
     return [x, y] as [number, number];
   });
-  const d   = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
+  const d = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
   const fill = `${d} L${pts[pts.length-1][0]},${height} L${pts[0][0]},${height} Z`;
   return (
-    <svg width={width} height={height} style={{ display: 'block' }}>
-      <path d={fill} fill={color} opacity="0.12" />
-      <path d={d} stroke={color} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r="2.2" fill={color} />
+    <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" style={{ display: 'block' }}>
+      <defs>
+        <linearGradient id={`spark-fill-${color.replace('#','')}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {[0, 0.33, 0.66].map(i => (
+        <line key={i} x1={1} x2={width - 1} y1={2 + i * (height - 4) / 3} y2={2 + i * (height - 4) / 3}
+          stroke="rgba(12,44,82,0.06)" strokeDasharray="3 4" />
+      ))}
+      <path d={fill} fill={`url(#spark-fill-${color.replace('#','')})`} />
+      <path d={d} stroke={color} strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r="4" fill={color} />
+      <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r="8" fill={color} opacity="0.15" />
     </svg>
   );
 }
 
-// ── Overview: Situation cell ───────────────────────────────────────────────────
+const ACTIVE_AGENTS = ['Kai', 'Rio', 'Dev'];
+const IDLE_AGENTS   = ['Diana', 'Raj', 'Mia', 'Lena', 'Nate', 'Quinn', 'Atlas', 'Pixel', 'Felix', 'Marcus'];
+
+// ── Situation — V1: Clear Ice ──────────────────────────────────────────────────
 function OverviewSituation({ onGoFull }: { onGoFull: () => void }) {
   return (
-    <div style={{ ...GLASS_CARD, padding: 22, height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-        <SectionLabel><span style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />Situation</SectionLabel>
-        <FullViewLink onClick={onGoFull} />
+    <div style={{ ...G1, padding: 24, height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />Situation
+        </p>
+        <a onClick={onGoFull} className="cursor-pointer" style={{ fontSize: 12, fontWeight: 700, color: ACCENT, textDecoration: 'none', letterSpacing: '0.04em' }}>Full view →</a>
       </div>
-
-      <div className="flex items-center gap-4 flex-wrap">
-        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4, marginRight: 4 }}>Active</span>
+      <div className="flex items-center gap-3 flex-wrap">
+        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: I1d }}>Active</span>
         {ACTIVE_AGENTS.map(name => (
-          <span key={name} className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: 'rgba(255,255,255,0.10)', border: `1px solid ${INK_LINE}`, fontSize: 12, fontWeight: 600, color: INK_2 }}>
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 0 3px rgba(16,185,129,0.18)', display: 'inline-block' }} />
-            {name}
+          <span key={name} className="flex items-center gap-2 px-4 py-1.5 rounded-full" style={{ background: 'rgba(12,44,82,0.07)', border: `1px solid ${L1}`, fontSize: 13, fontWeight: 700, color: I1b }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 0 3px rgba(16,185,129,0.18)', display: 'inline-block' }} />{name}
           </span>
         ))}
       </div>
-
-      <div className="flex items-center gap-3 flex-wrap mt-2.5">
-        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4, marginRight: 4 }}>Idle</span>
+      <div className="flex items-center gap-3 flex-wrap mt-3">
+        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: I1d }}>Idle</span>
         {IDLE_AGENTS.slice(0, 6).map(name => (
-          <span key={name} className="flex items-center gap-2 px-3 py-1 rounded-full" style={{ background: 'transparent', border: `1px solid rgba(255,255,255,0.10)`, fontSize: 12, fontWeight: 500, color: INK_4 }}>
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: INK_5, display: 'inline-block' }} />
-            {name}
+          <span key={name} className="flex items-center gap-2 px-4 py-1.5 rounded-full" style={{ background: 'transparent', border: `1px solid ${L1}`, fontSize: 13, fontWeight: 600, color: I1d }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: I1e, display: 'inline-block' }} />{name}
           </span>
         ))}
-        <span className="px-3 py-1 rounded-full" style={{ background: 'transparent', border: `1px dashed rgba(255,255,255,0.10)`, fontSize: 12, fontWeight: 500, color: INK_4 }}>
+        <span className="px-4 py-1.5 rounded-full" style={{ background: 'transparent', border: `1px dashed ${L1}`, fontSize: 13, fontWeight: 600, color: I1d }}>
           +{IDLE_AGENTS.length - 6}
         </span>
       </div>
-
-      <p className="mt-3.5" style={{ fontSize: 12, color: INK_3, fontWeight: 500 }}>
-        <strong style={{ color: INK, fontWeight: 700 }}>3 agents working</strong>
-        <span style={{ margin: '0 8px', color: INK_5 }}>·</span>
+      <p className="mt-4" style={{ fontSize: 14, color: I1c, fontWeight: 600 }}>
+        <strong style={{ color: I1, fontWeight: 800 }}>3 agents working</strong>
+        <span style={{ margin: '0 10px', color: I1e }}>·</span>
         {IDLE_AGENTS.length} idle
-        <span style={{ margin: '0 8px', color: INK_5 }}>·</span>
+        <span style={{ margin: '0 10px', color: I1e }}>·</span>
         4 completed today
       </p>
     </div>
   );
 }
 
-// ── Overview: Act cell ─────────────────────────────────────────────────────────
+// ── Act — V3: Obsidian ─────────────────────────────────────────────────────────
 const ACT_ITEMS = [
-  { tier: 'ACT NOW', bg: '#dc2626',  title: 'Approve Novizio Q3 budget?',             meta: 'Due EOD' },
-  { tier: 'URGENT',  bg: '#d97706',  title: 'Fix size guide in Instagram checkout',    meta: 'Window 22:00' },
-  { tier: 'HIGH',    bg: '#0066cc',  title: 'Close transparency gap · Diana',          meta: 'Within 72h' },
+  { tier: 'ACT NOW', bg: '#dc2626', title: 'Approve Novizio Q3 budget?',           meta: 'Due EOD' },
+  { tier: 'URGENT',  bg: '#d97706', title: 'Fix size guide in Instagram checkout',  meta: 'Window 22:00' },
+  { tier: 'HIGH',    bg: '#0066cc', title: 'Close transparency gap · Diana',        meta: 'Within 72h' },
 ];
 
 function OverviewAct({ actCount, onGoFull }: { actCount: number; onGoFull: () => void }) {
   return (
-    <div className="ceo-glass-amber" style={{ padding: 22, display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+    <div style={{ ...G3, padding: 24, display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <div className="flex items-center gap-2">
-          <SectionLabel>Act</SectionLabel>
-          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: '#dc2626', color: '#fff' }}>●{actCount}</span>
+          <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I3d, margin: 0 }}>Act</p>
+          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: '#dc2626', color: '#fff' }}>●{actCount}</span>
         </div>
-        <FullViewLink onClick={onGoFull} />
+        <a onClick={onGoFull} className="cursor-pointer" style={{ fontSize: 12, fontWeight: 700, color: '#7eb8ff', textDecoration: 'none', letterSpacing: '0.04em' }}>Full view →</a>
       </div>
-
       <div className="flex flex-col gap-0 flex-1">
         {ACT_ITEMS.map((it, i) => (
-          <div key={i} className="ceo-act-row mt-2.5" onClick={onGoFull}>
-            <span className="text-[9px] font-bold px-2 py-1 rounded-full flex-none text-white" style={{ background: it.bg, letterSpacing: '0.16em' }}>
-              {it.tier}
-            </span>
-            <span className="flex-1 text-[13.5px] font-semibold truncate" style={{ color: INK, letterSpacing: '-0.01em' }}>{it.title}</span>
-            <span className="text-[11px] font-medium flex-none" style={{ color: INK_4 }}>{it.meta}</span>
-            <span style={{ color: INK_4 }}>›</span>
+          <div key={i} className="ceo-act-row mt-3" onClick={onGoFull}>
+            <span className="text-[11px] font-bold px-3 py-1.5 rounded-full flex-none text-white" style={{ background: it.bg, letterSpacing: '0.14em' }}>{it.tier}</span>
+            <span className="flex-1 text-[15px] font-semibold truncate" style={{ color: I3, letterSpacing: '-0.01em' }}>{it.title}</span>
+            <span className="text-[13px] font-semibold flex-none" style={{ color: I3d }}>{it.meta}</span>
+            <span style={{ color: I3d, fontSize: 16 }}>›</span>
           </div>
         ))}
       </div>
-
-      <p className="mt-3.5" style={{ fontSize: 11, color: INK_4, fontWeight: 500 }}>
+      <p className="mt-4" style={{ fontSize: 13, color: I3d, fontWeight: 600 }}>
         3 decisions waiting · 0 overdue · Next refresh 06:00
       </p>
     </div>
   );
 }
 
-// ── Overview: Done cell ────────────────────────────────────────────────────────
+// ── Done — V4: Prism ───────────────────────────────────────────────────────────
 function OverviewDone({ onGoFull }: { onGoFull: () => void }) {
   return (
-    <div style={{ ...GLASS_CARD, padding: 22, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-        <SectionLabel>Done</SectionLabel>
-        <FullViewLink onClick={onGoFull} />
+    <div style={{ ...G4, padding: 24, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I4d, margin: 0 }}>Done</p>
+        <a onClick={onGoFull} className="cursor-pointer" style={{ fontSize: 12, fontWeight: 700, color: VIOLET, textDecoration: 'none', letterSpacing: '0.04em' }}>Full view →</a>
       </div>
-
       <div className="flex items-baseline gap-3 mt-1.5">
-        <span style={{ fontSize: 48, fontWeight: 700, letterSpacing: '-0.035em', color: INK, lineHeight: 1 }}>4</span>
-        <span style={{ fontSize: 12, color: INK_3, fontWeight: 500, lineHeight: 1.4 }}>items completed<br/>today</span>
+        <span style={{ fontSize: 52, fontWeight: 800, letterSpacing: '-0.035em', color: I4, lineHeight: 1 }}>4</span>
+        <span style={{ fontSize: 14, color: I4c, fontWeight: 600, lineHeight: 1.4 }}>items completed<br />today</span>
       </div>
-
-      <p className="mt-3.5" style={{ fontSize: 11.5, color: INK_3, fontWeight: 500, lineHeight: 1.55 }}>
-        <strong style={{ color: INK_2, fontWeight: 700 }}>Last:</strong> Kai delivered analytics report
-        <span style={{ color: INK_5 }}> · </span>
+      <p className="mt-4" style={{ fontSize: 13, color: I4c, fontWeight: 600, lineHeight: 1.55 }}>
+        <strong style={{ color: I4b, fontWeight: 800 }}>Last:</strong> Kai delivered analytics report
+        <span style={{ color: I4e }}> · </span>
         <span style={{ color: GREEN, fontWeight: 700 }}>4h ago</span>
       </p>
     </div>
   );
 }
 
-// ── Overview: Context cell ─────────────────────────────────────────────────────
+// ── Context — V2: Azure Tint ───────────────────────────────────────────────────
 function OverviewContext({ onGoFull }: { onGoFull: () => void }) {
   return (
-    <div className="ceo-glass-violet" style={{ padding: 22 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-        <SectionLabel>Context</SectionLabel>
-        <FullViewLink onClick={onGoFull} />
+    <div style={{ ...G2, padding: 24 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I2d, margin: 0 }}>Context</p>
+        <a onClick={onGoFull} className="cursor-pointer" style={{ fontSize: 12, fontWeight: 700, color: '#7eb8ff', textDecoration: 'none', letterSpacing: '0.04em' }}>Full view →</a>
       </div>
-
-      <p className="relative pl-3.5 italic" style={{ fontSize: 15, fontWeight: 400, color: INK_2, letterSpacing: '-0.015em', lineHeight: 1.45 }}>
-        <span className="absolute left-0 top-1 bottom-1 w-0.5 rounded" style={{ background: `linear-gradient(180deg, ${VIOLET}, #8b7cf6)`, display: 'block' }} />
+      <p className="relative pl-3.5 italic" style={{ fontSize: 16, fontWeight: 500, color: I2b, letterSpacing: '-0.015em', lineHeight: 1.5 }}>
+        <span className="absolute left-0 top-1 bottom-1 w-0.5 rounded" style={{ background: 'linear-gradient(180deg,#7eb8ff,#a8d0ff)', display: 'block' }} />
         Audience isn&apos;t just buying linen — they&apos;re buying our integrity.
       </p>
-
-      <div className="flex gap-4 mt-3.5 flex-wrap">
+      <div className="flex gap-5 mt-4 flex-wrap">
         {[{ k: 'Novizio', v: '74', up: '↑2' }, { k: 'Hourbour', v: '67', up: '↑1' }].map(s => (
-          <div key={s.k} className="flex items-baseline gap-1.5" style={{ fontSize: 11, color: INK_3, fontWeight: 500 }}>
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_4 }}>{s.k}</span>
-            <span style={{ fontSize: 14, fontWeight: 700, color: INK, letterSpacing: '-0.02em' }}>{s.v}</span>
-            <span style={{ fontSize: 10, fontWeight: 700, color: GREEN }}>{s.up}</span>
+          <div key={s.k} className="flex items-baseline gap-1.5">
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: I2d }}>{s.k}</span>
+            <span style={{ fontSize: 18, fontWeight: 800, color: I2, letterSpacing: '-0.02em' }}>{s.v}</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#10b981' }}>{s.up}</span>
           </div>
         ))}
       </div>
@@ -190,76 +176,52 @@ function OverviewContext({ onGoFull }: { onGoFull: () => void }) {
   );
 }
 
-// ── Overview: KPIs strip ───────────────────────────────────────────────────────
+// ── KPI Cards — separate V1 cards ──────────────────────────────────────────────
 const KPIS = [
-  { k: 'ROAS · MoM',    v: '3.8', unit: '×',  d: '↑ +0.4 MoM', spark: [3.0,3.1,3.3,3.2,3.4,3.5,3.6,3.8], color: ACCENT },
-  { k: 'CAC · Blended', v: '8.20', unit: '$prefix', d: '↓ −12% MoM', spark: [10.2,10.0,9.6,9.3,9.1,8.8,8.4,8.2], color: GREEN },
-  { k: 'Brand Health',  v: '74',  unit: '',   d: '↑ +2 pts',   spark: [62,64,65,67,69,70,72,74], color: ACCENT },
+  { k: 'ROAS · MoM',    v: '3.8',  unit: '×',       d: '↑ +0.4 MoM', spark: [3.0,3.1,3.3,3.2,3.4,3.5,3.6,3.8], color: ACCENT },
+  { k: 'CAC · Blended', v: '8.20', unit: '$prefix',  d: '↓ −12% MoM', spark: [10.2,10.0,9.6,9.3,9.1,8.8,8.4,8.2], color: GREEN },
+  { k: 'Brand Health',  v: '74',   unit: '',          d: '↑ +2 pts',   spark: [62,64,65,67,69,70,72,74], color: VIOLET },
 ];
 
 function OverviewKPIs() {
   return (
-    <div style={{ ...GLASS_CARD, padding: 8 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
-        {KPIS.map(k => (
-          <div key={k.k} style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '16px 18px', borderRight: `1px solid ${INK_LINE}` }}
-               className="last:border-r-0">
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4 }}>{k.k}</span>
-            <div className="flex items-end justify-between">
-              <span style={{ fontSize: 44, fontWeight: 700, letterSpacing: '-0.035em', color: INK, lineHeight: 1 }}>
-                {k.unit === '$prefix' && <span style={{ fontSize: 22, fontWeight: 500, color: INK_3, marginRight: 2 }}>$</span>}
-                {k.v}
-                {k.unit !== '$prefix' && k.unit && <span style={{ fontSize: 22, fontWeight: 500, color: INK_3, marginLeft: 2 }}>{k.unit}</span>}
-              </span>
-              <Sparkline values={k.spark} color={k.color} width={100} height={32} />
-            </div>
-            <span style={{ fontSize: 11, fontWeight: 700, color: GREEN }}>
-              {k.d}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      {KPIS.map(k => (
+        <div key={k.k} style={{ ...G1, padding: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I1d }}>{k.k}</span>
+          <div className="flex items-end justify-between gap-4">
+            <span style={{ fontSize: 52, fontWeight: 800, letterSpacing: '-0.04em', color: I1, lineHeight: 1 }}>
+              {k.unit === '$prefix' && <span style={{ fontSize: 28, fontWeight: 600, color: I1c, marginRight: 2 }}>$</span>}
+              {k.v}
+              {k.unit !== '$prefix' && k.unit && <span style={{ fontSize: 28, fontWeight: 600, color: I1c, marginLeft: 2 }}>{k.unit}</span>}
             </span>
           </div>
-        ))}
-      </div>
+          <Sparkline values={k.spark} color={k.color} />
+          <span style={{ fontSize: 14, fontWeight: 800, color: GREEN }}>{k.d}</span>
+        </div>
+      ))}
     </div>
   );
 }
 
 // ── Overview Tab ───────────────────────────────────────────────────────────────
-interface OverviewTabProps {
-  onJump: (tab: TabId) => void;
-  actCount: number;
-}
+interface OverviewTabProps { onJump: (tab: TabId) => void; actCount: number; }
 
 export default function OverviewTab({ onJump, actCount }: OverviewTabProps) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gridAutoRows: 'minmax(0, auto)',
-        gap: 16,
-      }}
-    >
-      {/* Situation: cols 1–7, row 1 */}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gridAutoRows: 'minmax(0, auto)', gap: 16 }}>
       <div style={{ gridColumn: '1 / span 7', gridRow: '1' }}>
         <OverviewSituation onGoFull={() => onJump('situation')} />
       </div>
-
-      {/* Act: cols 8–12, rows 1–2 */}
       <div style={{ gridColumn: '8 / span 5', gridRow: '1 / span 2' }}>
         <OverviewAct actCount={actCount} onGoFull={() => onJump('act')} />
       </div>
-
-      {/* Done: cols 1–4, row 2 */}
       <div style={{ gridColumn: '1 / span 4', gridRow: '2' }}>
         <OverviewDone onGoFull={() => onJump('done')} />
       </div>
-
-      {/* Context: cols 5–7, row 2 */}
       <div style={{ gridColumn: '5 / span 3', gridRow: '2' }}>
         <OverviewContext onGoFull={() => onJump('context')} />
       </div>
-
-      {/* KPIs: full width, row 3 */}
       <div style={{ gridColumn: '1 / span 12', gridRow: '3' }}>
         <OverviewKPIs />
       </div>
