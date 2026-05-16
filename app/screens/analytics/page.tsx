@@ -31,26 +31,6 @@ const signals = [
   { id: 3, severity: 'amber', text: 'KAI · LinkedIn B2B reach +34% MoM — recommend reallocating 15% Instagram spend to LinkedIn.',                                                           cta: 'Explore Action',  route: '/screens/war-room?q=Kai%2C+LinkedIn+B2B+reach+is+up+34%25+MoM.+Should+I+reallocate+15%25+of+Instagram+spend+to+LinkedIn%3F' },
 ];
 
-const execKpis = [
-  { label: 'ROAS · MoM',   value: '3.8',  unit: '×',    delta: '+0.4 MoM', up: true,  spark: [3.0,3.1,3.3,3.2,3.4,3.5,3.6,3.8] },
-  { label: 'Blended CAC',  value: '8.20', unit: '$',    delta: '−12% MoM', up: true,  spark: [10.2,10.0,9.6,9.3,9.1,8.8,8.4,8.2] },
-  { label: 'Brand Health', value: '82',   unit: '/100', delta: '+2 pts',   up: true,  spark: [72,74,75,76,77,79,80,82] },
-];
-
-const socialKpis = [
-  { label: 'Combined Reach',    value: '124.5K', delta: '+12%',  up: true  },
-  { label: 'Avg Engagement',    value: '4.2%',   delta: '−0.3%', up: false },
-  { label: 'Total Impressions', value: '1.8M',   delta: '+22%',  up: true  },
-  { label: 'Brand Health',      value: '82/100', delta: '+2pts', up: true  },
-];
-
-const ecomKpis = [
-  { label: 'Revenue (MTD)',       value: '$842K', delta: '+18%',  up: true  },
-  { label: 'Conversion Rate',     value: '3.8%',  delta: '−0.2%', up: false },
-  { label: 'Returning Customers', value: '88%',   delta: '+4%',   up: true  },
-  { label: 'Cart Abandonment',    value: '42%',   delta: '−6%',   up: true  },
-];
-
 const topicRows = [
   { topic: 'Process Transparency', score: 89, multiplier: '3.2×', revenue: '$22K–$26K', highlight: true  },
   { topic: 'Founder Story',        score: 72, multiplier: '2.8×', revenue: '$18K–$24K', highlight: false },
@@ -85,25 +65,6 @@ const followerLines = [
 ];
 
 // ── Sub-components ──────────────────────────────────────────────────────────────
-
-function Sparkline({ values, color }: { values: number[]; color: string }) {
-  const W = 80, H = 28;
-  const max = Math.max(...values), min = Math.min(...values), range = max - min || 1;
-  const pts = values.map((v, i) => {
-    const x = (i / (values.length - 1)) * (W - 2) + 1;
-    const y = H - 2 - ((v - min) / range) * (H - 4);
-    return [x, y] as [number, number];
-  });
-  const d    = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
-  const fill = `${d} L${pts[pts.length-1][0]},${H} L${pts[0][0]},${H} Z`;
-  return (
-    <svg width={W} height={H} style={{ display: 'block', flexShrink: 0 }}>
-      <path d={fill} fill={color} opacity="0.12" />
-      <path d={d} stroke={color} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r="2" fill={color} />
-    </svg>
-  );
-}
 
 function LineChart({ lines, labels, gridColor, labelColor }: {
   lines: { color: string; points: number[] }[];
@@ -177,64 +138,7 @@ export default function AnalyticsPage() {
           })}
         </section>
 
-        {/* ── 2. Executive KPI Strip — V1 Clear Ice ─────────────────────────── */}
-        <section style={{ ...G1, padding: 8 }}>
-          <div className="grid grid-cols-3">
-            {execKpis.map((k, i) => (
-              <div key={k.label} className="flex flex-col gap-2 px-7 py-5"
-                style={{ borderRight: i < execKpis.length - 1 ? `1px solid ${L1}` : 'none' }}>
-                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase', color: I1d }}>{k.label}</span>
-                <div className="flex items-end justify-between">
-                  <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 42, fontWeight: 700, letterSpacing: '-0.04em', color: I1, lineHeight: 1 }}>
-                    {k.unit === '$' && <span style={{ fontSize: 22, fontWeight: 500, color: I1d, marginRight: 2 }}>$</span>}
-                    {k.value}
-                    {k.unit !== '$' && <span style={{ fontSize: 20, fontWeight: 500, color: I1d, marginLeft: 2 }}>{k.unit}</span>}
-                  </span>
-                  <Sparkline values={k.spark} color={k.up ? '#10b981' : '#f87171'} />
-                </div>
-                <span style={{ fontSize: 11, fontWeight: 700, color: k.up ? '#10b981' : '#f87171' }}>
-                  {k.up ? '↑' : '↓'} {k.delta}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── 3. Social Performance — V2 Azure Tint ─────────────────────────── */}
-        <section>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, margin: '0 0 16px' }}>Social Performance</p>
-          <div className="grid grid-cols-4 gap-4">
-            {socialKpis.map(k => (
-              <div key={k.label} style={{ ...G2, padding: 24 }}>
-                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: I2d, margin: '0 0 12px' }}>{k.label}</p>
-                <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em', color: I2, margin: '0 0 6px' }}>{k.value}</p>
-                <div className={`flex items-center gap-1 text-[11px] font-bold ${k.up ? 'text-emerald-400' : 'text-red-400'}`}>
-                  <span className="material-symbols-outlined text-[13px]">{k.up ? 'trending_up' : 'trending_down'}</span>
-                  {k.delta}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── 4. E-Commerce Health — V4 Prism ───────────────────────────────── */}
-        <section>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, margin: '0 0 16px' }}>E-Commerce Health</p>
-          <div className="grid grid-cols-4 gap-4">
-            {ecomKpis.map(k => (
-              <div key={k.label} style={{ ...G4, padding: 24 }}>
-                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: I4d, margin: '0 0 12px' }}>{k.label}</p>
-                <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em', color: I4, margin: '0 0 6px' }}>{k.value}</p>
-                <div className={`flex items-center gap-1 text-[11px] font-bold ${k.up ? 'text-emerald-500' : 'text-rose-500'}`}>
-                  <span className="material-symbols-outlined text-[13px]">{k.up ? 'trending_up' : 'trending_down'}</span>
-                  {k.delta}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── 5. Content Correlation + Kai Callout ──────────────────────────── */}
+        {/* ── 2. Content Correlation + Kai Callout ──────────────────────────── */}
         <section className="grid grid-cols-12 gap-6">
           {/* Table — V1 Clear Ice */}
           <div className="col-span-7" style={{ ...G1, overflow: 'hidden' }}>
@@ -300,7 +204,7 @@ export default function AnalyticsPage() {
               </p>
             </div>
             <button
-              onClick={() => router.push('/screens/analytics/content')}
+              onClick={() => router.push('/screens/marketing')}
               className="mt-6 self-start flex items-center gap-2 text-white px-5 py-2.5 rounded-full hover:opacity-90 active:scale-95 transition-all"
               style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase', background: ACCENT }}
             >

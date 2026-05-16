@@ -2,225 +2,254 @@
 
 import CompetitorSubNav from '../_subnav';
 
-const s1 = 'bg-[#1d1d1f]';
+// ── Glass variants ──────────────────────────────────────────────────────────────
+const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
+const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
 
+const G2 = { background: 'linear-gradient(135deg,rgba(0,102,204,0.28),rgba(0,160,255,0.18))', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 18px 50px -10px rgba(0,60,160,0.40)' };
+const I2 = '#f4f8ff', I2d = 'rgba(244,248,255,0.48)';
+
+const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
+
+const G4 = { background: 'radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))', backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
+const I4 = '#2a1240', I4d = 'rgba(42,18,64,0.48)';
+
+const ACCENT = '#0066cc';
+const INK_4  = 'rgba(10,37,71,0.52)';
+
+// ── DOT component ───────────────────────────────────────────────────────────────
 type DotColor = 'green' | 'yellow' | 'blue' | 'none';
 const DOT = ({ color }: { color: DotColor }) => {
-  const cls: Record<DotColor, string> = {
+  const bg: Record<DotColor, string> = {
     green:  'bg-emerald-500',
-    yellow: 'bg-yellow-500',
-    blue:   'bg-[#0071e3] shadow-[0_0_6px_#0071e3]',
-    none:   'bg-white/15',
+    yellow: 'bg-yellow-400',
+    blue:   'bg-[#0066cc]',
+    none:   'bg-black/10',
   };
-  return <span className={`w-2 h-2 rounded-full inline-block ${cls[color]}`} />;
+  return <span className={`w-2 h-2 rounded-full inline-block ${bg[color]}`} />;
 };
 
+// ── Data ────────────────────────────────────────────────────────────────────────
 const keywords = [
-  { kw: 'best hourly savings app',        vol: '2.4k',  diff: 18, intent: 'High',   hrb: 'blue',   rev: 'none',  mon: 'none',  wis: 'none',  gap: true  },
-  { kw: 'automatic savings tracker uk',   vol: '4.1k',  diff: 32, intent: 'High',   hrb: 'none',   rev: 'yellow',mon: 'green', wis: 'none',  gap: true  },
-  { kw: 'best app for saving money',      vol: '12.4k', diff: 72, intent: 'High',   hrb: 'none',   rev: 'green', mon: 'green', wis: 'none',  gap: true  },
-  { kw: 'neobank uk 2026',               vol: '8.5k',  diff: 64, intent: 'Med',    hrb: 'none',   rev: 'green', mon: 'green', wis: 'none',  gap: true  },
-  { kw: 'international transfer free',    vol: '24.1k', diff: 88, intent: 'High',   hrb: 'none',   rev: 'green', mon: 'yellow',wis: 'green', gap: true  },
-  { kw: 'fintech app uk',                vol: '5.2k',  diff: 45, intent: 'Med',    hrb: 'none',   rev: 'yellow',mon: 'green', wis: 'none',  gap: true  },
-  { kw: 'hourly savings tracker',         vol: '1.2k',  diff: 22, intent: 'High',   hrb: 'blue',   rev: 'none',  mon: 'none',  wis: 'none',  gap: false },
-  { kw: 'money management app',           vol: '18.9k', diff: 82, intent: 'High',   hrb: 'none',   rev: 'green', mon: 'green', wis: 'none',  gap: true  },
+  { kw: 'best hourly savings app',       vol: '2.4k',  diff: 18, hrb: 'blue',  rev: 'none',   mon: 'none',   wis: 'none',  gap: true  },
+  { kw: 'automatic savings tracker uk',  vol: '4.1k',  diff: 32, hrb: 'none',  rev: 'yellow', mon: 'green',  wis: 'none',  gap: true  },
+  { kw: 'best app for saving money',     vol: '12.4k', diff: 72, hrb: 'none',  rev: 'green',  mon: 'green',  wis: 'none',  gap: true  },
+  { kw: 'neobank uk 2026',              vol: '8.5k',  diff: 64, hrb: 'none',  rev: 'green',  mon: 'green',  wis: 'none',  gap: true  },
+  { kw: 'international transfer free',   vol: '24.1k', diff: 88, hrb: 'none',  rev: 'green',  mon: 'yellow', wis: 'green', gap: true  },
+  { kw: 'fintech app uk',               vol: '5.2k',  diff: 45, hrb: 'none',  rev: 'yellow', mon: 'green',  wis: 'none',  gap: true  },
+  { kw: 'hourly savings tracker',        vol: '1.2k',  diff: 22, hrb: 'blue',  rev: 'none',   mon: 'none',   wis: 'none',  gap: false },
+  { kw: 'money management app',          vol: '18.9k', diff: 82, hrb: 'none',  rev: 'green',  mon: 'green',  wis: 'none',  gap: true  },
 ];
 
 const trending = [
-  { kw: 'ai savings app',         change: '+340%', badge: 'Surging',  badgeCls: 'bg-emerald-500/10 text-emerald-400' },
-  { kw: 'open banking uk',        change: '+185%', badge: 'Rising',   badgeCls: 'bg-[#0071e3]/10 text-[#0071e3]'    },
-  { kw: 'ethical fintech',        change: '+92%',  badge: 'Rising',   badgeCls: 'bg-[#0071e3]/10 text-[#0071e3]'    },
-  { kw: 'crypto savings account', change: '-44%',  badge: 'Falling',  badgeCls: 'bg-white/10 text-white/50'         },
+  { kw: 'ai savings app',        change: '+340%', badge: 'Surging', up: true  },
+  { kw: 'open banking uk',       change: '+185%', badge: 'Rising',  up: true  },
+  { kw: 'ethical fintech',       change: '+92%',  badge: 'Rising',  up: true  },
+  { kw: 'crypto savings account',change: '−44%',  badge: 'Falling', up: false },
 ];
 
+const priorityGaps = [
+  { score: '9.1', kw: 'automatic savings tracker uk', vol: '4.1k', why: 'High intent, low competition, directly maps to your core product.', platform: 'Organic + Blog' },
+  { score: '8.7', kw: 'best hourly savings app',       vol: '2.4k', why: "Branded long-tail — own this before competitors colonise it.",     platform: 'Organic + ASO' },
+  { score: '8.2', kw: 'ai savings app',                vol: '2.1k', why: 'Surging 340% — early mover advantage still available.',            platform: 'Blog + Social' },
+  { score: '7.5', kw: 'neobank uk 2026',              vol: '8.5k', why: 'Competitors rank here; requires content investment but high payoff.', platform: 'SEO' },
+];
+
+// ── Page ────────────────────────────────────────────────────────────────────────
 export default function CompetitorKeywordsPage() {
-  const gapCount = keywords.filter((k) => k.gap && k.hrb === 'none').length;
-  const ownedCount = keywords.filter((k) => k.hrb !== 'none').length;
+  const gapCount   = keywords.filter(k => k.gap && k.hrb === 'none').length;
+  const ownedCount = keywords.filter(k => k.hrb !== 'none').length;
+
+  const kpiCards = [
+    { label: 'Keywords Tracked',  value: keywords.length, icon: 'manage_search', color: I4, iconColor: I4d   },
+    { label: 'You Own',           value: ownedCount,       icon: 'verified',      color: ACCENT, iconColor: ACCENT },
+    { label: 'Gap Opportunities', value: gapCount,         icon: 'arrow_upward',  color: '#059669', iconColor: '#059669' },
+    { label: 'Avg Difficulty',    value: '53',             icon: 'speed',         color: '#d97706', iconColor: '#d97706' },
+  ];
 
   return (
-    <main className="min-h-screen bg-black text-[#f5f5f7] antialiased flex flex-col pt-14">
+    <main className="min-h-screen pb-24">
       <CompetitorSubNav />
 
-      <div className="flex-grow pt-8 pb-24 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto w-full flex flex-col gap-10">
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px] space-y-8">
 
-        {/* KPI row */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: 'Keywords Tracked',    value: keywords.length, icon: 'manage_search',  color: 'text-white' },
-            { label: 'You Own',             value: ownedCount,      icon: 'verified',        color: 'text-[#0071e3]' },
-            { label: 'Gap Opportunities',   value: gapCount,        icon: 'arrow_upward',    color: 'text-emerald-400' },
-            { label: 'Avg Difficulty',      value: '53',            icon: 'speed',           color: 'text-yellow-400' },
-          ].map((k) => (
-            <div key={k.label} className={`${s1} rounded-2xl p-6 flex flex-col gap-3 border border-white/5`}>
-              <div className="flex justify-between items-center text-white/50">
-                <span className="text-[12px] uppercase tracking-wider font-medium">{k.label}</span>
-                <span className={`material-symbols-outlined text-[18px] ${k.color}`}>{k.icon}</span>
+        {/* ── 1. KPI Cards — G4 Prism ───────────────────────────────────────── */}
+        <section>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, margin: '0 0 16px' }}>Keyword Intelligence</p>
+          <div className="grid grid-cols-4 gap-4">
+            {kpiCards.map(k => (
+              <div key={k.label} style={{ ...G4, padding: 24 }}>
+                <div className="flex items-center justify-between mb-3">
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: I4d, margin: 0 }}>{k.label}</p>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: k.iconColor }}>{k.icon}</span>
+                </div>
+                <p style={{ fontFamily: 'ui-monospace,monospace', fontSize: 32, fontWeight: 700, letterSpacing: '-0.04em', color: k.color, margin: 0, lineHeight: 1 }}>{k.value}</p>
               </div>
-              <div className={`text-[32px] font-semibold leading-none ${k.color}`}>{k.value}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </section>
 
-        {/* Main grid */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* ── 2. Main Grid: Keyword Matrix + Right Column ───────────────────── */}
+        <section className="grid grid-cols-12 gap-6">
 
-          {/* Keyword table */}
-          <div className="lg:col-span-2 flex flex-col gap-4">
-            <div className="flex justify-between items-center">
+          {/* Keyword Matrix — G1 Clear Ice */}
+          <div className="col-span-8" style={{ ...G1, overflow: 'hidden' }}>
+            <div className="px-6 pt-5 pb-3 flex items-end justify-between">
               <div>
-                <h2 className="text-white text-[18px] font-semibold" style={{ letterSpacing: '-0.28px' }}>Keyword Matrix</h2>
-                <p className="text-white/40 text-[12px] mt-0.5">Volume + difficulty + competitor coverage</p>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: '0 0 4px' }}>Search Coverage</p>
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Keyword Matrix</h2>
               </div>
-              <div className="flex items-center gap-3 text-[11px] text-white/40">
-                <span className="flex items-center gap-1.5"><DOT color="blue" /> You</span>
-                <span className="flex items-center gap-1.5"><DOT color="green" /> Competitor</span>
-                <span className="flex items-center gap-1.5"><DOT color="yellow" /> Partial</span>
-                <span className="flex items-center gap-1.5"><DOT color="none" /> Missing</span>
-              </div>
-            </div>
-
-            <div className={`${s1} rounded-2xl overflow-hidden border border-white/5`}>
-              <table className="w-full text-left text-[13px]">
-                <thead className="text-white/40 text-[11px] uppercase tracking-wider border-b border-white/5">
-                  <tr>
-                    <th className="px-5 py-4 font-medium">Keyword</th>
-                    <th className="px-4 py-4 font-medium text-right">Vol/mo</th>
-                    <th className="px-4 py-4 font-medium text-right">Diff</th>
-                    <th className="px-4 py-4 font-medium text-center text-[#0071e3]">You</th>
-                    <th className="px-4 py-4 font-medium text-center">Rev</th>
-                    <th className="px-4 py-4 font-medium text-center">Mon</th>
-                    <th className="px-4 py-4 font-medium text-center">Wise</th>
-                    <th className="px-4 py-4 font-medium text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {keywords.map((r) => (
-                    <tr key={r.kw} className={`hover:bg-white/[0.03] transition-colors group ${r.gap && r.hrb === 'none' ? 'border-l-2 border-l-emerald-500/40' : ''}`}>
-                      <td className="px-5 py-3.5 text-white font-medium">{r.kw}</td>
-                      <td className="px-4 py-3.5 text-right text-white/60">{r.vol}</td>
-                      <td className="px-4 py-3.5 text-right">
-                        <span className={`text-[12px] font-medium ${r.diff < 40 ? 'text-emerald-400' : r.diff < 70 ? 'text-yellow-400' : 'text-rose-400'}`}>
-                          {r.diff}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3.5 text-center"><DOT color={r.hrb as DotColor} /></td>
-                      <td className="px-4 py-3.5 text-center"><DOT color={r.rev as DotColor} /></td>
-                      <td className="px-4 py-3.5 text-center"><DOT color={r.mon as DotColor} /></td>
-                      <td className="px-4 py-3.5 text-center"><DOT color={r.wis as DotColor} /></td>
-                      <td className="px-4 py-3.5 text-right">
-                        {r.gap && r.hrb === 'none' && (
-                          <button className="opacity-0 group-hover:opacity-100 transition-opacity text-[11px] font-medium text-[#0071e3] bg-[#0071e3]/10 hover:bg-[#0071e3]/20 px-2.5 py-1 rounded-lg active:scale-95">
-                            Target
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Right column */}
-          <div className="flex flex-col gap-6">
-
-            {/* Trending */}
-            <div className="flex flex-col gap-3">
-              <h2 className="text-white text-[18px] font-semibold" style={{ letterSpacing: '-0.28px' }}>Trending This Week</h2>
-              <div className="flex flex-col gap-2">
-                {trending.map((t) => (
-                  <div key={t.kw} className={`${s1} rounded-xl p-4 border border-white/5 flex justify-between items-center`}>
-                    <div>
-                      <div className="text-white text-[14px] font-medium">{t.kw}</div>
-                      <div className={`text-[11px] font-medium mt-0.5 ${t.change.startsWith('+') ? 'text-emerald-400' : 'text-rose-400'}`}>{t.change} searches</div>
-                    </div>
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${t.badgeCls}`}>{t.badge}</span>
+              <div className="flex items-center gap-4">
+                {[{ color: 'blue' as DotColor, label: 'You' }, { color: 'green' as DotColor, label: 'Competitor' }, { color: 'yellow' as DotColor, label: 'Partial' }, { color: 'none' as DotColor, label: 'Missing' }].map(d => (
+                  <div key={d.label} className="flex items-center gap-1.5">
+                    <DOT color={d.color} />
+                    <span style={{ fontSize: 10, color: I1d }}>{d.label}</span>
                   </div>
                 ))}
               </div>
             </div>
+            <table className="w-full text-left">
+              <thead>
+                <tr style={{ borderTop: `1px solid ${L1}` }}>
+                  {['Keyword', 'Vol/mo', 'Diff', 'You', 'Rev', 'Mon', 'Wise', 'Action'].map((h, i) => (
+                    <th key={h} className={`px-4 py-3 ${i === 1 || i === 2 ? 'text-right' : i > 2 && i < 7 ? 'text-center' : i === 7 ? 'text-right' : ''}`}
+                      style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: i === 3 ? ACCENT : I1d }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {keywords.map(r => (
+                  <tr key={r.kw} style={{ borderTop: `1px solid ${L1}`, borderLeft: r.gap && r.hrb === 'none' ? '3px solid rgba(5,150,105,0.40)' : '3px solid transparent' }}
+                    className="hover:bg-black/[0.02] transition-colors group">
+                    <td className="px-4 py-3" style={{ fontSize: 12, fontWeight: 500, color: I1 }}>{r.kw}</td>
+                    <td className="px-4 py-3 text-right" style={{ fontSize: 12, color: I1c }}>{r.vol}</td>
+                    <td className="px-4 py-3 text-right">
+                      <span style={{ fontSize: 12, fontWeight: 600, color: r.diff < 40 ? '#059669' : r.diff < 70 ? '#d97706' : '#e11d48' }}>{r.diff}</span>
+                    </td>
+                    <td className="px-4 py-3 text-center"><DOT color={r.hrb as DotColor} /></td>
+                    <td className="px-4 py-3 text-center"><DOT color={r.rev as DotColor} /></td>
+                    <td className="px-4 py-3 text-center"><DOT color={r.mon as DotColor} /></td>
+                    <td className="px-4 py-3 text-center"><DOT color={r.wis as DotColor} /></td>
+                    <td className="px-4 py-3 text-right">
+                      {r.gap && r.hrb === 'none' && (
+                        <button className="opacity-0 group-hover:opacity-100 transition-opacity active:scale-95"
+                          style={{ fontSize: 11, fontWeight: 700, color: ACCENT, background: `${ACCENT}12`, padding: '4px 10px', borderRadius: 6, border: 'none', cursor: 'pointer' }}>
+                          Target
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-            {/* Strategy note */}
-            <div className="bg-gradient-to-b from-[#0071e3]/10 to-[#1d1d1f] rounded-2xl p-6 border border-[#0071e3]/20 flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#0071e3] text-[20px]">insights</span>
-                <span className="text-white text-[14px] font-semibold">Kai&apos;s Recommendation</span>
+          {/* Right column */}
+          <div className="col-span-4 flex flex-col gap-5">
+
+            {/* Trending This Week — G3 Obsidian */}
+            <div style={{ ...G3, overflow: 'hidden' }}>
+              <div className="px-5 pt-5 pb-3">
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I3d, margin: '0 0 4px' }}>Search trends</p>
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: '#f1f5fb', letterSpacing: '-0.02em', margin: 0 }}>Trending This Week</h2>
               </div>
-              <p className="text-white/70 text-[13px] leading-relaxed">
-                You currently rank for <strong className="text-white">0 non-branded keywords</strong> in top 100 results.
-                Start with low-difficulty long-tail terms like <em className="text-[#0071e3]">&quot;hourly savings tracker&quot;</em> to
-                build domain authority before targeting high-volume competitive terms.
+              {trending.map((t, idx) => (
+                <div key={t.kw} className="flex items-center justify-between px-5 py-3.5 hover:bg-white/5 transition-colors"
+                  style={{ borderTop: '1px solid rgba(241,245,251,0.07)' }}>
+                  <div>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5fb', margin: '0 0 2px' }}>{t.kw}</p>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: t.up ? '#34d399' : '#f87171', margin: 0 }}>{t.change} searches</p>
+                  </div>
+                  <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', padding: '3px 10px', borderRadius: 999,
+                    background: t.up ? 'rgba(52,211,153,0.12)' : 'rgba(248,113,113,0.12)',
+                    color: t.up ? '#34d399' : '#f87171' }}>{t.badge}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Kai's Recommendation — G2 Azure Tint */}
+            <div style={{ ...G2, padding: 22 }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="material-symbols-outlined" style={{ fontSize: 18, color: ACCENT }}>insights</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: I2 }}>Kai&apos;s Recommendation</span>
+              </div>
+              <p style={{ fontSize: 13, color: I2d, lineHeight: 1.65, margin: '0 0 14px' }}>
+                You currently rank for <strong style={{ color: I2 }}>0 non-branded keywords</strong> in top 100 results.
+                Start with low-difficulty long-tail terms like{' '}
+                <em style={{ color: '#5ba8ff' }}>&quot;hourly savings tracker&quot;</em> to build domain authority.
               </p>
-              <button className="mt-1 text-[#0071e3] text-[13px] font-medium flex items-center gap-1 hover:underline active:scale-95">
+              <button className="flex items-center gap-1 active:scale-95"
+                style={{ fontSize: 12, fontWeight: 700, color: '#5ba8ff', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                 Build keyword plan
-                <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_forward</span>
               </button>
             </div>
 
-            {/* Quick actions */}
-            <div className={`${s1} rounded-2xl p-5 border border-white/5 flex flex-col gap-3`}>
-              <h3 className="text-white text-[14px] font-semibold">Quick Actions</h3>
-              <div className="flex flex-col gap-2">
+            {/* Quick Actions — G1 Clear Ice */}
+            <div style={{ ...G1, padding: 20 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: I1, margin: '0 0 12px' }}>Quick Actions</p>
+              <div className="flex flex-col gap-1">
                 {[
-                  { label: 'Export keyword gaps CSV',      icon: 'download' },
-                  { label: 'Add keyword to tracking',      icon: 'add_circle' },
+                  { label: 'Export keyword gaps CSV',       icon: 'download'    },
+                  { label: 'Add keyword to tracking',       icon: 'add_circle'  },
                   { label: 'Create content brief from gap', icon: 'description' },
-                ].map((a) => (
-                  <button key={a.label}
-                    className="flex items-center gap-3 text-[13px] text-white/70 hover:text-white hover:bg-white/5 transition-colors px-3 py-2.5 rounded-lg text-left active:scale-95">
-                    <span className="material-symbols-outlined text-[16px] text-white/40">{a.icon}</span>
+                ].map(a => (
+                  <button key={a.label} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-black/[0.04] transition-colors active:scale-95"
+                    style={{ fontSize: 12, color: I1c, background: 'none', border: 'none', cursor: 'pointer', width: '100%' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: 15, color: I1d }}>{a.icon}</span>
                     {a.label}
                   </button>
                 ))}
               </div>
             </div>
+
           </div>
         </section>
 
-        {/* Top keyword gaps */}
-        <section className="flex flex-col gap-4">
-          <div>
-            <h2 className="text-white text-[18px] font-semibold" style={{ letterSpacing: '-0.28px' }}>Priority Keyword Gaps</h2>
-            <p className="text-white/40 text-[12px] mt-0.5">High-opportunity terms competitors own &mdash; you don&apos;t</p>
+        {/* ── 3. Priority Keyword Gaps — G1 Clear Ice ───────────────────────── */}
+        <section>
+          <div className="flex items-end justify-between mb-4">
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4, margin: '0 0 4px' }}>Opportunity</p>
+              <h2 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Priority Keyword Gaps</h2>
+            </div>
+            <span style={{ fontSize: 11, color: I1d }}>High-opportunity terms competitors own — you don&apos;t</span>
           </div>
-          <div className={`${s1} rounded-2xl p-3 border border-white/5`}>
-            <div className="flex flex-col divide-y divide-white/5">
-              {[
-                { score: '9.1', kw: 'automatic savings tracker uk',  vol: '4.1k', why: 'High intent, low competition, directly maps to your core product.',        platform: 'Organic + Blog'   },
-                { score: '8.7', kw: 'best hourly savings app',        vol: '2.4k', why: 'Branded long-tail — own this before competitors colonise it.',             platform: 'Organic + ASO'    },
-                { score: '8.2', kw: 'ai savings app',                 vol: '2.1k', why: 'Surging 340% — early mover advantage still available.',                   platform: 'Blog + Social'    },
-                { score: '7.5', kw: 'neobank uk 2026',               vol: '8.5k', why: 'Competitors rank here; requires content investment but high payoff.',       platform: 'SEO'              },
-              ].map((r) => (
-                <div key={r.kw} className="flex items-center justify-between px-4 py-4 hover:bg-white/[0.02] transition-colors rounded-xl group">
-                  <div className="flex items-center gap-4">
-                    <span className="text-[#0071e3] font-semibold font-mono text-[16px] w-10 text-center">{r.score}</span>
-                    <div>
-                      <div className="text-white font-medium text-[15px]">{r.kw}</div>
-                      <div className="text-white/40 text-[12px] mt-0.5">{r.why}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-white/40 text-[12px] hidden md:block">{r.vol}/mo · {r.platform}</span>
-                    <button className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#0071e3] hover:bg-[#0071e3]/90 text-white text-[12px] px-3 py-1.5 rounded-lg active:scale-95">
-                      Create Brief
-                    </button>
+          <div style={{ ...G1, overflow: 'hidden' }}>
+            {priorityGaps.map((r, idx) => (
+              <div key={r.kw} className="flex items-center justify-between px-6 py-4 hover:bg-black/[0.03] transition-colors group"
+                style={{ borderTop: idx > 0 ? `1px solid ${L1}` : 'none' }}>
+                <div className="flex items-center gap-5">
+                  <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 16, fontWeight: 700, color: ACCENT, width: 36, textAlign: 'center', flexShrink: 0 }}>{r.score}</span>
+                  <div>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: I1, margin: '0 0 2px' }}>{r.kw}</p>
+                    <p style={{ fontSize: 12, color: I1d, margin: 0 }}>{r.why}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span style={{ fontSize: 11, color: I1d }}>{r.vol}/mo · {r.platform}</span>
+                  <button className="opacity-0 group-hover:opacity-100 transition-opacity active:scale-95"
+                    style={{ background: ACCENT, color: '#fff', fontSize: 11, fontWeight: 700, padding: '6px 12px', borderRadius: 8, border: 'none', cursor: 'pointer' }}>
+                    Create Brief
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
-      </div>
+        {/* Footer */}
+        <footer className="border-t flex items-center justify-between py-6" style={{ borderColor: L1 }}>
+          <p style={{ fontSize: 11, color: INK_4 }}>© 2026 YVON Intelligence. Built for Excellence.</p>
+          <div className="flex items-center gap-5">
+            {['Privacy', 'Terms', 'Support'].map(l => (
+              <a key={l} href="#" style={{ fontSize: 11, color: INK_4 }} className="hover:opacity-70 transition-opacity">{l}</a>
+            ))}
+          </div>
+        </footer>
 
-      <footer className="border-t border-white/10 py-8 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto w-full flex justify-between items-center text-[12px] text-white/30">
-        <span>© 2026 YVON Intelligence. All rights reserved.</span>
-        <div className="flex gap-6">
-          {['Privacy', 'Terms', 'Support'].map((l) => (
-            <a key={l} href="#" className="hover:text-white/60 transition-colors">{l}</a>
-          ))}
-        </div>
-      </footer>
+      </div>
     </main>
   );
 }

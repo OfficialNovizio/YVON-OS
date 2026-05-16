@@ -187,7 +187,7 @@ export default function DangerSettingsPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: T.bg, fontFamily: T.font, paddingTop: 56, paddingBottom: 60 }}>
-      <div style={{ maxWidth: 640, margin: '0 auto', padding: '32px 32px 0' }}>
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto" style={{ paddingTop: 32 }}>
         <BackLink />
 
         <h1 style={{ fontSize: 22, fontWeight: 600, color: T.text1, letterSpacing: '-0.03em', margin: '0 0 6px' }}>

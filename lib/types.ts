@@ -148,6 +148,34 @@ export interface VentureContext {
   ga4PropertyId: string
 }
 
+export interface BrandBigIdea {
+  brandNameMeaning: string
+  idealPerson: string
+  idealPersonTraits: string
+  gatheringActivity: string
+  missionBeyondProduct: string
+  platformFocus: 'instagram' | 'tiktok' | 'facebook' | 'threads' | 'all'
+}
+
+export type ContentSeriesFormat    = 'reel' | 'carousel' | 'story' | 'collab' | 'mixed'
+export type ContentSeriesFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'per-drop'
+export type ContentSeriesFanGoal   = 'faithful' | 'advocate' | 'nurtured'
+
+export interface ContentSeries {
+  id: string
+  ventureId: string
+  name: string
+  description: string
+  format: ContentSeriesFormat
+  frequency: ContentSeriesFrequency
+  platform: string
+  fanGoal: ContentSeriesFanGoal
+  active: boolean
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
 export interface VentureConfig {
   id: string
   name: string
@@ -169,6 +197,8 @@ export interface VentureConfig {
   repoUrl?: string
   notionUrl?: string
   updatedAt?: string
+  // Content intelligence (migration 020)
+  brandBigIdea?: BrandBigIdea
 }
 
 // ─── Briefs ──────────────────────────────────────────────────────────────────
@@ -712,6 +742,39 @@ export interface StripeWebhookEvent {
   rawWebhook?: Record<string, unknown>
 }
 
+// ─── Content Intelligence ────────────────────────────────────────────────────
+
+export interface ContentPitch {
+  id:                 string
+  ventureId:          string
+  batchId:            string | null
+  rank:               number
+  platform:           string
+  format:             string
+  category:           'competitor_gap' | 'unclaimed_territory' | 'blue_ocean'
+  intelligenceSource: string | null
+  ourMove:            string
+  hookA:              string
+  hookB:              string
+  leverPrimary:       string
+  psychologyScore:    number | null
+  system1ScoreA:      number | null
+  runRecommendation:  string | null
+  marketEffect:       string | null
+  vsCurrent:          string | null
+  viralMechanism:     string | null
+  status:             'pending' | 'approved' | 'drafted' | 'deployed' | 'passed'
+  generatedAt:        string
+}
+
+export interface IntelligenceBatch {
+  id:           string
+  ventureId:    string
+  batchNumber:  number
+  status:       'generating' | 'complete' | 'failed'
+  createdAt:    string
+}
+
 // PostHog session
 export interface PostHogSession {
   id?: string
@@ -734,3 +797,30 @@ export interface PostHogSession {
   conversionValue?: number
   createdAt?: string
 }
+
+// ─── Clothing / Outfit Builder ───────────────────────────────────────────────
+
+export interface ClothingItem {
+  id:          string
+  ventureId:   string
+  name:        string
+  category:    'top' | 'bottom' | 'outerwear' | 'footwear' | 'accessory'
+  description: string
+  color:       string
+  season:      string
+  active:      boolean
+  sortOrder:   number
+  createdAt:   string
+}
+
+export interface SceneOutfit {
+  sceneNumber:  number
+  top:          { name: string; color: string; styling: string } | null
+  bottom:       { name: string; color: string; styling: string } | null
+  outerwear:    { name: string; color: string; styling: string } | null
+  footwear:     { name: string; color: string; styling: string } | null
+  accessory:    { name: string; color: string; styling: string } | null
+  stylingNotes: string
+  heroItem:     string
+}
+

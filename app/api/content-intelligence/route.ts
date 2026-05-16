@@ -10,8 +10,12 @@ import { getLatestReports } from '@/lib/reports'
 import {
   getLeverTracker, updateLeverTracker, insertStrategyLog,
   createBatch, updateBatchStatus, insertPitches,
+  getLatestBatch, getLatestPitches, updatePitchStatus,
 } from '@/lib/intelligence'
 import { KAHNEMAN_BATCH_SYSTEM } from '@/lib/kahneman-prompt'
+import { getBigIdea } from '@/lib/big-idea'
+import { getContentSeries } from '@/lib/content-series'
+import { supabase } from '@/lib/supabase'
 
 export const maxDuration = 300  // 5 minutes for full pipeline
 
@@ -44,17 +48,39 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const cookieStore = await cookies()
-  const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
-  const ventureName = getVentureName(ventureId)
-  const ventureDesc = getVentureDesc(ventureId)
+  const slug = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
+  const { data: vRow } = await supabase.from('ventures').select('id').eq('slug', slug).single()
+  const ventureId = (vRow?.id as string | undefined) ?? slug
+  const ventureName = getVentureName(slug)
+  const ventureDesc = getVentureDesc(slug)
 
   try {
     // ═════════════════════════════════════════════════════════════════════
-    //  PHASE 0 — Read latest department reports + lever tracker
+    //  PHASE 0 — Read latest department reports + lever tracker + brand DNA
     // ═════════════════════════════════════════════════════════════════════
 
-    const reports = await getLatestReports(ventureId)
-    const levers = await getLeverTracker(ventureName)
+    const [reports, levers, bigIdea, allSeries] = await Promise.all([
+      getLatestReports(ventureId),
+      getLeverTracker(ventureName),
+      getBigIdea(ventureId),
+      getContentSeries(ventureId),
+    ])
+
+    const activeSeries = allSeries.filter(s => s.active)
+    const bigIdeaContext = bigIdea ? `
+BRAND BIG IDEA:
+- Brand name meaning: ${bigIdea.brandNameMeaning}
+- Ideal person: ${bigIdea.idealPerson}
+- Their traits: ${bigIdea.idealPersonTraits}
+- What they gather to do: ${bigIdea.gatheringActivity}
+- Mission beyond product: ${bigIdea.missionBeyondProduct}
+- Primary platform: ${bigIdea.platformFocus}
+` : ''
+
+    const seriesContext = activeSeries.length > 0 ? `
+ACTIVE CONTENT SERIES (suggest content within or extending these):
+${activeSeries.map(s => `- ${s.name} (${s.format}, ${s.frequency}, ${s.platform}, FAN goal: ${s.fanGoal}): ${s.description}`).join('\n')}
+` : ''
 
     // ═════════════════════════════════════════════════════════════════════
     //  PHASE 1 — KAI INTELLIGENCE BRIEF
@@ -68,7 +94,7 @@ export async function POST(request: Request): Promise<Response> {
       messages: [{
         role: 'user',
         content: `You are Kai, lead analyst at YVON for ${ventureName} (${ventureDesc}).
-
+${bigIdeaContext}${seriesContext}
 Here are the latest department reports:
 
 --- ANALYTICS REPORT ---
@@ -80,7 +106,7 @@ ${marketingSummary.slice(0, 800)}
 --- COMPETITOR REPORT ---
 ${competitorSummary.slice(0, 800)}
 
-Synthesize these into a single intelligence brief. Be decisive. Cite real numbers. No hedging.
+Synthesize these into a single intelligence brief. Suggestions MUST align with the brand's Big Idea and extend the active Content Series. Be decisive. Cite real numbers. No hedging.
 
 Return ONLY valid JSON with no markdown:
 {
@@ -450,11 +476,33 @@ ${pitchTexts}`
   }
 }
 
-// ─── GET — trigger on demand (for testing/warmup) ───────────────────────────────
+// ─── GET — latest batch + pitches for active venture ───────────────────────────
 
 export async function GET(): Promise<Response> {
-  return Response.json({
-    message: 'Content Intelligence Engine. POST to run the full pipeline.',
-    usage: 'POST /api/content-intelligence',
-  })
+  const cookieStore = await cookies()
+  const slug = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
+  const { data } = await supabase.from('ventures').select('id').eq('slug', slug).single()
+  const ventureId = (data?.id as string | undefined) ?? slug
+
+  const [batch, pitches] = await Promise.all([
+    getLatestBatch(ventureId),
+    getLatestPitches(ventureId, 5),
+  ])
+
+  return Response.json({ ventureId, batch, pitches })
+}
+
+// ─── PATCH — update a pitch status (approve / reject / pass) ───────────────────
+
+export async function PATCH(request: Request): Promise<Response> {
+  let body: { pitchId: string; status: 'approved' | 'drafted' | 'deployed' | 'passed' }
+  try { body = await request.json() as typeof body }
+  catch { return Response.json({ error: 'Invalid JSON' }, { status: 400 }) }
+
+  if (!body.pitchId || !body.status) {
+    return Response.json({ error: 'pitchId and status are required' }, { status: 400 })
+  }
+
+  await updatePitchStatus(body.pitchId, body.status)
+  return Response.json({ ok: true, pitchId: body.pitchId, status: body.status })
 }

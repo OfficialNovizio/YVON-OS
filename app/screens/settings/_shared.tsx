@@ -4,21 +4,21 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { CSSProperties } from 'react'
 
-// ─── Design Tokens ────────────────────────────────────────────────────────────
+// ─── Glass Design Tokens ──────────────────────────────────────────────────────
 
 export const T = {
   font:       "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif",
-  accent:     '#0071e3',
-  accentGlow: 'rgba(0,113,227,0.14)',
-  bg:         '#000000',
-  surface:    'rgba(255,255,255,0.04)',
-  surfaceHov: 'rgba(255,255,255,0.07)',
-  border:     'rgba(255,255,255,0.08)',
-  borderHov:  'rgba(255,255,255,0.18)',
-  text1:      '#ffffff',
-  text2:      'rgba(255,255,255,0.60)',
-  text3:      'rgba(255,255,255,0.36)',
-  red:        '#ff453a',
+  accent:     '#0066cc',
+  accentGlow: 'rgba(0,102,204,0.14)',
+  bg:         'transparent',
+  surface:    'rgba(255,255,255,0.28)',
+  surfaceHov: 'rgba(255,255,255,0.36)',
+  border:     'rgba(255,255,255,0.35)',
+  borderHov:  'rgba(255,255,255,0.55)',
+  text1:      '#0c2c52',
+  text2:      'rgba(12,44,82,0.65)',
+  text3:      'rgba(12,44,82,0.48)',
+  red:        '#dc2626',
 } as const
 
 export const SC = {
@@ -41,11 +41,11 @@ export const DC = {
 
 export function iS(focused: boolean): CSSProperties {
   return {
-    background:   'rgba(255,255,255,0.05)',
-    border:       `1px solid ${focused ? T.accent : 'rgba(255,255,255,0.1)'}`,
+    background:   'rgba(12,44,82,0.06)',
+    border:       `1px solid ${focused ? T.accent : 'rgba(12,44,82,0.15)'}`,
     boxShadow:    focused ? `0 0 0 3px ${T.accentGlow}` : 'none',
     borderRadius: 8,
-    color:        '#fff',
+    color:        '#0c2c52',
     outline:      'none',
     fontFamily:   T.font,
     fontSize:     14,
@@ -58,15 +58,16 @@ export function iS(focused: boolean): CSSProperties {
 
 // ─── Form Field wrapper ───────────────────────────────────────────────────────
 
-export function FF({ label, children, style }: {
+export function FF({ label, children, style, labelColor }: {
   label: string
   children: React.ReactNode
   style?: CSSProperties
+  labelColor?: string
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5, ...style }}>
       <label style={{ fontFamily: T.font, fontSize: 10, fontWeight: 600,
-        color: T.text3, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
+        color: labelColor ?? T.text3, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
         {label}
       </label>
       {children}
@@ -145,7 +146,7 @@ export function FSelect({ value, onChange, options }: {
       }}
     >
       {options.map(o => (
-        <option key={o.value} value={o.value} style={{ background: '#1a1a1a', color: '#fff' }}>
+        <option key={o.value} value={o.value} style={{ background: '#ffffff', color: '#0c2c52' }}>
           {o.label}
         </option>
       ))}
@@ -157,7 +158,7 @@ export function FSelect({ value, onChange, options }: {
 
 export function FDivider({ label }: { label?: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '4px 0' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '2px 0' }}>
       {label && (
         <span style={{ fontFamily: T.font, fontSize: 10, fontWeight: 600, color: T.text3,
           textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>
@@ -173,16 +174,12 @@ export function FDivider({ label }: { label?: string }) {
 
 export function SaveBar({ onSave, saving }: { onSave: () => void; saving: boolean }) {
   return (
-    <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, height: 60,
-      background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(20px)',
-      borderTop: '1px solid rgba(255,255,255,0.07)',
-      display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-      padding: '0 32px', zIndex: 100 }}>
-      <button onClick={onSave} style={{ background: T.accent, color: '#fff', border: 'none',
-        borderRadius: 8, padding: '9px 20px', fontFamily: T.font, fontSize: 14, fontWeight: 500,
-        cursor: 'pointer', letterSpacing: '-0.2px', opacity: saving ? 0.7 : 1, transition: 'opacity 0.15s',
-        display: 'flex', alignItems: 'center', gap: 7 }}>
-        <span className="material-symbols-outlined" style={{ fontSize: 17 }}>
+    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+      <button onClick={onSave} disabled={saving} style={{ background: '#0c2c52', color: '#fff', border: 'none',
+        borderRadius: 999, padding: '10px 32px', fontFamily: T.font, fontSize: 13, fontWeight: 600,
+        cursor: 'pointer', letterSpacing: '-0.01em', opacity: saving ? 0.5 : 1, transition: 'all 0.15s',
+        display: 'flex', alignItems: 'center', gap: 8 }}>
+        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
           {saving ? 'progress_activity' : 'save'}
         </span>
         {saving ? 'Saving…' : 'Save Changes'}
@@ -216,7 +213,7 @@ export function Btn({ children, onClick, variant = 'primary', small, disabled, s
   }
   const styles: Record<string, CSSProperties> = {
     primary:     { background: h && !disabled ? '#0082ff' : T.accent, color: '#fff' },
-    ghost:       { background: h ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.05)', color: T.text2, border: '1px solid rgba(255,255,255,0.1)' },
+    ghost:       { background: h ? 'rgba(12,44,82,0.10)' : 'rgba(12,44,82,0.06)', color: T.text2, border: '1px solid rgba(12,44,82,0.15)' },
     danger:      { background: h && !disabled ? 'rgba(255,69,58,0.08)' : 'transparent', color: T.red, border: '1px solid rgba(255,69,58,0.27)' },
     dangerSolid: { background: h && !disabled ? '#cc3530' : '#ff453a', color: '#fff' },
   }

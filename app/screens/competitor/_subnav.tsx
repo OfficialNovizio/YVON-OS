@@ -11,55 +11,74 @@ const subTabs = [
   { label: 'Alerts',        href: '/screens/competitor/alerts' },
 ];
 
+const INK    = '#0a2547';
+const INK_4  = 'rgba(10,37,71,0.52)';
+const GREEN  = '#059669';
+const ACCENT = '#0066cc';
+const P_INK4 = 'rgba(220,228,248,0.45)';
+
 export default function CompetitorSubNav() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-14 z-40 bg-black/95 backdrop-blur-xl border-b border-white/5">
-      <div className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6">
-        {/* Title + tracking strip */}
-        <div className="flex items-center justify-between pt-5 pb-3">
-          <h1 className="text-[22px] font-semibold text-white" style={{ letterSpacing: '-0.28px' }}>
-            Competitor Overview
+    <header className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 pt-[96px]">
+      <div className="flex items-end justify-between gap-6 mb-[22px]">
+        <div>
+          <div
+            className="flex items-center gap-2 mb-1.5"
+            style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', textTransform: 'uppercase', color: INK_4 }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: ACCENT }} />
+            Competitor · YVON OS
+          </div>
+          <h1 style={{ fontSize: 44, fontWeight: 700, letterSpacing: '-0.025em', margin: 0, color: INK, lineHeight: 1 }}>
+            Intelligence<span style={{ color: ACCENT }}>.</span>
           </h1>
-          <div className="flex items-center gap-5 text-[12px] text-white/50" style={{ letterSpacing: '-0.374px' }}>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>Live Tracking Active</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[13px]">schedule</span>
-              <span>Last updated: 2 mins ago</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[13px]">tune</span>
-              <span>Filters: Top 5, 30 Days</span>
-            </div>
+        </div>
+        <div className="text-right flex flex-col items-end gap-2">
+          <p className="flex items-center gap-1.5" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: GREEN, margin: 0 }}>
+            <span className="ceo-live-dot" style={{ background: GREEN }} />
+            Live Tracking
+          </p>
+          <div
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer"
+            style={{ background: 'rgba(10,37,71,0.06)', border: '1px solid rgba(10,37,71,0.12)', fontSize: 11, fontWeight: 600, color: 'rgba(10,37,71,0.55)' }}
+          >
+            <span>30 days</span>
+            <span className="material-symbols-outlined text-[14px]">expand_more</span>
           </div>
         </div>
-
-        {/* Sub-tabs */}
-        <ul className="flex items-center gap-1 text-[13px]" style={{ letterSpacing: '-0.2px' }}>
-          {subTabs.map((t) => {
-            const isActive = pathname === t.href;
-            return (
-              <li key={t.href}>
-                <Link
-                  href={t.href}
-                  className={[
-                    'block px-3 pb-3 border-b-2 transition-colors duration-200',
-                    isActive
-                      ? 'text-[#0071e3] font-medium border-[#0071e3]'
-                      : 'text-white/40 hover:text-white/70 border-transparent',
-                  ].join(' ')}
-                >
-                  {t.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
       </div>
-    </div>
+
+      <nav
+        className="flex items-center gap-1.5 p-1.5 w-fit"
+        style={{
+          background: 'rgba(8,16,36,0.58)',
+          backdropFilter: 'blur(28px) saturate(160%)',
+          WebkitBackdropFilter: 'blur(28px) saturate(160%)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          borderRadius: 999,
+          boxShadow: '0 1px 0 rgba(255,255,255,0.10) inset, 0 20px 40px -18px rgba(0,0,0,0.50), 0 4px 10px -4px rgba(0,0,0,0.30)',
+        }}
+      >
+        {subTabs.map((t) => {
+          const isActive = pathname === t.href;
+          return (
+            <Link
+              key={t.href}
+              href={t.href}
+              className="flex items-center gap-2 px-[18px] py-[9px] rounded-full text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-200"
+              style={{
+                color: isActive ? '#0c0d10' : P_INK4,
+                background: isActive ? 'rgba(255,255,255,0.92)' : 'transparent',
+                textDecoration: 'none',
+              }}
+            >
+              {t.label}
+            </Link>
+          );
+        })}
+      </nav>
+    </header>
   );
 }

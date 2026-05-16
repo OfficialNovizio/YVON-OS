@@ -4,6 +4,12 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import type { AgentId, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord } from '@/lib/types'
 import { getActiveVentureSlugClient } from '@/lib/venture-context'
 
+// ── Glass system ────────────────────────────────────────────────────────────────
+const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const I3c = '#ffffff', I3d = 'rgba(241,245,251,0.85)';
+const ACCENT = '#0066cc';
+const INK_4  = 'rgba(10,37,71,0.52)';
+
 // ─── Agent meta ────────────────────────────────────────────────────────────────
 
 const AGENT_META: Record<AgentId, { name: string; icon: string; color: string; role: string }> = {
@@ -157,16 +163,16 @@ function UserBubble({ item }: { item: Extract<ThreadItem, { kind: 'user' }> }) {
       <div className="max-w-[68%]">
         {item.attachment && (
           <div className="mb-2 flex justify-end">
-            <div className="relative w-44 h-32 rounded-xl overflow-hidden border border-white/10">
+            <div className="relative w-44 h-32 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.10)' }}>
               <img src={item.attachment.preview} alt="attachment" className="w-full h-full object-cover" />
-              <div className="absolute bottom-1.5 right-1.5 bg-black/60 backdrop-blur-sm rounded px-1.5 py-0.5 text-[9px] text-white/70 uppercase tracking-wider">
+              <div className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[9px] uppercase tracking-wider rounded" style={{ background: 'rgba(0,0,0,0.60)', color: I3c }}>
                 {item.attachment.mimeType.split('/')[1]}
               </div>
             </div>
           </div>
         )}
-        <div className="bg-[#0066cc]/20 border border-[#0066cc]/25 rounded-2xl rounded-tr-sm px-4 py-3">
-          <p className="text-[14px] text-white/90 leading-relaxed">{item.text}</p>
+        <div className="rounded-2xl rounded-tr-sm px-4 py-3" style={{ background: `${ACCENT}30`, border: `1px solid ${ACCENT}35` }}>
+          <p className="text-[14px] leading-relaxed" style={{ color: I3c }}>{item.text}</p>
         </div>
       </div>
     </div>
@@ -176,17 +182,17 @@ function UserBubble({ item }: { item: Extract<ThreadItem, { kind: 'user' }> }) {
 function PlanBanner({ item }: { item: Extract<ThreadItem, { kind: 'plan' }> }) {
   return (
     <div className="flex justify-center">
-      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#0071e3]/[0.07] border border-[#0071e3]/15 text-[11px] max-w-[80%]">
-        <span className="material-symbols-outlined text-[13px] text-[#0071e3]/70 flex-shrink-0">account_tree</span>
-        <span className="text-white/50 truncate">{item.objective}</span>
-        <span className="text-white/20 flex-shrink-0">·</span>
+      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl text-[11px] max-w-[80%]" style={{ background: `${ACCENT}12`, border: `1px solid ${ACCENT}20` }}>
+        <span className="material-symbols-outlined flex-shrink-0" style={{ fontSize: 13, color: ACCENT }}>account_tree</span>
+        <span className="truncate" style={{ color: I3c }}>{item.objective}</span>
+        <span style={{ color: I3d }}>·</span>
         <div className="flex items-center gap-0.5 flex-shrink-0">
           {item.agents.map(id => (
             <span key={id} className="text-sm" title={AGENT_META[id]?.name}>{AGENT_META[id]?.icon ?? '?'}</span>
           ))}
         </div>
-        <span className="text-white/20 flex-shrink-0">·</span>
-        <span className="text-[#0071e3]/60 uppercase tracking-wider text-[9px] flex-shrink-0">{item.order}</span>
+        <span style={{ color: I3d }}>·</span>
+        <span style={{ color: ACCENT, textTransform: 'uppercase' as const, letterSpacing: '0.08em', fontSize: 9 }} className="flex-shrink-0">{item.order}</span>
       </div>
     </div>
   )
@@ -219,25 +225,23 @@ function AgentCard({
 
   return (
     <div className="flex justify-start">
-      <div className={`w-full max-w-[480px] glass-card rounded-xl border transition-all duration-300 ${
-        item.status === 'done'    ? 'border-green-400/15' :
-        isActive                  ? 'border-yellow-400/20' :
-        item.status === 'error'   ? 'border-red-400/15' :
-        'border-white/[0.05]'
-      }`}>
+      <div className="w-full max-w-[480px] rounded-xl transition-all duration-300" style={{
+        background: 'rgba(241,245,251,0.04)',
+        border: item.status === 'done' ? '1px solid rgba(52,211,153,0.20)' : isActive ? '1px solid rgba(250,204,21,0.25)' : item.status === 'error' ? '1px solid rgba(248,113,113,0.20)' : '1px solid rgba(255,255,255,0.06)',
+      }}>
         <div className="flex items-center gap-3 px-3 py-2.5">
           {/* Avatar */}
           <div className="relative flex-shrink-0">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-base transition-all ${
-              isActive ? 'bg-yellow-400/10' : item.status === 'done' ? 'bg-green-400/10' : 'bg-white/[0.05]'
-            }`}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-base transition-all" style={{
+              background: isActive ? 'rgba(250,204,21,0.10)' : item.status === 'done' ? 'rgba(52,211,153,0.10)' : 'rgba(255,255,255,0.05)',
+            }}>
               {meta?.icon}
             </div>
             {isActive && (
-              <span className="absolute inset-0 rounded-full border border-yellow-400/40 animate-ping" />
+              <span className="absolute inset-0 rounded-full animate-ping" style={{ border: '1px solid rgba(250,204,21,0.40)' }} />
             )}
             {item.status === 'done' && (
-              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border border-black flex items-center justify-center">
+              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 flex items-center justify-center" style={{ border: '1px solid rgba(8,14,28,0.90)' }}>
                 <span className="text-[6px] text-black font-bold">✓</span>
               </span>
             )}
@@ -246,11 +250,11 @@ function AgentCard({
           {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
-              <p className="text-[12px] font-semibold text-white">{meta?.name}</p>
-              <span className="text-[9px] text-white/25 uppercase tracking-wide">{meta?.role}</span>
+              <p className="text-[12px] font-semibold" style={{ color: I3c }}>{meta?.name}</p>
+              <span className="text-[9px] uppercase tracking-wide" style={{ color: I3d }}>{meta?.role}</span>
             </div>
             {item.task && (
-              <p className="text-[11px] text-white/40 mt-0.5 truncate">{item.task}</p>
+              <p className="text-[11px] mt-0.5 truncate" style={{ color: I3d }}>{item.task}</p>
             )}
           </div>
 
@@ -258,14 +262,15 @@ function AgentCard({
           <div className="flex items-center gap-2 flex-shrink-0">
             <div className="flex items-center gap-1.5">
               <span className={`w-1.5 h-1.5 rounded-full ${dotCls[item.status]}`} />
-              <span className="text-[9px] font-bold text-white/30 tracking-widest">{statusLabel[item.status]}</span>
+              <span className="text-[9px] font-bold tracking-widest" style={{ color: I3d }}>{statusLabel[item.status]}</span>
             </div>
             {item.output && (
               <button
                 onClick={onToggle}
-                className="text-white/20 hover:text-white/55 transition-colors"
+                className="transition-colors"
+                style={{ color: I3d, background: 'none', border: 'none', cursor: 'pointer' }}
               >
-                <span className="material-symbols-outlined text-[15px]">
+                <span className="material-symbols-outlined" style={{ fontSize: 15 }}>
                   {item.expanded ? 'expand_less' : 'expand_more'}
                 </span>
               </button>
@@ -275,8 +280,8 @@ function AgentCard({
 
         {/* Expanded output */}
         {item.expanded && item.output && (
-          <div className="px-3 pb-3 border-t border-white/[0.05]">
-            <p className="text-[12px] text-white/50 leading-relaxed mt-2">{item.output}</p>
+          <div className="px-3 pb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <p className="text-[12px] leading-relaxed mt-2" style={{ color: I3d }}>{item.output}</p>
           </div>
         )}
       </div>
@@ -296,20 +301,20 @@ function SynthesisBubble({
   return (
     <div className="flex justify-start gap-3">
       {/* Crown avatar */}
-      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#F59E0B]/10 border border-[#F59E0B]/20 flex items-center justify-center mt-0.5">
+      <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-0.5" style={{ background: 'rgba(245,158,11,0.10)', border: '1px solid rgba(245,158,11,0.20)' }}>
         <span className="text-sm">👑</span>
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-[11px] font-semibold text-[#F59E0B]">Marcus</span>
-          <span className="text-[10px] text-white/25">CEO Synthesis</span>
+          <span className="text-[11px] font-semibold" style={{ color: '#F59E0B' }}>Marcus</span>
+          <span className="text-[10px]" style={{ color: I3d }}>CEO Synthesis</span>
           {item.streaming && (
-            <span className="inline-block w-[3px] h-3.5 bg-white/50 ml-0.5 animate-pulse rounded-full" />
+            <span className="inline-block w-[3px] h-3.5 ml-0.5 animate-pulse rounded-full" style={{ background: I3c }} />
           )}
         </div>
 
-        <div className="glass-card rounded-2xl rounded-tl-sm p-5 border border-white/[0.06]">
+        <div className="rounded-2xl rounded-tl-sm p-5" style={{ background: `rgba(241,245,251,0.04)`, border: '1px solid rgba(255,255,255,0.08)' }}>
           <SimpleMarkdown text={item.text} />
         </div>
 
@@ -317,9 +322,10 @@ function SynthesisBubble({
           <div className="flex items-center gap-3 mt-2 ml-1">
             <button
               onClick={onCopy}
-              className="flex items-center gap-1.5 text-[11px] text-white/25 hover:text-white/55 transition-colors"
+              className="flex items-center gap-1.5 transition-colors"
+              style={{ fontSize: 11, color: I3d, background: 'none', border: 'none', cursor: 'pointer' }}
             >
-              <span className="material-symbols-outlined text-[13px]">{copied ? 'check' : 'content_copy'}</span>
+              <span className="material-symbols-outlined" style={{ fontSize: 13 }}>{copied ? 'check' : 'content_copy'}</span>
               {copied ? 'Copied' : 'Copy'}
             </button>
           </div>
@@ -651,14 +657,6 @@ export default function WarRoomPage() {
 
   const isRunning = sessionStatus === 'planning' || sessionStatus === 'executing' || sessionStatus === 'synthesizing'
 
-  const statusColors: Record<SessionStatus, string> = {
-    idle:        'text-white/25',
-    planning:    'text-yellow-400',
-    executing:   'text-[#0071e3]',
-    synthesizing:'text-purple-400',
-    complete:    'text-green-400',
-    error:       'text-red-400',
-  }
   const statusLabels: Record<SessionStatus, string> = {
     idle:        'Ready',
     planning:    'Planning…',
@@ -669,19 +667,19 @@ export default function WarRoomPage() {
   }
 
   return (
-    <main className="pt-20 h-screen overflow-hidden flex bg-black">
+    <main className="h-screen overflow-hidden pt-[80px] p-5"><div className="flex flex-col h-full gap-4"><div className="flex flex-1 gap-4 min-h-0">
 
       {/* ── Left sidebar — agent roster ──────────────────────────────────────── */}
-      <aside className={`${sidebarCollapsed ? 'w-14' : 'w-56'} flex-shrink-0 border-r border-white/[0.05] flex flex-col transition-all duration-200 overflow-hidden`}>
+      <aside className={`${sidebarCollapsed ? 'w-14' : 'w-56'} flex-shrink-0 flex flex-col transition-all duration-200 overflow-hidden rounded-2xl`} style={{ background: 'linear-gradient(135deg,rgba(15,22,38,0.62),rgba(8,14,28,0.78))', backdropFilter: 'blur(28px) saturate(140%)', WebkitBackdropFilter: 'blur(28px) saturate(140%)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14),0 20px 50px -16px rgba(0,10,40,0.55)' }}>
 
         {/* Sidebar header */}
-        <div className="flex items-center px-3 py-3 border-b border-white/[0.05] flex-shrink-0">
+        <div className="flex items-center px-3 py-3 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           {!sidebarCollapsed && (
-            <p className="text-[9px] font-bold tracking-[0.3em] text-white/20 uppercase flex-1">Agents</p>
+            <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase' as const, flex: 1, color: '#ffffff' }}>Agents</p>
           )}
           <button
             onClick={() => setSidebarCollapsed(p => !p)}
-            className="text-white/15 hover:text-white/45 transition-colors ml-auto"
+            style={{ color: '#ffffff', cursor: 'pointer', background: 'none', border: 'none', marginLeft: 'auto' }}
           >
             <span className="material-symbols-outlined text-[16px]">
               {sidebarCollapsed ? 'chevron_right' : 'chevron_left'}
@@ -719,8 +717,8 @@ export default function WarRoomPage() {
                 </div>
                 {!sidebarCollapsed && (
                   <div className="min-w-0">
-                    <p className="text-[12px] text-white/70 font-medium leading-none truncate">{meta.name}</p>
-                    <p className="text-[9px] text-white/25 uppercase tracking-wide mt-0.5 truncate">{meta.role}</p>
+                    <p className="truncate" style={{ fontSize: 12, fontWeight: 500, color: I3c, lineHeight: 1.2 }}>{meta.name}</p>
+                    <p className="truncate" style={{ fontSize: 9, color: I3d, textTransform: 'uppercase' as const, letterSpacing: '0.08em', marginTop: 2 }}>{meta.role}</p>
                   </div>
                 )}
               </div>
@@ -730,12 +728,12 @@ export default function WarRoomPage() {
 
         {/* Session status */}
         {!sidebarCollapsed && (
-          <div className="border-t border-white/[0.05] px-3 py-3 flex-shrink-0">
-            <p className={`text-[10px] font-semibold ${statusColors[sessionStatus]}`}>
+          <div className="px-3 py-3 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <p style={{ fontSize: 10, fontWeight: 600, color: sessionStatus === 'complete' ? '#4ade80' : sessionStatus === 'error' ? '#f87171' : sessionStatus === 'idle' ? I3d : ACCENT }}>
               {statusLabels[sessionStatus]}
             </p>
             {conversationHistory.length > 0 && (
-              <p className="text-[9px] text-white/18 mt-0.5">
+              <p className="mt-0.5" style={{ fontSize: 9, color: I3d }}>
                 {conversationHistory.length} exchange{conversationHistory.length !== 1 ? 's' : ''} in context
               </p>
             )}
@@ -744,27 +742,31 @@ export default function WarRoomPage() {
       </aside>
 
       {/* ── Main area ─────────────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden rounded-2xl" style={{ background: 'linear-gradient(135deg,rgba(15,22,38,0.62),rgba(8,14,28,0.78))', backdropFilter: 'blur(28px) saturate(140%)', WebkitBackdropFilter: 'blur(28px) saturate(140%)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14),0 20px 50px -16px rgba(0,10,40,0.55)' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-white/[0.05] flex-shrink-0">
+        <div className="flex items-center justify-between px-6 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingTop: 12, paddingBottom: 12 }}>
           <div>
-            <h1 className="text-[15px] font-semibold text-white tracking-tight">War Room</h1>
-            <p className="text-[11px] text-white/30 mt-0.5 flex items-center gap-1.5">
+            <div className="flex items-center gap-2 mb-0.5" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', textTransform: 'uppercase' as const, color: I3d }}>
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: ACCENT }} />
+              War Room
+            </div>
+            <p style={{ fontSize: 12, color: I3c }} className="flex items-center gap-1.5">
               <span>{venture}</span>
-              <span className="text-white/15">·</span>
-              {repoStatus === 'ready'   && <span className="text-green-400/60">{repoLabel}</span>}
-              {repoStatus === 'loading' && <span>loading repo…</span>}
-              {repoStatus === 'error'   && <span className="text-red-400/60">repo unavailable</span>}
-              {repoStatus === 'no-repo' && <span>no repo linked</span>}
+              <span style={{ color: I3d }}>·</span>
+              {repoStatus === 'ready'   && <span style={{ color: 'rgba(52,211,153,0.60)' }}>{repoLabel}</span>}
+              {repoStatus === 'loading' && <span style={{ color: I3d }}>loading repo…</span>}
+              {repoStatus === 'error'   && <span style={{ color: 'rgba(248,113,113,0.60)' }}>repo unavailable</span>}
+              {repoStatus === 'no-repo' && <span style={{ color: I3d }}>no repo linked</span>}
             </p>
           </div>
           {thread.length > 0 && (
             <button
               onClick={reset}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.07] text-[11px] text-white/35 hover:text-white/65 hover:border-white/15 transition-all"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', borderRadius: 10, padding: '6px 12px', color: I3d, fontSize: 11, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+              className="active:scale-95 transition-all"
             >
-              <span className="material-symbols-outlined text-[13px]">restart_alt</span>
+              <span className="material-symbols-outlined" style={{ fontSize: 13 }}>restart_alt</span>
               New session
             </button>
           )}
@@ -777,11 +779,11 @@ export default function WarRoomPage() {
         >
           {thread.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center pb-16">
-              <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mb-5">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                 <span className="text-3xl">👑</span>
               </div>
-              <h2 className="text-[15px] font-semibold text-white mb-2">War Room</h2>
-              <p className="text-[13px] text-white/30 max-w-xs leading-relaxed mb-7">
+              <h2 className="text-[15px] font-semibold mb-2" style={{ color: I3c }}>War Room</h2>
+              <p className="text-[13px] max-w-xs leading-relaxed mb-7" style={{ color: I3d }}>
                 Send a request and Marcus will route it to the right agents, then deliver a unified executive response.
               </p>
               <div className="flex flex-wrap gap-2 justify-center">
@@ -789,9 +791,10 @@ export default function WarRoomPage() {
                   <button
                     key={q.label}
                     onClick={() => { setInput(q.prompt); textareaRef.current?.focus() }}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.07] text-[12px] text-white/45 hover:text-white/75 hover:border-white/14 hover:bg-white/[0.06] transition-all"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl transition-all active:scale-95"
+                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 12, color: I3d, cursor: 'pointer' }}
                   >
-                    <span className="material-symbols-outlined text-[14px]">{q.icon}</span>
+                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>{q.icon}</span>
                     {q.label}
                   </button>
                 ))}
@@ -823,23 +826,24 @@ export default function WarRoomPage() {
         </div>
 
         {/* ── Input bar ──────────────────────────────────────────────────────── */}
-        <div className="flex-shrink-0 border-t border-white/[0.05] px-4 pt-3 pb-4 space-y-2.5">
+        <div className="flex-shrink-0 px-4 pt-3 pb-4 space-y-2.5" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
 
           {/* Attachment preview */}
           {attachment && (
-            <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.07]">
-              <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
+            <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(255,255,255,0.10)' }}>
                 <img src={attachment.preview} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[11px] text-white/55">Image attached</p>
-                <p className="text-[9px] text-white/25">{attachment.mimeType} · agents will see this</p>
+                <p style={{ fontSize: 11, color: I3c }}>Image attached</p>
+                <p style={{ fontSize: 9, color: I3d }}>{attachment.mimeType} · agents will see this</p>
               </div>
               <button
                 onClick={() => setAttachment(null)}
-                className="text-white/20 hover:text-white/55 transition-colors flex-shrink-0"
+                className="flex-shrink-0 transition-colors"
+                style={{ color: I3d, background: 'none', border: 'none', cursor: 'pointer' }}
               >
-                <span className="material-symbols-outlined text-[16px]">close</span>
+                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>close</span>
               </button>
             </div>
           )}
@@ -849,9 +853,10 @@ export default function WarRoomPage() {
             <button
               onClick={() => fileInputRef.current?.click()}
               title="Attach image"
-              className="flex-shrink-0 w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center text-white/25 hover:text-white/55 hover:border-white/15 transition-all"
+              className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: I3d, cursor: 'pointer' }}
             >
-              <span className="material-symbols-outlined text-[18px]">attach_file</span>
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>attach_file</span>
             </button>
             <input
               ref={fileInputRef}
@@ -870,8 +875,8 @@ export default function WarRoomPage() {
               disabled={isRunning}
               placeholder="Message the War Room… (Enter to send · Shift+Enter for newline · Esc to cancel)"
               rows={1}
-              style={{ minHeight: '42px', maxHeight: '128px' }}
-              className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-2.5 text-[14px] text-white placeholder-white/18 focus:outline-none focus:border-white/18 resize-none disabled:opacity-40 transition-colors leading-relaxed"
+              style={{ minHeight: '42px', maxHeight: '128px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 12, padding: '10px 16px', fontSize: 14, color: '#f1f5fb' }}
+              className="flex-1 focus:outline-none resize-none disabled:opacity-40 transition-colors leading-relaxed"
               onInput={e => {
                 const el = e.currentTarget
                 el.style.height = 'auto'
@@ -883,71 +888,71 @@ export default function WarRoomPage() {
             <button
               onClick={() => void run()}
               disabled={isRunning || !input.trim()}
-              className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#0071e3] flex items-center justify-center text-white hover:bg-[#0077ed] active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              style={{ background: ACCENT, color: '#fff', border: 'none', cursor: 'pointer' }}
             >
               {isRunning
-                ? <span className="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
-                : <span className="material-symbols-outlined text-[16px]">arrow_upward</span>
+                ? <span className="material-symbols-outlined animate-spin" style={{ fontSize: 16 }}>progress_activity</span>
+                : <span className="material-symbols-outlined" style={{ fontSize: 16 }}>arrow_upward</span>
               }
             </button>
-          </div>
-        </div>
-
-        {/* ── Session history ────────────────────────────────────────────────── */}
-        <div className="flex-shrink-0 border-t border-white/[0.05]">
-          <button
-            onClick={() => {
-              const next = !historyOpen
-              setHistoryOpen(next)
-              if (next && history.length === 0) void loadHistory()
-            }}
-            className="w-full flex items-center gap-3 px-6 py-2.5 hover:bg-white/[0.02] transition-colors"
-          >
-            <span className="text-[9px] font-bold tracking-[0.25em] text-white/18 uppercase flex-1">
-              Session History
-              {history.length > 0 && <span className="ml-2 text-white/12">({history.length})</span>}
-            </span>
-            {historyLoading && (
-              <span className="w-3 h-3 rounded-full border border-white/15 border-t-white/50 animate-spin" />
-            )}
-            <span className="text-white/15 text-[10px]">{historyOpen ? '▲' : '▼'}</span>
-          </button>
-
-          {historyOpen && (
-            <div className="max-h-44 overflow-y-auto border-t border-white/[0.04]">
-              {history.length === 0 && !historyLoading && (
-                <p className="text-[11px] text-white/18 text-center py-4">No sessions yet.</p>
-              )}
-              {history.map(plan => (
-                <div key={plan.id} className="flex items-center gap-3 px-6 py-2.5 border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02] transition-colors">
-                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                    plan.status === 'complete' ? 'bg-green-400' :
-                    plan.status === 'partial'  ? 'bg-yellow-400' : 'bg-red-400'
-                  }`} />
-                  <p className="flex-1 text-[12px] text-white/45 truncate">
-                    {plan.userPrompt.split(' ').slice(0, 6).join(' ')}
-                    {plan.agentsUsed.length > 0 && (
-                      <span className="text-white/20 ml-1.5">
-                        · {plan.agentsUsed.slice(0, 2).map(id => AGENT_META[id]?.name ?? id).join(', ')}
-                      </span>
-                    )}
-                  </p>
-                  <div className="flex gap-0.5 flex-shrink-0">
-                    {plan.agentsUsed.slice(0, 3).map(id => (
-                      <span key={id} className="text-xs" title={AGENT_META[id]?.name ?? id}>
-                        {AGENT_META[id]?.icon ?? '?'}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-[10px] text-white/18 flex-shrink-0 tabular-nums">
-                    {new Date(plan.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
+      </div>
+      </div>
+      {/* ── Session history ──────────────────────────────────────────── */}
+      <div className="rounded-xl" style={{ background: "linear-gradient(135deg,rgba(15,22,38,0.62),rgba(8,14,28,0.78))", backdropFilter: "blur(28px) saturate(140%)", WebkitBackdropFilter: "blur(28px) saturate(140%)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.14),0 20px 50px -16px rgba(0,10,40,0.55)" }}>
+        <button
+          onClick={() => {
+            const next = !historyOpen;
+            setHistoryOpen(next);
+            if (next && history.length === 0) void loadHistory();
+          }}
+          className="w-full flex items-center gap-3 px-5 py-2.5 transition-colors rounded-xl"
+          style={{ background: "none", border: "none", cursor: "pointer" }}
+        >
+          <span className="text-[9px] font-bold tracking-[0.25em] uppercase flex-1" style={{ color: I3c }}>
+            Session History
+            {history.length > 0 && <span className="ml-2" style={{ color: I3d }}>({history.length})</span>}
+          </span>
+          {historyLoading && (
+            <span className="w-3 h-3 rounded-full animate-spin" style={{ border: "1px solid rgba(255,255,255,0.15)", borderTopColor: I3c }} />
+          )}
+          <span style={{ color: I3d, fontSize: 10 }}>{historyOpen ? "▲" : "▼"}</span>
+        </button>
+
+        {historyOpen && (
+          <div className="max-h-40 overflow-y-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+            {history.length === 0 && !historyLoading && (
+              <p className="text-[11px] text-center py-3" style={{ color: I3d }}>No sessions yet.</p>
+            )}
+            {history.map((plan) => (
+              <div key={plan.id} className="flex items-center gap-3 px-5 py-2 transition-colors" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                <span className={"w-1.5 h-1.5 rounded-full flex-shrink-0 " + (plan.status === "complete" ? "bg-green-400" : plan.status === "partial" ? "bg-yellow-400" : "bg-red-400")} />
+                <p className="flex-1 text-[12px] truncate" style={{ color: I3c }}>
+                  {plan.userPrompt.split(" ").slice(0, 6).join(" ")}
+                  {plan.agentsUsed.length > 0 && (
+                    <span style={{ color: I3d }} className="ml-1.5">
+                      · {plan.agentsUsed.slice(0, 2).map((id) => AGENT_META[id]?.name ?? id).join(", ")}
+                    </span>
+                  )}
+                </p>
+                <div className="flex gap-0.5 flex-shrink-0">
+                  {plan.agentsUsed.slice(0, 3).map((id) => (
+                    <span key={id} className="text-xs" title={AGENT_META[id]?.name ?? id}>
+                      {AGENT_META[id]?.icon ?? "?"}
+                    </span>
+                  ))}
+                </div>
+                <span className="text-[10px] flex-shrink-0 tabular-nums" style={{ color: I3d }}>
+                  {new Date(plan.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
     </main>
-  )
+  );
 }

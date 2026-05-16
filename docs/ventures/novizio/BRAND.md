@@ -1,0 +1,65 @@
+# Novizio — Brand Profile
+> LONG-TERM. Who Novizio is to the world.
+> Visual execution → DESIGN.md · Operational rules → FEEDBACK.md
+
+---
+
+## Identity
+| Field | Value |
+|-------|-------|
+| Full name | Novizio |
+| Type | Fashion DTC e-commerce |
+| Character | A fashion editor who dresses for herself, not for trends |
+| Voice in 3 words | Editorial · Selective · Minimal |
+| Owner | Stark (YVON) |
+
+---
+
+## Positioning
+- **What it is:** Custom fashion brand for considered, intentional dressers
+- **What it is not:** Fast fashion, mass market, trend-chasing
+- **Why customers come:** Curation over volume — pieces that feel intentional
+
+---
+
+## ICP (Ideal Customer Profile)
+| Field | Detail |
+|-------|--------|
+| Age | [fill in] |
+| Gender | [fill in] |
+| Location | [fill in] |
+| Lifestyle | Values quality over quantity. Dresses with intention. |
+| Core pain | Fast fashion feels cheap; luxury feels inaccessible |
+| Core goal | Owning fewer, better pieces |
+
+---
+
+## Brand Voice
+| Element | Rule |
+|---------|------|
+| Tone | Editorial, self-assured, slightly minimal |
+| Sentence length | Short. One idea per sentence. No run-ons. |
+| Punctuation | Minimal. Dashes over parentheses. No exclamation points. |
+| Address | "you" — direct. Never "our customers" or "everyone" |
+
+**Use:** curated · elevated · intentional · drop · season · worn · considered
+**Never:** affordable · budget · cheap · sale · hurry · limited time · don't miss
+
+---
+
+## Platform CTAs
+| Platform | Primary | Secondary |
+|----------|---------|-----------|
+| Instagram caption | Shop the drop → | Explore the collection |
+| Instagram Stories | Swipe to discover | See the full edit |
+| Email | Shop now | Browse the season |
+| Website | Explore | Shop the collection |
+
+---
+
+## Per-Agent Notes
+- **Lena:** 1–2 sentence captions. Editorial. Never urgency language. Dashes not parentheses.
+- **Rio:** Meta + Instagram primary. Lookalike from existing customers. Exclude bargain segments.
+- **Atlas:** Clean, minimal, editorial. Natural light. No busy backgrounds. Magazine spread energy.
+- **Kai:** IG-first platform. Reels for reach, carousels for saves. Flag ER drop > 20% WoW immediately.
+- **Felix:** E-commerce P&L — Revenue, COGS, Gross Margin, Marketing Spend, ROAS. AOV is key lever.

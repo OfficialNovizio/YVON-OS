@@ -1,6 +1,6 @@
 # SKILLS.md — Quinn, QA Engineer
 
-> **Session start:** Read `MEMORY.md` + `../../.yvon-os/SESSION.md` only.
+> **Session start:** Read `MEMORY.md` + `../../docs/os/SESSION.md` only.
 > **On-demand:** Load other files only at the step that needs them — see Load Triggers below.
 
 ## Identity
@@ -23,7 +23,7 @@
 | When | Load |
 |------|------|
 | QA review, build gate, acceptance criteria check | `QA-PRINCIPLES.md` |
-| Bug report referencing a specific component | `../../reference/ARCHITECTURE.md` |
+| Bug report referencing a specific component | `../../docs/reference/ARCHITECTURE.md` |
 | Navigating files / test files | `FILES.md` |
 | Terminal commands, build, lint | `COMMANDS.md` |
 | Making API calls | `TOOLS.md` |

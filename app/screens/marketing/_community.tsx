@@ -2,75 +2,49 @@
 
 import { useState, useCallback } from 'react';
 
-/* ── Static data ── */
+// ── Glass variants ──────────────────────────────────────────────────────────────
+const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
+const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
+const G2 = { background: 'linear-gradient(135deg,rgba(0,102,204,0.28),rgba(0,160,255,0.18))', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 18px 50px -10px rgba(0,60,160,0.40)' };
+const I2 = '#f4f8ff', I2d = 'rgba(244,248,255,0.48)';
+const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
+const G4 = { background: 'radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))', backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
+const I4d = 'rgba(42,18,64,0.48)';
+const ACCENT = '#0066cc';
+const INK_4  = 'rgba(10,37,71,0.52)';
+
+// ── Static data ──────────────────────────────────────────────────────────────────
 const platforms = [
-  {
-    name: 'Telegram',
-    icon: '✈️',
-    members: 312,
-    growth: '+18 this week',
-    growthUp: true,
-    engagement: '64%',
-    engColor: 'text-emerald-400',
-    status: 'ACTIVE',
-    statusColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-    description: 'Core inner circle. Daily voice notes from the founder.',
-  },
-  {
-    name: 'LinkedIn Group',
-    icon: '💼',
-    members: 841,
-    growth: '+55 this week',
-    growthUp: true,
-    engagement: '2.1%',
-    engColor: 'text-[#ffb693]',
-    status: 'GROWING',
-    statusColor: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-    description: 'B2B audience. Weekly founder insights post.',
-  },
-  {
-    name: 'Discord',
-    icon: '🎮',
-    members: 128,
-    growth: '+3 this week',
-    growthUp: true,
-    engagement: '41%',
-    engColor: 'text-emerald-400',
-    status: 'SEED',
-    statusColor: 'text-[#abc7ff] bg-[#0071e3]/10 border-[#0071e3]/20',
-    description: 'Power users. Bug reports & feature voting.',
-  },
+  { name: 'Telegram',     icon: '✈️', members: 312, growth: '+18 this week', growthUp: true,  engagement: '64%',  engUp: true,  status: 'ACTIVE',  statusColor: '#34d399', statusBg: 'rgba(52,211,153,0.12)',  description: 'Core inner circle. Daily voice notes from the founder.' },
+  { name: 'LinkedIn Group',icon: '💼', members: 841, growth: '+55 this week', growthUp: true,  engagement: '2.1%', engUp: false, status: 'GROWING', statusColor: '#fbbf24', statusBg: 'rgba(251,191,36,0.12)',  description: 'B2B audience. Weekly founder insights post.' },
+  { name: 'Discord',      icon: '🎮', members: 128, growth: '+3 this week',  growthUp: true,  engagement: '41%',  engUp: true,  status: 'SEED',    statusColor: '#5ba8ff', statusBg: `${ACCENT}18`,           description: 'Power users. Bug reports & feature voting.' },
 ];
 
 const ambassadors = [
-  { handle: '@clara.finance', platform: 'Instagram', followers: '24K', posts: 12, reach: '180K', status: 'Active' },
-  { handle: '@paulbudgets',   platform: 'TikTok',    followers: '61K', posts: 7,  reach: '420K', status: 'Active' },
-  { handle: '@shreya_saves',  platform: 'LinkedIn',  followers: '8.2K',posts: 4,  reach: '32K',  status: 'Warm'   },
-  { handle: '@moneyreal.yt',  platform: 'YouTube',   followers: '19K', posts: 2,  reach: '95K',  status: 'Warm'   },
+  { handle: '@clara.finance', platform: 'Instagram', followers: '24K',  posts: 12, reach: '180K', status: 'Active' },
+  { handle: '@paulbudgets',   platform: 'TikTok',    followers: '61K',  posts: 7,  reach: '420K', status: 'Active' },
+  { handle: '@shreya_saves',  platform: 'LinkedIn',  followers: '8.2K', posts: 4,  reach: '32K',  status: 'Warm'   },
+  { handle: '@moneyreal.yt',  platform: 'YouTube',   followers: '19K',  posts: 2,  reach: '95K',  status: 'Warm'   },
 ];
 
 const ugcQueue = [
-  { handle: '@olivia_tracks', platform: 'TikTok',    quote: '"Hourbour literally changed how I look at my paycheck."',     views: '48K', age: '2h ago',  status: 'Hot' },
-  { handle: '@ben_finance',   platform: 'Instagram', quote: '"Finally a budgeting app that doesn\'t feel like homework."', views: '12K', age: '6h ago',  status: 'Rising' },
-  { handle: '@jasmine.cfo',   platform: 'LinkedIn',  quote: '"Showed my CFO. He asked which firm built this."',             views: '3.2K',age: '1d ago',  status: 'New' },
+  { handle: '@olivia_tracks', platform: 'TikTok',    quote: '"Hourbour literally changed how I look at my paycheck."',     views: '48K', age: '2h ago',  status: 'Hot'    },
+  { handle: '@ben_finance',   platform: 'Instagram', quote: '"Finally a budgeting app that doesn\'t feel like homework."',  views: '12K', age: '6h ago',  status: 'Rising' },
+  { handle: '@jasmine.cfo',   platform: 'LinkedIn',  quote: '"Showed my CFO. He asked which firm built this."',             views: '3.2K', age: '1d ago', status: 'New'    },
 ];
 
-const statusColor: Record<string, string> = {
-  Hot:    'text-rose-400 bg-rose-500/10 border-rose-500/20',
-  Rising: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-  New:    'text-[#8b919f] bg-white/5 border-white/10',
+const ugcStatusConfig: Record<string, { color: string; bg: string }> = {
+  Hot:    { color: '#f87171', bg: 'rgba(248,113,113,0.10)' },
+  Rising: { color: '#fbbf24', bg: 'rgba(251,191,36,0.10)'  },
+  New:    { color: I1d,       bg: L1                        },
 };
 
-const ambassadorStatus: Record<string, string> = {
-  Active: 'text-emerald-400',
-  Warm:   'text-amber-400',
-};
-
-/* ── Main component ── */
+// ── Main component ────────────────────────────────────────────────────────────────
 export default function CommunityTab() {
-  const [prompts, setPrompts]   = useState<string[]>([]);
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState('');
+  const [prompts, setPrompts] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState('');
 
   const generatePrompts = useCallback(async () => {
     setLoading(true);
@@ -90,8 +64,7 @@ export default function CommunityTab() {
 
       const reader  = res.body.getReader();
       const decoder = new TextDecoder();
-      let buf = '';
-      let full = '';
+      let buf = '', full = '';
 
       while (true) {
         const { done, value } = await reader.read();
@@ -110,7 +83,6 @@ export default function CommunityTab() {
         }
       }
 
-      // Parse numbered list
       const parsed = full
         .split(/\n/)
         .map(l => l.replace(/^\d+[\.\)]\s*/, '').trim())
@@ -127,140 +99,141 @@ export default function CommunityTab() {
   const totalMembers = platforms.reduce((s, p) => s + p.members, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
 
-      {/* ── Community Header ── */}
+      {/* ── Header ─────────────────────────────────────────────────────────────── */}
       <div className="flex items-end justify-between">
         <div>
-          <h2 className="text-[22px] font-semibold text-white" style={{ letterSpacing: '-0.02em' }}>Community Hub</h2>
-          <p className="text-[12px] text-[#8b919f] mt-0.5">Real people who talk about Hourbour — capture, amplify, seed.</p>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 6px' }}>Community Hub</p>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Real people who talk about Hourbour.</h2>
+          <p style={{ fontSize: 13, color: I1d, margin: '4px 0 0' }}>Capture, amplify, seed.</p>
         </div>
         <div className="text-right">
-          <div className="text-[32px] font-semibold text-white leading-none" style={{ letterSpacing: '-0.03em' }}>
-            {totalMembers.toLocaleString()}
-          </div>
-          <div className="text-[11px] text-[#8b919f] mt-0.5 uppercase tracking-widest">Total community</div>
+          <p style={{ fontFamily: 'ui-monospace,monospace', fontSize: 36, fontWeight: 700, color: I1, letterSpacing: '-0.04em', margin: 0, lineHeight: 1 }}>{totalMembers.toLocaleString()}</p>
+          <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.16em', color: I1d, margin: '4px 0 0' }}>Total community</p>
         </div>
       </div>
 
-      {/* ── Platform Cards ── */}
-      <div className="grid grid-cols-3 gap-5">
-        {platforms.map((p) => (
-          <div key={p.name} className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{p.icon}</span>
-                <span className="text-[15px] font-semibold text-white">{p.name}</span>
+      {/* ── Platform Cards — G4 Prism ──────────────────────────────────────────── */}
+      <section>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 16px' }}>Platforms</p>
+        <div className="grid grid-cols-3 gap-5">
+          {platforms.map(p => (
+            <div key={p.name} style={{ ...G4, padding: 24 }}>
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <span style={{ fontSize: 22 }}>{p.icon}</span>
+                  <span style={{ fontSize: 15, fontWeight: 700, color: I4d.replace('0.48', '0.85') }}>{p.name}</span>
+                </div>
+                <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const, padding: '4px 10px', borderRadius: 999, background: p.statusBg, color: p.statusColor }}>{p.status}</span>
               </div>
-              <span className={`text-[9px] font-bold tracking-widest px-2 py-1 rounded-full border ${p.statusColor}`}>
-                {p.status}
-              </span>
+              <div className="flex items-end gap-3 mb-1">
+                <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: 30, fontWeight: 700, letterSpacing: '-0.04em', color: '#2a1240', lineHeight: 1 }}>{p.members.toLocaleString()}</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: p.growthUp ? '#059669' : '#e11d48', marginBottom: 2 }}>{p.growth}</span>
+              </div>
+              <div className="flex items-center gap-2 mb-4">
+                <span style={{ fontSize: 11, color: I4d }}>Engagement rate</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: p.engUp ? '#059669' : '#d97706' }}>{p.engagement}</span>
+              </div>
+              <p style={{ fontSize: 11, color: I4d, lineHeight: 1.55, margin: 0 }}>{p.description}</p>
             </div>
-            <div className="flex items-end gap-3 mb-1">
-              <span className="text-[28px] font-semibold text-white leading-none">{p.members.toLocaleString()}</span>
-              <span className={`text-[12px] font-medium mb-0.5 ${p.growthUp ? 'text-emerald-400' : 'text-[#ffb693]'}`}>
-                {p.growth}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-[11px] text-[#8b919f]">Engagement rate</span>
-              <span className={`text-[11px] font-bold ${p.engColor}`}>{p.engagement}</span>
-            </div>
-            <p className="text-[11px] text-[#8b919f] leading-relaxed">{p.description}</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
 
-      {/* ── Two-col: UGC + Ambassadors ── */}
-      <div className="grid grid-cols-[1fr_380px] gap-5">
+      {/* ── UGC Pipeline + Right Column ────────────────────────────────────────── */}
+      <section className="grid grid-cols-[1fr_380px] gap-6">
 
-        {/* UGC Pipeline */}
-        <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
+        {/* UGC Pipeline — G1 */}
+        <div style={{ ...G1, padding: 24 }}>
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-[13px] font-semibold text-white">Voice Capture Pipeline</h3>
-              <p className="text-[11px] text-[#8b919f] mt-0.5">UGC spotted in the wild — seed these back into your feed</p>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: '0 0 4px' }}>UGC · Voice Capture</p>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Voice Capture Pipeline</h3>
+              <p style={{ fontSize: 11, color: I1d, margin: '2px 0 0' }}>UGC spotted in the wild — seed these back into your feed</p>
             </div>
-            <button className="text-[11px] text-[#abc7ff] bg-[#0071e3]/10 border border-[#0071e3]/20 px-3 py-1.5 rounded-full hover:bg-[#0071e3]/20 transition-colors">
+            <button style={{ fontSize: 11, fontWeight: 700, color: ACCENT, background: `${ACCENT}12`, border: `1px solid ${ACCENT}20`, padding: '6px 14px', borderRadius: 999, cursor: 'pointer' }}>
               + Add source
             </button>
           </div>
 
-          <div className="space-y-3">
-            {ugcQueue.map((u, i) => (
-              <div key={i} className="bg-[#131313] border border-[#353535]/60 rounded-[14px] p-4 hover:border-[#414753] transition-colors">
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <p className="text-[13px] text-[#c1c6d6] italic leading-snug flex-1">{u.quote}</p>
-                  <span className={`text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full border flex-shrink-0 ${statusColor[u.status]}`}>
-                    {u.status}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-medium text-white/60">{u.handle}</span>
-                  <span className="text-[#353535]">·</span>
-                  <span className="text-[11px] text-[#8b919f]">{u.platform}</span>
-                  <span className="text-[#353535]">·</span>
-                  <span className="text-[11px] text-[#8b919f]">{u.views} views</span>
-                  <span className="text-[#353535]">·</span>
-                  <span className="text-[11px] text-[#8b919f]">{u.age}</span>
-                  <div className="flex gap-2 ml-auto">
-                    <button className="text-[10px] text-emerald-400 hover:text-emerald-300 font-medium transition-colors">Repost</button>
-                    <button className="text-[10px] text-[#abc7ff] hover:text-white font-medium transition-colors">Amplify</button>
+          <div className="flex flex-col gap-3">
+            {ugcQueue.map((u, i) => {
+              const sc = ugcStatusConfig[u.status] ?? ugcStatusConfig['New'];
+              return (
+                <div key={i} style={{ background: L1, borderRadius: 14, padding: 16 }} className="hover:bg-black/[0.04] transition-colors">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <p style={{ fontSize: 13, color: I1c, fontStyle: 'italic', lineHeight: 1.5, flexGrow: 1, margin: 0 }}>{u.quote}</p>
+                    <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', padding: '3px 8px', borderRadius: 999, background: sc.bg, color: sc.color, flexShrink: 0 }}>{u.status}</span>
+                  </div>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span style={{ fontSize: 11, fontWeight: 600, color: I1d }}>{u.handle}</span>
+                    <span style={{ color: L1 }}>·</span>
+                    <span style={{ fontSize: 11, color: I1d }}>{u.platform}</span>
+                    <span style={{ color: L1 }}>·</span>
+                    <span style={{ fontSize: 11, color: I1d }}>{u.views} views</span>
+                    <span style={{ color: L1 }}>·</span>
+                    <span style={{ fontSize: 11, color: I1d }}>{u.age}</span>
+                    <div className="flex gap-3 ml-auto">
+                      <button style={{ fontSize: 11, fontWeight: 700, color: '#059669', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Repost</button>
+                      <button style={{ fontSize: 11, fontWeight: 700, color: ACCENT, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>Amplify</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          <div className="mt-4 p-3 bg-[#131313] border border-dashed border-[#414753] rounded-[12px] text-center">
-            <p className="text-[11px] text-[#8b919f]">
-              Set up monitoring: connect Apify social scraper to auto-pull mentions every 6h
-            </p>
+          <div className="mt-4 p-3 rounded-xl text-center" style={{ border: `1px dashed ${L1}` }}>
+            <p style={{ fontSize: 11, color: I1d, margin: 0 }}>Set up monitoring: connect Apify social scraper to auto-pull mentions every 6h</p>
           </div>
         </div>
 
-        {/* Right col: Ambassadors + Prompt Generator */}
+        {/* Right col — Ambassadors + Prompt Generator */}
         <div className="flex flex-col gap-5">
 
-          {/* Top Ambassadors */}
-          <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
-            <h3 className="text-[13px] font-semibold text-white mb-4">Top Ambassadors</h3>
-            <div className="space-y-3">
+          {/* Top Ambassadors — G1 */}
+          <div style={{ ...G1, padding: 24 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: '0 0 4px' }}>Community</p>
+            <h3 style={{ fontSize: 14, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: '0 0 16px' }}>Top Ambassadors</h3>
+            <div className="flex flex-col gap-3">
               {ambassadors.map((a, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <span className="text-[11px] text-[#8b919f] font-mono w-4">{i + 1}</span>
+                  <span style={{ fontSize: 11, color: I1d, fontFamily: 'ui-monospace,monospace', width: 16, flexShrink: 0 }}>{i + 1}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-medium text-white truncate">{a.handle}</p>
-                    <p className="text-[10px] text-[#8b919f]">{a.platform} · {a.followers} followers</p>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: I1, margin: '0 0 1px' }}>{a.handle}</p>
+                    <p style={{ fontSize: 10, color: I1d, margin: 0 }}>{a.platform} · {a.followers} followers</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-[11px] font-medium text-white">{a.reach}</p>
-                    <p className={`text-[10px] font-medium ${ambassadorStatus[a.status]}`}>{a.status}</p>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: I1, margin: '0 0 1px' }}>{a.reach}</p>
+                    <p style={{ fontSize: 10, fontWeight: 700, color: a.status === 'Active' ? '#059669' : '#d97706', margin: 0 }}>{a.status}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <button className="w-full mt-4 text-[11px] text-[#8b919f] bg-[#131313] border border-[#353535] py-2 rounded-full hover:text-white hover:border-[#414753] transition-all">
+            <button className="w-full mt-4 active:scale-95"
+              style={{ fontSize: 11, color: I1d, background: L1, border: `1px solid ${L1}`, padding: '8px 0', borderRadius: 999, cursor: 'pointer', fontWeight: 600 }}>
               + Nominate ambassador
             </button>
           </div>
 
-          {/* Engagement Prompt Generator */}
-          <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6 flex flex-col flex-1">
+          {/* Engagement Prompt Generator — G2 Azure Tint */}
+          <div style={{ ...G2, padding: 24 }} className="flex flex-col flex-1">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-[13px] font-semibold text-white">Engagement Prompts</h3>
-                <p className="text-[11px] text-[#8b919f] mt-0.5">Lena writes prompts for your Telegram group</p>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I2d, margin: '0 0 4px' }}>Lena · Content</p>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: I2, margin: 0 }}>Engagement Prompts</h3>
+                <p style={{ fontSize: 11, color: I2d, margin: '2px 0 0' }}>Lena writes prompts for your Telegram group</p>
               </div>
-              <span className="text-lg">✍️</span>
+              <span style={{ fontSize: 18 }}>✍️</span>
             </div>
 
             {prompts.length === 0 && !loading && (
               <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
-                <div className="w-10 h-10 rounded-full bg-[#131313] border border-[#353535] flex items-center justify-center mb-3">
-                  <span className="material-symbols-outlined text-[18px] text-[#8b919f]">chat_bubble_outline</span>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.16)' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 18, color: I2d }}>chat_bubble_outline</span>
                 </div>
-                <p className="text-[12px] text-[#8b919f] max-w-[200px] leading-relaxed">
+                <p style={{ fontSize: 12, color: I2d, maxWidth: 200, lineHeight: 1.6, margin: 0 }}>
                   Generate community prompts that get members talking
                 </p>
               </div>
@@ -268,23 +241,22 @@ export default function CommunityTab() {
 
             {loading && (
               <div className="flex-1 flex items-center justify-center gap-2 py-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#abc7ff] animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#abc7ff] animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#abc7ff] animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40 animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             )}
 
-            {error && (
-              <p className="text-[11px] text-[#ffb693] py-2">{error}</p>
-            )}
+            {error && <p style={{ fontSize: 11, color: '#f87171', padding: '8px 0', margin: 0 }}>{error}</p>}
 
             {prompts.length > 0 && (
-              <div className="flex-1 space-y-2 mb-4 overflow-y-auto max-h-[240px]">
+              <div className="flex-1 mb-4 overflow-y-auto flex flex-col gap-2" style={{ maxHeight: 240 }}>
                 {prompts.map((prompt, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 bg-[#131313] border border-[#353535]/60 rounded-[12px] hover:border-[#414753] transition-colors group">
-                    <span className="text-[10px] font-bold text-[#8b919f] w-4 mt-0.5 flex-shrink-0">{i + 1}</span>
-                    <p className="text-[12px] text-[#c1c6d6] leading-relaxed flex-1">{prompt}</p>
-                    <button className="text-[10px] text-[#8b919f] hover:text-[#abc7ff] opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 font-medium">
+                  <div key={i} className="flex items-start gap-3 group" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: 12 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: I2d, width: 16, marginTop: 1, flexShrink: 0 }}>{i + 1}</span>
+                    <p style={{ fontSize: 12, color: I2, lineHeight: 1.55, flexGrow: 1, margin: 0 }}>{prompt}</p>
+                    <button className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                      style={{ fontSize: 10, fontWeight: 700, color: I2d, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                       Copy
                     </button>
                   </div>
@@ -295,46 +267,40 @@ export default function CommunityTab() {
             <button
               onClick={() => void generatePrompts()}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-[#0071e3] text-white py-2.5 rounded-full text-[12px] font-bold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all disabled:opacity-40 mt-auto"
-            >
+              className="w-full flex items-center justify-center gap-2 active:scale-95 mt-auto"
+              style={{ background: ACCENT, color: '#fff', fontSize: 12, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.14em', padding: '10px 0', borderRadius: 999, border: 'none', cursor: 'pointer', opacity: loading ? 0.5 : 1 }}>
               {loading ? (
-                <>
-                  <span className="w-1 h-1 rounded-full bg-white animate-pulse" />
-                  Lena is writing...
-                </>
+                <><span className="w-1 h-1 rounded-full bg-white animate-pulse" />Lena is writing...</>
               ) : (
-                <>
-                  <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
-                  {prompts.length > 0 ? 'Regenerate Prompts' : 'Generate Prompts'}
-                </>
+                <><span className="material-symbols-outlined" style={{ fontSize: 14 }}>auto_awesome</span>
+                {prompts.length > 0 ? 'Regenerate Prompts' : 'Generate Prompts'}</>
               )}
             </button>
           </div>
-
         </div>
-      </div>
+      </section>
 
-      {/* ── UGC Seeding Strategy ── */}
-      <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
-        <h3 className="text-[13px] font-semibold text-white mb-4">UGC Seeding Loop</h3>
+      {/* ── UGC Seeding Loop — G3 ──────────────────────────────────────────────── */}
+      <section>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 16px' }}>UGC Seeding Loop</p>
         <div className="grid grid-cols-4 gap-4">
           {[
-            { icon: 'record_voice_over', step: '01', label: 'Capture', desc: 'Monitor mentions every 6h via Apify scraper across all platforms' },
-            { icon: 'thumb_up',          step: '02', label: 'Validate', desc: 'Flag posts with >500 views or >2% engagement for amplification' },
+            { icon: 'record_voice_over',  step: '01', label: 'Capture',   desc: 'Monitor mentions every 6h via Apify scraper across all platforms' },
+            { icon: 'thumb_up',           step: '02', label: 'Validate',  desc: 'Flag posts with >500 views or >2% engagement for amplification' },
             { icon: 'volunteer_activism', step: '03', label: 'Seed Back', desc: 'Repost to Stories, embed in newsletter, share in Telegram' },
-            { icon: 'trending_up',       step: '04', label: 'Amplify', desc: 'Boost posts hitting 2× benchmark — $20 minimum, 24h window' },
-          ].map((s) => (
-            <div key={s.step} className="relative p-5 bg-[#131313] border border-[#353535]/60 rounded-[16px]">
+            { icon: 'trending_up',        step: '04', label: 'Amplify',   desc: 'Boost posts hitting 2× benchmark — $20 minimum, 24h window' },
+          ].map(s => (
+            <div key={s.step} style={{ ...G3, padding: 20 }}>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-[10px] font-bold text-[#8b919f] font-mono">{s.step}</span>
-                <span className="material-symbols-outlined text-[18px] text-[#abc7ff]">{s.icon}</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: I3d, fontFamily: 'ui-monospace,monospace' }}>{s.step}</span>
+                <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#5ba8ff' }}>{s.icon}</span>
               </div>
-              <h4 className="text-[13px] font-semibold text-white mb-2">{s.label}</h4>
-              <p className="text-[11px] text-[#8b919f] leading-relaxed">{s.desc}</p>
+              <h4 style={{ fontSize: 14, fontWeight: 700, color: '#f1f5fb', margin: '0 0 6px' }}>{s.label}</h4>
+              <p style={{ fontSize: 11, color: I3c, lineHeight: 1.55, margin: 0 }}>{s.desc}</p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
     </div>
   );

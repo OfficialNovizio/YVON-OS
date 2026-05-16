@@ -1,6 +1,6 @@
 # SKILLS.md — Pixel, Production Manager
 
-> **Session start:** Read `MEMORY.md` + `../../.yvon-os/SESSION.md` only.
+> **Session start:** Read `MEMORY.md` + `../../docs/os/SESSION.md` only.
 > **On-demand:** Load other files only at the step that needs them — see Load Triggers below.
 
 ## Identity

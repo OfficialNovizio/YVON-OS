@@ -7,7 +7,6 @@ const subTabs = [
   { label: 'Overview',     href: '/screens/analytics' },
   { label: 'Portfolio',    href: '/screens/analytics/portfolio' },
   { label: 'Social Media', href: '/screens/analytics/social-media' },
-  { label: 'Content',      href: '/screens/analytics/content' },
   { label: 'Reports',      href: '/screens/analytics/reports', badge: 'NEW' },
 ];
 

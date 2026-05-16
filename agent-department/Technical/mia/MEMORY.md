@@ -14,13 +14,30 @@
 ## Never Again
 > Populated from session errors. Each entry: [date] — component — issue — rule.
 
-## Design System (non-negotiable)
-- **Palette**: dark navy `#1A1A2E` (bg), `#E94560` (accent red), `#0F3460` (blue), `#E2E8F0` (text), `#94A3B8` (muted)
-- **Design tokens in use**: `--color-bg` `--color-surface` `--color-accent` `--color-accent-blue` `--color-text` `--color-muted` `--color-border`
-- **Border radius**: max 8px — no pill buttons, no fully rounded cards
-- **Font**: Inter (via `next/font`) for all UI text; Courier New for code/mono
-- **Style**: dark cyberpunk professional — clean, card-based, subtle gradients, zero clutter
-- **No light mode** — design only for dark theme
+## Design System
+> DO NOT store palette, typography, or visual style here. It differs per venture and drifts.
+> Load from the active venture's DESIGN.md before any UI task. That file overrides everything.
+
+**Active venture design files:**
+| Venture | Design file |
+|---------|------------|
+| yvon-dashboard | `docs/ventures/yvon-dashboard/DESIGN.md` ← canonical glass system |
+| novizio | `docs/ventures/novizio/DESIGN.md` |
+| hourbour | `docs/ventures/hourbour/DESIGN.md` |
+
+**Shared floor rules (apply to all ventures, from `docs/memory/design.md`):**
+- Minimum 12px / font-weight 800 for any readable text
+- No hardcoded hex values — CSS variable tokens from `globals.css` only
+- `globals.css` ↔ `tailwind.config.ts` must stay in sync
+- No dark overlay on top of any background image
+- Light containers → dark text. Dark containers → light text. Never swap.
+
+**YVON dashboard glass system (canonical reference):**
+- 4 variants: G1 Clear Ice · G2 Azure Tint · G3 Obsidian · G4 Prism
+- Exact constants: `app/screens/ceo-command-dashboard/_overview.tsx`
+- Full spec: `docs/ventures/yvon-dashboard/DESIGN.md`
+
+**Rule:** If a token doesn't exist in `globals.css`, add it there first, then use it. Never inline a new color.
 
 ## UX Principles for YVON Dashboard
 - Venture context always visible — `VentureSwitcher` in top nav, persistent

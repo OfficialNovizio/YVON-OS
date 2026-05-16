@@ -5,292 +5,309 @@ import { useState } from 'react';
 import GrowthSprintTab from './_growth-sprint';
 import CommunityTab from './_community';
 import TeamChatTab from './_team-chat';
+import ContentTab from './_content';
 
-/* ── Data ── */
+// ── Glass variants ──────────────────────────────────────────────────────────────
+const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
+const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
+const G2 = { background: 'linear-gradient(135deg,rgba(0,102,204,0.28),rgba(0,160,255,0.18))', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 18px 50px -10px rgba(0,60,160,0.40)' };
+const I2 = '#f4f8ff', I2d = 'rgba(244,248,255,0.48)';
+const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
+const G4 = { background: 'radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))', backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
+const I4 = '#2a1240', I4d = 'rgba(42,18,64,0.48)';
+const ACCENT = '#0066cc';
+const INK_4  = 'rgba(10,37,71,0.52)';
+
+// ── Data ────────────────────────────────────────────────────────────────────────
 const pillars = [
-  {
-    name: 'Clarity',
-    icon: 'visibility',
-    description: 'Demystifying financial data without dumbing it down.',
-    supportLine: '"See exactly where it goes."',
-  },
-  {
-    name: 'Control',
-    icon: 'tune',
-    description: 'Giving agency back to the user to make decisive moves.',
-    supportLine: '"Your money, your rules."',
-  },
-  {
-    name: 'Trust',
-    icon: 'verified_user',
-    description: 'Bank-level security presented with absolute transparency.',
-    supportLine: '"Built for peace of mind."',
-  },
+  { name: 'Clarity',  icon: 'visibility',   description: 'Demystifying financial data without dumbing it down.',         supportLine: '"See exactly where it goes."'  },
+  { name: 'Control',  icon: 'tune',         description: 'Giving agency back to the user to make decisive moves.',       supportLine: '"Your money, your rules."'     },
+  { name: 'Trust',    icon: 'verified_user', description: 'Bank-level security presented with absolute transparency.',   supportLine: '"Built for peace of mind."'    },
 ];
 
 const auditRows = [
-  { platform: 'Instagram', color: 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500', photo: 'check', bio: 'check', link: 'check', highlight: 'warn', pinned: 'check' },
-  { platform: 'TikTok',    color: 'bg-black border border-white/20',                              photo: 'check', bio: 'check', link: 'cross', highlight: 'na',   pinned: 'warn'  },
-  { platform: 'LinkedIn',  color: 'bg-[#0A66C2]',                                                 photo: 'check', bio: 'cross', link: 'check', highlight: 'na',   pinned: 'cross' },
+  { platform: 'Instagram', dot: 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500', photo: 'check', bio: 'check', link: 'check', highlight: 'warn',  pinned: 'check' },
+  { platform: 'TikTok',    dot: 'bg-black',                                                      photo: 'check', bio: 'check', link: 'cross', highlight: 'na',    pinned: 'warn'  },
+  { platform: 'LinkedIn',  dot: 'bg-[#0A66C2]',                                                  photo: 'check', bio: 'cross', link: 'check', highlight: 'na',    pinned: 'cross' },
 ];
 
 const voiceItems = [
-  { tone: 'Tone: Direct & Authoritative',  copy: '"Stop wondering where your paycheck went. Tell it where to go."',                                                                               usage: 'Use in: Hero Headlines' },
-  { tone: 'Tone: Empathetic & Clear',      copy: "\"We automatically categorize your expenses so you don't have to lift a finger at the end of the month.\"",                                   usage: 'Use in: Feature Explanations' },
-  { tone: 'Tone: Urgent & Actionable',     copy: '"Your subscription renewal is approaching. Review it now."',                                                                                   usage: 'Use in: Push Notifications' },
+  { tone: 'Tone: Direct & Authoritative',  copy: '"Stop wondering where your paycheck went. Tell it where to go."',                                                         usage: 'Use in: Hero Headlines'       },
+  { tone: 'Tone: Empathetic & Clear',      copy: "\"We automatically categorize your expenses so you don't have to lift a finger at the end of the month.\"",              usage: 'Use in: Feature Explanations'  },
+  { tone: 'Tone: Urgent & Actionable',     copy: '"Your subscription renewal is approaching. Review it now."',                                                              usage: 'Use in: Push Notifications'   },
 ];
 
 const tactics = [
-  { title: 'Clarity Elevator',            badge: 'EASY',        badgeColor: 'text-emerald-400 bg-emerald-900/30 border-emerald-800/50', description: 'Distill your core value proposition into a 3-second hook that cuts through market noise instantly.',                                      apply: 'Rewrite homepage hero headline to focus solely on the primary user outcome, removing all technical jargon.',                                    tags: ['Low Effort', 'High Conv.'],    status: { icon: 'schedule', color: 'text-[#8b919f]', label: 'Not started' } },
-  { title: 'Marketing Control',           badge: 'HOT',         badgeColor: 'text-rose-400 bg-rose-900/30 border-rose-800/50',         description: 'Seize control of the narrative by creating definitive content that positions competitors relative to you.',                              apply: 'Publish a "vs" matrix page highlighting our organic focus against traditional paid models.',                                                      tags: ['Med Effort', 'High Trust'],    status: { icon: 'check_circle',  color: 'text-emerald-500', label: '40% Complete' } },
-  { title: 'Pioneer Content',             badge: 'RISING',      badgeColor: 'text-amber-400 bg-amber-900/30 border-amber-800/50',      description: "Create fundamentally new categories of content that competitors haven't recognized as valuable yet.",                                  apply: 'Launch "Tactical Teardowns" analyzing obscure but highly effective organic campaigns in adjacent industries.',                                    tags: ['High Effort', 'Long Tail'],    status: { icon: 'schedule', color: 'text-[#8b919f]', label: 'Planning phase' } },
-  { title: 'Explaining Subscription Waste', badge: 'EASY',      badgeColor: 'text-emerald-400 bg-emerald-900/30 border-emerald-800/50', description: 'Highlight the inefficiency of current market solutions to agitate the problem before presenting your fix.',                             apply: 'Create a LinkedIn carousel showing the ROI decay of typical SaaS marketing stacks over 12 months.',                                              tags: ['Low Effort', 'High Agitation'], status: { icon: 'schedule', color: 'text-[#8b919f]', label: 'Queued' } },
-  { title: 'Spend Breakdown',             badge: 'RISING',      badgeColor: 'text-amber-400 bg-amber-900/30 border-amber-800/50',      description: 'Radical transparency regarding resource allocation to build immense trust with skeptical buyers.',                                         apply: 'Publish an open-book review of how we allocate hours across the Tactical Library vs administrative tasks.',                                       tags: ['Med Effort', 'Max Trust'],     status: { icon: 'schedule', color: 'text-[#8b919f]', label: 'Drafting' } },
-  { title: 'Social Proof Story',          badge: 'RISING',      badgeColor: 'text-amber-400 bg-amber-900/30 border-amber-800/50',      description: 'Embed testimonials within narrative structures rather than isolated quotes for higher retention.',                                         apply: 'Interview recent successful client and cut into a 3-part micro-documentary for Twitter threads.',                                                 tags: ['Med Effort', 'High Conv.'],    status: { icon: 'check_circle',  color: 'text-emerald-500', label: 'Active run' } },
-  { title: 'Creator Trust',               badge: 'ESTABLISHED', badgeColor: 'text-[#8b919f] bg-[#1f1f1f] border-[#414753]',           description: 'Leverage the personal brand of founders or key team members to humanize corporate offerings.',                                           apply: 'Daily 60-second raw voice notes from the lead strategist shared to the private telegram community.',                                             tags: ['Low Effort', 'High Loyalty'],  status: { icon: 'check_circle',  color: 'text-emerald-500', label: 'Ongoing' } },
-  { title: 'Tackling Objections',         badge: 'ESTABLISHED', badgeColor: 'text-[#8b919f] bg-[#1f1f1f] border-[#414753]',           description: "Directly address the top reasons prospects don't buy, leaning into vulnerabilities.",                                                   apply: '"Why You Shouldn\'t Hire Us" landing page section filtering out bad fit leads early.',                                                           tags: ['Med Effort', 'Qualifying'],    status: { icon: 'check_circle',  color: 'text-emerald-500', label: 'Deployed' } },
+  { title: 'Clarity Elevator',             badge: 'EASY',        badgeColor: '#059669', badgeBg: 'rgba(5,150,105,0.12)',   description: 'Distill your core value proposition into a 3-second hook that cuts through market noise instantly.',                    apply: 'Rewrite homepage hero headline to focus solely on the primary user outcome, removing all technical jargon.',                       tags: ['Low Effort', 'High Conv.'],    status: { icon: 'schedule',      color: INK_4,     label: 'Not started'  } },
+  { title: 'Marketing Control',            badge: 'HOT',         badgeColor: '#e11d48', badgeBg: 'rgba(225,29,72,0.12)',   description: 'Seize control of the narrative by creating definitive content that positions competitors relative to you.',              apply: 'Publish a "vs" matrix page highlighting our organic focus against traditional paid models.',                                         tags: ['Med Effort', 'High Trust'],    status: { icon: 'check_circle',  color: '#059669', label: '40% Complete' } },
+  { title: 'Pioneer Content',              badge: 'RISING',      badgeColor: '#d97706', badgeBg: 'rgba(217,119,6,0.12)',   description: "Create fundamentally new categories of content that competitors haven't recognized as valuable yet.",                  apply: 'Launch "Tactical Teardowns" analyzing obscure but highly effective organic campaigns in adjacent industries.',                      tags: ['High Effort', 'Long Tail'],    status: { icon: 'schedule',      color: INK_4,     label: 'Planning phase'} },
+  { title: 'Subscription Waste',           badge: 'EASY',        badgeColor: '#059669', badgeBg: 'rgba(5,150,105,0.12)',   description: 'Highlight the inefficiency of current market solutions to agitate the problem before presenting your fix.',             apply: 'Create a LinkedIn carousel showing the ROI decay of typical SaaS marketing stacks over 12 months.',                                 tags: ['Low Effort', 'High Agitation'],status: { icon: 'schedule',      color: INK_4,     label: 'Queued'       } },
+  { title: 'Spend Breakdown',              badge: 'RISING',      badgeColor: '#d97706', badgeBg: 'rgba(217,119,6,0.12)',   description: 'Radical transparency regarding resource allocation to build immense trust with skeptical buyers.',                        apply: 'Publish an open-book review of how we allocate hours across the Tactical Library vs administrative tasks.',                         tags: ['Med Effort', 'Max Trust'],     status: { icon: 'schedule',      color: INK_4,     label: 'Drafting'     } },
+  { title: 'Social Proof Story',           badge: 'RISING',      badgeColor: '#d97706', badgeBg: 'rgba(217,119,6,0.12)',   description: 'Embed testimonials within narrative structures rather than isolated quotes for higher retention.',                        apply: 'Interview recent successful client and cut into a 3-part micro-documentary for Twitter threads.',                                   tags: ['Med Effort', 'High Conv.'],    status: { icon: 'check_circle',  color: '#059669', label: 'Active run'   } },
+  { title: 'Creator Trust',                badge: 'ESTABLISHED', badgeColor: I1d,       badgeBg: L1,                       description: 'Leverage the personal brand of founders or key team members to humanize corporate offerings.',                          apply: 'Daily 60-second raw voice notes from the lead strategist shared to the private Telegram community.',                               tags: ['Low Effort', 'High Loyalty'],  status: { icon: 'check_circle',  color: '#059669', label: 'Ongoing'      } },
+  { title: 'Tackling Objections',          badge: 'ESTABLISHED', badgeColor: I1d,       badgeBg: L1,                       description: "Directly address the top reasons prospects don't buy, leaning into vulnerabilities.",                                   apply: '"Why You Shouldn\'t Hire Us" landing page section filtering out bad fit leads early.',                                             tags: ['Med Effort', 'Qualifying'],    status: { icon: 'check_circle',  color: '#059669', label: 'Deployed'     } },
 ];
 
 const tacticFilters = ['ALL', 'HOT', 'RISING', 'EASY WINS', 'ACTIVE'];
 
-/* ── Helpers ── */
+// ── Helpers ──────────────────────────────────────────────────────────────────────
 function AuditIcon({ status }: { status: string }) {
-  if (status === 'check') return <span className="material-symbols-outlined text-[18px] text-emerald-400">check_circle</span>;
-  if (status === 'cross') return <span className="material-symbols-outlined text-[18px] text-[#ffb4ab]">cancel</span>;
-  if (status === 'warn')  return <span className="material-symbols-outlined text-[18px] text-yellow-500">warning</span>;
-  return <span className="text-[#8b919f] text-[18px]">—</span>;
+  if (status === 'check') return <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#059669' }}>check_circle</span>;
+  if (status === 'cross') return <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#e11d48' }}>cancel</span>;
+  if (status === 'warn')  return <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#d97706' }}>warning</span>;
+  return <span style={{ color: I1d, fontSize: 16 }}>—</span>;
 }
 
-/* ── Page ── */
+// ── Page ─────────────────────────────────────────────────────────────────────────
 export default function MarketingPage() {
   const router = useRouter();
   const [activeTab, setActiveTab]       = useState('Brand Identity');
   const [activeFilter, setActiveFilter] = useState('ALL');
 
-  const tabs = ['Brand Identity', 'Growth Strategy', 'Tactics Library', 'Community', 'Growth Sprint', 'Team'];
+  const tabs = ['Brand Identity', 'Growth Strategy', 'Tactics Library', 'Content', 'Community', 'Growth Sprint', 'Team'];
+
+  const filteredTactics = activeFilter === 'ALL'       ? tactics
+    : activeFilter === 'ACTIVE'    ? tactics.filter(t => ['Active run','Ongoing','Deployed','40% Complete'].includes(t.status.label))
+    : activeFilter === 'EASY WINS' ? tactics.filter(t => t.badge === 'EASY')
+    : tactics.filter(t => t.badge === activeFilter);
 
   return (
-    <main className="pt-14 pb-24 bg-[#131313] text-white min-h-screen">
-      <div className="pt-8 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto space-y-6">
+    <main className="min-h-screen pb-24">
 
-        {/* ── Page Header ── */}
-        <header className="flex items-end justify-between pb-4">
+      {/* ── Header ──────────────────────────────────────────────────────────────── */}
+      <div className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 pt-[96px]">
+        <div className="flex items-end justify-between gap-6 mb-[22px]">
           <div>
-            <div className="flex items-center gap-2 text-[12px] font-medium text-[#8b919f] tracking-wide mb-3">
-              <span className="hover:text-white cursor-pointer transition-colors">YVON</span>
-              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-              <span className="text-white">Marketing</span>
+            <div className="flex items-center gap-2 mb-1.5" style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', textTransform: 'uppercase', color: INK_4
+            }}>
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: ACCENT }} />
+              Marketing · YVON OS
             </div>
-            <div className="text-[10px] font-bold tracking-[0.1em] text-[#8b919f] mb-1 uppercase">Organic Marketing · Hourbour</div>
-            <h1 className="text-[40px] font-semibold tracking-tight leading-[1.10] text-white">Marketing</h1>
+            <h1 style={{ fontSize: 44, fontWeight: 700, letterSpacing: '-0.025em', margin: 0, color: I1, lineHeight: 1 }}>
+              Operations<span style={{ color: ACCENT }}>.</span>
+            </h1>
           </div>
-          <div className="flex items-center gap-2 bg-[#1f1f1f] py-1.5 px-3 rounded-full border border-[#353535]">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] animate-pulse" />
-            <span className="text-[11px] font-bold tracking-widest text-emerald-400">LIVE</span>
-          </div>
-        </header>
-
-        {/* ── Anomaly Strip ── */}
-        <div className="bg-[#2a2a2a] border border-[#414753] rounded-[16px] p-3 flex items-start gap-3">
-          <span className="material-symbols-outlined text-[#ffb693] text-[20px] mt-0.5">warning</span>
-          <div className="text-[13px] leading-relaxed text-[#c1c6d6]">
-            <span className="font-bold text-white tracking-wide">ANOMALIES:</span>{' '}
-            Instagram engagement dropped <span className="text-[#ffb693] font-medium">18%</span> vs 7-day avg |{' '}
-            YouTube views up <span className="text-emerald-400 font-medium">34%</span> — spike detected
+          <div className="text-right flex flex-col items-end gap-2">
+            <p className="flex items-center gap-1.5" style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#059669', margin: 0
+            }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Live
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* ── Hero Card ── */}
-        <div className="relative overflow-hidden rounded-[24px] bg-[#1f1f1f] border border-[#353535] shadow-[0_8px_30px_rgba(0,0,0,0.3)] p-10 flex flex-col justify-between min-h-[300px]">
-          <div className="absolute -right-32 -bottom-32 w-96 h-96 bg-emerald-900/20 blur-[100px] rounded-full pointer-events-none" />
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-emerald-900/0 via-emerald-500/30 to-emerald-900/0" />
-          <div className="relative z-10 max-w-2xl">
-            <div className="text-[13px] font-medium text-[#8b919f] mb-4">Organic Marketing Center · Hourbour · 3 priority fixes this week</div>
-            <h2 className="text-[34px] font-semibold tracking-tight leading-[1.10] text-white mb-8">
-              Marketing. Tighten the story before scaling distribution.
-            </h2>
-            <div className="flex flex-wrap gap-3 mb-10">
-              <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#353535] border border-[#414753] text-[13px] font-medium text-white">
-                Momentum Score — <span className="text-emerald-400 ml-1 font-bold">54</span>
-              </span>
-              <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#353535] border border-[#ffb693]/30 text-[13px] font-medium text-white">
-                Brand Friction — <span className="text-[#ffb693] ml-1 font-bold">1 blocker</span>
-              </span>
-              <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#353535] border border-[#0071e3]/50 text-[13px] font-medium text-white">
-                Today&apos;s Priority — TikTok explainer
-              </span>
-            </div>
-          </div>
-          <div className="relative z-10">
-            <button
-              onClick={() => router.push('/screens/war-room?q=Generate+a+brand+brief+for+Hourbour')}
-              className="bg-[#0071e3] text-white hover:opacity-90 px-6 py-3 rounded-full text-[14px] font-semibold tracking-wide flex items-center gap-2 active:scale-95 transition-all"
-            >
-              Generate Brand Brief
-              <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-            </button>
-          </div>
-        </div>
+      {/* ── Tab strip ─────────────────────────────────────────────────────────────── */}
+      <div className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 mt-4 mb-2">
+          <nav className="flex items-center gap-1.5 p-1.5 w-fit" style={{
+            background: 'rgba(8,16,36,0.58)',
+            backdropFilter: 'blur(28px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(28px) saturate(160%)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 999,
+            boxShadow: '0 1px 0 rgba(255,255,255,0.10) inset, 0 20px 40px -18px rgba(0,0,0,0.50), 0 4px 10px -4px rgba(0,0,0,0.30)',
+          }}>
+            {tabs.map(tab => (
+              <button key={tab} onClick={() => setActiveTab(tab)}
+                className="transition-all duration-200 active:scale-95"
+                style={{
+                  fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' as const,
+                  padding: '9px 18px', borderRadius: 999, border: 'none', cursor: 'pointer',
+                  color:      activeTab === tab ? '#0c0d10' : 'rgba(220,228,248,0.45)',
+                  background: activeTab === tab ? 'rgba(255,255,255,0.92)' : 'transparent',
+                }}>
+                {tab}
+              </button>
+            ))}
+          </nav>
+      </div>
 
-        {/* ── Summary Cards ── */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="bg-[#1f1f1f] p-6 rounded-[20px] border border-[#353535] flex flex-col justify-between min-h-[140px]">
-            <div className="text-[13px] font-medium text-[#8b919f] mb-2">Momentum Score</div>
-            <div className="flex items-end gap-3">
-              <span className="text-[36px] font-semibold leading-none text-white tracking-tight">54</span>
-              <span className="flex items-center text-emerald-400 text-[14px] font-medium mb-1">
-                <span className="material-symbols-outlined text-[16px]">arrow_upward</span>velocity
-              </span>
-            </div>
-            <div className="text-[12px] text-[#c1c6d6] mt-3">Brand growth velocity index</div>
-          </div>
-          <div className="bg-[#1f1f1f] p-6 rounded-[20px] border border-[#ffb693]/20 flex flex-col min-h-[140px]">
-            <div className="flex items-center gap-1.5 text-[13px] font-medium text-[#ffb693] mb-2">
-              <span className="material-symbols-outlined text-[16px]">block</span>Growth Blocker
-            </div>
-            <div className="text-[15px] leading-[1.47] text-white font-medium">Instagram engagement is down 18% in 3 weeks.</div>
-            <div className="text-[12px] text-[#c1c6d6] mt-auto pt-3">Audience retention issue detected.</div>
-          </div>
-          <div className="bg-[#1f1f1f] p-6 rounded-[20px] border border-[#0071e3]/30 flex flex-col min-h-[140px]">
-            <div className="flex items-center gap-1.5 text-[13px] font-medium text-[#abc7ff] mb-2">
-              <span className="material-symbols-outlined text-[16px]">flag</span>Today&apos;s Priority
-            </div>
-            <div className="text-[15px] leading-[1.47] text-white font-medium">Post the subscription audit explainer on TikTok.</div>
-            <div className="text-[12px] text-[#c1c6d6] mt-auto pt-3">Draft is ready for review.</div>
-          </div>
-        </div>
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px] space-y-8">
 
-        {/* ── Sub Tabs ── */}
-        <div className="flex space-x-6 border-b border-[#353535] overflow-x-auto pb-px">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`pb-3 text-[14px] font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab
-                  ? 'text-white border-b-2 border-emerald-500'
-                  : 'text-[#8b919f] hover:text-white/80'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        {/* ── 1. Signal Strip — G3 Obsidian ──────────────────────────────────── */}
+        <section style={{ ...G3, padding: '14px 24px' }} className="flex items-center gap-5 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase' as const, color: I3d }}>Signals</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: 'rgba(251,146,60,0.12)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 13, color: '#fb923c' }}>warning</span>
+            <span style={{ fontSize: 12, color: '#fb923c', fontWeight: 600 }}>Instagram Engagement −18% vs 7-day avg</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: 'rgba(52,211,153,0.10)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 13, color: '#34d399' }}>trending_up</span>
+            <span style={{ fontSize: 12, color: '#34d399', fontWeight: 600 }}>YouTube Views +34% — spike detected</span>
+          </div>
+          <span style={{ fontSize: 11, color: I3d, marginLeft: 'auto' }}>Organic Marketing · Hourbour</span>
+        </section>
 
-        {/* ══════════════════════════════════════════
+        {/* ── 2. Hero — G3 Obsidian ──────────────────────────────────────────── */}
+        <section style={{ ...G3, padding: 40 }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I3d, margin: '0 0 12px' }}>Organic Marketing · YVON OS</p>
+          <h2 style={{ fontSize: 38, fontWeight: 700, color: '#f1f5fb', letterSpacing: '-0.025em', lineHeight: 1.1, margin: '0 0 16px' }}>
+            Marketing. Tighten the story<br />before scaling distribution.
+          </h2>
+          <p style={{ fontSize: 18, color: I3c, margin: '0 0 28px', lineHeight: 1.5 }}>3 priority fixes this week.</p>
+          <div className="flex flex-wrap gap-3 mb-8">
+            {[
+              { icon: 'speed',  label: 'Momentum Score — 54',          accent: true  },
+              { icon: 'block',  label: 'Brand Friction — 1 blocker',   accent: false },
+              { icon: 'flag',   label: "Today's Priority — TikTok",    accent: false },
+            ].map(b => (
+              <div key={b.label} className="flex items-center gap-2 rounded-full px-4 py-2"
+                style={{ background: b.accent ? `${ACCENT}25` : 'rgba(241,245,251,0.08)' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 14, color: b.accent ? '#5ba8ff' : I3d }}>{b.icon}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: b.accent ? '#5ba8ff' : I3c }}>{b.label}</span>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => router.push('/screens/war-room?q=Generate+a+brand+brief+for+Hourbour')}
+            className="active:scale-95"
+            style={{ background: ACCENT, color: '#fff', fontSize: 14, fontWeight: 700, padding: '14px 28px', borderRadius: 999, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
+            Generate Brand Brief
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>auto_awesome</span>
+          </button>
+        </section>
+
+        {/* ── 3. Summary KPIs — G4 Prism ─────────────────────────────────────── */}
+        <section>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 16px' }}>Performance Summary</p>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { label: 'Momentum Score',  value: '54',       icon: 'speed',   valueColor: ACCENT,    desc: 'Brand growth velocity index'              },
+              { label: 'Growth Blocker',  value: '1 Active', icon: 'block',   valueColor: '#fb923c', desc: 'Instagram engagement −18% in 3 weeks'     },
+              { label: "Today's Priority",value: 'TikTok',   icon: 'flag',    valueColor: I4,        desc: 'Post subscription audit explainer'        },
+            ].map(k => (
+              <div key={k.label} style={{ ...G4, padding: 24 }}>
+                <div className="flex items-center justify-between mb-3">
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: I4d, margin: 0 }}>{k.label}</p>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: k.valueColor }}>{k.icon}</span>
+                </div>
+                <p style={{ fontFamily: 'ui-monospace,monospace', fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em', color: k.valueColor, margin: '0 0 6px', lineHeight: 1 }}>{k.value}</p>
+                <p style={{ fontSize: 11, color: I4d, margin: 0 }}>{k.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════════════════
             TAB: BRAND IDENTITY
-        ══════════════════════════════════════════ */}
+        ══════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'Brand Identity' && (
           <div className="space-y-6">
-            {/* Next Move Strip */}
-            <div className="bg-gradient-to-r from-[#353535] to-[#1f1f1f] p-4 rounded-[14px] border border-[#414753] flex items-center gap-4 relative overflow-hidden">
-              <div className="absolute left-0 top-0 w-1 h-full bg-[#0071e3]" />
-              <div className="bg-[#131313] p-2 rounded-full border border-[#353535]">
-                <span className="material-symbols-outlined text-[#abc7ff] text-[20px]">lightbulb</span>
+
+            {/* Next Move Strip — G3 + ACCENT border */}
+            <div style={{ ...G3, padding: '16px 20px', borderLeft: `4px solid ${ACCENT}` }} className="flex items-center gap-4">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${ACCENT}20` }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#5ba8ff' }}>lightbulb</span>
               </div>
-              <div className="text-[14px]">
-                <span className="font-bold text-white text-[12px] tracking-wider uppercase mr-2 opacity-80">Next Move:</span>
-                <span className="text-[#c1c6d6]">Hourbour&apos;s LinkedIn page has no banner image or about section. This is a missed trust signal.</span>
+              <div className="flex-1">
+                <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.14em', color: '#5ba8ff', marginRight: 8 }}>Next Move:</span>
+                <span style={{ fontSize: 13, color: I3c }}>Hourbour&apos;s LinkedIn page has no banner image or about section. This is a missed trust signal.</span>
               </div>
               <button
                 onClick={() => router.push('/screens/war-room?q=Fix+Hourbour+LinkedIn+brand+presence')}
-                className="ml-auto text-[13px] font-medium text-[#abc7ff] hover:text-white transition-colors flex items-center gap-1 flex-shrink-0"
-              >
-                Fix now <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                className="flex items-center gap-1 flex-shrink-0 active:scale-95"
+                style={{ fontSize: 12, fontWeight: 700, color: '#5ba8ff', background: 'none', border: 'none', cursor: 'pointer' }}>
+                Fix now <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_forward</span>
               </button>
             </div>
 
-            {/* 2-Col Bento */}
+            {/* 2-col layout */}
             <div className="grid grid-cols-12 gap-6">
-              {/* Left */}
+
+              {/* Left col — positioning + pillars */}
               <div className="col-span-7 flex flex-col gap-6">
-                {/* Positioning Statement */}
-                <div className="bg-[#1f1f1f] rounded-[20px] border border-[#353535] p-8 group relative">
+
+                {/* Positioning Statement — G1 */}
+                <div style={{ ...G1, padding: 32 }} className="group relative">
                   <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-[11px] font-bold tracking-widest text-[#8b919f] uppercase">Positioning Statement</h3>
-                    <button className="text-[12px] font-medium text-[#abc7ff] hover:text-white bg-[#131313] py-1.5 px-4 rounded-full border border-[#353535] transition-colors opacity-0 group-hover:opacity-100 flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[14px]">edit</span> Edit
+                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: 0 }}>Positioning Statement</p>
+                    <button className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 active:scale-95"
+                      style={{ fontSize: 12, fontWeight: 700, color: ACCENT, background: `${ACCENT}12`, padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer' }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 13 }}>edit</span> Edit
                     </button>
                   </div>
-                  <p className="text-[26px] font-medium leading-[1.25] text-white" style={{ letterSpacing: '-0.01em' }}>
+                  <p style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.3, color: I1, letterSpacing: '-0.01em', margin: 0 }}>
                     &ldquo;Hourbour gives people total clarity over their money so they can stop guessing and start deciding.&rdquo;
                   </p>
                 </div>
 
                 {/* Brand Pillars */}
                 <div>
-                  <h3 className="text-[11px] font-bold tracking-widest text-[#8b919f] uppercase mb-4 pl-2">Brand Pillars</h3>
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 16px 4px' }}>Brand Pillars</p>
                   <div className="grid grid-cols-3 gap-4">
-                    {pillars.map((p) => (
-                      <div key={p.name} className="bg-[#1f1f1f] rounded-[16px] p-5 border border-[#353535]">
-                        <div className="w-10 h-10 rounded-full bg-[#353535] border border-[#414753] flex items-center justify-center mb-4">
-                          <span className="material-symbols-outlined text-white text-[20px]">{p.icon}</span>
+                    {pillars.map(p => (
+                      <div key={p.name} style={{ ...G1, padding: 20 }}>
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4" style={{ background: L1 }}>
+                          <span className="material-symbols-outlined" style={{ fontSize: 20, color: ACCENT }}>{p.icon}</span>
                         </div>
-                        <h4 className="text-[16px] font-semibold text-white mb-2">{p.name}</h4>
-                        <p className="text-[13px] leading-[1.5] text-[#c1c6d6] mb-4" style={{ minHeight: '60px' }}>{p.description}</p>
-                        <div className="text-[11px] font-medium text-[#8b919f] uppercase tracking-wider mb-1">Support Line</div>
-                        <div className="text-[12px] text-white italic">{p.supportLine}</div>
+                        <h4 style={{ fontSize: 15, fontWeight: 700, color: I1, margin: '0 0 8px', letterSpacing: '-0.01em' }}>{p.name}</h4>
+                        <p style={{ fontSize: 12, color: I1c, lineHeight: 1.55, margin: '0 0 12px', minHeight: 52 }}>{p.description}</p>
+                        <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', color: I1d, margin: '0 0 4px' }}>Support Line</p>
+                        <p style={{ fontSize: 12, color: I1, fontStyle: 'italic', margin: 0 }}>{p.supportLine}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Right */}
+              {/* Right col — audit + voice */}
               <div className="col-span-5 flex flex-col gap-6">
-                {/* Brand Presence Audit */}
-                <div className="bg-[#1f1f1f] rounded-[20px] border border-[#353535] overflow-hidden">
-                  <div className="p-6 border-b border-[#353535] flex items-center justify-between">
-                    <h3 className="text-[13px] font-semibold text-white">Brand Presence Audit</h3>
-                    <span className="text-[11px] text-[#8b919f]">Updated 2h ago</span>
+
+                {/* Brand Presence Audit — G1 */}
+                <div style={{ ...G1, overflow: 'hidden' }}>
+                  <div className="flex items-center justify-between px-6 pt-5 pb-3">
+                    <h3 style={{ fontSize: 14, fontWeight: 700, color: I1, margin: 0 }}>Brand Presence Audit</h3>
+                    <span style={{ fontSize: 11, color: I1d }}>Updated 2h ago</span>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-[13px]">
-                      <thead className="bg-[#353535] text-[11px] uppercase tracking-wider text-[#8b919f] font-medium">
-                        <tr>
-                          <th className="px-4 py-3 font-medium">Platform</th>
-                          <th className="px-2 py-3 font-medium text-center">Photo</th>
-                          <th className="px-2 py-3 font-medium text-center">Bio</th>
-                          <th className="px-2 py-3 font-medium text-center">Link</th>
-                          <th className="px-2 py-3 font-medium text-center">Highl.</th>
-                          <th className="px-2 py-3 font-medium text-center">Pinned</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-[#353535]">
-                        {auditRows.map((row) => (
-                          <tr key={row.platform} className="hover:bg-[#353535]/50 transition-colors">
-                            <td className="px-4 py-3 font-medium text-white">
-                              <div className="flex items-center gap-2">
-                                <span className={`w-4 h-4 rounded flex-shrink-0 ${row.color} opacity-80`} />
-                                {row.platform}
-                              </div>
-                            </td>
-                            <td className="px-2 py-3 text-center"><AuditIcon status={row.photo} /></td>
-                            <td className="px-2 py-3 text-center"><AuditIcon status={row.bio} /></td>
-                            <td className="px-2 py-3 text-center"><AuditIcon status={row.link} /></td>
-                            <td className="px-2 py-3 text-center"><AuditIcon status={row.highlight} /></td>
-                            <td className="px-2 py-3 text-center"><AuditIcon status={row.pinned} /></td>
-                          </tr>
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr style={{ borderTop: `1px solid ${L1}` }}>
+                        {['Platform','Photo','Bio','Link','Highl.','Pinned'].map((h, i) => (
+                          <th key={h} className={i > 0 ? 'text-center' : ''}
+                            style={{ padding: `8px ${i === 0 ? '20px' : '8px'}`, fontSize: 9, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', color: I1d }}>
+                            {h}
+                          </th>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {auditRows.map(row => (
+                        <tr key={row.platform} style={{ borderTop: `1px solid ${L1}` }} className="hover:bg-black/[0.02] transition-colors">
+                          <td className="px-5 py-3">
+                            <div className="flex items-center gap-2">
+                              <span className={`w-4 h-4 rounded flex-shrink-0 opacity-80 ${row.dot}`} />
+                              <span style={{ fontSize: 13, fontWeight: 600, color: I1 }}>{row.platform}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 text-center"><AuditIcon status={row.photo} /></td>
+                          <td className="py-3 text-center"><AuditIcon status={row.bio} /></td>
+                          <td className="py-3 text-center"><AuditIcon status={row.link} /></td>
+                          <td className="py-3 text-center"><AuditIcon status={row.highlight} /></td>
+                          <td className="py-3 text-center"><AuditIcon status={row.pinned} /></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
 
-                {/* Brand Voice Library */}
-                <div className="bg-[#1f1f1f] rounded-[20px] border border-[#353535] p-6">
-                  <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[13px] font-semibold text-white flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[18px] text-[#8b919f]">record_voice_over</span>
-                      Brand Voice Library
-                    </h3>
+                {/* Brand Voice Library — G2 Azure Tint */}
+                <div style={{ ...G2, padding: 24 }}>
+                  <div className="flex items-center gap-2 mb-5">
+                    <span className="material-symbols-outlined" style={{ fontSize: 18, color: ACCENT }}>record_voice_over</span>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: I2, margin: 0 }}>Brand Voice Library</p>
                   </div>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {voiceItems.map((v, i) => (
-                      <div key={i} className="p-4 rounded-[14px] bg-[#131313] border border-[#414753]/30 hover:border-[#414753] transition-colors">
-                        <div className="text-[11px] font-bold text-[#8b919f] uppercase tracking-wider mb-2">{v.tone}</div>
-                        <p className="text-[13px] text-[#c1c6d6] italic mb-2">{v.copy}</p>
-                        <span className="text-[11px] text-[#8b919f] px-2 py-0.5 rounded bg-[#353535]">{v.usage}</span>
+                      <div key={i} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 14, padding: 14 }}>
+                        <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', color: I2d, margin: '0 0 6px' }}>{v.tone}</p>
+                        <p style={{ fontSize: 12, color: I2, fontStyle: 'italic', margin: '0 0 8px', lineHeight: 1.55 }}>{v.copy}</p>
+                        <span style={{ fontSize: 10, background: 'rgba(255,255,255,0.10)', color: I2d, padding: '3px 10px', borderRadius: 999 }}>{v.usage}</span>
                       </div>
                     ))}
                   </div>
@@ -300,260 +317,230 @@ export default function MarketingPage() {
           </div>
         )}
 
-        {/* ══════════════════════════════════════════
-            TAB: TACTICS LIBRARY
-        ══════════════════════════════════════════ */}
-        {activeTab === 'Tactics Library' && (
-          <div className="space-y-6">
-            {/* Filter Bar */}
-            <div className="flex items-center justify-between">
-              <div className="flex flex-wrap gap-2">
-                {tacticFilters.map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setActiveFilter(f)}
-                    className={`text-[12px] px-4 py-1.5 rounded-full font-medium transition-all ${
-                      activeFilter === f
-                        ? 'bg-[#353535] text-white border border-[#414753]'
-                        : 'bg-transparent text-[#8b919f] hover:text-white border border-transparent hover:border-[#414753]/50 hover:bg-[#1f1f1f]'
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-              <div className="text-[13px] text-[#8b919f] font-medium">12 tactics</div>
-            </div>
-
-            {/* Section Label */}
-            <div>
-              <h3 className="text-[11px] font-bold tracking-widest text-[#c1c6d6] uppercase mb-1">Tactics Library</h3>
-              <p className="text-[#8b919f] text-[12px]">Repeatable growth plays ranked by relevance and expected payoff.</p>
-            </div>
-
-            {/* Tactic Cards Grid */}
-            <div className="grid grid-cols-4 gap-5 pb-12">
-              {tactics.map((t) => (
-                <div key={t.title} className="bg-[#18181a] border border-[#353535]/60 rounded-[16px] p-5 flex flex-col hover:border-[#414753] transition-colors">
-                  <div className="flex justify-between items-start mb-3">
-                    <h4 className="text-[14px] font-semibold text-white leading-tight w-2/3">{t.title}</h4>
-                    <span className={`text-[9px] font-bold tracking-wider px-2 py-0.5 rounded border ${t.badgeColor}`}>{t.badge}</span>
-                  </div>
-                  <p className="text-[12px] text-[#8b919f] mb-4 flex-grow leading-relaxed">{t.description}</p>
-                  <div className="h-px w-full bg-[#353535] mb-4" />
-                  <div className="mb-4">
-                    <div className="text-[9px] font-semibold text-[#8b919f] tracking-wider mb-2 uppercase">How to Apply — Hourbour</div>
-                    <p className="text-[11px] text-[#c1c6d6] line-clamp-2">{t.apply}</p>
-                  </div>
-                  <div className="flex gap-2 mb-3 flex-wrap">
-                    {t.tags.map((tag) => (
-                      <span key={tag} className="bg-[#1f1f1f] border border-[#353535] text-[#8b919f] text-[10px] px-2 py-0.5 rounded-sm">{tag}</span>
-                    ))}
-                  </div>
-                  <div className={`text-[10px] flex items-center mt-auto ${t.status.color}`}>
-                    <span className="material-symbols-outlined text-[12px] mr-1">{t.status.icon}</span>
-                    {t.status.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ══════════════════════════════════════════
+        {/* ══════════════════════════════════════════════════════════════════════
             TAB: GROWTH STRATEGY
-        ══════════════════════════════════════════ */}
+        ══════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'Growth Strategy' && (
           <div className="space-y-6">
 
-            {/* North Star */}
-            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-5">
-              {[
-                { label: 'North Star', value: 'Monthly Active Users', sub: 'MAU drives all decisions', color: 'text-[#abc7ff]' },
-                { label: 'Current MAU', value: '1,240', sub: '+18% MoM — on track', color: 'text-emerald-400' },
-                { label: 'MAU Target', value: '2,000', sub: 'End of this sprint cycle', color: 'text-white' },
-                { label: 'Gap to Close', value: '760', sub: '38% remaining · 14 days', color: 'text-[#ffb693]' },
-              ].map((c) => (
-                <div key={c.label} className="bg-[#1f1f1f] border border-[#353535] rounded-[18px] p-5">
-                  <div className="text-[10px] font-bold text-[#8b919f] uppercase tracking-widest mb-2">{c.label}</div>
-                  <div className={`text-[26px] font-semibold leading-none mb-1 ${c.color}`} style={{ letterSpacing: '-0.02em' }}>{c.value}</div>
-                  <div className="text-[11px] text-[#8b919f]">{c.sub}</div>
-                </div>
-              ))}
-            </div>
+            {/* North Star KPIs — G4 */}
+            <section>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 16px' }}>Growth North Star</p>
+              <div className="grid grid-cols-4 gap-4">
+                {[
+                  { label: 'North Star',    value: 'MAU',    sub: 'Monthly Active Users drives all decisions', valueColor: ACCENT,    icon: 'auto_awesome'  },
+                  { label: 'Current MAU',   value: '1,240',  sub: '+18% MoM — on track',                      valueColor: '#34d399', icon: 'people'        },
+                  { label: 'MAU Target',    value: '2,000',  sub: 'End of this sprint cycle',                 valueColor: I4,        icon: 'flag'          },
+                  { label: 'Gap to Close',  value: '760',    sub: '38% remaining · 14 days',                  valueColor: '#fb923c', icon: 'trending_up'   },
+                ].map(c => (
+                  <div key={c.label} style={{ ...G4, padding: 24 }}>
+                    <div className="flex items-center justify-between mb-3">
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' as const, color: I4d, margin: 0 }}>{c.label}</p>
+                      <span className="material-symbols-outlined" style={{ fontSize: 16, color: c.valueColor }}>{c.icon}</span>
+                    </div>
+                    <p style={{ fontFamily: 'ui-monospace,monospace', fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em', color: c.valueColor, margin: '0 0 4px', lineHeight: 1 }}>{c.value}</p>
+                    <p style={{ fontSize: 11, color: I4d, margin: 0 }}>{c.sub}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
 
-            {/* Two-col: Funnel + Leverage Actions */}
-            <div className="grid grid-cols-[380px_1fr] gap-5">
+            {/* Funnel Health + Leverage Actions */}
+            <section className="grid grid-cols-12 gap-6">
 
-              {/* Funnel Health */}
-              <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
-                <h3 className="text-[13px] font-semibold text-white mb-5">Funnel Health</h3>
-                <div className="space-y-3">
+              {/* Funnel Health — G1 */}
+              <div className="col-span-5" style={{ ...G1, padding: 28 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: '0 0 4px' }}>Kai · Funnel Health</p>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: '0 0 20px' }}>Funnel Health</h3>
+                <div className="space-y-4">
                   {[
-                    { stage: 'Awareness',    value: 48200, max: 60000, pct: 80, color: 'bg-[#abc7ff]',    gap: null },
-                    { stage: 'Interest',     value: 9640,  max: 60000, pct: 16, color: 'bg-amber-400',    gap: '80% drop-off — top leak' },
-                    { stage: 'Trial',        value: 3210,  max: 60000, pct: 5,  color: 'bg-emerald-400',  gap: '67% drop-off' },
-                    { stage: 'Paid',         value: 1240,  max: 60000, pct: 2,  color: 'bg-[#0071e3]',    gap: '61% drop-off' },
-                  ].map((f) => (
+                    { stage: 'Awareness', value: 48200, pct: 80, color: ACCENT,    gap: null                        },
+                    { stage: 'Interest',  value: 9640,  pct: 16, color: '#fb923c', gap: '80% drop-off — top leak'   },
+                    { stage: 'Trial',     value: 3210,  pct: 5,  color: '#34d399', gap: '67% drop-off'              },
+                    { stage: 'Paid',      value: 1240,  pct: 2,  color: '#8b5cf6', gap: '61% drop-off'              },
+                  ].map(f => (
                     <div key={f.stage}>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[12px] font-medium text-white">{f.stage}</span>
-                        <span className="text-[11px] font-bold text-white">{f.value.toLocaleString()}</span>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span style={{ fontSize: 13, fontWeight: 600, color: I1 }}>{f.stage}</span>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: I1, fontFamily: 'ui-monospace,monospace' }}>{f.value.toLocaleString()}</span>
                       </div>
-                      <div className="h-2 bg-[#353535] rounded-full overflow-hidden mb-1">
-                        <div className={`h-full rounded-full ${f.color}`} style={{ width: `${f.pct}%` }} />
+                      <div className="h-2 rounded-full overflow-hidden mb-1.5" style={{ background: L1 }}>
+                        <div className="h-full rounded-full" style={{ width: `${f.pct}%`, background: f.color }} />
                       </div>
-                      {f.gap && (
-                        <span className="text-[10px] text-[#ffb693]">⚠ {f.gap}</span>
-                      )}
+                      {f.gap && <span style={{ fontSize: 11, color: '#fb923c' }}>⚠ {f.gap}</span>}
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 p-3 bg-[#131313] border border-[#ffb693]/20 rounded-[12px]">
-                  <p className="text-[11px] text-[#ffb693] font-medium">Biggest leak: Awareness → Interest</p>
-                  <p className="text-[11px] text-[#8b919f] mt-1">Fix: Hook quality and CTA clarity on all organic posts</p>
+                <div className="mt-5 p-3 rounded-xl" style={{ background: 'rgba(251,146,60,0.08)', border: '1px solid rgba(251,146,60,0.15)' }}>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: '#fb923c', margin: '0 0 4px' }}>Biggest leak: Awareness → Interest</p>
+                  <p style={{ fontSize: 11, color: I1d, margin: 0 }}>Fix: Hook quality and CTA clarity on all organic posts</p>
                 </div>
               </div>
 
-              {/* Top 3 Leverage Actions */}
-              <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
-                <div className="flex items-center gap-2 mb-5">
-                  <span className="text-xl">🚀</span>
-                  <h3 className="text-[13px] font-semibold text-white">Nate&apos;s Top 3 Leverage Actions</h3>
-                </div>
+              {/* Leverage Actions — G3 */}
+              <div className="col-span-7" style={{ ...G3, padding: 28 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I3d, margin: '0 0 4px' }}>Nate · Growth</p>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: '#f1f5fb', letterSpacing: '-0.02em', margin: '0 0 20px' }}>Top 3 Leverage Actions</h3>
                 <div className="space-y-4">
                   {[
-                    {
-                      rank: '01',
-                      label: 'Quick Win',
-                      rankColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-                      action: 'Add a friction-free "Save Report" CTA inside the app after every expense sync',
-                      hypothesis: 'IF we add in-app share trigger THEN referral installs will increase by 25% BECAUSE users share wins organically when prompted at peak satisfaction.',
-                      effort: 'Low effort',
-                      impact: 'High impact',
-                    },
-                    {
-                      rank: '02',
-                      label: 'Big Bet',
-                      rankColor: 'text-[#abc7ff] bg-[#0071e3]/10 border-[#0071e3]/20',
-                      action: 'Launch a 14-day "Spending Clarity Challenge" — daily micro-prompts via Telegram + TikTok',
-                      hypothesis: 'IF we run a public challenge THEN trial signups will increase by 40% BECAUSE challenge-based content consistently outperforms passive posts by 3-5× in fintech.',
-                      effort: 'Med effort',
-                      impact: 'Max reach',
-                    },
-                    {
-                      rank: '03',
-                      label: 'Kill',
-                      rankColor: 'text-[#ffb693] bg-[#ffb693]/10 border-[#ffb693]/20',
-                      action: 'Stop posting generic "financial tips" carousels — engagement rate is 0.4%, below kill threshold',
-                      hypothesis: 'Reallocating this production time to short-form video will yield 4× the reach for the same effort.',
-                      effort: 'Saves time',
-                      impact: 'Frees capacity',
-                    },
-                  ].map((a) => (
-                    <div key={a.rank} className="flex gap-4 p-4 bg-[#131313] border border-[#353535]/60 rounded-[14px] hover:border-[#414753] transition-colors">
-                      <div className="flex-shrink-0">
-                        <span className={`text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-full border block text-center ${a.rankColor}`}>
-                          {a.label}
-                        </span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-medium text-white mb-2">{a.action}</p>
-                        <p className="text-[11px] text-[#8b919f] italic leading-relaxed mb-2">&ldquo;{a.hypothesis}&rdquo;</p>
-                        <div className="flex gap-2">
-                          <span className="text-[10px] text-[#8b919f] bg-[#1f1f1f] border border-[#353535] px-2 py-0.5 rounded-sm">{a.effort}</span>
-                          <span className="text-[10px] text-[#8b919f] bg-[#1f1f1f] border border-[#353535] px-2 py-0.5 rounded-sm">{a.impact}</span>
+                    { label: 'Quick Win', labelColor: '#34d399', labelBg: 'rgba(52,211,153,0.12)',  action: 'Add a friction-free "Save Report" CTA inside the app after every expense sync',                              hypothesis: 'IF we add in-app share trigger THEN referral installs will increase by 25% BECAUSE users share wins organically when prompted at peak satisfaction.',                                                     effort: 'Low effort',  impact: 'High impact'    },
+                    { label: 'Big Bet',   labelColor: '#5ba8ff', labelBg: `${ACCENT}18`,             action: 'Launch a 14-day "Spending Clarity Challenge" — daily micro-prompts via Telegram + TikTok',                  hypothesis: 'IF we run a public challenge THEN trial signups will increase by 40% BECAUSE challenge-based content consistently outperforms passive posts by 3-5× in fintech.',                                           effort: 'Med effort',  impact: 'Max reach'      },
+                    { label: 'Kill',      labelColor: '#fb923c', labelBg: 'rgba(251,146,60,0.12)',   action: 'Stop posting generic "financial tips" carousels — engagement rate is 0.4%, below kill threshold',            hypothesis: 'Reallocating this production time to short-form video will yield 4× the reach for the same effort.',                                                                                                      effort: 'Saves time',  impact: 'Frees capacity' },
+                  ].map(a => (
+                    <div key={a.label} style={{ background: 'rgba(241,245,251,0.04)', border: '1px solid rgba(241,245,251,0.08)', borderRadius: 14, padding: 18 }}>
+                      <div className="flex items-start gap-4">
+                        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' as const, padding: '4px 10px', borderRadius: 999, background: a.labelBg, color: a.labelColor, flexShrink: 0, marginTop: 2 }}>{a.label}</span>
+                        <div className="flex-1 min-w-0">
+                          <p style={{ fontSize: 13, fontWeight: 600, color: '#f1f5fb', margin: '0 0 6px' }}>{a.action}</p>
+                          <p style={{ fontSize: 11, color: I3d, fontStyle: 'italic', lineHeight: 1.6, margin: '0 0 10px' }}>&ldquo;{a.hypothesis}&rdquo;</p>
+                          <div className="flex gap-2">
+                            <span style={{ fontSize: 10, color: I3d, background: 'rgba(241,245,251,0.06)', padding: '2px 10px', borderRadius: 999 }}>{a.effort}</span>
+                            <span style={{ fontSize: 10, color: I3d, background: 'rgba(241,245,251,0.06)', padding: '2px 10px', borderRadius: 999 }}>{a.impact}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            </section>
 
             {/* Channel Benchmarks + Experiment Queue */}
-            <div className="grid grid-cols-[1fr_380px] gap-5">
+            <section className="grid grid-cols-12 gap-6">
 
-              {/* Channel Benchmarks */}
-              <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] overflow-hidden">
-                <div className="p-6 border-b border-[#353535]">
-                  <h3 className="text-[13px] font-semibold text-white">Channel Health vs Benchmarks</h3>
-                  <p className="text-[11px] text-[#8b919f] mt-0.5">Rio&apos;s framework — underinvested channels flagged</p>
+              {/* Channel Benchmarks — G1 */}
+              <div className="col-span-8" style={{ ...G1, overflow: 'hidden' }}>
+                <div className="px-6 pt-5 pb-3">
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: '0 0 4px' }}>Rio · Channels</p>
+                  <h3 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Channel Health vs Benchmarks</h3>
                 </div>
-                <table className="w-full text-left text-[13px]">
-                  <thead className="bg-[#353535] text-[10px] uppercase tracking-widest text-[#8b919f]">
-                    <tr>
-                      <th className="px-5 py-3 font-medium">Channel</th>
-                      <th className="px-4 py-3 font-medium">Metric</th>
-                      <th className="px-4 py-3 font-medium">Current</th>
-                      <th className="px-4 py-3 font-medium">Target</th>
-                      <th className="px-4 py-3 font-medium">Gap</th>
-                      <th className="px-4 py-3 font-medium">Signal</th>
+                <table className="w-full text-left">
+                  <thead>
+                    <tr style={{ borderTop: `1px solid ${L1}` }}>
+                      {['Channel','Metric','Current','Target','Gap','Signal'].map(h => (
+                        <th key={h} className="px-5 py-3" style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', color: I1d }}>{h}</th>
+                      ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#353535]">
+                  <tbody>
                     {[
-                      { ch: 'Instagram', metric: 'Engagement rate', current: '1.1%', target: '2.5%', gap: '-1.4pp', signal: 'Under', sigColor: 'text-[#ffb693]' },
-                      { ch: 'TikTok',    metric: 'View retention',  current: '38%',  target: '50%',  gap: '-12pp',  signal: 'Under', sigColor: 'text-[#ffb693]' },
-                      { ch: 'LinkedIn',  metric: 'Eng. rate',       current: '3.8%', target: '3%',   gap: '+0.8pp', signal: 'Over',  sigColor: 'text-emerald-400' },
-                      { ch: 'YouTube',   metric: 'CTR',             current: '5.4%', target: '4%',   gap: '+1.4pp', signal: 'Over',  sigColor: 'text-emerald-400' },
-                    ].map((r) => (
-                      <tr key={r.ch} className="hover:bg-[#353535]/30 transition-colors">
-                        <td className="px-5 py-3 font-medium text-white">{r.ch}</td>
-                        <td className="px-4 py-3 text-[#8b919f]">{r.metric}</td>
-                        <td className="px-4 py-3 text-white font-medium">{r.current}</td>
-                        <td className="px-4 py-3 text-[#8b919f]">{r.target}</td>
-                        <td className="px-4 py-3 text-white">{r.gap}</td>
-                        <td className={`px-4 py-3 text-[11px] font-bold ${r.sigColor}`}>{r.signal}</td>
+                      { ch: 'Instagram', metric: 'Engagement rate', current: '1.1%', target: '2.5%', gap: '−1.4pp', over: false },
+                      { ch: 'TikTok',    metric: 'View retention',  current: '38%',  target: '50%',  gap: '−12pp',  over: false },
+                      { ch: 'LinkedIn',  metric: 'Eng. rate',       current: '3.8%', target: '3%',   gap: '+0.8pp', over: true  },
+                      { ch: 'YouTube',   metric: 'CTR',             current: '5.4%', target: '4%',   gap: '+1.4pp', over: true  },
+                    ].map(r => (
+                      <tr key={r.ch} style={{ borderTop: `1px solid ${L1}` }} className="hover:bg-black/[0.02] transition-colors">
+                        <td className="px-5 py-3.5" style={{ fontSize: 13, fontWeight: 600, color: I1 }}>{r.ch}</td>
+                        <td className="px-5 py-3.5" style={{ fontSize: 12, color: I1d }}>{r.metric}</td>
+                        <td className="px-5 py-3.5" style={{ fontSize: 12, fontWeight: 700, color: I1 }}>{r.current}</td>
+                        <td className="px-5 py-3.5" style={{ fontSize: 12, color: I1d }}>{r.target}</td>
+                        <td className="px-5 py-3.5" style={{ fontSize: 12, color: I1c }}>{r.gap}</td>
+                        <td className="px-5 py-3.5">
+                          <span style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', padding: '3px 10px', borderRadius: 999, background: r.over ? 'rgba(52,211,153,0.10)' : 'rgba(251,146,60,0.10)', color: r.over ? '#34d399' : '#fb923c' }}>
+                            {r.over ? 'Over' : 'Under'}
+                          </span>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
 
-              {/* Experiment Queue */}
-              <div className="bg-[#1f1f1f] border border-[#353535] rounded-[20px] p-6">
-                <h3 className="text-[13px] font-semibold text-white mb-4">Experiment Queue</h3>
-                <div className="space-y-3">
+              {/* Experiment Queue — G1 */}
+              <div className="col-span-4" style={{ ...G1, padding: 24 }}>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: '0 0 4px' }}>Nate · Experiments</p>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: '0 0 16px' }}>Experiment Queue</h3>
+                <div className="flex flex-col gap-3">
                   {[
-                    { name: 'Hook A/B Test', status: 'Running', statusColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', days: '7 days left', desc: 'Question vs statement hook on TikTok' },
-                    { name: 'Spending Challenge', status: 'Queued', statusColor: 'text-[#abc7ff] bg-[#0071e3]/10 border-[#0071e3]/20', days: 'Starts Monday', desc: '14-day series across Telegram + TikTok' },
-                    { name: 'LinkedIn Carousel', status: 'Draft', statusColor: 'text-[#8b919f] bg-white/5 border-white/10', days: '—', desc: 'ROI decay of typical SaaS stacks' },
-                  ].map((e) => (
-                    <div key={e.name} className="p-4 bg-[#131313] border border-[#353535]/60 rounded-[14px]">
+                    { name: 'Hook A/B Test',      status: 'Running', statusColor: '#34d399', statusBg: 'rgba(52,211,153,0.10)', days: '7 days left',  desc: 'Question vs statement hook on TikTok'        },
+                    { name: 'Spending Challenge',  status: 'Queued',  statusColor: ACCENT,    statusBg: `${ACCENT}15`,           days: 'Starts Monday', desc: '14-day series across Telegram + TikTok'      },
+                    { name: 'LinkedIn Carousel',   status: 'Draft',   statusColor: I1d,       statusBg: L1,                      days: '—',             desc: 'ROI decay of typical SaaS stacks'            },
+                  ].map(e => (
+                    <div key={e.name} style={{ background: L1, borderRadius: 14, padding: 14 }}>
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[12px] font-medium text-white">{e.name}</span>
-                        <span className={`text-[9px] font-bold tracking-widest px-2 py-0.5 rounded-full border ${e.statusColor}`}>{e.status}</span>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: I1 }}>{e.name}</span>
+                        <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', padding: '3px 8px', borderRadius: 999, background: e.statusBg, color: e.statusColor }}>{e.status}</span>
                       </div>
-                      <p className="text-[11px] text-[#8b919f] mb-1">{e.desc}</p>
-                      <p className="text-[10px] text-[#8b919f]/60">{e.days}</p>
+                      <p style={{ fontSize: 11, color: I1c, margin: '0 0 4px' }}>{e.desc}</p>
+                      <p style={{ fontSize: 10, color: I1d, margin: 0 }}>{e.days}</p>
                     </div>
                   ))}
                 </div>
               </div>
+            </section>
+          </div>
+        )}
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            TAB: TACTICS LIBRARY
+        ══════════════════════════════════════════════════════════════════════ */}
+        {activeTab === 'Tactics Library' && (
+          <div className="space-y-6">
+
+            {/* Filter bar */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1 p-1" style={{
+                background: 'rgba(8,16,36,0.58)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)',
+                border: '1px solid rgba(255,255,255,0.12)', borderRadius: 999,
+              }}>
+                {tacticFilters.map(f => (
+                  <button key={f} onClick={() => setActiveFilter(f)}
+                    className="transition-all duration-200 active:scale-95"
+                    style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' as const,
+                      padding: '7px 14px', borderRadius: 999, border: 'none', cursor: 'pointer',
+                      color:      activeFilter === f ? '#0c0d10' : 'rgba(220,228,248,0.45)',
+                      background: activeFilter === f ? 'rgba(255,255,255,0.92)' : 'transparent',
+                    }}>
+                    {f}
+                  </button>
+                ))}
+              </div>
+              <span style={{ fontSize: 11, color: I1d }}>{filteredTactics.length} tactics</span>
+            </div>
+
+            {/* Tactic cards */}
+            <div className="grid grid-cols-4 gap-4 pb-4">
+              {filteredTactics.map(t => (
+                <div key={t.title} style={{ ...G1, padding: 20 }} className="flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 style={{ fontSize: 14, fontWeight: 700, color: I1, margin: 0, letterSpacing: '-0.01em', lineHeight: 1.3, width: '70%' }}>{t.title}</h4>
+                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' as const, padding: '3px 8px', borderRadius: 999, background: t.badgeBg, color: t.badgeColor }}>{t.badge}</span>
+                  </div>
+                  <p style={{ fontSize: 12, color: I1c, margin: '0 0 12px', flexGrow: 1, lineHeight: 1.55 }}>{t.description}</p>
+                  <div style={{ borderTop: `1px solid ${L1}`, paddingTop: 12, marginBottom: 12 }}>
+                    <p style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', color: I1d, margin: '0 0 6px' }}>How to Apply — Hourbour</p>
+                    <p className="line-clamp-2" style={{ fontSize: 11, color: I1c, lineHeight: 1.5, margin: 0 }}>{t.apply}</p>
+                  </div>
+                  <div className="flex gap-1.5 flex-wrap mb-3">
+                    {t.tags.map(tag => (
+                      <span key={tag} style={{ fontSize: 10, color: I1d, background: L1, padding: '2px 8px', borderRadius: 4 }}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-auto">
+                    <span className="material-symbols-outlined" style={{ fontSize: 12, color: t.status.color }}>{t.status.icon}</span>
+                    <span style={{ fontSize: 10, color: t.status.color }}>{t.status.label}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* ══════════════════════════════════════════
-            TAB: COMMUNITY
-        ══════════════════════════════════════════ */}
-        {activeTab === 'Community' && <CommunityTab />}
-
-        {/* ══════════════════════════════════════════
-            TAB: GROWTH SPRINT
-        ══════════════════════════════════════════ */}
+        {activeTab === 'Content'       && <ContentTab />}
+        {activeTab === 'Community'     && <CommunityTab />}
         {activeTab === 'Growth Sprint' && <GrowthSprintTab />}
+        {activeTab === 'Team'          && <TeamChatTab />}
 
-        {/* ══════════════════════════════════════════
-            TAB: TEAM
-        ══════════════════════════════════════════ */}
-        {activeTab === 'Team' && <TeamChatTab />}
-
-        {/* Continuation cue */}
-        <div className="flex justify-center pt-8 pb-12 opacity-30">
-          <div className="w-px h-16 bg-gradient-to-b from-[#8b919f] to-transparent" />
-        </div>
+        {/* Footer */}
+        <footer className="border-t flex items-center justify-between py-6" style={{ borderColor: L1 }}>
+          <p style={{ fontSize: 11, color: INK_4 }}>© 2026 YVON Intelligence. Built for Excellence.</p>
+          <div className="flex items-center gap-5">
+            {['Privacy', 'Terms', 'Support'].map(l => (
+              <a key={l} href="#" style={{ fontSize: 11, color: INK_4 }} className="hover:opacity-70 transition-opacity">{l}</a>
+            ))}
+          </div>
+        </footer>
 
       </div>
     </main>

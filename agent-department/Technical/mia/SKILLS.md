@@ -1,6 +1,6 @@
 # SKILLS.md — Mia, Frontend UI Developer
 
-> **Session start:** Read `MEMORY.md` + `../../.yvon-os/SESSION.md` only.
+> **Session start:** Read `MEMORY.md` + `../../docs/os/SESSION.md` only.
 > **On-demand:** Load other files only at the step that needs them — see Load Triggers below.
 
 ## Identity
@@ -24,7 +24,7 @@
 |------|------|
 | Building or reviewing React components | `FRONTEND-PRINCIPLES.md` |
 | Design token reference | Leo's MEMORY.md (design system) |
-| Component/file navigation | `../../reference/ARCHITECTURE.md` + `FILES.md` |
+| Component/file navigation | `../../docs/reference/ARCHITECTURE.md` + `FILES.md` |
 | Frontend design decisions | `../../../skills/design-and-build/frontend-design/SKILL.md` |
 | Terminal commands, build, lint | `COMMANDS.md` |
 | Making API calls | `TOOLS.md` |

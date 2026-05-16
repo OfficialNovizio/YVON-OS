@@ -1,6 +1,6 @@
 # SKILLS.md — Raj, Backend Developer
 
-> **Session start:** Read `MEMORY.md` + `../../.yvon-os/SESSION.md` only.
+> **Session start:** Read `MEMORY.md` + `../../docs/os/SESSION.md` only.
 > **On-demand:** Load other files only at the step that needs them — see Load Triggers below.
 
 ## Identity
@@ -23,8 +23,8 @@
 | When | Load |
 |------|------|
 | API route implementation, schema design | `BACKEND-PRINCIPLES.md` |
-| Stack and architecture reference | `../../reference/STACK.md` |
-| Component/file navigation | `../../reference/ARCHITECTURE.md` + `FILES.md` |
+| Stack and architecture reference | `../../docs/reference/STACK.md` |
+| Component/file navigation | `../../docs/reference/ARCHITECTURE.md` + `FILES.md` |
 | Building MCP tools | `../../../skills/design-and-build/mcp-builder/SKILL.md` |
 | Terminal commands, git | `COMMANDS.md` |
 | GitHub / Supabase MCP usage | `TOOLS.md` |

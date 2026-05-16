@@ -291,11 +291,11 @@ export default function AgentsSettingsPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: T.bg, fontFamily: T.font, paddingTop: 56, paddingBottom: 60 }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 32px 0' }}>
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto" style={{ paddingTop: 32 }}>
         <BackLink />
       </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 32px', display: 'flex', gap: 32 }}>
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto" style={{ display: 'flex', gap: 32 }}>
 
         {/* Dept sidebar */}
         <aside style={{ width: 180, flexShrink: 0, paddingTop: 32, borderRight: `1px solid ${T.border}`, paddingRight: 16 }}>

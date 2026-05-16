@@ -4,6 +4,12 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { T, SC } from './_shared'
 
+// ── Glass system ────────────────────────────────────────────────────────────────
+const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
+const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
+const ACCENT = '#0066cc';
+const INK_4  = 'rgba(10,37,71,0.52)';
+
 // ─── Hub Cards ────────────────────────────────────────────────────────────────
 
 const HUB_CARDS = [
@@ -58,42 +64,36 @@ export default function SettingsHubPage() {
   return (
     <div style={{
       minHeight:   '100vh',
-      background:  T.bg,
+      background:  'transparent',
       fontFamily:  T.font,
-      paddingTop:  56,
     }}>
-      <div style={{
-        maxWidth: 840,
-        margin:   '0 auto',
-        padding:  '48px 32px 80px',
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto" style={{
+        paddingTop: 96,
+        paddingBottom: 80,
       }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
-          <p style={{
-            fontSize:      11,
-            fontWeight:    600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color:         T.text3,
-            marginBottom:  10,
+          <div className="flex items-center gap-2 mb-2" style={{
+            fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', textTransform: 'uppercase', color: INK_4
           }}>
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: ACCENT }} />
             YVON OS
-          </p>
+          </div>
           <h1 style={{
-            fontSize:      28,
-            fontWeight:    600,
-            color:         T.text1,
-            letterSpacing: '-0.03em',
-            lineHeight:    1.15,
+            fontSize:      44,
+            fontWeight:    700,
+            color:         I1,
+            letterSpacing: '-0.025em',
+            lineHeight:    1,
             margin:        0,
           }}>
-            Settings
+            Settings<span style={{ color: ACCENT }}>.</span>
           </h1>
           <p style={{
-            fontSize:   14,
-            color:      T.text2,
-            marginTop:  8,
+            fontSize:   15,
+            color:      I1c,
+            marginTop:  10,
             lineHeight: 1.5,
           }}>
             Configure your ventures, agents, and workspace preferences.
@@ -115,13 +115,11 @@ export default function SettingsHubPage() {
                 onMouseEnter={() => setHovered(card.key)}
                 onMouseLeave={() => setHovered(null)}
                 style={{
-                  background:    T.surface,
-                  border:        `1px solid ${isHov ? T.borderHov : T.border}`,
-                  borderRadius:  16,
-                  padding:       '28px 24px',
+                  ...G1,
+                  padding:       '22px 22px',
                   cursor:        'pointer',
                   textAlign:     'left',
-                  transition:    'transform 0.18s, border-color 0.18s, background 0.18s',
+                  transition:    'transform 0.18s, border-color 0.18s',
                   transform:     isHov ? 'scale(1.012)' : 'scale(1)',
                   display:       'flex',
                   flexDirection: 'column',

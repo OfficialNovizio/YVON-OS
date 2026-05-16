@@ -23,35 +23,6 @@ const I3='#f1f5fb', I3b='#ccd6eb', I3c='rgba(241,245,251,0.75)', I3d='rgba(241,2
 const G4: React.CSSProperties = { background: "radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))", backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
 const I4='#2a1240', I4b='#4a2060', I4c='rgba(42,18,64,0.68)', I4d='rgba(42,18,64,0.48)', I4e='rgba(42,18,64,0.26)', L4='rgba(42,18,64,0.10)';
 
-// ── Sparkline (bigger) ─────────────────────────────────────────────────────────
-function Sparkline({ values, color = ACCENT, width = 220, height = 64 }: { values: number[]; color?: string; width?: number; height?: number }) {
-  const max = Math.max(...values), min = Math.min(...values), range = max - min || 1;
-  const pts = values.map((v, i) => {
-    const x = (i / (values.length - 1)) * (width - 2) + 1;
-    const y = height - 2 - ((v - min) / range) * (height - 4);
-    return [x, y] as [number, number];
-  });
-  const d = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
-  const fill = `${d} L${pts[pts.length-1][0]},${height} L${pts[0][0]},${height} Z`;
-  return (
-    <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" style={{ display: 'block' }}>
-      <defs>
-        <linearGradient id={`spark-fill-${color.replace('#','')}`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.18" />
-          <stop offset="100%" stopColor={color} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {[0, 0.33, 0.66].map(i => (
-        <line key={i} x1={1} x2={width - 1} y1={2 + i * (height - 4) / 3} y2={2 + i * (height - 4) / 3}
-          stroke="rgba(12,44,82,0.06)" strokeDasharray="3 4" />
-      ))}
-      <path d={fill} fill={`url(#spark-fill-${color.replace('#','')})`} />
-      <path d={d} stroke={color} strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r="4" fill={color} />
-      <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r="8" fill={color} opacity="0.15" />
-    </svg>
-  );
-}
 
 const ACTIVE_AGENTS = ['Kai', 'Rio', 'Dev'];
 const IDLE_AGENTS   = ['Diana', 'Raj', 'Mia', 'Lena', 'Nate', 'Quinn', 'Atlas', 'Pixel', 'Felix', 'Marcus'];
@@ -176,28 +147,110 @@ function OverviewContext({ onGoFull }: { onGoFull: () => void }) {
   );
 }
 
-// ── KPI Cards — separate V1 cards ──────────────────────────────────────────────
+// ── Arc Gauge ──────────────────────────────────────────────────────────────────
+function ArcGauge({ pct, displayValue, color, label, delta, up }: {
+  pct: number; displayValue: string; color: string; label: string; delta: string; up: boolean;
+}) {
+  const cx = 44, cy = 46, r = 30;
+  const startAngle = 135;
+  const totalSweep = 270;
+  const toRad = (deg: number) => (deg - 90) * (Math.PI / 180);
+  const arcPath = (endAngle: number) => {
+    const x1 = cx + r * Math.cos(toRad(startAngle));
+    const y1 = cy + r * Math.sin(toRad(startAngle));
+    const x2 = cx + r * Math.cos(toRad(endAngle));
+    const y2 = cy + r * Math.sin(toRad(endAngle));
+    const large = endAngle - startAngle > 180 ? 1 : 0;
+    return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+  };
+  const fillEnd = startAngle + totalSweep * Math.min(Math.max(pct, 0), 1);
+  const endX = cx + r * Math.cos(toRad(fillEnd));
+  const endY = cy + r * Math.sin(toRad(fillEnd));
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flex: 1 }}>
+      <svg width="88" height="80" viewBox="0 0 88 84" style={{ overflow: 'visible' }}>
+        {/* Track */}
+        <path d={arcPath(startAngle + totalSweep)} fill="none" stroke="rgba(12,44,82,0.08)" strokeWidth="6" strokeLinecap="round" />
+        {/* Fill */}
+        {pct > 0.01 && (
+          <>
+            <path d={arcPath(fillEnd)} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
+              style={{ filter: `drop-shadow(0 0 4px ${color}66)` }} />
+            <circle cx={endX} cy={endY} r="4.5" fill={color} opacity="0.25" />
+            <circle cx={endX} cy={endY} r="2.5" fill={color} />
+          </>
+        )}
+        {/* Center value */}
+        <text x={cx} y={cy + 6} textAnchor="middle" fontSize="15" fontWeight="800"
+          fill={I1} fontFamily="'SF Pro Display', Inter, sans-serif" letterSpacing="-0.4">
+          {displayValue}
+        </text>
+        {/* Pct label */}
+        <text x={cx} y={cy + 20} textAnchor="middle" fontSize="9" fontWeight="700"
+          fill={I1d} fontFamily="'SF Pro Display', Inter, sans-serif" letterSpacing="0.08em">
+          {Math.round(pct * 100)}%
+        </text>
+      </svg>
+      <span style={{ fontSize: 10, fontWeight: 800, color, letterSpacing: '0.12em', textTransform: 'uppercase' }}>{label}</span>
+      <span style={{ fontSize: 11, fontWeight: 800, color: up ? GREEN : '#dc2626' }}>{delta}</span>
+    </div>
+  );
+}
+
+// ── KPI Cards — arc gauges per venture ────────────────────────────────────────
 const KPIS = [
-  { k: 'ROAS · MoM',    v: '3.8',  unit: '×',       d: '↑ +0.4 MoM', spark: [3.0,3.1,3.3,3.2,3.4,3.5,3.6,3.8], color: ACCENT },
-  { k: 'CAC · Blended', v: '8.20', unit: '$prefix',  d: '↓ −12% MoM', spark: [10.2,10.0,9.6,9.3,9.1,8.8,8.4,8.2], color: GREEN },
-  { k: 'Brand Health',  v: '74',   unit: '',          d: '↑ +2 pts',   spark: [62,64,65,67,69,70,72,74], color: VIOLET },
+  {
+    k: 'ROAS · MoM', subtitle: 'Target 5.0×',
+    ventures: [
+      { name: 'Novizio',  color: '#E94560', displayValue: '3.8×', pct: 3.8 / 5.0, delta: '↑ +0.4', up: true  },
+      { name: 'Hourbour', color: '#0066cc', displayValue: '2.1×', pct: 2.1 / 5.0, delta: '↑ +0.2', up: true  },
+    ],
+  },
+  {
+    k: 'CAC · Blended', subtitle: 'Efficiency vs target',
+    ventures: [
+      { name: 'Novizio',  color: '#E94560', displayValue: '$8.2',  pct: 7.0 / 8.2,  delta: '↓ −12%', up: true },
+      { name: 'Hourbour', color: '#0066cc', displayValue: '$14.5', pct: 12.0 / 14.5, delta: '↓ −6%',  up: true },
+    ],
+  },
+  {
+    k: 'Brand Health', subtitle: 'Score / 80 target',
+    ventures: [
+      { name: 'Novizio',  color: '#E94560', displayValue: '74', pct: 74 / 80, delta: '↑ +2 pts', up: true },
+      { name: 'Hourbour', color: '#0066cc', displayValue: '67', pct: 67 / 80, delta: '↑ +1 pt',  up: true },
+    ],
+  },
 ];
 
 function OverviewKPIs() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
       {KPIS.map(k => (
-        <div key={k.k} style={{ ...G1, padding: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I1d }}>{k.k}</span>
-          <div className="flex items-end justify-between gap-4">
-            <span style={{ fontSize: 52, fontWeight: 800, letterSpacing: '-0.04em', color: I1, lineHeight: 1 }}>
-              {k.unit === '$prefix' && <span style={{ fontSize: 28, fontWeight: 600, color: I1c, marginRight: 2 }}>$</span>}
-              {k.v}
-              {k.unit !== '$prefix' && k.unit && <span style={{ fontSize: 28, fontWeight: 600, color: I1c, marginLeft: 2 }}>{k.unit}</span>}
-            </span>
+        <div key={k.k} style={{ ...G1, padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Header */}
+          <div>
+            <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I1d }}>{k.k}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: I1e, marginLeft: 8 }}>{k.subtitle}</span>
           </div>
-          <Sparkline values={k.spark} color={k.color} />
-          <span style={{ fontSize: 14, fontWeight: 800, color: GREEN }}>{k.d}</span>
+
+          {/* Gauges */}
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+            {k.ventures.map(v => (
+              <ArcGauge key={v.name} pct={v.pct} displayValue={v.displayValue}
+                color={v.color} label={v.name} delta={v.delta} up={v.up} />
+            ))}
+          </div>
+
+          {/* Divider + legend */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 4, borderTop: `1px solid ${L1}` }}>
+            {k.ventures.map(v => (
+              <div key={v.name} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: v.color, display: 'inline-block' }} />
+                <span style={{ fontSize: 10, fontWeight: 700, color: I1d }}>{v.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </div>

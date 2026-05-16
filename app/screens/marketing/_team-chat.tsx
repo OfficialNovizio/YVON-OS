@@ -4,6 +4,10 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import type { AgentId, AgentRunStatus, WarRoomEvent } from '@/lib/types'
 import { getActiveVentureSlugClient } from '@/lib/venture-context'
 
+// ── Glass variant (G3 Obsidian for outer container) ──────────────────────────
+const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
+
 // ─── Agent registry ────────────────────────────────────────────────────────────
 
 const ROOM_ID = '__room__'
@@ -827,7 +831,7 @@ export default function TeamChatTab() {
   }
 
   return (
-    <div className="flex rounded-[20px] overflow-hidden border border-[#2a2a2a]" style={{ height: '720px', background: '#111111' }}>
+    <div style={{ ...G3, height: '720px', padding: 0 }} className="flex overflow-hidden">
 
       {/* ── LEFT: agent roster + history ─────────────────────────────────────── */}
       <div className="w-[240px] flex-shrink-0 border-r border-[#222] flex flex-col bg-[#0e0e0e]">

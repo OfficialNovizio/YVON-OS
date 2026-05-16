@@ -1,6 +1,6 @@
 # SKILLS.md — Dev, Lead Developer
 
-> **Session start:** Read `MEMORY.md` + `../../.yvon-os/SESSION.md` only.
+> **Session start:** Read `MEMORY.md` + `../../docs/os/SESSION.md` only.
 > **On-demand:** Load other files only at the step that needs them — see Load Triggers below.
 
 ## Identity
@@ -23,8 +23,8 @@
 | When | Load |
 |------|------|
 | Architecture decision, code review, API design | `ENGINEERING-PRINCIPLES.md` |
-| Stack and services reference | `../../reference/STACK.md` |
-| Component/file navigation | `../../reference/ARCHITECTURE.md` + `FILES.md` |
+| Stack and services reference | `../../docs/reference/STACK.md` |
+| Component/file navigation | `../../docs/reference/ARCHITECTURE.md` + `FILES.md` |
 | Frontend design decisions | `../../../skills/design-and-build/frontend-design/SKILL.md` |
 | Terminal commands, git, build | `COMMANDS.md` |
 | GitHub / Supabase MCP usage | `TOOLS.md` |

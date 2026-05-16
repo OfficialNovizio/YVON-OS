@@ -60,20 +60,23 @@ export default function VentureSwitcher() {
       {/* Pill trigger */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2.5 h-8 px-3 rounded-full border transition-all
-          bg-white/[0.04] border-white/10 hover:bg-white/[0.08] hover:border-white/20
-          focus:outline-none"
+        className="flex items-center gap-2.5 h-8 px-3 rounded-full border transition-all focus:outline-none"
+        style={{
+          background: 'rgba(12,44,82,0.07)',
+          border: '1px solid rgba(12,44,82,0.18)',
+        }}
       >
         {/* Colored dot */}
         <span
           className="w-2 h-2 rounded-full flex-shrink-0"
           style={{ backgroundColor: active?.color ?? '#E94560' }}
         />
-        <span className="text-[12px] font-semibold text-white tracking-tight">
+        <span className="text-[12px] font-semibold tracking-tight" style={{ color: '#0c2c52' }}>
           {active?.name ?? '—'}
         </span>
         <span
-          className={`material-symbols-outlined text-[14px] text-white/40 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`material-symbols-outlined text-[14px] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          style={{ color: 'rgba(12,44,82,0.50)' }}
         >
           expand_more
         </span>
@@ -81,9 +84,16 @@ export default function VentureSwitcher() {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-52 rounded-[14px] bg-[#111] border border-white/10 shadow-2xl overflow-hidden z-50">
+        <div
+          className="absolute top-full left-0 mt-2 w-52 rounded-[14px] overflow-hidden z-50"
+          style={{
+            background: '#0f1624',
+            border: '1px solid rgba(255,255,255,0.08)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.45)',
+          }}
+        >
           <div className="px-3 pt-3 pb-2">
-            <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">
+            <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: 'rgba(255,255,255,0.30)' }}>
               Active Brand
             </p>
             <div className="space-y-0.5">
@@ -93,30 +103,29 @@ export default function VentureSwitcher() {
                   <button
                     key={v.slug}
                     onClick={() => selectVenture(v.slug)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all text-left
-                      ${isActive
-                        ? 'bg-white/[0.08] border border-white/10'
-                        : 'hover:bg-white/[0.05] border border-transparent'
-                      }`}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all text-left"
+                    style={{
+                      background: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
+                      border: isActive ? '1px solid rgba(255,255,255,0.10)' : '1px solid transparent',
+                    }}
                   >
-                    {/* Color dot */}
                     <span
                       className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                       style={{ backgroundColor: v.color }}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-semibold text-white truncate">
+                      <p className="text-[13px] font-semibold truncate" style={{ color: '#f1f5fb' }}>
                         {v.name}
                       </p>
                       {v.tagline && (
-                        <p className="text-[10px] text-white/40 truncate">{v.tagline}</p>
+                        <p className="text-[10px] truncate" style={{ color: 'rgba(255,255,255,0.40)' }}>{v.tagline}</p>
                       )}
                       {!v.tagline && v.brandType && (
-                        <p className="text-[10px] text-white/40 capitalize">{v.brandType}</p>
+                        <p className="text-[10px] capitalize" style={{ color: 'rgba(255,255,255,0.40)' }}>{v.brandType}</p>
                       )}
                     </div>
                     {isActive && (
-                      <span className="material-symbols-outlined text-[14px] text-white/60 flex-shrink-0">
+                      <span className="material-symbols-outlined text-[14px] flex-shrink-0" style={{ color: 'rgba(255,255,255,0.55)' }}>
                         check
                       </span>
                     )}
@@ -127,14 +136,14 @@ export default function VentureSwitcher() {
           </div>
 
           {/* Status indicator */}
-          <div className="px-4 py-2.5 border-t border-white/5">
+          <div className="px-4 py-2.5" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
             <div className="flex items-center gap-2">
               <span
                 className="w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: active?.color ?? '#E94560' }}
               />
-              <p className="text-[10px] text-white/30">
-                Showing data for <span className="text-white/60 font-semibold">{active?.name}</span>
+              <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.30)' }}>
+                Showing data for <span className="font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>{active?.name}</span>
               </p>
             </div>
           </div>

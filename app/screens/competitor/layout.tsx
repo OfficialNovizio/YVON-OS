@@ -4,7 +4,17 @@ import VentureGate from '@/app/components/VentureGate';
 
 export default function CompetitorLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: "url('/Background Image.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#ffffff',
+        }}
+      />
       <NavBar />
       <VentureGate screenName="Competitor">{children}</VentureGate>
     </div>

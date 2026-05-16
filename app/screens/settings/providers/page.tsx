@@ -17,13 +17,19 @@ interface SavedRow {
   base_url:        string
 }
 
-// ─── Shared input style ───────────────────────────────────────────────────────
+// ─── Obsidian glass tokens (V3) ───────────────────────────────────────────────
+
+const O1 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
+const O1c = 'rgba(241,245,251,0.85)';  // primary text on obsidian
+const O1d = 'rgba(241,245,251,0.5)';   // muted text on obsidian
+
+// ─── Shared input style (dark glass) ──────────────────────────────────────────
 
 function inp(mono = false): React.CSSProperties {
   return {
-    width: '100%', background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.12)', borderRadius: 8,
-    color: '#fff', fontSize: 13, padding: '9px 12px', outline: 'none',
+    width: '100%', background: 'rgba(0,0,0,0.25)',
+    border: '1px solid rgba(255,255,255,0.10)', borderRadius: 8,
+    color: '#f1f5fb', fontSize: 13, padding: '9px 12px', outline: 'none',
     boxSizing: 'border-box', fontFamily: mono ? 'monospace' : T.font,
     transition: 'border-color 0.15s',
   }
@@ -34,7 +40,7 @@ function inp(mono = false): React.CSSProperties {
 function ModelFields({
   primary, secondary, tertiary,
   onPrimary, onSecondary, onTertiary,
-  hint,
+  hint, hintColor, mutedColor,
 }: {
   primary:     string
   secondary:   string
@@ -43,11 +49,13 @@ function ModelFields({
   onSecondary: (v: string) => void
   onTertiary:  (v: string) => void
   hint?:       string
+  hintColor?:  string
+  mutedColor?: string
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       {hint && (
-        <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: 0, lineHeight: 1.6 }}>
+        <p style={{ fontFamily: T.font, fontSize: 11, color: hintColor ?? T.text3, margin: 0, lineHeight: 1.6 }}>
           {hint}
         </p>
       )}
@@ -56,7 +64,7 @@ function ModelFields({
           <input value={primary} onChange={e => onPrimary(e.target.value)}
             placeholder="e.g. qwen3.5-9b or gpt-4o-mini"
             style={inp(true)} />
-          <span style={{ fontFamily: T.font, fontSize: 10, color: T.text3, marginTop: 3 }}>
+          <span style={{ fontFamily: T.font, fontSize: 10, color: mutedColor ?? T.text3, marginTop: 3 }}>
             Routing · planning · specialist calls
           </span>
         </FF>
@@ -64,7 +72,7 @@ function ModelFields({
           <input value={secondary} onChange={e => onSecondary(e.target.value)}
             placeholder="e.g. deepseek-reasoner or gpt-4o"
             style={inp(true)} />
-          <span style={{ fontFamily: T.font, fontSize: 10, color: T.text3, marginTop: 3 }}>
+          <span style={{ fontFamily: T.font, fontSize: 10, color: mutedColor ?? T.text3, marginTop: 3 }}>
             Marcus streaming synthesis
           </span>
         </FF>
@@ -72,7 +80,7 @@ function ModelFields({
           <input value={tertiary} onChange={e => onTertiary(e.target.value)}
             placeholder="leave empty if not needed"
             style={inp(true)} />
-          <span style={{ fontFamily: T.font, fontSize: 10, color: T.text3, marginTop: 3 }}>
+          <span style={{ fontFamily: T.font, fontSize: 10, color: mutedColor ?? T.text3, marginTop: 3 }}>
             Reserved · deep analysis
           </span>
         </FF>
@@ -133,39 +141,39 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
   }
 
   return (
-    <div style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${isConfigured && row.is_active ? `${meta.color}35` : 'rgba(255,255,255,0.08)'}`, borderRadius: 14, overflow: 'hidden' }}>
+    <div style={{ ...O1, border: `1px solid ${isConfigured && row.is_active ? `${meta.color}35` : 'rgba(255,255,255,0.08)'}`, overflow: 'hidden' }}>
       {/* Header */}
-      <button onClick={() => setOpen(o => !o)} style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left' }}>
+      <button onClick={() => setOpen(o => !o)} style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: 16, display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left' }}>
         <div style={{ width: 38, height: 38, borderRadius: 10, background: `${meta.color}18`, border: `1px solid ${meta.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
           {meta.icon}
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: T.font, fontSize: 14, fontWeight: 600, color: T.text1, margin: 0 }}>{meta.label}</p>
-          <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: '2px 0 0' }}>
+          <p style={{ fontFamily: T.font, fontSize: 14, fontWeight: 600, color: O1c, margin: 0 }}>{meta.label}</p>
+          <p style={{ fontFamily: T.font, fontSize: 11, color: O1d, margin: '2px 0 0' }}>
             {isConfigured ? `${row.apiKeyMasked} · primary: ${row.fast_model}` : 'Native SDK — requires Anthropic API key'}
           </p>
         </div>
         {isConfigured && (
-          <span style={{ background: row.is_active ? `${meta.color}18` : 'rgba(255,255,255,0.05)', border: `1px solid ${row.is_active ? `${meta.color}40` : 'rgba(255,255,255,0.1)'}`, borderRadius: 20, padding: '3px 10px', fontSize: 10, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' as const, color: row.is_active ? meta.color : T.text3, flexShrink: 0 }}>
+          <span style={{ background: row.is_active ? `${meta.color}18` : 'rgba(255,255,255,0.05)', border: `1px solid ${row.is_active ? `${meta.color}40` : 'rgba(255,255,255,0.1)'}`, borderRadius: 20, padding: '3px 10px', fontSize: 10, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' as const, color: row.is_active ? meta.color : O1d, flexShrink: 0 }}>
             {row.is_active ? 'ACTIVE' : 'INACTIVE'}
           </span>
         )}
-        <span style={{ color: T.text3, fontSize: 12, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
+        <span style={{ color: O1d, fontSize: 12, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
       </button>
 
       {open && (
-        <div style={{ padding: '0 20px 20px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ padding: '0 16px 16px', borderTop: `1px solid rgba(255,255,255,0.06)` }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, paddingTop: 16 }}>
 
             {/* API Key */}
-            <FF label={isConfigured ? 'Replace API Key' : 'API Key'}>
+            <FF label={isConfigured ? 'Replace API Key' : 'API Key'} labelColor={O1d}>
               <div style={{ display: 'flex', gap: 8 }}>
                 <div style={{ flex: 1, position: 'relative' }}>
                   <input type={showKey ? 'text' : 'password'} value={apiKey}
                     onChange={e => setApiKey(e.target.value)}
                     placeholder={isConfigured ? row.apiKeyMasked : 'sk-ant-...'}
                     style={{ ...inp(true), paddingRight: 38 }} />
-                  <button onClick={() => setShowKey(s => !s)} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: T.text3, padding: 0, fontSize: 13 }}>
+                  <button onClick={() => setShowKey(s => !s)} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: O1d, padding: 0, fontSize: 13 }}>
                     {showKey ? '🙈' : '👁'}
                   </button>
                 </div>
@@ -178,7 +186,7 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
                   {testStatus === 'ok' ? '✓ Connected' : testStatus === 'testing' ? '⏳ Connecting…' : `✗ ${testErr}`}
                 </p>
               )}
-              <a href={meta.docsUrl} target="_blank" rel="noreferrer" style={{ fontFamily: T.font, fontSize: 11, color: T.accent, textDecoration: 'none', marginTop: 4, display: 'block' }}>
+              <a href={meta.docsUrl} target="_blank" rel="noreferrer" style={{ fontFamily: T.font, fontSize: 11, color: '#66b3ff', textDecoration: 'none', marginTop: 4, display: 'block' }}>
                 Get key at console.anthropic.com →
               </a>
             </FF>
@@ -187,6 +195,7 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
               primary={primary} secondary={secondary} tertiary={tertiary}
               onPrimary={setPrimary} onSecondary={setSecondary} onTertiary={setTertiary}
               hint="All model names use Anthropic's model IDs (e.g. claude-haiku-4-5-20251001)."
+              mutedColor={O1d} hintColor={O1d}
             />
 
             <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -286,28 +295,28 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
   }
 
   return (
-    <div style={{ background: 'rgba(255,255,255,0.04)', border: `1px solid ${isConfigured && row.is_active ? `${meta.color}35` : 'rgba(255,255,255,0.08)'}`, borderRadius: 14, overflow: 'hidden' }}>
+    <div style={{ ...O1, border: `1px solid ${isConfigured && row.is_active ? `${meta.color}35` : 'rgba(255,255,255,0.08)'}`, overflow: 'hidden' }}>
       {/* Header */}
       <button onClick={() => setOpen(o => !o)} style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left' }}>
         <div style={{ width: 38, height: 38, borderRadius: 10, background: detected ? `${detected.color}18` : `${meta.color}18`, border: `1px solid ${detected ? `${detected.color}30` : `${meta.color}30`}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0, transition: 'all 0.2s' }}>
           {detected ? detected.icon : meta.icon}
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: T.font, fontSize: 14, fontWeight: 600, color: T.text1, margin: 0 }}>
+          <p style={{ fontFamily: T.font, fontSize: 14, fontWeight: 600, color: O1c, margin: 0 }}>
             {detected ? detected.label : isConfigured ? (row.base_url || 'Custom Provider') : 'Custom / OpenAI-Compatible'}
           </p>
-          <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: '2px 0 0' }}>
+          <p style={{ fontFamily: T.font, fontSize: 11, color: O1d, margin: '2px 0 0' }}>
             {isConfigured
               ? `${row.base_url || 'custom endpoint'} · primary: ${row.fast_model}`
               : 'Any OpenAI-compatible endpoint — cloud or local'}
           </p>
         </div>
         {isConfigured && (
-          <span style={{ background: row.is_active ? `${meta.color}18` : 'rgba(255,255,255,0.05)', border: `1px solid ${row.is_active ? `${meta.color}40` : 'rgba(255,255,255,0.1)'}`, borderRadius: 20, padding: '3px 10px', fontSize: 10, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' as const, color: row.is_active ? meta.color : T.text3, flexShrink: 0 }}>
+          <span style={{ background: row.is_active ? `${meta.color}18` : 'rgba(255,255,255,0.05)', border: `1px solid ${row.is_active ? `${meta.color}40` : 'rgba(255,255,255,0.1)'}`, borderRadius: 20, padding: '3px 10px', fontSize: 10, fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase' as const, color: row.is_active ? meta.color : O1d, flexShrink: 0 }}>
             {row.is_active ? 'ACTIVE' : 'INACTIVE'}
           </span>
         )}
-        <span style={{ color: T.text3, fontSize: 12, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
+        <span style={{ color: O1d, fontSize: 12, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▼</span>
       </button>
 
       {open && (
@@ -315,7 +324,7 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, paddingTop: 16 }}>
 
             {/* Base URL with auto-detect */}
-            <FF label="Base URL">
+            <FF label="Base URL" labelColor={O1d}>
               <div style={{ position: 'relative' }}>
                 <input
                   value={baseUrl}
@@ -324,7 +333,7 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
                   style={{ ...inp(true), paddingRight: detecting ? 90 : 12 }}
                 />
                 {detecting && (
-                  <span style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', fontFamily: T.font, fontSize: 11, color: T.text3 }}>
+                  <span style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', fontFamily: T.font, fontSize: 11, color: O1d }}>
                     detecting…
                   </span>
                 )}
@@ -335,16 +344,16 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, padding: '7px 12px', background: `${detected.color}10`, border: `1px solid ${detected.color}25`, borderRadius: 8 }}>
                   <span style={{ fontSize: 14 }}>{detected.icon}</span>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontFamily: T.font, fontSize: 12, fontWeight: 600, color: T.text1, margin: 0 }}>
+                    <p style={{ fontFamily: T.font, fontSize: 12, fontWeight: 600, color: O1c, margin: 0 }}>
                       ✓ Detected: {detected.label}
                     </p>
-                    <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: '1px 0 0' }}>
+                    <p style={{ fontFamily: T.font, fontSize: 11, color: O1d, margin: '1px 0 0' }}>
                       Suggested models pre-filled below — override anytime
                     </p>
                   </div>
                   <button
                     onClick={() => { setPrimary(detected.primary); setSecondary(detected.secondary); setTertiary(detected.tertiary) }}
-                    style={{ fontFamily: T.font, fontSize: 11, color: T.accent, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                    style={{ fontFamily: T.font, fontSize: 11, color: '#66b3ff', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                   >
                     Reset models
                   </button>
@@ -353,14 +362,14 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
             </FF>
 
             {/* API Key (optional for local) */}
-            <FF label="API Key (optional for local servers)">
+            <FF label="API Key (optional for local servers)" labelColor={O1d}>
               <div style={{ display: 'flex', gap: 8 }}>
                 <div style={{ flex: 1, position: 'relative' }}>
                   <input type={showKey ? 'text' : 'password'} value={apiKey}
                     onChange={e => setApiKey(e.target.value)}
                     placeholder={isConfigured ? row.apiKeyMasked : 'lmstudio  or  sk-...  or  leave empty'}
                     style={{ ...inp(true), paddingRight: 38 }} />
-                  <button onClick={() => setShowKey(s => !s)} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: T.text3, padding: 0, fontSize: 13 }}>
+                  <button onClick={() => setShowKey(s => !s)} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: O1d, padding: 0, fontSize: 13 }}>
                     {showKey ? '🙈' : '👁'}
                   </button>
                 </div>
@@ -379,6 +388,7 @@ function CustomCard({ row, onSave, onToggle, onDelete }: {
               primary={primary} secondary={secondary} tertiary={tertiary}
               onPrimary={setPrimary} onSecondary={setSecondary} onTertiary={setTertiary}
               hint="Type the exact model name your server expects (e.g. qwen3.5-9b or deepseek-chat)."
+              mutedColor={O1d} hintColor={O1d}
             />
 
             <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -467,7 +477,7 @@ export default function ProvidersPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: T.bg, fontFamily: T.font, paddingTop: 56 }}>
-      <div style={{ maxWidth: 720, margin: '0 auto', padding: '48px 32px 100px' }}>
+      <div className="max-w-[1480px] 2xl:max-w-[min(92vw,2000px)] mx-auto px-7" style={{ paddingTop: 48, paddingBottom: 100 }}>
         <BackLink />
 
         {/* Header */}
@@ -490,15 +500,15 @@ export default function ProvidersPage() {
         {activeRow && (() => {
           const meta = PROVIDER_MODELS[activeRow.provider as keyof typeof PROVIDER_MODELS] ?? PROVIDER_MODELS.custom
           return (
-            <div style={{ background: `${meta.color}10`, border: `1px solid ${meta.color}30`, borderRadius: 10, padding: '12px 16px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ ...O1, borderRadius: 10, padding: '12px 16px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
               <span style={{ fontSize: 18 }}>{meta.icon}</span>
               <div>
-                <p style={{ fontFamily: T.font, fontSize: 13, fontWeight: 600, color: T.text1, margin: 0 }}>
+                <p style={{ fontFamily: T.font, fontSize: 13, fontWeight: 600, color: O1c, margin: 0 }}>
                   {activeRow.provider === 'custom' && activeRow.base_url
                     ? activeRow.base_url
                     : meta.label} is active
                 </p>
-                <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: '2px 0 0' }}>
+                <p style={{ fontFamily: T.font, fontSize: 11, color: O1d, margin: '2px 0 0' }}>
                   Primary: {activeRow.fast_model} · Secondary: {activeRow.synthesis_model}
                   {activeRow.tertiary_model ? ` · Third: ${activeRow.tertiary_model}` : ''}
                 </p>
@@ -528,8 +538,8 @@ export default function ProvidersPage() {
         )}
 
         {/* How it works */}
-        <div style={{ marginTop: 28, padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
-          <p style={{ fontFamily: T.font, fontSize: 11, fontWeight: 700, color: T.text3, letterSpacing: '0.07em', textTransform: 'uppercase', margin: '0 0 10px' }}>How model tiers work</p>
+        <div style={{ ...O1, padding: '20px 16px 16px', marginTop: 24 }}>
+          <p style={{ fontFamily: T.font, fontSize: 11, fontWeight: 700, color: O1d, letterSpacing: '0.07em', textTransform: 'uppercase', margin: '0 0 10px' }}>How model tiers work</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
             {[
               ['Primary', 'Intent routing · Marcus planning · all specialist agent briefings (high call volume)'],
@@ -537,16 +547,16 @@ export default function ProvidersPage() {
               ['Third (optional)', 'Reserved for future deep-analysis mode. Leave empty if not needed.'],
             ].map(([title, desc]) => (
               <div key={title}>
-                <p style={{ fontFamily: T.font, fontSize: 12, fontWeight: 600, color: T.text2, margin: '0 0 3px' }}>{title}</p>
-                <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: 0, lineHeight: 1.5 }}>{desc}</p>
+                <p style={{ fontFamily: T.font, fontSize: 12, fontWeight: 600, color: O1c, margin: '0 0 3px' }}>{title}</p>
+                <p style={{ fontFamily: T.font, fontSize: 11, color: O1d, margin: 0, lineHeight: 1.5 }}>{desc}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Security note */}
-        <p style={{ fontFamily: T.font, fontSize: 11, color: T.text3, margin: '20px 0 0', lineHeight: 1.7 }}>
-          <strong style={{ color: T.text2 }}>Security:</strong> Keys stored in Supabase behind Row Level Security, accessed only server-side.
+        <p style={{ fontFamily: T.font, fontSize: 11, color: O1d, margin: '20px 0 0', lineHeight: 1.7 }}>
+          <strong style={{ color: O1c }}>Security:</strong> Keys stored in Supabase behind Row Level Security, accessed only server-side.
           If no provider is saved here, agents fall back to the <code style={{ fontFamily: 'monospace', fontSize: 10 }}>ANTHROPIC_API_KEY</code> env var.
         </p>
       </div>
