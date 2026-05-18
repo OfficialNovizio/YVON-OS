@@ -415,6 +415,13 @@ export default function GrowthSprintTab() {
                   </div>
                 ))}
               </div>
+              <div className="mt-4 p-3 rounded-xl flex items-start gap-2"
+                style={{ background: `${ACCENT}08`, border: `1px solid ${ACCENT}20` }}>
+                <span className="material-symbols-outlined flex-shrink-0 mt-0.5" style={{ fontSize: 14, color: ACCENT }}>info</span>
+                <p style={{ fontSize: 11, color: I1c, lineHeight: 1.55, margin: 0 }}>
+                  <strong style={{ color: I1 }}>This is not a report.</strong> A sprint is a live content production session — agents collaborate in real-time to produce, score, and queue content ideas. Reports (Analytics &rsaquo; Reports) look backwards. Sprints look forward.
+                </p>
+              </div>
             </div>
 
             {/* What Happens */}

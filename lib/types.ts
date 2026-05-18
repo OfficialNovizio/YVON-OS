@@ -763,6 +763,7 @@ export interface ContentPitch {
   marketEffect:       string | null
   vsCurrent:          string | null
   viralMechanism:     string | null
+  fullProposal:       Record<string, unknown> | null
   status:             'pending' | 'approved' | 'drafted' | 'deployed' | 'passed'
   generatedAt:        string
 }

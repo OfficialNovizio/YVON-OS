@@ -60,10 +60,44 @@ function AuditIcon({ status }: { status: string }) {
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────────
+// ── Edit Modal ────────────────────────────────────────────────────────────────────
+function EditModal({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6"
+      style={{ background: 'rgba(10,20,40,0.55)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+      onClick={onClose}>
+      <div style={{ ...G1, padding: 32, width: '100%', maxWidth: 560, maxHeight: '80vh', overflowY: 'auto' }}
+        onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-6">
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: I1, margin: 0 }}>{title}</h3>
+          <button onClick={onClose} style={{ background: L1, border: 'none', cursor: 'pointer', width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16, color: I1d }}>close</span>
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function MarketingPage() {
   const router = useRouter();
   const [activeTab, setActiveTab]       = useState('Brand Identity');
   const [activeFilter, setActiveFilter] = useState('ALL');
+
+  // ── Brand Identity edit state ────────────────────────────────────────────
+  type EditTarget = null | 'positioning' | `pillar-${0|1|2}` | 'voice';
+  const [editTarget, setEditTarget] = useState<EditTarget>(null);
+  const [positioningText, setPositioningText] = useState(
+    'Hourbour gives people total clarity over their money so they can stop guessing and start deciding.'
+  );
+  const [editablePillars, setEditablePillars] = useState(pillars.map(p => ({ ...p })));
+  const [editableVoice,   setEditableVoice]   = useState(voiceItems.map(v => ({ ...v })));
+
+  function savePillar(idx: 0|1|2, updated: typeof pillars[0]) {
+    setEditablePillars(prev => prev.map((p, i) => i === idx ? updated : p));
+    setEditTarget(null);
+  }
 
   const tabs = ['Brand Identity', 'Growth Strategy', 'Tactics Library', 'Content', 'Community', 'Growth Sprint', 'Team'];
 
@@ -73,6 +107,7 @@ export default function MarketingPage() {
     : tactics.filter(t => t.badge === activeFilter);
 
   return (
+  <>
     <main className="min-h-screen pb-24">
 
       {/* ── Header ──────────────────────────────────────────────────────────────── */}
@@ -227,13 +262,14 @@ export default function MarketingPage() {
                 <div style={{ ...G1, padding: 32 }} className="group relative">
                   <div className="flex items-center justify-between mb-6">
                     <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: 0 }}>Positioning Statement</p>
-                    <button className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 active:scale-95"
+                    <button onClick={() => setEditTarget('positioning')}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 active:scale-95"
                       style={{ fontSize: 12, fontWeight: 700, color: ACCENT, background: `${ACCENT}12`, padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer' }}>
                       <span className="material-symbols-outlined" style={{ fontSize: 13 }}>edit</span> Edit
                     </button>
                   </div>
                   <p style={{ fontSize: 24, fontWeight: 600, lineHeight: 1.3, color: I1, letterSpacing: '-0.01em', margin: 0 }}>
-                    &ldquo;Hourbour gives people total clarity over their money so they can stop guessing and start deciding.&rdquo;
+                    &ldquo;{positioningText}&rdquo;
                   </p>
                 </div>
 
@@ -241,8 +277,13 @@ export default function MarketingPage() {
                 <div>
                   <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: INK_4, margin: '0 0 16px 4px' }}>Brand Pillars</p>
                   <div className="grid grid-cols-3 gap-4">
-                    {pillars.map(p => (
-                      <div key={p.name} style={{ ...G1, padding: 20 }}>
+                    {editablePillars.map((p, idx) => (
+                      <div key={p.name} style={{ ...G1, padding: 20 }} className="group relative">
+                        <button onClick={() => setEditTarget(`pillar-${idx as 0|1|2}`)}
+                          className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity active:scale-95"
+                          style={{ fontSize: 10, fontWeight: 700, color: ACCENT, background: `${ACCENT}12`, padding: '4px 10px', borderRadius: 999, border: 'none', cursor: 'pointer' }}>
+                          Edit
+                        </button>
                         <div className="w-10 h-10 rounded-full flex items-center justify-center mb-4" style={{ background: L1 }}>
                           <span className="material-symbols-outlined" style={{ fontSize: 20, color: ACCENT }}>{p.icon}</span>
                         </div>
@@ -298,12 +339,19 @@ export default function MarketingPage() {
 
                 {/* Brand Voice Library — G2 Azure Tint */}
                 <div style={{ ...G2, padding: 24 }}>
-                  <div className="flex items-center gap-2 mb-5">
-                    <span className="material-symbols-outlined" style={{ fontSize: 18, color: ACCENT }}>record_voice_over</span>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: I2, margin: 0 }}>Brand Voice Library</p>
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined" style={{ fontSize: 18, color: ACCENT }}>record_voice_over</span>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: I2, margin: 0 }}>Brand Voice Library</p>
+                    </div>
+                    <button onClick={() => setEditTarget('voice')}
+                      style={{ fontSize: 11, fontWeight: 700, color: I2, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', padding: '5px 12px', borderRadius: 999, cursor: 'pointer' }}
+                      className="active:scale-95">
+                      Edit
+                    </button>
                   </div>
                   <div className="space-y-3">
-                    {voiceItems.map((v, i) => (
+                    {editableVoice.map((v, i) => (
                       <div key={i} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 14, padding: 14 }}>
                         <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.12em', color: I2d, margin: '0 0 6px' }}>{v.tone}</p>
                         <p style={{ fontSize: 12, color: I2, fontStyle: 'italic', margin: '0 0 8px', lineHeight: 1.55 }}>{v.copy}</p>
@@ -412,7 +460,7 @@ export default function MarketingPage() {
               <div className="col-span-8" style={{ ...G1, overflow: 'hidden' }}>
                 <div className="px-6 pt-5 pb-3">
                   <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase' as const, color: I1d, margin: '0 0 4px' }}>Rio · Channels</p>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Channel Health vs Benchmarks</h3>
+                  <h3 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Channel Health vs Our Targets</h3>
                 </div>
                 <table className="w-full text-left">
                   <thead>
@@ -544,5 +592,120 @@ export default function MarketingPage() {
 
       </div>
     </main>
+
+    {/* ── Brand Identity Edit Modals ─────────────────────────────────────────── */}
+
+    {/* Positioning Statement */}
+    {editTarget === 'positioning' && (
+      <EditModal title="Edit Positioning Statement" onClose={() => setEditTarget(null)}>
+        <textarea
+          value={positioningText}
+          onChange={e => setPositioningText(e.target.value)}
+          rows={4}
+          style={{ width: '100%', padding: '12px 16px', borderRadius: 12, border: `1px solid ${L1}`, background: 'rgba(12,44,82,0.04)', fontSize: 15, color: I1, lineHeight: 1.6, fontFamily: 'inherit', resize: 'vertical', outline: 'none', boxSizing: 'border-box' }}
+        />
+        <div className="flex items-center gap-3 mt-4">
+          <button
+            onClick={() => setEditTarget(null)}
+            style={{ background: ACCENT, color: '#fff', fontSize: 13, fontWeight: 700, padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer' }}
+            className="active:scale-95">
+            Save
+          </button>
+          <button
+            onClick={() => router.push('/screens/war-room?q=Regenerate+the+brand+positioning+statement+for+Hourbour')}
+            style={{ background: 'none', border: `1px solid ${L1}`, color: I1d, fontSize: 13, fontWeight: 600, padding: '10px 20px', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+            className="active:scale-95">
+            <span className="material-symbols-outlined" style={{ fontSize: 14 }}>auto_awesome</span>
+            Regenerate with Lena
+          </button>
+        </div>
+      </EditModal>
+    )}
+
+    {/* Pillar Edit */}
+    {(editTarget === 'pillar-0' || editTarget === 'pillar-1' || editTarget === 'pillar-2') && (() => {
+      const idx = Number(editTarget.split('-')[1]) as 0|1|2;
+      const pillar = editablePillars[idx];
+      return (
+        <EditModal title={`Edit Pillar — ${pillar.name}`} onClose={() => setEditTarget(null)}>
+          <div className="flex flex-col gap-4">
+            {[
+              { label: 'Pillar Name', key: 'name' as const, value: pillar.name },
+              { label: 'Description', key: 'description' as const, value: pillar.description },
+              { label: 'Support Line', key: 'supportLine' as const, value: pillar.supportLine },
+            ].map(field => (
+              <div key={field.key}>
+                <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.14em', color: I1d, margin: '0 0 6px' }}>{field.label}</p>
+                <input
+                  value={field.value}
+                  onChange={e => setEditablePillars(prev => prev.map((p, i) => i === idx ? { ...p, [field.key]: e.target.value } : p))}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: `1px solid ${L1}`, background: 'rgba(12,44,82,0.04)', fontSize: 13, color: I1, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-3 mt-5">
+            <button
+              onClick={() => savePillar(idx, editablePillars[idx])}
+              style={{ background: ACCENT, color: '#fff', fontSize: 13, fontWeight: 700, padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer' }}
+              className="active:scale-95">
+              Save Pillar
+            </button>
+            <button
+              onClick={() => setEditTarget(null)}
+              style={{ background: 'none', border: `1px solid ${L1}`, color: I1d, fontSize: 13, fontWeight: 600, padding: '10px 20px', borderRadius: 10, cursor: 'pointer' }}
+              className="active:scale-95">
+              Cancel
+            </button>
+          </div>
+        </EditModal>
+      );
+    })()}
+
+    {/* Brand Voice Edit */}
+    {editTarget === 'voice' && (
+      <EditModal title="Edit Brand Voice Library" onClose={() => setEditTarget(null)}>
+        <div className="flex flex-col gap-5">
+          {editableVoice.map((v, i) => (
+            <div key={i} style={{ background: 'rgba(12,44,82,0.04)', border: `1px solid ${L1}`, borderRadius: 14, padding: 16 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.14em', color: I1d, margin: '0 0 10px' }}>Voice Example {i + 1}</p>
+              <div className="flex flex-col gap-3">
+                {[
+                  { label: 'Tone Label', key: 'tone' as const, value: v.tone },
+                  { label: 'Copy Example', key: 'copy' as const, value: v.copy },
+                  { label: 'Usage Context', key: 'usage' as const, value: v.usage },
+                ].map(field => (
+                  <div key={field.key}>
+                    <p style={{ fontSize: 10, color: I1d, margin: '0 0 4px' }}>{field.label}</p>
+                    <input
+                      value={field.value}
+                      onChange={e => setEditableVoice(prev => prev.map((item, j) => j === i ? { ...item, [field.key]: e.target.value } : item))}
+                      style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: `1px solid ${L1}`, background: '#fff', fontSize: 12, color: I1, fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center gap-3 mt-5">
+          <button
+            onClick={() => setEditTarget(null)}
+            style={{ background: ACCENT, color: '#fff', fontSize: 13, fontWeight: 700, padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer' }}
+            className="active:scale-95">
+            Save Voice
+          </button>
+          <button
+            onClick={() => router.push('/screens/war-room?q=Regenerate+brand+voice+examples+for+Hourbour+with+3+tone+variants')}
+            style={{ background: 'none', border: `1px solid ${L1}`, color: I1d, fontSize: 13, fontWeight: 600, padding: '10px 20px', borderRadius: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+            className="active:scale-95">
+            <span className="material-symbols-outlined" style={{ fontSize: 14 }}>auto_awesome</span>
+            Regenerate with Lena
+          </button>
+        </div>
+      </EditModal>
+    )}
+
+  </>
   );
 }

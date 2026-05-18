@@ -9,6 +9,7 @@ const subTabs = [
   { label: 'Content Gaps',  href: '/screens/competitor/content-gaps' },
   { label: 'Keywords',      href: '/screens/competitor/keywords' },
   { label: 'Alerts',        href: '/screens/competitor/alerts' },
+  { label: 'Reports',       href: '/screens/competitor/reports' },
 ];
 
 const INK    = '#0a2547';

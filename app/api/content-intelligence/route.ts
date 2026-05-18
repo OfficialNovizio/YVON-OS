@@ -33,6 +33,23 @@ function getVentureName(ventureId: string): string {
   return ventureId === 'hourbour' ? 'Hourbour' : 'Novizio'
 }
 
+function parseCSEScores(raw: string): { E: number; R: number; G: number; B: number; T: number } {
+  const base = { E: 50, R: 50, G: 50, B: 50, T: 50 }
+  if (!raw) return base
+  const matches = [...raw.matchAll(/([ERGBT])=(\d+)/g)]
+  for (const m of matches) {
+    const key = m[1] as 'E' | 'R' | 'G' | 'B' | 'T'
+    base[key] = Math.min(100, Math.max(0, parseInt(m[2])))
+  }
+  return base
+}
+
+function mapSignalType(category: string): string {
+  if (category === 'competitor_gap') return 'GAP_OPPORTUNITY'
+  if (category === 'unclaimed_territory') return 'SEO_WINDOW'
+  return 'GAP_OPPORTUNITY'
+}
+
 function getVentureDesc(ventureId: string): string {
   return ventureId === 'hourbour'
     ? 'fintech SaaS — budgeting & personal finance app'
@@ -232,6 +249,11 @@ Caption: [full caption, publish-ready, brand voice correct, hashtags if appropri
 Why beats current: [current approach gets X metric → this approach targets Y because Z]
 Market effect: [what shifts in user perception/behavior if this lands]
 Tactic: [which Tactics Library play]
+Signal Type: [one of: GAP_OPPORTUNITY | PROVEN_FORMAT | SEO_WINDOW | URGENCY_WINDOW | FUNNEL_FIX]
+Growth Hypothesis: IF [specific action we take] THEN [specific metric change expected] BECAUSE [mechanism]
+CSE Score: E=[engagement signal strength 0-100] R=[recency/trend alignment 0-100] G=[gap opportunity size 0-100] B=[brand fit 0-100] T=[timing urgency 0-100]
+
+Signal Type guide: GAP_OPPORTUNITY=competitor content gap we can claim, PROVEN_FORMAT=format with demonstrated engagement data, SEO_WINDOW=active keyword/hashtag search opportunity, URGENCY_WINDOW=time-sensitive cultural trend (<72h window), FUNNEL_FIX=addresses a measured conversion drop-off.
 
 Write ALL 5 pitches. No extra text before or after.`
 
@@ -397,6 +419,18 @@ ${pitchTexts}`
         (proposal.runRecommendation as string) ?? 'A',
       ).catch(() => null)
 
+      // ── CSE self-learning fields ────────────────────────────────────────────
+      const rawSignalType = extractField(pitch.raw, 'Signal Type').trim().toUpperCase()
+      const validSignalTypes = ['GAP_OPPORTUNITY','PROVEN_FORMAT','SEO_WINDOW','URGENCY_WINDOW','FUNNEL_FIX']
+      const signalType = validSignalTypes.includes(rawSignalType) ? rawSignalType : mapSignalType(pitch.category)
+      const growthHypothesis = extractField(pitch.raw, 'Growth Hypothesis') || null
+      const cseScoreRaw = extractField(pitch.raw, 'CSE Score')
+      const scoreBreakdown = parseCSEScores(cseScoreRaw)
+      const cseScore = Math.round(
+        (scoreBreakdown.E * 0.25) + (scoreBreakdown.R * 0.25) +
+        (scoreBreakdown.G * 0.20) + (scoreBreakdown.B * 0.15) + (scoreBreakdown.T * 0.15)
+      )
+
       inserts.push({
         ventureId,
         batchId: batch.id,
@@ -418,7 +452,13 @@ ${pitchTexts}`
         marketEffect,
         vsCurrent,
         viralMechanism: (proposal.viralMechanism as string) ?? null,
-        fullProposal: proposal as Record<string, unknown>,
+        fullProposal: {
+          ...(proposal as Record<string, unknown>),
+          signalType,
+          growthHypothesis,
+          scoreBreakdown,
+          cseScore,
+        },
         status: 'pending',
         strategyLogId: logId,
       })
@@ -495,8 +535,18 @@ export async function GET(): Promise<Response> {
 // ─── PATCH — update a pitch status (approve / reject / pass) ───────────────────
 
 export async function PATCH(request: Request): Promise<Response> {
-  let body: { pitchId: string; status: 'approved' | 'drafted' | 'deployed' | 'passed' }
-  try { body = await request.json() as typeof body }
+  const cookieStore = await cookies()
+  const slug = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
+
+  interface PatchBody {
+    pitchId: string
+    status: 'approved' | 'drafted' | 'deployed' | 'passed'
+    passReason?: 'already_done' | 'wrong_timing' | 'off_brand' | 'tried_failed' | 'other'
+    passNotes?: string
+  }
+
+  let body: PatchBody
+  try { body = await request.json() as PatchBody }
   catch { return Response.json({ error: 'Invalid JSON' }, { status: 400 }) }
 
   if (!body.pitchId || !body.status) {
@@ -504,5 +554,21 @@ export async function PATCH(request: Request): Promise<Response> {
   }
 
   await updatePitchStatus(body.pitchId, body.status)
+
+  // Record pass reason when dismissing — feeds the self-learning loop
+  if (body.status === 'passed' && body.passReason) {
+    const isRequeue     = body.passReason === 'wrong_timing'
+    const isSignalPenalty = body.passReason === 'tried_failed'
+
+    await supabase.from('pitch_pass_reasons').insert({
+      venture_slug:  slug,
+      pitch_id:      body.pitchId,
+      reason:        body.passReason,
+      notes:         body.passNotes ?? null,
+      requeue_at:    isRequeue ? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString() : null,
+      signal_penalty: isSignalPenalty,
+    }).catch(() => null)  // non-fatal
+  }
+
   return Response.json({ ok: true, pitchId: body.pitchId, status: body.status })
 }

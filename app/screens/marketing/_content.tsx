@@ -83,9 +83,147 @@ const SUGGESTIONS = [
 ]
 
 const TOP_POSTS = [
-  { n: '01', brand: 'NOV', platform: 'TT', title: 'How our linen is made — factory tour', views: '28.4K', eng: '9.1%', type: 'Reel', positive: true },
-  { n: '02', brand: 'NOV', platform: 'IG', title: 'Supplier factory visit — Lisbon', views: '14.2K', eng: '6.8%', type: 'Carousel', positive: true },
-  { n: '03', brand: 'HRB', platform: 'TT', title: 'I saved £50 automatically this week', views: '8.6K', eng: '4.2%', type: 'Short', positive: false },
+  { n: '01', brand: 'NOV', platform: 'TT', title: 'How our linen is made — factory tour', views: '28.4K', eng: '9.1%', type: 'Reel', positive: true, assetUrl: null, postUrl: 'https://tiktok.com' },
+  { n: '02', brand: 'NOV', platform: 'IG', title: 'Supplier factory visit — Lisbon', views: '14.2K', eng: '6.8%', type: 'Carousel', positive: true, assetUrl: null, postUrl: 'https://instagram.com' },
+  { n: '03', brand: 'HRB', platform: 'TT', title: 'I saved £50 automatically this week', views: '8.6K', eng: '4.2%', type: 'Short', positive: false, assetUrl: null, postUrl: 'https://tiktok.com' },
+]
+
+const PLATFORM_NAMES: Record<string, string> = { TT: 'TikTok', IG: 'Instagram', LI: 'LinkedIn', YT: 'YouTube' }
+
+const SIGNAL_TYPE_META: Record<string, { label: string; color: string; icon: string }> = {
+  GAP_OPPORTUNITY: { label: 'Gap Opp',    color: '#f87171', icon: 'radar' },
+  PROVEN_FORMAT:   { label: 'Proven',     color: '#34d399', icon: 'trending_up' },
+  SEO_WINDOW:      { label: 'SEO Window', color: '#60a5fa', icon: 'search' },
+  URGENCY_WINDOW:  { label: 'Urgent',     color: '#fb923c', icon: 'bolt' },
+  FUNNEL_FIX:      { label: 'Funnel Fix', color: '#a78bfa', icon: 'conversion_path' },
+}
+
+const VISUAL_FORMATS = ['Reel', 'Short', 'Carousel', 'Static']
+
+const DEMO_PITCHES: ContentPitch[] = [
+  {
+    id: 'demo-1', ventureId: 'novizio', batchId: null, rank: 1,
+    platform: 'TikTok', format: 'Reel',
+    category: 'competitor_gap',
+    intelligenceSource: 'Zara, H&M, ASOS all post 12–15 reels/week — zero factory transparency content. Gap is unclaimed in the entire 8K–50K tier.',
+    ourMove: 'Film our Lisbon linen supplier. Founder narration. No cuts. Real time. 90 seconds. Show the hands, the machines, the fabric.',
+    hookA: 'You\'ve seen the look — now see who folds the sleeves before it lands on your doorstep.',
+    hookB: 'Most brands hide this. We\'re showing you exactly where your clothes come from.',
+    leverPrimary: 'L6 — Curiosity Gap',
+    psychologyScore: 87,
+    system1ScoreA: 82,
+    runRecommendation: 'A',
+    marketEffect: 'Shifts perception from "manufactured brand" to "maker with a heartbeat" — Novizio becomes the relatable premium choice.',
+    vsCurrent: 'Product shots avg 1.1% eng rate → transparency reels target 4.2% (our own top-3 posts are all process content at 2× avg)',
+    viralMechanism: 'L6 Curiosity Gap — "brands hide this" creates pattern interrupt that demands completion; 38% of viewers share to Stories',
+    fullProposal: {
+      signalType: 'GAP_OPPORTUNITY',
+      growthHypothesis: 'IF we post a 90s linen production reel THEN saves rate increases 40% BECAUSE authenticity triggers purchase intent in the 18–34 segment before competitors respond',
+      scoreBreakdown: { E: 82, R: 74, G: 91, B: 88, T: 65 },
+      cseScore: 80,
+    },
+    status: 'pending', generatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'demo-2', ventureId: 'novizio', batchId: null, rank: 2,
+    platform: 'Instagram', format: 'Carousel',
+    category: 'unclaimed_territory',
+    intelligenceSource: 'Our own data: behind-the-scenes posts avg 6.1% eng vs 2.8% for product shots. 3 of our top 5 posts are supplier/process content.',
+    ourMove: 'Trace a single linen shirt: raw flax → weaving → dyeing → cutting → sewing → inspection → delivery. One supplier\'s hands in every frame. 8 slides.',
+    hookA: '8 slides. 1 garment. The story your clothes can\'t tell you.',
+    hookB: 'From the Lisbon factory floor to your wardrobe — told in 8 slides.',
+    leverPrimary: 'L3 — Story Arc + Social Proof',
+    psychologyScore: 79,
+    system1ScoreA: 76,
+    runRecommendation: 'A',
+    marketEffect: 'Builds loyalty with sustainability-conscious buyers — the cohort most likely to purchase full-price and refer 2+ friends.',
+    vsCurrent: 'Standard product carousels avg 2.8% eng → supplier story format targets 6.1% (validated by our own top-5 post pattern)',
+    viralMechanism: 'L3 Social Proof — real supply chain data activates authenticity bias; saves spikes when content uses a number anchor ("8 slides")',
+    fullProposal: {
+      signalType: 'PROVEN_FORMAT',
+      growthHypothesis: 'IF we launch a supplier story carousel THEN saves rate triples vs product carousels BECAUSE authenticity content earns Stories shares at 3× the rate of product posts',
+      scoreBreakdown: { E: 90, R: 68, G: 75, B: 92, T: 58 },
+      cseScore: 77,
+    },
+    status: 'pending', generatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'demo-3', ventureId: 'novizio', batchId: null, rank: 3,
+    platform: 'TikTok', format: 'Short',
+    category: 'blue_ocean',
+    intelligenceSource: '"sustainable fashion UK" trending +340% past 7 days. Zero brand in the 8K–50K tier has posted in this window — giant brands take 72h to respond.',
+    ourMove: 'Sub-45s founder-to-camera educational short. Debunk the top 3 greenwashing claims using real Novizio production numbers. No script. Calm and confident.',
+    hookA: 'This is what sustainable fashion actually looks like — not what brands want you to think.',
+    hookB: 'I checked 12 "eco-friendly" brands so you don\'t have to. Here\'s what I found.',
+    leverPrimary: 'L8 — Contrarian Framing',
+    psychologyScore: 84,
+    system1ScoreA: 88,
+    runRecommendation: 'A',
+    marketEffect: 'Positions Novizio as the category educator — the brand that tells the truth when others hide behind vague sustainability claims.',
+    vsCurrent: 'Standard brand content avg 5K views → trend-surfing educational shorts target 30K+ (FYP algorithm surfaces topical content first in the 72h window)',
+    viralMechanism: 'L8 Contrarian — "not what brands want you to think" triggers cognitive dissonance; viewers tag brands they bought from',
+    fullProposal: {
+      signalType: 'SEO_WINDOW',
+      growthHypothesis: 'IF we post within 48h THEN FYP reach exceeds 25K views BECAUSE the search term peaks before major brand responses kick in at the 72h mark',
+      scoreBreakdown: { E: 75, R: 95, G: 82, B: 85, T: 88 },
+      cseScore: 85,
+    },
+    status: 'pending', generatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'demo-4', ventureId: 'novizio', batchId: null, rank: 4,
+    platform: 'Instagram', format: 'Reel',
+    category: 'competitor_gap',
+    intelligenceSource: 'Zara "sustainability" campaign detected (brand monitoring alert). First-mover counter-narrative window: 5 days before topic saturates.',
+    ourMove: 'Response reel: analyse Zara\'s campaign claims vs Novizio\'s actual production data. Founder on camera. Calm, factual, 60 seconds. Zero anger, all receipts.',
+    hookA: 'Zara just launched a "sustainable" collection. Here\'s why we\'re not impressed.',
+    hookB: 'A big brand made a bold sustainability claim. Let\'s look at the actual numbers.',
+    leverPrimary: 'L1 — Competitive Contrast (Reactive)',
+    psychologyScore: 91,
+    system1ScoreA: 89,
+    runRecommendation: 'A',
+    marketEffect: 'Locks in first-mover advantage on the "honest premium fashion" positioning before Zara\'s campaign saturates the audience\'s feed.',
+    vsCurrent: 'Baseline brand content avg 5K views → reactive competitor response content targets 40K+ (competitor news events amplify organic reach 8× in fashion)',
+    viralMechanism: 'L1 Competitive Contrast — competitor news creates natural sharing trigger; viewers tag friends who bought from the competitor',
+    fullProposal: {
+      signalType: 'URGENCY_WINDOW',
+      growthHypothesis: 'IF we post this within 5 days THEN share rate is 3× our baseline BECAUSE competitor campaign news acts as a cultural Schelling point — audiences amplify contrast stories',
+      scoreBreakdown: { E: 85, R: 88, G: 95, B: 86, T: 92 },
+      cseScore: 89,
+    },
+    status: 'pending', generatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'demo-5', ventureId: 'hourbour', batchId: null, rank: 5,
+    platform: 'LinkedIn', format: 'Article',
+    category: 'blue_ocean',
+    intelligenceSource: 'Hourbour funnel: Awareness 48K → Interest 9.6K (80% drop). Root cause: value prop not understood in first 5 seconds. LinkedIn fintech content is dominated by product announcements — no brand owns "honest money psychology" format.',
+    ourMove: 'Long-form LinkedIn article: the psychology of why people set up savings apps and never use them. Feature 3 real Hourbour user moments. End with product CTA.',
+    hookA: 'The reason 80% of people abandon their savings app on day one (and how Hourbour fixes it).',
+    hookB: 'You set up a savings app. You used it for 3 days. Here\'s the actual psychology of why you stopped.',
+    leverPrimary: 'L2 — Problem–Solution Framing',
+    psychologyScore: 76,
+    system1ScoreA: 71,
+    runRecommendation: 'A',
+    marketEffect: 'Establishes Hourbour as the "honest fintech" voice on LinkedIn — differentiates from Monzo/Revolut\'s product-first content.',
+    vsCurrent: 'No LinkedIn content strategy → 3.8% avg eng benchmark in fintech tier; article format outperforms standard posts 2.8× on LinkedIn',
+    viralMechanism: 'L2 Problem-Solution — "80% abandon" statistic creates self-recognition trigger; financially-aware audience tags colleagues and partners',
+    fullProposal: {
+      signalType: 'FUNNEL_FIX',
+      growthHypothesis: 'IF we publish this article THEN LinkedIn-sourced signups increase 25% in 14 days BECAUSE B2B-adjacent 28–40 audience is underserved by fintech content on LinkedIn',
+      scoreBreakdown: { E: 72, R: 65, G: 78, B: 90, T: 70 },
+      cseScore: 74,
+    },
+    status: 'pending', generatedAt: new Date().toISOString(),
+  },
+]
+
+const PASS_REASONS: { value: string; label: string; desc: string }[] = [
+  { value: 'already_done',  label: 'Already done',   desc: "We've covered this recently" },
+  { value: 'wrong_timing',  label: 'Wrong timing',   desc: "Good idea, not the right moment — re-surface in 14 days" },
+  { value: 'off_brand',     label: 'Off brand',      desc: "Doesn't fit our voice or direction" },
+  { value: 'tried_failed',  label: 'Tried & failed', desc: "We ran this — it underperformed (signal penalty applied)" },
+  { value: 'other',         label: 'Other',           desc: "Skip without feedback" },
 ]
 
 const PLATFORM_PRIORITY = [
@@ -365,6 +503,29 @@ export default function ContentTab() {
   const [generating,    setGenerating]    = useState(false);
   const [genError,      setGenError]      = useState('');
 
+  // Hook A/B toggle per pitch
+  const [hookVariant, setHookVariant] = useState<Record<string, 'A' | 'B'>>({});
+
+  // Expanded pitch (source intel accordion)
+  const [expandedPitch, setExpandedPitch] = useState<string | null>(null);
+
+  // Pass reason modal
+  const [passModalPitch, setPassModalPitch] = useState<ContentPitch | null>(null);
+  const [passReason,     setPassReason]     = useState('');
+  const [passNotes,      setPassNotes]      = useState('');
+  const [passLoading,    setPassLoading]    = useState(false);
+
+  // Weight proposals
+  interface WeightProposal { id: string; version: number; weights: Record<string,number>; reason: string; trigger_data: string; created_at: string }
+  const [weightProposals,  setWeightProposals]  = useState<WeightProposal[]>([]);
+  const [activeWeights,    setActiveWeights]    = useState<Record<string,number>>({ E: 0.25, R: 0.25, G: 0.20, B: 0.15, T: 0.15 });
+  const [weightActionId,   setWeightActionId]   = useState<string | null>(null);
+
+  // Content performance stage
+  const [contentStage,   setContentStage]   = useState<0|1|2>(0);
+  const [measuredCount,  setMeasuredCount]  = useState(0);
+  const [stageLabel,     setStageLabel]     = useState('');
+
   const fetchEntries = useCallback(async () => {
     setCalLoading(true);
     try {
@@ -380,6 +541,26 @@ export default function ContentTab() {
   }, []);
 
   useEffect(() => { fetchEntries(); }, [fetchEntries]);
+
+  // Fetch weight proposals and content stage on mount
+  useEffect(() => {
+    fetch('/api/weight-proposal')
+      .then(r => r.json())
+      .then((d: { pending?: WeightProposal[]; activeWeights?: Record<string,number> }) => {
+        setWeightProposals(d.pending ?? []);
+        setActiveWeights(d.activeWeights ?? { E: 0.25, R: 0.25, G: 0.20, B: 0.15, T: 0.15 });
+      })
+      .catch(() => null);
+
+    fetch('/api/content-performance')
+      .then(r => r.json())
+      .then((d: { stage?: number; measuredCount?: number; stageLabel?: string }) => {
+        setContentStage((d.stage ?? 0) as 0|1|2);
+        setMeasuredCount(d.measuredCount ?? 0);
+        setStageLabel(d.stageLabel ?? '');
+      })
+      .catch(() => null);
+  }, []);
 
   const fetchPitches = useCallback(async () => {
     setPitchLoading(true);
@@ -415,6 +596,32 @@ export default function ContentTab() {
   async function dismissPitch(pitchId: string) {
     await fetch('/api/content-intelligence', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pitchId, status: 'passed' }) });
     setPitches(prev => prev.map(p => p.id === pitchId ? { ...p, status: 'passed' } : p));
+  }
+
+  async function handlePassSubmit() {
+    if (!passModalPitch || !passReason) return;
+    setPassLoading(true);
+    try {
+      await fetch('/api/content-intelligence', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pitchId: passModalPitch.id, status: 'passed', passReason, passNotes: passNotes || undefined }),
+      });
+      setPitches(prev => prev.map(p => p.id === passModalPitch.id ? { ...p, status: 'passed' } : p));
+      setPassModalPitch(null); setPassReason(''); setPassNotes('');
+    } finally { setPassLoading(false); }
+  }
+
+  async function handleWeightAction(proposalId: string, action: 'approve' | 'reject') {
+    setWeightActionId(proposalId);
+    try {
+      await fetch('/api/weight-proposal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proposalId, action }),
+      });
+      setWeightProposals(prev => prev.filter(p => p.id !== proposalId));
+    } finally { setWeightActionId(null); }
   }
 
   function openAdd(prefill?: Partial<PostForm>) {
@@ -519,6 +726,58 @@ export default function ContentTab() {
         </div>
       </section>
 
+      {/* ── Weight Proposal Panel — only shown when self-learning proposes a weight change ── */}
+      {weightProposals.length > 0 && weightProposals.map(proposal => (
+        <section key={proposal.id} className="ana-glass-v4 p-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-3 flex-1 min-w-0">
+              <span className="material-symbols-outlined text-[20px] shrink-0 mt-0.5" style={{ color: '#fb923c' }}>science</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <p style={{ fontSize: 12, fontWeight: 700, color: I4, margin: 0 }}>Weight Adjustment Proposed · v{proposal.version}</p>
+                  <span className="px-2 py-0.5 rounded text-[9px] font-bold" style={{ background: 'rgba(251,146,60,0.15)', color: '#fb923c' }}>PENDING APPROVAL</span>
+                </div>
+                <p style={{ fontSize: 11, color: I4b, lineHeight: 1.5, margin: '0 0 10px' }}>{proposal.reason}</p>
+                <p style={{ fontSize: 10, color: I4d, fontStyle: 'italic', margin: '0 0 12px' }}>{proposal.trigger_data}</p>
+                <div className="flex gap-3 flex-wrap">
+                  {Object.entries(proposal.weights).map(([k, v]) => {
+                    const curr = activeWeights[k] ?? 0;
+                    const diff = (v as number) - curr;
+                    return (
+                      <div key={k} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg" style={{ background: 'rgba(42,18,64,0.08)', border: '1px solid rgba(42,18,64,0.12)' }}>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: I4b }}>{k}</span>
+                        <span style={{ fontFamily: 'ui-monospace,"Geist Mono",monospace', fontSize: 12, fontWeight: 700, color: I4 }}>{Math.round((v as number) * 100)}%</span>
+                        {diff !== 0 && (
+                          <span style={{ fontSize: 9, fontWeight: 700, color: diff > 0 ? '#10b981' : '#f87171' }}>
+                            {diff > 0 ? '+' : ''}{Math.round(diff * 100)}%
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 shrink-0">
+              <button
+                onClick={() => { void handleWeightAction(proposal.id, 'approve') }}
+                disabled={weightActionId === proposal.id}
+                className="px-4 py-2 rounded-full text-[12px] font-bold transition-all active:scale-95 disabled:opacity-50"
+                style={{ background: '#10b981', color: '#fff', border: 'none', cursor: 'pointer' }}>
+                Approve
+              </button>
+              <button
+                onClick={() => { void handleWeightAction(proposal.id, 'reject') }}
+                disabled={weightActionId === proposal.id}
+                className="px-4 py-2 rounded-full text-[12px] font-bold transition-all active:scale-95 disabled:opacity-50"
+                style={{ background: 'transparent', color: I4b, border: `1px solid ${L4}`, cursor: 'pointer' }}>
+                Reject (14d)
+              </button>
+            </div>
+          </div>
+        </section>
+      ))}
+
       {/* ── 2. What to Create Next — live intelligence board ──────────────────── */}
       <section>
         <div className="flex items-center justify-between mb-5">
@@ -543,6 +802,32 @@ export default function ContentTab() {
           </button>
         </div>
 
+        {/* Stage confidence banner */}
+        {contentStage < 2 && (
+          <div className="mb-4 px-4 py-3 rounded-xl flex items-center gap-3"
+            style={{ background: contentStage === 0 ? 'rgba(251,146,60,0.07)' : 'rgba(251,191,36,0.07)', border: `1px solid ${contentStage === 0 ? 'rgba(251,146,60,0.20)' : 'rgba(251,191,36,0.20)'}` }}>
+            <span className="material-symbols-outlined text-[16px]" style={{ color: contentStage === 0 ? '#fb923c' : '#fbbf24' }}>
+              {contentStage === 0 ? 'info' : 'bar_chart'}
+            </span>
+            <div className="flex-1">
+              <p style={{ fontSize: 12, fontWeight: 600, color: contentStage === 0 ? '#fb923c' : '#fbbf24', margin: 0 }}>
+                {contentStage === 0 ? 'Stage 0 — Industry benchmarks only' : `Stage 1 — Low confidence (${measuredCount}/5 posts measured)`}
+              </p>
+              <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.45)', margin: 0 }}>
+                {stageLabel || (contentStage === 0
+                  ? 'Suggestions use 8K–12K tier benchmarks. Score your first post to start learning.'
+                  : `${5 - measuredCount} more measured posts unlock own-data scoring.`)}
+              </p>
+            </div>
+            <button
+              onClick={() => router.push('/screens/analytics/social-media')}
+              style={{ fontSize: 11, color: ACCENT, whiteSpace: 'nowrap', fontFamily: 'InstrumentSans, Inter, sans-serif' }}
+              className="hover:opacity-80 transition-opacity shrink-0">
+              Track posts →
+            </button>
+          </div>
+        )}
+
         {genError && (
           <div className="mb-4 px-4 py-3 rounded-xl flex items-center gap-3" style={{ background: 'rgba(255,69,58,0.08)', border: '1px solid rgba(255,69,58,0.20)', color: '#ff453a', fontSize: 12 }}>
             <span className="material-symbols-outlined text-[16px]">error</span>
@@ -551,119 +836,282 @@ export default function ContentTab() {
         )}
 
         {pitchLoading ? (
-          <div className="grid grid-cols-3 gap-5">
+          <div className="space-y-4">
             {[1,2,3].map(i => (
               <div key={i} className="ana-glass-v2 rounded-[22px] p-6 space-y-4 animate-pulse">
-                <div className="h-3 rounded w-1/3" style={{ background: 'rgba(255,255,255,0.12)' }} />
+                <div className="flex gap-3">
+                  <div className="h-4 rounded w-12" style={{ background: 'rgba(255,255,255,0.12)' }} />
+                  <div className="h-4 rounded w-24" style={{ background: 'rgba(255,255,255,0.10)' }} />
+                  <div className="h-4 rounded w-20 ml-auto" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                </div>
                 <div className="h-5 rounded w-3/4" style={{ background: 'rgba(255,255,255,0.10)' }} />
-                <div className="h-3 rounded w-full" style={{ background: 'rgba(255,255,255,0.08)' }} />
-                <div className="h-3 rounded w-2/3" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                <div className="h-3 rounded w-full" style={{ background: 'rgba(255,255,255,0.07)' }} />
+                <div className="grid grid-cols-5 gap-2">
+                  {[1,2,3,4,5].map(j => <div key={j} className="h-8 rounded-lg" style={{ background: 'rgba(255,255,255,0.06)' }} />)}
+                </div>
               </div>
             ))}
           </div>
-        ) : pitches.filter(p => p.status !== 'passed').length === 0 ? (
-          <div className="ana-glass-v2 rounded-[22px] p-10 flex flex-col items-center gap-4 text-center">
-            <span className="material-symbols-outlined text-[32px]" style={{ color: I2d }}>lightbulb</span>
-            <div>
-              <p style={{ fontSize: 15, fontWeight: 700, color: I2, marginBottom: 6 }}>No suggestions yet</p>
-              <p style={{ fontSize: 12, color: I2c }}>Hit Generate — Kai analyses your data, Nate spots gaps, Kahneman scores each idea for psychological impact.</p>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-3 gap-5">
-            {pitches.filter(p => p.status !== 'passed').slice(0, 3).map((pitch, idx) => {
-              const CATEGORY_META: Record<string, { label: string; color: string }> = {
-                competitor_gap:       { label: 'Competitor Gap',  color: '#f87171' },
-                unclaimed_territory:  { label: 'Blue Territory',  color: '#a78bfa' },
-                blue_ocean:           { label: 'Blue Ocean',      color: '#34d399' },
-              }
-              const meta = CATEGORY_META[pitch.category] ?? { label: pitch.category, color: ACCENT }
-              const rankColors = ['#ffd700', '#c0c0c0', '#cd7f32']
-              const isApproved = pitch.status === 'approved'
-              return (
-                <div key={pitch.id} className="ana-glass-v2 rounded-[22px] p-6 flex flex-col gap-4"
-                  style={{ borderLeft: `3px solid ${meta.color}`, opacity: isApproved ? 0.7 : 1 }}>
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 12, fontWeight: 700, color: rankColors[idx] ?? I2d }}>
-                        #{pitch.rank}
-                      </span>
-                      <span className="text-[9px] font-bold px-2 py-0.5 rounded"
-                        style={{ background: `${meta.color}25`, color: meta.color, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
-                        {meta.label}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.10)', color: I2d, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                        {pitch.platform}
-                      </span>
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.10)', color: I2d, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                        {pitch.format}
-                      </span>
-                    </div>
-                  </div>
+        ) : (() => {
+          const activePitches = pitches.filter(p => p.status !== 'passed');
+          const displayPitches = activePitches.length > 0 ? activePitches : DEMO_PITCHES;
+          const isDemo = activePitches.length === 0;
 
-                  <div>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: I2, marginBottom: 6, letterSpacing: '-0.01em', lineHeight: 1.4 }}>{pitch.hookA}</p>
-                    <p style={{ fontSize: 11, color: I2c, lineHeight: 1.6 }}>{pitch.ourMove}</p>
-                  </div>
+          const CATEGORY_META: Record<string, { label: string; color: string }> = {
+            competitor_gap:      { label: 'Competitor Gap', color: '#f87171' },
+            unclaimed_territory: { label: 'Blue Territory', color: '#a78bfa' },
+            blue_ocean:          { label: 'Blue Ocean',     color: '#34d399' },
+          };
+          const rankColors = ['#ffd700', '#c0c0c0', '#cd7f32', 'rgba(255,255,255,0.35)', 'rgba(255,255,255,0.20)'];
+          const SCORE_LABELS: Record<string, string> = { E: 'Engagement', R: 'Recency', G: 'Gap Size', B: 'Brand Fit', T: 'Timing' };
 
-                  {pitch.leverPrimary && (
-                    <div className="flex items-start gap-2 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.10)', border: `1px solid ${L2}` }}>
-                      <span className="material-symbols-outlined text-[#5ba8ff] text-[13px] mt-0.5 shrink-0">psychology</span>
-                      <p style={{ fontSize: 11, color: '#b8d4ff', lineHeight: 1.5 }}>
-                        {pitch.leverPrimary}
-                        {pitch.psychologyScore !== null && (
-                          <span style={{ marginLeft: 6, fontWeight: 700, color: pitch.psychologyScore >= 70 ? '#34d399' : '#fbbf24' }}>
-                            {pitch.psychologyScore}%
+          return (
+            <>
+              {isDemo && (
+                <div className="mb-4 px-4 py-2.5 rounded-xl flex items-center gap-2"
+                  style={{ background: 'rgba(0,102,204,0.08)', border: '1px solid rgba(0,102,204,0.18)' }}>
+                  <span className="material-symbols-outlined text-[14px]" style={{ color: ACCENT }}>science</span>
+                  <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.55)', margin: 0 }}>
+                    <strong style={{ color: ACCENT }}>Demo mode</strong> — showing sample pitches. Hit Generate to run the live engine.
+                  </p>
+                </div>
+              )}
+              <div className="space-y-4">
+                {displayPitches.slice(0, 5).map((pitch, idx) => {
+                  const meta   = CATEGORY_META[pitch.category] ?? { label: pitch.category, color: ACCENT };
+                  const fp     = pitch.fullProposal ?? {};
+                  const signalType    = fp.signalType    as string | undefined;
+                  const growthHyp     = fp.growthHypothesis as string | undefined;
+                  const cseScore      = fp.cseScore      as number | undefined;
+                  const scoreBreakdown= fp.scoreBreakdown as Record<string,number> | undefined;
+                  const signalMeta    = signalType ? SIGNAL_TYPE_META[signalType] : null;
+                  const isApproved    = pitch.status === 'approved';
+                  const isExpanded    = expandedPitch === pitch.id;
+                  const variant       = hookVariant[pitch.id] ?? 'A';
+                  const activeHook    = variant === 'A' ? pitch.hookA : (pitch.hookB || pitch.hookA);
+                  const scoreColor    = (v: number) => v >= 70 ? '#34d399' : v >= 50 ? '#fbbf24' : '#f87171';
+                  const cseColor      = cseScore !== undefined ? scoreColor(cseScore) : I2d;
+
+                  return (
+                    <div key={pitch.id} className="ana-glass-v2 rounded-[22px] overflow-hidden"
+                      style={{ borderLeft: `4px solid ${meta.color}`, opacity: isApproved ? 0.75 : 1 }}>
+
+                      {/* ── Top bar: rank · tags · platform · format · CSE score ── */}
+                      <div className="flex items-center gap-2 px-5 pt-5 pb-0 flex-wrap">
+                        <span style={{ fontFamily: 'ui-monospace,"Geist Mono",monospace', fontSize: 13, fontWeight: 700, color: rankColors[idx] ?? I2d }}>
+                          #{pitch.rank}
+                        </span>
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: `${meta.color}22`, color: meta.color, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
+                          {meta.label}
+                        </span>
+                        {signalMeta && (
+                          <span className="flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-full"
+                            style={{ background: `${signalMeta.color}18`, color: signalMeta.color, letterSpacing: '0.08em' }}>
+                            <span className="material-symbols-outlined text-[10px]">{signalMeta.icon}</span>
+                            {signalMeta.label}
                           </span>
                         )}
-                      </p>
-                    </div>
-                  )}
-
-                  {pitch.marketEffect && (
-                    <p style={{ fontSize: 11, color: I2d, lineHeight: 1.5, fontStyle: 'italic' }}>
-                      &ldquo;{pitch.marketEffect}&rdquo;
-                    </p>
-                  )}
-
-                  <div className="flex gap-2 mt-auto">
-                    {isApproved ? (
-                      <div className="flex-1 py-2 rounded-full text-center flex items-center justify-center gap-1.5"
-                        style={{ background: 'rgba(52,211,153,0.15)', border: '1px solid rgba(52,211,153,0.30)', fontSize: 11, fontWeight: 700, color: '#34d399' }}>
-                        <span className="material-symbols-outlined text-[13px]">check_circle</span>
-                        Approved
+                        <div className="flex items-center gap-1.5 ml-auto">
+                          {/* Platform pill */}
+                          {(() => {
+                            const pCfg = { TikTok: { bg: '#1a1a1a', color: '#fff' }, Instagram: { bg: 'linear-gradient(135deg,#f09433,#e6683c,#bc1888)', color: '#fff' }, LinkedIn: { bg: '#0a66c2', color: '#fff' }, YouTube: { bg: '#ff0000', color: '#fff' } };
+                            const cfg  = pCfg[pitch.platform as keyof typeof pCfg] ?? { bg: 'rgba(255,255,255,0.12)', color: I2d };
+                            return (
+                              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full" style={{ background: cfg.bg, color: cfg.color, letterSpacing: '0.06em' }}>
+                                {pitch.platform}
+                              </span>
+                            );
+                          })()}
+                          {VISUAL_FORMATS.includes(pitch.format) && (
+                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.10)', color: I2d, letterSpacing: '0.06em' }}>
+                              {pitch.format}
+                            </span>
+                          )}
+                          {cseScore !== undefined && (
+                            <span className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full"
+                              style={{ background: `${cseColor}18`, color: cseColor, border: `1px solid ${cseColor}35` }}>
+                              <span className="material-symbols-outlined text-[11px]">bar_chart_4_bars</span>
+                              {cseScore}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    ) : (
-                      <button
-                        onClick={() => { void approvePitch(pitch) }}
-                        className="flex-1 py-2 rounded-full bg-[#0066cc] text-white hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-1.5"
-                        style={{ fontSize: 11, fontWeight: 700, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-                        <span className="material-symbols-outlined text-[13px]">add_task</span>
-                        Approve
-                      </button>
-                    )}
-                    <button
-                      onClick={() => router.push(`/screens/creative-studio?pitch=${pitch.id}&hook=${encodeURIComponent(pitch.hookA)}&platform=${pitch.platform}&format=${pitch.format}`)}
-                      className="px-3 py-2 rounded-full transition-colors hover:bg-white/10"
-                      title="Send to Creative Studio"
-                      style={{ fontSize: 11, color: I2d, border: `1px solid ${L2}`, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-                      <span className="material-symbols-outlined text-[14px] align-middle">movie</span>
-                    </button>
-                    <button
-                      onClick={() => { void dismissPitch(pitch.id) }}
-                      className="px-3 py-2 rounded-full transition-colors hover:bg-white/5"
-                      title="Dismiss"
-                      style={{ fontSize: 11, color: I2d, border: `1px solid ${L2}`, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-                      <span className="material-symbols-outlined text-[14px] align-middle">close</span>
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
+
+                      {/* ── Main body ── */}
+                      <div className="px-5 pt-4 pb-0 space-y-3">
+
+                        {/* Hook A/B toggle */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.14em', color: I2d, textTransform: 'uppercase' }}>Hook</span>
+                            {pitch.hookB && pitch.hookB !== pitch.hookA && (
+                              <div className="flex rounded-md overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.12)' }}>
+                                {(['A','B'] as const).map(v => (
+                                  <button key={v} onClick={() => setHookVariant(prev => ({ ...prev, [pitch.id]: v }))}
+                                    className="px-2 py-0.5 text-[9px] font-bold transition-colors"
+                                    style={{
+                                      background: variant === v ? 'rgba(0,102,204,0.30)' : 'transparent',
+                                      color: variant === v ? '#7ec8ff' : I2d,
+                                    }}>
+                                    {v}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <p style={{ fontSize: 14, fontWeight: 700, color: I2, letterSpacing: '-0.02em', lineHeight: 1.45 }}>
+                            &ldquo;{activeHook}&rdquo;
+                          </p>
+                        </div>
+
+                        {/* Angle */}
+                        <p style={{ fontSize: 12, color: I2c, lineHeight: 1.65 }}>{pitch.ourMove}</p>
+
+                        {/* 3-col info strip: Psychology · Market Effect · vs Current */}
+                        <div className="grid grid-cols-3 gap-3 pt-1">
+                          {pitch.leverPrimary && (
+                            <div className="p-3 rounded-xl flex flex-col gap-1" style={{ background: 'rgba(91,168,255,0.10)', border: '1px solid rgba(91,168,255,0.20)' }}>
+                              <div className="flex items-center gap-1">
+                                <span className="material-symbols-outlined text-[11px]" style={{ color: '#5ba8ff' }}>psychology</span>
+                                <span style={{ fontSize: 8, fontWeight: 700, color: '#5ba8ff', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Psychology</span>
+                              </div>
+                              <p style={{ fontSize: 10, color: '#b8d4ff', lineHeight: 1.5, margin: 0 }}>{pitch.leverPrimary}</p>
+                              {pitch.psychologyScore !== null && pitch.psychologyScore !== undefined && (
+                                <span style={{ fontFamily: 'ui-monospace,"Geist Mono",monospace', fontSize: 13, fontWeight: 700, color: pitch.psychologyScore >= 70 ? '#34d399' : '#fbbf24' }}>
+                                  {pitch.psychologyScore}%
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          {pitch.marketEffect && (
+                            <div className="p-3 rounded-xl flex flex-col gap-1" style={{ background: 'rgba(167,139,250,0.10)', border: '1px solid rgba(167,139,250,0.20)' }}>
+                              <div className="flex items-center gap-1">
+                                <span className="material-symbols-outlined text-[11px]" style={{ color: '#a78bfa' }}>bolt</span>
+                                <span style={{ fontSize: 8, fontWeight: 700, color: '#a78bfa', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Market Effect</span>
+                              </div>
+                              <p style={{ fontSize: 10, color: 'rgba(196,181,253,0.85)', lineHeight: 1.5, margin: 0 }}>{pitch.marketEffect}</p>
+                            </div>
+                          )}
+                          {pitch.vsCurrent && (
+                            <div className="p-3 rounded-xl flex flex-col gap-1" style={{ background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)' }}>
+                              <div className="flex items-center gap-1">
+                                <span className="material-symbols-outlined text-[11px]" style={{ color: '#fbbf24' }}>compare_arrows</span>
+                                <span style={{ fontSize: 8, fontWeight: 700, color: '#fbbf24', letterSpacing: '0.12em', textTransform: 'uppercase' }}>vs Current</span>
+                              </div>
+                              <p style={{ fontSize: 10, color: 'rgba(252,211,77,0.80)', lineHeight: 1.5, margin: 0 }}>{pitch.vsCurrent}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* E/R/G/B/T score bars */}
+                        {scoreBreakdown && (
+                          <div className="flex gap-2 pt-1">
+                            {(['E','R','G','B','T'] as const).map(k => {
+                              const v = scoreBreakdown[k] ?? 50;
+                              const c = scoreColor(v);
+                              return (
+                                <div key={k} className="flex-1 flex flex-col gap-1.5" title={SCORE_LABELS[k]}>
+                                  <div className="w-full rounded-full" style={{ height: 3, background: 'rgba(255,255,255,0.10)' }}>
+                                    <div className="rounded-full" style={{ height: 3, width: `${v}%`, background: c }} />
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span style={{ fontSize: 8, color: I2d, fontWeight: 600 }}>{k}</span>
+                                    <span style={{ fontFamily: 'ui-monospace,"Geist Mono",monospace', fontSize: 9, fontWeight: 700, color: c }}>{v}</span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+
+                        {/* Growth hypothesis accordion */}
+                        {growthHyp && (
+                          <button className="w-full text-left"
+                            onClick={() => setExpandedPitch(isExpanded ? null : pitch.id)}>
+                            <div className="flex items-center gap-2 py-2 px-3 rounded-xl transition-colors hover:bg-white/[0.05]"
+                              style={{ border: '1px solid rgba(52,211,153,0.18)' }}>
+                              <span className="material-symbols-outlined text-[12px]" style={{ color: '#34d399' }}>trending_up</span>
+                              <span style={{ fontSize: 10, fontWeight: 700, color: '#34d399', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Growth Hypothesis</span>
+                              <span className="material-symbols-outlined text-[14px] ml-auto" style={{ color: '#34d399' }}>
+                                {isExpanded ? 'expand_less' : 'expand_more'}
+                              </span>
+                            </div>
+                            {isExpanded && (
+                              <div className="px-3 pt-2 pb-1">
+                                <p style={{ fontSize: 11, color: '#a7f3d0', lineHeight: 1.65 }}>{growthHyp}</p>
+                              </div>
+                            )}
+                          </button>
+                        )}
+
+                        {/* Source intel accordion */}
+                        {pitch.intelligenceSource && (
+                          <div className="pb-1">
+                            <details className="group">
+                              <summary className="flex items-center gap-2 py-2 px-3 rounded-xl cursor-pointer list-none transition-colors hover:bg-white/[0.05]"
+                                style={{ border: '1px solid rgba(255,255,255,0.10)' }}>
+                                <span className="material-symbols-outlined text-[12px]" style={{ color: I2d }}>travel_explore</span>
+                                <span style={{ fontSize: 10, fontWeight: 700, color: I2d, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Source Intelligence</span>
+                                <span className="material-symbols-outlined text-[14px] ml-auto group-open:rotate-180 transition-transform" style={{ color: I2d }}>expand_more</span>
+                              </summary>
+                              <div className="px-3 pt-2 pb-1">
+                                <p style={{ fontSize: 11, color: I2c, lineHeight: 1.65 }}>{pitch.intelligenceSource}</p>
+                              </div>
+                            </details>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* ── Action bar ── */}
+                      <div className="flex items-center gap-2 px-5 py-4 mt-1" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                        {isApproved ? (
+                          <div className="flex items-center gap-1.5 px-4 py-2 rounded-full"
+                            style={{ background: 'rgba(52,211,153,0.15)', border: '1px solid rgba(52,211,153,0.30)', fontSize: 11, fontWeight: 700, color: '#34d399' }}>
+                            <span className="material-symbols-outlined text-[13px]">check_circle</span>
+                            Approved — added to calendar
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => { void approvePitch(pitch) }}
+                            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#0066cc] text-white hover:opacity-90 active:scale-95 transition-all"
+                            style={{ fontSize: 12, fontWeight: 700, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                            <span className="material-symbols-outlined text-[14px]">add_task</span>
+                            Approve &amp; Schedule
+                          </button>
+                        )}
+                        <button
+                          onClick={() => router.push(`/screens/war-room?q=Brief+Atlas+on+this+pitch:+${encodeURIComponent(pitch.hookA)}+Platform:+${pitch.platform}+Format:+${pitch.format}`)}
+                          className="flex items-center gap-1 px-3 py-2 rounded-full transition-colors hover:bg-white/[0.08]"
+                          title="Brief Atlas in War Room"
+                          style={{ fontSize: 11, color: I2d, border: `1px solid ${L2}`, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                          <span className="material-symbols-outlined text-[14px]">chat</span>
+                          Brief Atlas
+                        </button>
+                        <button
+                          onClick={() => router.push(`/screens/creative-studio?pitch=${pitch.id}&hook=${encodeURIComponent(pitch.hookA)}&platform=${pitch.platform}&format=${pitch.format}`)}
+                          className="flex items-center gap-1 px-3 py-2 rounded-full transition-colors hover:bg-white/[0.08]"
+                          title="Send to Creative Studio"
+                          style={{ fontSize: 11, color: I2d, border: `1px solid ${L2}`, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                          <span className="material-symbols-outlined text-[14px]">movie</span>
+                          Studio
+                        </button>
+                        <button
+                          onClick={() => { setPassModalPitch(pitch); setPassReason(''); setPassNotes(''); }}
+                          className="flex items-center gap-1 px-3 py-2 rounded-full transition-colors hover:bg-white/[0.05] ml-auto"
+                          title="Pass with reason"
+                          style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', border: `1px solid rgba(255,255,255,0.08)`, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                          <span className="material-symbols-outlined text-[14px]">close</span>
+                          Pass
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          );
+        })()}
       </section>
 
       {/* ── 3. Top Posts This Month — V1 Clear Ice ───────────────────────────── */}
@@ -685,7 +1133,7 @@ export default function ContentTab() {
                   <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.type} · May 2026</p>
                 </div>
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-6">
                 <div className="text-right">
                   <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 16, fontWeight: 700, color: p.positive ? '#10b981' : '#eef0f8' }}>{p.views}</p>
                   <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>views</p>
@@ -694,6 +1142,20 @@ export default function ContentTab() {
                   <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 16, fontWeight: 700, color: '#10b981' }}>{p.eng}</p>
                   <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>eng rate</p>
                 </div>
+                {p.assetUrl ? (
+                  <button
+                    style={{ fontSize: 12, fontWeight: 700, color: '#0066cc', background: 'rgba(0,102,204,0.08)', border: '1px solid rgba(0,102,204,0.18)', padding: '7px 14px', borderRadius: 10, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                    className="active:scale-95 hover:opacity-80 transition-opacity">
+                    View
+                  </button>
+                ) : (
+                  <a href={p.postUrl} target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 12, fontWeight: 700, color: '#0066cc', background: 'rgba(0,102,204,0.08)', border: '1px solid rgba(0,102,204,0.18)', padding: '7px 14px', borderRadius: 10, cursor: 'pointer', whiteSpace: 'nowrap', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                    className="active:scale-95 hover:opacity-80 transition-opacity">
+                    View on {PLATFORM_NAMES[p.platform] ?? p.platform}
+                    <span className="material-symbols-outlined" style={{ fontSize: 12 }}>open_in_new</span>
+                  </a>
+                )}
               </div>
             </div>
           ))}
@@ -742,6 +1204,61 @@ export default function ContentTab() {
           </div>
         </div>
       </section>
+
+      {/* ── Pass Reason Modal ─────────────────────────────────────────────────── */}
+      {passModalPitch && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setPassModalPitch(null)} />
+          <div className="relative w-full max-w-[400px] z-10 rounded-[20px] p-6 space-y-5"
+            style={{ background: 'rgba(15,15,20,0.96)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 24px 48px rgba(0,0,0,0.5)' }}>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#fff', margin: '0 0 4px' }}>Why are you passing?</p>
+              <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', margin: 0 }} className="line-clamp-1">
+                {passModalPitch.hookA}
+              </p>
+            </div>
+            <div className="space-y-2">
+              {PASS_REASONS.map(r => (
+                <button key={r.value} onClick={() => setPassReason(r.value)}
+                  className="w-full flex items-start gap-3 p-3 rounded-xl text-left transition-all"
+                  style={{
+                    background: passReason === r.value ? 'rgba(0,102,204,0.18)' : 'rgba(255,255,255,0.05)',
+                    border: `1px solid ${passReason === r.value ? 'rgba(0,102,204,0.40)' : 'rgba(255,255,255,0.08)'}`,
+                  }}>
+                  <span className="material-symbols-outlined text-[14px] shrink-0 mt-0.5"
+                    style={{ color: passReason === r.value ? '#5ba8ff' : 'rgba(255,255,255,0.40)' }}>
+                    {passReason === r.value ? 'radio_button_checked' : 'radio_button_unchecked'}
+                  </span>
+                  <div>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: passReason === r.value ? '#fff' : 'rgba(255,255,255,0.70)', margin: 0 }}>{r.label}</p>
+                    <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', margin: 0 }}>{r.desc}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+            {passReason && passReason !== 'other' && (
+              <textarea value={passNotes} onChange={e => setPassNotes(e.target.value)}
+                placeholder="Optional note…" rows={2}
+                className="w-full border rounded-xl px-3 py-2.5 text-[12px] text-white placeholder:text-white/20 outline-none resize-none"
+                style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.10)', fontFamily: 'InstrumentSans, Inter, sans-serif' }} />
+            )}
+            <div className="flex gap-3">
+              <button onClick={() => setPassModalPitch(null)}
+                className="flex-1 py-2.5 rounded-full border text-[13px] transition-colors hover:border-white/30"
+                style={{ borderColor: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.40)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                Cancel
+              </button>
+              <button onClick={() => { void handlePassSubmit() }}
+                disabled={!passReason || passLoading}
+                className="flex-1 py-2.5 rounded-full text-[13px] font-semibold transition-all active:scale-95 disabled:opacity-40 flex items-center justify-center gap-1.5"
+                style={{ background: '#0066cc', color: '#fff', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+                {passLoading && <span className="material-symbols-outlined text-[13px] animate-spin">progress_activity</span>}
+                Pass pitch
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── 5. Content Operations Calendar — V2 Azure Tint ────────────────────── */}
       <section ref={calendarRef as React.RefObject<HTMLElement>} className="ana-glass-v2 p-6 space-y-4">
