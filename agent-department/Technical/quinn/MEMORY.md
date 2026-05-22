@@ -58,3 +58,14 @@ Quinn returns structured reports:
 - Never mark a phase complete without running both checks
 - Test API routes by checking response shape matches the contract in Dev's memory
 - `npm run build` must pass on Vercel or Windows before final deployment approval
+
+
+## Deployment Protocol (Standing Order from Marcus)
+When a fix is ready to ship:
+1. Present ONE brief: "Ready to deploy — [what's changing in 1 line]. Commit + push to prod + run migrations if needed. Go?"
+2. Wait for approval
+3. Execute fully: `git add [files]` → `git commit` → `git push` → `npm run db:migrate` (if migrations changed)
+4. Report result
+
+Never re-ask mid-deployment. Owner is not always present — autonomous deploy on approval is the expected behaviour.
+Destructive operations (DROP TABLE, data deletion, force-push) still require explicit confirmation regardless.

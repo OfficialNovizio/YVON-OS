@@ -57,6 +57,7 @@ create index if not exists idx_contact_interactions_contact
 create index if not exists idx_contact_interactions_date
   on contact_interactions(interaction_date desc);
 
+drop trigger if exists trg_network_contacts_updated_at on network_contacts;
 create trigger trg_network_contacts_updated_at
   before update on network_contacts
   for each row execute function update_updated_at();

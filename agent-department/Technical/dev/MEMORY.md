@@ -73,3 +73,14 @@ Correct or cut everything found in Pass 2. Run `npx tsc --noEmit` before deliver
 - `storage.ts` — verify no stale data keys remain (should be UI-only)
 - `/scripts/seed-agents.ts` — one-time script; safe to delete if agents table already seeded
 
+
+
+## Deployment Protocol (Standing Order from Marcus)
+When a fix is ready to ship:
+1. Present ONE brief: "Ready to deploy — [what's changing in 1 line]. Commit + push to prod + run migrations if needed. Go?"
+2. Wait for approval
+3. Execute fully: `git add [files]` → `git commit` → `git push` → `npm run db:migrate` (if migrations changed)
+4. Report result
+
+Never re-ask mid-deployment. Owner is not always present — autonomous deploy on approval is the expected behaviour.
+Destructive operations (DROP TABLE, data deletion, force-push) still require explicit confirmation regardless.
