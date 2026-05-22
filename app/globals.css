@@ -86,20 +86,9 @@
 }
 
 @layer base {
-  /* Stretch the background image across the full screen including iOS
-     notch and home-bar safe areas. background-attachment:fixed is
-     intentionally omitted — it is broken on iOS Safari and causes the
-     image to disappear in safe zones. Without it the image is anchored
-     to the html element which, with viewport-fit:cover, already covers
-     the entire screen edge-to-edge. */
-  html {
-    background: url('/Background Image.jpg') center center / cover no-repeat;
-    background-color: #dce8f5;
-  }
-
   body {
     font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: transparent;
+    background-color: #000000;
     color: #e2e2e2;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
@@ -256,15 +245,6 @@
       inset 0 1px 0 rgba(255,255,255,0.55),
       inset 0 -1px 0 rgba(255,255,255,0.08),
       0 8px 32px rgba(20,60,120,0.18);
-  }
-
-  /* Mobile — tighter margins so the pill fills the screen edge-to-edge-ish */
-  @media (max-width: 640px) {
-    .glass-nav {
-      top: 8px;
-      width: calc(100% - 16px);
-      border-radius: 16px;
-    }
   }
 }
 
@@ -585,10 +565,6 @@
   width: fit-content;
 }
 .ceo-tab-strip::-webkit-scrollbar { display: none; }
-
-@media (max-width: 640px) {
-  .ceo-tab-strip { margin-top: 12px; padding: 3px; gap: 2px; }
-}
 
 /* CEO Overview grid — 12-col desktop, single-col mobile */
 .ceo-overview-grid {

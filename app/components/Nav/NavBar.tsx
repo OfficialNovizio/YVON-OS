@@ -26,8 +26,7 @@ export function NavBar() {
   const router = useRouter();
   const [activeVenture, setActiveVenture] = useState<string>('novizio');
   const [mobileOpen, setMobileOpen] = useState(false);
-  const drawerRef    = useRef<HTMLDivElement>(null);
-  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setActiveVenture(getActiveVentureSlugClient());
@@ -39,30 +38,26 @@ export function NavBar() {
     return () => window.removeEventListener('venturechange', onVentureChange);
   }, []);
 
-  // Close drawer when route changes (handles cross-route navigation)
+  // Close drawer when route changes
   useEffect(() => { setMobileOpen(false); }, [pathname]);
 
-  // Close drawer on outside click — exclude the hamburger button itself so
-  // the toggle's own onClick isn't cancelled by this handler firing first
+  // Close drawer on outside click
   useEffect(() => {
     if (!mobileOpen) return;
     function onOutside(e: MouseEvent) {
-      const target = e.target as Node;
-      const inDrawer    = drawerRef.current?.contains(target);
-      const inHamburger = hamburgerRef.current?.contains(target);
-      if (!inDrawer && !inHamburger) setMobileOpen(false);
+      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
+        setMobileOpen(false);
+      }
     }
     document.addEventListener('mousedown', onOutside);
     return () => document.removeEventListener('mousedown', onOutside);
   }, [mobileOpen]);
 
-  function closeDrawer() { setMobileOpen(false); }
-
   async function handleLogout() {
     await Promise.all([
       supabaseClient.auth.signOut(),
       fetch('/api/auth/logout', { method: 'POST' }),
-    ]);
+    ])
     router.replace('/login');
   }
 
@@ -73,12 +68,12 @@ export function NavBar() {
 
   return (
     <>
-      <nav className="glass-nav px-3 sm:px-5 py-2 sm:py-2.5 gap-1.5 sm:gap-2">
+      <nav className="glass-nav px-5 py-2.5 gap-2">
         {/* Left: Logo + divider + Brand Switcher + Nav links */}
-        <div className="flex items-center gap-2 sm:gap-5 flex-1 min-w-0">
+        <div className="flex items-center gap-5 flex-1 min-w-0">
           <Link
             href="/"
-            className="flex items-center gap-2 shrink-0 pr-2 sm:pr-4"
+            className="flex items-center gap-2.5 shrink-0 pr-4"
             style={{ borderRight: '1px solid rgba(12,44,82,0.15)' }}
           >
             <span
@@ -118,7 +113,7 @@ export function NavBar() {
         </div>
 
         {/* Right: Period toggle, settings, notifications, user, hamburger */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <div
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl cursor-pointer transition-all"
             style={{ background: 'rgba(12,44,82,0.07)', border: '1px solid rgba(12,44,82,0.12)' }}
@@ -140,7 +135,7 @@ export function NavBar() {
             <span className="absolute top-0 right-0 w-1.5 h-1.5 bg-[#0066cc] rounded-full" />
           </button>
 
-          <div className="flex items-center gap-2 sm:gap-2.5 pl-2 sm:pl-3" style={{ borderLeft: '1px solid rgba(12,44,82,0.12)' }}>
+          <div className="flex items-center gap-2.5 pl-3" style={{ borderLeft: '1px solid rgba(12,44,82,0.12)' }}>
             <div className="text-right hidden sm:block">
               <p className="text-[11px] font-bold leading-none" style={{ color: '#0c2c52' }}>yvon786</p>
               <p className="text-[9px] uppercase tracking-tighter" style={{ color: 'rgba(12,44,82,0.50)' }}>Administrator</p>
@@ -163,7 +158,6 @@ export function NavBar() {
 
           {/* Hamburger — mobile only */}
           <button
-            ref={hamburgerRef}
             className="md:hidden flex items-center justify-center w-8 h-8 rounded-xl transition-all"
             style={{ background: mobileOpen ? 'rgba(12,44,82,0.12)' : 'transparent' }}
             onClick={() => setMobileOpen(o => !o)}
@@ -186,16 +180,13 @@ export function NavBar() {
                 key={item.href}
                 href={item.href}
                 className={`mobile-nav-link${isActive ? ' active' : ''}`}
-                onClick={closeDrawer}
               >
                 {item.label}
               </Link>
             );
           })}
           <div style={{ height: 1, background: 'rgba(12,44,82,0.08)', margin: '6px 0' }} />
-          <Link href="/screens/settings" className="mobile-nav-link" onClick={closeDrawer}>
-            Settings
-          </Link>
+          <Link href="/screens/settings" className="mobile-nav-link">Settings</Link>
           <button
             onClick={handleLogout}
             className="mobile-nav-link w-full text-left"

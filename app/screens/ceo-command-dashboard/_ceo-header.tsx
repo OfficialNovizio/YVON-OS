@@ -119,7 +119,7 @@ function TabStrip({ active, onChange, actCount }: { active: TabId; onChange: (t:
           role="tab"
           aria-selected={active === t.id}
           onClick={() => onChange(t.id)}
-          className={`flex items-center gap-1.5 px-[12px] sm:px-[22px] py-[7px] sm:py-[11px] rounded-full text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.16em] transition-all duration-200 ${active === t.id ? 'ceo-tab-active' : ''}`}
+          className={`flex items-center gap-2 px-[22px] py-[11px] rounded-full text-[13px] font-bold uppercase tracking-[0.16em] transition-all duration-200 ${active === t.id ? 'ceo-tab-active' : ''}`}
           style={{ color: active === t.id ? '#0c0d10' : P_INK4, border: 'none', background: active === t.id ? 'rgba(255,255,255,0.92)' : 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
         >
           {t.label}
