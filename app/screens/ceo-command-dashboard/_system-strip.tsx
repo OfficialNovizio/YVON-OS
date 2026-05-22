@@ -373,7 +373,7 @@ export default function SystemStrip() {
       </div>
 
       {/* Expandable content */}
-      <div style={{ maxHeight: open ? 2000 : 0, overflow: 'hidden', transition: 'max-height 400ms ease', padding: open ? '0 14px 14px' : '0 14px' }}>
+      <div style={{ maxHeight: open ? 640 : 0, overflow: 'hidden', transition: 'max-height 320ms ease', padding: open ? '0 14px 14px' : '0 14px' }}>
         <div className="ceo-system-4col">
           <ProjectGraphPanel />
           <TokenUsagePanel />

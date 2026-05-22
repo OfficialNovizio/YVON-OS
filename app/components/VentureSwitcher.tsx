@@ -60,7 +60,7 @@ export default function VentureSwitcher() {
       {/* Pill trigger */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 sm:gap-2.5 h-7 sm:h-8 px-2 sm:px-3 rounded-full transition-all focus:outline-none"
+        className="flex items-center gap-2.5 h-8 px-3 rounded-full border transition-all focus:outline-none"
         style={{
           background: 'rgba(12,44,82,0.07)',
           border: '1px solid rgba(12,44,82,0.18)',
@@ -71,11 +71,11 @@ export default function VentureSwitcher() {
           className="w-2 h-2 rounded-full flex-shrink-0"
           style={{ backgroundColor: active?.color ?? '#E94560' }}
         />
-        <span className="text-[11px] sm:text-[12px] font-semibold tracking-tight max-w-[60px] sm:max-w-none truncate" style={{ color: '#0c2c52' }}>
+        <span className="text-[12px] font-semibold tracking-tight" style={{ color: '#0c2c52' }}>
           {active?.name ?? '—'}
         </span>
         <span
-          className={`material-symbols-outlined text-[13px] sm:text-[14px] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`material-symbols-outlined text-[14px] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           style={{ color: 'rgba(12,44,82,0.50)' }}
         >
           expand_more
