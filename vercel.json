@@ -30,10 +30,6 @@
       "schedule": "0 3 * * 1"
     },
     {
-      "path": "/api/health",
-      "schedule": "0 */6 * * *"
-    },
-    {
       "path": "/api/reports/generate?type=analytics",
       "schedule": "0 6 * * *"
     },
