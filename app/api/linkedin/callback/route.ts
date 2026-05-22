@@ -1,14 +1,24 @@
 import { NextRequest }  from 'next/server'
 import { redirect }     from 'next/navigation'
+import { cookies }      from 'next/headers'
 import { supabase }     from '@/lib/supabase'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
-  const code  = searchParams.get('code')
-  const error = searchParams.get('error')
+  const code        = searchParams.get('code')
+  const stateParam  = searchParams.get('state')
+  const error       = searchParams.get('error')
 
   if (error || !code) {
     redirect('/screens/career?linkedin_error=denied')
+  }
+
+  const cookieStore   = await cookies()
+  const stateCookie   = cookieStore.get('linkedin_oauth_state')?.value
+  cookieStore.delete('linkedin_oauth_state')
+
+  if (!stateCookie || stateParam !== stateCookie) {
+    redirect('/screens/career?linkedin_error=state_mismatch')
   }
 
   const clientId     = process.env.LINKEDIN_CLIENT_ID!

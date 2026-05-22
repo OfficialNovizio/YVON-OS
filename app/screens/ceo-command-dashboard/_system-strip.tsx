@@ -367,14 +367,14 @@ export default function SystemStrip() {
           System
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontSize: 13, fontWeight: 600, color: I4c }}>
-          <span>Project Graph · Token Usage · Workload · Session Sync</span>
+          <span className="ceo-system-label">Project Graph · Token Usage · Workload · Session Sync</span>
           <span style={{ display: 'inline-flex', alignItems: 'center', transition: 'transform 240ms ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
         </span>
       </div>
 
       {/* Expandable content */}
       <div style={{ maxHeight: open ? 640 : 0, overflow: 'hidden', transition: 'max-height 320ms ease', padding: open ? '0 14px 14px' : '0 14px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 14 }}>
+        <div className="ceo-system-4col">
           <ProjectGraphPanel />
           <TokenUsagePanel />
           <WorkloadCalendarPanel />

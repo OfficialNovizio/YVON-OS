@@ -1,8 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabaseClient } from '@/lib/supabase-client';
+
+async function issueAuthCookie(accessToken: string): Promise<boolean> {
+  const res = await fetch('/api/auth/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ accessToken }),
+  })
+  return res.ok
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,6 +20,17 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // If Supabase already has a valid session (e.g. HttpOnly cookie expired but
+  // localStorage session is still live), re-issue the cookie silently.
+  useEffect(() => {
+    void supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.access_token) {
+        const ok = await issueAuthCookie(session.access_token)
+        if (ok) router.replace('/screens/ceo-command-dashboard')
+      }
+    })
+  }, [router])
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setError('');
@@ -18,13 +38,20 @@ export default function LoginPage() {
 
     const email = userId.includes('@') ? userId : `${userId}@yvon.app`;
 
-    const { error: authError } = await supabaseClient.auth.signInWithPassword({
+    const { data, error: authError } = await supabaseClient.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (authError) {
+    if (authError || !data.session) {
       setError('Invalid credentials. Check your User ID and password.');
+      setLoading(false);
+      return;
+    }
+
+    const ok = await issueAuthCookie(data.session.access_token)
+    if (!ok) {
+      setError('Session could not be established. Try again.');
       setLoading(false);
       return;
     }

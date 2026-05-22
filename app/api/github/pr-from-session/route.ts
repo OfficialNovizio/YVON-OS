@@ -140,7 +140,7 @@ export async function POST(request: Request): Promise<Response> {
     const baseSha = branchInfo.object.sha
 
     // Create a new branch: yvon/2026-05-10-a3b2
-    const shortHash = Math.random().toString(36).slice(2, 6)
+    const shortHash = crypto.randomUUID().replace(/-/g, '').slice(0, 8)
     const branchName = `yvon/${new Date().toISOString().slice(0, 10)}-${shortHash}`
 
     await gh(`/repos/${owner}/${repo}/git/refs`, {

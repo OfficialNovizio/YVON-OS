@@ -1,6 +1,7 @@
 import { callFast } from '@/lib/ai-client'
 import { runWebScraper } from '@/lib/apify'
 import { upsertTrendingItem } from '@/lib/db'
+import { sanitizeForPrompt } from '@/lib/sanitize'
 
 export const maxDuration = 30
 import type { TrendItem } from '@/lib/types'
@@ -12,10 +13,11 @@ const NICHE_URLS = [
 ]
 
 export async function GET(request: Request): Promise<Response> {
-  // Verify Vercel Cron secret
-  const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (request.headers.get('authorization') !== `Bearer ${cronSecret}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -30,11 +32,13 @@ export async function GET(request: Request): Promise<Response> {
     const scrapedTexts = await Promise.allSettled(
       NICHE_URLS.map((u) => runWebScraper(u))
     )
-    const combined = scrapedTexts
-      .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
-      .map((r) => r.value)
-      .join('\n\n')
-      .slice(0, 6000)
+    const combined = sanitizeForPrompt(
+      scrapedTexts
+        .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
+        .map((r) => r.value)
+        .join('\n\n'),
+      6000
+    )
 
     if (!combined.trim()) {
       return Response.json({ trends: [], generatedAt: new Date().toISOString() })

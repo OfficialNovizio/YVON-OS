@@ -630,3 +630,24 @@
 
 .resp-grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (min-width: 1024px) { .resp-grid-4 { grid-template-columns: repeat(4, 1fr); } }
+
+/* CEO content grids — collapse to 1-col on mobile */
+.ceo-col3-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 640px) { .ceo-col3-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.ceo-col2-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 768px) { .ceo-col2-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Activity log stats footer: 2-col mobile → 4-col desktop */
+.ceo-act-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 640px) { .ceo-act-stats { grid-template-columns: repeat(4, 1fr); } }
+
+/* System strip 4-col: 1-col mobile → 2-col tablet → 4-col desktop */
+.ceo-system-4col { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 640px)  { .ceo-system-4col { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .ceo-system-4col { grid-template-columns: repeat(4, 1fr); } }
+
+/* System strip toggle label — hide on small screens */
+@media (max-width: 640px) {
+  .ceo-system-label { display: none !important; }
+}

@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   }
 
   const ext      = file.name.split('.').pop()?.toLowerCase() ?? 'pdf'
-  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+  const fileName = `${Date.now()}-${crypto.randomUUID().replace(/-/g, '').slice(0, 8)}.${ext}`
   const buffer   = Buffer.from(await file.arrayBuffer())
 
   const { error: uploadErr } = await supabase.storage

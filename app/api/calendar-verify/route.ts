@@ -1,4 +1,4 @@
-import { getAllVentures, getPastDuePlanned, getCachedPosts, upsertCachedPosts, markAsPosted, markAsMissed } from '@/lib/db'
+import { getAllVentures, getVentureSocials, getPastDuePlanned, getCachedPosts, upsertCachedPosts, markAsPosted, markAsMissed } from '@/lib/db'
 import { scrapeInstagramPosts, scrapeTikTokPosts, scrapeLinkedInPosts } from '@/lib/apify'
 import { jaccardSimilarity } from '@/lib/similarity'
 
@@ -9,17 +9,17 @@ const SIMILARITY_THRESHOLD = 0.4
 
 type PlatformHandle = { platform: 'IG' | 'TT' | 'LI'; handle: string }
 
-function getVentureHandles(venture: VentureConfig): PlatformHandle[] {
-  const handles: PlatformHandle[] = []
-  if (venture.igHandle) {
-    handles.push({ platform: 'IG', handle: venture.igHandle })
-    // TikTok handle — reuse igHandle as fallback until ventures table has tiktok_handle
-    handles.push({ platform: 'TT', handle: venture.igHandle })
-  }
-  if (venture.liProfileUrl) {
-    handles.push({ platform: 'LI', handle: venture.liProfileUrl })
-  }
-  return handles
+const PLATFORM_MAP: Record<string, 'IG' | 'TT' | 'LI'> = {
+  instagram: 'IG',
+  tiktok:    'TT',
+  linkedin:  'LI',
+}
+
+async function getVentureHandles(venture: VentureConfig): Promise<PlatformHandle[]> {
+  const socials = await getVentureSocials(venture.id)
+  return socials
+    .filter(s => PLATFORM_MAP[s.platform])
+    .map(s => ({ platform: PLATFORM_MAP[s.platform]!, handle: s.handleOrUrl }))
 }
 
 async function scrapeForPlatform(platform: 'IG' | 'TT' | 'LI', handle: string) {
@@ -52,7 +52,7 @@ async function verifyVenture(venture: VentureConfig) {
   let missed = 0
   let newPosts = 0
 
-  const handles = getVentureHandles(venture)
+  const handles = await getVentureHandles(venture)
   const pastDue = await getPastDuePlanned(venture.id)
 
   for (const { platform, handle } of handles) {
@@ -111,9 +111,11 @@ async function verifyVenture(venture: VentureConfig) {
 
 // GET = Vercel Cron (weekly)
 export async function GET(request: Request): Promise<Response> {
-  const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (request.headers.get('authorization') !== `Bearer ${cronSecret}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

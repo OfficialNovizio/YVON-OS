@@ -147,7 +147,7 @@ function AgentKanban() {
           {active.length + idle.length} agents online{lastSync ? ` · synced ${lastSync}` : ' · syncing…'}
         </span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
+      <div className="ceo-col3-grid">
         <KanbanColumn title="Active"     swatch="#10b981"              agents={active} />
         <KanbanColumn title="Idle"       swatch="rgba(12,44,82,0.22)"  agents={idle} />
         <KanbanColumn title="Done Today" swatch={ACCENT}               agents={done} showDept={false} />
@@ -191,7 +191,7 @@ function IntelligenceFeedPanel() {
         </div>
         <a href="#" style={{ fontSize: 12, fontWeight: 700, color: ACCENT, textDecoration: 'none', letterSpacing: '0.04em' }}>All reports →</a>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, maxHeight: 420, overflowY: 'auto' }}>
+      <div className="ceo-col3-grid" style={{ maxHeight: 420, overflowY: 'auto' }}>
         {(['analytics', 'marketing', 'competitor'] as const).map(kind => (
           <div key={kind} style={{ ...G1, padding: 20, display: 'flex', flexDirection: 'column', gap: 10, borderLeft: `4px solid ${BORDERS[kind]}` }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>

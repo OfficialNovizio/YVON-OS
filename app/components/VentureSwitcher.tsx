@@ -38,8 +38,8 @@ export default function VentureSwitcher() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  function selectVenture(slug: string) {
-    setActiveVentureSlugClient(slug);
+  async function selectVenture(slug: string) {
+    await setActiveVentureSlugClient(slug);
     setActiveSlug(slug);
     setOpen(false);
     window.dispatchEvent(new CustomEvent('venturechange', { detail: { slug } }));
@@ -102,7 +102,7 @@ export default function VentureSwitcher() {
                 return (
                   <button
                     key={v.slug}
-                    onClick={() => selectVenture(v.slug)}
+                    onClick={() => { void selectVenture(v.slug) }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all text-left"
                     style={{
                       background: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',

@@ -32,7 +32,10 @@ export async function GET(request: Request): Promise<Response> {
 // Called by Vercel Cron (Monday 8am UTC) to refresh competitor content
 export async function POST(request: Request): Promise<Response> {
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (process.env.CRON_SECRET && cronSecret !== process.env.CRON_SECRET) {
+  if (!process.env.CRON_SECRET) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (cronSecret !== process.env.CRON_SECRET) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

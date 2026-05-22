@@ -31,7 +31,7 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const ext  = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
-  const name = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+  const name = `${Date.now()}-${crypto.randomUUID().replace(/-/g, '').slice(0, 8)}.${ext}`
 
   const buffer = Buffer.from(await file.arrayBuffer())
 

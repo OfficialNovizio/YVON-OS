@@ -1,5 +1,5 @@
 import { getAllVentures, createVenture } from '@/lib/db'
-import { getVentureConfig, VENTURES } from '@/lib/venture-context'
+import { VENTURES } from '@/lib/venture-context'
 import type { VentureConfig } from '@/lib/types'
 
 export async function GET(): Promise<Response> {
@@ -10,16 +10,15 @@ export async function GET(): Promise<Response> {
     if (ventures.length === 0) {
       const seeded: VentureConfig[] = []
       for (const v of VENTURES) {
-        const cfg = getVentureConfig(v.slug)
         try {
           const created = await createVenture({
-            name:          cfg.name,
-            slug:          cfg.slug,
-            color:         cfg.color,
-            igHandle:      cfg.igHandle,
-            ytChannelId:   cfg.ytChannelId,
-            liProfileUrl:  cfg.liProfileUrl,
-            ga4PropertyId: cfg.ga4PropertyId,
+            name:          v.name,
+            slug:          v.slug,
+            color:         v.color,
+            igHandle:      '',
+            ytChannelId:   '',
+            liProfileUrl:  '',
+            ga4PropertyId: '',
             // Omit migration-014 fields — they default to NULL if columns don't exist yet
           })
           seeded.push(created)
@@ -27,13 +26,8 @@ export async function GET(): Promise<Response> {
           // Row already exists or migration not run — fall through
         }
       }
-      // Re-read after seeding; if still empty return env-var fallback
       const afterSeed = seeded.length > 0 ? seeded : await getAllVentures()
-      if (afterSeed.length > 0) ventures = afterSeed
-      else {
-        // DB unavailable or migration not run — return env-var configs directly
-        ventures = VENTURES.map(v => ({ ...getVentureConfig(v.slug), id: v.slug }))
-      }
+      ventures = afterSeed
     }
 
     return Response.json(ventures)

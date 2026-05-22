@@ -5,7 +5,10 @@ import { supabase } from '@/lib/supabase'
 // Protected by CRON_SECRET. Add to vercel.json cron: "0 3 * * 1" (Monday 3am UTC).
 export async function POST(request: Request): Promise<Response> {
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (process.env.CRON_SECRET && cronSecret !== process.env.CRON_SECRET) {
+  if (!process.env.CRON_SECRET) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (cronSecret !== process.env.CRON_SECRET) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

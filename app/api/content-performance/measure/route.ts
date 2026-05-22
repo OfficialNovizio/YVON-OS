@@ -9,13 +9,17 @@ import { supabase } from '@/lib/supabase'
 export const maxDuration = 30
 
 export async function GET(request: Request): Promise<Response> {
-  // Allow both cron (via Authorization header) and direct browser calls
+  // Auth: cron calls use CRON_SECRET header; browser calls rely on middleware yvon_auth gate
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  const isCron = !process.env.CRON_SECRET || cronSecret === process.env.CRON_SECRET
+  const isCron = Boolean(process.env.CRON_SECRET) && cronSecret === process.env.CRON_SECRET
+
+  if (!isCron && !request.headers.get('cookie')?.includes('yvon_auth')) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   const cookieStore = await cookies()
   const slug = isCron
-    ? 'novizio'   // cron runs for default venture; extend to multi-venture later
+    ? 'novizio'
     : (cookieStore.get('yvon_active_venture')?.value ?? 'novizio')
 
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()

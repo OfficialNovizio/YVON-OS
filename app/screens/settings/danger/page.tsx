@@ -176,7 +176,7 @@ export default function DangerSettingsPage() {
       setVentures(remaining)
       if (remaining[0]) {
         setVenture(remaining[0])
-        setActiveVentureSlugClient(remaining[0].slug)
+        await setActiveVentureSlugClient(remaining[0].slug)
       } else {
         setVenture(null)
       }

@@ -54,7 +54,10 @@ export function NavBar() {
   }, [mobileOpen]);
 
   async function handleLogout() {
-    await supabaseClient.auth.signOut();
+    await Promise.all([
+      supabaseClient.auth.signOut(),
+      fetch('/api/auth/logout', { method: 'POST' }),
+    ])
     router.replace('/login');
   }
 

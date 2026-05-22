@@ -21,7 +21,10 @@ const SIGNAL_WEIGHT_MAP: Record<string, keyof typeof DEFAULT_WEIGHTS> = {
 
 export async function GET(request: Request): Promise<Response> {
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (process.env.CRON_SECRET && cronSecret !== process.env.CRON_SECRET) {
+  if (!process.env.CRON_SECRET) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (cronSecret !== process.env.CRON_SECRET) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

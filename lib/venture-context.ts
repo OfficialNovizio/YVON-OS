@@ -18,8 +18,12 @@ export function getActiveVentureSlugClient(): string {
   return match ? decodeURIComponent(match[1]) : 'novizio'
 }
 
-export function setActiveVentureSlugClient(slug: string): void {
-  document.cookie = `${COOKIE_NAME}=${encodeURIComponent(slug)}; path=/; max-age=31536000; SameSite=Lax`
+export async function setActiveVentureSlugClient(slug: string): Promise<void> {
+  await fetch('/api/set-venture', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ventureSlug: slug }),
+  })
 }
 
 // ─── Sync fallback (env vars) — used by analytics/briefing routes ─────────────

@@ -81,7 +81,7 @@ function ActivityLog() {
         </>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginTop: 16, paddingTop: 16, borderTop: `1px solid ${L1}` }}>
+      <div className="ceo-act-stats" style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${L1}` }}>
         {[
           { label: 'Today',     v: '4',   c: I1 },
           { label: 'This Week', v: '26',  c: I1 },
@@ -206,7 +206,7 @@ function SourceReportsPanel() {
         <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I2d }}>Last pull · 04:00</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
+      <div className="ceo-col3-grid">
         <SourceCard kind="analytics"  report={reports?.analytics  ?? null} />
         <SourceCard kind="marketing"  report={reports?.marketing  ?? null} />
         <SourceCard kind="competitor" report={reports?.competitor ?? null} />

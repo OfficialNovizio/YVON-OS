@@ -1229,7 +1229,7 @@ export default function VentureSettingsPage() {
 
   function handleSwitch(slug: string) {
     setActiveSlug(slug)
-    setActiveVentureSlugClient(slug)
+    void setActiveVentureSlugClient(slug)
     const found = ventures.find(v => v.slug === slug) ?? null
     setVenture(found)
     setSocials([])
@@ -1241,7 +1241,7 @@ export default function VentureSettingsPage() {
     setVentures(updated)
     setVenture(v)
     setActiveSlug(v.slug)
-    setActiveVentureSlugClient(v.slug)
+    void setActiveVentureSlugClient(v.slug)
     setLoadStatus('ready')
     setShowAddForm(false)
   }

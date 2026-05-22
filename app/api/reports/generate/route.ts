@@ -19,7 +19,9 @@ async function genAnalyticsReport(ventureId: string, ventureName: string) {
   // Pull GA4 data if available
   let gaData: Record<string, unknown> = {}
   try {
-    const gaRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'}/api/analytics?ventureId=${ventureId}`)
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+    if (!siteUrl) throw new Error('NEXT_PUBLIC_SITE_URL not set — required for GA4 self-call')
+    const gaRes = await fetch(`${siteUrl}/api/analytics?ventureId=${ventureId}`)
     if (gaRes.ok) gaData = await gaRes.json() as Record<string, unknown>
   } catch { /* GA4 not configured — continue without */ }
 
@@ -224,9 +226,11 @@ URGENCY
 // ─── POST Handler ───────────────────────────────────────────────────────────────
 
 export async function POST(request: Request): Promise<Response> {
-  // Verify cron secret if not localhost
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (process.env.CRON_SECRET && cronSecret !== process.env.CRON_SECRET) {
+  if (!process.env.CRON_SECRET) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (cronSecret !== process.env.CRON_SECRET) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

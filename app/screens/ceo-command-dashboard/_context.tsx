@@ -32,7 +32,7 @@ function StrategicBriefing() {
         <span style={{ fontSize: 12, color: I1d, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase' }}>Updated 6h ago</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      <div className="ceo-col2-grid">
         {BRIEFING_BLOCKS.map(b => (
           <div key={b.label} style={{ padding: 16, borderRadius: 14, background: 'rgba(255,255,255,0.38)', border: `1px solid ${L1}` }}>
             <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: b.color, margin: '0 0 8px' }}>{b.label}</p>
@@ -197,10 +197,10 @@ function CeoReadout() {
 // ── Context Tab ────────────────────────────────────────────────────────────────
 export default function ContextTab() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+    <div className="ceo-col2-grid">
       <StrategicBriefing />
       <PulseAndChannel />
-      <div style={{ gridColumn: '1 / span 2' }}>
+      <div style={{ gridColumn: '1 / -1' }}>
         <CeoReadout />
       </div>
     </div>

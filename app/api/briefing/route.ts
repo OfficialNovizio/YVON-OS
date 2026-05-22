@@ -1,21 +1,24 @@
 import { callFast, callSynthesis } from '@/lib/ai-client'
-import { createBrief } from '@/lib/db'
+import { createBrief, getVentureBySlug } from '@/lib/db'
 import { getAgent } from '@/lib/agents'
 
 export const maxDuration = 60
-import { getVentureConfig } from '@/lib/venture-context'
 
 export async function GET(request: Request): Promise<Response> {
-  // Verify cron secret
-  const authHeader = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+  if (!cronSecret) {
+    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
+  if (request.headers.get('authorization') !== `Bearer ${cronSecret}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const url = new URL(request.url)
   const ventureSlug = url.searchParams.get('venture') ?? 'novizio'
-  const venture = getVentureConfig(ventureSlug)
+  const venture = (await getVentureBySlug(ventureSlug)) ?? {
+    id: ventureSlug, name: ventureSlug, slug: ventureSlug,
+    color: '#E94560', igHandle: '', ytChannelId: '', liProfileUrl: '', ga4PropertyId: '',
+  }
 
   const marcus = getAgent('marcus-ceo')
   const kai    = getAgent('kai-analyst')

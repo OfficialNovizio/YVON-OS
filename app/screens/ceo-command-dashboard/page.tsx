@@ -35,7 +35,7 @@ function WarRoomModal({ open, onClose }: { open: boolean; onClose: () => void })
       onClick={onClose}
     >
       <div
-        className="w-full max-w-[960px] max-h-[90vh] overflow-auto rounded-[24px] p-8"
+        className="w-full max-w-[960px] max-h-[90vh] overflow-auto rounded-[24px] p-4 sm:p-8"
         style={{
           background: 'linear-gradient(135deg, rgba(221,214,254,0.85), rgba(255,255,255,0.85))',
           backdropFilter: 'blur(40px) saturate(180%)',
@@ -56,7 +56,7 @@ function WarRoomModal({ open, onClose }: { open: boolean; onClose: () => void })
           <button className="ceo-ghost-btn text-lg px-3 py-1" onClick={onClose}>✕</button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {blocks.map(b => (
             <div key={b.label} className="p-4 rounded-[14px]" style={{ background: 'rgba(255,255,255,0.65)', border: '1px solid rgba(12,13,16,0.07)' }}>
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] mb-2" style={{ color: b.color }}>{b.label}</p>
@@ -121,7 +121,7 @@ export default function CEOCommandDashboardPage() {
       />
 
       {/* NavBar is rendered by layout.tsx — account for floating nav height + offset */}
-      <div className="max-w-[1480px] 2xl:max-w-[min(92vw,2000px)] mx-auto px-7 pb-10 pt-[96px]">
+      <div className="max-w-[1480px] 2xl:max-w-[min(92vw,2000px)] mx-auto px-4 sm:px-7 pb-10 pt-[96px]">
         <CeoHeader active={active} onChange={setActive} actCount={DECISIONS_COUNT} />
 
         <div className="mt-[18px]">
