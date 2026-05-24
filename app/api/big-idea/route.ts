@@ -56,7 +56,7 @@ export async function POST(request: Request): Promise<Response> {
     .eq('id', ventureId)
     .single()
 
-  const prompt = `You are a brand strategist using the Community Content Strategy framework.
+  const prompt = `You are a brand strategist. Answer in valid JSON only.
 
 Venture profile:
 - Name: ${v?.name ?? 'Unknown'}
@@ -64,22 +64,41 @@ Venture profile:
 - Tagline: ${v?.tagline ?? '(none)'}
 - Type: ${v?.brand_type ?? '(none)'}
 
-Based ONLY on the information above, draft short, thoughtful answers to these 5 Big Idea questions.
-Be specific and grounded — do not invent facts. If you cannot confidently answer a question, write a useful placeholder the user can edit.
+Draft short 1-sentence answers to these 5 Big Idea questions. Be specific but brief.
 
-Return ONLY valid JSON — no markdown:
-{
-  "brandNameMeaning": "What does the brand name mean? (etymology, origin, metaphor)",
-  "idealPerson": "Name ONE specific person (real or archetype) who best embodies this brand",
-  "idealPersonTraits": "List 4-6 traits about that person aligned with the brand (comma-separated)",
-  "gatheringActivity": "If that person and others like them gathered, what would they be doing?",
-  "missionBeyondProduct": "What is the greater mission beyond selling the product?"
-}`
+Return ONLY valid JSON, no other text:
+{"brandNameMeaning":"...","idealPerson":"...","idealPersonTraits":"trait1, trait2, trait3, trait4","gatheringActivity":"...","missionBeyondProduct":"..."}`
 
   try {
-    const raw = await callFast({ messages: [{ role: 'user', content: prompt }], maxTokens: 800 })
-    const clean = raw.replace(/```(?:json)?\s*/g, '').replace(/```/g, '').trim()
-    const draft = JSON.parse(clean) as BrandBigIdea
+    const raw = await callFast({ messages: [{ role: 'user', content: prompt }], maxTokens: 1200 })
+    let draft: BrandBigIdea | null = null
+
+    // Attempt 1: direct JSON parse
+    try { draft = JSON.parse(raw.trim()) as BrandBigIdea } catch { /* fall through */ }
+
+    // Attempt 2: extract from markdown code fence
+    if (!draft) {
+      const codeMatch = raw.match(/```(?:json)?\s*([\s\S]*?)```/)
+      if (codeMatch) {
+        try { draft = JSON.parse(codeMatch[1].trim()) as BrandBigIdea } catch { /* fall through */ }
+      }
+    }
+
+    // Attempt 3: find JSON object in free text
+    if (!draft) {
+      const objMatch = raw.match(/\{(?:[^{}]|(?:\{[^{}]*\}))*\}/)
+      if (objMatch) {
+        try { draft = JSON.parse(objMatch[0]) as BrandBigIdea } catch { /* fall through */ }
+      }
+    }
+
+    if (!draft) {
+      return Response.json({
+        error: 'AI returned invalid JSON',
+        snippet: raw.slice(0, 200),
+      }, { status: 502 })
+    }
+
     return Response.json({ ventureId, draft })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

@@ -18,12 +18,14 @@
     "reflect": "node scripts/self-reflect.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
+    "@anthropic-ai/claude-agent-sdk": "^0.3.150",
+    "@anthropic-ai/sdk": "^0.98.0",
     "@google-analytics/data": "^4.10.0",
     "@gsap/react": "^2.1.2",
     "@supabase/supabase-js": "^2.99.3",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
+    "jose": "^6.2.3",
     "lucide-react": "^1.7.0",
     "motion": "^12.38.0",
     "next": "^15.2.4",

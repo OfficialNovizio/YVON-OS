@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { getSecret } from '@/lib/secrets'
 import { callFast } from '@/lib/ai-client'
 import { getStrategyLog, getLeverTracker, runSkillLifecycleTransitions } from '@/lib/db'
 
@@ -10,7 +11,7 @@ export const maxDuration = 60
 
 export async function GET(request: NextRequest): Promise<Response> {
   const secret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (secret !== process.env.CRON_SECRET) {
+  if (secret !== await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

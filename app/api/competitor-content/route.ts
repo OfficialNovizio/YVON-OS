@@ -1,4 +1,5 @@
 import { getCompetitorContent, upsertCompetitorContent, insertCompetitorSnapshot } from '@/lib/db'
+import { getSecret } from '@/lib/secrets'
 
 const CACHE_DAYS = 14
 
@@ -32,10 +33,10 @@ export async function GET(request: Request): Promise<Response> {
 // Called by Vercel Cron (Monday 8am UTC) to refresh competitor content
 export async function POST(request: Request): Promise<Response> {
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (!process.env.CRON_SECRET) {
+  if (!await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
   }
-  if (cronSecret !== process.env.CRON_SECRET) {
+  if (cronSecret !== await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

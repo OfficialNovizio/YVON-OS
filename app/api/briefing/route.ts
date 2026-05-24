@@ -1,11 +1,12 @@
 import { callFast, callSynthesis } from '@/lib/ai-client'
+import { getSecret } from '@/lib/secrets'
 import { createBrief, getVentureBySlug } from '@/lib/db'
 import { getAgent } from '@/lib/agents'
 
 export const maxDuration = 60
 
 export async function GET(request: Request): Promise<Response> {
-  const cronSecret = process.env.CRON_SECRET
+  const cronSecret = await getSecret('CRON_SECRET')
   if (!cronSecret) {
     return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
   }

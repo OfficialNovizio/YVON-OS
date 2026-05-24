@@ -4,6 +4,7 @@
 // (we don't auto-classify without real metric data).
 
 import { cookies } from 'next/headers'
+import { getSecret } from '@/lib/secrets'
 import { supabase } from '@/lib/supabase'
 
 export const maxDuration = 30
@@ -11,7 +12,7 @@ export const maxDuration = 30
 export async function GET(request: Request): Promise<Response> {
   // Auth: cron calls use CRON_SECRET header; browser calls rely on middleware yvon_auth gate
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  const isCron = Boolean(process.env.CRON_SECRET) && cronSecret === process.env.CRON_SECRET
+  const isCron = Boolean(await getSecret('CRON_SECRET')) && cronSecret === await getSecret('CRON_SECRET')
 
   if (!isCron && !request.headers.get('cookie')?.includes('yvon_auth')) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })

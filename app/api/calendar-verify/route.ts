@@ -1,4 +1,5 @@
 import { getAllVentures, getVentureSocials, getPastDuePlanned, getCachedPosts, upsertCachedPosts, markAsPosted, markAsMissed } from '@/lib/db'
+import { getSecret } from '@/lib/secrets'
 import { scrapeInstagramPosts, scrapeTikTokPosts, scrapeLinkedInPosts } from '@/lib/apify'
 import { jaccardSimilarity } from '@/lib/similarity'
 
@@ -111,7 +112,7 @@ async function verifyVenture(venture: VentureConfig) {
 
 // GET = Vercel Cron (weekly)
 export async function GET(request: Request): Promise<Response> {
-  const cronSecret = process.env.CRON_SECRET
+  const cronSecret = await getSecret('CRON_SECRET')
   if (!cronSecret) {
     return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
   }

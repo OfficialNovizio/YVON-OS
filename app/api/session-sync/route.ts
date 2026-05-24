@@ -1,9 +1,7 @@
 import { supabase } from '@/lib/supabase'
+import { getSecret } from '@/lib/secrets'
 
 const GH_API   = 'https://api.github.com'
-const GH_TOKEN = process.env.GITHUB_TOKEN
-const GH_OWNER = process.env.YVON_GITHUB_OWNER
-const GH_REPO  = process.env.YVON_GITHUB_REPO
 const SESSION_PATH = 'docs/os/SESSION.md'
 
 // Agent display names
@@ -111,8 +109,11 @@ export async function GET(): Promise<Response> {
 // ─── POST — sync today's summary into SESSION.md via GitHub ──────────────────
 
 export async function POST(): Promise<Response> {
-  if (!GH_TOKEN) return Response.json({ error: 'GITHUB_TOKEN not set' }, { status: 503 })
-  if (!GH_OWNER || !GH_REPO) return Response.json({ error: 'YVON_GITHUB_OWNER / YVON_GITHUB_REPO not set' }, { status: 503 })
+  const ghToken = await getSecret('GITHUB_TOKEN')
+  const ghOwner = await getSecret('YVON_GITHUB_OWNER')
+  const ghRepo  = await getSecret('YVON_GITHUB_REPO')
+  if (!ghToken) return Response.json({ error: 'GITHUB_TOKEN not set' }, { status: 503 })
+  if (!ghOwner || !ghRepo) return Response.json({ error: 'YVON_GITHUB_OWNER / YVON_GITHUB_REPO not set' }, { status: 503 })
 
   const todayStart = new Date()
   todayStart.setHours(0, 0, 0, 0)
@@ -132,13 +133,13 @@ export async function POST(): Promise<Response> {
 
   // 1. Fetch current SESSION.md from GitHub to get its SHA
   const ghHeaders = {
-    Authorization: `Bearer ${GH_TOKEN}`,
+    Authorization: `Bearer ${ghToken}`,
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
     'User-Agent': 'YVON-OS/1.0',
   }
 
-  const fileRes = await fetch(`${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${SESSION_PATH}`, { headers: ghHeaders })
+  const fileRes = await fetch(`${GH_API}/repos/${ghOwner}/${ghRepo}/contents/${SESSION_PATH}`, { headers: ghHeaders })
   if (!fileRes.ok) {
     const text = await fileRes.text()
     return Response.json({ error: `GitHub GET failed: ${fileRes.status} ${text}` }, { status: 502 })
@@ -153,7 +154,7 @@ export async function POST(): Promise<Response> {
   }
 
   // 3. Write back
-  const putRes = await fetch(`${GH_API}/repos/${GH_OWNER}/${GH_REPO}/contents/${SESSION_PATH}`, {
+  const putRes = await fetch(`${GH_API}/repos/${ghOwner}/${ghRepo}/contents/${SESSION_PATH}`, {
     method: 'PUT',
     headers: { ...ghHeaders, 'Content-Type': 'application/json' },
     body: JSON.stringify({

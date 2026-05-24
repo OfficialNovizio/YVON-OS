@@ -42,6 +42,50 @@ function AgentPanel({
   saved:         boolean
   onClose:       () => void
 }) {
+  // Memory.md editor — loads/saves via Supabase
+  const [memDraft, setMemDraft]       = useState('')
+  const [memOriginal, setMemOriginal] = useState('')
+  const [memLoading, setMemLoading]   = useState(true)
+  const [memSaving, setMemSaving]     = useState(false)
+  const [memSaved, setMemSaved]       = useState(false)
+  const [memUpdatedAt, setMemUpdatedAt] = useState<string | null>(null)
+  const [memError, setMemError]       = useState('')
+
+  useEffect(() => {
+    let alive = true
+    setMemLoading(true); setMemError(''); setMemSaved(false)
+    fetch(`/api/agent-memory?agentId=${encodeURIComponent(agent.id)}`)
+      .then(async r => {
+        const data = await r.json() as { row?: { content: string; updatedAt: string }; error?: string }
+        if (!alive) return
+        if (data.error) { setMemError(data.error); return }
+        const c = data.row?.content ?? ''
+        setMemDraft(c); setMemOriginal(c); setMemUpdatedAt(data.row?.updatedAt ?? null)
+      })
+      .catch(e => { if (alive) setMemError(String(e)) })
+      .finally(() => { if (alive) setMemLoading(false) })
+    return () => { alive = false }
+  }, [agent.id])
+
+  async function saveMemory() {
+    setMemSaving(true); setMemError('')
+    try {
+      const res = await fetch('/api/agent-memory', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agentId: agent.id, content: memDraft }),
+      })
+      const data = await res.json() as { ok?: boolean; error?: string }
+      if (!res.ok || data.error) throw new Error(data.error ?? `HTTP ${res.status}`)
+      setMemOriginal(memDraft); setMemUpdatedAt(new Date().toISOString())
+      setMemSaved(true); setTimeout(() => setMemSaved(false), 2500)
+    } catch (e) {
+      setMemError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setMemSaving(false)
+    }
+  }
+
+  const memDirty = memDraft !== memOriginal
   const color = deptColor(agent.department)
 
   return (
@@ -108,11 +152,74 @@ function AgentPanel({
           </div>
         )}
 
-        {/* Memory entries */}
+        {/* Agent MEMORY.md — live from Supabase agent_memory table */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: T.text3 }}>
+              MEMORY.md (Supabase)
+            </p>
+            {memUpdatedAt && (
+              <span style={{ fontSize: 10, color: T.text3 }}>
+                {new Date(memUpdatedAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+          </div>
+          {memLoading ? (
+            <p style={{ fontSize: 11, color: T.text3 }}>Loading…</p>
+          ) : (
+            <>
+              <textarea
+                value={memDraft}
+                onChange={e => setMemDraft(e.target.value)}
+                spellCheck={false}
+                placeholder="Rolling agent memory. Markdown is fine. Agents read this live as part of their system prompt."
+                style={{
+                  width: '100%',
+                  minHeight: 280,
+                  background: T.surface,
+                  border: `1px solid ${T.border}`,
+                  borderRadius: 10,
+                  padding: '10px 12px',
+                  fontFamily: 'ui-monospace, SF Mono, Monaco, monospace',
+                  fontSize: 11,
+                  lineHeight: 1.55,
+                  color: T.text1,
+                  outline: 'none',
+                  resize: 'vertical',
+                  boxSizing: 'border-box',
+                }}
+              />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                <button
+                  onClick={() => void saveMemory()}
+                  disabled={memSaving || !memDirty}
+                  style={{
+                    background: memDirty ? T.accent : T.surface,
+                    color: memDirty ? '#fff' : T.text3,
+                    border: `1px solid ${memDirty ? T.accent : T.border}`,
+                    borderRadius: 8,
+                    padding: '6px 14px',
+                    fontFamily: T.font,
+                    fontSize: 12,
+                    cursor: memDirty && !memSaving ? 'pointer' : 'not-allowed',
+                    opacity: memSaving ? 0.6 : 1,
+                  }}
+                >
+                  {memSaving ? 'Saving…' : memDirty ? 'Save Memory' : 'Saved'}
+                </button>
+                <span style={{ fontSize: 10, color: T.text3 }}>{memDraft.length} chars</span>
+                {memSaved && <span style={{ fontSize: 11, color: '#30d158', fontWeight: 600 }}>✓ Saved to Supabase</span>}
+                {memError && <span style={{ fontSize: 11, color: '#ff453a' }}>✗ {memError}</span>}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Legacy structured memory entries (unused for now, kept for back-compat) */}
         {memory.length > 0 && (
           <div>
             <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: T.text3, marginBottom: 10 }}>
-              Stored Memory
+              Stored Memory (FTS)
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {memory.map((m, i) => (

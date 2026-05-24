@@ -15,6 +15,10 @@ const csp = [
   "font-src 'self' https://fonts.gstatic.com",
   "connect-src 'self' https:",
   "frame-ancestors 'none'",
+  "frame-src 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
 ].join('; ')
 
 const nextConfig: NextConfig = {

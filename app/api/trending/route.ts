@@ -1,4 +1,5 @@
 import { callFast } from '@/lib/ai-client'
+import { getSecret } from '@/lib/secrets'
 import { runWebScraper } from '@/lib/apify'
 import { upsertTrendingItem } from '@/lib/db'
 import { sanitizeForPrompt } from '@/lib/sanitize'
@@ -13,7 +14,7 @@ const NICHE_URLS = [
 ]
 
 export async function GET(request: Request): Promise<Response> {
-  const cronSecret = process.env.CRON_SECRET
+  const cronSecret = await getSecret('CRON_SECRET')
   if (!cronSecret) {
     return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
   }

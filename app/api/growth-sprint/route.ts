@@ -1,31 +1,14 @@
-import { readFileSync } from 'fs'
-import { join } from 'path'
 import { callFast, streamSynthesis } from '@/lib/ai-client'
 import { getAgent } from '@/lib/agents'
+import { getAgentMemory } from '@/lib/agent-memory'
 import type { AgentId } from '@/lib/types'
 
 export const maxDuration = 60
 
-// ─── Agent memory paths ────────────────────────────────────────────────────────
-
-const MEMORY_PATHS: Partial<Record<string, string>> = {
-  'kai-analyst':         'agent-department/Marketing/kai/MEMORY.md',
-  'nate-growth':         'agent-department/Marketing/nate/MEMORY.md',
-  'lena-brand':          'agent-department/Marketing/lena/MEMORY.md',
-  'rio-ads':             'agent-department/Marketing/rio/MEMORY.md',
-  'atlas-art-director':  'agent-department/Marketing/atlas/MEMORY.md',
-}
-
-function readMemory(agentId: string): string {
-  const rel = MEMORY_PATHS[agentId]
-  if (!rel) return ''
-  try { return readFileSync(join(process.cwd(), rel), 'utf8').slice(0, 800) }
-  catch { return '' }
-}
-
-function agentSystem(agentId: string): string {
+// Persona memory is now pulled live from Supabase via lib/agent-memory.
+async function agentSystem(agentId: string): Promise<string> {
   const agent = getAgent(agentId as AgentId)
-  const mem   = readMemory(agentId)
+  const mem   = await getAgentMemory(agentId, undefined, 800)
   return [agent?.systemPrompt ?? '', mem].filter(Boolean).join('\n\n')
 }
 
@@ -139,7 +122,7 @@ export async function POST(request: Request): Promise<Response> {
             emit('agent_start', { agentId: 'kai-analyst' })
 
             const kaiBrief = await callFast({
-              system:    agentSystem('kai-analyst'),
+              system:    await agentSystem('kai-analyst'),
               maxTokens: 200,
               messages: [{
                 role: 'user',
@@ -160,7 +143,7 @@ You are Kai. One trend is spiking RIGHT NOW. Give:
             emit('agent_start', { agentId: 'lena-brand' })
 
             const lenaRaw = await callFast({
-              system:    agentSystem('lena-brand'),
+              system:    await agentSystem('lena-brand'),
               maxTokens: 250,
               messages: [{
                 role: 'user',
@@ -198,7 +181,7 @@ Tactic: [tactic name]`,
             emit('agent_start', { agentId: 'kai-analyst' })
 
             const kaiBrief = await callFast({
-              system:    agentSystem('kai-analyst'),
+              system:    await agentSystem('kai-analyst'),
               maxTokens: 300,
               messages: [{
                 role: 'user',
@@ -222,7 +205,7 @@ You are Kai. Be fast and decisive:
             emit('agent_start', { agentId: 'nate-growth' })
 
             const nateRead = await callFast({
-              system:    agentSystem('nate-growth'),
+              system:    await agentSystem('nate-growth'),
               maxTokens: 250,
               messages: [{
                 role: 'user',
@@ -245,7 +228,7 @@ You are Nate. One lever only:
             emit('agent_start', { agentId: 'lena-brand' })
 
             const lenaRaw = await callFast({
-              system:    agentSystem('lena-brand'),
+              system:    await agentSystem('lena-brand'),
               maxTokens: 500,
               messages: [{
                 role: 'user',
@@ -292,7 +275,7 @@ Tactic: [tactic name]`,
             emit('agent_start', { agentId: 'kai-analyst' })
 
             const kaiBrief = await callFast({
-              system:    agentSystem('kai-analyst'),
+              system:    await agentSystem('kai-analyst'),
               maxTokens: 500,
               messages: [{
                 role: 'user',
@@ -323,7 +306,7 @@ Deliver the sprint opening brief in this EXACT format (no deviation):
               (async () => {
                 emit('agent_start', { agentId: 'nate-growth' })
                 return callFast({
-                  system:    agentSystem('nate-growth'),
+                  system:    await agentSystem('nate-growth'),
                   maxTokens: 400,
                   messages: [{
                     role: 'user',
@@ -349,7 +332,7 @@ You are Nate. Give your growth read:
               (async () => {
                 emit('agent_start', { agentId: 'rio-ads' })
                 return callFast({
-                  system:    agentSystem('rio-ads'),
+                  system:    await agentSystem('rio-ads'),
                   maxTokens: 400,
                   messages: [{
                     role: 'user',
@@ -382,7 +365,7 @@ You are Rio. Give your channel performance read:
             emit('agent_start', { agentId: 'lena-brand' })
 
             const lenaRaw = await callFast({
-              system:    agentSystem('lena-brand'),
+              system:    await agentSystem('lena-brand'),
               maxTokens: 900,
               messages: [{
                 role: 'user',
@@ -467,7 +450,7 @@ Tactic: [tactic name]`,
           let full = ''
 
           for await (const chunk of streamSynthesis({
-            system:    agentSystem(target) || undefined,
+            system:    await agentSystem(target) || undefined,
             maxTokens: 500,
             messages: [{
               role: 'user',
@@ -501,7 +484,7 @@ Tactic: [tactic name]`,
           await Promise.all(broadcastAgents.map(async ({ id, role }) => {
             emit('agent_start', { agentId: id })
             const response = await callFast({
-              system:    agentSystem(id),
+              system:    await agentSystem(id),
               maxTokens: 220,
               messages: [{
                 role: 'user',
@@ -524,7 +507,7 @@ You are responding as ${role}. Give YOUR specific angle on this — what does it
           emit('agent_start', { agentId: 'lena-brand' })
 
           const varied = await callFast({
-            system:    agentSystem('lena-brand'),
+            system:    await agentSystem('lena-brand'),
             maxTokens: 300,
             messages: [{
               role: 'user',

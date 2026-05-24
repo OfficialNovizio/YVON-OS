@@ -26,13 +26,15 @@ export async function POST(request: NextRequest) {
   const resolvedBase = (baseUrl?.trim() || meta.baseUrl).replace(/\/$/, '')
 
   try {
-    // ── Anthropic — native wire format ────────────────────────────────────────
+    // ── Anthropic — native wire format (supports custom baseURL, e.g. DeepSeek's /anthropic) ──
     if (meta.protocol === 'anthropic') {
       const testModel = fastModel?.trim() || 'claude-haiku-4-5-20251001'
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const anthropicBase = (resolvedBase || 'https://api.anthropic.com').replace(/\/$/, '')
+      const res = await fetch(`${anthropicBase}/v1/messages`, {
         method:  'POST',
         headers: {
           'x-api-key':         apiKey,
+          'authorization':     `Bearer ${apiKey}`,
           'anthropic-version': '2023-06-01',
           'Content-Type':      'application/json',
         },

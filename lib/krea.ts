@@ -2,9 +2,13 @@
 // Generates images via Krea AI API and attaches assets to campaign cards
 
 import 'server-only'
+import { getSecret } from '@/lib/secrets'
 
 const KREA_BASE = 'https://api.krea.ai/v1'
-const KREA_KEY = process.env.KREA_API_KEY ?? ''
+
+async function getKreaKey(): Promise<string> {
+  return (await getSecret('KREA_API_KEY')) ?? ''
+}
 
 export interface KreaGenerationRequest {
   prompt: string
@@ -26,14 +30,14 @@ export interface KreaGenerationResponse {
 export async function generateWithKrea(
   req: KreaGenerationRequest
 ): Promise<KreaGenerationResponse[]> {
-  if (!KREA_KEY) {
+  if (!(await getKreaKey())) {
     throw new Error('KREA_API_KEY not set — apply for Krea AI API access')
   }
 
   const response = await fetch(`${KREA_BASE}/generate`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${KREA_KEY}`,
+      'Authorization': `Bearer ${(await getKreaKey())}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

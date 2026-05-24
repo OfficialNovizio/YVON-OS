@@ -3,23 +3,22 @@
 import { useEffect, useState } from 'react'
 import { T, SC, FF, FInput, FTextArea, FSelect, FDivider, SaveBar, Btn, BackLink } from '../_shared'
 import { getActiveVentureSlugClient, setActiveVentureSlugClient } from '@/lib/venture-context'
-import type { VentureConfig, VentureSocial, SocialPlatform, BrandType, VentureStatus, BrandBigIdea, ContentSeries, ContentSeriesFormat, ContentSeriesFrequency, ContentSeriesFanGoal } from '@/lib/types'
+import type { VentureConfig, VentureSocial, SocialPlatform, BrandType, VentureStatus, BrandBigIdea, ContentSeries, ContentSeriesFormat, ContentSeriesFrequency, ContentSeriesFanGoal, TargetAudience } from '@/lib/types'
 
 // ── Glass system ────────────────────────────────────────────────────────────────
 const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
 const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
 const G2 = { background: 'linear-gradient(135deg,rgba(0,102,204,0.28),rgba(0,160,255,0.18))', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 18px 50px -10px rgba(0,60,160,0.40)' };
-const I2 = '#f4f8ff', I2d = 'rgba(244,248,255,0.48)';
+const I2 = '#f4f8ff';
 const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
 const I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
 const G4 = { background: 'radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))', backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
 const I4 = '#2a1240', I4d = 'rgba(42,18,64,0.48)';
 const ACCENT = '#0066cc';
-const INK_4  = 'rgba(10,37,71,0.52)';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const TABS = ['Profile', 'Social Accounts', 'Content DNA', 'Integrations'] as const
+const TABS = ['Profile', 'Social Accounts', 'Content DNA', 'Brand Docs', 'Integrations', 'Regions'] as const
 type Tab = typeof TABS[number]
 
 const BRAND_TYPES: { value: BrandType; label: string }[] = [
@@ -29,6 +28,289 @@ const BRAND_TYPES: { value: BrandType; label: string }[] = [
   { value: 'media',       label: 'Media' },
   { value: 'marketplace', label: 'Marketplace' },
 ]
+
+// ─── Market hierarchy tree ────────────────────────────────────────────────────
+
+interface MarketTreeNode {
+  value: string;
+  label: string;
+  children?: MarketTreeNode[];
+}
+
+const MARKET_TREE: Record<string, MarketTreeNode[]> = {
+  ecommerce: [
+    {
+      value: 'clothing', label: 'Clothing',
+      children: [
+        {
+          value: 'womenswear', label: "Women's",
+          children: [
+            {
+              value: 'ethnic-womenswear', label: 'Ethnic',
+              children: [
+                { value: 'saree', label: 'Saree' },
+                { value: 'lehenga', label: 'Lehenga' },
+                { value: 'salwar-kameez', label: 'Salwar Kameez' },
+                { value: 'churidar', label: 'Churidar' },
+                { value: 'anarkali', label: 'Anarkali' },
+                { value: 'ethnic-gown', label: 'Ethnic Gown' },
+                { value: 'indo-western', label: 'Indo-Western' },
+              ],
+            },
+            {
+              value: 'western-womenswear', label: 'Western',
+              children: [
+                { value: 'western-dress', label: 'Dress' },
+                { value: 'top', label: 'Top' },
+                { value: 'trouser', label: 'Trouser' },
+                { value: 'jeans-womens', label: 'Jeans' },
+                { value: 'shorts-womens', label: 'Shorts' },
+                { value: 'blazer-womens', label: 'Blazer' },
+                { value: 'jumpsuit', label: 'Jumpsuit' },
+                { value: 'co-ord', label: 'Co-ord Set' },
+              ],
+            },
+            { value: 'activewear-womens', label: 'Activewear' },
+            { value: 'swimwear-womens', label: 'Swimwear' },
+            { value: 'lingerie', label: 'Lingerie' },
+          ],
+        },
+        {
+          value: 'menswear', label: "Men's",
+          children: [
+            {
+              value: 'ethnic-menswear', label: 'Ethnic',
+              children: [
+                { value: 'sherwani', label: 'Sherwani' },
+                { value: 'kurta', label: 'Kurta' },
+                { value: 'kurta-pajama', label: 'Kurta Pajama' },
+                { value: 'bandhgala', label: 'Bandhgala' },
+                { value: 'dhoti', label: 'Dhoti' },
+              ],
+            },
+            {
+              value: 'western-menswear', label: 'Western',
+              children: [
+                { value: 'shirt', label: 'Shirt' },
+                { value: 't-shirt', label: 'T-Shirt' },
+                { value: 'trouser-mens', label: 'Trouser' },
+                { value: 'jeans-mens', label: 'Jeans' },
+                { value: 'blazer-mens', label: 'Blazer' },
+                { value: 'suit', label: 'Suit' },
+                { value: 'shorts-mens', label: 'Shorts' },
+              ],
+            },
+            { value: 'activewear-mens', label: 'Activewear' },
+            { value: 'swimwear-mens', label: 'Swimwear' },
+          ],
+        },
+        {
+          value: 'kidswear', label: "Kids'",
+          children: [
+            { value: 'ethnic-kids', label: 'Ethnic' },
+            { value: 'western-kids', label: 'Western' },
+            { value: 'activewear-kids', label: 'Activewear' },
+          ],
+        },
+        { value: 'unisex', label: 'Unisex' },
+      ],
+    },
+    {
+      value: 'accessories', label: 'Accessories',
+      children: [
+        { value: 'jewelry', label: 'Jewelry' },
+        { value: 'bags', label: 'Bags' },
+        { value: 'watches', label: 'Watches' },
+        { value: 'belts', label: 'Belts' },
+        { value: 'scarves', label: 'Scarves' },
+        { value: 'sunglasses', label: 'Sunglasses' },
+        { value: 'hats', label: 'Hats' },
+      ],
+    },
+    {
+      value: 'footwear', label: 'Footwear',
+      children: [
+        { value: 'sneakers', label: 'Sneakers' },
+        { value: 'boots', label: 'Boots' },
+        { value: 'sandals', label: 'Sandals' },
+        { value: 'formal-shoes', label: 'Formal' },
+        { value: 'heels', label: 'Heels' },
+        { value: 'flats', label: 'Flats' },
+        { value: 'slippers', label: 'Slippers' },
+      ],
+    },
+    {
+      value: 'beauty', label: 'Beauty',
+      children: [
+        { value: 'skincare', label: 'Skincare' },
+        { value: 'makeup', label: 'Makeup' },
+        { value: 'fragrance', label: 'Fragrance' },
+        { value: 'haircare', label: 'Haircare' },
+        { value: 'nailcare', label: 'Nailcare' },
+        { value: 'grooming', label: 'Grooming' },
+      ],
+    },
+    {
+      value: 'home-living', label: 'Home & Living',
+      children: [
+        { value: 'decor', label: 'Decor' },
+        { value: 'furniture', label: 'Furniture' },
+        { value: 'bedding', label: 'Bedding' },
+        { value: 'kitchen', label: 'Kitchen' },
+        { value: 'lighting', label: 'Lighting' },
+      ],
+    },
+    {
+      value: 'electronics', label: 'Electronics',
+      children: [
+        { value: 'smartphones', label: 'Smartphones' },
+        { value: 'laptops', label: 'Laptops' },
+        { value: 'audio', label: 'Audio' },
+        { value: 'wearables', label: 'Wearables' },
+        { value: 'tablets', label: 'Tablets' },
+        { value: 'gaming', label: 'Gaming' },
+      ],
+    },
+  ],
+  saas: [
+    { value: 'fintech', label: 'Fintech' },
+    { value: 'healthtech', label: 'HealthTech' },
+    { value: 'edtech', label: 'EdTech' },
+    { value: 'hrtech', label: 'HR Tech' },
+    { value: 'martech', label: 'Marketing Tech' },
+    { value: 'salestech', label: 'Sales Tech' },
+    { value: 'devops', label: 'DevOps' },
+    { value: 'analytics', label: 'Analytics' },
+    { value: 'productivity', label: 'Productivity' },
+    { value: 'crm', label: 'CRM' },
+    { value: 'proptech', label: 'PropTech' },
+    { value: 'legaltech', label: 'LegalTech' },
+  ],
+  agency: [
+    { value: 'creative', label: 'Creative' },
+    { value: 'digital', label: 'Digital' },
+    { value: 'pr', label: 'PR' },
+    { value: 'media-buying', label: 'Media Buying' },
+    { value: 'production', label: 'Production' },
+    { value: 'branding', label: 'Branding' },
+    { value: 'influencer', label: 'Influencer Marketing' },
+  ],
+  media: [
+    { value: 'publishing', label: 'Publishing' },
+    { value: 'video', label: 'Video' },
+    { value: 'audio', label: 'Audio / Podcast' },
+    { value: 'social-media', label: 'Social Media' },
+    { value: 'newsletter', label: 'Newsletter' },
+  ],
+  marketplace: [
+    { value: 'physical-goods', label: 'Physical Goods' },
+    { value: 'services', label: 'Services' },
+    { value: 'rental', label: 'Rental' },
+    { value: 'b2b-marketplace', label: 'B2B' },
+    { value: 'digital-goods', label: 'Digital Goods' },
+  ],
+}
+
+// ─── Cascading market picker ──────────────────────────────────────────────────
+
+function CascadingCategoryPicker({ selections, onChange, brandType }: {
+  selections: string[]
+  onChange: (vals: string[]) => void
+  brandType: string
+}) {
+  const tree = MARKET_TREE[brandType]
+  if (!tree) return null
+
+  // Parse stored selections to rebuild which nodes are selected at each level
+  const selectedSet = new Set(selections)
+
+  // Render one level of the tree
+  function renderLevel(nodes: MarketTreeNode[], parentPath: string, depth: number) {
+    if (!nodes || nodes.length === 0) return null
+
+    const selAtThisLevel = new Set(nodes.filter(n => selectedSet.has(n.value)).map(n => n.value))
+
+    return (
+      <div style={{ marginLeft: depth > 0 ? 0 : 0, marginTop: depth > 0 ? 0 : 0 }}>
+        {/* Level header */}
+        {depth > 0 && (
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: I1d, margin: '0 0 10px' }}>
+            {parentPath || 'Select category'}
+          </p>
+        )}
+
+        {/* Chips for this level */}
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
+          {nodes.map(node => {
+            const isSelected = selectedSet.has(node.value)
+            const hasChildren = node.children && node.children.length > 0
+
+            return (
+              <button
+                key={node.value}
+                onClick={() => {
+                  if (hasChildren) {
+                    // Toggle selection at this level — if selected, remove it and all descendants
+                    if (isSelected) {
+                      const toRemove = new Set<string>([node.value])
+                      const removeDescendants = (n: MarketTreeNode) => {
+                        n.children?.forEach(c => { toRemove.add(c.value); removeDescendants(c) })
+                      }
+                      removeDescendants(node)
+                      onChange(selections.filter(s => !toRemove.has(s)))
+                    } else {
+                      onChange([...selections, node.value])
+                    }
+                  } else {
+                    // Leaf node — toggle
+                    if (isSelected) {
+                      onChange(selections.filter(s => s !== node.value))
+                    } else {
+                      onChange([...selections, node.value])
+                    }
+                  }
+                }}
+                style={{
+                  padding: '7px 16px', borderRadius: 20, border: '1px solid',
+                  cursor: 'pointer', fontSize: 12, fontWeight: 600,
+                  fontFamily: T.font, transition: 'all 0.12s',
+                  background: isSelected ? ACCENT : 'transparent',
+                  color: isSelected ? '#fff' : I1c,
+                  borderColor: isSelected ? ACCENT : L1,
+                }}
+              >
+                {node.label}
+                {hasChildren && (
+                  <span className="material-symbols-outlined" style={{ fontSize: 14, marginLeft: 4, verticalAlign: 'middle' }}>
+                    {isSelected ? 'expand_more' : 'chevron_right'}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Render children of selected nodes — this creates the cascading effect */}
+        {nodes
+          .filter(n => selAtThisLevel.has(n.value) && n.children && n.children.length > 0)
+          .map(parent => (
+            <div key={parent.value} style={{
+              marginLeft: depth > 0 ? 0 : 0,
+              marginBottom: 12,
+              ...(depth > 0 ? {
+                paddingLeft: 16,
+                borderLeft: '2px solid rgba(0,102,204,0.15)',
+              } : {}),
+            }}>
+              {renderLevel(parent.children!, parent.label, depth + 1)}
+            </div>
+          ))}
+      </div>
+    )
+  }
+
+  return renderLevel(tree, '', 0)
+}
 
 const STATUS_OPTIONS: { value: VentureStatus; label: string }[] = [
   { value: 'active',   label: 'Active — normal routing' },
@@ -145,6 +427,92 @@ function ProfileTab({ venture, onChange, onSave, saving }: { venture: VentureCon
             onChange={e => set('foundedYear', parseInt(e.target.value) || undefined as unknown as number)}
             placeholder="2023"
             type="number"
+          />
+        </FF>
+      </div>
+
+      {/* Market subcategories — cascading expandable picker */}
+      {venture.brandType && MARKET_TREE[venture.brandType] && (
+        <div style={{ marginTop: 4 }}>
+          <FDivider label="Market Categories" />
+          <p style={{ fontSize: 11, color: I1d, margin: '8px 0 12px', lineHeight: 1.5 }}>
+            Select your market categories. Each selection opens the next level of detail.
+            You can select multiple options at each level.
+          </p>
+          <div style={{ ...G1, padding: 20 }}>
+            <CascadingCategoryPicker
+              brandType={venture.brandType}
+              selections={venture.marketSubcategories ?? []}
+              onChange={vals => set('marketSubcategories', vals)}
+            />
+            {/* Show selected leaf count */}
+            {(venture.marketSubcategories ?? []).length > 0 && (
+              <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${L1}`, fontSize: 11, color: I1c }}>
+                {venture.marketSubcategories!.length} sub-categor{(venture.marketSubcategories!.length === 1) ? 'y' : 'ies'} selected
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Target audience profile */}
+      <FDivider label="Target Audience" />
+      <p style={{ fontSize: 11, color: I1d, margin: '8px 0 12px', lineHeight: 1.5 }}>
+        Define your initial target market. This seeds the Market Intelligence tab under Analytics
+        with demographic context for your market research.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+        <FF label="Age Range">
+          <FInput
+            value={venture.targetAudience?.ageRange ?? ''}
+            onChange={e => set('targetAudience', { ...venture.targetAudience, ageRange: e.target.value } as TargetAudience)}
+            placeholder="e.g. 25–40"
+          />
+        </FF>
+        <FF label="Gender Focus">
+          <FSelect
+            value={venture.targetAudience?.gender ?? ''}
+            onChange={e => set('targetAudience', { ...venture.targetAudience, gender: e.target.value } as TargetAudience)}
+            options={[
+              { value: '', label: 'All' },
+              { value: 'female', label: 'Female' },
+              { value: 'male', label: 'Male' },
+              { value: 'non-binary', label: 'Non-Binary' },
+            ]}
+          />
+        </FF>
+        <FF label="Income Tier">
+          <FSelect
+            value={venture.targetAudience?.incomeTier ?? ''}
+            onChange={e => set('targetAudience', { ...venture.targetAudience, incomeTier: e.target.value } as TargetAudience)}
+            options={[
+              { value: '', label: 'All' },
+              { value: 'mass', label: 'Mass (<$40K)' },
+              { value: 'aspirational', label: 'Aspirational ($40–70K)' },
+              { value: 'premium', label: 'Premium ($70–120K)' },
+              { value: 'luxury', label: 'Luxury ($120K+)' },
+            ]}
+          />
+        </FF>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 4 }}>
+        <FF label="Region Type">
+          <FSelect
+            value={venture.targetAudience?.region ?? ''}
+            onChange={e => set('targetAudience', { ...venture.targetAudience, region: e.target.value } as TargetAudience)}
+            options={[
+              { value: 'all', label: 'All' },
+              { value: 'urban', label: 'Urban' },
+              { value: 'suburban', label: 'Suburban' },
+              { value: 'rural', label: 'Rural' },
+            ]}
+          />
+        </FF>
+        <FF label="Description (optional)">
+          <FInput
+            value={venture.targetAudience?.description ?? ''}
+            onChange={e => set('targetAudience', { ...venture.targetAudience, description: e.target.value } as TargetAudience)}
+            placeholder="e.g. Style-conscious professionals"
           />
         </FF>
       </div>
@@ -408,6 +776,13 @@ function GitHubCard({ venture }: { venture: VentureConfig }) {
     if (next && !repoInfo && !loading) void loadRepo()
   }
 
+  // Auto-connect on mount whenever a repoUrl is configured — no need to expand the card first.
+  // Re-runs only when the URL itself changes (switching venture or editing the URL).
+  useEffect(() => {
+    if (hasRepo && !repoInfo && !loading) void loadRepo()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [venture.repoUrl])
+
   async function handleCreateIssue() {
     if (!issueTitle.trim()) return
     setCreating(true)
@@ -568,6 +943,157 @@ function GitHubCard({ venture }: { venture: VentureConfig }) {
 
 // ─── Integrations Tab ─────────────────────────────────────────────────────────
 
+// ─── Brand Docs Tab — DB-backed CONTEXT / BRAND / DESIGN / FEEDBACK ──────────
+
+type VentureDocType = 'context' | 'brand' | 'design' | 'feedback'
+const DOC_LABELS: Record<VentureDocType, { label: string; description: string }> = {
+  context:  { label: 'Context',  description: 'Architectural notes, decisions, constraints' },
+  brand:    { label: 'Brand',    description: 'Brand voice, tone, positioning, identity' },
+  design:   { label: 'Design',   description: 'Visual system, tokens, design rules' },
+  feedback: { label: 'Feedback', description: 'Brand/content/tone feedback — never-again errors' },
+}
+
+function BrandDocsTab({ ventureSlug }: { ventureSlug: string }) {
+  const [docs, setDocs] = useState<Record<VentureDocType, { content: string; updatedAt: string }>>({} as Record<VentureDocType, { content: string; updatedAt: string }>)
+  const [active, setActive] = useState<VentureDocType>('context')
+  const [draft, setDraft] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => { void load() }, [ventureSlug])
+
+  async function load() {
+    setLoading(true); setError('')
+    try {
+      const res = await fetch(`/api/venture-documents?slug=${encodeURIComponent(ventureSlug)}`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json() as { docs?: Record<VentureDocType, { content: string; updatedAt: string }>; error?: string }
+      if (data.error) throw new Error(data.error)
+      const next = data.docs ?? {} as Record<VentureDocType, { content: string; updatedAt: string }>
+      setDocs(next)
+      setDraft(next[active]?.content ?? '')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function switchTo(type: VentureDocType) {
+    setActive(type)
+    setDraft(docs[type]?.content ?? '')
+    setSaved(false)
+  }
+
+  async function save() {
+    setSaving(true); setError('')
+    try {
+      const res = await fetch('/api/venture-documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: ventureSlug, type: active, content: draft }),
+      })
+      const data = await res.json() as { ok?: boolean; error?: string }
+      if (!res.ok || data.error) throw new Error(data.error ?? `HTTP ${res.status}`)
+      setDocs(prev => ({ ...prev, [active]: { content: draft, updatedAt: new Date().toISOString() } }))
+      setSaved(true); setTimeout(() => setSaved(false), 2500)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const isDirty = (docs[active]?.content ?? '') !== draft
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div>
+        <h2 style={{ fontSize: 16, fontWeight: 600, color: I1, margin: 0, marginBottom: 4 }}>Brand Docs</h2>
+        <p style={{ fontSize: 12, color: I1c, lineHeight: 1.6, margin: 0 }}>
+          Source of truth for this venture's identity. War Room agents pull these live from Supabase as their venture context.
+          Replaces the legacy <code style={{ fontFamily: 'monospace', fontSize: 11 }}>docs/ventures/{ventureSlug}/*.md</code> files.
+        </p>
+      </div>
+
+      {/* Doc-type tabs */}
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        {(Object.keys(DOC_LABELS) as VentureDocType[]).map(type => {
+          const isActive = type === active
+          const meta = DOC_LABELS[type]
+          return (
+            <button
+              key={type}
+              onClick={() => switchTo(type)}
+              style={{
+                padding: '8px 14px',
+                borderRadius: 10,
+                background: isActive ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.25)',
+                border: `1px solid ${isActive ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.40)'}`,
+                color: isActive ? I1 : I1c,
+                fontFamily: T.font, fontSize: 12, fontWeight: 600,
+                cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2,
+                minWidth: 140,
+              }}
+            >
+              <span>{meta.label}</span>
+              <span style={{ fontSize: 10, fontWeight: 400, color: I1d }}>{meta.description}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      {loading ? (
+        <p style={{ fontSize: 12, color: I1c }}>Loading from Supabase…</p>
+      ) : (
+        <>
+          <div style={{ position: 'relative' }}>
+            <textarea
+              value={draft}
+              onChange={e => setDraft(e.target.value)}
+              spellCheck={false}
+              placeholder={`Write the ${DOC_LABELS[active].label.toLowerCase()} doc here. Markdown is fine.`}
+              style={{
+                width: '100%',
+                minHeight: 420,
+                background: 'rgba(255,255,255,0.42)',
+                border: '1px solid rgba(255,255,255,0.55)',
+                borderRadius: 12,
+                padding: '14px 16px',
+                fontFamily: 'ui-monospace, SF Mono, Monaco, monospace',
+                fontSize: 12,
+                lineHeight: 1.6,
+                color: I1,
+                outline: 'none',
+                resize: 'vertical',
+                boxSizing: 'border-box',
+              }}
+            />
+            <div style={{ position: 'absolute', bottom: 10, right: 14, fontSize: 10, color: I1d, fontFamily: 'monospace' }}>
+              {draft.length} chars
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <Btn onClick={save} disabled={saving || !isDirty}>
+              {saving ? 'Saving…' : `Save ${DOC_LABELS[active].label}`}
+            </Btn>
+            {saved && <span style={{ fontFamily: T.font, fontSize: 12, color: '#30d158', fontWeight: 600 }}>✓ Saved to Supabase</span>}
+            {error && <span style={{ fontFamily: T.font, fontSize: 12, color: '#ff453a' }}>✗ {error}</span>}
+            {docs[active]?.updatedAt && (
+              <span style={{ fontFamily: T.font, fontSize: 11, color: I1d, marginLeft: 'auto' }}>
+                Last updated {new Date(docs[active].updatedAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 function IntegrationsTab({ venture, socials }: { venture: VentureConfig; socials: VentureSocial[] }) {
   const [expanded, setExpanded] = useState<string | null>(null)
 
@@ -707,6 +1233,7 @@ function ContentDNATab({ ventureId }: { ventureId: string }) {
   const [series,      setSeries]      = useState<ContentSeries[]>([])
   const [savingBI,    setSavingBI]    = useState(false)
   const [generating,  setGenerating]  = useState(false)
+  const [draftError,  setDraftError]  = useState('')
   const [loadingBI,   setLoadingBI]   = useState(true)
   const [loadingSer,  setLoadingSer]  = useState(true)
   const [biSaved,     setBiSaved]     = useState(false)
@@ -746,11 +1273,15 @@ function ContentDNATab({ ventureId }: { ventureId: string }) {
   }
 
   async function generateDraft() {
-    setGenerating(true)
-    const res = await fetch('/api/big-idea', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'generate' }) })
-    const d = await res.json() as { draft?: BrandBigIdea }
-    if (d.draft) setDraft(d.draft)
-    setGenerating(false)
+    setGenerating(true); setDraftError('')
+    try {
+      const res = await fetch('/api/big-idea', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'generate' }) })
+      const d = await res.json() as { draft?: BrandBigIdea; error?: string }
+      if (d.draft) { setDraft(d.draft) }
+      else { setDraftError(d.error ?? `Request failed (${res.status})`) }
+    } catch (e) {
+      setDraftError(e instanceof Error ? e.message : 'Network error')
+    } finally { setGenerating(false) }
   }
 
   async function handleCreateSeries() {
@@ -814,6 +1345,22 @@ function ContentDNATab({ ventureId }: { ventureId: string }) {
             {generating ? 'AI drafting…' : 'AI Draft'}
           </button>
         </div>
+
+        {draftError && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '8px 14px', borderRadius: 10, marginBottom: 14,
+            background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)',
+            fontSize: 12, color: '#dc2626',
+          }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16, flexShrink: 0 }}>error</span>
+            <span>AI Draft failed: {draftError}</span>
+            <button
+              onClick={() => setDraftError('')}
+              style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', color: '#dc2626', padding: 2 }}
+            >×</button>
+          </div>
+        )}
 
         {loadingBI ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: I1d, fontSize: 12, padding: '12px 0' }}>
@@ -1036,6 +1583,278 @@ function ContentDNATab({ ventureId }: { ventureId: string }) {
         )}
       </div>
 
+    </div>
+  )
+}
+
+// ─── Country Operations ────────────────────────────────────────────────────────
+
+interface CountryOption { code: string; name: string; region: string }
+
+const COUNTRIES: CountryOption[] = [
+  // North America
+  { code: 'US', name: 'United States', region: 'North America' },
+  { code: 'CA', name: 'Canada', region: 'North America' },
+  { code: 'MX', name: 'Mexico', region: 'North America' },
+  // Europe
+  { code: 'GB', name: 'United Kingdom', region: 'Europe' },
+  { code: 'DE', name: 'Germany', region: 'Europe' },
+  { code: 'FR', name: 'France', region: 'Europe' },
+  { code: 'IT', name: 'Italy', region: 'Europe' },
+  { code: 'ES', name: 'Spain', region: 'Europe' },
+  { code: 'NL', name: 'Netherlands', region: 'Europe' },
+  { code: 'SE', name: 'Sweden', region: 'Europe' },
+  { code: 'DK', name: 'Denmark', region: 'Europe' },
+  { code: 'NO', name: 'Norway', region: 'Europe' },
+  { code: 'CH', name: 'Switzerland', region: 'Europe' },
+  { code: 'AT', name: 'Austria', region: 'Europe' },
+  { code: 'BE', name: 'Belgium', region: 'Europe' },
+  { code: 'IE', name: 'Ireland', region: 'Europe' },
+  { code: 'PT', name: 'Portugal', region: 'Europe' },
+  { code: 'PL', name: 'Poland', region: 'Europe' },
+  // Asia Pacific
+  { code: 'JP', name: 'Japan', region: 'Asia Pacific' },
+  { code: 'KR', name: 'South Korea', region: 'Asia Pacific' },
+  { code: 'CN', name: 'China', region: 'Asia Pacific' },
+  { code: 'IN', name: 'India', region: 'Asia Pacific' },
+  { code: 'AU', name: 'Australia', region: 'Asia Pacific' },
+  { code: 'NZ', name: 'New Zealand', region: 'Asia Pacific' },
+  { code: 'SG', name: 'Singapore', region: 'Asia Pacific' },
+  { code: 'HK', name: 'Hong Kong', region: 'Asia Pacific' },
+  { code: 'TW', name: 'Taiwan', region: 'Asia Pacific' },
+  { code: 'TH', name: 'Thailand', region: 'Asia Pacific' },
+  { code: 'VN', name: 'Vietnam', region: 'Asia Pacific' },
+  { code: 'PH', name: 'Philippines', region: 'Asia Pacific' },
+  { code: 'MY', name: 'Malaysia', region: 'Asia Pacific' },
+  { code: 'ID', name: 'Indonesia', region: 'Asia Pacific' },
+  // Middle East & Africa
+  { code: 'AE', name: 'UAE', region: 'Middle East' },
+  { code: 'SA', name: 'Saudi Arabia', region: 'Middle East' },
+  { code: 'IL', name: 'Israel', region: 'Middle East' },
+  { code: 'ZA', name: 'South Africa', region: 'Africa' },
+  { code: 'NG', name: 'Nigeria', region: 'Africa' },
+  // South America
+  { code: 'BR', name: 'Brazil', region: 'South America' },
+  { code: 'AR', name: 'Argentina', region: 'South America' },
+  { code: 'CO', name: 'Colombia', region: 'South America' },
+  { code: 'CL', name: 'Chile', region: 'South America' },
+]
+
+function RegionsTab({ venture }: { venture: VentureConfig }) {
+  const [countries, setCountries] = useState<string[]>(venture.operatingCountries ?? ['US'])
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [search, setSearch] = useState('')
+  const [regionFilter, setRegionFilter] = useState<string | null>(null)
+
+  const filtered = COUNTRIES.filter(c => {
+    if (regionFilter && c.region !== regionFilter) return false
+    if (!search) return true
+    const q = search.toLowerCase()
+    return c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q)
+  })
+
+  const regions = [...new Set(COUNTRIES.map(c => c.region))]
+
+  function toggleCountry(code: string) {
+    setCountries(prev =>
+      prev.includes(code) ? prev.filter(c => c !== code) : [...prev, code]
+    )
+    setSaved(false)
+  }
+
+  function selectAllInRegion(region: string) {
+    const codes = COUNTRIES.filter(c => c.region === region).map(c => c.code)
+    const allSelected = codes.every(c => countries.includes(c))
+    setCountries(prev =>
+      allSelected ? prev.filter(c => !codes.includes(c)) : [...new Set([...prev, ...codes])]
+    )
+    setSaved(false)
+  }
+
+  async function handleSave() {
+    setSaving(true); setSaved(false)
+    try {
+      await fetch(`/api/ventures/${venture.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operatingCountries: countries }),
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    } finally { setSaving(false) }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* Info card */}
+      <div style={{ ...G4, padding: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: I4 }}>public</span>
+          <p style={{ fontSize: 13, fontWeight: 700, color: I4, margin: 0 }}>Operating Countries</p>
+        </div>
+        <p style={{ fontSize: 12, color: I4d, lineHeight: 1.6, margin: 0 }}>
+          Select the countries where you operate. This filters Analytics, Competitor, and Marketing
+          dashboards to show data specific to your selected markets. All countries selected = global view.
+        </p>
+      </div>
+
+      {/* Selected count + Save */}
+      <div style={{ ...G1, padding: 16 }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: I1, margin: '0 0 2px' }}>
+              {countries.length === 0 && 'No countries selected'}
+              {countries.length === 1 && '1 country selected'}
+              {countries.length > 1 && `${countries.length} countries selected`}
+            </p>
+            {countries.length > 0 && (
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 8 }}>
+                {countries.map(code => {
+                  const country = COUNTRIES.find(c => c.code === code)
+                  return (
+                    <span key={code} style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                      padding: '3px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+                      background: 'rgba(0,102,204,0.10)', color: ACCENT,
+                      border: '1px solid rgba(0,102,204,0.20)',
+                    }}>
+                      {country?.name ?? code}
+                      <button
+                        onClick={() => toggleCountry(code)}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', padding: 0, fontSize: 13, lineHeight: 1 }}
+                      >×</button>
+                    </span>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {saved && (
+              <span style={{ fontSize: 12, color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span>
+                Saved
+              </span>
+            )}
+            <button
+              onClick={() => { void handleSave() }}
+              disabled={saving}
+              style={{
+                padding: '8px 20px', borderRadius: 10, border: 'none',
+                background: ACCENT, color: '#fff', cursor: saving ? 'default' : 'pointer',
+                fontSize: 12, fontWeight: 600, fontFamily: T.font,
+                opacity: saving ? 0.6 : 1, transition: 'all 0.15s',
+              }}
+            >
+              {saving ? 'Saving…' : 'Save Countries'}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Region filter + Search */}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setRegionFilter(null)}
+            style={{
+              padding: '5px 12px', borderRadius: 8, border: '1px solid', cursor: 'pointer',
+              fontSize: 11, fontWeight: 600, fontFamily: T.font, transition: 'all 0.15s',
+              background: regionFilter === null ? ACCENT : 'transparent',
+              color: regionFilter === null ? '#fff' : I1c,
+              borderColor: regionFilter === null ? ACCENT : L1,
+            }}
+          >All</button>
+          {regions.map(r => (
+            <button
+              key={r}
+              onClick={() => setRegionFilter(r)}
+              style={{
+                padding: '5px 12px', borderRadius: 8, border: '1px solid', cursor: 'pointer',
+                fontSize: 11, fontWeight: 600, fontFamily: T.font, transition: 'all 0.15s',
+                background: regionFilter === r ? ACCENT : 'transparent',
+                color: regionFilter === r ? '#fff' : I1c,
+                borderColor: regionFilter === r ? ACCENT : L1,
+              }}
+            >{r}</button>
+          ))}
+        </div>
+        <div style={{ flex: 1, maxWidth: 200, marginLeft: 'auto' }}>
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search countries…"
+            style={{
+              width: '100%', padding: '6px 12px', borderRadius: 8, border: `1px solid ${L1}`,
+              fontSize: 12, fontFamily: T.font, color: I1, background: 'transparent',
+              outline: 'none',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Country grid */}
+      <div style={{ ...G1, padding: 4, overflow: 'hidden' }}>
+        {regionFilter && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '8px 12px 0' }}>
+            <button
+              onClick={() => selectAllInRegion(regionFilter)}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontSize: 11, fontWeight: 600, color: ACCENT, fontFamily: T.font,
+              }}
+            >
+              {COUNTRIES.filter(c => c.region === regionFilter).every(c => countries.includes(c.code))
+                ? 'Deselect all in region'
+                : 'Select all in region'
+              }
+            </button>
+          </div>
+        )}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))',
+          gap: 2, padding: 8,
+        }}>
+          {filtered.length === 0 && (
+            <p style={{ fontSize: 12, color: I1d, padding: '16px 8px', gridColumn: '1 / -1' }}>
+              No countries match your search.
+            </p>
+          )}
+          {filtered.map(c => {
+            const isSelected = countries.includes(c.code)
+            return (
+              <button
+                key={c.code}
+                onClick={() => toggleCountry(c.code)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: '8px 10px', borderRadius: 8, border: '1px solid',
+                  cursor: 'pointer', textAlign: 'left', transition: 'all 0.12s',
+                  fontFamily: T.font, fontSize: 12,
+                  background: isSelected ? 'rgba(0,102,204,0.08)' : 'transparent',
+                  color: isSelected ? ACCENT : I1c,
+                  borderColor: isSelected ? 'rgba(0,102,204,0.25)' : 'transparent',
+                }}
+              >
+                <span style={{
+                  width: 16, height: 16, borderRadius: 4, flexShrink: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: isSelected ? ACCENT : 'rgba(0,0,0,0.06)',
+                  transition: 'all 0.12s',
+                }}>
+                  {isSelected && (
+                    <span className="material-symbols-outlined" style={{ fontSize: 12, color: '#fff' }}>check</span>
+                  )}
+                </span>
+                <span style={{ flex: 1 }}>{c.name}</span>
+                <span style={{ fontSize: 9, color: I1d, fontWeight: 600, textTransform: 'uppercase' }}>{c.code}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }
@@ -1349,7 +2168,9 @@ export default function VentureSettingsPage() {
                 <SocialsTab ventureId={venture.id} socials={socials} onSocialsChange={setSocials} />
               )}
               {tab === 'Content DNA' && <ContentDNATab ventureId={venture.id} />}
+              {tab === 'Brand Docs' && <BrandDocsTab key={venture.slug} ventureSlug={venture.slug} />}
               {tab === 'Integrations' && <IntegrationsTab venture={venture} socials={socials} />}
+              {tab === 'Regions' && <RegionsTab key={venture.id} venture={venture} />}
             </>
           )}
         </main>

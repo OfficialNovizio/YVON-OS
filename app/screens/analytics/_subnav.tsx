@@ -5,9 +5,10 @@ import { usePathname } from 'next/navigation';
 
 const subTabs = [
   { label: 'Overview',     href: '/screens/analytics' },
+  { label: 'Market',       href: '/screens/analytics/market', badge: 'NEW' },
   { label: 'Portfolio',    href: '/screens/analytics/portfolio' },
   { label: 'Social Media', href: '/screens/analytics/social-media' },
-  { label: 'Reports',      href: '/screens/analytics/reports', badge: 'NEW' },
+  { label: 'Reports',      href: '/screens/analytics/reports' },
 ];
 
 const INK    = '#0a2547';

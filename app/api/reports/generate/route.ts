@@ -3,6 +3,7 @@
 // Called by Vercel Cron (24h/48h schedule). Also callable manually with CRON_SECRET.
 
 import { cookies } from 'next/headers'
+import { getSecret } from '@/lib/secrets'
 import { callFast } from '@/lib/ai-client'
 import { supabase } from '@/lib/supabase'
 import { insertReport } from '@/lib/reports'
@@ -227,10 +228,10 @@ URGENCY
 
 export async function POST(request: Request): Promise<Response> {
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (!process.env.CRON_SECRET) {
+  if (!await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
   }
-  if (cronSecret !== process.env.CRON_SECRET) {
+  if (cronSecret !== await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

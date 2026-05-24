@@ -9,5 +9,12 @@ updates:
     labels:
       - "dependencies"
     ignore:
-      - dependency-name: "*"
+      # Only ignore patch updates for devDependencies — runtime deps get all fixes
+      - dependency-name: "@types/*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "eslint*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "prettier*"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "typescript"
         update-types: ["version-update:semver-patch"]

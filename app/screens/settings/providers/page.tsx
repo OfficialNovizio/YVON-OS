@@ -93,7 +93,7 @@ function ModelFields({
 
 function AnthropicCard({ row, onSave, onToggle, onDelete }: {
   row:      SavedRow | null
-  onSave:   (data: { apiKey: string; primary: string; secondary: string; tertiary: string }) => Promise<void>
+  onSave:   (data: { apiKey: string; primary: string; secondary: string; tertiary: string; baseUrl: string }) => Promise<void>
   onToggle: () => void
   onDelete: () => void
 }) {
@@ -101,6 +101,7 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
   const [open, setOpen]         = useState(false)
   const [showKey, setShowKey]   = useState(false)
   const [apiKey, setApiKey]     = useState('')
+  const [baseUrl, setBaseUrl]   = useState(row?.base_url || '')
   const [primary, setPrimary]   = useState(row?.fast_model      || 'claude-haiku-4-5-20251001')
   const [secondary, setSecondary] = useState(row?.synthesis_model || 'claude-sonnet-4-6')
   const [tertiary, setTertiary] = useState(row?.tertiary_model  || '')
@@ -112,10 +113,11 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
   // Sync fields when row arrives from async DB load
   useEffect(() => {
     if (!row) return
+    setBaseUrl(row.base_url || '')
     setPrimary(row.fast_model || 'claude-haiku-4-5-20251001')
     setSecondary(row.synthesis_model || 'claude-sonnet-4-6')
     setTertiary(row.tertiary_model || '')
-  }, [row?.provider, row?.fast_model, row?.synthesis_model, row?.tertiary_model])
+  }, [row?.provider, row?.base_url, row?.fast_model, row?.synthesis_model, row?.tertiary_model])
 
   const isConfigured = !!row
   const testColor = testStatus === 'ok' ? '#30d158' : testStatus === 'fail' ? '#ff453a' : '#ff9f0a'
@@ -126,7 +128,7 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
     try {
       const res  = await fetch('/api/ai-keys/test', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ provider: 'anthropic', apiKey, fastModel: primary }),
+        body: JSON.stringify({ provider: 'anthropic', apiKey, baseUrl, fastModel: primary }),
       })
       const d = await res.json() as { ok: boolean; error?: string }
       setTest(d.ok ? 'ok' : 'fail'); setTestErr(d.error ?? '')
@@ -135,7 +137,7 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
 
   async function save() {
     setSaving(true)
-    await onSave({ apiKey, primary, secondary, tertiary })
+    await onSave({ apiKey, primary, secondary, tertiary, baseUrl })
     setSaving(false); setSaved(true); setApiKey('')
     setTimeout(() => setSaved(false), 3000)
   }
@@ -164,6 +166,19 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
       {open && (
         <div style={{ padding: '0 16px 16px', borderTop: `1px solid rgba(255,255,255,0.06)` }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, paddingTop: 16 }}>
+
+            {/* Base URL — override for Anthropic-compatible endpoints (e.g. DeepSeek /anthropic) */}
+            <FF label="Base URL (leave empty for native Anthropic)" labelColor={O1d}>
+              <input
+                value={baseUrl}
+                onChange={e => { setBaseUrl(e.target.value); setTest('idle') }}
+                placeholder="https://api.anthropic.com  or  https://api.deepseek.com/anthropic"
+                style={inp(true)}
+              />
+              <span style={{ fontFamily: T.font, fontSize: 11, color: O1d, marginTop: 4, display: 'block', lineHeight: 1.5 }}>
+                Any endpoint that speaks the Anthropic Messages API. Empty = official Anthropic.
+              </span>
+            </FF>
 
             {/* API Key */}
             <FF label={isConfigured ? 'Replace API Key' : 'API Key'} labelColor={O1d}>
@@ -194,7 +209,7 @@ function AnthropicCard({ row, onSave, onToggle, onDelete }: {
             <ModelFields
               primary={primary} secondary={secondary} tertiary={tertiary}
               onPrimary={setPrimary} onSecondary={setSecondary} onTertiary={setTertiary}
-              hint="All model names use Anthropic's model IDs (e.g. claude-haiku-4-5-20251001)."
+              hint="Use the model IDs your endpoint accepts (e.g. claude-haiku-4-5-20251001, or deepseek-v4-flash[1m] for DeepSeek's /anthropic)."
               mutedColor={O1d} hintColor={O1d}
             />
 
@@ -437,12 +452,12 @@ export default function ProvidersPage() {
     return rows.find(r => r.provider === provider) ?? null
   }
 
-  async function saveAnthropic({ apiKey, primary, secondary, tertiary }: { apiKey: string; primary: string; secondary: string; tertiary: string }) {
+  async function saveAnthropic({ apiKey, primary, secondary, tertiary, baseUrl }: { apiKey: string; primary: string; secondary: string; tertiary: string; baseUrl: string }) {
     const row = getRow('anthropic')
     if (row && !apiKey.trim()) {
-      await fetch('/api/ai-keys', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: 'anthropic', fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary }) })
+      await fetch('/api/ai-keys', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: 'anthropic', fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, baseUrl }) })
     } else {
-      await fetch('/api/ai-keys', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: 'anthropic', apiKey, fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, isActive: true }) })
+      await fetch('/api/ai-keys', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: 'anthropic', apiKey, fastModel: primary, synthesisModel: secondary, tertiaryModel: tertiary, isActive: true, baseUrl }) })
     }
     await load()
   }

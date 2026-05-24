@@ -4,6 +4,7 @@
 // Engine NEVER auto-applies weights. Every change requires explicit user approval.
 
 import { supabase } from '@/lib/supabase'
+import { getSecret } from '@/lib/secrets'
 
 export const maxDuration = 60
 
@@ -21,10 +22,10 @@ const SIGNAL_WEIGHT_MAP: Record<string, keyof typeof DEFAULT_WEIGHTS> = {
 
 export async function GET(request: Request): Promise<Response> {
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (!process.env.CRON_SECRET) {
+  if (!await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
   }
-  if (cronSecret !== process.env.CRON_SECRET) {
+  if (cronSecret !== await getSecret('CRON_SECRET')) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

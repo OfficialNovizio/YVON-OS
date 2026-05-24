@@ -199,6 +199,20 @@ export interface VentureConfig {
   updatedAt?: string
   // Content intelligence (migration 020)
   brandBigIdea?: BrandBigIdea
+  // Country operations (migration 030)
+  operatingCountries?: string[]
+  // Market hierarchy — cascading selections stored as breadcrumb paths
+  marketSubcategories?: string[]
+  // Target audience profile (migration 033)
+  targetAudience?: TargetAudience
+}
+
+export interface TargetAudience {
+  ageRange?: string
+  gender?: string
+  incomeTier?: string
+  region?: 'urban' | 'suburban' | 'rural' | 'all'
+  description?: string
 }
 
 // ─── Briefs ──────────────────────────────────────────────────────────────────
@@ -296,9 +310,15 @@ export type WarRoomEvent =
   | { type: 'autonomy';       agentId: AgentId; level: number; action: string }
   | { type: 'collaboration';  primaryAgent: AgentId; recommendedPartners: AgentId[]; note: string }
   | { type: 'conflicts';      conflicts: ConflictItem[] }
-  | { type: 'text';           content: string }
-  | { type: 'plan_complete';  elapsed: number }
-  | { type: 'error';          message: string }
+  | { type: 'text';             content: string }
+  | { type: 'plan_complete';    elapsed: number }
+  | { type: 'error';            message: string }
+  | { type: 'tool_call_start';  agentId: AgentId; tool: string; input: unknown; tool_use_id: string }
+  | { type: 'tool_call_result'; agentId: AgentId; tool: string; summary: string; is_error: boolean; tool_use_id: string }
+  | { type: 'tool_iteration';   agentId: AgentId; n: number }
+  | { type: 'github_snapshot';  ok: boolean; repo: string | null; branch: string | null; openIssues: number | null; error: string | null }
+  | { type: 'engine';           engine: 'agent_sdk' | 'client_sdk' }
+  | { type: 'plan_approval_required'; plan: ExecutionPlan; routing: RoutingResult }
 
 export interface ConflictItem {
   topic: string

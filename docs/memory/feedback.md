@@ -55,6 +55,15 @@ metadata:
 **Rule:** Any list that could grow (priorities, reports, cards) needs maxHeight + overflowY: auto. 
 Defaults: maxHeight: 360–420px, scrollbarWidth: thin. Header and stats bar stay outside the scroll area.
 
+## 6. WAR ROOM APPROVAL GATE — NEVER REMOVE ⛔
+**Rule:** `/api/team-chat` MUST implement a two-phase approval flow. Specialists NEVER execute until the user clicks "Go ahead →" on the ENGAGE+PLAN card.
+**Why:** This has been accidentally deleted 5+ times. Every time team-chat or war-room is touched, the gate disappears.
+**Guard:** Look for the `⛔ WORKFLOW RULE 4` comment in `app/api/team-chat/route.ts`. If it's missing, the gate was removed — restore it before doing anything else.
+**Three things that must exist:**
+1. `app/api/team-chat/route.ts` — `approved` flag + `plan_approval_required` emit
+2. `app/screens/war-room/page.tsx` — `EngagePlanCard` component + `awaiting_approval` status
+3. `lib/types.ts` — `plan_approval_required` in `WarRoomEvent`
+
 ## 5. NEVER AGAIN — Error Prevention
 - If a user correction repeats → save immediately to this file's "Never Again" section
 - If a build error happens twice → add the fix pattern here

@@ -1,3 +1,5 @@
+import { getSecret } from '@/lib/secrets'
+
 // Krea.ai Image Generation — submit an async image generation job
 // POST: sends prompt to Krea API, returns job_id for polling
 // Docs: https://docs.krea.ai/api-reference/introduction
@@ -15,7 +17,7 @@ type RequestBody = {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const apiKey = process.env.KREA_API_KEY
+  const apiKey = await getSecret('KREA_API_KEY')
   if (!apiKey) {
     return Response.json({ error: 'KREA_API_KEY is not configured. Add it to your .env.local file.' }, { status: 500 })
   }

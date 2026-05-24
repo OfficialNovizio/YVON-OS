@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Repository health — GitHub API for PRs, issues, build status */
+import { getSecret } from '@/lib/secrets'
 export interface RepoHealthResult {
   status: 'pass' | 'fail' | 'warn'
   details: Record<string, { status: string; value: any }>
@@ -7,7 +8,7 @@ export interface RepoHealthResult {
 
 export async function checkRepositoryHealth(): Promise<RepoHealthResult> {
   const details: Record<string, { status: string; value: any }> = {}
-  const token = process.env.GITHUB_TOKEN
+  const token = await getSecret('GITHUB_TOKEN')
   const repo = process.env.GITHUB_REPO || 'OfficialNovizio/YVON2.0'
 
   // Open PRs

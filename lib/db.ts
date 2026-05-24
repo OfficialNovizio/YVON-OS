@@ -313,14 +313,17 @@ function mapVentureRow(r: Record<string, unknown>): VentureConfig {
     ga4PropertyId: (r.ga4_property_id as string) ?? '',
     description:   (r.description as string) ?? undefined,
     tagline:       (r.tagline as string) ?? undefined,
-    brandType:     (r.brand_type as VentureConfig['brandType']) ?? undefined,
+    brandType:          (r.brand_type as VentureConfig['brandType']) ?? undefined,
+    marketSubcategories: (r.market_subcategories as string[]) ?? undefined,
     status:        ((r.status as string) ?? 'active') as VentureConfig['status'],
     websiteUrl:    (r.website_url as string) ?? undefined,
     logoUrl:       (r.logo_url as string) ?? undefined,
     foundedYear:   (r.founded_year as number) ?? undefined,
     repoUrl:       (r.repo_url as string) ?? undefined,
     notionUrl:     (r.notion_url as string) ?? undefined,
-    updatedAt:     (r.updated_at as string) ?? undefined,
+    updatedAt:          (r.updated_at as string) ?? undefined,
+    operatingCountries: (r.operating_countries as string[]) ?? [],
+    targetAudience:     r.target_audience ? (r.target_audience as VentureConfig['targetAudience']) : undefined,
   }
 }
 
@@ -348,12 +351,15 @@ export async function createVenture(data: Omit<VentureConfig, 'id'>): Promise<Ve
       description:    data.description,
       tagline:        data.tagline,
       brand_type:     data.brandType,
+      market_subcategories: data.marketSubcategories ?? null,
       status:         data.status ?? 'active',
       website_url:    data.websiteUrl,
       logo_url:       data.logoUrl,
       founded_year:   data.foundedYear,
-      repo_url:       data.repoUrl,
-      notion_url:     data.notionUrl,
+      repo_url:           data.repoUrl,
+      notion_url:         data.notionUrl,
+      operating_countries: data.operatingCountries ?? [],
+      target_audience:     data.targetAudience ?? null,
     })
     .select()
     .single()
@@ -376,12 +382,15 @@ export async function updateVenture(
   if (data.description  !== undefined) update.description     = data.description
   if (data.tagline      !== undefined) update.tagline         = data.tagline
   if (data.brandType    !== undefined) update.brand_type      = data.brandType
+  if (data.marketSubcategories !== undefined) update.market_subcategories = data.marketSubcategories
   if (data.status       !== undefined) update.status          = data.status
   if (data.websiteUrl   !== undefined) update.website_url     = data.websiteUrl
   if (data.logoUrl      !== undefined) update.logo_url        = data.logoUrl
   if (data.foundedYear  !== undefined) update.founded_year    = data.foundedYear
   if (data.repoUrl      !== undefined) update.repo_url        = data.repoUrl
-  if (data.notionUrl    !== undefined) update.notion_url      = data.notionUrl
+  if (data.notionUrl           !== undefined) update.notion_url           = data.notionUrl
+  if (data.operatingCountries  !== undefined) update.operating_countries  = data.operatingCountries
+  if (data.targetAudience      !== undefined) update.target_audience      = data.targetAudience
   await supabase.from('ventures').update(update).eq('id', id)
 }
 

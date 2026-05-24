@@ -46,6 +46,14 @@ const HUB_CARDS = [
     tags:  ['API Keys', 'Models', 'Providers'],
   },
   {
+    key:   'secrets',
+    color: '#7c3aed',
+    icon:  'encrypted',
+    title: 'App Secrets',
+    desc:  'Manage runtime secrets stored encrypted in Supabase Vault. GITHUB_TOKEN, CRON_SECRET, API keys, and more.',
+    tags:  ['Encrypted', 'Vault'],
+  },
+  {
     key:   'danger',
     color: SC.danger,
     icon:  'warning',

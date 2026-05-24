@@ -12,6 +12,9 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
 import { PROVIDER_MODELS } from '@/lib/providers'
+import { runToolLoop, type ToolLoopEvent } from '@/lib/tool-loop'
+import { toolsForAgent } from '@/lib/agent-tools'
+import { runAgentSdk, isAgentSdkEnabled } from '@/lib/agent-sdk-runner'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -193,7 +196,7 @@ export async function callFast(params: {
   const cfg = await loadConfig()
 
   if (cfg.protocol === 'anthropic') {
-    const client = new Anthropic({ apiKey: cfg.apiKey })
+    const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
     const res = await client.messages.create({
       model:      cfg.fastModel,
       max_tokens: params.maxTokens,
@@ -225,7 +228,7 @@ export async function callSynthesis(params: {
   const cfg = await loadConfig()
 
   if (cfg.protocol === 'anthropic') {
-    const client = new Anthropic({ apiKey: cfg.apiKey })
+    const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
     const res = await client.messages.create({
       model:      cfg.synthesisModel,
       max_tokens: params.maxTokens,
@@ -258,7 +261,7 @@ export async function* streamSynthesis(params: {
   const cfg = await loadConfig()
 
   if (cfg.protocol === 'anthropic') {
-    const client = new Anthropic({ apiKey: cfg.apiKey })
+    const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
 
     // Build messages, injecting image into last user turn if provided
     type AnthropicMsg = Parameters<typeof client.messages.stream>[0]['messages'][number]
@@ -312,6 +315,68 @@ export async function* streamSynthesis(params: {
     oaiMessages(params.system, params.messages),
     params.maxTokens,
   )
+}
+
+// ─── streamWithTools — tool-use loop using the fast model (used for specialists) ──
+// Yields a typed event stream from lib/tool-loop.ts. Falls back to plain streaming
+// if the active provider isn't Anthropic-wire-compatible (OpenAI-compat can't run
+// the Anthropic tool_use schema without a translation layer).
+
+export async function* streamWithTools(params: {
+  agentId:   string
+  system?:   string
+  messages:  AIMessage[]
+  maxTokens: number
+  /** 'fast' (specialists/planning) | 'synthesis' (Marcus). Default 'fast'. */
+  modelTier?: 'fast' | 'synthesis'
+  /** Optional cap on tool loop iterations. Default 8. */
+  maxIterations?: number
+  /** Venture slug — required for the Github tool to resolve the active repo. */
+  ventureSlug?: string
+}): AsyncGenerator<ToolLoopEvent> {
+  // Engine switch: WAR_ROOM_ENGINE=agent_sdk routes through Claude Agent SDK
+  // (full Claude Code engine, subprocess). Default: Client SDK tool loop.
+  if (await isAgentSdkEnabled()) {
+    const userMsg = params.messages.filter(m => m.role === 'user').map(m => m.content).join('\n\n')
+    yield* runAgentSdk({
+      agentId:      params.agentId,
+      systemPrompt: params.system ?? '',
+      userPrompt:   userMsg,
+      modelTier:    params.modelTier,
+    })
+    return
+  }
+
+  const cfg = await loadConfig()
+  const model = (params.modelTier === 'synthesis' ? cfg.synthesisModel : cfg.fastModel)
+
+  if (cfg.protocol !== 'anthropic') {
+    // OpenAI-compatible endpoints: tool_use schema differs. Fall back to plain text.
+    yield { kind: 'iteration', n: 1 }
+    let buf = ''
+    for await (const chunk of (params.modelTier === 'synthesis'
+      ? streamSynthesis({ system: params.system, messages: params.messages, maxTokens: params.maxTokens })
+      : streamSynthesis({ system: params.system, messages: params.messages, maxTokens: params.maxTokens }))) {
+      buf += chunk
+      yield { kind: 'text', text: chunk }
+    }
+    yield { kind: 'done', reason: 'end_turn' }
+    return
+  }
+
+  const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
+  const tools = toolsForAgent(params.agentId)
+
+  yield* runToolLoop({
+    client,
+    model,
+    maxTokens:       params.maxTokens,
+    system:          params.system,
+    tools,
+    initialMessages: params.messages.map(m => ({ role: m.role, content: m.content })),
+    maxIterations:   params.maxIterations,
+    toolContext:     { ventureSlug: params.ventureSlug },
+  })
 }
 
 // ─── Expose active config info (for status bar in War Room) ──────────────────

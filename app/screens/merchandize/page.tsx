@@ -391,7 +391,7 @@ export default function MerchandizePage() {
   const [activeSkus, setActiveSkus] = useState(0)
 
   return (
-    <main className="pt-14 min-h-screen bg-black text-[var(--color-text)]">
+    <main className="pt-[96px] min-h-screen bg-black text-[var(--color-text)]">
       <div className="max-w-screen-2xl mx-auto px-8 py-10">
 
         {/* Header */}

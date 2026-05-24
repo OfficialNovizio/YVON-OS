@@ -1,3 +1,5 @@
+import { getSecret } from '@/lib/secrets'
+
 // Krea.ai Job Status — poll a generation job until completion
 // GET /api/krea/status?jobId=xxx
 // Returns: { status: 'pending' | 'completed' | 'failed', imageUrl?: string }
@@ -13,7 +15,7 @@ type KreaJob = {
 }
 
 export async function GET(request: Request): Promise<Response> {
-  const apiKey = process.env.KREA_API_KEY
+  const apiKey = await getSecret('KREA_API_KEY')
   if (!apiKey) {
     return Response.json({ error: 'KREA_API_KEY is not configured', status: 'failed' }, { status: 500 })
   }

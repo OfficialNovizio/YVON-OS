@@ -1,14 +1,14 @@
 'use client'
 
+import Image from 'next/image'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import type { AgentId, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord } from '@/lib/types'
 import { getActiveVentureSlugClient } from '@/lib/venture-context'
+import { supabaseClient } from '@/lib/supabase-client'
 
 // ── Glass system ────────────────────────────────────────────────────────────────
-const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
 const I3c = '#ffffff', I3d = 'rgba(241,245,251,0.85)';
 const ACCENT = '#0066cc';
-const INK_4  = 'rgba(10,37,71,0.52)';
 
 // ─── Agent meta ────────────────────────────────────────────────────────────────
 
@@ -40,15 +40,26 @@ const QUICK_PROMPTS = [
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
-type SessionStatus = 'idle' | 'planning' | 'executing' | 'synthesizing' | 'complete' | 'error'
+type SessionStatus = 'idle' | 'planning' | 'awaiting_approval' | 'executing' | 'synthesizing' | 'complete' | 'error'
 type RepoStatus    = 'idle' | 'loading' | 'ready' | 'error' | 'no-repo'
 
+interface ToolCallEntry {
+  id:        string   // tool_use_id from the model
+  name:      string   // tool name (Read, Glob, Grep, Github, etc.)
+  input:     unknown  // raw tool input (we render a short summary from this)
+  startedAt: number
+  endedAt?:  number
+  summary?:  string   // one-line result summary from the server
+  isError?:  boolean
+}
+
 type ThreadItem =
-  | { id: string; kind: 'user';      text: string; attachment?: { preview: string; mimeType: string } }
-  | { id: string; kind: 'plan';      objective: string; order: string; agents: AgentId[] }
-  | { id: string; kind: 'agent';     agentId: AgentId; task: string; status: AgentRunStatus; output?: string; expanded: boolean }
-  | { id: string; kind: 'synthesis'; text: string; streaming: boolean }
-  | { id: string; kind: 'error';     message: string }
+  | { id: string; kind: 'user';         text: string; attachment?: { preview: string; mimeType: string } }
+  | { id: string; kind: 'plan';         objective: string; order: string; agents: AgentId[] }
+  | { id: string; kind: 'engage_plan';  originalMessage: string; plan: import('@/lib/types').ExecutionPlan; routing: import('@/lib/types').RoutingResult }
+  | { id: string; kind: 'agent';        agentId: AgentId; task: string; status: AgentRunStatus; output?: string; expanded: boolean; startedAt: number; endedAt?: number; tools: ToolCallEntry[] }
+  | { id: string; kind: 'synthesis';    text: string; streaming: boolean }
+  | { id: string; kind: 'error';        message: string }
 
 // ─── Pure helpers ──────────────────────────────────────────────────────────────
 
@@ -64,6 +75,21 @@ function updateLastAgent(
     const item = prev[i]
     if (item.kind === 'agent' && item.agentId === agentId) {
       return [...prev.slice(0, i), { ...item, ...patch }, ...prev.slice(i + 1)]
+    }
+  }
+  return prev
+}
+
+/** Append or update a tool call entry on the most recent agent row for this agentId. */
+function patchLastAgentTools(
+  prev: ThreadItem[],
+  agentId: AgentId,
+  fn: (tools: ToolCallEntry[]) => ToolCallEntry[],
+): ThreadItem[] {
+  for (let i = prev.length - 1; i >= 0; i--) {
+    const item = prev[i]
+    if (item.kind === 'agent' && item.agentId === agentId) {
+      return [...prev.slice(0, i), { ...item, tools: fn(item.tools) }, ...prev.slice(i + 1)]
     }
   }
   return prev
@@ -157,6 +183,81 @@ function SimpleMarkdown({ text }: { text: string }) {
 
 // ─── Thread item components ────────────────────────────────────────────────────
 
+function GithubStatusPill({
+  status, label, branch, openIssues, snapshotError,
+}: {
+  status: RepoStatus
+  label: string | null
+  branch: string | null
+  openIssues: number | null
+  snapshotError: string | null
+}) {
+  // If we have a live snapshot, show its info regardless of the original page-load status
+  const effective: RepoStatus = snapshotError ? 'error' : (label ? 'ready' : status)
+  const config = {
+    idle:     { dot: 'rgba(255,255,255,0.30)',  text: I3d,                       icon: 'sync' },
+    loading:  { dot: 'rgba(250,204,21,0.70)',   text: 'rgba(250,204,21,0.85)',   icon: 'sync' },
+    ready:    { dot: 'rgba(52,211,153,0.80)',   text: 'rgba(52,211,153,0.90)',   icon: 'check_circle' },
+    error:    { dot: 'rgba(248,113,113,0.70)',  text: 'rgba(248,113,113,0.90)',  icon: 'error' },
+    'no-repo':{ dot: 'rgba(255,255,255,0.30)',  text: I3d,                       icon: 'link_off' },
+  }[effective]
+
+  const text =
+    effective === 'ready'    ? (label ?? 'connected')
+    : effective === 'error'  ? (snapshotError ? 'github error' : 'unavailable')
+    : effective === 'loading'? 'connecting…'
+    : effective === 'no-repo'? 'no repo linked'
+    : 'connecting…'
+
+  return (
+    <div
+      className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+      title={effective === 'ready' && branch ? `${label} · ${branch} · ${openIssues ?? 0} open issues` : snapshotError ?? `GitHub status: ${effective}`}
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: `1px solid ${effective === 'ready' ? 'rgba(52,211,153,0.25)' : effective === 'error' ? 'rgba(248,113,113,0.25)' : 'rgba(255,255,255,0.10)'}`,
+        fontFamily: 'ui-monospace, SF Mono, Monaco, monospace',
+      }}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${effective === 'loading' ? 'animate-pulse' : ''}`} style={{ background: config.dot }} />
+      <span className="material-symbols-outlined" style={{ fontSize: 13, color: config.text }}>code</span>
+      <span style={{ fontSize: 11, color: config.text, fontWeight: 600 }}>{text}</span>
+      {effective === 'ready' && branch && (
+        <>
+          <span style={{ fontSize: 10, color: I3d }}>·</span>
+          <span style={{ fontSize: 11, color: I3d }}>{branch}</span>
+          {openIssues !== null && (
+            <>
+              <span style={{ fontSize: 10, color: I3d }}>·</span>
+              <span style={{ fontSize: 11, color: I3d }}>{openIssues} issue{openIssues === 1 ? '' : 's'}</span>
+            </>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+function EnginePill({ engine }: { engine: 'client_sdk' | 'agent_sdk' }) {
+  const isClaude = engine === 'agent_sdk'
+  return (
+    <div
+      className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+      title={isClaude ? 'Engine: Claude Agent SDK (subprocess)' : 'Engine: Client SDK tool loop (in-process)'}
+      style={{
+        background: isClaude ? 'rgba(224,117,71,0.10)' : 'rgba(102,179,255,0.10)',
+        border: `1px solid ${isClaude ? 'rgba(224,117,71,0.30)' : 'rgba(102,179,255,0.30)'}`,
+        fontFamily: 'ui-monospace, SF Mono, Monaco, monospace',
+      }}
+    >
+      <span style={{ fontSize: 11 }}>{isClaude ? '🟠' : '🔵'}</span>
+      <span style={{ fontSize: 11, color: isClaude ? 'rgba(224,117,71,0.95)' : 'rgba(102,179,255,0.95)', fontWeight: 600 }}>
+        {isClaude ? 'Claude Agent SDK' : 'Client SDK'}
+      </span>
+    </div>
+  )
+}
+
 function UserBubble({ item }: { item: Extract<ThreadItem, { kind: 'user' }> }) {
   return (
     <div className="flex justify-end">
@@ -164,7 +265,7 @@ function UserBubble({ item }: { item: Extract<ThreadItem, { kind: 'user' }> }) {
         {item.attachment && (
           <div className="mb-2 flex justify-end">
             <div className="relative w-44 h-32 rounded-xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.10)' }}>
-              <img src={item.attachment.preview} alt="attachment" className="w-full h-full object-cover" />
+              <Image src={item.attachment.preview} alt="attachment" width={176} height={128} className="w-full h-full object-cover" />
               <div className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[9px] uppercase tracking-wider rounded" style={{ background: 'rgba(0,0,0,0.60)', color: I3c }}>
                 {item.attachment.mimeType.split('/')[1]}
               </div>
@@ -198,12 +299,42 @@ function PlanBanner({ item }: { item: Extract<ThreadItem, { kind: 'plan' }> }) {
   )
 }
 
+function formatElapsed(ms: number): string {
+  if (ms < 1000) return `${ms}ms`
+  const s = ms / 1000
+  if (s < 60) return `${s.toFixed(1)}s`
+  const m = Math.floor(s / 60)
+  return `${m}m${Math.floor(s - m * 60)}s`
+}
+
+function shortToolInput(name: string, input: unknown): string {
+  if (!input || typeof input !== 'object') return ''
+  const o = input as Record<string, unknown>
+  if (name === 'Read')      return String(o.file_path ?? '')
+  if (name === 'Glob')      return String(o.pattern ?? '') + (o.path ? `  in ${o.path}` : '')
+  if (name === 'Grep')      return `"${String(o.pattern ?? '')}"${o.glob ? `  ${o.glob}` : ''}${o.path ? `  in ${o.path}` : ''}`
+  if (name === 'Bash')      return String(o.command ?? '')
+  if (name === 'WebFetch')  return String(o.url ?? '')
+  if (name === 'Github')    {
+    const parts = [String(o.action ?? '')]
+    if (o.path)   parts.push(String(o.path))
+    if (o.query)  parts.push(`"${String(o.query)}"`)
+    if (o.branch) parts.push(`branch=${String(o.branch)}`)
+    if (o.state)  parts.push(`state=${String(o.state)}`)
+    return parts.join(' ')
+  }
+  if (name === 'TodoWrite' && Array.isArray(o.todos)) return `${(o.todos as unknown[]).length} item(s)`
+  return JSON.stringify(input).slice(0, 80)
+}
+
 function AgentCard({
   item,
   onToggle,
+  now,
 }: {
   item: Extract<ThreadItem, { kind: 'agent' }>
   onToggle: () => void
+  now: number
 }) {
   const meta = AGENT_META[item.agentId]
   const isActive = item.status === 'working' || item.status === 'retrying'
@@ -223,9 +354,12 @@ function AgentCard({
     retrying: 'RETRYING',
   }
 
+  const elapsedMs = (item.endedAt ?? now) - item.startedAt
+  const elapsedStr = formatElapsed(elapsedMs)
+
   return (
     <div className="flex justify-start">
-      <div className="w-full max-w-[480px] rounded-xl transition-all duration-300" style={{
+      <div className="w-full max-w-[640px] rounded-xl transition-all duration-300" style={{
         background: 'rgba(241,245,251,0.04)',
         border: item.status === 'done' ? '1px solid rgba(52,211,153,0.20)' : isActive ? '1px solid rgba(250,204,21,0.25)' : item.status === 'error' ? '1px solid rgba(248,113,113,0.20)' : '1px solid rgba(255,255,255,0.06)',
       }}>
@@ -258,8 +392,9 @@ function AgentCard({
             )}
           </div>
 
-          {/* Status + expand */}
+          {/* Status + elapsed + expand */}
           <div className="flex items-center gap-2 flex-shrink-0">
+            <span className="text-[10px] tabular-nums" style={{ color: I3d, fontFamily: 'ui-monospace, SF Mono, Monaco, monospace' }}>{elapsedStr}{isActive ? '…' : ''}</span>
             <div className="flex items-center gap-1.5">
               <span className={`w-1.5 h-1.5 rounded-full ${dotCls[item.status]}`} />
               <span className="text-[9px] font-bold tracking-widest" style={{ color: I3d }}>{statusLabel[item.status]}</span>
@@ -277,6 +412,28 @@ function AgentCard({
             )}
           </div>
         </div>
+
+        {/* Tool calls — CLI-style list. Visible whenever there's at least one call. */}
+        {item.tools.length > 0 && (
+          <div className="px-3 pb-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 8 }}>
+            <div className="space-y-1" style={{ fontFamily: 'ui-monospace, SF Mono, Monaco, monospace' }}>
+              {item.tools.map(t => {
+                const tElapsed = (t.endedAt ?? now) - t.startedAt
+                const inFlight = !t.endedAt
+                return (
+                  <div key={t.id} className="flex items-center gap-2" style={{ fontSize: 11, lineHeight: 1.4 }}>
+                    <span style={{ color: inFlight ? 'rgba(250,204,21,0.70)' : t.isError ? 'rgba(248,113,113,0.70)' : 'rgba(52,211,153,0.70)' }}>
+                      {inFlight ? '⏵' : t.isError ? '✗' : '✓'}
+                    </span>
+                    <span className="font-semibold" style={{ color: I3c }}>{t.name}</span>
+                    <span className="flex-1 truncate" style={{ color: I3d }}>{shortToolInput(t.name, t.input)}</span>
+                    <span className="tabular-nums flex-shrink-0" style={{ color: I3d, fontSize: 10 }}>{formatElapsed(tElapsed)}{inFlight ? '…' : ''}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Expanded output */}
         {item.expanded && item.output && (
@@ -346,6 +503,104 @@ function ErrorCard({ item }: { item: Extract<ThreadItem, { kind: 'error' }> }) {
   )
 }
 
+function EngagePlanCard({ item, onApprove, onCancel }: {
+  item: Extract<ThreadItem, { kind: 'engage_plan' }>
+  onApprove: () => void
+  onCancel: () => void
+}) {
+  const agents = (item.plan.agents ?? []) as AgentId[]
+  return (
+    <div className="flex justify-start">
+      <div className="max-w-[80%] w-full rounded-2xl overflow-hidden" style={{ background: 'rgba(15,22,38,0.70)', border: '1px solid rgba(245,158,11,0.30)', boxShadow: '0 0 0 1px rgba(245,158,11,0.08) inset' }}>
+        {/* Header */}
+        <div className="flex items-center gap-2 px-4 py-2.5" style={{ borderBottom: '1px solid rgba(245,158,11,0.15)', background: 'rgba(245,158,11,0.06)' }}>
+          <span style={{ fontSize: 14 }}>👑</span>
+          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.20em', textTransform: 'uppercase' as const, color: 'rgba(245,158,11,0.90)' }}>
+            Marcus — Engage + Plan
+          </span>
+        </div>
+
+        {/* Body */}
+        <div className="px-4 py-3 space-y-2.5">
+          {/* Intent + Venture row */}
+          <div className="flex gap-4 text-[12px]">
+            <span style={{ color: 'rgba(255,255,255,0.38)', minWidth: 64 }}>Intent</span>
+            <span style={{ color: I3c }}>{item.routing.intent.replace(/_/g, ' ')}</span>
+          </div>
+
+          {/* Team row */}
+          <div className="flex gap-4 text-[12px]">
+            <span style={{ color: 'rgba(255,255,255,0.38)', minWidth: 64 }}>Team</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              {agents.map(id => (
+                <span key={id} className="flex items-center gap-1 px-2 py-0.5 rounded-lg" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 11 }}>
+                  <span>{AGENT_META[id]?.icon ?? '?'}</span>
+                  <span style={{ color: I3c }}>{AGENT_META[id]?.name ?? id}</span>
+                </span>
+              ))}
+              <span className="px-2 py-0.5 rounded-lg" style={{ background: `${ACCENT}18`, border: `1px solid ${ACCENT}30`, fontSize: 9, color: ACCENT, textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>
+                {item.plan.order}
+              </span>
+            </div>
+          </div>
+
+          {/* Plan steps */}
+          {agents.length > 0 && (
+            <div className="flex gap-4 text-[12px]">
+              <span style={{ color: 'rgba(255,255,255,0.38)', minWidth: 64 }}>Plan</span>
+              <div className="space-y-1.5 flex-1">
+                {agents.map(id => {
+                  const task = item.plan.each_agent_task?.[id]
+                  return task ? (
+                    <div key={id} className="flex gap-2">
+                      <span style={{ color: 'rgba(255,255,255,0.30)', flexShrink: 0 }}>→</span>
+                      <span style={{ color: I3d }}>
+                        <span style={{ color: I3c, fontWeight: 500 }}>{AGENT_META[id]?.name ?? id}:</span>{' '}
+                        {task.length > 100 ? task.slice(0, 100) + '…' : task}
+                      </span>
+                    </div>
+                  ) : null
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Done condition */}
+          {item.plan.definition_of_done && (
+            <div className="flex gap-4 text-[12px]">
+              <span style={{ color: 'rgba(255,255,255,0.38)', minWidth: 64 }}>Done when</span>
+              <span style={{ color: I3d }}>{item.plan.definition_of_done}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Footer — approval gate */}
+        <div className="flex items-center justify-between px-4 py-3" style={{ borderTop: '1px solid rgba(245,158,11,0.12)', background: 'rgba(245,158,11,0.04)' }}>
+          <span style={{ fontSize: 11, color: 'rgba(245,158,11,0.70)', fontStyle: 'italic' }}>
+            Awaiting your go-ahead →
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onCancel}
+              className="px-3 py-1.5 rounded-lg text-[11px] transition-all active:scale-95"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', color: I3d, cursor: 'pointer' }}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={onApprove}
+              className="px-4 py-1.5 rounded-lg text-[11px] font-semibold transition-all active:scale-95"
+              style={{ background: 'rgba(245,158,11,0.85)', border: '1px solid rgba(245,158,11,0.60)', color: '#000', cursor: 'pointer' }}
+            >
+              Go ahead →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Main page ─────────────────────────────────────────────────────────────────
 
 export default function WarRoomPage() {
@@ -357,11 +612,16 @@ export default function WarRoomPage() {
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>('idle')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [venture, setVenture]             = useState('Novizio')
-  const [ventureSlug, setVentureSlug]     = useState('')
+  const [ventureSlug, setVentureSlug] = useState('')
   const [githubContext, setGithubContext] = useState('')
   const [repoStatus, setRepoStatus]       = useState<RepoStatus>('idle')
   const [repoLabel, setRepoLabel]         = useState('')
   const [history, setHistory]             = useState<WarRoomPlanRecord[]>([])
+  // Tick that drives live elapsed-time displays while the session is active.
+  const [tick, setTick]                   = useState(0)
+  // Live diagnostic state emitted by the server at session start
+  const [engine, setEngine]               = useState<'client_sdk' | 'agent_sdk' | null>(null)
+  const [snapshot, setSnapshot]           = useState<{ repo: string | null; branch: string | null; openIssues: number | null; error: string | null } | null>(null)
   const [historyOpen, setHistoryOpen]     = useState(false)
   const [historyLoading, setHistoryLoading] = useState(false)
   const [copiedId, setCopiedId]           = useState<string | null>(null)
@@ -373,6 +633,14 @@ export default function WarRoomPage() {
   const abortRef        = useRef<AbortController | null>(null)
   const synthesisIdRef  = useRef<string | null>(null)
   const synthesisTextRef = useRef('')
+
+  // Live timer — re-renders every 250ms while the session is running so elapsed
+  // counters update. Stops when idle/complete to avoid wasted renders.
+  useEffect(() => {
+    if (sessionStatus !== 'planning' && sessionStatus !== 'executing' && sessionStatus !== 'synthesizing') return
+    const t = setInterval(() => setTick(n => n + 1), 250)
+    return () => clearInterval(t)
+  }, [sessionStatus])
 
   // Auto-scroll thread to bottom on new items
   useEffect(() => {
@@ -433,6 +701,22 @@ export default function WarRoomPage() {
     }
   }, [venture])
 
+  // Restore a past session into the current thread so the user can read it and continue from there.
+  const loadSessionIntoThread = useCallback((plan: WarRoomPlanRecord) => {
+    const synthesis = plan.synthesis ?? '(this session had no recorded synthesis)'
+    const items: ThreadItem[] = [
+      { id: mkId(), kind: 'user', text: plan.userPrompt },
+      ...(plan.objective ? [{ id: mkId(), kind: 'plan' as const, objective: plan.objective, order: plan.agentOrder, agents: plan.agentsUsed }] : []),
+      { id: mkId(), kind: 'synthesis', text: synthesis, streaming: false },
+    ]
+    setThread(items)
+    // Seed conversation history so the next message has the prior exchange as context
+    setConversationHistory([{ user: plan.userPrompt, marcus: synthesis }])
+    setHistoryOpen(false)
+    // Scroll thread back to top so the user sees the restored exchange from the start
+    requestAnimationFrame(() => threadRef.current?.scrollTo({ top: 0, behavior: 'auto' }))
+  }, [])
+
   // File attachment handler
   const handleFile = (file: File) => {
     if (!file.type.startsWith('image/')) return
@@ -460,31 +744,58 @@ export default function WarRoomPage() {
     })
   }, [])
 
+  // ── Auth cookie refresh ───────────────────────────────────────────────────────
+  // The yvon_auth cookie has a 1-hour TTL but Supabase client sessions (localStorage)
+  // persist via refresh tokens. Refresh the cookie silently before each War Room call
+  // so the middleware doesn't 401.
+  async function ensureAuthCookie(): Promise<boolean> {
+    const { data: { session } } = await supabaseClient.auth.getSession()
+    if (!session?.access_token) return false
+    const res = await fetch('/api/auth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accessToken: session.access_token }),
+    })
+    return res.ok
+  }
+
   // ── Run a session ────────────────────────────────────────────────────────────
-  const run = useCallback(async () => {
-    if (!input.trim()) return
+  const run = useCallback(async (approvalData?: {
+    originalMessage: string
+    plan: import('@/lib/types').ExecutionPlan
+    routing: import('@/lib/types').RoutingResult
+  }) => {
+    const isApproval = !!approvalData
+    if (!isApproval && !input.trim()) return
     if (sessionStatus === 'planning' || sessionStatus === 'executing' || sessionStatus === 'synthesizing') return
 
-    const msg = input.trim()
-    const att = attachment
-    setInput('')
-    setAttachment(null)
-    setSessionStatus('planning')
+    const msg = isApproval ? approvalData.originalMessage : input.trim()
+    const att = isApproval ? null : attachment
+
+    if (!isApproval) {
+      setInput('')
+      setAttachment(null)
+      if (textareaRef.current) textareaRef.current.style.height = 'auto'
+      setThread(prev => [...prev, {
+        id: mkId(), kind: 'user', text: msg,
+        attachment: att ? { preview: att.preview, mimeType: att.mimeType } : undefined,
+      }])
+    } else {
+      // Remove the engage_plan card — execution is about to start
+      setThread(prev => prev.filter(i => i.kind !== 'engage_plan'))
+    }
+
+    setSessionStatus(isApproval ? 'executing' : 'planning')
     setAgentRoster({})
     setSessionAgents([])
     synthesisIdRef.current  = null
     synthesisTextRef.current = ''
 
-    // Reset textarea height
-    if (textareaRef.current) textareaRef.current.style.height = 'auto'
-
-    setThread(prev => [...prev, {
-      id: mkId(), kind: 'user', text: msg,
-      attachment: att ? { preview: att.preview, mimeType: att.mimeType } : undefined,
-    }])
-
     abortRef.current?.abort()
     abortRef.current = new AbortController()
+
+    // Refresh the yvon_auth cookie silently before hitting the API
+    await ensureAuthCookie()
 
     try {
       const res = await fetch('/api/team-chat', {
@@ -493,10 +804,16 @@ export default function WarRoomPage() {
         body: JSON.stringify({
           message: msg,
           ventureName: venture,
+          ventureSlug: ventureSlug || undefined,
           githubContext: githubContext || undefined,
           imageBase64: att?.base64,
           imageMimeType: att?.mimeType,
           conversationHistory: conversationHistory.slice(-2),
+          ...(isApproval ? {
+            approved: true,
+            previousPlan: approvalData.plan,
+            previousRouting: approvalData.routing,
+          } : {}),
         }),
         signal: abortRef.current.signal,
       })
@@ -518,7 +835,7 @@ export default function WarRoomPage() {
           if (line.startsWith(':')) continue
           if (!line.startsWith('data:')) continue
           const raw = line.slice(5).trim()
-          if (raw === '[DONE]') { setSessionStatus('complete'); continue }
+          if (raw === '[DONE]') { setSessionStatus(prev => prev === 'awaiting_approval' ? 'awaiting_approval' : 'complete'); continue }
 
           let evt: WarRoomEvent
           try { evt = JSON.parse(raw) } catch { continue }
@@ -555,22 +872,51 @@ export default function WarRoomPage() {
                 task: evt.task ?? '',
                 status: 'working',
                 expanded: false,
+                startedAt: Date.now(),
+                tools: [],
               }])
               break
             }
             case 'agent_complete': {
               setAgentRoster(prev => ({ ...prev, [evt.agentId]: 'done' }))
-              setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, { status: 'done', output: evt.previewText }))
+              setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, { status: 'done', endedAt: Date.now(), output: evt.previewText }))
               break
             }
             case 'agent_error': {
               setAgentRoster(prev => ({ ...prev, [evt.agentId]: 'error' }))
-              setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, { status: 'error' }))
+              setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, { status: 'error', endedAt: Date.now() }))
               break
             }
             case 'retry': {
               setAgentRoster(prev => ({ ...prev, [evt.agentId]: 'retrying' }))
               setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, { status: 'retrying' }))
+              break
+            }
+            case 'tool_call_start': {
+              const id = (evt.tool_use_id as string) || `${evt.agentId}-${Date.now()}`
+              setThread(prev => patchLastAgentTools(prev, evt.agentId as AgentId, tools => [
+                ...tools,
+                { id, name: evt.tool as string, input: evt.input, startedAt: Date.now() },
+              ]))
+              break
+            }
+            case 'tool_call_result': {
+              const id = evt.tool_use_id as string
+              setThread(prev => patchLastAgentTools(prev, evt.agentId as AgentId, tools =>
+                tools.map(t => t.id === id ? { ...t, endedAt: Date.now(), summary: evt.summary as string, isError: !!evt.is_error } : t),
+              ))
+              break
+            }
+            case 'tool_iteration': {
+              // Reserved for showing iteration count if we want it visible later
+              break
+            }
+            case 'github_snapshot': {
+              setSnapshot({ repo: evt.repo, branch: evt.branch, openIssues: evt.openIssues, error: evt.error })
+              break
+            }
+            case 'engine': {
+              setEngine(evt.engine)
               break
             }
             case 'text': {
@@ -593,8 +939,22 @@ export default function WarRoomPage() {
               }
               break
             }
+            case 'plan_approval_required': {
+              // ⛔ WORKFLOW RULE 4 — DO NOT REMOVE. See app/api/team-chat/route.ts for full comment.
+              // Phase 1 complete — show ENGAGE+PLAN card and wait for user approval
+              const planData = evt.plan as import('@/lib/types').ExecutionPlan
+              const routingData = evt.routing as import('@/lib/types').RoutingResult
+              setThread(prev => [...prev, {
+                id: mkId(), kind: 'engage_plan',
+                originalMessage: msg,
+                plan: planData,
+                routing: routingData,
+              }])
+              setSessionStatus('awaiting_approval')
+              break
+            }
             case 'plan_complete': {
-              setSessionStatus('complete')
+              setSessionStatus(prev => prev === 'awaiting_approval' ? 'awaiting_approval' : 'complete')
               const sid = synthesisIdRef.current
               if (sid) {
                 setThread(prev => {
@@ -658,12 +1018,13 @@ export default function WarRoomPage() {
   const isRunning = sessionStatus === 'planning' || sessionStatus === 'executing' || sessionStatus === 'synthesizing'
 
   const statusLabels: Record<SessionStatus, string> = {
-    idle:        'Ready',
-    planning:    'Planning…',
-    executing:   'Agents working',
-    synthesizing:'Marcus synthesizing',
-    complete:    'Complete',
-    error:       'Error',
+    idle:              'Ready',
+    planning:          'Planning…',
+    awaiting_approval: 'Awaiting approval',
+    executing:         'Agents working',
+    synthesizing:      'Marcus synthesizing',
+    complete:          'Complete',
+    error:             'Error',
   }
 
   return (
@@ -745,21 +1106,23 @@ export default function WarRoomPage() {
       <div className="flex-1 flex flex-col overflow-hidden rounded-2xl" style={{ background: 'linear-gradient(135deg,rgba(15,22,38,0.62),rgba(8,14,28,0.78))', backdropFilter: 'blur(28px) saturate(140%)', WebkitBackdropFilter: 'blur(28px) saturate(140%)', border: '1px solid rgba(255,255,255,0.12)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14),0 20px 50px -16px rgba(0,10,40,0.55)' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingTop: 12, paddingBottom: 12 }}>
-          <div>
-            <div className="flex items-center gap-2 mb-0.5" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', textTransform: 'uppercase' as const, color: I3d }}>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: ACCENT }} />
-              War Room
+        <div className="flex items-center justify-between gap-3 px-6 flex-shrink-0 flex-wrap" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingTop: 12, paddingBottom: 12 }}>
+          <div className="flex items-center gap-3 flex-wrap">
+            <div>
+              <div className="flex items-center gap-2 mb-0.5" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.24em', textTransform: 'uppercase' as const, color: I3d }}>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: ACCENT }} />
+                War Room
+              </div>
+              <p style={{ fontSize: 13, color: I3c, fontWeight: 600 }}>{venture}</p>
             </div>
-            <p style={{ fontSize: 12, color: I3c }} className="flex items-center gap-1.5">
-              <span>{venture}</span>
-              <span style={{ color: I3d }}>·</span>
-              {repoStatus === 'ready'   && <span style={{ color: 'rgba(52,211,153,0.60)' }}>{repoLabel}</span>}
-              {repoStatus === 'loading' && <span style={{ color: I3d }}>loading repo…</span>}
-              {repoStatus === 'error'   && <span style={{ color: 'rgba(248,113,113,0.60)' }}>repo unavailable</span>}
-              {repoStatus === 'no-repo' && <span style={{ color: I3d }}>no repo linked</span>}
-            </p>
+
+            {/* GitHub connection pill — Claude CLI-style status bar */}
+            <GithubStatusPill status={repoStatus} label={snapshot?.repo ?? repoLabel} branch={snapshot?.branch ?? null} openIssues={snapshot?.openIssues ?? null} snapshotError={snapshot?.error ?? null} />
+
+            {/* Engine indicator — only visible after first session run */}
+            {engine && <EnginePill engine={engine} />}
           </div>
+
           {thread.length > 0 && (
             <button
               onClick={reset}
@@ -807,8 +1170,20 @@ export default function WarRoomPage() {
                   return <UserBubble key={item.id} item={item} />
                 case 'plan':
                   return <PlanBanner key={item.id} item={item} />
+                case 'engage_plan':
+                  return (
+                    <EngagePlanCard
+                      key={item.id}
+                      item={item}
+                      onApprove={() => void run({ originalMessage: item.originalMessage, plan: item.plan, routing: item.routing })}
+                      onCancel={() => {
+                        setThread(prev => prev.filter(i => i.kind !== 'engage_plan'))
+                        setSessionStatus('idle')
+                      }}
+                    />
+                  )
                 case 'agent':
-                  return <AgentCard key={item.id} item={item} onToggle={() => toggleAgentExpand(item.id)} />
+                  return <AgentCard key={item.id} item={item} onToggle={() => toggleAgentExpand(item.id)} now={Date.now()} />
                 case 'synthesis':
                   return (
                     <SynthesisBubble
@@ -832,7 +1207,7 @@ export default function WarRoomPage() {
           {attachment && (
             <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(255,255,255,0.10)' }}>
-                <img src={attachment.preview} alt="" className="w-full h-full object-cover" />
+                <Image src={attachment.preview} alt="" width={36} height={36} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <p style={{ fontSize: 11, color: I3c }}>Image attached</p>
@@ -927,7 +1302,13 @@ export default function WarRoomPage() {
               <p className="text-[11px] text-center py-3" style={{ color: I3d }}>No sessions yet.</p>
             )}
             {history.map((plan) => (
-              <div key={plan.id} className="flex items-center gap-3 px-5 py-2 transition-colors" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+              <button
+                key={plan.id}
+                onClick={() => loadSessionIntoThread(plan)}
+                title="Click to load this session into the chat"
+                className="w-full text-left flex items-center gap-3 px-5 py-2 transition-colors hover:bg-white/5"
+                style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", background: "none", border: "none", cursor: "pointer" }}
+              >
                 <span className={"w-1.5 h-1.5 rounded-full flex-shrink-0 " + (plan.status === "complete" ? "bg-green-400" : plan.status === "partial" ? "bg-yellow-400" : "bg-red-400")} />
                 <p className="flex-1 text-[12px] truncate" style={{ color: I3c }}>
                   {plan.userPrompt.split(" ").slice(0, 6).join(" ")}
@@ -947,7 +1328,7 @@ export default function WarRoomPage() {
                 <span className="text-[10px] flex-shrink-0 tabular-nums" style={{ color: I3d }}>
                   {new Date(plan.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
                 </span>
-              </div>
+              </button>
             ))}
           </div>
         )}

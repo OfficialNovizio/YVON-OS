@@ -36,7 +36,8 @@ export async function checkDatabaseHealth(): Promise<DbHealthResult> {
   // Query performance (benchmark on social_stats)
   try {
     const qStart = Date.now()
-    const { error: qErr } = await supabase.from('social_stats').select('count', { count: 'exact', head: true }).limit(1)
+    const { error: _qErr } = await supabase.from('social_stats').select('count', { count: 'exact', head: true }).limit(1)
+    void _qErr
     const qTime = Date.now() - qStart
     details.queryPerf = { status: qTime < 1000 ? 'pass' : 'warn', value: `${qTime}ms` }
   } catch (e: any) {

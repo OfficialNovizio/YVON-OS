@@ -2,9 +2,10 @@
 // Accepts campaign asset prompts and returns generated images
 
 import { generateWithKrea } from '@/lib/krea'
+import { getSecret } from '@/lib/secrets'
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.KREA_API_KEY) {
+  if (!(await getSecret('KREA_API_KEY'))) {
     return Response.json({ error: 'KREA_API_KEY not set — apply for access' }, { status: 500 })
   }
 

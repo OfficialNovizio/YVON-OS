@@ -3,11 +3,12 @@ import type { RoutingResult } from '@/lib/types'
 
 const CLASSIFIER_PROMPT = `You are a routing classifier for an AI team. Analyze the user's message and return JSON only — no explanation.
 
-Available intents: strategy, marketing_content, social_tactics, content_create, growth_data, competitor_intel, technical_backend, technical_frontend, technical_general, qa_review, trending_content, operations, product_roadmap, advertising
+Available intents: strategy, marketing_content, social_tactics, content_create, growth_data, competitor_intel, technical_backend, technical_frontend, technical_general, qa_review, trending_content, operations, product_roadmap, advertising, github_analysis
 
 Available specialists: marcus-ceo, diana-coo, lena-brand, rio-ads, atlas-art-director, pixel-production, kai-analyst, nate-growth, dev-lead, raj-backend, mia-frontend, quinn-qa, felix-finance
 
 Intent guidance:
+- github_analysis: GitHub project report, repo overview, commit history, open issues, PRs, branch status, codebase health, project status — ALWAYS use this when the user asks about "the github project", "the repo", "report on the codebase", "what's in the repo", "github status"
 - technical_backend: API routes, database, Supabase, server-side logic, integrations, data models
 - technical_frontend: UI components, styling, Tailwind, animations, design system, layout, responsiveness
 - technical_general: architecture decisions, full-stack features, or unclear which layer

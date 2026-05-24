@@ -3,12 +3,14 @@
 // commits each file, and opens a draft PR. Agents write code — this ships it.
 
 import { getVentureBySlug } from '@/lib/db'
+import { getRequiredSecret, getSecret } from '@/lib/secrets'
 
 const GH_API = 'https://api.github.com'
 
-function ghHeaders() {
+async function ghHeaders() {
+  const token = await getRequiredSecret('GITHUB_TOKEN')
   return {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Authorization: `Bearer ${token}`,
     Accept:        'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
     'User-Agent':  'YVON-OS/1.0',
@@ -28,7 +30,7 @@ function parseRepoUrl(url: string): { owner: string; repo: string } | null {
 async function gh<T>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${GH_API}${path}`, {
     ...opts,
-    headers: { ...ghHeaders(), ...(opts?.headers as Record<string, string> ?? {}) },
+    headers: { ...(await ghHeaders()), ...(opts?.headers as Record<string, string> ?? {}) },
   })
   if (!res.ok) {
     const body = await res.text()
@@ -96,7 +98,7 @@ function parseCodeBlocks(text: string): ParsedFile[] {
 // ─── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: Request): Promise<Response> {
-  if (!process.env.GITHUB_TOKEN) {
+  if (!(await getSecret('GITHUB_TOKEN'))) {
     return Response.json({ error: 'GITHUB_TOKEN not configured' }, { status: 503 })
   }
 

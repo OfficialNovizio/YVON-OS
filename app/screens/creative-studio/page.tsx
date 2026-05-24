@@ -784,7 +784,7 @@ export default function CreativeStudioPage() {
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <main className="pb-24 px-8 max-w-[900px] 2xl:max-w-[min(90vw,1200px)] mx-auto">
+    <main className="pb-24 px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto">
 
       {/* Header */}
       <div className="pt-[96px] pb-6">
