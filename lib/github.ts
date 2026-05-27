@@ -147,3 +147,55 @@ export async function searchCode(owner: string, repo: string, query: string): Pr
   const d = await gh<{ items: Array<{ path: string; html_url: string }> }>(`/search/code?q=${q}&per_page=20`)
   return d.items.map(i => ({ path: i.path, url: i.html_url }))
 }
+
+// ─── Write operations ─────────────────────────────────────────────────────────
+
+/** Delete a file from the repo via the GitHub Contents API. Auto-fetches the current SHA. */
+export async function deleteRepoFile(
+  owner: string,
+  repo: string,
+  path: string,
+  message: string,
+  branch?: string,
+): Promise<{ commitSha: string }> {
+  const existing = await gh<{ sha: string }>(`/repos/${owner}/${repo}/contents/${path}`)
+  const body: Record<string, string> = { message, sha: existing.sha }
+  if (branch) body.branch = branch
+  const result = await gh<{ commit: { sha: string } }>(
+    `/repos/${owner}/${repo}/contents/${path}`,
+    { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+  )
+  return { commitSha: result.commit.sha }
+}
+
+/** Create or update a file in the repo via the GitHub Contents API. Returns the commit SHA and URL. */
+export async function createOrUpdateRepoFile(
+  owner: string,
+  repo: string,
+  path: string,
+  content: string,   // plain UTF-8 text — encoded to base64 before sending
+  message: string,
+  branch?: string,
+): Promise<{ sha: string; url: string; created: boolean }> {
+  // Auto-fetch existing file's SHA so we can update instead of erroring on existing paths
+  let existingSha: string | undefined
+  try {
+    const existing = await gh<{ sha: string }>(`/repos/${owner}/${repo}/contents/${path}`)
+    existingSha = existing.sha
+  } catch {
+    // 404 = new file — that's fine
+  }
+
+  const body: Record<string, string> = {
+    message,
+    content: Buffer.from(content, 'utf-8').toString('base64'),
+  }
+  if (existingSha) body.sha = existingSha
+  if (branch) body.branch = branch
+
+  const result = await gh<{ content: { sha: string; html_url: string } }>(
+    `/repos/${owner}/${repo}/contents/${path}`,
+    { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+  )
+  return { sha: result.content.sha, url: result.content.html_url, created: !existingSha }
+}

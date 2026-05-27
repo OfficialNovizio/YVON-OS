@@ -344,8 +344,20 @@ export default function AgentsSettingsPage() {
   const [saving,      setSaving]      = useState<Record<string, boolean>>({})
   const [saved,       setSaved]       = useState<Record<string, boolean>>({})
 
+  // War Room engine state
+  const [engineInfo,    setEngineInfo]    = useState<{ engine: string; fastModel: string; synthesisModel: string } | null>(null)
+  const [engineLoading, setEngineLoading] = useState(true)
+  const [engineSaving,  setEngineSaving]  = useState(false)
+  const [engineSaved,   setEngineSaved]   = useState(false)
+  const [engineError,   setEngineError]   = useState('')
+
   useEffect(() => {
     void fetchSettings()
+    fetch('/api/war-room-engine')
+      .then(r => r.json() as Promise<{ engine: string; fastModel: string; synthesisModel: string }>)
+      .then(setEngineInfo)
+      .catch(() => {})
+      .finally(() => setEngineLoading(false))
   }, [])
 
   async function fetchSettings() {
@@ -389,6 +401,25 @@ export default function AgentsSettingsPage() {
       setTimeout(() => setSaved(prev => ({ ...prev, [agentId]: false })), 3000)
     } finally {
       setSaving(prev => ({ ...prev, [agentId]: false }))
+    }
+  }
+
+  async function saveEngine(mode: 'client_sdk' | 'agent_sdk') {
+    setEngineSaving(true); setEngineError('')
+    try {
+      const res = await fetch('/api/secrets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'WAR_ROOM_ENGINE', value: mode === 'agent_sdk' ? 'agent_sdk' : '' }),
+      })
+      const data = await res.json() as { ok?: boolean; error?: string }
+      if (!res.ok || data.error) throw new Error(data.error ?? `HTTP ${res.status}`)
+      setEngineInfo(prev => prev ? { ...prev, engine: mode } : prev)
+      setEngineSaved(true); setTimeout(() => setEngineSaved(false), 2500)
+    } catch (e) {
+      setEngineError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setEngineSaving(false)
     }
   }
 
@@ -465,6 +496,92 @@ export default function AgentsSettingsPage() {
                 onClick={() => setPanelAgent(agent)}
               />
             ))}
+          </div>
+
+          {/* ── War Room Engine ──────────────────────────────────────────── */}
+          <div style={{ marginTop: 40, borderTop: `1px solid ${T.border}`, paddingTop: 32 }}>
+            <div style={{ marginBottom: 18 }}>
+              <h2 style={{ fontSize: 16, fontWeight: 600, color: T.text1, letterSpacing: '-0.02em', margin: 0, marginBottom: 6 }}>
+                War Room Engine
+              </h2>
+              <p style={{ fontSize: 12, color: T.text2, lineHeight: 1.6, maxWidth: 520 }}>
+                <strong style={{ color: T.text1 }}>Claude Agent SDK</strong> spawns a real Claude Code subprocess per agent — identical engine to the Cursor extension, with full workspace access.{' '}
+                <strong style={{ color: T.text1 }}>Client SDK</strong> runs an in-process tool loop.
+                Agent SDK is local-only; Vercel falls back to Client SDK automatically.
+              </p>
+            </div>
+
+            {engineLoading ? (
+              <p style={{ fontSize: 12, color: T.text3 }}>Loading…</p>
+            ) : engineInfo ? (
+              <div>
+                <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' as const }}>
+                  {([
+                    { value: 'client_sdk', emoji: '🔵', label: 'Client SDK',        desc: 'In-process tool loop' },
+                    { value: 'agent_sdk',  emoji: '🟠', label: 'Claude Agent SDK',   desc: 'Full Claude Code subprocess' },
+                  ] as const).map(opt => {
+                    const isActive = engineInfo.engine === opt.value
+                    const color = opt.value === 'agent_sdk' ? 'rgba(224,117,71,1)' : 'rgba(102,179,255,1)'
+                    const bg    = opt.value === 'agent_sdk' ? 'rgba(224,117,71,0.12)' : 'rgba(102,179,255,0.12)'
+                    const bdr   = opt.value === 'agent_sdk' ? 'rgba(224,117,71,0.45)' : 'rgba(102,179,255,0.45)'
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => { if (!isActive && !engineSaving) void saveEngine(opt.value) }}
+                        disabled={engineSaving}
+                        style={{
+                          background:   isActive ? bg : T.surface,
+                          border:       `1px solid ${isActive ? bdr : T.border}`,
+                          borderRadius: 12,
+                          padding:      '12px 20px',
+                          cursor:       isActive || engineSaving ? 'default' : 'pointer',
+                          fontFamily:   T.font,
+                          textAlign:    'left' as const,
+                          transition:   'all 0.15s',
+                          opacity:      engineSaving && !isActive ? 0.5 : 1,
+                          minWidth:     180,
+                        }}
+                      >
+                        <div style={{ fontSize: 13, fontWeight: isActive ? 600 : 400, color: isActive ? color : T.text2, marginBottom: 3 }}>
+                          {opt.emoji} {opt.label}
+                          {isActive && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color }}>ACTIVE</span>}
+                        </div>
+                        <div style={{ fontSize: 11, color: T.text3 }}>{opt.desc}</div>
+                      </button>
+                    )
+                  })}
+                </div>
+
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' as const }}>
+                  <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: '6px 14px', fontSize: 11, display: 'flex', gap: 8 }}>
+                    <span style={{ color: T.text3 }}>Specialist model</span>
+                    <span style={{ color: T.text1, fontFamily: 'ui-monospace, SF Mono, Monaco, monospace' }}>{engineInfo.fastModel}</span>
+                  </div>
+                  <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: '6px 14px', fontSize: 11, display: 'flex', gap: 8 }}>
+                    <span style={{ color: T.text3 }}>CEO synthesis</span>
+                    <span style={{ color: T.text1, fontFamily: 'ui-monospace, SF Mono, Monaco, monospace' }}>{engineInfo.synthesisModel}</span>
+                  </div>
+                </div>
+
+                {engineSaving && <p style={{ fontSize: 11, color: T.text3, marginTop: 10 }}>Saving…</p>}
+                {engineSaved  && <p style={{ fontSize: 11, color: '#30d158', marginTop: 10, fontWeight: 600 }}>✓ Engine mode saved</p>}
+                {engineError  && <p style={{ fontSize: 11, color: '#ff453a', marginTop: 10 }}>✗ {engineError}</p>}
+
+                <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${T.border}` }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: T.text3, letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>
+                    Local Repo Path (per venture)
+                  </p>
+                  <p style={{ fontSize: 12, color: T.text2, lineHeight: 1.6, marginBottom: 0 }}>
+                    Set the absolute path to each venture&apos;s cloned repo in{' '}
+                    <strong style={{ color: T.text1 }}>Settings → Venture Profile → Local Repo Path</strong>.
+                    When the War Room is switched to <strong style={{ color: T.text1 }}>Local mode</strong>,
+                    agents use Read / Bash / Glob / Grep on that path instead of the GitHub API.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p style={{ fontSize: 12, color: T.text3 }}>Could not load engine info.</p>
+            )}
           </div>
         </main>
       </div>

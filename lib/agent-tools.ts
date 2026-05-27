@@ -23,6 +23,7 @@ import {
   resolveVentureRepo,
   getRepoInfo, getRepoTree, getRepoFile,
   listIssues, listPRs, listBranches, listCommits, searchCode,
+  createOrUpdateRepoFile, deleteRepoFile,
 } from '@/lib/github'
 
 const execP = promisify(exec)
@@ -49,7 +50,11 @@ export const ALL_TOOLS: ToolName[] = ['Read', 'Glob', 'Grep', 'Bash', 'WebFetch'
 
 /** Per-call context for tools that need session-scope info (e.g. which venture's repo). */
 export interface ToolContext {
-  ventureSlug?: string
+  ventureSlug?:   string
+  /** 'github' (default) | 'local' — controls whether FS tools are allowed for product ventures */
+  repoMode?:      'github' | 'local'
+  /** Absolute path to the venture's locally cloned repo (only relevant when repoMode=local) */
+  localRepoPath?: string
 }
 
 type AnthropicTool = Anthropic.Messages.Tool
@@ -146,19 +151,21 @@ export const TOOL_SCHEMAS: Record<ToolName, AnthropicTool> = {
   },
   Github: {
     name: 'Github',
-    description: 'Query the active venture\'s configured GitHub repo via the GitHub API. Use this to VERIFY repo existence, read files, check commits/issues/PRs/branches before making claims. If the user asks anything about "the repo" / "github" / "the codebase", use this — never guess.',
+    description: 'Query OR write to the active venture\'s GitHub repo. READ: verify repo existence, read files, check commits/issues/PRs/branches. WRITE: use action=write_file to commit a file directly to the repo — no git push needed. If the user uploads a file and asks you to add it to the repo, use write_file.',
     input_schema: {
       type: 'object',
       properties: {
         action: {
           type: 'string',
-          enum: ['repo', 'tree', 'file', 'issues', 'prs', 'branches', 'commits', 'search'],
-          description: 'repo=metadata · tree=full file list · file=read one file (needs path) · issues · prs · branches · commits · search=code search (needs query)',
+          enum: ['repo', 'tree', 'file', 'issues', 'prs', 'branches', 'commits', 'search', 'write_file', 'delete_file'],
+          description: 'repo=metadata · tree=full file list · file=read one file · issues · prs · branches · commits · search · write_file=create or update a file (needs path, content, message) · delete_file=delete a file (needs path, message)',
         },
-        path:   { type: 'string', description: 'For action=file: the file path inside the repo.' },
-        branch: { type: 'string', description: 'For action=tree: branch (defaults to main).' },
-        state:  { type: 'string', enum: ['open', 'closed', 'all'], description: 'For issues/prs.' },
-        query:  { type: 'string', description: 'For action=search: code search query.' },
+        path:    { type: 'string', description: 'File path inside the repo. Required for file, write_file, delete_file.' },
+        content: { type: 'string', description: 'For write_file: the full file content as plain text.' },
+        message: { type: 'string', description: 'For write_file and delete_file: the commit message.' },
+        branch:  { type: 'string', description: 'For tree, write_file, delete_file: branch name (defaults to repo default).' },
+        state:   { type: 'string', enum: ['open', 'closed', 'all'], description: 'For issues/prs.' },
+        query:   { type: 'string', description: 'For action=search: code search query.' },
       },
       required: ['action'],
     },
@@ -330,7 +337,7 @@ async function execWebFetch(input: { url: string; prompt: string }): Promise<Too
 interface TodoItem { content: string; status: 'pending' | 'in_progress' | 'completed'; activeForm: string }
 
 async function execGithub(
-  input: { action: string; path?: string; branch?: string; state?: 'open' | 'closed' | 'all'; query?: string },
+  input: { action: string; path?: string; content?: string; message?: string; branch?: string; state?: 'open' | 'closed' | 'all'; query?: string },
   ctx: ToolContext,
 ): Promise<ToolResult> {
   if (!ctx.ventureSlug) return err('No active venture for this session — cannot resolve GitHub repo.')
@@ -352,10 +359,11 @@ async function execGithub(
         return ok(body, `github repo ${slug}: exists, ${r.openIssues} open issues`)
       }
       case 'tree': {
-        const t = await getRepoTree(owner, repo, input.branch ?? 'main')
+        const branch = input.branch ?? (await getRepoInfo(owner, repo)).defaultBranch
+        const t = await getRepoTree(owner, repo, branch)
         const list = t.files.slice(0, 300).map(f => `${f.path}  (${f.size}B)`).join('\n')
         const note = t.truncated ? `\n[result truncated by GitHub — showing first ${t.files.length} files]` : `\n[${t.files.length} files total]`
-        return ok(list + note, `github tree ${slug}: ${t.files.length} files`)
+        return ok(list + note, `github tree ${slug}@${branch}: ${t.files.length} files`)
       }
       case 'file': {
         if (!input.path) return err('action=file requires a path argument')
@@ -390,13 +398,31 @@ async function execGithub(
         if (list.length === 0) return ok('(no matches)', `github search ${slug} "${input.query}": 0`)
         return ok(list.map(r => r.path).join('\n'), `github search ${slug} "${input.query}": ${list.length}`)
       }
+      case 'write_file': {
+        if (!input.path)    return err('action=write_file requires a path argument')
+        if (!input.content) return err('action=write_file requires a content argument')
+        if (!input.message) return err('action=write_file requires a message (commit message) argument')
+        const result = await createOrUpdateRepoFile(owner, repo, input.path, input.content, input.message, input.branch)
+        return ok(
+          `File ${result.created ? 'created' : 'updated'}: ${input.path}\nCommit SHA: ${result.sha}\nURL: ${result.url}`,
+          `github write_file ${slug}/${input.path}: ${result.created ? 'created' : 'updated'} ✓`
+        )
+      }
+      case 'delete_file': {
+        if (!input.path)    return err('action=delete_file requires a path argument')
+        if (!input.message) return err('action=delete_file requires a message (commit message) argument')
+        const result = await deleteRepoFile(owner, repo, input.path, input.message, input.branch)
+        return ok(
+          `Deleted: ${input.path}\nCommit SHA: ${result.commitSha}`,
+          `github delete_file ${slug}/${input.path}: deleted ✓`
+        )
+      }
       default:
         return err(`Unknown Github action: ${input.action}`)
     }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
-    // 404 from GitHub = repo doesn't exist or no access — agent should report this
-    if (/GitHub 404/.test(msg)) return ok(`The repo does NOT exist or YVON's GitHub token has no access. Detail: ${msg}`, `github: repo not found / no access`)
+    if (/GitHub 404/.test(msg)) return err(`GitHub 404 — repo not found or GITHUB_TOKEN has no access. Check: (1) venture repo URL is correct in Settings, (2) GITHUB_TOKEN has Contents read permission for this repo. Detail: ${msg.slice(0, 200)}`)
     return err(msg)
   }
 }
@@ -417,8 +443,25 @@ function execTodoWrite(input: { todos: TodoItem[] }): ToolResult {
 
 // ─── Dispatcher ───────────────────────────────────────────────────────────────
 
+const LOCAL_FS_TOOLS = new Set(['Read', 'Glob', 'Grep', 'Bash'])
+
 export async function executeTool(name: string, input: unknown, ctx: ToolContext = {}): Promise<ToolResult> {
   const inp = (input ?? {}) as Record<string, unknown>
+
+  // Hard block: local filesystem tools are forbidden for product ventures in GitHub mode.
+  // In local mode the user has explicitly cloned the repo locally — FS tools are allowed.
+  const isYvonDashboard = !ctx.ventureSlug || ctx.ventureSlug === 'yvon-dashboard'
+  const isLocalMode     = ctx.repoMode === 'local'
+  if (!isYvonDashboard && !isLocalMode && LOCAL_FS_TOOLS.has(name)) {
+    const slug = ctx.ventureSlug
+    return err(
+      `⛔ Local filesystem access is blocked for venture "${slug}" (GitHub mode). ` +
+      `Use Github(action=file, path=...) to read files, Github(action=tree) for the file list, ` +
+      `Github(action=commits/issues/prs) for repo data. ` +
+      `Switch to Local mode in the War Room to use filesystem tools.`
+    )
+  }
+
   try {
     switch (name) {
       case 'Read':      return await execRead(inp as Parameters<typeof execRead>[0])

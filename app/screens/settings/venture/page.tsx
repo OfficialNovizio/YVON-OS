@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { T, SC, FF, FInput, FTextArea, FSelect, FDivider, SaveBar, Btn, BackLink } from '../_shared'
 import { getActiveVentureSlugClient, setActiveVentureSlugClient } from '@/lib/venture-context'
 import type { VentureConfig, VentureSocial, SocialPlatform, BrandType, VentureStatus, BrandBigIdea, ContentSeries, ContentSeriesFormat, ContentSeriesFrequency, ContentSeriesFanGoal, TargetAudience } from '@/lib/types'
@@ -375,6 +375,148 @@ function TabBar({ active, onChange }: { active: Tab; onChange: (t: Tab) => void 
   )
 }
 
+// ─── Folder Picker ───────────────────────────────────────────────────────────
+
+interface FsEntry { name: string; path: string }
+
+function FolderPicker({ value, onChange }: { value: string; onChange: (path: string) => void }) {
+  const [open,    setOpen]    = useState(false)
+  const [current, setCurrent] = useState('')
+  const [dirs,    setDirs]    = useState<FsEntry[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState('')
+  const [draft,   setDraft]   = useState(value)
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  const browse = useCallback(async (path?: string) => {
+    setLoading(true); setError('')
+    try {
+      const url = path ? `/api/browse-fs?path=${encodeURIComponent(path)}` : '/api/browse-fs'
+      const res  = await fetch(url)
+      const data = await res.json() as { path: string; dirs: FsEntry[]; home: string; error?: string }
+      if (data.error) throw new Error(data.error)
+      setCurrent(data.path)
+      setDirs(data.dirs)
+    } catch (e) { setError(e instanceof Error ? e.message : String(e)) }
+    finally { setLoading(false) }
+  }, [])
+
+  function open_picker() {
+    setDraft(value)
+    setOpen(true)
+    browse(value || undefined)
+  }
+
+  function goUp() {
+    if (!current) return
+    const parts = current.split('/').filter(Boolean)
+    if (parts.length === 0) return
+    browse('/' + parts.slice(0, -1).join('/') || '/')
+  }
+
+  function select() {
+    onChange(current)
+    setOpen(false)
+  }
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return
+    function handler(e: MouseEvent) {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+
+  const pathParts = current.split('/').filter(Boolean)
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {/* Input row */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div style={{ flex: 1, fontFamily: 'monospace', fontSize: 13, padding: '9px 12px', background: 'rgba(12,44,82,0.06)', border: '1px solid rgba(12,44,82,0.15)', borderRadius: 8, color: value ? '#0c2c52' : 'rgba(12,44,82,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {value || 'No path selected'}
+        </div>
+        <button
+          onClick={open_picker}
+          style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6, padding: '9px 14px', borderRadius: 8, background: 'rgba(12,44,82,0.08)', border: '1px solid rgba(12,44,82,0.18)', cursor: 'pointer', fontSize: 13, color: '#0c2c52', fontFamily: T.font, fontWeight: 500, whiteSpace: 'nowrap' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>folder_open</span>
+          Browse
+        </button>
+        {value && (
+          <button onClick={() => onChange('')} title="Clear" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: 8, background: 'none', border: '1px solid rgba(12,44,82,0.15)', cursor: 'pointer', color: '#0c2c52', opacity: 0.5 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>close</span>
+          </button>
+        )}
+      </div>
+
+      {/* Modal */}
+      {open && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.45)' }}>
+          <div ref={modalRef} style={{ width: 560, maxHeight: '70vh', display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(24px)', borderRadius: 18, border: '1px solid rgba(255,255,255,0.70)', boxShadow: '0 24px 80px rgba(0,0,0,0.32)', overflow: 'hidden' }}>
+
+            {/* Header */}
+            <div style={{ padding: '16px 18px 12px', borderBottom: '1px solid rgba(12,44,82,0.10)', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20, color: T.text2 }}>folder_open</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: T.text1, fontFamily: T.font, flex: 1 }}>Select Local Repo Folder</span>
+              <button onClick={() => setOpen(false)} style={{ display: 'flex', background: 'none', border: 'none', cursor: 'pointer', color: T.text3, padding: 0 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+              </button>
+            </div>
+
+            {/* Breadcrumb */}
+            <div style={{ padding: '8px 18px', borderBottom: '1px solid rgba(12,44,82,0.07)', display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap', background: 'rgba(12,44,82,0.03)' }}>
+              <button onClick={() => browse('/')} style={{ fontSize: 11, color: T.accent, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'monospace', padding: '1px 4px' }}>/</button>
+              {pathParts.map((part, i) => (
+                <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ fontSize: 11, color: T.text3 }}>/</span>
+                  <button onClick={() => browse('/' + pathParts.slice(0, i + 1).join('/'))} style={{ fontSize: 11, color: i === pathParts.length - 1 ? T.text1 : T.accent, fontWeight: i === pathParts.length - 1 ? 600 : 400, background: 'none', border: 'none', cursor: i === pathParts.length - 1 ? 'default' : 'pointer', fontFamily: 'monospace', padding: '1px 4px' }}>{part}</button>
+                </span>
+              ))}
+            </div>
+
+            {/* Directory list */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '6px 10px' }}>
+              {loading && <p style={{ fontSize: 13, color: T.text3, padding: '12px 8px', fontFamily: T.font }}>Loading…</p>}
+              {error   && <p style={{ fontSize: 13, color: '#dc2626', padding: '12px 8px', fontFamily: T.font }}>{error}</p>}
+              {!loading && !error && pathParts.length > 0 && (
+                <button onClick={goUp} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', width: '100%', background: 'none', border: 'none', cursor: 'pointer', borderRadius: 8, fontFamily: T.font }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: T.text3 }}>arrow_upward</span>
+                  <span style={{ fontSize: 13, color: T.text2 }}>..</span>
+                </button>
+              )}
+              {!loading && dirs.map(d => (
+                <button key={d.path} onDoubleClick={() => browse(d.path)} onClick={() => setCurrent(d.path)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 10px', width: '100%', background: current === d.path ? 'rgba(0,102,204,0.08)' : 'none', border: current === d.path ? '1px solid rgba(0,102,204,0.18)' : '1px solid transparent', borderRadius: 8, cursor: 'pointer', textAlign: 'left', transition: 'all 0.1s', fontFamily: T.font }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: current === d.path ? T.accent : '#f59e0b', flexShrink: 0 }}>folder</span>
+                  <span style={{ fontSize: 13, color: T.text1, fontWeight: current === d.path ? 500 : 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.name}</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: 14, color: T.text3, marginLeft: 'auto', flexShrink: 0 }}>chevron_right</span>
+                </button>
+              ))}
+              {!loading && !error && dirs.length === 0 && (
+                <p style={{ fontSize: 13, color: T.text3, padding: '12px 8px', fontFamily: T.font }}>No subdirectories here</p>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div style={{ padding: '12px 18px', borderTop: '1px solid rgba(12,44,82,0.10)', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <code style={{ flex: 1, fontSize: 11, color: T.text2, background: 'rgba(12,44,82,0.06)', borderRadius: 6, padding: '5px 10px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>
+                {current || '/'}
+              </code>
+              <button onClick={() => setOpen(false)} style={{ fontSize: 13, color: T.text2, background: 'transparent', border: '1px solid rgba(12,44,82,0.15)', borderRadius: 8, padding: '7px 14px', cursor: 'pointer', fontFamily: T.font }}>Cancel</button>
+              <button onClick={select} style={{ fontSize: 13, color: '#fff', background: T.accent, border: 'none', borderRadius: 8, padding: '7px 18px', cursor: 'pointer', fontFamily: T.font, fontWeight: 600 }}>
+                Select
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Profile Tab ─────────────────────────────────────────────────────────────
 
 function ProfileTab({ venture, onChange, onSave, saving }: { venture: VentureConfig; onChange: (v: VentureConfig) => void; onSave: () => void; saving: boolean }) {
@@ -549,6 +691,10 @@ function ProfileTab({ venture, onChange, onSave, saving }: { venture: VentureCon
           <FInput value={venture.notionUrl ?? ''} onChange={e => set('notionUrl', e.target.value)} placeholder="https://notion.so/..." type="url" />
         </FF>
       </div>
+
+      <FF label="Local Repo Path — absolute path to the cloned repo on this machine">
+        <FolderPicker value={venture.localRepoPath ?? ''} onChange={path => set('localRepoPath', path)} />
+      </FF>
 
       <FDivider label="Analytics" />
 
@@ -2049,6 +2195,7 @@ export default function VentureSettingsPage() {
   function handleSwitch(slug: string) {
     setActiveSlug(slug)
     void setActiveVentureSlugClient(slug)
+    window.dispatchEvent(new CustomEvent('venturechange', { detail: { slug } }))
     const found = ventures.find(v => v.slug === slug) ?? null
     setVenture(found)
     setSocials([])

@@ -67,3 +67,60 @@ For multi-step tasks, state a brief plan:
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+---
+
+## 5. Tool Boundaries — NEVER HALLUCINATE WRITES ⛔
+
+**You have zero local filesystem write access. This is a hard constraint, not a preference.**
+
+### Two codebases — venture-scoped tool rules ⚠️
+
+There are always two separate codebases in scope. Which one matters depends on the **active venture**.
+
+| Codebase | What it is | Tools |
+|----------|-----------|-------|
+| **YVON OS** | The AI operating system — Next.js at `/Users/novysingh/StudioProjects/YVON2.0/` | `Read`, `Bash`, `Glob`, `Grep` |
+| **Venture app** | The actual product (Hourbour Flutter, Novizio store, etc.) | `Github(action=...)` only |
+
+**When active venture = Hourbour (or any non-YVON venture):**
+- ALL questions about the venture's code, commits, files, bugs → `Github(action=...)` only
+- `Read` / `Bash` / `Glob` / `Grep` are permitted ONLY for loading your own MEMORY.md and YVON system docs (WORKFLOW.md, SESSION.md). They cannot see the venture's codebase.
+- `Bash git log` shows YVON's commits. Running it to answer questions about Hourbour returns wrong data. Always use `Github(action=commits)` for the venture's history.
+
+**When active venture = YVON Dashboard:**
+- The codebase in question IS the YVON OS local filesystem
+- `Read` / `Bash` / `Glob` / `Grep` are valid for exploring it
+- `Github` targets the YVON OS repo if one is configured
+
+**The test before every tool call:**
+> "Is the user asking about [venture name]'s product, or about YVON itself?"
+> Venture product → Github. YVON OS → Read/Bash.
+
+### What you CAN do
+- Read YVON OS files with `Read(file_path)` — docs, agent memory, YVON source code
+- Search YVON OS code with `Glob` / `Grep`
+- Run read-only shell commands with `Bash`: `ls`, `cat`, `find`, `git log`, `git status`, `git diff` — against the YVON OS directory only
+- Read or write the venture's GitHub repo with `Github(action=...)` — this is the only path to the venture's actual codebase
+
+### What you CANNOT do — ever
+- Write, edit, create, or delete files on the local machine
+- Run `Bash` write commands (`echo >`, `sed -i`, `mkdir`, `cp`, `mv`, `rm`, etc.) — they are blocked
+- There is no `Write` tool, no `Edit` tool, no `Save` tool in your palette
+
+### The only write path
+`Github(action=write_file)` — creates or updates a file directly in the venture's GitHub repo via the API. No git push needed. It commits immediately.
+`Github(action=delete_file)` — deletes a file from the repo. Same mechanism.
+
+### Forbidden phrases — never say these
+- "I've updated the file locally"
+- "I've edited X"
+- "I've saved the changes"
+- "Done — I've written the file"
+- "The file has been modified"
+- Any past-tense claim about a local write you did not make via a tool call
+
+### Correct behavior when asked to write a file
+1. If a venture repo is configured: call `Github(action=write_file, path=..., content=..., message=...)` — the tool call is the proof. The user sees it happen.
+2. If no repo is configured or the write fails: say exactly that. Do not pretend it worked.
+3. Never generate a code block and claim you "saved it" — generating text is not writing a file.

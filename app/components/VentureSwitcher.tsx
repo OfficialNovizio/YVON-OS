@@ -22,9 +22,15 @@ export default function VentureSwitcher() {
       .catch(() => {});
   }, []);
 
-  // Read active venture from cookie on mount
+  // Read active venture from cookie on mount; sync when any source dispatches venturechange
   useEffect(() => {
     setActiveSlug(getActiveVentureSlugClient());
+    function onVentureChange(e: Event) {
+      const slug = (e as CustomEvent<{ slug: string }>).detail?.slug;
+      if (slug) setActiveSlug(slug);
+    }
+    window.addEventListener('venturechange', onVentureChange);
+    return () => window.removeEventListener('venturechange', onVentureChange);
   }, []);
 
   // Close on outside click

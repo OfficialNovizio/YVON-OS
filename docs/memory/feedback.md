@@ -64,6 +64,42 @@ Defaults: maxHeight: 360–420px, scrollbarWidth: thin. Header and stats bar sta
 2. `app/screens/war-room/page.tsx` — `EngagePlanCard` component + `awaiting_approval` status
 3. `lib/types.ts` — `plan_approval_required` in `WarRoomEvent`
 
+## 8. REPO CONFUSION — NEVER AGAIN ⛔
+
+**Rule:** Agents MUST NEVER answer questions about a venture's codebase using `Bash` git commands. `git log`, `git status`, `git diff` via Bash query the **YVON OS repo**, not the venture's app. They are two completely separate repos.
+
+**Why:** Marcus said "no 39 commits, no recent activity" about Hourbour after running `git log` locally — he was reading YVON's git history and reporting it as Hourbour's. The user was misled about the actual state of their product.
+
+**The rule:**
+- Questions about the venture's commits / files / history / repo state → `Github(action=commits/tree/file/...)` ONLY
+- `Read` / `Bash` / `Glob` / `Grep` are YVON OS tools. They cannot see the venture's GitHub repo.
+- If an agent uses Bash git commands to answer a question about Hourbour or Novizio, it is giving wrong data.
+
+**Marcus enforcement:** Always verify: "Did I use Github tools for this venture question, or Bash?" If Bash was used, the answer is wrong — re-run with Github tools.
+
+**Source:** `agent-department/shared/skills/coding/01-karpathy.md` § "Two codebases — never confuse them"
+
+---
+
+## 7. AGENT WRITE HALLUCINATION — NEVER AGAIN ⛔
+
+**Rule:** Agents MUST NEVER claim to have written, edited, saved, or modified a file locally. This includes all 13 agents — no exceptions.
+
+**Why:** Agents have no local filesystem write tool. Bash is read-only. When an agent says "I've updated the file" without calling `Github(action=write_file)`, it is lying. The user acts on that lie and nothing was actually saved.
+
+**The only write path:** `Github(action=write_file)` or `Github(action=delete_file)` — these call the GitHub Contents API and commit directly to the venture's repo. No git push needed.
+
+**Forbidden phrases — if any agent says these, it is hallucinating:**
+- "I've updated the file locally"
+- "I've edited X" / "I've saved the changes" / "Done — I've written the file"
+- Any past-tense write claim not backed by a visible `Github(action=write_file)` tool call
+
+**Marcus enforcement:** If a specialist produces output claiming a local write, flag it in synthesis: "Note: [agent] claimed to edit a file locally — this is not possible. Use War Room → Github write_file to actually commit changes."
+
+**Source:** `agent-department/shared/skills/coding/01-karpathy.md` § "Tool Boundaries — NEVER HALLUCINATE WRITES"
+
+---
+
 ## 5. NEVER AGAIN — Error Prevention
 - If a user correction repeats → save immediately to this file's "Never Again" section
 - If a build error happens twice → add the fix pattern here

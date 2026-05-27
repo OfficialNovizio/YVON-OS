@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { getAgent, AGENTS } from '@/lib/agents'
-import { callFast, streamSynthesis, streamWithTools } from '@/lib/ai-client'
+import { callFast, streamSynthesis, streamWithTools, getActiveProviderInfo } from '@/lib/ai-client'
 import { resolveVentureRepo, getRepoInfo, listCommits, listIssues, getRepoTree } from '@/lib/github'
 import { getAllVentureDocs } from '@/lib/venture-documents'
 import { getAgentMemory } from '@/lib/agent-memory'
@@ -10,7 +10,7 @@ export const maxDuration = 300
 import { COLLABORATION_GRAPH, calculateRoutingConfidence, recommendCollaboration } from '@/lib/collaboration-manager'
 import { routingFeedback } from '@/lib/routing-feedback'
 import { monitoring } from '@/lib/monitoring'
-import { saveWarRoomPlan, saveAgentSession, prefetchAgentMemory, searchSkills, trackSkillUsage } from '@/lib/db'
+import { saveWarRoomPlan, updateWarRoomPlan, saveAgentSession, prefetchAgentMemory, searchSkills, trackSkillUsage } from '@/lib/db'
 import type { RoutingResult, SpecialistBriefing, AgentId, ExecutionPlan, ConflictItem } from '@/lib/types'
 
 // ─── GitHub snapshot pre-fetcher ───────────────────────────────────────────────
@@ -38,11 +38,11 @@ async function prefetchVentureGithubSnapshot(slug: string | undefined): Promise<
   // No cache — always fetch live from GitHub API + the Supabase venture record.
   try {
     const { owner, repo, repoUrl } = await resolveVentureRepo(slug)
-    const [info, commits, issues, tree] = await Promise.all([
-      getRepoInfo(owner, repo),
+    const info = await getRepoInfo(owner, repo)
+    const [commits, issues, tree] = await Promise.all([
       listCommits(owner, repo, 5),
       listIssues(owner, repo, 'open'),
-      getRepoTree(owner, repo, 'main').catch(() => ({ files: [], truncated: false })),
+      getRepoTree(owner, repo, info.defaultBranch).catch(() => ({ files: [], truncated: false })),
     ])
     // Top-level directories/files only
     const topPaths = new Set<string>()
@@ -187,6 +187,71 @@ Output ONLY valid JSON, no prose:
   }
 }
 
+const FALLBACK_TASK_TEMPLATES: Partial<Record<AgentId, (msg: string) => string>> = {
+  'dev-lead':           msg => `Review the codebase architecture, structure, and technical health. Context: ${msg.slice(0, 80)}`,
+  'quinn-qa':           msg => `Audit code quality, test coverage, open issues, and flag any risks. Context: ${msg.slice(0, 80)}`,
+  'raj-backend':        msg => `Examine backend architecture, API routes, database schema, and server-side logic. Context: ${msg.slice(0, 80)}`,
+  'mia-frontend':       msg => `Review UI components, design system, and frontend structure. Context: ${msg.slice(0, 80)}`,
+  'marcus-ceo':         msg => `Provide executive synthesis and strategic recommendations. Context: ${msg.slice(0, 80)}`,
+  'diana-coo':          msg => `Assess operational processes, workflows, and execution readiness. Context: ${msg.slice(0, 80)}`,
+  'kai-analyst':        msg => `Analyze metrics, data signals, and surface key insights. Context: ${msg.slice(0, 80)}`,
+  'lena-brand':         msg => `Review brand voice, content strategy, and messaging quality. Context: ${msg.slice(0, 80)}`,
+  'rio-ads':            msg => `Analyze paid channel performance, ROAS, and ad strategy. Context: ${msg.slice(0, 80)}`,
+  'nate-growth':        msg => `Identify growth opportunities and top-of-funnel optimizations. Context: ${msg.slice(0, 80)}`,
+  'felix-finance':      msg => `Analyze financial metrics, P&L, and budget implications. Context: ${msg.slice(0, 80)}`,
+  'atlas-art-director': msg => `Review visual identity, creative direction, and brand assets. Context: ${msg.slice(0, 80)}`,
+  'pixel-production':   msg => `Coordinate asset production pipeline and delivery. Context: ${msg.slice(0, 80)}`,
+  'daniel-kahneman':    msg => `Apply behavioral psychology and cognitive bias analysis to the decision. Context: ${msg.slice(0, 80)}`,
+}
+
+// ─── Multi-file Context Note Builder ──────────────────────────────────────────
+
+function isTextMime(mime: string, name: string): boolean {
+  return mime.startsWith('text/') ||
+    ['application/json','application/xml','application/javascript','application/typescript'].includes(mime) ||
+    /\.(ts|tsx|js|jsx|py|md|csv|txt|json|yaml|yml|html|css|sql)$/i.test(name)
+}
+
+function buildFilesNote(
+  filesArr: Array<{ base64: string; mimeType: string; name: string; isImage: boolean }>,
+  variant: 'specialist' | 'ceo' = 'specialist',
+): string {
+  if (!filesArr || filesArr.length === 0) return ''
+  const images = filesArr.filter(f => f.isImage)
+  const docs   = filesArr.filter(f => !f.isImage)
+  const parts: string[] = []
+
+  if (images.length > 0) {
+    const label = images.length === 1
+      ? `an image (${images[0].mimeType})`
+      : `${images.length} images`
+    parts.push(variant === 'ceo'
+      ? `[The user attached ${label} — analyze visually in your synthesis.]`
+      : `[Context: The user attached ${label}. Marcus will analyze it visually in synthesis.]`)
+  }
+
+  for (const file of docs) {
+    if (isTextMime(file.mimeType, file.name)) {
+      try {
+        const decoded = Buffer.from(file.base64, 'base64').toString('utf-8')
+        if (variant === 'ceo') {
+          parts.push(`[The user attached "${file.name}" — content was shared with specialists above.]`)
+        } else {
+          parts.push(`[Context: User attached "${file.name}"]\n<attached-file name="${file.name}">\n${decoded.slice(0, 6000)}\n</attached-file>`)
+        }
+      } catch {
+        parts.push(`[Context: User attached "${file.name}" (${file.mimeType}) — could not decode.]`)
+      }
+    } else {
+      parts.push(variant === 'ceo'
+        ? `[The user attached "${file.name}" (${file.mimeType}) — content was shared with specialists.]`
+        : `[Context: User attached "${file.name}" (${file.mimeType})]`)
+    }
+  }
+
+  return parts.length > 0 ? '\n\n' + parts.join('\n\n') : ''
+}
+
 // Fallback plan used when Marcus can't produce valid JSON — ensures orchestration always runs visibly
 function fallbackPlan(specialists: AgentId[], message: string): ExecutionPlan {
   return {
@@ -194,7 +259,7 @@ function fallbackPlan(specialists: AgentId[], message: string): ExecutionPlan {
     agents: specialists,
     order: 'parallel',
     each_agent_task: Object.fromEntries(
-      specialists.map(id => [id, message])
+      specialists.map(id => [id, (FALLBACK_TASK_TEMPLATES[id] ?? ((m: string) => m.slice(0, 120)))(message)])
     ) as Partial<Record<AgentId, string>>,
     definition_of_done: 'All specialists deliver their analysis and Marcus synthesizes.',
   }
@@ -215,6 +280,8 @@ async function getSpecialistBriefing(
   emit: (type: string, data: Record<string, unknown>) => void,
   githubContext?: string,
   imageNote?: string,
+  repoMode?: 'github' | 'local',
+  localRepoPath?: string,
 ): Promise<SpecialistBriefing> {
   const agent = getAgent(agentId)
   if (!agent) return { agentId, content: '' }
@@ -254,9 +321,42 @@ async function getSpecialistBriefing(
     ? `<github-context>\n[System note: Live repo snapshot fetched when the War Room session opened. Use this as ground truth for the current codebase state.]\n\n${githubContext}\n</github-context>`
     : ''
 
-  const ventureBlock = ventureSlug
-    ? `<venture-context>\nActive venture slug: ${ventureSlug}  (name: ${ventureName})\n</venture-context>`
-    : `<venture-context>\nActive venture: ${ventureName}  (no slug — Github tool unavailable)\n</venture-context>`
+  const isYvonDashboard = !ventureSlug || ventureSlug === 'yvon-dashboard'
+  const isLocalMode     = repoMode === 'local'
+  const ventureBlock = isYvonDashboard
+    ? `<venture-scope>
+Active venture: YVON Dashboard (the AI operating system itself)
+The active codebase IS the YVON OS at the local filesystem (/Users/novysingh/StudioProjects/YVON2.0/).
+- Read / Bash / Glob / Grep: use freely to explore the YVON Next.js codebase and docs
+- Github tool: targets the YVON OS GitHub repo if configured
+- All codebase questions refer to the YVON OS itself
+</venture-scope>`
+    : isLocalMode
+    ? `<venture-scope>
+Active venture: ${ventureName} (slug: ${ventureSlug}) — LOCAL MODE
+The venture's repo is cloned locally at: ${localRepoPath ?? '(path not set — configure in Venture Settings → Profile → Local Repo Path)'}
+
+LOCAL MODE — filesystem tools are ENABLED for this venture:
+- Read / Bash / Glob / Grep: use these to explore ${ventureName}'s codebase at the path above
+- ALWAYS cd to ${localRepoPath ?? '<local-repo-path>'} before running Bash git commands
+- Github tool is also available but filesystem access is preferred when possible
+- Do NOT read YVON OS paths (/YVON2.0/) — only work inside ${localRepoPath ?? '<local-repo-path>'}
+</venture-scope>`
+    : `<venture-scope>
+Active venture: ${ventureName} (slug: ${ventureSlug})
+
+⚠️ REPO SCOPE — READ THIS BEFORE USING ANY TOOL:
+You are working exclusively for the ${ventureName} venture. Its codebase lives on GitHub (see <github-snapshot> above).
+
+ALLOWED for ${ventureName} questions:
+  Github(action=file/tree/commits/issues/prs/branches/search/write_file/delete_file) — the ONLY way to read or write the ${ventureName} codebase
+
+NOT ALLOWED for ${ventureName} questions:
+  Read / Bash / Glob / Grep — these access the YVON OS dashboard (/YVON2.0/), a completely separate Next.js codebase. It has NOTHING to do with ${ventureName}.
+  Bash git commands (git log, git status, git diff) — these query YVON's git history, NOT ${ventureName}'s. Using them to answer questions about ${ventureName} produces wrong data.
+
+Read / Bash / Glob / Grep are ONLY permitted for: loading your own MEMORY.md, YVON system docs (WORKFLOW.md, SESSION.md), and YVON agent config. For everything else about ${ventureName}, use Github tools.
+</venture-scope>`
 
   // Ground-truth snapshot pre-fetched server-side — saves the agent from burning
   // tool calls re-discovering basic repo state. Already has owner/repo, branch,
@@ -266,7 +366,38 @@ async function getSpecialistBriefing(
     : ''
 
   const isReport = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(message)
-  const toolGuidance = `<tools-available>\nYou have read-only tools. Ground every specific claim in tool output — do NOT guess file paths, code, or contents.\n- Read(file_path): YVON repo (server local)\n- Glob(pattern), Grep(pattern): YVON code search\n- Bash(command): read-only shell (ls/cat/find/git log)\n- WebFetch(url): fetch a URL\n- Github(action): query the VENTURE'S configured GitHub repo (action=repo/tree/file/issues/prs/branches/commits/search). Use this to drill in BEYOND the snapshot above — e.g. to read a specific file, list a subdirectory, or check a particular issue.\n- TodoWrite: plan multi-step work\nThe <github-snapshot> above already has repo existence, branch, top-level structure, recent commits, and open issues — DO NOT waste tool calls re-fetching those. Drill in only when you need specifics.\n${isReport ? 'Cap: ~8 tool calls. Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'Cap: ~6 tool calls. End with a 100–150 word answer.'}\n</tools-available>`
+  // Action task: user wants something DONE in the repo, not just analysed
+  const isAction = !isYvonDashboard && /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(message) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package)\b/i.test(message)
+  const ventureRepoLabel = ventureSlug ? `${ventureSlug} app repo` : 'venture app repo'
+  const toolGuidance = `<tools-available>
+⚠️ TWO COMPLETELY SEPARATE CODEBASES — NEVER CONFUSE THEM:
+
+1. YVON OS (this AI system): Read / Bash / Glob / Grep
+   Path: /Users/novysingh/StudioProjects/YVON2.0/
+   This is the AI operating system dashboard — Next.js, TypeScript, Supabase.
+   Git commits, files, and history here belong to YVON, NOT to ${ventureName}.
+   NEVER use Bash git commands to answer questions about the venture's product.
+
+2. ${ventureName} app (the actual product): Github(action=...)
+   This is the venture's real codebase on GitHub (Flutter app, e-commerce site, etc.).
+   ALL questions about "${ventureName}'s codebase / repo / commits / files" → use Github tool ONLY.
+   The <github-snapshot> above is the ground truth for this repo.
+
+Tools:
+- Read(file_path): read a file from the YVON OS filesystem — YVON docs, agent memory, etc. NOT the ${ventureRepoLabel}.
+- Glob(pattern), Grep(pattern): search the YVON OS codebase only.
+- Bash(command): read-only shell (ls/cat/find/git log). WARNING: git commands here query YVON's git history, NOT ${ventureName}'s.
+- WebFetch(url): fetch a URL.
+- Github(action): READ or WRITE the ${ventureName} repo on GitHub.
+  Read: repo · tree · file · issues · prs · branches · commits · search
+  Write: write_file(path, content, message, branch?) — commit a file directly via GitHub API. delete_file(path, message, branch?) — delete a file.
+- TodoWrite: plan multi-step work.
+
+⛔ LOCAL WRITE PROHIBITION: You have zero local filesystem write access. Bash is read-only. Never claim to have written or edited a file locally. The only write path is Github(action=write_file).
+
+The <github-snapshot> already has the ${ventureName} repo structure, commits, and issues — do not re-fetch those. Drill in only when you need file contents or specifics.
+${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe it. Read the file → edit → write_file → confirm. Do not produce a long report.' : isReport ? 'Cap: ~8 tool calls. Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'Cap: ~6 tool calls. End with a 100–150 word answer.'}
+</tools-available>`
 
   const ventureDocsBlock = ventureDocs
     ? `<venture-docs>\n[Live from Supabase venture_documents — CONTEXT, BRAND, DESIGN, FEEDBACK for the active venture. Use these as the source of truth for venture identity.]\n\n${ventureDocs}\n</venture-docs>`
@@ -275,7 +406,9 @@ async function getSpecialistBriefing(
   const systemText = [agent.systemPrompt, memoryBlock, ghBlock, ventureBlock, ventureDocsBlock, snapshotBlock, toolGuidance].filter(Boolean).join('\n\n')
 
   let content = ''
-  const userPrompt = isReport
+  const userPrompt = isAction
+    ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nTake direct action — do NOT just describe what to do.\nWorkflow:\n1. If editing an existing file: read it first with Github(action=file, path=...) to get current content\n2. Make the required change\n3. Commit with Github(action=write_file, path=..., content=..., message=...)\n4. If deleting: Github(action=delete_file, path=..., message=...)\nConfirm exactly what was done: file path + commit message. Keep your reply to 3–4 sentences max.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [file path changed]\nconfidence: high\n---END---`
+    : isReport
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nUse tools to gather real data before writing. Produce a structured markdown report with ## section headers and bullet points. Be specific — include actual numbers, commit messages, issue titles, file names. 300–400 words.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: report\nkey_output: [deliverable]\nconfidence: high\n---END---`
     : `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nUse tools to explore the repo before answering. Final answer 100–150 words, specific and actionable.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: strategy\nkey_output: [deliverable]\nconfidence: high\n---END---`
 
@@ -283,8 +416,11 @@ async function getSpecialistBriefing(
     for await (const event of streamWithTools({
       agentId,
       ventureSlug,
+      repoMode,
+      localRepoPath,
       system:    systemText || undefined,
-      maxTokens: isReport ? 3000 : 1500,
+      maxTokens: isAction ? 2000 : isReport ? 3000 : 1500,
+      maxIterations: isAction ? 10 : undefined,
       messages: [{ role: 'user', content: userPrompt }],
     })) {
       switch (event.kind) {
@@ -328,10 +464,12 @@ async function getSpecialistWithRetry(
   emit: (type: string, data: Record<string, unknown>) => void,
   githubContext?: string,
   imageNote?: string,
+  repoMode?: 'github' | 'local',
+  localRepoPath?: string,
 ): Promise<SpecialistBriefing> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const briefing = await getSpecialistBriefing(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskOverride, emit, githubContext, imageNote)
+      const briefing = await getSpecialistBriefing(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskOverride, emit, githubContext, imageNote, repoMode, localRepoPath)
       emit('agent_complete', {
         agentId,
         previewText: briefing.content.slice(0, 120),
@@ -424,6 +562,8 @@ async function executeSequential(
   emit: (type: string, data: Record<string, unknown>) => void,
   githubContext?: string,
   imageNote?: string,
+  repoMode?: 'github' | 'local',
+  localRepoPath?: string,
 ): Promise<{ briefings: SpecialistBriefing[]; stepResults: StepResult[] }> {
   const briefings: SpecialistBriefing[] = []
   const stepResults: StepResult[] = []
@@ -446,7 +586,7 @@ async function executeSequential(
       ? `${task ?? message}\n\nHandoff context from previous specialist:\n${handoffContext}`
       : task
 
-    const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskWithContext, emit, githubContext, imageNote)
+    const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskWithContext, emit, githubContext, imageNote, repoMode, localRepoPath)
     briefings.push(briefing)
     stepResults.push({
       agentId,
@@ -479,37 +619,67 @@ export async function POST(request: Request): Promise<Response> {
   let message: string
   let ventureName: string
   let ventureSlug: string | undefined
+  let repoMode: 'github' | 'local'
+  let localRepoPath: string | undefined
   let githubContext: string | undefined
-  let imageBase64:  string | undefined
-  let imageMimeType: string | undefined
+  let fileBase64:   string | undefined
+  let fileMimeType: string | undefined
+  let fileName:     string | undefined
+  let fileIsImage:  boolean
+  let files:        Array<{ base64: string; mimeType: string; name: string; isImage: boolean }>
   let conversationHistory: Array<{ user: string; marcus: string }>
   let approved: boolean
   let previousPlan: ExecutionPlan | undefined
   let previousRouting: RoutingResult | undefined
+  let sessionId: string | undefined
   try {
     const body = await request.json() as {
       message?: string
       ventureId?: string
       ventureName?: string
       ventureSlug?: string
+      repoMode?: 'github' | 'local'
+      localRepoPath?: string
       githubContext?: string
+      files?: Array<{ base64: string; mimeType: string; name: string; isImage: boolean }>
+      // legacy single-file compat
+      fileBase64?: string
+      fileMimeType?: string
+      fileName?: string
+      fileIsImage?: boolean
       imageBase64?: string
       imageMimeType?: string
       conversationHistory?: Array<{ user: string; marcus: string }>
       approved?: boolean
       previousPlan?: ExecutionPlan
       previousRouting?: RoutingResult
+      sessionId?: string
     }
     message             = body.message ?? ''
     ventureName         = body.ventureName ?? 'Novizio'
     ventureSlug         = body.ventureSlug
+    repoMode            = body.repoMode ?? 'github'
+    localRepoPath       = body.localRepoPath
     githubContext       = body.githubContext
-    imageBase64         = body.imageBase64
-    imageMimeType       = body.imageMimeType
     conversationHistory = body.conversationHistory ?? []
     approved            = body.approved ?? false
     previousPlan        = body.previousPlan
     previousRouting     = body.previousRouting
+    sessionId           = body.sessionId
+    // Multi-file: body.files takes priority; fall back to legacy single-file fields
+    const legacyBase64   = body.fileBase64 ?? body.imageBase64
+    const legacyMime     = body.fileMimeType ?? body.imageMimeType
+    const legacyName     = body.fileName
+    const legacyIsImage  = body.fileIsImage ?? (legacyMime?.startsWith('image/') ?? false)
+    files = body.files ??
+      (legacyBase64
+        ? [{ base64: legacyBase64, mimeType: legacyMime ?? 'application/octet-stream', name: legacyName ?? 'file', isImage: legacyIsImage }]
+        : [])
+    // Legacy compat aliases — downstream single-file code paths still work
+    fileBase64   = files[0]?.base64
+    fileMimeType = files[0]?.mimeType
+    fileName     = files[0]?.name
+    fileIsImage  = files[0]?.isImage ?? false
   } catch {
     return Response.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
@@ -523,7 +693,12 @@ export async function POST(request: Request): Promise<Response> {
 
   const stream = new ReadableStream({
     async start(controller) {
+      let controllerClosed = false
+      function closeController() {
+        if (!controllerClosed) { controllerClosed = true; controller.close() }
+      }
       function emit(type: string, data: Record<string, unknown>) {
+        if (controllerClosed) return
         controller.enqueue(
           encoder.encode(`data: ${JSON.stringify({ type, ...data })}\n\n`)
         )
@@ -565,9 +740,9 @@ export async function POST(request: Request): Promise<Response> {
           const directHistoryBlock = conversationHistory.length > 0
             ? `\n\nPrior conversation:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus.slice(0, 200)}…`).join('\n\n')}`
             : ''
-          const directImageNote = imageBase64 ? `\n\n[The user attached an image — analyze it visually as part of your reply.]` : ''
+          const directFileNote = buildFilesNote(files, 'specialist')
 
-          const directBasePrompt = `You are Marcus, CEO of YVON (venture: ${ventureName}). The user said: "${message}"${directImageNote}${directHistoryBlock}\n\nReply naturally and concisely as Marcus. No agent delegation needed.`
+          const directBasePrompt = `You are Marcus, CEO of YVON (venture: ${ventureName}). The user said: "${message}"${directFileNote}${directHistoryBlock}\n\nReply naturally and concisely as Marcus. No agent delegation needed.`
 
           let directSynthesis = ''
           if (needsTools) {
@@ -585,10 +760,19 @@ export async function POST(request: Request): Promise<Response> {
               openIssues: directSnap.snapshot?.openIssues ?? null,
               error:     directSnap.error ?? null,
             })
-            const toolSystem = `You are Marcus, CEO of YVON. Active venture: ${ventureName} (slug: ${ventureSlug ?? 'unknown'}).\n\nYou have read-only tools (Read/Glob/Grep/Bash/WebFetch/Github/TodoWrite).${directSnapText ? `\n\n<github-snapshot>\n[Live GitHub data — ground truth]\n\n${directSnapText}\n</github-snapshot>` : ''}${directVentureDocs ? `\n\n<venture-docs>\n[Live from Supabase — source of truth for this venture]\n\n${directVentureDocs}\n</venture-docs>` : ''}\n\nThe snapshot + docs above are ground truth. Don't re-fetch what's already in them. Drill in only when you need specifics. End with a concise answer.`
+            const isDirectYvon = !ventureSlug || ventureSlug === 'yvon-dashboard'
+            const directVentureScope = isDirectYvon
+              ? `Active venture: YVON Dashboard. The codebase in question IS the YVON OS at the local filesystem. Read/Bash/Glob/Grep freely explore YVON's Next.js code.`
+              : `Active venture: ${ventureName} (slug: ${ventureSlug}).
+⚠️ REPO SCOPE: All codebase questions about "${ventureName}" → Github(action=...) ONLY.
+Read/Bash/Glob/Grep access the YVON OS (/YVON2.0/) — a completely different codebase, NOT ${ventureName}'s.
+Bash git commands query YVON's git history, NOT ${ventureName}'s — never use them to answer questions about ${ventureName}.`
+            const toolSystem = `You are Marcus, CEO of YVON.\n\n${directVentureScope}\n\nTools: Read/Glob/Grep/Bash(read-only)/WebFetch/Github/TodoWrite. Github supports write_file and delete_file to commit directly to the venture repo.\n⛔ No local filesystem write access. Use Github(action=write_file) to persist changes.${directSnapText ? `\n\n<github-snapshot>\n[Live GitHub data — ground truth for ${ventureName} repo]\n\n${directSnapText}\n</github-snapshot>` : ''}${directVentureDocs ? `\n\n<venture-docs>\n[Live from Supabase — source of truth for this venture]\n\n${directVentureDocs}\n</venture-docs>` : ''}\n\nThe snapshot + docs above are ground truth. Don't re-fetch what's already in them. End with a concise answer.`
             for await (const event of streamWithTools({
               agentId:     'marcus-ceo',
               ventureSlug,
+              repoMode,
+              localRepoPath,
               system:      toolSystem,
               maxTokens:   2000,
               messages:    [{ role: 'user', content: directBasePrompt }],
@@ -608,8 +792,8 @@ export async function POST(request: Request): Promise<Response> {
             // Quick chat — no tools needed, fastest path
             for await (const chunk of streamSynthesis({
               maxTokens: 1500,
-              imageBase64,
-              imageMimeType,
+              imageBase64: fileIsImage ? fileBase64 : undefined,
+              imageMimeType: fileIsImage ? fileMimeType : undefined,
               messages: [{ role: 'user', content: directBasePrompt }],
             })) {
               directSynthesis += chunk
@@ -621,19 +805,23 @@ export async function POST(request: Request): Promise<Response> {
           emit('plan_complete', { elapsed })
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
 
-          saveWarRoomPlan({
-            ventureName,
-            userPrompt:  message,
-            intent:      'direct',
-            plan:        null,
-            agentsUsed:  [],
-            status:      'complete',
-            synthesis:   directSynthesis,
-            elapsedMs:   elapsed,
-            steps:       [],
-          }).catch(() => {})
+          if (sessionId) {
+            updateWarRoomPlan(sessionId, { synthesis: directSynthesis, status: 'complete', elapsedMs: elapsed }).catch(() => {})
+          } else {
+            saveWarRoomPlan({
+              ventureName,
+              userPrompt:  message,
+              intent:      'direct',
+              plan:        null,
+              agentsUsed:  [],
+              status:      'complete',
+              synthesis:   directSynthesis,
+              elapsedMs:   elapsed,
+              steps:       [],
+            }).then(id => emit('session_id', { sessionId: id })).catch(() => {})
+          }
 
-          controller.close()
+          closeController()
           return
         }
 
@@ -686,11 +874,14 @@ export async function POST(request: Request): Promise<Response> {
           const confidence = calculateRoutingConfidence(message, routing.specialists as AgentId[])
           emit('routing', { routing, confidence })
           emit('plan', { plan: executionPlan, routing })
+          // Emit engine info in Phase 1 so the client shows engine state before approval
+          const [phase1Engine, phase1Provider] = await Promise.all([getSecret('WAR_ROOM_ENGINE'), getActiveProviderInfo()])
+          emit('engine', { engine: phase1Engine === 'agent_sdk' ? 'agent_sdk' : 'client_sdk', fastModel: phase1Provider?.fastModel, synthesisModel: phase1Provider?.synthesisModel, provider: phase1Provider?.provider })
           emit('plan_approval_required', { plan: executionPlan, routing })
           emit('plan_complete', { elapsed: Date.now() - startTime })
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           clearInterval(heartbeat)
-          controller.close()
+          closeController()
           return
         }
 
@@ -709,17 +900,17 @@ export async function POST(request: Request): Promise<Response> {
         })
 
         // Engine in use — surface for diagnostic clarity
-        emit('engine', {
-          engine: (await getSecret('WAR_ROOM_ENGINE')) === 'agent_sdk' ? 'agent_sdk' : 'client_sdk',
-        })
+        {
+          const [phase2Engine, phase2Provider] = await Promise.all([getSecret('WAR_ROOM_ENGINE'), getActiveProviderInfo()])
+          emit('engine', { engine: phase2Engine === 'agent_sdk' ? 'agent_sdk' : 'client_sdk', fastModel: phase2Provider?.fastModel, synthesisModel: phase2Provider?.synthesisModel, provider: phase2Provider?.provider })
+        }
 
         emit('plan', { plan: executionPlan, routing })
 
         // ── Step 3: Specialist execution (parallel or sequential) ───────────
         const useSequential = executionPlan.order === 'sequential' && routing.specialists.length > 1
-        const imageNote = imageBase64
-          ? `\n\n[Context: The user attached an image (${imageMimeType ?? 'image'}). Marcus will analyze it visually in synthesis — factor in that this may be a visual/design/reference asset.]`
-          : undefined
+        // Build context notes for all attached files (images + text/binary docs)
+        const imageNote = buildFilesNote(files, 'specialist') || undefined
 
         let briefings: SpecialistBriefing[]
         let stepResults: StepResult[]
@@ -736,6 +927,8 @@ export async function POST(request: Request): Promise<Response> {
             emit,
             githubContext,
             imageNote,
+            repoMode,
+            localRepoPath,
           )
           briefings   = result.briefings
           stepResults = result.stepResults
@@ -755,7 +948,7 @@ export async function POST(request: Request): Promise<Response> {
               })
               emit('agent_start', { agentId, task: task ?? '' })
 
-              const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshotText, ventureDocsText, task, emit, githubContext, imageNote)
+              const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshotText, ventureDocsText, task, emit, githubContext, imageNote, repoMode, localRepoPath)
               parallelStepResults.push({
                 agentId,
                 taskBrief:     task ?? null,
@@ -797,12 +990,26 @@ export async function POST(request: Request): Promise<Response> {
         const historyBlock = conversationHistory.length > 0
           ? `\n\nPrior conversation context:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus.slice(0, 200)}…`).join('\n\n')}`
           : ''
-        const ceoImageNote = imageBase64
-          ? `\n\n[The user attached an image — analyze it visually as part of your synthesis.]`
-          : ''
+        const ceoImageNote = buildFilesNote(files, 'ceo')
 
         const isReportRequest = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(message)
-        const ceoPrompt = isReportRequest
+        const isActionRequest = !(!ventureSlug || ventureSlug === 'yvon-dashboard') && /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(message) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package)\b/i.test(message)
+        const ceoPrompt = isActionRequest
+          ? `You are Marcus, CEO of YVON. Venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}
+
+Specialists reported:
+${briefingText}
+
+User asked: ${message}${ceoImageNote}${historyBlock}
+
+Write a concise action summary — 3–6 sentences max. Structure it exactly like this:
+1. Which specialist(s) worked on this (use their names: Dev, Raj, Mia, etc.)
+2. Which files were changed (exact file paths from the specialist reports)
+3. The commit SHA and commit message (copy from the specialist report — do not invent)
+4. Whether it succeeded or failed
+
+⚠️ CRITICAL: You do NOT have access to Bash, Read, Glob, or Grep for ${ventureName}. Those tools are blocked — calling them will fail. Do NOT attempt git commands. All information you need is in the specialist reports above. If a commit SHA is not in the reports, say "commit SHA not reported". Write only what the specialists confirmed — no assumptions.`
+          : isReportRequest
           ? `You are Marcus, CEO of YVON. Venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}
 
 Specialists delivered:
@@ -836,18 +1043,26 @@ You have read-only tools (Read/Glob/Grep/Github/etc.). If a specialist's claim s
         const ceoVentureDocsBlock = ventureDocsText
           ? `\n\n<venture-docs>\n[Live from Supabase venture_documents — source of truth for this venture's identity, brand, design, context, feedback]\n\n${ventureDocsText}\n</venture-docs>`
           : ''
-        const ceoSystem = `You are Marcus, CEO of YVON synthesising specialist briefings. Active venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}.\n\nYour job: produce a single unified 150-word answer for the user. Use the read-only tool palette ONLY when a claim needs verification or when the user asked about repo/code state. Don't pad with unnecessary tool calls — the specialists already did the heavy exploration.${ceoSnapshotBlock}${ceoVentureDocsBlock}`
+        const isCeoYvon = !ventureSlug || ventureSlug === 'yvon-dashboard'
+        const isCeoLocal = repoMode === 'local'
+        const ceoVentureScope = isCeoYvon
+          ? `Active venture: YVON Dashboard. Codebase questions refer to the YVON OS local filesystem — Read/Bash/Glob/Grep are valid for this.`
+          : isCeoLocal
+          ? `Active venture: ${ventureName} (slug: ${ventureSlug}) — LOCAL MODE. The venture's repo is at: ${localRepoPath ?? '(path not configured)'}. Read/Bash/Glob/Grep are enabled — use them on that path. Always cd to the repo path before git commands.`
+          : `Active venture: ${ventureName} (slug: ${ventureSlug}). ⛔ BLOCKED: Read, Bash, Glob, and Grep are NOT available to you for ${ventureName}. These tools access the YVON OS codebase — an entirely different repo. Calling them will fail with an error. For ${ventureName} repo access, use Github(action=file/tree/commits/issues) ONLY.`
+        const ceoSystem = `You are Marcus, CEO of YVON synthesising specialist briefings.\n\n${ceoVentureScope}\n\nYour job: produce a single unified answer for the user. Use Github tools ONLY when a claim needs verification against the live repo. Don't call Bash, Read, Glob, or Grep for product ventures — they are blocked. The specialists already did the heavy exploration; trust their reports.${ceoSnapshotBlock}${ceoVentureDocsBlock}`
 
         let ceoSynthesis = ''
         const ceoMaxTokens = isReportRequest ? 4000 : 2000
         // Only stream image into synthesis if no tools needed (Anthropic tool_use API + image
         // in the same turn is finicky across the DeepSeek compat layer). If user attached an
         // image, prefer plain stream so visual analysis stays high-quality.
-        if (imageBase64) {
+        const firstImage = files.find(f => f.isImage)
+        if (firstImage) {
           for await (const chunk of streamSynthesis({
             maxTokens: ceoMaxTokens,
-            imageBase64,
-            imageMimeType,
+            imageBase64: firstImage.base64,
+            imageMimeType: firstImage.mimeType,
             messages: [{ role: 'user', content: ceoPrompt }],
           })) {
             ceoSynthesis += chunk
@@ -857,6 +1072,8 @@ You have read-only tools (Read/Glob/Grep/Github/etc.). If a specialist's claim s
           for await (const event of streamWithTools({
             agentId:     'marcus-ceo',
             ventureSlug,
+            repoMode,
+            localRepoPath,
             modelTier:   'synthesis',
             system:      ceoSystem,
             maxTokens:   ceoMaxTokens,
@@ -883,19 +1100,28 @@ You have read-only tools (Read/Glob/Grep/Github/etc.). If a specialist's claim s
 
         // ── Step 6: Persist plan + agent sessions (fire-and-forget) ────────
         const hasErrors = stepResults.some(s => s.status === 'error')
-        saveWarRoomPlan({
-          ventureName,
-          userPrompt:  message,
-          intent:      routing.intent,
-          plan:        executionPlan,
-          agentsUsed:  routing.specialists as AgentId[],
-          status:      hasErrors ? 'partial' : 'complete',
-          synthesis:   ceoSynthesis || briefingText,
-          elapsedMs:   elapsed,
-          steps:       stepResults,
-        }).catch(err => {
-          monitoring.warn('War Room plan persistence failed (non-fatal)', { error: String(err) })
-        })
+        if (sessionId) {
+          updateWarRoomPlan(sessionId, {
+            synthesis:  ceoSynthesis || briefingText,
+            status:     hasErrors ? 'partial' : 'complete',
+            elapsedMs:  elapsed,
+            agentsUsed: routing.specialists as AgentId[],
+            steps:      stepResults,
+          }).catch(err => monitoring.warn('War Room plan update failed (non-fatal)', { error: String(err) }))
+        } else {
+          saveWarRoomPlan({
+            ventureName,
+            userPrompt:  message,
+            intent:      routing.intent,
+            plan:        executionPlan,
+            agentsUsed:  routing.specialists as AgentId[],
+            status:      hasErrors ? 'partial' : 'complete',
+            synthesis:   ceoSynthesis || briefingText,
+            elapsedMs:   elapsed,
+            steps:       stepResults,
+          }).then(id => emit('session_id', { sessionId: id }))
+            .catch(err => monitoring.warn('War Room plan persistence failed (non-fatal)', { error: String(err) }))
+        }
 
         // Hermes Phase 1: save individual agent sessions for cross-session memory
         // Hermes SIP: trigger self-improvement analysis per agent (fire-and-forget)
@@ -932,7 +1158,7 @@ You have read-only tools (Read/Glob/Grep/Github/etc.). If a specialist's claim s
         emit('error', { message: msg })
       } finally {
         clearInterval(heartbeat)
-        controller.close()
+        closeController()
       }
     },
   })

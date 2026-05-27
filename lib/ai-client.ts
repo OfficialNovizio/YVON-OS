@@ -333,10 +333,16 @@ export async function* streamWithTools(params: {
   maxIterations?: number
   /** Venture slug — required for the Github tool to resolve the active repo. */
   ventureSlug?: string
+  /** 'github' (default) | 'local' — when local, FS tools are included in schema + not blocked */
+  repoMode?: 'github' | 'local'
+  /** Absolute local path to the venture's cloned repo (only used when repoMode=local) */
+  localRepoPath?: string
 }): AsyncGenerator<ToolLoopEvent> {
   // Engine switch: WAR_ROOM_ENGINE=agent_sdk routes through Claude Agent SDK
-  // (full Claude Code engine, subprocess). Default: Client SDK tool loop.
-  if (await isAgentSdkEnabled()) {
+  // (full Claude Code engine, subprocess). Only used for YVON Dashboard — product
+  // ventures must use the Client SDK tool loop so the Github tool is available.
+  const isYvonDashboard = !params.ventureSlug || params.ventureSlug === 'yvon-dashboard'
+  if (isYvonDashboard && await isAgentSdkEnabled()) {
     const userMsg = params.messages.filter(m => m.role === 'user').map(m => m.content).join('\n\n')
     yield* runAgentSdk({
       agentId:      params.agentId,
@@ -365,7 +371,14 @@ export async function* streamWithTools(params: {
   }
 
   const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
-  const tools = toolsForAgent(params.agentId)
+  const isProductVenture = params.ventureSlug && params.ventureSlug !== 'yvon-dashboard'
+  const isLocalMode      = params.repoMode === 'local'
+  const LOCAL_FS_TOOL_NAMES = ['Read', 'Glob', 'Grep', 'Bash']
+  // In GitHub mode: strip FS tools from schema so the model doesn't try to call them.
+  // In local mode: include them — user has explicitly enabled local filesystem access.
+  const tools = toolsForAgent(params.agentId).filter(t =>
+    isProductVenture && !isLocalMode ? !LOCAL_FS_TOOL_NAMES.includes(t.name) : true
+  )
 
   yield* runToolLoop({
     client,
@@ -375,7 +388,7 @@ export async function* streamWithTools(params: {
     tools,
     initialMessages: params.messages.map(m => ({ role: m.role, content: m.content })),
     maxIterations:   params.maxIterations,
-    toolContext:     { ventureSlug: params.ventureSlug },
+    toolContext:     { ventureSlug: params.ventureSlug, repoMode: params.repoMode, localRepoPath: params.localRepoPath },
   })
 }
 

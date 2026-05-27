@@ -54,6 +54,14 @@ const HUB_CARDS = [
     tags:  ['Encrypted', 'Vault'],
   },
   {
+    key:   'war-room',
+    color: '#cc785c',
+    icon:  'terminal',
+    title: 'War Room Commands',
+    desc:  'Add, edit, or delete custom slash commands for the War Room. Same /cmd overrides a built-in default.',
+    tags:  ['Slash Commands', 'Prompts'],
+  },
+  {
     key:   'danger',
     color: SC.danger,
     icon:  'warning',

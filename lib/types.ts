@@ -195,6 +195,7 @@ export interface VentureConfig {
   logoUrl?: string
   foundedYear?: number
   repoUrl?: string
+  localRepoPath?: string
   notionUrl?: string
   updatedAt?: string
   // Content intelligence (migration 020)
@@ -317,8 +318,9 @@ export type WarRoomEvent =
   | { type: 'tool_call_result'; agentId: AgentId; tool: string; summary: string; is_error: boolean; tool_use_id: string }
   | { type: 'tool_iteration';   agentId: AgentId; n: number }
   | { type: 'github_snapshot';  ok: boolean; repo: string | null; branch: string | null; openIssues: number | null; error: string | null }
-  | { type: 'engine';           engine: 'agent_sdk' | 'client_sdk' }
+  | { type: 'engine';           engine: 'agent_sdk' | 'client_sdk'; fastModel?: string; synthesisModel?: string; provider?: string }
   | { type: 'plan_approval_required'; plan: ExecutionPlan; routing: RoutingResult }
+  | { type: 'session_id'; sessionId: string }
 
 export interface ConflictItem {
   topic: string

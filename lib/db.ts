@@ -320,6 +320,7 @@ function mapVentureRow(r: Record<string, unknown>): VentureConfig {
     logoUrl:       (r.logo_url as string) ?? undefined,
     foundedYear:   (r.founded_year as number) ?? undefined,
     repoUrl:       (r.repo_url as string) ?? undefined,
+    localRepoPath: (r.local_repo_path as string) ?? undefined,
     notionUrl:     (r.notion_url as string) ?? undefined,
     updatedAt:          (r.updated_at as string) ?? undefined,
     operatingCountries: (r.operating_countries as string[]) ?? [],
@@ -388,6 +389,7 @@ export async function updateVenture(
   if (data.logoUrl      !== undefined) update.logo_url        = data.logoUrl
   if (data.foundedYear  !== undefined) update.founded_year    = data.foundedYear
   if (data.repoUrl      !== undefined) update.repo_url        = data.repoUrl
+  if (data.localRepoPath       !== undefined) update.local_repo_path      = data.localRepoPath
   if (data.notionUrl           !== undefined) update.notion_url           = data.notionUrl
   if (data.operatingCountries  !== undefined) update.operating_countries  = data.operatingCountries
   if (data.targetAudience      !== undefined) update.target_audience      = data.targetAudience
@@ -1141,6 +1143,40 @@ export async function saveWarRoomPlan(input: SaveWarRoomPlanInput): Promise<stri
   }
 
   return planId
+}
+
+export async function updateWarRoomPlan(
+  planId: string,
+  patch: {
+    synthesis?: string
+    status?: 'complete' | 'partial' | 'error'
+    elapsedMs?: number
+    agentsUsed?: AgentId[]
+    steps?: SaveWarRoomPlanInput['steps']
+  }
+): Promise<void> {
+  await supabase
+    .from('execution_plans')
+    .update({
+      ...(patch.synthesis  !== undefined ? { synthesis:  patch.synthesis  } : {}),
+      ...(patch.status     !== undefined ? { status:     patch.status     } : {}),
+      ...(patch.elapsedMs  !== undefined ? { elapsed_ms: patch.elapsedMs  } : {}),
+      ...(patch.agentsUsed !== undefined ? { agents_used: patch.agentsUsed } : {}),
+    })
+    .eq('id', planId)
+
+  if (patch.steps && patch.steps.length > 0) {
+    await supabase.from('execution_steps').insert(
+      patch.steps.map(s => ({
+        plan_id:        planId,
+        agent_id:       s.agentId,
+        task_brief:     s.taskBrief,
+        output_content: s.outputContent,
+        status:         s.status,
+        retry_count:    s.retryCount,
+      }))
+    )
+  }
 }
 
 export async function getWarRoomPlans(
