@@ -100,3 +100,70 @@ export async function setAgentMemory(agentId: string, content: string): Promise<
     )
   if (error) throw new Error(error.message)
 }
+
+// ─── Session History (agent_session_memory) ──────────────────────────────────
+
+export interface AgentSessionEntry {
+  id:              string
+  agentId:         string
+  venture:         string | null
+  sessionDate:     string
+  summary:         string
+  learnings:       string[]
+  corrections:     string[]
+  filesChanged:    string[]
+  toolCallsCount:  number
+  createdAt:       string
+}
+
+/** Save a session entry. Auto-pruned to 50 per agent by DB trigger. */
+export async function saveSessionMemory(
+  agentId: string,
+  data: {
+    venture?:        string
+    summary:         string
+    learnings?:      string[]
+    corrections?:    string[]
+    filesChanged?:   string[]
+    toolCallsCount?: number
+  },
+): Promise<void> {
+  const sb = client()
+  const { error } = await sb.from('agent_session_memory').insert({
+    agent_id:         agentId,
+    venture:          data.venture ?? null,
+    summary:          data.summary,
+    learnings:        data.learnings    ?? [],
+    corrections:      data.corrections  ?? [],
+    files_changed:    data.filesChanged ?? [],
+    tool_calls_count: data.toolCallsCount ?? 0,
+  })
+  if (error) throw new Error(error.message)
+}
+
+/** Read last N sessions for an agent (newest first). */
+export async function getSessionHistory(
+  agentId: string,
+  limit: number = 10,
+): Promise<AgentSessionEntry[]> {
+  const sb = client()
+  const { data, error } = await sb
+    .from('agent_session_memory')
+    .select('*')
+    .eq('agent_id', agentId)
+    .order('created_at', { ascending: false })
+    .limit(Math.min(limit, 50))
+  if (error) throw new Error(error.message)
+  return (data ?? []).map(r => ({
+    id:             r.id             as string,
+    agentId:        r.agent_id       as string,
+    venture:        r.venture        as string | null,
+    sessionDate:    r.session_date   as string,
+    summary:        r.summary        as string,
+    learnings:      (r.learnings     as string[]) ?? [],
+    corrections:    (r.corrections   as string[]) ?? [],
+    filesChanged:   (r.files_changed as string[]) ?? [],
+    toolCallsCount: (r.tool_calls_count as number) ?? 0,
+    createdAt:      r.created_at     as string,
+  }))
+}

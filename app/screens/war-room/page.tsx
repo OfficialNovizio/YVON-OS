@@ -643,6 +643,10 @@ export default function WarRoomPage() {
     return localStorage.getItem(`yvon_local_repo_path_${slug}`) ?? ''
   })
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null)
+  const [contextTarget, setContextTarget] = useState<'yvon' | 'venture'>(() => {
+    if (typeof window === 'undefined') return 'venture'
+    return (localStorage.getItem('yvon_war_room_context_target') as 'yvon' | 'venture') ?? 'venture'
+  })
   // currentSessionId tracks the DB plan ID for the ongoing conversation — reused across turns
   const currentSessionIdRef = useRef<string | null>(null)
   // Slash command state
@@ -861,12 +865,18 @@ export default function WarRoomPage() {
 
     await ensureAuthCookie()
 
+    // Prepend context note so agents know which project the user is asking about.
+    // Display message (msg) stays clean — only the API payload carries this prefix.
+    const contextNote = contextTarget === 'yvon'
+      ? `[CONTEXT: YVON OS] The user is asking about the YVON AI operating system dashboard (this product), NOT about ${venture}. Focus on the YVON codebase and system.\n\n`
+      : `[CONTEXT: ${venture}] The user is asking about the ${venture} venture project.\n\n`
+
     try {
       const res = await fetch('/api/team-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: msg,
+          message: contextNote + msg,
           ventureName: venture,
           ventureSlug: ventureSlug || undefined,
           repoMode,
@@ -1042,7 +1052,7 @@ export default function WarRoomPage() {
         }
       }
     }
-  }, [input, attachments, venture, ventureSlug, githubContext, conversationHistory, sessionStatus, loadHistory])
+  }, [input, attachments, venture, ventureSlug, githubContext, conversationHistory, sessionStatus, loadHistory, contextTarget])
 
   const reset = () => {
     abortRef.current?.abort()
@@ -1128,6 +1138,30 @@ export default function WarRoomPage() {
                   style={{ padding: '3px 9px', fontSize: 10, fontWeight: active ? 700 : 500, background: active ? (mode === 'local' ? 'rgba(224,117,71,0.14)' : 'rgba(0,102,204,0.12)') : 'transparent', color: active ? (mode === 'local' ? '#cc7840' : '#0066cc') : ink.navy, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3, transition: 'all 0.12s', opacity: mode === 'local' && !localRepoPath ? 0.5 : 1 }}>
                   <span className="material-symbols-outlined" style={{ fontSize: 11 }}>{mode === 'local' ? 'folder' : 'cloud'}</span>
                   {mode === 'github' ? 'GitHub' : 'Local'}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Context target toggle — tells agents whether the user is asking about YVON OS or the active venture */}
+          <div
+            title={contextTarget === 'yvon' ? 'Asking about YVON OS (this dashboard)' : `Asking about ${venture}`}
+            style={{ display: 'flex', borderRadius: 8, overflow: 'hidden', border: `1px solid ${contextTarget === 'yvon' ? 'rgba(180,83,9,0.30)' : 'rgba(21,128,61,0.25)'}`, flexShrink: 0, transition: 'border-color 0.2s' }}
+          >
+            {(['yvon', 'venture'] as const).map(target => {
+              const active = contextTarget === target
+              const label  = target === 'yvon' ? 'YVON OS' : (venture.split(' ')[0] ?? venture)
+              const icon   = target === 'yvon' ? 'smart_toy' : 'storefront'
+              const activeBg   = target === 'yvon' ? 'rgba(245,158,11,0.16)' : 'rgba(22,163,74,0.13)'
+              const activeColor = target === 'yvon' ? '#b45309' : '#15803d'
+              return (
+                <button
+                  key={target}
+                  onClick={() => { setContextTarget(target); localStorage.setItem('yvon_war_room_context_target', target) }}
+                  style={{ padding: '3px 9px', fontSize: 10, fontWeight: active ? 700 : 500, background: active ? activeBg : 'transparent', color: active ? activeColor : ink.navy, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3, transition: 'all 0.12s' }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 11 }}>{icon}</span>
+                  {label}
                 </button>
               )
             })}

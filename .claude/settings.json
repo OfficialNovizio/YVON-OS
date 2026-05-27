@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd /Users/novysingh/StudioProjects/YVON2.0 && node scripts/session-end.mjs 2>/dev/null || true",
+            "command": "node scripts/session-end.mjs 2>/dev/null || true",
             "statusMessage": "Updating session log..."
           }
         ]

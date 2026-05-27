@@ -11,10 +11,21 @@ import { execSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { homedir } from 'os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const MEMORY_DIR = '/Users/novysingh/.claude/projects/-Users-novysingh-StudioProjects-YVON2-0/memory';
+
+// Derive Claude Code project memory dir from the project root path.
+// Claude Code converts the absolute path to a project ID by replacing
+// separators and special chars with '-' (drive letter colon → '-').
+function pathToProjectId(absPath) {
+  return absPath
+    .replace(/^([A-Za-z]):/, (_, d) => d.toLowerCase() + '-') // C: → c-
+    .replace(/[\\/\s.]/g, '-');                                 // \, /, space, dot → -
+}
+
+const MEMORY_DIR = join(homedir(), '.claude', 'projects', pathToProjectId(ROOT), 'memory');
 const INDEX_PATH = join(MEMORY_DIR, 'MEMORY.md');
 
 function run(cmd) {

@@ -223,8 +223,12 @@ Work each step. No shortcuts, no skipping steps, no half-finished implementation
    → YES → save to the right location
 
 5. Agent SESSION.md: update the active agent's SESSION.md with one row (last 3 sessions only, drop oldest if 4th entry)
-6. Global SESSION:  update docs/os/SESSION.md to match
+6. Global SESSION:  update docs/os/SESSION.md to match (one unique row — never duplicate)
 7. Venture SESSION: if this task was venture-specific, update docs/ventures/[name]/SESSION.md
+8. Session memory DB: POST /api/agent-session-memory with:
+   { agentId, venture, summary, learnings: string[], corrections: string[], filesChanged: string[], toolCallsCount: number }
+   → This is the 50-session rolling store. Required every ADJOURNING, no exceptions.
+   → Read back with GET /api/agent-session-memory?agentId=X&limit=3 at session start for continuity.
 ```
 
 ---

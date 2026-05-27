@@ -7,6 +7,10 @@ import { getAgentMemory } from '@/lib/agent-memory'
 import { getSecret } from '@/lib/secrets'
 
 export const maxDuration = 300
+
+// YVON OS project root — used in agent system prompts to scope filesystem tool access.
+// process.cwd() is the Next.js project root on both dev and production.
+const YVON_OS_PATH = process.cwd()
 import { COLLABORATION_GRAPH, calculateRoutingConfidence, recommendCollaboration } from '@/lib/collaboration-manager'
 import { routingFeedback } from '@/lib/routing-feedback'
 import { monitoring } from '@/lib/monitoring'
@@ -40,8 +44,8 @@ async function prefetchVentureGithubSnapshot(slug: string | undefined): Promise<
     const { owner, repo, repoUrl } = await resolveVentureRepo(slug)
     const info = await getRepoInfo(owner, repo)
     const [commits, issues, tree] = await Promise.all([
-      listCommits(owner, repo, 5),
-      listIssues(owner, repo, 'open'),
+      listCommits(owner, repo, 5).catch(() => []),
+      listIssues(owner, repo, 'open').catch(() => []),   // issues may be disabled on the repo
       getRepoTree(owner, repo, info.defaultBranch).catch(() => ({ files: [], truncated: false })),
     ])
     // Top-level directories/files only
@@ -326,7 +330,7 @@ async function getSpecialistBriefing(
   const ventureBlock = isYvonDashboard
     ? `<venture-scope>
 Active venture: YVON Dashboard (the AI operating system itself)
-The active codebase IS the YVON OS at the local filesystem (/Users/novysingh/StudioProjects/YVON2.0/).
+The active codebase IS the YVON OS at the local filesystem (${YVON_OS_PATH}).
 - Read / Bash / Glob / Grep: use freely to explore the YVON Next.js codebase and docs
 - Github tool: targets the YVON OS GitHub repo if configured
 - All codebase questions refer to the YVON OS itself
@@ -334,13 +338,15 @@ The active codebase IS the YVON OS at the local filesystem (/Users/novysingh/Stu
     : isLocalMode
     ? `<venture-scope>
 Active venture: ${ventureName} (slug: ${ventureSlug}) — LOCAL MODE
-The venture's repo is cloned locally at: ${localRepoPath ?? '(path not set — configure in Venture Settings → Profile → Local Repo Path)'}
+The venture's repo is noted at: ${localRepoPath ?? '(path not set — configure in Venture Settings → Profile → Local Repo Path)'}
 
-LOCAL MODE — filesystem tools are ENABLED for this venture:
-- Read / Bash / Glob / Grep: use these to explore ${ventureName}'s codebase at the path above
-- ALWAYS cd to ${localRepoPath ?? '<local-repo-path>'} before running Bash git commands
-- Github tool is also available but filesystem access is preferred when possible
-- Do NOT read YVON OS paths (/YVON2.0/) — only work inside ${localRepoPath ?? '<local-repo-path>'}
+⚠️ SANDBOX RESTRICTION: Bash / Read / Glob / Grep are sandboxed to the YVON OS project directory (${YVON_OS_PATH}).
+They CANNOT access external paths like ${localRepoPath ?? 'the venture repo'} — any attempt will fail with a permission error.
+
+LOCAL MODE — use Github(action=...) for ALL venture codebase access:
+- Github(action=file/tree/commits/issues/prs/branches/search): primary tool for ${ventureName} repo
+- The <github-snapshot> above already has repo structure, commits, and issues — use it directly
+- Do NOT attempt Bash cd or git commands pointing to the venture path — they will be blocked
 </venture-scope>`
     : `<venture-scope>
 Active venture: ${ventureName} (slug: ${ventureSlug})
@@ -373,7 +379,7 @@ Read / Bash / Glob / Grep are ONLY permitted for: loading your own MEMORY.md, YV
 ⚠️ TWO COMPLETELY SEPARATE CODEBASES — NEVER CONFUSE THEM:
 
 1. YVON OS (this AI system): Read / Bash / Glob / Grep
-   Path: /Users/novysingh/StudioProjects/YVON2.0/
+   Path: ${YVON_OS_PATH}
    This is the AI operating system dashboard — Next.js, TypeScript, Supabase.
    Git commits, files, and history here belong to YVON, NOT to ${ventureName}.
    NEVER use Bash git commands to answer questions about the venture's product.
@@ -762,7 +768,7 @@ export async function POST(request: Request): Promise<Response> {
             })
             const isDirectYvon = !ventureSlug || ventureSlug === 'yvon-dashboard'
             const directVentureScope = isDirectYvon
-              ? `Active venture: YVON Dashboard. The codebase in question IS the YVON OS at the local filesystem. Read/Bash/Glob/Grep freely explore YVON's Next.js code.`
+              ? `Active venture: YVON Dashboard. The codebase in question IS the YVON OS at the local filesystem (${YVON_OS_PATH}). Read/Bash/Glob/Grep freely explore YVON's Next.js code.`
               : `Active venture: ${ventureName} (slug: ${ventureSlug}).
 ⚠️ REPO SCOPE: All codebase questions about "${ventureName}" → Github(action=...) ONLY.
 Read/Bash/Glob/Grep access the YVON OS (/YVON2.0/) — a completely different codebase, NOT ${ventureName}'s.
@@ -1048,7 +1054,7 @@ You have read-only tools (Read/Glob/Grep/Github/etc.). If a specialist's claim s
         const ceoVentureScope = isCeoYvon
           ? `Active venture: YVON Dashboard. Codebase questions refer to the YVON OS local filesystem — Read/Bash/Glob/Grep are valid for this.`
           : isCeoLocal
-          ? `Active venture: ${ventureName} (slug: ${ventureSlug}) — LOCAL MODE. The venture's repo is at: ${localRepoPath ?? '(path not configured)'}. Read/Bash/Glob/Grep are enabled — use them on that path. Always cd to the repo path before git commands.`
+          ? `Active venture: ${ventureName} (slug: ${ventureSlug}) — LOCAL MODE. ⚠️ Bash/Read/Glob/Grep are sandboxed to ${YVON_OS_PATH} and CANNOT access the venture repo path (${localRepoPath ?? 'not configured'}). Use Github(action=file/tree/commits/issues) for all ${ventureName} repo access.`
           : `Active venture: ${ventureName} (slug: ${ventureSlug}). ⛔ BLOCKED: Read, Bash, Glob, and Grep are NOT available to you for ${ventureName}. These tools access the YVON OS codebase — an entirely different repo. Calling them will fail with an error. For ${ventureName} repo access, use Github(action=file/tree/commits/issues) ONLY.`
         const ceoSystem = `You are Marcus, CEO of YVON synthesising specialist briefings.\n\n${ceoVentureScope}\n\nYour job: produce a single unified answer for the user. Use Github tools ONLY when a claim needs verification against the live repo. Don't call Bash, Read, Glob, or Grep for product ventures — they are blocked. The specialists already did the heavy exploration; trust their reports.${ceoSnapshotBlock}${ceoVentureDocsBlock}`
 

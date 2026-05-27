@@ -6,6 +6,7 @@
  *    queries today's agent_sessions and prepends a new row to the Last 5 Sessions table.
  */
 import { readFileSync, writeFileSync } from 'fs';
+import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -123,4 +124,27 @@ async function fetchTodaySessions() {
   }
 
   writeFileSync(sessionPath, content, 'utf8');
+
+  // Rebuild knowledge graph (AST-only — no API cost, ~3 seconds)
+  try {
+    execSync('npm run graphify:build --silent', { cwd: root, stdio: 'ignore', timeout: 60000 });
+  } catch { /* non-fatal — graph rebuild failure never blocks session end */ }
+
+  // Output ADJOURNING reminder so Claude sees it as a system-reminder next turn
+  const reminder = [
+    'ADJOURNING CHECKLIST (run if this session had ≥3 tool calls):',
+    '1. POST /api/agent-session-memory { agentId, venture, summary, learnings[], corrections[], filesChanged[], toolCallsCount }',
+    '2. Append learning to agent MEMORY.md via POST /api/agent-memory { agentId, content }',
+    '3. Run 3-question self-improvement check (docs/reference/SELF-IMPROVEMENT.md)',
+    '4. Update docs/os/SESSION.md Last 5 Sessions table (one unique row — no duplicates)',
+    '5. Write ## Last Clean Exit timestamp',
+    'Graph rebuilt automatically by session-end hook.',
+  ].join(' | ');
+
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: {
+      hookEventName: 'Stop',
+      additionalContext: reminder,
+    },
+  }) + '\n');
 })();
