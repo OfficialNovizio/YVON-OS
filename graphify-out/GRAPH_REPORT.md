@@ -770,11 +770,11 @@ Nodes (1): Wait for server to be ready by polling the port.
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `GET()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 8`, `Community 12`, `Community 13`?**
-  _High betweenness centrality (0.208) - this node is a cross-community bridge._
+  _High betweenness centrality (0.251) - this node is a cross-community bridge._
 - **Why does `POST()` connect `Community 2` to `Community 0`, `Community 1`, `Community 3`, `Community 4`, `Community 5`, `Community 8`, `Community 12`, `Community 13`, `Community 15`?**
-  _High betweenness centrality (0.169) - this node is a cross-community bridge._
+  _High betweenness centrality (0.204) - this node is a cross-community bridge._
 - **Why does `select()` connect `Community 1` to `Community 0`, `Community 2`, `Community 4`, `Community 5`, `Community 6`, `Community 8`, `Community 12`, `Community 13`?**
-  _High betweenness centrality (0.124) - this node is a cross-community bridge._
+  _High betweenness centrality (0.092) - this node is a cross-community bridge._
 - **Are the 89 inferred relationships involving `GET()` (e.g. with `DELETE()` and `getStrategyLog()`) actually correct?**
   _`GET()` has 89 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 77 inferred relationships involving `POST()` (e.g. with `appendDailyLog()` and `setAgentMemory()`) actually correct?**
