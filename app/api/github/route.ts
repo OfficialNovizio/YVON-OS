@@ -89,18 +89,27 @@ export async function GET(request: Request): Promise<Response> {
 
       case 'issues': {
         const state = searchParams.get('state') ?? 'open'
-        const data = await gh(`/repos/${owner}/${repo}/issues?state=${state}&per_page=30&pulls=false`)
-        const issues = (data as Array<{ id: number; number: number; title: string; state: string; created_at: string; html_url: string; labels: Array<{ name: string }> }>)
-          .filter(i => !('pull_request' in i))
-          .map(i => ({
-            number:    i.number,
-            title:     i.title,
-            state:     i.state,
-            labels:    i.labels.map(l => l.name),
-            createdAt: i.created_at,
-            url:       i.html_url,
-          }))
-        return Response.json({ issues })
+        try {
+          const data = await gh(`/repos/${owner}/${repo}/issues?state=${state}&per_page=30`)
+          const issues = (data as Array<{ id: number; number: number; title: string; state: string; created_at: string; html_url: string; labels: Array<{ name: string }> }>)
+            .filter(i => !('pull_request' in i))
+            .map(i => ({
+              number:    i.number,
+              title:     i.title,
+              state:     i.state,
+              labels:    i.labels.map(l => l.name),
+              createdAt: i.created_at,
+              url:       i.html_url,
+            }))
+          return Response.json({ issues })
+        } catch (issueErr) {
+          const msg = issueErr instanceof Error ? issueErr.message : String(issueErr)
+          // Issues may be disabled on the repo (GitHub 410) or restricted — return empty list gracefully
+          const isDisabled = msg.includes('410') || msg.includes('disabled') || msg.includes('403')
+          console.warn(`[github/issues] ${owner}/${repo}: ${msg}`)
+          if (isDisabled) return Response.json({ issues: [], githubError: msg })
+          throw issueErr // re-throw other errors for the outer catch
+        }
       }
 
       case 'prs': {
@@ -143,6 +152,7 @@ export async function GET(request: Request): Promise<Response> {
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
+    console.error(`[github/${action}] ${owner}/${repo}: ${msg}`)
     return Response.json({ error: msg }, { status: 502 })
   }
 }

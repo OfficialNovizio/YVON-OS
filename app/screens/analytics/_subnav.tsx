@@ -41,13 +41,9 @@ export default function AnalyticsSubNav() {
             <span className="ceo-live-dot" style={{ background: GREEN }} />
             Live data
           </p>
-          <div
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer"
-            style={{ background: 'rgba(10,37,71,0.06)', border: '1px solid rgba(10,37,71,0.12)', fontSize: 11, fontWeight: 600, color: 'rgba(10,37,71,0.55)' }}
-          >
-            <span>30 days</span>
-            <span className="material-symbols-outlined text-[14px]">expand_more</span>
-          </div>
+          <p style={{ fontSize: 10, color: 'rgba(10,37,71,0.4)' }}>
+            Select period per chart below
+          </p>
         </div>
       </div>
 

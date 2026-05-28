@@ -25,6 +25,7 @@ const SELF_AUTHED_PREFIXES = [
   '/api/linkedin/connect',  // OAuth initiation
   '/api/route-intent',       // Internal routing classifier (server-to-server)
   '/api/health',          // intentionally public health check
+  '/api/social-accounts', // Venture social accounts — read-only, no auth needed
 ]
 
 /** Rate limit configuration per route type */

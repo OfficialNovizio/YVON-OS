@@ -325,6 +325,8 @@ function mapVentureRow(r: Record<string, unknown>): VentureConfig {
     updatedAt:          (r.updated_at as string) ?? undefined,
     operatingCountries: (r.operating_countries as string[]) ?? [],
     targetAudience:     r.target_audience ? (r.target_audience as VentureConfig['targetAudience']) : undefined,
+    brandTier:          (r.brand_tier as VentureConfig['brandTier']) ?? undefined,
+    avgPricePoint:      (r.avg_price_point as number) ?? undefined,
   }
 }
 
@@ -393,6 +395,8 @@ export async function updateVenture(
   if (data.notionUrl           !== undefined) update.notion_url           = data.notionUrl
   if (data.operatingCountries  !== undefined) update.operating_countries  = data.operatingCountries
   if (data.targetAudience      !== undefined) update.target_audience      = data.targetAudience
+  if (data.brandTier           !== undefined) update.brand_tier           = data.brandTier
+  if (data.avgPricePoint       !== undefined) update.avg_price_point      = data.avgPricePoint
   await supabase.from('ventures').update(update).eq('id', id)
 }
 
@@ -1231,6 +1235,23 @@ export async function getWarRoomPlans(
     createdAt:      p.created_at as string,
     steps:          stepsByPlan.get(p.id as string) ?? [],
   }))
+}
+
+export async function deleteWarRoomPlan(planId: string): Promise<void> {
+  await supabase.from('execution_steps').delete().eq('plan_id', planId)
+  await supabase.from('execution_plans').delete().eq('id', planId)
+}
+
+export async function deleteAllWarRoomPlans(ventureName: string): Promise<void> {
+  const { data: plans } = await supabase
+    .from('execution_plans')
+    .select('id')
+    .eq('venture_name', ventureName)
+  if (plans && plans.length > 0) {
+    const ids = plans.map(p => p.id as string)
+    await supabase.from('execution_steps').delete().in('plan_id', ids)
+  }
+  await supabase.from('execution_plans').delete().eq('venture_name', ventureName)
 }
 
 // ─── Hermes: Agent Session Memory ─────────────────────────────────────────────

@@ -127,6 +127,15 @@ export type SocialPlatform =
   | 'github'    | 'discord'  | 'telegram'
 
 export type BrandType = 'ecommerce' | 'saas' | 'agency' | 'media' | 'marketplace'
+
+export type BrandTier =
+  | 'budget'
+  | 'fast-fashion'
+  | 'mid-market'
+  | 'contemporary'
+  | 'premium'
+  | 'luxury'
+  | 'ultra-luxury'
 export type VentureStatus = 'active' | 'paused' | 'archived'
 
 export interface VentureSocial {
@@ -190,6 +199,8 @@ export interface VentureConfig {
   description?: string
   tagline?: string
   brandType?: BrandType
+  brandTier?: BrandTier
+  avgPricePoint?: number
   status?: VentureStatus
   websiteUrl?: string
   logoUrl?: string

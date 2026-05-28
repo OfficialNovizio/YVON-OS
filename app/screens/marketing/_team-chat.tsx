@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import type { AgentId, AgentRunStatus, WarRoomEvent } from '@/lib/types'
-import { getActiveVentureSlugClient } from '@/lib/venture-context'
+import { useVentureSlug } from '@/lib/use-venture-slug'
 
 // ── Glass variant (G3 Obsidian for outer container) ──────────────────────────
 const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
@@ -492,7 +492,8 @@ function CockpitPanel({
 // ─── Main component ────────────────────────────────────────────────────────────
 
 export default function TeamChatTab() {
-  const [venture, setVenture]             = useState('Novizio')
+  const ventureSlug = useVentureSlug()
+  const venture = ventureSlug.charAt(0).toUpperCase() + ventureSlug.slice(1)
   const [selected, setSelected]           = useState<string>(ROOM_ID)
   const [conversations, setConversations] = useState<ConversationMap>({})
   const [input, setInput]                 = useState('')
@@ -523,11 +524,6 @@ export default function TeamChatTab() {
   const synthIdRef = useRef<string | null>(null)
   const synthText  = useRef('')
   const convHistory = useRef<{ user: string; marcus: string }[]>([])
-
-  useEffect(() => {
-    const slug = getActiveVentureSlugClient()
-    if (slug) setVenture(slug === 'novizio' ? 'Novizio' : 'Hourbour')
-  }, [])
 
   useEffect(() => {
     threadRef.current?.scrollTo({ top: threadRef.current.scrollHeight, behavior: 'smooth' })

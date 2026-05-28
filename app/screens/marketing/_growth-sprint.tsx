@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { getActiveVentureSlugClient } from '@/lib/venture-context';
+import { useVentureSlug } from '@/lib/use-venture-slug';
 
 // ── Glass variants ──────────────────────────────────────────────────────────────
 const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
@@ -213,7 +213,8 @@ function QueueItem({ pitch, index }: { pitch: ContentPitch; index: number }) {
 /* ── Main component ─────────────────────────────────────────────────────────────── */
 export default function GrowthSprintTab() {
   const router = useRouter();
-  const [venture, setVenture]             = useState('Hourbour');
+  const ventureSlug = useVentureSlug();
+  const venture = ventureSlug.charAt(0).toUpperCase() + ventureSlug.slice(1);
   const [sprintMode, setSprintMode]       = useState<'1h' | '6h' | '48h'>('48h');
   const [phase, setPhase]                 = useState<SprintPhase>('idle');
   const [messages, setMessages]           = useState<AgentMessage[]>([]);
@@ -225,11 +226,6 @@ export default function GrowthSprintTab() {
   const [phaseLabel, setPhaseLabel]       = useState('');
   const feedRef  = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
-
-  useEffect(() => {
-    const slug = getActiveVentureSlugClient();
-    if (slug) setVenture(slug === 'novizio' ? 'Novizio' : 'Hourbour');
-  }, []);
 
   useEffect(() => {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });

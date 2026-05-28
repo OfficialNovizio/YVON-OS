@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { T, SC, FF, FInput, FTextArea, FSelect, FDivider, SaveBar, Btn, BackLink } from '../_shared'
 import { getActiveVentureSlugClient, setActiveVentureSlugClient } from '@/lib/venture-context'
-import type { VentureConfig, VentureSocial, SocialPlatform, BrandType, VentureStatus, BrandBigIdea, ContentSeries, ContentSeriesFormat, ContentSeriesFrequency, ContentSeriesFanGoal, TargetAudience } from '@/lib/types'
+import type { VentureConfig, VentureSocial, SocialPlatform, BrandType, BrandTier, VentureStatus, BrandBigIdea, ContentSeries, ContentSeriesFormat, ContentSeriesFrequency, ContentSeriesFanGoal, TargetAudience } from '@/lib/types'
 
 // ── Glass system ────────────────────────────────────────────────────────────────
 const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
@@ -28,6 +28,50 @@ const BRAND_TYPES: { value: BrandType; label: string }[] = [
   { value: 'media',       label: 'Media' },
   { value: 'marketplace', label: 'Marketplace' },
 ]
+
+function getIncomeTierOptions(countries: string[]): { value: string; label: string }[] {
+  const indiaOnly = countries.length === 1 && countries[0] === 'IN'
+  if (indiaOnly) {
+    return [
+      { value: '',            label: 'All' },
+      { value: 'mass',        label: 'Mass (<₹3L)' },
+      { value: 'aspirational',label: 'Aspirational (₹3–7L)' },
+      { value: 'premium',     label: 'Premium (₹7–15L)' },
+      { value: 'luxury',      label: 'Luxury (₹15L+)' },
+    ]
+  }
+  return [
+    { value: '',            label: 'All' },
+    { value: 'mass',        label: 'Mass (<$40K)' },
+    { value: 'aspirational',label: 'Aspirational ($40–70K)' },
+    { value: 'premium',     label: 'Premium ($70–120K)' },
+    { value: 'luxury',      label: 'Luxury ($120K+)' },
+  ]
+}
+
+function getBrandTiers(countries: string[]): { value: BrandTier; label: string; priceRange: string; example: string }[] {
+  const indiaOnly = countries.length === 1 && countries[0] === 'IN'
+  if (indiaOnly) {
+    return [
+      { value: 'budget',       label: 'Budget',       priceRange: '₹299–999',       example: 'Meesho, Club Factory' },
+      { value: 'fast-fashion', label: 'Fast Fashion', priceRange: '₹999–2,499',     example: 'Zara (entry), H&M, Shein' },
+      { value: 'mid-market',   label: 'Mid-Market',   priceRange: '₹2,500–4,999',   example: 'W, Global Desi, AND' },
+      { value: 'contemporary', label: 'Contemporary', priceRange: '₹5,000–9,999',   example: 'Label Life, Aza Indie' },
+      { value: 'premium',      label: 'Premium',      priceRange: '₹10,000–24,999', example: 'Ritu Kumar, Anita Dongre' },
+      { value: 'luxury',       label: 'Luxury',       priceRange: '₹25,000–99,999', example: 'Sabyasachi, Tarun Tahiliani' },
+      { value: 'ultra-luxury', label: 'Ultra-Luxury', priceRange: '₹1L+',           example: 'Abu Jani, Manish Malhotra couture' },
+    ]
+  }
+  return [
+    { value: 'budget',       label: 'Budget',       priceRange: '$4–12',      example: 'Shein, Wish, Meesho' },
+    { value: 'fast-fashion', label: 'Fast Fashion', priceRange: '$12–30',     example: 'Zara (entry), H&M, ASOS' },
+    { value: 'mid-market',   label: 'Mid-Market',   priceRange: '$30–60',     example: 'Banana Republic, J.Crew, Mango' },
+    { value: 'contemporary', label: 'Contemporary', priceRange: '$60–120',    example: 'Rag & Bone, Theory, AllSaints' },
+    { value: 'premium',      label: 'Premium',      priceRange: '$120–300',   example: 'Coach, Kate Spade, Ted Baker' },
+    { value: 'luxury',       label: 'Luxury',       priceRange: '$300–1,200', example: 'Gucci, Prada, Burberry' },
+    { value: 'ultra-luxury', label: 'Ultra-Luxury', priceRange: '$1,200+',    example: 'Chanel, Hermès, Loro Piana' },
+  ]
+}
 
 // ─── Market hierarchy tree ────────────────────────────────────────────────────
 
@@ -627,13 +671,7 @@ function ProfileTab({ venture, onChange, onSave, saving }: { venture: VentureCon
           <FSelect
             value={venture.targetAudience?.incomeTier ?? ''}
             onChange={e => set('targetAudience', { ...venture.targetAudience, incomeTier: e.target.value } as TargetAudience)}
-            options={[
-              { value: '', label: 'All' },
-              { value: 'mass', label: 'Mass (<$40K)' },
-              { value: 'aspirational', label: 'Aspirational ($40–70K)' },
-              { value: 'premium', label: 'Premium ($70–120K)' },
-              { value: 'luxury', label: 'Luxury ($120K+)' },
-            ]}
+            options={getIncomeTierOptions(venture.operatingCountries ?? [])}
           />
         </FF>
       </div>
@@ -694,6 +732,42 @@ function ProfileTab({ venture, onChange, onSave, saving }: { venture: VentureCon
 
       <FF label="Local Repo Path — absolute path to the cloned repo on this machine">
         <FolderPicker value={venture.localRepoPath ?? ''} onChange={path => set('localRepoPath', path)} />
+      </FF>
+
+      <FDivider label="Market Positioning" />
+
+      <FF label="Brand Tier · Anchors TAM, benchmarks, and growth projections to your actual competitive segment">
+        <div className="grid grid-cols-1 gap-2" style={{ maxWidth: 560 }}>
+          {getBrandTiers(venture.operatingCountries ?? []).map(t => (
+            <button
+              key={t.value}
+              type="button"
+              onClick={() => set('brandTier', t.value as BrandTier)}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '10px 16px', borderRadius: 12, border: '1.5px solid',
+                cursor: 'pointer', textAlign: 'left', transition: 'all 0.12s',
+                background: venture.brandTier === t.value ? 'rgba(0,102,204,0.10)' : 'rgba(255,255,255,0.04)',
+                borderColor: venture.brandTier === t.value ? ACCENT : L1,
+              }}
+            >
+              <div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: venture.brandTier === t.value ? ACCENT : I1c }}>{t.label}</span>
+                <span style={{ fontSize: 11, color: I1d, marginLeft: 8 }}>{t.priceRange}</span>
+              </div>
+              <span style={{ fontSize: 10, color: I1d }}>{t.example}</span>
+            </button>
+          ))}
+        </div>
+      </FF>
+
+      <FF label={`Average Price Point (${(venture.operatingCountries ?? []).length === 1 && venture.operatingCountries?.[0] === 'IN' ? '₹' : '$'}) · Used for price premium signals and competitive positioning`} style={{ maxWidth: 220 }}>
+        <FInput
+          value={venture.avgPricePoint != null ? String(venture.avgPricePoint) : ''}
+          onChange={e => set('avgPricePoint', e.target.value === '' ? undefined : parseInt(e.target.value.replace(/\D/g, ''), 10))}
+          placeholder="e.g. 12000"
+          mono
+        />
       </FF>
 
       <FDivider label="Analytics" />

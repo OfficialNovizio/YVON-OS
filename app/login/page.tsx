@@ -19,17 +19,22 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Start in 'checking' — render nothing until we know there's no live session.
+  // This prevents the login form from flashing when the yvon_auth cookie
+  // has expired but the Supabase session in localStorage is still valid.
+  const [authChecking, setAuthChecking] = useState(true);
 
-  // If Supabase already has a valid session (e.g. HttpOnly cookie expired but
-  // localStorage session is still live), re-issue the cookie silently.
   useEffect(() => {
     void supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.access_token) {
         const ok = await issueAuthCookie(session.access_token)
-        if (ok) router.replace('/screens/ceo-command-dashboard')
+        if (ok) { router.replace('/screens/ceo-command-dashboard'); return }
       }
+      setAuthChecking(false)
     })
   }, [router])
+
+  if (authChecking) return <div className="min-h-screen bg-black" />
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();

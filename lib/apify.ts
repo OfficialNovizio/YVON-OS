@@ -1,8 +1,314 @@
 import 'server-only'
 import type { InstagramStats, LinkedInStats } from '@/lib/types'
+import { supabase } from '@/lib/supabase'
 
 const APIFY_BASE = 'https://api.apify.com/v2'
-const TOKEN = process.env.APIFY_TOKEN!
+
+// Free-plan budget: cache everything for 24h, max 10 posts per run
+const MAX_POSTS = 10
+const CACHE_TTL_HOURS = 24
+
+// Read from Supabase Vault (encrypted at rest, service-role only).
+// Falls back to APIFY_TOKEN env var for backward compatibility.
+let _cachedToken: string | null = null
+async function getToken(): Promise<string> {
+  if (_cachedToken) return _cachedToken
+  try {
+    const { data } = await supabase.rpc('get_app_secret', { p_name: 'apify_api_key' })
+    if (data) { _cachedToken = data as string; return _cachedToken }
+  } catch { /* fall through to env */ }
+  const envToken = process.env.APIFY_TOKEN
+  if (!envToken) throw new Error('Apify token not found in vault or env')
+  _cachedToken = envToken
+  return _cachedToken
+}
+
+// ── Types (new analytics helpers) ─────────────────────────────────────────────
+
+export interface SocialMetrics {
+  platform:        'instagram' | 'tiktok' | 'linkedin' | 'youtube'
+  handle:          string
+  followers:       number
+  following:       number
+  posts_count:     number
+  avg_likes:       number
+  avg_comments:    number
+  avg_views:       number
+  engagement_rate: number  // decimal e.g. 0.034 = 3.4%
+  fetched_at:      string
+  from_cache:      boolean
+}
+
+export interface SocialPost {
+  post_id:         string
+  url:             string
+  caption:         string
+  post_type:       string
+  likes:           number
+  comments:        number
+  shares:          number
+  saves:           number
+  views:           number
+  reach:           number
+  engagement_rate: number
+  published_at:    string
+}
+
+// ── Cache helpers ─────────────────────────────────────────────────────────────
+
+async function getCachedSnapshot(ventureSlug: string, platform: string, handle: string) {
+  const { data } = await supabase
+    .from('social_snapshots')
+    .select('*')
+    .eq('venture_slug', ventureSlug)
+    .eq('platform', platform)
+    .eq('handle', handle)
+    .gt('cache_expires_at', new Date().toISOString())
+    .order('captured_at', { ascending: false })
+    .limit(1)
+    .single()
+  return data
+}
+
+async function upsertSnapshot(
+  ventureSlug: string,
+  platform: string,
+  handle: string,
+  metrics: Omit<SocialMetrics, 'platform' | 'handle' | 'fetched_at' | 'from_cache'>,
+  rawData: unknown,
+) {
+  const now     = new Date()
+  const expires = new Date(now.getTime() + CACHE_TTL_HOURS * 60 * 60 * 1000)
+  await supabase.from('social_snapshots').upsert({
+    venture_id:       ventureSlug,
+    venture_slug:     ventureSlug,
+    platform,
+    handle,
+    captured_at:      now.toISOString(),
+    cache_expires_at: expires.toISOString(),
+    followers:        metrics.followers,
+    following:        metrics.following,
+    posts_count:      metrics.posts_count,
+    avg_likes:        metrics.avg_likes,
+    avg_comments:     metrics.avg_comments,
+    avg_views:        metrics.avg_views,
+    engagement_rate:  metrics.engagement_rate,
+    data:             rawData,
+  }, { onConflict: 'venture_slug,platform,handle' })
+}
+
+async function upsertPosts(ventureSlug: string, platform: string, posts: SocialPost[]) {
+  if (!posts.length) return
+  await supabase.from('social_posts').upsert(
+    posts.map(p => ({
+      venture_slug:    ventureSlug,
+      platform,
+      post_id:         p.post_id,
+      url:             p.url,
+      caption:         p.caption.slice(0, 500),
+      post_type:       p.post_type,
+      likes:           p.likes,
+      comments:        p.comments,
+      shares:          p.shares,
+      saves:           p.saves,
+      views:           p.views,
+      reach:           p.reach,
+      engagement_rate: p.engagement_rate,
+      published_at:    p.published_at,
+    })),
+    { onConflict: 'venture_slug,platform,post_id' },
+  )
+}
+
+// ── Sync actor runner (cheaper than async start/poll on free plan) ─────────────
+
+async function runActorSync(token: string, actorId: string, input: Record<string, unknown>): Promise<unknown[]> {
+  const url = `${APIFY_BASE}/acts/${actorId}/run-sync-get-dataset-items?token=${token}&memory=256`
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+    signal: AbortSignal.timeout(120_000),
+  })
+  if (!res.ok) throw new Error(`Apify actor ${actorId} failed (${res.status})`)
+  const items = await res.json() as unknown[]
+  return Array.isArray(items) ? items : []
+}
+
+// ── Platform scrapers ─────────────────────────────────────────────────────────
+
+type ScraperResult = { metrics: Omit<SocialMetrics, 'platform' | 'handle' | 'fetched_at' | 'from_cache'>; posts: SocialPost[]; raw: unknown }
+
+async function scrapeInstagramFull(token: string, handle: string): Promise<ScraperResult> {
+  const items = await runActorSync(token, 'apify~instagram-profile-scraper', {
+    usernames: [handle.replace('@', '')],
+    resultsLimit: MAX_POSTS,
+  })
+  const p = (items[0] ?? {}) as Record<string, unknown>
+  const pArr = (Array.isArray(p.latestPosts) ? p.latestPosts : []) as Record<string, unknown>[]
+  const followers    = Number(p.followersCount ?? 0)
+  const count        = pArr.length || 1
+  const avg_likes    = pArr.reduce((s, v) => s + Number(v.likesCount ?? 0), 0) / count
+  const avg_comments = pArr.reduce((s, v) => s + Number(v.commentsCount ?? 0), 0) / count
+  return {
+    metrics: { followers, following: Number(p.followsCount ?? 0), posts_count: Number(p.postsCount ?? 0), avg_likes, avg_comments, avg_views: 0, engagement_rate: followers > 0 ? (avg_likes + avg_comments) / followers : 0 },
+    posts: pArr.slice(0, MAX_POSTS).map(v => ({
+      post_id: String(v.id ?? v.shortCode ?? ''), url: String(v.url ?? ''), caption: String(v.caption ?? '').slice(0, 500),
+      post_type: v.type === 'Video' ? 'reel' : v.type === 'Sidecar' ? 'carousel' : 'static',
+      likes: Number(v.likesCount ?? 0), comments: Number(v.commentsCount ?? 0), shares: 0, saves: 0,
+      views: Number(v.videoViewCount ?? 0), reach: 0,
+      engagement_rate: followers > 0 ? (Number(v.likesCount ?? 0) + Number(v.commentsCount ?? 0)) / followers : 0,
+      published_at: String(v.timestamp ?? new Date().toISOString()),
+    })),
+    raw: p,
+  }
+}
+
+async function scrapeTikTokFull(token: string, handle: string): Promise<ScraperResult> {
+  const items = await runActorSync(token, 'clockworks~tiktok-profile-scraper', {
+    profiles: [`https://www.tiktok.com/@${handle.replace('@', '')}`],
+    resultsPerPage: MAX_POSTS,
+    shouldDownloadVideos: false,
+    shouldDownloadCovers: false,
+  })
+  const p = (items[0] ?? {}) as Record<string, unknown>
+  const vArr = (Array.isArray(p.videos) ? p.videos : []) as Record<string, unknown>[]
+  const followers    = Number(p.fans ?? p.followerCount ?? 0)
+  const count        = vArr.length || 1
+  const avg_likes    = vArr.reduce((s, v) => s + Number(v.diggCount ?? 0), 0) / count
+  const avg_comments = vArr.reduce((s, v) => s + Number(v.commentCount ?? 0), 0) / count
+  const avg_views    = vArr.reduce((s, v) => s + Number(v.playCount ?? 0), 0) / count
+  return {
+    metrics: { followers, following: Number(p.following ?? 0), posts_count: Number(p.video ?? 0), avg_likes, avg_comments, avg_views, engagement_rate: avg_views > 0 ? (avg_likes + avg_comments) / avg_views : 0 },
+    posts: vArr.slice(0, MAX_POSTS).map(v => ({
+      post_id: String(v.id ?? ''), url: String(v.webVideoUrl ?? ''), caption: String(v.text ?? '').slice(0, 500),
+      post_type: 'short',
+      likes: Number(v.diggCount ?? 0), comments: Number(v.commentCount ?? 0), shares: Number(v.shareCount ?? 0), saves: Number(v.collectCount ?? 0),
+      views: Number(v.playCount ?? 0), reach: 0,
+      engagement_rate: Number(v.playCount ?? 1) > 0 ? (Number(v.diggCount ?? 0) + Number(v.commentCount ?? 0)) / Number(v.playCount ?? 1) : 0,
+      published_at: new Date((Number(v.createTime ?? 0)) * 1000).toISOString(),
+    })),
+    raw: p,
+  }
+}
+
+async function scrapeLinkedInFull(token: string, handle: string): Promise<ScraperResult> {
+  const url = handle.startsWith('http') ? handle : `https://www.linkedin.com/company/${handle}/`
+  const items = await runActorSync(token, 'curious_coder~linkedin-company-scraper', { companies: [url], maxPosts: MAX_POSTS })
+  const p = (items[0] ?? {}) as Record<string, unknown>
+  const pArr = (Array.isArray(p.posts) ? p.posts : []) as Record<string, unknown>[]
+  const followers    = Number(p.followersCount ?? p.followers ?? 0)
+  const count        = pArr.length || 1
+  const avg_likes    = pArr.reduce((s, v) => s + Number(v.likesCount ?? v.numLikes ?? 0), 0) / count
+  const avg_comments = pArr.reduce((s, v) => s + Number(v.commentsCount ?? v.numComments ?? 0), 0) / count
+  return {
+    metrics: { followers, following: 0, posts_count: Number(p.postsCount ?? 0), avg_likes, avg_comments, avg_views: 0, engagement_rate: followers > 0 ? (avg_likes + avg_comments) / followers : 0 },
+    posts: pArr.slice(0, MAX_POSTS).map(v => ({
+      post_id: String(v.id ?? v.urn ?? ''), url: String(v.url ?? ''), caption: String(v.text ?? '').slice(0, 500),
+      post_type: v.type === 'ARTICLE' ? 'article' : 'static',
+      likes: Number(v.likesCount ?? v.numLikes ?? 0), comments: Number(v.commentsCount ?? v.numComments ?? 0), shares: Number(v.sharesCount ?? 0), saves: 0,
+      views: Number(v.impressionsCount ?? 0), reach: 0,
+      engagement_rate: followers > 0 ? (Number(v.likesCount ?? 0) + Number(v.commentsCount ?? 0)) / followers : 0,
+      published_at: String(v.postedAt ?? v.date ?? new Date().toISOString()),
+    })),
+    raw: p,
+  }
+}
+
+async function scrapeYouTubeFull(token: string, handle: string): Promise<ScraperResult> {
+  const q = handle.startsWith('UC') ? handle : `@${handle.replace(/^@/, '')}`
+  const items = await runActorSync(token, 'bernardo_adinolfi~youtube-channel-scraper', {
+    startUrls: [{ url: `https://www.youtube.com/${q}` }],
+    maxVideos: MAX_POSTS,
+  })
+  const ch   = (items[0] ?? {}) as Record<string, unknown>
+  const vArr = (Array.isArray(ch.videos) ? ch.videos : items.slice(1)) as Record<string, unknown>[]
+  const followers = Number(ch.subscriberCount ?? ch.subscribers ?? 0)
+  const count     = vArr.length || 1
+  const avg_views = vArr.reduce((s, v) => s + Number(v.viewCount ?? v.views ?? 0), 0) / count
+  const avg_likes = vArr.reduce((s, v) => s + Number(v.likeCount ?? v.likes ?? 0), 0) / count
+  return {
+    metrics: { followers, following: 0, posts_count: Number(ch.videoCount ?? 0), avg_likes, avg_comments: 0, avg_views, engagement_rate: avg_views > 0 ? avg_likes / avg_views : 0 },
+    posts: vArr.slice(0, MAX_POSTS).map(v => ({
+      post_id: String(v.id ?? v.videoId ?? ''), url: String(v.url ?? `https://youtube.com/watch?v=${v.id ?? ''}`),
+      caption: String(v.title ?? '').slice(0, 500),
+      post_type: Number(v.durationSeconds ?? 9999) < 60 ? 'short' : 'long video',
+      likes: Number(v.likeCount ?? 0), comments: Number(v.commentCount ?? 0), shares: 0, saves: 0,
+      views: Number(v.viewCount ?? v.views ?? 0), reach: 0,
+      engagement_rate: Number(v.viewCount ?? 1) > 0 ? Number(v.likeCount ?? 0) / Number(v.viewCount ?? 1) : 0,
+      published_at: String(v.publishedAt ?? v.date ?? new Date().toISOString()),
+    })),
+    raw: ch,
+  }
+}
+
+// ── Public analytics API (cache-first) ───────────────────────────────────────
+
+/**
+ * Returns social metrics for a connected platform.
+ * Cache-first — only calls Apify when cache is stale or forceRefresh=true.
+ * Only pass forceRefresh=true on explicit user Refresh button click.
+ */
+export async function getSocialMetrics(
+  ventureSlug: string,
+  platform: 'instagram' | 'tiktok' | 'linkedin' | 'youtube',
+  handle: string,
+  forceRefresh = false,
+): Promise<SocialMetrics> {
+  if (!forceRefresh) {
+    const cached = await getCachedSnapshot(ventureSlug, platform, handle)
+    if (cached) {
+      return {
+        platform, handle,
+        followers:       cached.followers       ?? 0,
+        following:       cached.following        ?? 0,
+        posts_count:     cached.posts_count      ?? 0,
+        avg_likes:       Number(cached.avg_likes     ?? 0),
+        avg_comments:    Number(cached.avg_comments  ?? 0),
+        avg_views:       Number(cached.avg_views     ?? 0),
+        engagement_rate: Number(cached.engagement_rate ?? 0),
+        fetched_at:      cached.captured_at as string,
+        from_cache:      true,
+      }
+    }
+  }
+
+  const token = await getToken()
+  let result: ScraperResult
+
+  switch (platform) {
+    case 'instagram': result = await scrapeInstagramFull(token, handle); break
+    case 'tiktok':    result = await scrapeTikTokFull(token, handle);    break
+    case 'linkedin':  result = await scrapeLinkedInFull(token, handle);  break
+    case 'youtube':   result = await scrapeYouTubeFull(token, handle);   break
+  }
+
+  await upsertSnapshot(ventureSlug, platform, handle, result.metrics, result.raw)
+  await upsertPosts(ventureSlug, platform, result.posts)
+
+  return { platform, handle, ...result.metrics, fetched_at: new Date().toISOString(), from_cache: false }
+}
+
+/** Returns cached posts (populated by getSocialMetrics runs). Never calls Apify directly. */
+export async function getSocialPosts(
+  ventureSlug: string,
+  platform: 'instagram' | 'tiktok' | 'linkedin' | 'youtube',
+  limit = 10,
+): Promise<SocialPost[]> {
+  const { data } = await supabase
+    .from('social_posts')
+    .select('*')
+    .eq('venture_slug', ventureSlug)
+    .eq('platform', platform)
+    .order('published_at', { ascending: false })
+    .limit(limit)
+  return (data ?? []).map(r => ({
+    post_id: r.post_id, url: r.url ?? '', caption: r.caption ?? '', post_type: r.post_type ?? 'static',
+    likes: r.likes ?? 0, comments: r.comments ?? 0, shares: r.shares ?? 0, saves: r.saves ?? 0,
+    views: r.views ?? 0, reach: r.reach ?? 0, engagement_rate: Number(r.engagement_rate ?? 0),
+    published_at: r.published_at ?? new Date().toISOString(),
+  }))
+}
 
 // Actor IDs from Apify Store
 const ACTORS = {
@@ -14,8 +320,9 @@ const ACTORS = {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 async function startRun(actorId: string, input: Record<string, unknown>): Promise<string> {
+  const token = await getToken()
   const res = await fetch(
-    `${APIFY_BASE}/acts/${actorId}/runs?token=${TOKEN}`,
+    `${APIFY_BASE}/acts/${actorId}/runs?token=${token}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,10 +335,11 @@ async function startRun(actorId: string, input: Record<string, unknown>): Promis
 }
 
 async function waitForRun(runId: string, timeoutMs = 25000): Promise<string> {
+  const token = await getToken()
   const deadline = Date.now() + timeoutMs
   while (Date.now() < deadline) {
     await new Promise((r) => setTimeout(r, 2000))
-    const res = await fetch(`${APIFY_BASE}/actor-runs/${runId}?token=${TOKEN}`)
+    const res = await fetch(`${APIFY_BASE}/actor-runs/${runId}?token=${token}`)
     if (!res.ok) throw new Error(`Apify run poll failed: ${res.status}`)
     const json = await res.json() as { data: { status: string; defaultDatasetId: string } }
     if (json.data.status === 'SUCCEEDED') return json.data.defaultDatasetId
@@ -43,7 +351,8 @@ async function waitForRun(runId: string, timeoutMs = 25000): Promise<string> {
 }
 
 async function fetchDataset<T>(datasetId: string): Promise<T[]> {
-  const res = await fetch(`${APIFY_BASE}/datasets/${datasetId}/items?token=${TOKEN}`)
+  const token = await getToken()
+  const res = await fetch(`${APIFY_BASE}/datasets/${datasetId}/items?token=${token}`)
   if (!res.ok) throw new Error(`Apify dataset fetch failed: ${res.status}`)
   return res.json() as Promise<T[]>
 }

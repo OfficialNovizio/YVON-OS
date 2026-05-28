@@ -371,9 +371,16 @@ Read / Bash / Glob / Grep are ONLY permitted for: loading your own MEMORY.md, YV
     ? `<github-snapshot>\n[System note: Live GitHub data fetched at the start of this session — this is ground truth, use it directly.]\n\n${githubSnapshot}\n</github-snapshot>`
     : ''
 
-  const isReport = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(message)
-  // Action task: user wants something DONE in the repo, not just analysed
-  const isAction = !isYvonDashboard && /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(message) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package)\b/i.test(message)
+  // Strip the [CONTEXT: ...] prefix injected by the War Room client before intent detection,
+  // so action/debug keywords in the user's actual message aren't buried or missed.
+  const cleanMessage = message.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+
+  const isReport = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(cleanMessage)
+  // Debugging: user pasted an error, stack trace, or is asking to fix a bug/crash
+  const isDebugging = !isYvonDashboard && /(\bat\s+\w|\b#\d+\s+\w|Exception|Traceback|Error:|FAILED|stacktrace|\[firebase_|\[flutter_|flutter:|\bcrash\b|\bcrashed\b|\bnot\s+working\b|\bdoesn.t\s+work\b)/i.test(cleanMessage)
+    || /\b(fix\s+(this|the|my|it)|please\s+fix|help\s+me\s+fix|debug\s+(this|the|my)|resolve\s+(this|the)|i['’]m\s+getting\s+(an?\s+)?error|i\s+get\s+(an?\s+)?error|getting\s+(an?\s+)?error|i\s+have\s+(an?\s+)?error|there.s\s+(an?\s+)?error)\b/i.test(cleanMessage)
+  // Action task: user wants a file/code change done in the venture repo
+  const isAction = !isYvonDashboard && !isDebugging && /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(cleanMessage) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package)\b/i.test(cleanMessage)
   const ventureRepoLabel = ventureSlug ? `${ventureSlug} app repo` : 'venture app repo'
   const toolGuidance = `<tools-available>
 ⚠️ TWO COMPLETELY SEPARATE CODEBASES — NEVER CONFUSE THEM:
@@ -402,7 +409,7 @@ Tools:
 ⛔ LOCAL WRITE PROHIBITION: You have zero local filesystem write access. Bash is read-only. Never claim to have written or edited a file locally. The only write path is Github(action=write_file).
 
 The <github-snapshot> already has the ${ventureName} repo structure, commits, and issues — do not re-fetch those. Drill in only when you need file contents or specifics.
-${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe it. Read the file → edit → write_file → confirm. Do not produce a long report.' : isReport ? 'Cap: ~8 tool calls. Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'Cap: ~6 tool calls. End with a 100–150 word answer.'}
+${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe it. Read the file → edit → write_file → confirm. Do not produce a long report.' : isDebugging ? 'Cap: ~8 tool calls. DIAGNOSE AND FIX — do not give a project overview. Steps: 1) identify which file the error is in, 2) read that file with Github(action=file), 3) identify the exact fix needed, 4) apply it with Github(action=write_file). End with: what was wrong + what you fixed. 150 words max.' : isReport ? 'Cap: ~8 tool calls. Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'Cap: ~6 tool calls. End with a 100–150 word answer.'}
 </tools-available>`
 
   const ventureDocsBlock = ventureDocs
@@ -414,6 +421,8 @@ ${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe 
   let content = ''
   const userPrompt = isAction
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nTake direct action — do NOT just describe what to do.\nWorkflow:\n1. If editing an existing file: read it first with Github(action=file, path=...) to get current content\n2. Make the required change\n3. Commit with Github(action=write_file, path=..., content=..., message=...)\n4. If deleting: Github(action=delete_file, path=..., message=...)\nConfirm exactly what was done: file path + commit message. Keep your reply to 3–4 sentences max.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [file path changed]\nconfidence: high\n---END---`
+    : isDebugging
+    ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nThe user has a bug or error. DO NOT give a project overview or general assessment.\nDebugging workflow:\n1. Read the error message/stack trace carefully — identify the exact file and line\n2. Use Github(action=file, path=...) to read the relevant source file\n3. Identify the root cause\n4. If you can fix it: use Github(action=write_file) to commit the fix\n5. If you cannot directly fix it (config issue, Firebase console setting, etc.): give the exact step-by-step fix instruction\nResponse format: [Root cause in 1 sentence] → [Fix applied or exact steps to fix]. Max 200 words.\n\n---HANDOFF---\nsummary: [root cause in 1 sentence]\ntype: debug\nkey_output: [fix applied or fix steps]\nconfidence: high\n---END---`
     : isReport
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nUse tools to gather real data before writing. Produce a structured markdown report with ## section headers and bullet points. Be specific — include actual numbers, commit messages, issue titles, file names. 300–400 words.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: report\nkey_output: [deliverable]\nconfidence: high\n---END---`
     : `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nUse tools to explore the repo before answering. Final answer 100–150 words, specific and actionable.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: strategy\nkey_output: [deliverable]\nconfidence: high\n---END---`
@@ -425,8 +434,8 @@ ${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe 
       repoMode,
       localRepoPath,
       system:    systemText || undefined,
-      maxTokens: isAction ? 2000 : isReport ? 3000 : 1500,
-      maxIterations: isAction ? 10 : undefined,
+      maxTokens: isAction ? 2000 : isDebugging ? 2000 : isReport ? 3000 : 1500,
+      maxIterations: isAction || isDebugging ? 10 : undefined,
       messages: [{ role: 'user', content: userPrompt }],
     })) {
       switch (event.kind) {
@@ -753,9 +762,10 @@ export async function POST(request: Request): Promise<Response> {
           let directSynthesis = ''
           if (needsTools) {
             // Exploration question — Marcus uses tools to ground his answer.
-            // Pre-fetch snapshot + venture docs in parallel so direct-Marcus has the same context
+            // Pre-fetch snapshot + venture docs in parallel so direct-Marcus has the same context.
+            // Skip GitHub snapshot when in local mode — agents use the local filesystem instead.
             const [directSnap, directVentureDocs] = await Promise.all([
-              prefetchVentureGithubSnapshot(ventureSlug),
+              repoMode === 'local' ? Promise.resolve({ snapshot: null, error: undefined }) : prefetchVentureGithubSnapshot(ventureSlug),
               loadVentureContextBlock(ventureSlug),
             ])
             const directSnapText = directSnap.snapshot ? formatGithubSnapshot(directSnap.snapshot) : ''
@@ -833,7 +843,10 @@ Bash git commands query YVON's git history, NOT ${ventureName}'s — never use t
 
         // ── Step 0.5: Pre-fetch GitHub snapshot + venture docs in parallel ──
         // Both surface ground-truth state to every downstream agent in their system prompt.
-        const snapshotPromise = prefetchVentureGithubSnapshot(ventureSlug)
+        // Skip GitHub snapshot in local mode — the venture repo is on the local filesystem.
+        const snapshotPromise = repoMode === 'local'
+          ? Promise.resolve({ snapshot: null, error: undefined })
+          : prefetchVentureGithubSnapshot(ventureSlug)
         const ventureDocsPromise = loadVentureContextBlock(ventureSlug)
 
         // ── Steps 1 + 2: Classify intent + build plan (skip if already approved) ──

@@ -16,7 +16,7 @@
 
 | Variable | Used By |
 |----------|---------|
-| `APIFY_TOKEN` | Instagram, LinkedIn, Web Scraper routes |
+| `APIFY_TOKEN` | Legacy fallback only — Apify credentials now live in Supabase Vault (see below) |
 | `YOUTUBE_API_KEY` | `/api/youtube` |
 | `GOOGLE_SA_JSON` | `/api/analytics` — full service account JSON object |
 | `RESEND_API_KEY` | `/api/email` — CEO brief digest emails |
@@ -53,6 +53,23 @@
 ### Adding a New Brand
 Copy the Novizio block above, replace prefix with new brand's slug (e.g., `BRANDNAME_IG_HANDLE`).
 Then update `brand-context/brands/{brandname}.md` with the matching config.
+
+## Apify — Supabase Vault Storage
+
+Apify credentials are stored encrypted in Supabase Vault (migration 036), not in env files.
+
+| Vault key | Description |
+|-----------|-------------|
+| `apify_api_key` | Apify API token — read via `get_app_secret('apify_api_key')` |
+| `apify_user_id` | Apify user ID |
+
+**Free plan budget rules (enforced in `lib/apify.ts`):**
+- Cache TTL: 24 hours — Apify is never called if valid cache exists
+- Max posts per run: 10
+- Only refresh on explicit user click — never on page load
+- Use sync actor endpoint (`run-sync-get-dataset-items`) — no polling overhead
+
+**To update credentials:** Run `node scripts/seed-apify.mjs <NEW_KEY> <USER_ID>` (creates the script fresh, runs it, then delete the script — the key is never stored in any file).
 
 ## Troubleshooting
 | Problem | Check |

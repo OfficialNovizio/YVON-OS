@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import type { AgentId, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord } from '@/lib/types'
 import { getActiveVentureSlugClient } from '@/lib/venture-context'
@@ -215,9 +214,19 @@ function SimpleMarkdown({ text, dark = false }: { text: string; dark?: boolean }
 }
 
 // ─── Status pills ──────────────────────────────────────────────────────────────
-function GithubStatusPill({ status, label, branch, openIssues, snapshotError }: {
-  status: RepoStatus; label: string | null; branch: string | null; openIssues: number | null; snapshotError: string | null
+function GithubStatusPill({ status, label, branch, openIssues, snapshotError, localMode }: {
+  status: RepoStatus; label: string | null; branch: string | null; openIssues: number | null; snapshotError: string | null; localMode?: boolean
 }) {
+  // Local mode — no GitHub calls made, show neutral folder pill
+  if (localMode) {
+    return (
+      <div title="Local repo mode — GitHub not queried"
+        style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 10px', borderRadius: 20, background: 'rgba(5,18,32,0.07)', border: '1px solid rgba(5,18,32,0.18)', fontFamily: 'ui-monospace,monospace' }}>
+        <span className="material-symbols-outlined" style={{ fontSize: 11, color: ink.navy, opacity: 0.50 }}>folder</span>
+        <span style={{ fontSize: 11, color: ink.navy, fontWeight: 700, opacity: 0.55 }}>local repo</span>
+      </div>
+    )
+  }
   const eff: RepoStatus = snapshotError ? 'error' : (label ? 'ready' : status)
   const dot   = eff === 'ready' ? '#16a34a' : eff === 'error' ? '#dc2626' : eff === 'loading' ? '#ca8a04' : 'rgba(5,18,32,0.25)'
   const tc    = eff === 'ready' ? '#15803d' : eff === 'error' ? '#dc2626' : ink.navy
@@ -261,7 +270,8 @@ function UserBubble({ item }: { item: Extract<ThreadItem, { kind: 'user' }> }) {
           <div style={{ marginBottom: 8, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
             {item.attachments.map((att, i) => att.isImage && att.preview ? (
               <div key={i} style={{ position: 'relative', width: 176, height: 128, borderRadius: 10, overflow: 'hidden', border: `1px solid ${BORDER}` }}>
-                <Image src={att.preview} alt="attachment" width={176} height={128} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={att.preview} alt="attachment" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               </div>
             ) : (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: `1px solid ${BORDER}` }}>
@@ -558,10 +568,13 @@ function groupByDate(records: WarRoomPlanRecord[]): Array<{ label: string; items
   return Object.entries(g).filter(([, items]) => items.length > 0).map(([label, items]) => ({ label, items }))
 }
 
-function HistorySidebar({ collapsed, onCollapse, onNew, records, loading, onLoad, activeSessionId }: {
+function HistorySidebar({ collapsed, onCollapse, onNew, records, loading, onLoad, activeSessionId, onDeleteSession, onDeleteAll }: {
   collapsed: boolean; onCollapse: () => void; onNew: () => void
   records: WarRoomPlanRecord[]; loading: boolean; onLoad: (r: WarRoomPlanRecord) => void; activeSessionId: string | null
+  onDeleteSession: (id: string) => void; onDeleteAll: () => void
 }) {
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [confirmAll, setConfirmAll] = useState(false)
   const groups = groupByDate(records)
   return (
     <div style={{ width: collapsed ? 52 : 256, flexShrink: 0, display: 'flex', flexDirection: 'column', ...G3, borderRadius: 16, transition: 'width 0.2s', overflow: 'hidden' }}>
@@ -571,6 +584,23 @@ function HistorySidebar({ collapsed, onCollapse, onNew, records, loading, onLoad
           <span className="material-symbols-outlined" style={{ fontSize: 18 }}>{collapsed ? 'chevron_right' : 'menu'}</span>
         </button>
         {!collapsed && <span style={{ fontSize: 12, fontWeight: 600, color: T2, flex: 1 }}>War Room</span>}
+        {!collapsed && records.length > 0 && (
+          confirmAll ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontSize: 10, color: '#f87171' }}>Delete all?</span>
+              <button onClick={() => { onDeleteAll(); setConfirmAll(false) }} title="Confirm delete all" style={{ width: 22, height: 22, borderRadius: 5, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.40)', cursor: 'pointer', color: '#f87171', flexShrink: 0 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 12 }}>check</span>
+              </button>
+              <button onClick={() => setConfirmAll(false)} title="Cancel" style={{ width: 22, height: 22, borderRadius: 5, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: `1px solid ${BORDER}`, cursor: 'pointer', color: T2, flexShrink: 0 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 12 }}>close</span>
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setConfirmAll(true)} title="Delete all sessions" style={{ width: 28, height: 28, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: `1px solid rgba(239,68,68,0.28)`, cursor: 'pointer', color: '#f87171', flexShrink: 0 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 14 }}>delete_sweep</span>
+            </button>
+          )
+        )}
         {!collapsed && (
           <button onClick={onNew} title="New session" style={{ width: 28, height: 28, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: `1px solid ${BORDER}`, cursor: 'pointer', color: T2, flexShrink: 0 }}>
             <span className="material-symbols-outlined" style={{ fontSize: 14 }}>add</span>
@@ -593,16 +623,30 @@ function HistorySidebar({ collapsed, onCollapse, onNew, records, loading, onLoad
             <div key={label}>
               <p style={{ fontSize: 10, fontWeight: 600, color: T3, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '8px 12px 3px', margin: 0 }}>{label}</p>
               {items.map(r => (
-                <button key={r.id} onClick={() => onLoad(r)} style={{ display: 'block', textAlign: 'left', padding: '6px 10px', background: activeSessionId === r.id ? 'rgba(255,255,255,0.08)' : 'none', border: 'none', cursor: 'pointer', borderRadius: 6, margin: '1px 4px', width: 'calc(100% - 8px)' }}>
-                  <p style={{ fontSize: 12, color: T1, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {r.userPrompt.split(' ').slice(0, 7).join(' ')}{r.userPrompt.split(' ').length > 7 ? '…' : ''}
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: r.status === 'complete' ? '#4ade80' : r.status === 'partial' ? '#facc15' : '#f87171', display: 'inline-block', flexShrink: 0 }} />
-                    <span style={{ fontSize: 10, color: T3 }}>{new Date(r.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
-                    {r.agentsUsed.slice(0, 3).map(id => <span key={id} style={{ fontSize: 10 }} title={AGENT_META[id]?.name}>{AGENT_META[id]?.icon ?? '?'}</span>)}
-                  </div>
-                </button>
+                <div key={r.id} style={{ position: 'relative', margin: '1px 4px' }}
+                  onMouseEnter={() => setHoveredId(r.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                >
+                  <button onClick={() => onLoad(r)} style={{ display: 'block', textAlign: 'left', padding: '6px 28px 6px 10px', background: activeSessionId === r.id ? 'rgba(255,255,255,0.08)' : 'none', border: 'none', cursor: 'pointer', borderRadius: 6, width: '100%' }}>
+                    <p style={{ fontSize: 12, color: T1, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {r.userPrompt.split(' ').slice(0, 7).join(' ')}{r.userPrompt.split(' ').length > 7 ? '…' : ''}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', background: r.status === 'complete' ? '#4ade80' : r.status === 'partial' ? '#facc15' : '#f87171', display: 'inline-block', flexShrink: 0 }} />
+                      <span style={{ fontSize: 10, color: T3 }}>{new Date(r.createdAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                      {r.agentsUsed.slice(0, 3).map(id => <span key={id} style={{ fontSize: 10 }} title={AGENT_META[id]?.name}>{AGENT_META[id]?.icon ?? '?'}</span>)}
+                    </div>
+                  </button>
+                  {hoveredId === r.id && (
+                    <button
+                      onClick={e => { e.stopPropagation(); onDeleteSession(r.id) }}
+                      title="Delete session"
+                      style={{ position: 'absolute', top: '50%', right: 4, transform: 'translateY(-50%)', width: 20, height: 20, borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.35)', cursor: 'pointer', color: '#f87171' }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 12 }}>delete</span>
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
           ))}
@@ -645,7 +689,8 @@ export default function WarRoomPage() {
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null)
   const [contextTarget, setContextTarget] = useState<'yvon' | 'venture'>(() => {
     if (typeof window === 'undefined') return 'venture'
-    return (localStorage.getItem('yvon_war_room_context_target') as 'yvon' | 'venture') ?? 'venture'
+    const slug = document.cookie.match(/yvon_active_venture=([^;]+)/)?.[1] ?? 'novizio'
+    return (localStorage.getItem(`yvon_war_room_context_target_${slug}`) as 'yvon' | 'venture') ?? 'venture'
   })
   // currentSessionId tracks the DB plan ID for the ongoing conversation — reused across turns
   const currentSessionIdRef = useRef<string | null>(null)
@@ -699,53 +744,92 @@ export default function WarRoomPage() {
       .catch(() => {})
   }, [])
 
-  // Load venture + GitHub context
+  // Load venture + GitHub context — extracted so it can be re-called on venture switch
+  const loadVentureContext = useCallback(async (slug: string) => {
+    setVentureSlug(slug)
+    setRepoStatus('loading')
+    setSnapshot(null)
+    setGithubContext('')
+    setRepoLabel('')
+    try {
+      const ventureRes = await fetch('/api/ventures')
+      const ventures = await ventureRes.json() as Array<{ slug: string; name: string; repoUrl?: string; localRepoPath?: string }>
+      const v = ventures.find(x => x.slug === slug) ?? ventures[0]
+      if (!v) return
+      setVenture(v.name)
+      if (v.localRepoPath) {
+        setLocalRepoPath(v.localRepoPath)
+        localStorage.setItem(`yvon_local_repo_path_${slug}`, v.localRepoPath)
+      }
+
+      // Reload history for the new venture using v.name directly (avoids stale closure)
+      setHistoryLoading(true)
+      fetch(`/api/war-room-plans?venture=${encodeURIComponent(v.name)}&limit=40`)
+        .then(r => r.ok ? r.json() as Promise<WarRoomPlanRecord[]> : Promise.resolve([]))
+        .then(data => setHistory(data))
+        .catch(() => {})
+        .finally(() => setHistoryLoading(false))
+
+      if (!v.repoUrl) { setRepoStatus('no-repo'); return }
+
+      // Skip GitHub API calls when the user has selected Local mode — agents use the local filesystem
+      const currentRepoMode = localStorage.getItem('yvon_war_room_repo_mode') ?? 'github'
+      if (currentRepoMode === 'local') {
+        setRepoStatus('no-repo') // pill will show "local repo" via localMode prop
+        return
+      }
+
+      const [repoRes, commitsRes, issuesRes, prsRes] = await Promise.all([
+        fetch(`/api/github?venture=${slug}&action=repo`),
+        fetch(`/api/github?venture=${slug}&action=commits`),
+        fetch(`/api/github?venture=${slug}&action=issues`),
+        fetch(`/api/github?venture=${slug}&action=prs`),
+      ])
+      if (!repoRes.ok) { setRepoStatus('error'); return }
+
+      const repo    = await repoRes.json() as { name: string; defaultBranch: string; openIssues: number }
+      const commits = commitsRes.ok ? (await commitsRes.json() as { commits: Array<{ sha: string; message: string; author: string }> }).commits.slice(0, 10) : []
+      const issues  = issuesRes.ok  ? (await issuesRes.json()  as { issues:  Array<{ number: number; title: string }> }).issues.slice(0, 10) : []
+      const prs     = prsRes.ok     ? (await prsRes.json()     as { prs:     Array<{ number: number; title: string; head: string; base: string }> }).prs.slice(0, 5) : []
+
+      setGithubContext([
+        `## GitHub: ${repo.name} (${repo.defaultBranch}) · ${repo.openIssues} open issues`,
+        commits.length > 0 ? `### Commits\n${commits.map(c => `- ${c.message} (${c.author})`).join('\n')}` : '',
+        issues.length  > 0 ? `### Issues\n${issues.map(i => `- #${i.number}: ${i.title}`).join('\n')}` : '',
+        prs.length     > 0 ? `### PRs\n${prs.map(p => `- #${p.number}: ${p.title} (${p.head} → ${p.base})`).join('\n')}` : '',
+      ].filter(Boolean).join('\n'))
+      setRepoLabel(repo.name)
+      setRepoStatus('ready')
+    } catch {
+      setRepoStatus('error')
+    }
+  }, [])
+
+  // Initial load on mount
   useEffect(() => {
     const slug = getActiveVentureSlugClient()
-    if (!slug) return
-    setVentureSlug(slug)
+    if (slug) void loadVentureContext(slug)
+  }, [loadVentureContext])
 
-    async function load() {
-      setRepoStatus('loading')
-      try {
-        const ventureRes = await fetch('/api/ventures')
-        const ventures = await ventureRes.json() as Array<{ slug: string; name: string; repoUrl?: string; localRepoPath?: string }>
-        const v = ventures.find(x => x.slug === slug) ?? ventures[0]
-        if (!v) return
-        setVenture(v.name)
-        if (v.localRepoPath) {
-          setLocalRepoPath(v.localRepoPath)
-          localStorage.setItem(`yvon_local_repo_path_${slug}`, v.localRepoPath)
-        }
-        if (!v.repoUrl) { setRepoStatus('no-repo'); return }
-
-        const [repoRes, commitsRes, issuesRes, prsRes] = await Promise.all([
-          fetch(`/api/github?venture=${slug}&action=repo`),
-          fetch(`/api/github?venture=${slug}&action=commits`),
-          fetch(`/api/github?venture=${slug}&action=issues`),
-          fetch(`/api/github?venture=${slug}&action=prs`),
-        ])
-        if (!repoRes.ok) { setRepoStatus('error'); return }
-
-        const repo    = await repoRes.json() as { name: string; defaultBranch: string; openIssues: number }
-        const commits = commitsRes.ok ? (await commitsRes.json() as { commits: Array<{ sha: string; message: string; author: string }> }).commits.slice(0, 10) : []
-        const issues  = issuesRes.ok  ? (await issuesRes.json()  as { issues:  Array<{ number: number; title: string }> }).issues.slice(0, 10) : []
-        const prs     = prsRes.ok     ? (await prsRes.json()     as { prs:     Array<{ number: number; title: string; head: string; base: string }> }).prs.slice(0, 5) : []
-
-        setGithubContext([
-          `## GitHub: ${repo.name} (${repo.defaultBranch}) · ${repo.openIssues} open issues`,
-          commits.length > 0 ? `### Commits\n${commits.map(c => `- ${c.message} (${c.author})`).join('\n')}` : '',
-          issues.length  > 0 ? `### Issues\n${issues.map(i => `- #${i.number}: ${i.title}`).join('\n')}` : '',
-          prs.length     > 0 ? `### PRs\n${prs.map(p => `- #${p.number}: ${p.title} (${p.head} → ${p.base})`).join('\n')}` : '',
-        ].filter(Boolean).join('\n'))
-        setRepoLabel(repo.name)
-        setRepoStatus('ready')
-      } catch {
-        setRepoStatus('error')
-      }
+  // React to venture switches from the nav bar
+  useEffect(() => {
+    function onVentureChange(e: Event) {
+      const slug = (e as CustomEvent<{ slug: string }>).detail?.slug
+      if (!slug) return
+      // Abort any running session and reset thread
+      abortRef.current?.abort()
+      setThread([]); setAgentRoster({}); setSessionAgents([])
+      setConversationHistory([]); setActiveSessionId(null); setSessionStatus('idle')
+      synthesisIdRef.current = null; synthesisTextRef.current = ''
+      currentSessionIdRef.current = null
+      // Restore context target preference for this venture
+      const saved = localStorage.getItem(`yvon_war_room_context_target_${slug}`) as 'yvon' | 'venture' | null
+      setContextTarget(saved ?? 'venture')
+      void loadVentureContext(slug)
     }
-    void load()
-  }, [])
+    window.addEventListener('venturechange', onVentureChange)
+    return () => window.removeEventListener('venturechange', onVentureChange)
+  }, [loadVentureContext])
 
   const loadHistory = useCallback(async () => {
     setHistoryLoading(true)
@@ -757,8 +841,19 @@ export default function WarRoomPage() {
     }
   }, [venture])
 
-  // Load history on mount so sidebar is pre-populated
-  useEffect(() => { void loadHistory() }, [loadHistory])
+  const deleteSession = useCallback(async (id: string) => {
+    setHistory(prev => prev.filter(r => r.id !== id))
+    if (activeSessionId === id) { setThread([]); setActiveSessionId(null); currentSessionIdRef.current = null }
+    await fetch(`/api/war-room-plans?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+  }, [activeSessionId])
+
+  const deleteAllSessions = useCallback(async () => {
+    setHistory([])
+    setThread([]); setActiveSessionId(null); setConversationHistory([])
+    currentSessionIdRef.current = null
+    await fetch(`/api/war-room-plans?venture=${encodeURIComponent(venture)}&all=true`, { method: 'DELETE' })
+  }, [venture])
+
 
   const loadSessionIntoThread = useCallback((plan: WarRoomPlanRecord) => {
     const synthesis = plan.synthesis ?? '(this session had no recorded synthesis)'
@@ -784,7 +879,8 @@ export default function WarRoomPage() {
           mimeType: file.type || 'application/octet-stream',
           name:     file.name,
           isImage,
-          preview:  isImage ? URL.createObjectURL(file) : undefined,
+          // Use full data URL — blob: URLs can't be served through Next.js image optimization
+          preview:  isImage ? dataUrl : undefined,
         }])
       }
       reader.readAsDataURL(file)
@@ -1116,6 +1212,8 @@ export default function WarRoomPage() {
         loading={historyLoading}
         onLoad={loadSessionIntoThread}
         activeSessionId={activeSessionId}
+        onDeleteSession={deleteSession}
+        onDeleteAll={deleteAllSessions}
       />
 
       {/* ── Main column ──────────────────────────────────────────────────────── */}
@@ -1126,7 +1224,7 @@ export default function WarRoomPage() {
 
         {/* Status bar — G1 Clear Ice — detached floating */}
         <div style={{ ...G1, borderRadius: 12, padding: '5px 16px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, flexWrap: 'wrap', boxShadow: '0 2px 12px rgba(0,0,0,0.10)' }}>
-          <GithubStatusPill status={repoStatus} label={snapshot?.repo ?? repoLabel} branch={snapshot?.branch ?? null} openIssues={snapshot?.openIssues ?? null} snapshotError={snapshot?.error ?? null} />
+          <GithubStatusPill status={repoStatus} label={snapshot?.repo ?? repoLabel} branch={snapshot?.branch ?? null} openIssues={snapshot?.openIssues ?? null} snapshotError={snapshot?.error ?? null} localMode={repoMode === 'local'} />
           {engineInfo && <EnginePill engine={engineInfo.engine} fastModel={engineInfo.fastModel} synthesisModel={engineInfo.synthesisModel} />}
 
           {/* Repo mode toggle */}
@@ -1134,7 +1232,12 @@ export default function WarRoomPage() {
             {(['github', 'local'] as const).map(mode => {
               const active = repoMode === mode
               return (
-                <button key={mode} onClick={() => { setRepoMode(mode); localStorage.setItem('yvon_war_room_repo_mode', mode) }} title={mode === 'local' ? (localRepoPath || 'Set local path in Venture Settings → Profile') : 'Use GitHub API'}
+                <button key={mode} onClick={() => {
+                  setRepoMode(mode)
+                  localStorage.setItem('yvon_war_room_repo_mode', mode)
+                  // When switching to GitHub mode, refresh the status bar
+                  if (mode === 'github') void loadVentureContext(ventureSlug || getActiveVentureSlugClient())
+                }} title={mode === 'local' ? (localRepoPath || 'Set local path in Venture Settings → Profile') : 'Use GitHub API'}
                   style={{ padding: '3px 9px', fontSize: 10, fontWeight: active ? 700 : 500, background: active ? (mode === 'local' ? 'rgba(224,117,71,0.14)' : 'rgba(0,102,204,0.12)') : 'transparent', color: active ? (mode === 'local' ? '#cc7840' : '#0066cc') : ink.navy, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3, transition: 'all 0.12s', opacity: mode === 'local' && !localRepoPath ? 0.5 : 1 }}>
                   <span className="material-symbols-outlined" style={{ fontSize: 11 }}>{mode === 'local' ? 'folder' : 'cloud'}</span>
                   {mode === 'github' ? 'GitHub' : 'Local'}
@@ -1157,7 +1260,7 @@ export default function WarRoomPage() {
               return (
                 <button
                   key={target}
-                  onClick={() => { setContextTarget(target); localStorage.setItem('yvon_war_room_context_target', target) }}
+                  onClick={() => { setContextTarget(target); localStorage.setItem(`yvon_war_room_context_target_${ventureSlug || 'novizio'}`, target) }}
                   style={{ padding: '3px 9px', fontSize: 10, fontWeight: active ? 700 : 500, background: active ? activeBg : 'transparent', color: active ? activeColor : ink.navy, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3, transition: 'all 0.12s' }}
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: 11 }}>{icon}</span>
@@ -1271,7 +1374,7 @@ export default function WarRoomPage() {
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 10, background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.40)', maxWidth: 220 }}>
                     <div style={{ width: 28, height: 28, borderRadius: 6, overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(255,255,255,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.20)' }}>
                       {att.isImage && att.preview
-                        ? <Image src={att.preview} alt="" width={28} height={28} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ? <img src={att.preview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                         : <span className="material-symbols-outlined" style={{ fontSize: 16, color: ink.navy, opacity: 0.65 }}>description</span>
                       }
                     </div>

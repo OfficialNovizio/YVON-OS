@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import AnalyticsSubNav from '../_subnav';
 import MarketIntelligence from '../_market-intelligence';
 import CountryFilterBar from '../_country-bar';
-import { getActiveVentureSlugClient } from '@/lib/venture-context';
+import { useVentureSlug } from '@/lib/use-venture-slug';
 import type { TargetAudience } from '@/lib/types';
 
 // ── Glass variants ──────────────────────────────────────────────────────────────
@@ -14,19 +14,17 @@ const INK_4  = 'rgba(10,37,71,0.52)';
 const ACCENT = '#0066cc';
 
 export default function AnalyticsMarketPage() {
-  const [ventureSlug, setVentureSlug] = useState('novizio');
+  const ventureSlug = useVentureSlug();
   const [countries, setCountries] = useState<string[]>(['US']);
   const [targetAudience, setTargetAudience] = useState<TargetAudience | null>(null);
   const [marketCats, setMarketCats] = useState<string[]>([]);
   const [marketFocus, setMarketFocus] = useState('');
 
   useEffect(() => {
-    const slug = getActiveVentureSlugClient();
-    setVentureSlug(slug);
     fetch('/api/ventures')
       .then(r => r.json())
       .then((ventures: { slug: string; operatingCountries?: string[]; targetAudience?: TargetAudience; marketSubcategories?: string[] }[]) => {
-        const v = ventures.find((x: { slug: string }) => x.slug === slug);
+        const v = ventures.find((x: { slug: string }) => x.slug === ventureSlug);
         if (v?.operatingCountries?.length) setCountries(v.operatingCountries);
         if (v?.targetAudience) setTargetAudience(v.targetAudience);
         if (v?.marketSubcategories?.length) setMarketCats(v.marketSubcategories);
@@ -42,7 +40,7 @@ export default function AnalyticsMarketPage() {
         if (focusItems.length) setMarketFocus(focusItems.join(', '));
       })
       .catch(() => {});
-  }, []);
+  }, [ventureSlug]);
 
   return (
     <main className="min-h-screen pb-24">
