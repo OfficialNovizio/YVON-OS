@@ -286,6 +286,8 @@ async function getSpecialistBriefing(
   imageNote?: string,
   repoMode?: 'github' | 'local',
   localRepoPath?: string,
+  userMaxIterations?: number,
+  userMaxOutputTokens?: number,
 ): Promise<SpecialistBriefing> {
   const agent = getAgent(agentId)
   if (!agent) return { agentId, content: '' }
@@ -338,15 +340,21 @@ The active codebase IS the YVON OS at the local filesystem (${YVON_OS_PATH}).
     : isLocalMode
     ? `<venture-scope>
 Active venture: ${ventureName} (slug: ${ventureSlug}) — LOCAL MODE
-The venture's repo is noted at: ${localRepoPath ?? '(path not set — configure in Venture Settings → Profile → Local Repo Path)'}
+Local repo path: ${localRepoPath ?? '(not configured — set in Venture Settings → Profile → Local Repo Path)'}
 
-⚠️ SANDBOX RESTRICTION: Bash / Read / Glob / Grep are sandboxed to the YVON OS project directory (${YVON_OS_PATH}).
-They CANNOT access external paths like ${localRepoPath ?? 'the venture repo'} — any attempt will fail with a permission error.
+WRITE PATH (LOCAL MODE):
+${localRepoPath
+  ? `- Github(action=write_file): writes directly to ${localRepoPath}/<path> on THIS machine — NOT a GitHub commit
+- Github(action=delete_file): deletes from the local repo on THIS machine
+- Changes appear immediately in your local clone. No git pull needed.`
+  : `- Local repo path not set — writes will fall back to GitHub commits.
+- To write locally, set the path in Venture Settings → Profile → Local Repo Path.`}
 
-LOCAL MODE — use Github(action=...) for ALL venture codebase access:
-- Github(action=file/tree/commits/issues/prs/branches/search): primary tool for ${ventureName} repo
-- The <github-snapshot> above already has repo structure, commits, and issues — use it directly
-- Do NOT attempt Bash cd or git commands pointing to the venture path — they will be blocked
+READ PATH:
+- Github(action=file/tree/commits/issues/prs/branches/search): reads from the GitHub repo
+- Use Github(action=tree) to discover the repo structure before writing files
+
+⚠️ Bash / Read / Glob / Grep are sandboxed to the YVON OS project (${YVON_OS_PATH}) and cannot access ${localRepoPath ?? 'the venture repo path'}.
 </venture-scope>`
     : `<venture-scope>
 Active venture: ${ventureName} (slug: ${ventureSlug})
@@ -381,7 +389,31 @@ Read / Bash / Glob / Grep are ONLY permitted for: loading your own MEMORY.md, YV
     || /\b(fix\s+(this|the|my|it)|please\s+fix|help\s+me\s+fix|debug\s+(this|the|my)|resolve\s+(this|the)|i['’]m\s+getting\s+(an?\s+)?error|i\s+get\s+(an?\s+)?error|getting\s+(an?\s+)?error|i\s+have\s+(an?\s+)?error|there.s\s+(an?\s+)?error)\b/i.test(cleanMessage)
   // Action task: user wants a file/code change done in the venture repo
   const isAction = !isYvonDashboard && !isDebugging && /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(cleanMessage) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package)\b/i.test(cleanMessage)
+  const isFlutterProject = !!(githubSnapshot && /pubspec\.yaml/i.test(githubSnapshot)) ||
+    /\b(flutter|\.dart)\b/i.test(cleanMessage)
+  const isDemoData = isFlutterProject && !isDebugging && (
+    /\b(demo.?data|sample.?data|mock.?data|seed.?data|dummy.?data|fake.?data)\b/i.test(cleanMessage) ||
+    (/\b(demo|sample|mock|seed|dummy)\b/i.test(cleanMessage) && /\b(data|content|record|records|entries)\b/i.test(cleanMessage))
+  )
+  const flutterPathNote = isFlutterProject
+    ? `\n\nFLUTTER PROJECT — FILE PATH RULES (MANDATORY):
+- ALL .dart source files MUST be placed under \`lib/\` — NEVER at repo root
+- lib/models/   — data model classes
+- lib/data/     — demo/seed/static data dart files
+- lib/services/ — service and provider classes
+- lib/screens/  — screen widgets
+- test/         — test files only
+- pubspec.yaml → repo root only
+
+⛔ NEVER create README.md files as "demo data" — create .dart files only
+⛔ NEVER create folders like demo_data/ or data/ at repo root — use lib/data/ only`
+    : ''
   const ventureRepoLabel = ventureSlug ? `${ventureSlug} app repo` : 'venture app repo'
+  const localWriteNote = isLocalMode && localRepoPath
+    ? `✓ LOCAL MODE: Github(action=write_file) writes to your LOCAL filesystem at ${localRepoPath} — no GitHub commit. Github(action=delete_file) deletes locally too.`
+    : isLocalMode
+    ? `⚠️ LOCAL MODE but no local repo path configured — writes fall back to GitHub. Set the Local Repo Path in Venture Settings → Profile.`
+    : `⛔ LOCAL WRITE PROHIBITION: You have zero local filesystem write access. Bash is read-only. Never claim to have written or edited a file locally. The only write path is Github(action=write_file).`
   const toolGuidance = `<tools-available>
 ⚠️ TWO COMPLETELY SEPARATE CODEBASES — NEVER CONFUSE THEM:
 
@@ -401,15 +433,15 @@ Tools:
 - Glob(pattern), Grep(pattern): search the YVON OS codebase only.
 - Bash(command): read-only shell (ls/cat/find/git log). WARNING: git commands here query YVON's git history, NOT ${ventureName}'s.
 - WebFetch(url): fetch a URL.
-- Github(action): READ or WRITE the ${ventureName} repo on GitHub.
+- Github(action): READ or WRITE the ${ventureName} repo.
   Read: repo · tree · file · issues · prs · branches · commits · search
-  Write: write_file(path, content, message, branch?) — commit a file directly via GitHub API. delete_file(path, message, branch?) — delete a file.
+  Write: write_file(path, content, message) — write a file. delete_file(path, message) — delete a file.
 - TodoWrite: plan multi-step work.
 
-⛔ LOCAL WRITE PROHIBITION: You have zero local filesystem write access. Bash is read-only. Never claim to have written or edited a file locally. The only write path is Github(action=write_file).
+${localWriteNote}${flutterPathNote}
 
 The <github-snapshot> already has the ${ventureName} repo structure, commits, and issues — do not re-fetch those. Drill in only when you need file contents or specifics.
-${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe it. Read the file → edit → write_file → confirm. Do not produce a long report.' : isDebugging ? 'Cap: ~8 tool calls. DIAGNOSE AND FIX — do not give a project overview. Steps: 1) identify which file the error is in, 2) read that file with Github(action=file), 3) identify the exact fix needed, 4) apply it with Github(action=write_file). End with: what was wrong + what you fixed. 150 words max.' : isReport ? 'Cap: ~8 tool calls. Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'Cap: ~6 tool calls. End with a 100–150 word answer.'}
+${isDemoData ? 'Cap: ~20 tool calls. Workflow: tree → read models → write dart files. DO NOT write README files. Create real .dart data files in lib/data/.' : isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe it. Read the file → edit → write_file → confirm. Do not produce a long report.' : isDebugging ? 'Cap: ~8 tool calls. DIAGNOSE AND FIX — do not give a project overview. Steps: 1) identify which file the error is in, 2) read that file with Github(action=file), 3) identify the exact fix needed, 4) apply it with Github(action=write_file). End with: what was wrong + what you fixed. 150 words max.' : isReport ? 'Cap: ~8 tool calls. Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'Cap: ~6 tool calls. End with a 100–150 word answer.'}
 </tools-available>`
 
   const ventureDocsBlock = ventureDocs
@@ -419,7 +451,9 @@ ${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe 
   const systemText = [agent.systemPrompt, memoryBlock, ghBlock, ventureBlock, ventureDocsBlock, snapshotBlock, toolGuidance].filter(Boolean).join('\n\n')
 
   let content = ''
-  const userPrompt = isAction
+  const userPrompt = isDemoData
+    ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nCREATING FLUTTER DEMO DATA — follow this exact workflow:\n\n1. Call Github(action=tree) to see the full project file structure\n2. Find all model files in lib/models/ (or lib/model/) and read each one with Github(action=file, path=...)\n3. Understand every model class — field names, types, constructors, enums, relationships\n4. For each model that needs demo data, create a .dart file in lib/data/ that:\n   - Imports the model class from the correct path\n   - Exports a const/final List<ModelClass> with 5–10 realistic sample instances\n   - Uses real-looking values (real names, plausible numbers, valid ISO dates, realistic enums)\n5. Write each file: Github(action=write_file, path=lib/data/demo_[name].dart, content=..., message=...)\n\n⛔ NEVER create README.md files — only .dart files\n⛔ NEVER put files outside lib/ — all output goes to lib/data/\n⛔ NEVER write placeholder text or empty lists — use realistic data\n⛔ Do NOT write a summary report — just create the files\n\nEnd with: list every lib/data/*.dart file created and what model it covers.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [list of dart files created in lib/data/]\nconfidence: high\n---END---`
+    : isAction
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nTake direct action — do NOT just describe what to do.\nWorkflow:\n1. If editing an existing file: read it first with Github(action=file, path=...) to get current content\n2. Make the required change\n3. Commit with Github(action=write_file, path=..., content=..., message=...)\n4. If deleting: Github(action=delete_file, path=..., message=...)\nConfirm exactly what was done: file path + commit message. Keep your reply to 3–4 sentences max.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [file path changed]\nconfidence: high\n---END---`
     : isDebugging
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}\n\nThe user has a bug or error. DO NOT give a project overview or general assessment.\nDebugging workflow:\n1. Read the error message/stack trace carefully — identify the exact file and line\n2. Use Github(action=file, path=...) to read the relevant source file\n3. Identify the root cause\n4. If you can fix it: use Github(action=write_file) to commit the fix\n5. If you cannot directly fix it (config issue, Firebase console setting, etc.): give the exact step-by-step fix instruction\nResponse format: [Root cause in 1 sentence] → [Fix applied or exact steps to fix]. Max 200 words.\n\n---HANDOFF---\nsummary: [root cause in 1 sentence]\ntype: debug\nkey_output: [fix applied or fix steps]\nconfidence: high\n---END---`
@@ -434,8 +468,8 @@ ${isAction ? 'Cap: ~10 tool calls. Your job is to MAKE THE CHANGE, not describe 
       repoMode,
       localRepoPath,
       system:    systemText || undefined,
-      maxTokens: isAction ? 2000 : isDebugging ? 2000 : isReport ? 3000 : 1500,
-      maxIterations: isAction || isDebugging ? 10 : undefined,
+      maxTokens: userMaxOutputTokens ?? (isDemoData ? 4000 : isAction ? 2000 : isDebugging ? 2000 : isReport ? 3000 : 1500),
+      maxIterations: userMaxIterations ?? (isDemoData ? 20 : isAction || isDebugging ? 10 : undefined),
       messages: [{ role: 'user', content: userPrompt }],
     })) {
       switch (event.kind) {
@@ -481,10 +515,12 @@ async function getSpecialistWithRetry(
   imageNote?: string,
   repoMode?: 'github' | 'local',
   localRepoPath?: string,
+  userMaxIterations?: number,
+  userMaxOutputTokens?: number,
 ): Promise<SpecialistBriefing> {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const briefing = await getSpecialistBriefing(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskOverride, emit, githubContext, imageNote, repoMode, localRepoPath)
+      const briefing = await getSpecialistBriefing(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskOverride, emit, githubContext, imageNote, repoMode, localRepoPath, userMaxIterations, userMaxOutputTokens)
       emit('agent_complete', {
         agentId,
         previewText: briefing.content.slice(0, 120),
@@ -579,6 +615,8 @@ async function executeSequential(
   imageNote?: string,
   repoMode?: 'github' | 'local',
   localRepoPath?: string,
+  userMaxIterations?: number,
+  userMaxOutputTokens?: number,
 ): Promise<{ briefings: SpecialistBriefing[]; stepResults: StepResult[] }> {
   const briefings: SpecialistBriefing[] = []
   const stepResults: StepResult[] = []
@@ -601,7 +639,7 @@ async function executeSequential(
       ? `${task ?? message}\n\nHandoff context from previous specialist:\n${handoffContext}`
       : task
 
-    const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskWithContext, emit, githubContext, imageNote, repoMode, localRepoPath)
+    const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshot, ventureDocs, taskWithContext, emit, githubContext, imageNote, repoMode, localRepoPath, userMaxIterations, userMaxOutputTokens)
     briefings.push(briefing)
     stepResults.push({
       agentId,
@@ -647,6 +685,8 @@ export async function POST(request: Request): Promise<Response> {
   let previousPlan: ExecutionPlan | undefined
   let previousRouting: RoutingResult | undefined
   let sessionId: string | undefined
+  let userMaxIterations: number | undefined
+  let userMaxOutputTokens: number | undefined
   try {
     const body = await request.json() as {
       message?: string
@@ -669,15 +709,19 @@ export async function POST(request: Request): Promise<Response> {
       previousPlan?: ExecutionPlan
       previousRouting?: RoutingResult
       sessionId?: string
+      maxIterations?: number
+      maxOutputTokens?: number
     }
-    message             = body.message ?? ''
-    ventureName         = body.ventureName ?? 'Novizio'
-    ventureSlug         = body.ventureSlug
-    repoMode            = body.repoMode ?? 'github'
-    localRepoPath       = body.localRepoPath
-    githubContext       = body.githubContext
-    conversationHistory = body.conversationHistory ?? []
-    approved            = body.approved ?? false
+    message               = body.message ?? ''
+    ventureName           = body.ventureName ?? 'Novizio'
+    ventureSlug           = body.ventureSlug
+    repoMode              = body.repoMode ?? 'github'
+    localRepoPath         = body.localRepoPath
+    githubContext         = body.githubContext
+    conversationHistory   = body.conversationHistory ?? []
+    approved              = body.approved ?? false
+    userMaxIterations     = typeof body.maxIterations === 'number' && body.maxIterations > 0 ? body.maxIterations : undefined
+    userMaxOutputTokens   = typeof body.maxOutputTokens === 'number' && body.maxOutputTokens > 0 ? body.maxOutputTokens : undefined
     previousPlan        = body.previousPlan
     previousRouting     = body.previousRouting
     sessionId           = body.sessionId
@@ -948,6 +992,8 @@ Bash git commands query YVON's git history, NOT ${ventureName}'s — never use t
             imageNote,
             repoMode,
             localRepoPath,
+            userMaxIterations,
+            userMaxOutputTokens,
           )
           briefings   = result.briefings
           stepResults = result.stepResults
@@ -967,7 +1013,7 @@ Bash git commands query YVON's git history, NOT ${ventureName}'s — never use t
               })
               emit('agent_start', { agentId, task: task ?? '' })
 
-              const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshotText, ventureDocsText, task, emit, githubContext, imageNote, repoMode, localRepoPath)
+              const briefing = await getSpecialistWithRetry(agentId, message, ventureName, ventureSlug, githubSnapshotText, ventureDocsText, task, emit, githubContext, imageNote, repoMode, localRepoPath, userMaxIterations, userMaxOutputTokens)
               parallelStepResults.push({
                 agentId,
                 taskBrief:     task ?? null,

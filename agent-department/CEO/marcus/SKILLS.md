@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -34,6 +50,8 @@
 | After every delivery | `skills/operating-system/reflection-protocol/SKILL.md` |
 | Session start — workflow reference | `docs/reference/WORKFLOW-TREE.md` |
 | Strategic focus and what not to do | `skills/marketplace/good-strategy-bad-strategy/SKILL.md` |
+| Evaluating strategic options, competitive analysis, or long-term direction | `skills/marketplace/strategy-advisor/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 | Stress-testing a decision or plan | `skills/marketplace/decision-critic/SKILL.md` |
 | Vision documents or manifesto | `skills/marketplace/vision/SKILL.md` |
 | Narrative structure for briefs or plans | `skills/marketplace/storytelling/SKILL.md` |
@@ -162,3 +180,4 @@ Marcus improves from every session:
 |------|--------------|----------------------------|--------------|---------|
 | 2026-03-23 | (baseline established) | — | initial SIP setup | 0 |
 | 2026-05-21 | Phase 2: kahneman-routing trigger added | Removed FILES.md dead trigger | Phase 2 upgrade | +1 |
+| 2026-05-28 | Gap-fill: strategy-advisor trigger confirmed; session-protocol trigger added | — | Deep audit + skill gap remediation | +2 |

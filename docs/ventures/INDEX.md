@@ -25,6 +25,9 @@
 | `FEEDBACK.md` | ✅ 🔴 always · 🟡 if relevant | ✅ | ✅ | Always (🔴 minimum) |
 | `BRAND.md` | If: copy, marketing, content, brand decision | ✅ same | ✅ same | On demand |
 | `DESIGN.md` | If: any UI, visual, component, asset work | ✅ same | ✅ same | On demand |
+| `ISSUES.md` | If: starting any task — check for blockers first | ✅ same | ✅ same | Start of task |
+| `METRICS.md` | If: analytics, finance, KPI review, or target-setting | ✅ same | ✅ same | On demand |
+| `AGENTS.md` | If: routing a task, checking agent ownership, multi-agent task | ✅ same | ✅ same | On demand |
 
 ---
 
@@ -37,6 +40,9 @@
 | `FEEDBACK.md` | Rules from errors/corrections — 🔴🟡🟢 tagged, dated | Strategic decisions |
 | `BRAND.md` | Who this venture is to the world | Visual execution |
 | `DESIGN.md` | How this venture looks in code and assets | Brand positioning |
+| `ISSUES.md` | Open bugs, gaps, blockers — priority-tagged | Closed issues older than 30 days |
+| `METRICS.md` | KPI targets, current baselines, alert thresholds | Raw data or individual session results |
+| `AGENTS.md` | Which agents own what for this venture, routing notes | Agent MEMORY.md content (stays in agent files) |
 
 **The CONTEXT vs FEEDBACK razor:**
 - CONTEXT.md → *decision + WHY it was made + date locked*

@@ -8,6 +8,11 @@
  *   3. scoreAndSave() — compute signal score from fresh metrics
  *   4. generateIntel() — Kai (Anthropic) brief on the competitor
  *
+ * Tier model:
+ *   benchmark — 50k–200k followers, realistic peers. Gap cards generated.
+ *   stretch   — 200k–600k followers, visible horizon. Included in SOV.
+ *   anchor    — 1M+ followers, directional reference only. Excluded from SOV/scoring.
+ *
  * All writes go to: competitors, competitor_socials, competitor_metrics,
  * competitor_snapshots. Reads competitor intelligence from the same tables.
  */
@@ -28,6 +33,7 @@ import { callFast } from '@/lib/ai-client'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type Platform = 'instagram' | 'tiktok' | 'linkedin' | 'youtube'
+export type CompetitorTier = 'benchmark' | 'stretch' | 'anchor'
 
 export interface CompetitorHandle {
   platform: Platform
@@ -37,6 +43,7 @@ export interface CompetitorHandle {
 export interface PipelineResult {
   competitorId: string
   brandName: string
+  tier: CompetitorTier
   platforms: {
     platform: Platform
     handle: string
@@ -54,6 +61,7 @@ export interface CompetitorIntel {
   competitorId: string
   brandName: string
   url: string | null
+  tier: CompetitorTier
   signalScore: number
   followerGrowthRate: number
   shareOfVoice: number
@@ -72,21 +80,25 @@ export interface CompetitorIntel {
   }
 }
 
+export interface GapCard {
+  competitorName: string
+  totalFollowers: number
+  followerGap: number
+  engagementRate: number | null
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function fmtFollowers(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
+  if (n >= 1_000) return `${Math.round(n / 1_000)}K`
+  return n === 0 ? 'No data' : String(n)
+}
+
 // ─── Handle Resolution ────────────────────────────────────────────────────────
 
 const KNOWN_HANDLES: Record<string, CompetitorHandle[]> = {
-  // Fashion
-  zara: [
-    { platform: 'instagram', handle: 'zara' },
-    { platform: 'tiktok', handle: 'zara' },
-    { platform: 'youtube', handle: '@zara' },
-  ],
-  hnm: [
-    { platform: 'instagram', handle: 'hm' },
-    { platform: 'tiktok', handle: 'hm' },
-    { platform: 'youtube', handle: '@handm' },
-  ],
-  // Fintech
+  // Fintech only — fashion brands resolved via AI to get tier-appropriate handles
   monzo: [
     { platform: 'instagram', handle: 'monzo' },
     { platform: 'tiktok', handle: 'monzobank' },
@@ -99,6 +111,11 @@ const KNOWN_HANDLES: Record<string, CompetitorHandle[]> = {
     { platform: 'linkedin', handle: 'https://www.linkedin.com/company/revolut/' },
     { platform: 'youtube', handle: '@revolutapp' },
   ],
+  zara: [
+    { platform: 'instagram', handle: 'zara' },
+    { platform: 'tiktok', handle: 'zara' },
+    { platform: 'youtube', handle: '@zara' },
+  ],
 }
 
 export async function resolveHandles(
@@ -107,13 +124,9 @@ export async function resolveHandles(
 ): Promise<CompetitorHandle[]> {
   const key = brandName.toLowerCase().trim()
 
-  // 1. Known handles (hardcoded directory)
   if (KNOWN_HANDLES[key]) return KNOWN_HANDLES[key]
-
-  // 2. User-provided handles
   if (knownHandles && knownHandles.length > 0) return knownHandles
 
-  // 3. AI-powered handle resolution
   try {
     const raw = await callFast({
       messages: [{
@@ -146,7 +159,6 @@ For LinkedIn, use the full company URL. For YouTube, use the @handle format. For
     }
   } catch { /* fall through to best-effort guess */ }
 
-  // 4. Best-effort guess (lowercase brand name, no spaces)
   const slug = key.replace(/\s+/g, '')
   return [
     { platform: 'instagram', handle: slug },
@@ -187,7 +199,6 @@ export async function scrapeCompetitor(
         default: throw new Error(`Unsupported platform: ${h.platform}`)
       }
 
-      // Save metrics
       await upsertCompetitorMetrics(competitorId, [{
         platform: h.platform,
         followers: data.metrics.followers,
@@ -196,14 +207,13 @@ export async function scrapeCompetitor(
         estimatedMonthlyTraffic: 0,
       }])
 
-      // Save posts to competitor_snapshots
       if (data.posts.length > 0) {
         await insertCompetitorSnapshot(
-          competitorId, // venture_id gets competitor's parent venture — but this takes ventureId
+          competitorId,
           h.platform,
           { posts: data.posts.slice(0, 10), scrapedAt: new Date().toISOString() },
           h.handle,
-        ).catch(() => {}) // non-fatal
+        ).catch(() => {})
       }
 
       return {
@@ -240,16 +250,12 @@ export function computeSignalScore(platforms: PipelineResult['platforms']): numb
   const totalFollowers = successes.reduce((s, p) => s + p.followers, 0)
   const avgEng = successes.reduce((s, p) => s + p.engagementRate, 0) / successes.length
 
-  // Normalize to 0-100
-  const followerScore = Math.min(Math.log10(Math.max(totalFollowers, 1)) * 10, 35)
+  const followerScore   = Math.min(Math.log10(Math.max(totalFollowers, 1)) * 10, 35)
   const engagementScore = Math.min(avgEng * 1000, 30)
-  const platformDiversity = Math.min(successes.length * 10, 20)
+  const platformDiv     = Math.min(successes.length * 10, 20)
   const contentVelocity = Math.min(successes.reduce((s, p) => s + p.postCount, 0) * 0.5, 15)
 
-  return Math.round(Math.min(
-    followerScore + engagementScore + platformDiversity + contentVelocity,
-    100,
-  ))
+  return Math.round(Math.min(followerScore + engagementScore + platformDiv + contentVelocity, 100))
 }
 
 // ─── Full Pipeline ────────────────────────────────────────────────────────────
@@ -260,9 +266,10 @@ export async function runCompetitorPipeline(
     brandName: string
     url?: string
     handles?: CompetitorHandle[]
+    tier?: CompetitorTier
+    isCustom?: boolean
   }>,
 ): Promise<PipelineResult[]> {
-  // Step 1: Upsert competitors (adds new, updates existing)
   const baseScores = competitors.map(c => ({
     brandName: c.brandName,
     url: c.url,
@@ -273,10 +280,11 @@ export async function runCompetitorPipeline(
     fundingRoundDetected: false,
     shareOfVoice: 0,
     weekOverWeekChange: 0,
+    tier: c.tier ?? 'benchmark',
+    isCustom: c.isCustom ?? false,
   }))
   await upsertCompetitors(ventureId, baseScores)
 
-  // Step 2: Fetch the IDs of upserted competitors
   const { data: savedComps } = await supabase
     .from('competitors')
     .select('id, brand_name')
@@ -284,7 +292,6 @@ export async function runCompetitorPipeline(
 
   const compMap = new Map((savedComps ?? []).map((c: any) => [c.brand_name, c.id]))
 
-  // Step 3: For each competitor, resolve handles + save to competitor_socials
   const pipelineResults: PipelineResult[] = []
 
   for (const comp of competitors) {
@@ -293,7 +300,6 @@ export async function runCompetitorPipeline(
 
     const handles = await resolveHandles(comp.brandName, comp.handles)
 
-    // Save handles to competitor_socials
     if (handles.length > 0) {
       try {
         await supabase.from('competitor_socials').upsert(
@@ -307,61 +313,61 @@ export async function runCompetitorPipeline(
       } catch { /* non-fatal */ }
     }
 
-    // Step 4: Scrape each platform
     const platformResults = await scrapeCompetitor(compId, comp.brandName, handles)
-
-    // Step 5: Compute and save signal score
     const signalScore = computeSignalScore(platformResults)
 
-    // Calculate follower growth from previous metrics
     const { data: prevMetrics } = await supabase
       .from('competitor_metrics')
       .select('followers')
       .eq('competitor_id', compId)
       .order('recorded_at', { ascending: false })
-      .limit(handles.length * 2) // current + previous per platform
+      .limit(handles.length * 2)
 
     let followerGrowthRate = 0
     if (prevMetrics && prevMetrics.length >= handles.length) {
-      const current = platformResults.reduce((s, p) => s + p.followers, 0)
-      const half = Math.floor(prevMetrics.length / 2)
+      const current  = platformResults.reduce((s, p) => s + p.followers, 0)
+      const half     = Math.floor(prevMetrics.length / 2)
       const previous = (prevMetrics.slice(half) as any[]).reduce((s: number, m: any) => s + (m.followers ?? 0), 0)
-      if (previous > 0) {
-        followerGrowthRate = ((current - previous) / previous) * 100
+      if (previous > 0) followerGrowthRate = ((current - previous) / previous) * 100
+    }
+
+    // SOV calculated only within benchmark + stretch, not anchor
+    const tier = comp.tier ?? 'benchmark'
+    let shareOfVoice = 0
+    if (tier !== 'anchor') {
+      const { data: allComps } = await supabase
+        .from('competitors')
+        .select('id')
+        .eq('venture_id', ventureId)
+        .in('tier', ['benchmark', 'stretch'])
+
+      const allCompIds = (allComps ?? []).map((c: any) => c.id)
+      const { data: allMetrics } = await supabase
+        .from('competitor_metrics')
+        .select('competitor_id, followers')
+        .in('competitor_id', allCompIds)
+
+      if (allMetrics && allMetrics.length > 0) {
+        const totalAllFollowers = (allMetrics as any[]).reduce((s: number, m: any) => s + (m.followers ?? 0), 0)
+        const ourFollowers      = platformResults.reduce((s, p) => s + p.followers, 0)
+        shareOfVoice = totalAllFollowers > 0
+          ? Math.round((ourFollowers / totalAllFollowers) * 1000) / 10
+          : 0
       }
     }
 
-    // Calculate share of voice from total followers
-    const { data: allComps } = await supabase
-      .from('competitors')
-      .select('id')
-      .eq('venture_id', ventureId)
-    const allCompIds = (allComps ?? []).map((c: any) => c.id)
-
-    const { data: allMetrics } = await supabase
-      .from('competitor_metrics')
-      .select('competitor_id, followers')
-      .in('competitor_id', allCompIds)
-
-    let shareOfVoice = 0
-    if (allMetrics && allMetrics.length > 0) {
-      const totalAllFollowers = (allMetrics as any[]).reduce((s: number, m: any) => s + (m.followers ?? 0), 0)
-      const ourFollowers = platformResults.reduce((s, p) => s + p.followers, 0)
-      shareOfVoice = totalAllFollowers > 0 ? Math.round((ourFollowers / totalAllFollowers) * 1000) / 10 : 0
-    }
-
-    // Update competitor row with fresh scores
     await supabase.from('competitors').update({
       signal_score: signalScore,
       follower_growth_rate: Math.round(followerGrowthRate * 100) / 100,
       share_of_voice: shareOfVoice,
-      week_over_week_change: 0, // computed next cycle
+      week_over_week_change: 0,
       last_checked: new Date().toISOString(),
     }).eq('id', compId)
 
     pipelineResults.push({
       competitorId: compId,
       brandName: comp.brandName,
+      tier: tier as CompetitorTier,
       platforms: platformResults,
       signalScore,
       lastChecked: new Date().toISOString(),
@@ -379,7 +385,10 @@ export async function getCompetitorIntelligence(ventureId: string): Promise<{
   competitors: Array<{
     name: string; initial: string; sov: string; sentiment: string
     sentUp: boolean | null; momentum: string; accent: boolean; dashed: boolean
+    tier: 'benchmark' | 'stretch'
   }>
+  anchor: { name: string; initial: string; followersFormatted: string } | null
+  gapCards: GapCard[]
 }> {
   const { data: compRows } = await supabase
     .from('competitors')
@@ -387,14 +396,11 @@ export async function getCompetitorIntelligence(ventureId: string): Promise<{
     .eq('venture_id', ventureId)
     .order('signal_score', { ascending: false })
 
-  const competitors = (compRows ?? []) as any[]
-
-  if (competitors.length === 0) {
-    return { signals: [], kpis: [], competitors: [] }
-  }
+  const allComps = (compRows ?? []) as any[]
+  if (allComps.length === 0) return { signals: [], kpis: [], competitors: [], anchor: null, gapCards: [] }
 
   // Fetch all metrics
-  const compIds = competitors.map((c: any) => c.id)
+  const compIds = allComps.map((c: any) => c.id)
   const { data: metricRows } = await supabase
     .from('competitor_metrics')
     .select('*')
@@ -407,15 +413,21 @@ export async function getCompetitorIntelligence(ventureId: string): Promise<{
     metricsByComp[m.competitor_id].push(m)
   }
 
-  // Build signals from real data
+  // Separate by tier (default legacy data to 'benchmark')
+  const anchorComp = allComps.find((c: any) => c.tier === 'anchor') ?? null
+  const benchmarkComps = allComps.filter((c: any) => !c.tier || c.tier === 'benchmark')
+  const stretchComps   = allComps.filter((c: any) => c.tier === 'stretch')
+  const sovComps       = [...benchmarkComps, ...stretchComps]
+
+  // Signals — from benchmark + stretch only
   const signals: Array<{ id: string; severity: 'red' | 'amber' | 'green'; text: string; cta: string }> = []
-  for (const c of competitors) {
+  for (const c of sovComps) {
     const score = Number(c.signal_score ?? 0)
     if (score > 60) {
       signals.push({
         id: `comp-${c.id}`,
         severity: 'red',
-        text: `${c.brand_name}: Signal score ${score} — high threat. ${Number(c.follower_growth_rate ?? 0).toFixed(1)}% follower growth.`,
+        text: `${c.brand_name}: Signal score ${score} — high activity. ${Number(c.follower_growth_rate ?? 0).toFixed(1)}% follower growth.`,
         cta: 'Analyze',
       })
     } else if (score > 30) {
@@ -436,15 +448,21 @@ export async function getCompetitorIntelligence(ventureId: string): Promise<{
     }
   }
 
-  // Compute KPIs
-  const allScores = competitors.map((c: any) => Number(c.signal_score ?? 0))
-  const avgScore = allScores.length > 0 ? allScores.reduce((a: number, b: number) => a + b, 0) / allScores.length : 0
+  // KPIs — based on benchmark + stretch only
+  const sovScores = sovComps.map((c: any) => Number(c.signal_score ?? 0))
+  const avgScore  = sovScores.length > 0
+    ? sovScores.reduce((a: number, b: number) => a + b, 0) / sovScores.length
+    : 0
+
+  const sovMetricRows = (metricRows ?? []).filter((m: any) =>
+    sovComps.some((c: any) => c.id === m.competitor_id),
+  )
 
   const kpis = [
     {
       label: 'Competitors Tracked', icon: 'radar',
-      value: String(competitors.length), unit: '',
-      delta: `${competitors.filter((c: any) => c.last_checked).length} with data`,
+      value: String(sovComps.length), unit: '',
+      delta: `${sovComps.filter((c: any) => c.last_checked).length} with data`,
       up: null as boolean | null,
     },
     {
@@ -455,40 +473,75 @@ export async function getCompetitorIntelligence(ventureId: string): Promise<{
     },
     {
       label: 'Total Share of Voice', icon: 'record_voice_over',
-      value: String(Math.round(competitors.reduce((s: number, c: any) => s + Number(c.share_of_voice ?? 0), 0) * 10) / 10),
+      value: String(Math.round(sovComps.reduce((s: number, c: any) => s + Number(c.share_of_voice ?? 0), 0) * 10) / 10),
       unit: '%',
-      delta: 'Across all platforms',
+      delta: 'Benchmark + Stretch only',
       up: null as boolean | null,
     },
     {
       label: 'Avg Engagement', icon: 'favorite',
-      value: (metricRows && metricRows.length > 0
-        ? (metricRows.reduce((s: number, m: any) => s + Number(m.engagement_rate ?? 0), 0) / metricRows.length * 100).toFixed(1)
-        : '0.0'),
+      value: sovMetricRows.length > 0
+        ? (sovMetricRows.reduce((s: number, m: any) => s + Number(m.engagement_rate ?? 0), 0) / sovMetricRows.length * 100).toFixed(1)
+        : '0.0',
       unit: '%',
       delta: 'Real data',
       up: true,
     },
   ]
 
-  // Build competitor list
-  const maxScore = Math.max(...allScores, 1)
-  const compList = competitors.map((c: any, i: number) => {
-    const score = Number(c.signal_score ?? 0)
-    const sov = Number(c.share_of_voice ?? 0)
+  // Competitor list — benchmark + stretch only
+  const compList = sovComps.map((c: any, i: number) => {
+    const score  = Number(c.signal_score ?? 0)
+    const sov    = Number(c.share_of_voice ?? 0)
     const growth = Number(c.follower_growth_rate ?? 0)
+    const tier   = (c.tier ?? 'benchmark') as 'benchmark' | 'stretch'
 
     return {
-      name: c.brand_name,
-      initial: c.brand_name.charAt(0).toUpperCase(),
-      sov: `${sov.toFixed(1)}%`,
+      name:      c.brand_name,
+      initial:   c.brand_name.charAt(0).toUpperCase(),
+      sov:       `${sov.toFixed(1)}%`,
       sentiment: score > 50 ? 'Strong' : score > 25 ? 'Moderate' : 'Low',
-      sentUp: score > 40 ? true : score > 20 ? null : false,
-      momentum: growth > 5 ? 'arrow_upward' : growth < -2 ? 'arrow_downward' : 'arrow_forward',
-      accent: i === 0, // top competitor highlighted
-      dashed: score === 0,
+      sentUp:    score > 40 ? true : score > 20 ? null : false,
+      momentum:  growth > 5 ? 'arrow_upward' : growth < -2 ? 'arrow_downward' : 'arrow_forward',
+      accent:    i === 0,
+      dashed:    score === 0,
+      tier,
     }
   })
 
-  return { signals: signals.slice(0, 5), kpis, competitors: compList }
+  // Gap cards — benchmark only
+  const gapCards: GapCard[] = benchmarkComps.map((c: any) => {
+    const metrics = (metricsByComp[c.id] ?? []).slice(0, 4)
+    const totalFollowers = metrics.reduce((s: number, m: any) => s + Number(m.followers ?? 0), 0)
+    const avgER = metrics.length > 0
+      ? metrics.reduce((s: number, m: any) => s + Number(m.engagement_rate ?? 0), 0) / metrics.length * 100
+      : null
+
+    return {
+      competitorName:  c.brand_name,
+      totalFollowers,
+      followerGap:     totalFollowers, // vs our ~0 baseline; UI shows "your gap to reach them"
+      engagementRate:  avgER !== null ? Math.round(avgER * 10) / 10 : null,
+    }
+  })
+
+  // Anchor brand
+  let anchor: { name: string; initial: string; followersFormatted: string } | null = null
+  if (anchorComp) {
+    const anchorMetrics = metricsByComp[anchorComp.id] ?? []
+    const totalFollowers = anchorMetrics.reduce((s: number, m: any) => s + Number(m.followers ?? 0), 0)
+    anchor = {
+      name:              anchorComp.brand_name,
+      initial:           anchorComp.brand_name.charAt(0).toUpperCase(),
+      followersFormatted: fmtFollowers(totalFollowers),
+    }
+  }
+
+  return {
+    signals: signals.slice(0, 5),
+    kpis,
+    competitors: compList,
+    anchor,
+    gapCards,
+  }
 }

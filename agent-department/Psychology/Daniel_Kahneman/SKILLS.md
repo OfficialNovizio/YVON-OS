@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -30,6 +46,8 @@
 | Tracking prediction accuracy over time | `skills/custom/calibration-tracker/SKILL.md` |
 | Before every delivery | `skills/operating-system/triple-pass-protocol/SKILL.md` |
 | After every delivery | `skills/operating-system/reflection-protocol/SKILL.md` |
+| Gain/loss framing audit, reference point, scarcity, anchoring detection | `skills/custom/framing-analysis/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -159,3 +177,4 @@ Kahneman improves from every session:
 |------|--------------|----------------------------|--------------|---------|
 | 2026-05-20 | SKILLS.md created; Default Behaviors, Conviction Patterns, Communication DNA, Quality Bar added; OS gates, pre-mortem, 2 custom skills, 8 Load Triggers | agent.md model hardcode fixed; INDEX.md dead ref removed | Phase 2 Kahneman | +0 |
 | 2026-05-21 | Renamed all 7 lowercase files to uppercase (MEMORY, AGENT, COMMANDS, CONFLICTS, PRINCIPLES, SKILL, TOOLS); fixed all lowercase refs in SKILLS.md | — | Kahneman naming fix | +0 |
+| 2026-05-28 | Gap-fill: framing-analysis (6-point framing audit), session-protocol triggers added | — | Deep audit + skill gap remediation | +2 |

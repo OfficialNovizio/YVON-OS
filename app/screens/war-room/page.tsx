@@ -692,6 +692,10 @@ export default function WarRoomPage() {
     const slug = document.cookie.match(/yvon_active_venture=([^;]+)/)?.[1] ?? 'novizio'
     return (localStorage.getItem(`yvon_war_room_context_target_${slug}`) as 'yvon' | 'venture') ?? 'venture'
   })
+  const [maxOutputTokens, setMaxOutputTokens] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0
+    return Number(localStorage.getItem('yvon_war_room_max_output_tokens') ?? '0')
+  })
   // currentSessionId tracks the DB plan ID for the ongoing conversation — reused across turns
   const currentSessionIdRef = useRef<string | null>(null)
   // Slash command state
@@ -978,6 +982,7 @@ export default function WarRoomPage() {
           repoMode,
           localRepoPath: repoMode === 'local' && localRepoPath ? localRepoPath : undefined,
           githubContext: githubContext || undefined,
+          maxOutputTokens: maxOutputTokens > 0 ? maxOutputTokens : undefined,
           files: att.length > 0 ? att.map(a => ({ base64: a.base64, mimeType: a.mimeType, name: a.name, isImage: a.isImage })) : undefined,
           conversationHistory: conversationHistory.slice(-2),
           sessionId: currentSessionIdRef.current ?? undefined,
@@ -1268,6 +1273,28 @@ export default function WarRoomPage() {
                 </button>
               )
             })}
+          </div>
+
+          {/* Max output tokens selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 12, color: ink.navy, opacity: 0.5 }}>token</span>
+            <select
+              value={maxOutputTokens}
+              onChange={e => {
+                const v = Number(e.target.value)
+                setMaxOutputTokens(v)
+                localStorage.setItem('yvon_war_room_max_output_tokens', String(v))
+              }}
+              title="Max output tokens per agent (Auto = task-based default)"
+              style={{ fontSize: 10, fontWeight: 600, color: maxOutputTokens > 0 ? '#0066cc' : ink.navy, background: maxOutputTokens > 0 ? 'rgba(0,102,204,0.10)' : 'transparent', border: `1px solid ${maxOutputTokens > 0 ? 'rgba(0,102,204,0.30)' : 'rgba(12,44,82,0.15)'}`, borderRadius: 6, padding: '2px 4px', cursor: 'pointer', outline: 'none', appearance: 'none', WebkitAppearance: 'none', paddingRight: 6 }}
+            >
+              <option value={0}>Auto</option>
+              <option value={500}>500</option>
+              <option value={1000}>1K</option>
+              <option value={2000}>2K</option>
+              <option value={4000}>4K</option>
+              <option value={8000}>8K</option>
+            </select>
           </div>
 
           <span style={{ flex: 1 }} />

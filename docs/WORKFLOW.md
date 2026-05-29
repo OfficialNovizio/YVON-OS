@@ -94,6 +94,7 @@ Team:           [solo: Mia | pair: Raj + Mia | squad: Kai + Raj + Mia + Quinn]
 Memory check:   [has this failed before? Is there a feedback.md rule for this?]
 Design check:   [touches UI? → YES → Mia is on this team]
 One unknown:    [the one thing Marcus doesn't know — state it before proceeding]
+Critique check: [top Pass 2 finding · second finding · or "None — output survives adversarial review."]
 
 Plan:
   [Solo → 3 lines max]

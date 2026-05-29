@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -41,6 +57,8 @@
 | Before any authenticated route | `skills/custom/auth-middleware/SKILL.md` |
 | When logging errors in routes | `skills/custom/error-tracking/SKILL.md` |
 | Caching strategy, bloom filter, membership queries | `skills/custom/bloom-filter-caching/SKILL.md` |
+| Writing, running, or reviewing any Supabase migration | `skills/custom/migration-management/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -175,3 +193,4 @@ Raj improves from every session:
 |------|--------------|----------------------------|--------------|---------|
 | 2026-03-23 | (baseline established) | — | initial SIP setup | 0 |
 | 2026-05-20 | Phase 2: 4 persona sections, 8 new triggers, model→from-settings, 6 superpowers | Removed dead triggers (mcp-builder, vercel-composition-patterns, vercel-react-best-practices, FILES.md) | Phase 2 upgrade | +55 |
+| 2026-05-28 | Gap-fill: migration-management (safe Supabase migrations + RLS), session-protocol triggers added | — | Deep audit + skill gap remediation | +2 |

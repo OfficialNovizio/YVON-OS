@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -38,6 +54,7 @@
 | Video batch production (Kling or Runway) | `skills/custom/video-production/SKILL.md` |
 | Upscaling images or video post-QC | `skills/custom/upscaling-pipeline/SKILL.md` |
 | Naming, organizing, or delivering final assets | `skills/custom/asset-delivery/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -194,3 +211,4 @@ Pixel improves from every session:
 | 2026-05-20 | OS triggers added, dead yvon-custom paths removed, stale refs fixed | superpowers, yvon-custom, Opus/Sofia/Alex refs | Phase 1 structural batch | +0 |
 | 2026-05-20 | Default Behaviors, Conviction Patterns, Communication DNA, Quality Bar added; 1 marketplace skill (pre-mortem); 5 custom skills (qc-criteria-library, prompt-variation-engine, video-production, upscaling-pipeline, asset-delivery); 6 new Load Triggers | — | Phase 2 persona deepening | +0 |
 | 2026-05-21 | Wire-up: production-pipeline trigger added (core job skill was orphaned) | — | Missing trigger audit | +1 |
+| 2026-05-28 | Gap-fill: session-protocol trigger added | — | Deep audit + skill gap remediation | +1 |

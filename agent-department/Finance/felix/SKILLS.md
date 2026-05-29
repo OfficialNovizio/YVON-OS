@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -37,6 +53,8 @@
 | Challenging financial hypotheses, hidden risk identification | `skills/marketplace/devil-advocate/SKILL.md` |
 | Making API calls | `TOOLS.md` |
 | Before any "continue investing in X" recommendation | `skills/custom/sunk-cost-gate/SKILL.md` |
+| Novizio DTC financial analysis: AOV, return rate, sell-through, SS26 model | `skills/custom/ecommerce-metrics/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 | Terminal commands | `COMMANDS.md` |
 
 ---
@@ -153,3 +171,4 @@ Felix is called when messages contain:
 | 2026-03-23 | (baseline established) | — | initial SIP setup | 0 |
 | 2026-05-19 | Full Buffett persona + 5-layer architecture + venture-scoped memory | Dead Load Triggers (4), hardcoded model, stale refs (Sam→Dev, Sofia→Kai, Alex→Lena+Kai) | Agent improvement session | +expanded |
 | 2026-05-21 | Phase 2: sunk-cost-gate trigger added | Removed FILES.md dead trigger | Phase 2 upgrade | +1 |
+| 2026-05-28 | Gap-fill: ecommerce-metrics (Novizio DTC), session-protocol triggers added | — | Deep audit + skill gap remediation | +2 |

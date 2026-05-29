@@ -16,7 +16,7 @@
 
 import type Anthropic from '@anthropic-ai/sdk'
 import { promises as fs } from 'fs'
-import { resolve, relative, isAbsolute } from 'path'
+import { resolve, relative, isAbsolute, dirname } from 'path'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import {
@@ -402,6 +402,26 @@ async function execGithub(
         if (!input.path)    return err('action=write_file requires a path argument')
         if (!input.content) return err('action=write_file requires a content argument')
         if (!input.message) return err('action=write_file requires a message (commit message) argument')
+        // Local mode: write directly to the cloned repo on this machine
+        if (ctx.repoMode === 'local' && ctx.localRepoPath) {
+          try {
+            const localRoot = ctx.localRepoPath
+            const targetPath = resolve(localRoot, input.path)
+            const rel = relative(localRoot, targetPath)
+            if (rel.startsWith('..') || isAbsolute(rel)) {
+              return err(`Path escapes local repo root: ${input.path}`)
+            }
+            await fs.mkdir(dirname(targetPath), { recursive: true })
+            const existed = await fs.stat(targetPath).then(() => true).catch(() => false)
+            await fs.writeFile(targetPath, input.content, 'utf-8')
+            return ok(
+              `File ${existed ? 'updated' : 'created'} locally: ${targetPath}`,
+              `local write ${input.path}: ${existed ? 'updated' : 'created'} ✓`
+            )
+          } catch (e) {
+            return err(`Local write failed: ${e instanceof Error ? e.message : String(e)}`)
+          }
+        }
         const result = await createOrUpdateRepoFile(owner, repo, input.path, input.content, input.message, input.branch)
         return ok(
           `File ${result.created ? 'created' : 'updated'}: ${input.path}\nCommit SHA: ${result.sha}\nURL: ${result.url}`,
@@ -411,6 +431,24 @@ async function execGithub(
       case 'delete_file': {
         if (!input.path)    return err('action=delete_file requires a path argument')
         if (!input.message) return err('action=delete_file requires a message (commit message) argument')
+        // Local mode: delete from the cloned repo on this machine
+        if (ctx.repoMode === 'local' && ctx.localRepoPath) {
+          try {
+            const localRoot = ctx.localRepoPath
+            const targetPath = resolve(localRoot, input.path)
+            const rel = relative(localRoot, targetPath)
+            if (rel.startsWith('..') || isAbsolute(rel)) {
+              return err(`Path escapes local repo root: ${input.path}`)
+            }
+            await fs.unlink(targetPath)
+            return ok(
+              `Deleted locally: ${targetPath}`,
+              `local delete ${input.path}: deleted ✓`
+            )
+          } catch (e) {
+            return err(`Local delete failed: ${e instanceof Error ? e.message : String(e)}`)
+          }
+        }
         const result = await deleteRepoFile(owner, repo, input.path, input.message, input.branch)
         return ok(
           `Deleted: ${input.path}\nCommit SHA: ${result.commitSha}`,

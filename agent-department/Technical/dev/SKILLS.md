@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -45,6 +61,9 @@
 | Caching strategy, bloom filter, membership queries | `skills/custom/bloom-filter-caching/SKILL.md` |
 | Server/client composition and Vercel deployment patterns | `skills/design-and-build/vercel-composition-patterns/SKILL.md` |
 | Writing structured implementation plans | `skills/superpowers/writing-plans/SKILL.md` |
+| Vercel deploy management, env vars, maxDuration config, rollback | `skills/design-and-build/cicd-deploy/SKILL.md` |
+| Logging route errors consistently across /api/ handlers | `../../shared/skills/custom/error-tracking/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -184,3 +203,4 @@ Dev improves from every session:
 | 2026-03-24 | Bulk agent changes → Python glob scripts | War Room keywords condensed 3→2 lines | SIP run 1 | 0 |
 | 2026-05-20 | Phase 2: 4 persona sections, 6 new triggers, model→from-settings | Removed dead triggers (frontend-design, skill-creator, prd-development, FILES.md, Priya/Sam refs) | Phase 2 upgrade | +50 |
 | 2026-05-21 | Wire-up: vercel-composition-patterns, writing-plans triggers added | — | Missing trigger audit | +2 |
+| 2026-05-28 | Gap-fill: cicd-deploy (Vercel), shared error-tracking, session-protocol triggers added | — | Deep audit + skill gap remediation | +3 |

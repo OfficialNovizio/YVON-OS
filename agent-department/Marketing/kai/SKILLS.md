@@ -18,12 +18,28 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
 |------|------|
 | Any data analysis or reporting | `ANALYTICS-PRINCIPLES.md` |
-| Active venture brand context needed | `skills/brands/novizio.md` or `skills/brands/hourbour.md` |
+| Active venture brand context needed | Brand injected by Marcus at session start — `docs/ventures/[active]/BRAND.md` |
 | Analytics tracking setup | `skills/marketing-and-growth/analytics-tracking/SKILL.md` |
 | Marketing ideas and opportunities | `skills/marketing-and-growth/marketing-ideas/SKILL.md` |
 | SEO audit or search visibility analysis | `skills/marketing-and-growth/seo-audit/SKILL.md` |
@@ -35,6 +51,9 @@
 | Producing CEO brief or KPI summary for Marcus | `skills/marketplace/executive-kpi-briefings/SKILL.md` |
 | Processing raw transcripts, brain dumps, or unstructured data inputs | `skills/marketplace/panning-for-gold/SKILL.md` |
 | Content Suggestion Engine — Phase 1 brief, scoring, exclusions | `skills/custom/content-suggestion-engine/SKILL.md` |
+| Competitor scrape data — turning raw data into competitive intelligence | `skills/custom/competitor-analysis/SKILL.md` |
+| Cohort retention, trial-to-paid funnel, LTV projection by cohort | `skills/custom/cohort-analysis/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -192,3 +211,4 @@ Kai improves from every session:
 | 2026-05-20 | OS triggers added, dead paths removed, stale refs fixed | superpowers paths, competitor-intel dead, Zara ref | Phase 1 structural batch | +0 |
 | 2026-05-20 | Default Behaviors, Conviction Patterns, Communication DNA, Quality Bar added; 2 marketplace skills | — | Phase 2 persona deepening | +0 |
 | 2026-05-21 | Wire-up: content-suggestion-engine trigger added | — | Missing trigger audit | +1 |
+| 2026-05-28 | Gap-fill: competitor-analysis, cohort-analysis, session-protocol triggers added | — | Deep audit + skill gap remediation | +3 |

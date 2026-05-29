@@ -18,11 +18,27 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
 |------|------|
-| Growth experiment design or funnel analysis | `GROWTH-PRINCIPLES.md` + `skills/brands/novizio.md` or `skills/brands/hourbour.md` |
+| Growth experiment design or funnel analysis | `GROWTH-PRINCIPLES.md` + brand injected by Marcus via `docs/ventures/[active]/BRAND.md` |
 | Churn prevention strategies | `skills/marketing-and-growth/churn-prevention/SKILL.md` |
 | Lead magnet design | `skills/marketing-and-growth/lead-magnets/SKILL.md` |
 | Marketing psychology + persuasion frameworks | `skills/marketing-and-growth/marketing-psychology/SKILL.md` |
@@ -35,6 +51,8 @@
 | Before committing to any growth experiment | `skills/marketplace/pre-mortem/SKILL.md` |
 | Scoring and prioritising growth experiments | `skills/custom/ice-scoring-framework/SKILL.md` |
 | Identifying which funnel stage to target for an experiment | `skills/custom/funnel-map/SKILL.md` |
+| Hourbour SaaS PLG — activation metrics, PQLs, viral loops, bottom-up expansion | `skills/marketing-and-growth/product-led-growth/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -192,3 +210,4 @@ Nate improves from every session:
 | 2026-03-23 | (baseline established) | — | initial SIP setup | 0 |
 | 2026-05-20 | OS triggers added, dead paths removed, stale refs fixed | superpowers, brand-context, Zara/Priya/Alex refs | Phase 1 structural batch | +0 |
 | 2026-05-20 | Default Behaviors, Conviction Patterns, Communication DNA, Quality Bar added; 4 new skills (lean-startup, pre-mortem, ice-scoring-framework, funnel-map); brands folder fixed | — | Phase 2 persona deepening | +0 |
+| 2026-05-28 | Gap-fill: product-led-growth (Hourbour SaaS PLG), session-protocol triggers added | — | Deep audit + skill gap remediation | +2 |

@@ -18,7 +18,7 @@ const ACCENT = '#0066cc';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const TABS = ['Profile', 'Social Accounts', 'Content DNA', 'Brand Docs', 'Integrations', 'Regions'] as const
+const TABS = ['Profile', 'Social Accounts', 'Content DNA', 'Brand Docs', 'Integrations', 'Competitors', 'Regions'] as const
 type Tab = typeof TABS[number]
 
 const BRAND_TYPES: { value: BrandType; label: string }[] = [
@@ -1807,6 +1807,200 @@ function ContentDNATab({ ventureId }: { ventureId: string }) {
   )
 }
 
+// ─── Competitors Tab ──────────────────────────────────────────────────────────
+
+interface CustomCompetitorRow {
+  id: string
+  brand_name: string
+  tier: string
+  signal_score: number
+  last_checked: string | null
+  is_custom: boolean
+}
+
+function CompetitorsTab({ ventureSlug }: { ventureSlug: string }) {
+  const [brands,     setBrands]     = useState<CustomCompetitorRow[]>([])
+  const [newBrand,   setNewBrand]   = useState('')
+  const [adding,     setAdding]     = useState(false)
+  const [addMsg,     setAddMsg]     = useState('')
+  const [addErr,     setAddErr]     = useState('')
+  const [loading,    setLoading]    = useState(true)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  useEffect(() => {
+    setLoading(true)
+    void fetch(`/api/custom-competitor?venture=${ventureSlug}`)
+      .then(r => r.json())
+      .then((d: { competitors?: CustomCompetitorRow[] }) => {
+        setBrands(d.competitors ?? [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [ventureSlug])
+
+  async function handleAdd() {
+    const name = newBrand.trim()
+    if (!name || adding) return
+    setAdding(true); setAddErr(''); setAddMsg('Scraping brand data — this takes ~20s…')
+    try {
+      const res  = await fetch('/api/custom-competitor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ventureSlug, brandName: name }),
+      })
+      const data = await res.json() as { competitor?: CustomCompetitorRow; error?: string }
+      if (!res.ok || data.error) { setAddErr(data.error ?? 'Failed to add brand'); setAddMsg(''); return }
+      if (data.competitor) setBrands(prev => [...prev.filter(b => b.brand_name !== name), data.competitor!])
+      setNewBrand('')
+      setAddMsg(`${name} added and scraped.`)
+      setTimeout(() => setAddMsg(''), 4000)
+    } catch (e) {
+      setAddErr(e instanceof Error ? e.message : 'Network error')
+      setAddMsg('')
+    } finally { setAdding(false) }
+  }
+
+  async function handleDelete(id: string) {
+    setDeletingId(id)
+    try {
+      await fetch(`/api/custom-competitor?venture=${ventureSlug}&id=${id}`, { method: 'DELETE' })
+      setBrands(prev => prev.filter(b => b.id !== id))
+    } finally { setDeletingId(null) }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+      {/* Info card */}
+      <div style={{ ...G2, padding: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: I2 }}>radar</span>
+          <p style={{ fontSize: 13, fontWeight: 700, color: I2, margin: 0 }}>Custom Competitor Tracking</p>
+        </div>
+        <p style={{ fontSize: 12, color: 'rgba(244,248,255,0.60)', lineHeight: 1.6, margin: 0 }}>
+          Add any specific brand to track alongside auto-discovered peers. YVON scrapes their
+          social accounts via Apify and adds them directly to the Competitor dashboard.
+          Auto-discovered brands are managed from the Competitor screen.
+        </p>
+      </div>
+
+      {/* Add brand form */}
+      <div style={{ ...G1, padding: 20 }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: I1, margin: '0 0 4px' }}>Track a Specific Brand</p>
+        <p style={{ fontSize: 11, color: I1d, margin: '0 0 14px', lineHeight: 1.5 }}>
+          Enter any brand name. YVON resolves their social handles, scrapes follower counts
+          and engagement, then adds them to your Competitor dashboard.
+        </p>
+
+        <div style={{ display: 'flex', gap: 8 }}>
+          <FInput
+            value={newBrand}
+            onChange={e => { setNewBrand(e.target.value); setAddErr('') }}
+            placeholder="e.g. Rouje, Mango, The Label"
+          />
+          <Btn
+            small
+            disabled={!newBrand.trim() || adding}
+            onClick={() => { void handleAdd() }}
+          >
+            {adding
+              ? <><span className="material-symbols-outlined" style={{ fontSize: 14, marginRight: 4, animation: 'spin 1s linear infinite' }}>progress_activity</span>Tracking…</>
+              : <><span className="material-symbols-outlined" style={{ fontSize: 14, marginRight: 4 }}>add_circle</span>Track Brand</>
+            }
+          </Btn>
+        </div>
+
+        {addMsg && (
+          <p style={{ marginTop: 8, fontSize: 12, color: '#34d399', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span>
+            {addMsg}
+          </p>
+        )}
+        {addErr && (
+          <p style={{ marginTop: 8, fontSize: 12, color: '#ff453a', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 14 }}>error</span>
+            {addErr}
+          </p>
+        )}
+      </div>
+
+      {/* Custom brands list */}
+      <div>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, margin: '0 0 10px' }}>
+          Manually Tracked
+        </p>
+
+        {loading && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: I1d, fontSize: 12, padding: '8px 0' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>progress_activity</span>
+            Loading…
+          </div>
+        )}
+
+        {!loading && brands.length === 0 && (
+          <p style={{ fontSize: 12, color: I1d, padding: '8px 0' }}>
+            No custom brands tracked yet. Add one above.
+          </p>
+        )}
+
+        {!loading && brands.length > 0 && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {brands.map(b => {
+              const isDeleting = deletingId === b.id
+              const hasData    = b.signal_score > 0
+              return (
+                <div key={b.id} style={{ ...G1, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <div style={{
+                    width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: ACCENT, color: '#fff', fontSize: 13, fontWeight: 700,
+                  }}>
+                    {b.brand_name.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: I1, margin: '0 0 2px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      {b.brand_name}
+                      <span style={{
+                        fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
+                        padding: '2px 7px', borderRadius: 10,
+                        background: 'rgba(0,102,204,0.10)', color: ACCENT,
+                        border: '1px solid rgba(0,102,204,0.20)',
+                      }}>
+                        Custom
+                      </span>
+                    </p>
+                    <p style={{ fontSize: 11, color: I1d, margin: 0 }}>
+                      {hasData
+                        ? `Signal score: ${Math.round(b.signal_score)} · Last scraped: ${b.last_checked ? new Date(b.last_checked).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) : 'never'}`
+                        : 'No data yet — scrape in progress or APIFY_TOKEN needed'
+                      }
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => { void handleDelete(b.id) }}
+                    disabled={isDeleting}
+                    title="Remove from tracking"
+                    style={{ background: 'none', border: `1px solid ${L1}`, borderRadius: 8, padding: '6px 8px', cursor: 'pointer', color: I1d, display: 'flex', alignItems: 'center', transition: 'all 0.15s' }}
+                    onMouseEnter={e => { (e.currentTarget.style.borderColor = 'rgba(255,69,58,0.4)'); (e.currentTarget.style.color = '#ff453a') }}
+                    onMouseLeave={e => { (e.currentTarget.style.borderColor = L1); (e.currentTarget.style.color = I1d) }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                      {isDeleting ? 'progress_activity' : 'delete'}
+                    </span>
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+    </div>
+  )
+}
+
 // ─── Country Operations ────────────────────────────────────────────────────────
 
 interface CountryOption { code: string; name: string; region: string }
@@ -2391,6 +2585,7 @@ export default function VentureSettingsPage() {
               {tab === 'Content DNA' && <ContentDNATab ventureId={venture.id} />}
               {tab === 'Brand Docs' && <BrandDocsTab key={venture.slug} ventureSlug={venture.slug} />}
               {tab === 'Integrations' && <IntegrationsTab venture={venture} socials={socials} />}
+              {tab === 'Competitors' && <CompetitorsTab key={venture.slug} ventureSlug={venture.slug} />}
               {tab === 'Regions' && <RegionsTab key={venture.id} venture={venture} />}
             </>
           )}

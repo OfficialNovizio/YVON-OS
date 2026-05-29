@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -43,6 +59,8 @@
 | Subagent-driven testing or investigation | `skills/superpowers/subagent-driven-development/SKILL.md` |
 | Using git worktrees for isolated QA environments | `skills/superpowers/using-git-worktrees/SKILL.md` |
 | Understanding the superpowers system | `skills/superpowers/using-superpowers/SKILL.md` |
+| Verifying error log format compliance across /api/ routes | `../../shared/skills/custom/error-tracking/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -180,3 +198,4 @@ Quinn improves from every session:
 | 2026-03-24 | npx tsc --noEmit is the Linux VM build gate | Does NOT Own condensed 2→1 line | SIP run 1 | 0 |
 | 2026-05-20 | Phase 2: 4 persona sections, 4 new triggers, yvon-custom→custom, stale refs fixed | Removed dead triggers (ab-test-setup, FILES.md), Priya/Leo refs replaced | Phase 2 upgrade | +50 |
 | 2026-05-21 | Wire-up: writing-plans, finishing-branch, receiving-review, subagent-dev, git-worktrees, using-superpowers triggers added | — | Missing trigger audit | +6 |
+| 2026-05-28 | Gap-fill: shared error-tracking (format compliance audit), session-protocol triggers added | — | Deep audit + skill gap remediation | +2 |

@@ -15,7 +15,7 @@ export const maxDuration = 180
 export async function POST(req: NextRequest) {
   let body: {
     ventureSlug?: string
-    competitors: Array<{ brandName: string; url?: string; handles?: Array<{ platform: string; handle: string }> }>
+    competitors: Array<{ brandName: string; url?: string; tier?: string; handles?: Array<{ platform: string; handle: string }> }>
   }
   try {
     body = await req.json() as typeof body
@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
   const typedCompetitors = competitors.map(c => ({
     brandName: c.brandName,
     url: c.url,
+    tier: (c.tier ?? 'benchmark') as 'benchmark' | 'stretch' | 'anchor',
     handles: (c.handles ?? []).map(h => ({
       platform: h.platform as 'instagram' | 'tiktok' | 'linkedin' | 'youtube',
       handle: h.handle,

@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -44,6 +60,9 @@
 | Applying and enforcing brand visual guidelines in UI | `skills/creative-visual/brand-guidelines/SKILL.md` |
 | Finishing a development branch | `skills/superpowers/finishing-a-development-branch/SKILL.md` |
 | Receiving a code review | `skills/superpowers/receiving-code-review/SKILL.md` |
+| Mobile-first responsive pass — breakpoints, glass adaptations, touch targets | `skills/design-and-build/responsive-design/SKILL.md` |
+| WCAG 2.1 AA — contrast, ARIA, keyboard navigation, focus management | `skills/design-and-build/accessibility/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -180,3 +199,4 @@ Mia improves from every session:
 | 2026-03-24 | Stale Aria→Lena corrected in team connections | Does NOT Own condensed 3→2 lines | SIP run 1 | 0 |
 | 2026-05-20 | Phase 2: 4 persona sections, 3 new triggers, Leo refs purged, FILES.md removed, 7 superpowers copied | Removed Leo MEMORY.md ref, Files.md ref, dead ../../../ prefixes | Phase 2 upgrade | +48 |
 | 2026-05-21 | Wire-up: awesome-design-reference, brand-guidelines, finishing-branch, receiving-review triggers added | — | Missing trigger audit | +4 |
+| 2026-05-28 | Gap-fill: responsive-design (glass system mobile), accessibility (WCAG 2.1 AA), session-protocol triggers added | — | Deep audit + skill gap remediation | +3 |

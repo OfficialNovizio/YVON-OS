@@ -7,21 +7,23 @@
 ---
 
 ## Active Right Now
-- **Status:** Deep Audit + Risk Remediation COMPLETE ✅
-- **Completed fixes:**
-  - Health page: added layout.tsx (NavBar, bg) + loading.tsx
-  - Removed orphaned CEO dashboard components (_intelligence-feed, _source-reports)
-  - Removed dead analytics/content redirect route
-  - Fixed unused vars in settings/venture (7) and war-room (3)
-  - Replaced `<img>` with `<Image>` in war-room (2 instances)
-  - Added `YVON_GITHUB_OWNER` + `YVON_GITHUB_REPO` to `.env.local`
-  - Verified all 33 migrations already applied (no pending)
-  - Added loading.tsx: health, career, merchandize, 4 analytics sub-pages
-- **Remaining:** lib/health `any` types (needs proper type definitions)
-- **Next session options (pick one):**
-  1. Continue responsive pass on remaining screens
-  2. Demo data for Analytics, Marketing, Competitor dashboards
-  3. Replace `<img>` with `<Image>` across marketing, settings/profile, settings/providers
+- **Status:** OS Gate Enforcement + Venture Infrastructure — COMPLETE ✅
+- **Completed this session:**
+  - Triple-pass-protocol SKILL.md rewritten (v2.0) — BLOCKING GATE, ≥3 critique items, Critique check line
+  - MANDATORY OS GATES section added to all 14 agent SKILLS.md files
+  - WORKFLOW.md updated — Critique check line added to ENGAGE+PLAN format
+  - Deprecated brand refs removed from 5 agents (Kai, Lena, Rio, Nate, Atlas)
+  - yvon-dashboard/BRAND.md expanded from 20 lines to full product identity
+  - ISSUES.md created for all 3 ventures (yvon-dashboard, novizio, hourbour)
+  - METRICS.md created for all 3 ventures with KPI targets + baselines
+  - AGENTS.md created for all 3 ventures with routing notes
+  - INDEX.md updated — ISSUES.md, METRICS.md, AGENTS.md added to load manifest
+- **Still pending (roadmap):**
+  - Competitor pipeline: test end-to-end with real Apify token (from previous session)
+  - WebSearch not wired in /api/claude (YVN-001 — highest urgency feature gap)
+  - Supabase RLS on multi-venture tables (YVN-002), Upstash rate limiting (YVN-004), Inbox approval UI (YVN-005)
+  - Fill in Novizio + Hourbour ICP fields (NOV-001, HRB-007)
+  - Hourbour trial-to-paid conversion flow (HRB-001)
 
 ---
 
@@ -36,14 +38,14 @@
 
 | Date | Agent(s) | Task | Outcome | Next Step |
 |------|---------|------|---------|-----------|
-| 2026-05-27 | Marcus, Diana | Provide executive synthesis and strategic recommendatio; Assess operational processes, workflows, and execution  | 26 agent calls via War Room | Review CEO dashboard |
-| 2026-05-27 | Marcus, Diana | Provide executive synthesis and strategic recommendatio; Assess operational processes, workflows, and execution  | 26 agent calls via War Room | Review CEO dashboard |
-| 2026-05-27 | Marcus, Diana | Provide executive synthesis and strategic recommendatio; Assess operational processes, workflows, and execution  | 26 agent calls via War Room | Review CEO dashboard |
-| 2026-05-27 | Marcus, Diana | Provide executive synthesis and strategic recommendatio; Assess operational processes, workflows, and execution  | 26 agent calls via War Room | Review CEO dashboard |
-| 2026-05-27 | Marcus, Diana | Provide executive synthesis and strategic recommendatio; Assess operational processes, workflows, and execution  | 26 agent calls via War Room | Review CEO dashboard |
+| 2026-05-28 | Diana, Marcus | Assess operational processes, workflows, and execution ; Provide executive synthesis and strategic recommendatio | 4 agent calls via War Room | Review CEO dashboard |
+| 2026-05-28 | Diana, Marcus | Assess operational processes, workflows, and execution ; Provide executive synthesis and strategic recommendatio | 4 agent calls via War Room | Review CEO dashboard |
+| 2026-05-28 | Diana, Marcus | Assess operational processes, workflows, and execution ; Provide executive synthesis and strategic recommendatio | 4 agent calls via War Room | Review CEO dashboard |
+| 2026-05-28 | Diana, Marcus | Assess operational processes, workflows, and execution ; Provide executive synthesis and strategic recommendatio | 4 agent calls via War Room | Review CEO dashboard |
+| 2026-05-28 | Marcus (all 14 agents) | OS gate enforcement + venture infrastructure | Triple-pass blocking gate; MANDATORY OS GATES in 14 SKILLS.md; 9 new venture files (ISSUES×3, METRICS×3, AGENTS×3); brand refs cleaned; INDEX.md updated | Wire WebSearch into /api/claude (YVN-001); fill ICP fields; trial-to-paid flow |
 ---
 
-## Last Clean Exit: 2026-05-28 00:21
+## Last Clean Exit: 2026-05-28 11:21
 
 ## SIP Flags (Pending Distillation)
 - No pending SIP flags

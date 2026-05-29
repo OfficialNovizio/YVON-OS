@@ -18,6 +18,22 @@
 
 ---
 
+## MANDATORY OS GATES
+
+> These gates run every session, every output — regardless of task size, agent, or venture.
+> They are NOT load triggers. They CANNOT be skipped, deferred, or bypassed.
+> If a gate has not run, the output is not ready to deliver.
+
+| Gate | Trigger condition | Skill |
+|------|-----------------|-------|
+| **Triple-pass** | Before ANY plan, recommendation, or strategic output | `skills/operating-system/triple-pass-protocol/SKILL.md` |
+| **Reflection** | End of any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
+| **Session-protocol** | Session start + session end, every session | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
+
+**Pass 2 minimum:** Triple-pass must produce ≥3 critique items. Zero findings is not acceptable.
+
+---
+
 ## Load Triggers
 
 | When | Load |
@@ -47,6 +63,8 @@
 | Making API calls | `TOOLS.md` |
 | Writing acceptance criteria for any feature or task | `skills/custom/acceptance-criteria/SKILL.md` |
 | Terminal commands needed | `COMMANDS.md` |
+| Orchestrating Lena → Atlas → Pixel content pipeline handoffs and gates | `skills/custom/content-pipeline-coordination/SKILL.md` |
+| Session start/end protocol, memory write obligations | `../../shared/skills/operating-system/session-protocol/SKILL.md` |
 
 ---
 
@@ -157,3 +175,4 @@ Diana improves from every session:
 | 2026-03-23 | (baseline established) | — | initial SIP setup | 0 |
 | 2026-05-21 | Phase 2: acceptance-criteria trigger added | Removed FILES.md dead trigger | Phase 2 upgrade | +1 |
 | 2026-05-21 | Wire-up: delivery-status, pre-dev-task-breakdown triggers added | — | Missing trigger audit | +2 |
+| 2026-05-28 | Gap-fill: content-pipeline-coordination (Lena→Atlas→Pixel gates), session-protocol triggers added | — | Deep audit + skill gap remediation | +2 |

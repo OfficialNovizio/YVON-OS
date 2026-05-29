@@ -23,6 +23,7 @@ export default function AnalyticsPortfolioPage() {
   const [loading, setLoading] = useState(true);
   const [pipelineRunning, setPipelineRunning] = useState(false);
   const [pipelineMsg, setPipelineMsg] = useState('');
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const fetchData = () => {
     if (!ventureSlug) return;
@@ -39,45 +40,76 @@ export default function AnalyticsPortfolioPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ventureSlug, period]);
 
+  function handleReset() {
+    if (!confirmReset) { setConfirmReset(true); return; }
+    setConfirmReset(false);
+    if (!ventureSlug) return;
+    setPipelineRunning(true);
+    setPipelineMsg('Clearing old data and rediscovering…');
+    fetch('/api/reset-competitors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ventureSlug }),
+    })
+      .then(r => r.json())
+      .then(d => {
+        if ((d as any)?.error) { setPipelineMsg(`Error: ${(d as any).error}`); setPipelineRunning(false); return; }
+        const count = (d as any)?.results?.length ?? 0;
+        setPipelineMsg(`Reset complete. Scraped ${count} fresh competitor${count !== 1 ? 's' : ''}.`);
+        setTimeout(() => { fetchData(); setPipelineRunning(false); setPipelineMsg(''); }, 1500);
+      })
+      .catch(() => { setPipelineRunning(false); setPipelineMsg('Reset failed.'); });
+  }
+
   function handleDiscoverCompetitors() {
     if (!ventureSlug) return;
     setPipelineRunning(true);
-    setPipelineMsg('Finding competitors...');
+    setPipelineMsg('Finding size-matched competitors…');
+
     const ventureName = ventureSlug === 'hourbour' ? 'Hourbour' : 'Novizio';
-    const industry = ventureSlug === 'hourbour' ? 'fintech' : 'fashion e-commerce';
+    const industry    = ventureSlug === 'hourbour' ? 'fintech' : 'fashion e-commerce';
 
-    // Default competitors per venture (used when AI is unavailable)
-    const DEFAULTS: Record<string, string[]> = {
-      novizio: ['Zara', 'H&M', 'ASOS', 'Mango', 'Uniqlo'],
-      hourbour: ['Monzo', 'Revolut', 'Starling Bank', 'Wise', 'Chime'],
+    // Tier-appropriate fallbacks when AI is unavailable
+    const FALLBACK: Record<string, { benchmark: string[]; stretch: string[]; anchor: string }> = {
+      novizio:  { benchmark: ['Rouje', 'By Far', 'Rhode'], stretch: ['Reformation', 'Staud'], anchor: 'Zara' },
+      hourbour: { benchmark: ['Lili', 'Klar', 'Suits App'], stretch: ['N26', 'Starling Bank'], anchor: 'Revolut' },
     };
+    const fallback = FALLBACK[ventureSlug] ?? FALLBACK.novizio;
 
-    // Try AI suggestions first, fall back to defaults
     fetch('/api/auto-competitors', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ brandName: ventureName, industry }),
+      body: JSON.stringify({ brandName: ventureName, industry, ventureSlug }),
     })
       .then(r => r.json())
-      .then(suggestions => {
-        let names: string[] = suggestions.competitors ?? [];
-        if (names.length === 0) names = DEFAULTS[ventureSlug] ?? ['Zara', 'H&M', 'ASOS', 'Mango', 'Uniqlo'];
-        return names;
+      .then((suggestions: any) => {
+        const benchmark: string[] = suggestions.benchmark?.length ? suggestions.benchmark : fallback.benchmark;
+        const stretch:   string[] = suggestions.stretch?.length   ? suggestions.stretch   : fallback.stretch;
+        const anchor:    string   = suggestions.anchor            || fallback.anchor;
+        return [
+          ...benchmark.map((n: string) => ({ brandName: n, tier: 'benchmark' })),
+          ...stretch.map((n: string)   => ({ brandName: n, tier: 'stretch' })),
+          { brandName: anchor, tier: 'anchor' },
+        ];
       })
-      .catch(() => DEFAULTS[ventureSlug] ?? ['Zara', 'H&M', 'ASOS', 'Mango', 'Uniqlo'])
-      .then(names => {
-        setPipelineMsg(`Scraping ${names.length} competitors...`);
+      .catch(() => [
+        ...fallback.benchmark.map(n => ({ brandName: n, tier: 'benchmark' })),
+        ...fallback.stretch.map(n   => ({ brandName: n, tier: 'stretch' })),
+        { brandName: fallback.anchor, tier: 'anchor' },
+      ])
+      .then(competitors => {
+        setPipelineMsg(`Scraping ${competitors.length} competitors…`);
         return fetch('/api/competitor-pipeline', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ventureSlug, competitors: names.map(n => ({ brandName: n })) }),
+          body: JSON.stringify({ ventureSlug, competitors }),
         });
       })
       .then(r => r.json())
       .then(d => {
-        if (d?.error) { setPipelineMsg(`Error: ${d.error}`); setPipelineRunning(false); return; }
-        const count = d?.results?.length ?? 0;
-        setPipelineMsg(`Scraped ${count} competitor${count !== 1 ? 's' : ''}. Refreshing...`);
+        if ((d as any)?.error) { setPipelineMsg(`Error: ${(d as any).error}`); setPipelineRunning(false); return; }
+        const count = (d as any)?.results?.length ?? 0;
+        setPipelineMsg(`Scraped ${count} competitor${count !== 1 ? 's' : ''}. Refreshing…`);
         setTimeout(() => { fetchData(); setPipelineRunning(false); setPipelineMsg(''); }, 1500);
       })
       .catch(() => { setPipelineRunning(false); setPipelineMsg('Failed. Is APIFY_TOKEN set in Vault?'); });
@@ -153,6 +185,28 @@ export default function AnalyticsPortfolioPage() {
                   <span className={`material-symbols-outlined text-[13px] ${pipelineRunning ? 'animate-spin' : ''}`}>refresh</span>
                   {pipelineRunning ? 'Refreshing...' : 'Discover More'}
                 </button>
+                {confirmReset ? (
+                  <div className="flex items-center gap-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: '#dc2626' }}>Wipe all data?</span>
+                    <button onClick={handleReset} disabled={pipelineRunning}
+                      className="flex items-center gap-1 px-2 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider active:scale-95 disabled:opacity-40"
+                      style={{ background: 'rgba(220,38,38,0.12)', color: '#dc2626', border: '1px solid rgba(220,38,38,0.3)' }}>
+                      Confirm
+                    </button>
+                    <button onClick={() => setConfirmReset(false)}
+                      className="px-2 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider active:scale-95"
+                      style={{ background: 'rgba(0,0,0,0.06)', color: 'rgba(0,0,0,0.4)' }}>
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={handleReset} disabled={pipelineRunning}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all active:scale-95 disabled:opacity-40"
+                    style={{ background: 'rgba(220,38,38,0.08)', color: '#dc2626', border: '1px solid rgba(220,38,38,0.2)' }}>
+                    <span className="material-symbols-outlined text-[13px]">delete_sweep</span>
+                    Reset &amp; Rediscover
+                  </button>
+                )}
               </div>
             </div>
 

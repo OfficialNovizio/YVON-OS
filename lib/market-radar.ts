@@ -135,6 +135,8 @@ export async function upsertCompetitors(
     fundingRoundDetected?: boolean
     shareOfVoice?: number
     weekOverWeekChange?: number
+    tier?: 'benchmark' | 'stretch' | 'anchor'
+    isCustom?: boolean
   }>
 ): Promise<void> {
   if (competitors.length === 0) return
@@ -150,6 +152,8 @@ export async function upsertCompetitors(
       funding_round_detected: c.fundingRoundDetected ?? false,
       share_of_voice: c.shareOfVoice ?? 0,
       week_over_week_change: c.weekOverWeekChange ?? 0,
+      tier: c.tier ?? 'benchmark',
+      is_custom: c.isCustom ?? false,
       last_checked: new Date().toISOString(),
     })),
     { onConflict: 'venture_id,brand_name' }
