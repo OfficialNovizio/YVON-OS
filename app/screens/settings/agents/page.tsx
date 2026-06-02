@@ -491,7 +491,7 @@ export default function AgentsSettingsPage() {
               <AgentCard
                 key={agent.id}
                 agent={agent}
-                model={models[agent.id] ?? agent.model}
+                model={models[agent.id] ?? ''}
                 saved={saved[agent.id] ?? false}
                 onClick={() => setPanelAgent(agent)}
               />
@@ -596,7 +596,7 @@ export default function AgentsSettingsPage() {
           />
           <AgentPanel
             agent={panelAgent}
-            model={models[panelAgent.id] ?? panelAgent.model}
+            model={models[panelAgent.id] ?? ''}
             prompt={prompts[panelAgent.id] ?? ''}
             memory={memory[panelAgent.id] ?? []}
             onModelChange={m => setModels(prev => ({ ...prev, [panelAgent.id]: m }))}

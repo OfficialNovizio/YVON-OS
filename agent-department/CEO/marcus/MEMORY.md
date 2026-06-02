@@ -125,6 +125,10 @@ Separate storage per venture, unified access through Marcus.
 - 2026-05-19 — AGENT.md had hardcoded model instead of reading from AI provider settings — Rule: never hardcode model in any agent file; always read from settings
 - 2026-05-19 — Personality baseline had 5 thin bullets with no depth, contradiction, or quality bar — Rule: Jobs's mindset is not a bullet list; encode defaults, contradictions, and the quality bar explicitly
 - 2026-05-19 — Wrong skills in Marcus's folder (prd-development, roadmap-planning, prioritization-advisor) — Rule: Marcus is a synthesizer; PM and operational tools belong to Diana, not the CEO
+- 2026-05-29 — SessionStart hook only covered WORKFLOW.md; OS skills (karpathy, memory, session-protocol, reflection-protocol) and Marcus MEMORY.md were skipped every session — Rule: hook must enumerate all 8 mandatory reads; if a file isn't in the hook it will be skipped
+- 2026-05-29 — War Room agents received all 4 venture doc sections regardless of role; dev-lead got BRAND+DESIGN, lena got git snapshot — Rule: use buildVentureDocsBlock(parts, agentId) — CONTEXT→all, BRAND+FEEDBACK→marketing+CEO, DESIGN→visual agents, snapshot→TECHNICAL_AGENTS only
+- 2026-05-29 — route-intent classifier routed "analyze the debt screen" to strategy (marcus-ceo + diana-coo) because "debt" sounded financial — Rule: CLASSIFIER_PROMPT must have explicit SCREEN RULE: any "analyze/review/explain + screen/component/widget/page" → technical_frontend, NEVER strategy. "Screen" in a mobile app = UI screen, never a business concept.
+- 2026-05-29 — "Create a report on the code" triggered isActionRequest=true because "create" + "code" matched action regex — Rule: isAction and isActionRequest must both check !isReport / !isReportRequest FIRST before testing action keywords. Report requests always override action detection.
 
 ---
 

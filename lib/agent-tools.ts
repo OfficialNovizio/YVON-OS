@@ -32,14 +32,21 @@ const execP = promisify(exec)
 
 const REPO_ROOT = process.cwd()
 
-/** Resolve a tool-supplied path to an absolute path within REPO_ROOT. Throws if it escapes. */
-function safeResolve(p: string): string {
+/**
+ * Resolve a tool-supplied path to an absolute path.
+ * Always allowed within REPO_ROOT.
+ * If localRepoPath is supplied (local mode), also allowed within that path.
+ * Throws on path traversal outside both roots.
+ */
+function safeResolve(p: string, localRepoPath?: string): string {
   const target = isAbsolute(p) ? resolve(p) : resolve(REPO_ROOT, p)
   const rel = relative(REPO_ROOT, target)
-  if (rel.startsWith('..') || isAbsolute(rel)) {
-    throw new Error(`Path escapes repo root: ${p}`)
+  if (!rel.startsWith('..') && !isAbsolute(rel)) return target // within YVON OS — always OK
+  if (localRepoPath) {
+    const relFromLocal = relative(localRepoPath, target)
+    if (!relFromLocal.startsWith('..') && !isAbsolute(relFromLocal)) return target // within local repo — OK in local mode
   }
-  return target
+  throw new Error(`Path escapes repo root: ${p}`)
 }
 
 // ─── Tool schemas (sent to the model) ─────────────────────────────────────────
@@ -193,17 +200,44 @@ function err(message: string): ToolResult {
 const BASH_ALLOWED_PREFIXES = [
   'ls', 'pwd', 'cat', 'head', 'tail', 'wc', 'find', 'tree', 'file', 'stat',
   'git status', 'git log', 'git diff', 'git show', 'git branch', 'git remote',
+  'git -C',  // allows: git -C /local/repo/path log/status/diff/branch
   'npm ls', 'npm view', 'npm outdated',
   'node --version', 'node -v',
 ]
 
-function isBashAllowed(cmd: string): boolean {
+// Safe read-only pipe targets: head, tail, sort, wc, grep (with literal pattern only)
+const SAFE_PIPE_TARGET = /^(head(\s+(-\d+|-n\s+\d+))?|tail(\s+(-\d+|-n\s+\d+))?|sort(\s+-[a-zA-Z0-9]+)*|wc(\s+-[a-zA-Z]+)?|grep(\s+-[a-zA-Z]+)*(\s+"[^"]*"|\s+'[^']*'|\s+\S+))$/
+
+function isBashAllowedSingle(cmd: string, localRepoPath?: string): boolean {
   const trimmed = cmd.trim()
-  // Block shell metacharacters and path traversal
   if (/[;&|`$(){}<>]|\.\.\//.test(trimmed)) return false
-  // Block absolute paths — confines all reads to REPO_ROOT (which is cwd)
-  if (/(?:^|\s)\//.test(trimmed)) return false
-  return BASH_ALLOWED_PREFIXES.some(prefix => trimmed === prefix || trimmed.startsWith(prefix + ' '))
+  if (!BASH_ALLOWED_PREFIXES.some(prefix => trimmed === prefix || trimmed.startsWith(prefix + ' '))) return false
+  if (/(?:^|\s)\//.test(trimmed)) {
+    if (!localRepoPath) return false
+    const absPaths = trimmed.match(/(?:^|\s)(\/[^\s]+)/g)
+    if (!absPaths) return false
+    return absPaths.every(p => {
+      const cleaned = p.trim()
+      const rel = relative(localRepoPath, resolve(cleaned))
+      return !rel.startsWith('..') && !isAbsolute(rel)
+    })
+  }
+  return true
+}
+
+function isBashAllowed(cmd: string, localRepoPath?: string): boolean {
+  const trimmed = cmd.trim()
+  // Handle pipeline — base command + safe terminal stages only
+  if (trimmed.includes('|')) {
+    const stages = trimmed.split('|').map(s => s.trim()).filter(Boolean)
+    if (stages.length < 2) return false
+    if (!isBashAllowedSingle(stages[0], localRepoPath)) return false
+    return stages.slice(1).every(stage => {
+      if (/[;&|`$(){}<>]/.test(stage)) return false
+      return SAFE_PIPE_TARGET.test(stage)
+    })
+  }
+  return isBashAllowedSingle(trimmed, localRepoPath)
 }
 
 // ─── Tool executors ───────────────────────────────────────────────────────────
@@ -212,9 +246,10 @@ const MAX_FILE_BYTES = 2_000_000
 const MAX_GREP_ROWS = 200
 const MAX_BASH_OUTPUT = 50_000
 
-async function execRead(input: { file_path: string; offset?: number; limit?: number }): Promise<ToolResult> {
+async function execRead(input: { file_path: string; offset?: number; limit?: number }, ctx?: ToolContext): Promise<ToolResult> {
   try {
-    const abs = safeResolve(input.file_path)
+    const localRepoPath = ctx?.repoMode === 'local' ? ctx?.localRepoPath : undefined
+    const abs = safeResolve(input.file_path, localRepoPath)
     const stat = await fs.stat(abs)
     if (stat.size > MAX_FILE_BYTES) {
       return err(`File too large (${stat.size} bytes, cap ${MAX_FILE_BYTES}). Use Grep or read with offset/limit.`)
@@ -233,9 +268,10 @@ async function execRead(input: { file_path: string; offset?: number; limit?: num
   }
 }
 
-async function execGlob(input: { pattern: string; path?: string }): Promise<ToolResult> {
+async function execGlob(input: { pattern: string; path?: string }, ctx?: ToolContext): Promise<ToolResult> {
   try {
-    const root = input.path ? safeResolve(input.path) : REPO_ROOT
+    const localRepoPath = ctx?.repoMode === 'local' ? ctx?.localRepoPath : undefined
+    const root = input.path ? safeResolve(input.path, localRepoPath) : REPO_ROOT
     // Node 22+ built-in glob — handles ** correctly, no shell dependency
     const paths: string[] = []
     const exclude = (p: string) => /\/(node_modules|\.next|\.git|dist|build|graphify-out|tsconfig\.tsbuildinfo)(\/|$)/.test(p)
@@ -260,9 +296,10 @@ async function execGrep(input: {
   '-i'?: boolean
   '-n'?: boolean
   head_limit?: number
-}): Promise<ToolResult> {
+}, ctx?: ToolContext): Promise<ToolResult> {
   try {
-    const target = input.path ? safeResolve(input.path) : REPO_ROOT
+    const localRepoPath = ctx?.repoMode === 'local' ? ctx?.localRepoPath : undefined
+    const target = input.path ? safeResolve(input.path, localRepoPath) : REPO_ROOT
     const mode = input.output_mode ?? 'files_with_matches'
     // POSIX grep -r (universally available; ripgrep not guaranteed on the host)
     const flags: string[] = ['-r', '-E', '--exclude-dir=node_modules', '--exclude-dir=.next', '--exclude-dir=.git', '--exclude-dir=dist', '--exclude-dir=build', '--exclude-dir=graphify-out']
@@ -286,14 +323,16 @@ async function execGrep(input: {
   }
 }
 
-async function execBash(input: { command: string; description: string; timeout?: number }): Promise<ToolResult> {
-  if (!isBashAllowed(input.command)) {
+async function execBash(input: { command: string; description: string; timeout?: number }, ctx?: ToolContext): Promise<ToolResult> {
+  const localRepoPath = ctx?.repoMode === 'local' ? ctx?.localRepoPath : undefined
+  if (!isBashAllowed(input.command, localRepoPath)) {
     return err(`Command not allowed. Read-only allowlist only (ls, cat, find, git log/diff/status/show/branch, npm ls/view/outdated, head, tail, wc, tree, etc.). Rejected: "${input.command}"`)
   }
   try {
     const timeout = Math.min(30_000, input.timeout ?? 10_000)
+    const cwd = (ctx?.repoMode === 'local' && ctx?.localRepoPath) ? ctx.localRepoPath : REPO_ROOT
     const { stdout, stderr } = await execP(input.command, {
-      cwd: REPO_ROOT,
+      cwd,
       shell: '/bin/bash',
       maxBuffer: MAX_BASH_OUTPUT,
       timeout,
@@ -502,10 +541,10 @@ export async function executeTool(name: string, input: unknown, ctx: ToolContext
 
   try {
     switch (name) {
-      case 'Read':      return await execRead(inp as Parameters<typeof execRead>[0])
-      case 'Glob':      return await execGlob(inp as Parameters<typeof execGlob>[0])
-      case 'Grep':      return await execGrep(inp as Parameters<typeof execGrep>[0])
-      case 'Bash':      return await execBash(inp as Parameters<typeof execBash>[0])
+      case 'Read':      return await execRead(inp as Parameters<typeof execRead>[0], ctx)
+      case 'Glob':      return await execGlob(inp as Parameters<typeof execGlob>[0], ctx)
+      case 'Grep':      return await execGrep(inp as Parameters<typeof execGrep>[0], ctx)
+      case 'Bash':      return await execBash(inp as Parameters<typeof execBash>[0], ctx)
       case 'WebFetch':  return await execWebFetch(inp as Parameters<typeof execWebFetch>[0])
       case 'TodoWrite': return execTodoWrite(inp as Parameters<typeof execTodoWrite>[0])
       case 'Github':    return await execGithub(inp as Parameters<typeof execGithub>[0], ctx)

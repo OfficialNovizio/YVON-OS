@@ -12,8 +12,19 @@
 
 import { NextRequest } from 'next/server'
 import { saveSessionMemory, getSessionHistory } from '@/lib/agent-memory'
+import { getSecret } from '@/lib/secrets'
+
+async function verifyInternalAuth(request: NextRequest): Promise<boolean> {
+  const cronSecret = await getSecret('CRON_SECRET')
+  if (!cronSecret) return false
+  return request.headers.get('authorization') === `Bearer ${cronSecret}`
+}
 
 export async function GET(request: NextRequest) {
+  if (!await verifyInternalAuth(request)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { searchParams } = new URL(request.url)
   const agentId = searchParams.get('agentId')
   const limit   = Math.min(parseInt(searchParams.get('limit') ?? '10', 10), 50)
@@ -29,6 +40,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!await verifyInternalAuth(request)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   interface Body {
     agentId?:        string
     venture?:        string

@@ -160,8 +160,10 @@ const CONTEXT_REQUIREMENTS: Record<RoutingIntent, string[]> = {
   operations: [],
   product_roadmap: [],
   advertising: ['product or offer', 'budget'],
+  github_analysis: [],
   strategy: [],
   finance: [],
+  behavioral_audit: [],
   direct: [],
 }
 
@@ -246,7 +248,9 @@ function generateReasoning(
     operations: 'Operations and process management',
     product_roadmap: 'Product planning and roadmap',
     advertising: 'Paid advertising and campaigns',
+    github_analysis: 'GitHub repository and codebase analysis',
     finance: 'Financial analysis and planning',
+    behavioral_audit: 'Cognitive bias and decision quality review',
     direct: 'Direct response from Marcus',
   }
 

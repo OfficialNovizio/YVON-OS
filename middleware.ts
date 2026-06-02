@@ -24,6 +24,7 @@ const SELF_AUTHED_PREFIXES = [
   '/api/linkedin/callback', // OAuth callback (IS the auth flow)
   '/api/linkedin/connect',  // OAuth initiation
   '/api/route-intent',       // Internal routing classifier (server-to-server)
+  '/api/agent-session-memory', // ADJOURNING writes — verified by CRON_SECRET header
   '/api/health',          // intentionally public health check
   '/api/social-accounts', // Venture social accounts — read-only, no auth needed
 ]

@@ -106,13 +106,12 @@ type ThreadItem =
   | { id: string; kind: 'user';        text: string; attachments?: Array<{ preview?: string; mimeType: string; name: string; isImage: boolean }> }
   | { id: string; kind: 'plan';        objective: string; order: string; agents: AgentId[] }
   | { id: string; kind: 'engage_plan'; originalMessage: string; plan: import('@/lib/types').ExecutionPlan; routing: import('@/lib/types').RoutingResult }
-  | { id: string; kind: 'agent';       agentId: AgentId; task: string; status: AgentRunStatus; output?: string; expanded: boolean; startedAt: number; endedAt?: number; tools: ToolCallEntry[] }
+  | { id: string; kind: 'agent';       agentId: AgentId; task: string; status: AgentRunStatus; output?: string; expanded: boolean; startedAt: number; endedAt?: number; tools: ToolCallEntry[]; iterations?: number }
   | { id: string; kind: 'synthesis';   text: string; streaming: boolean }
   | { id: string; kind: 'error';       message: string }
 
 // ─── Pure helpers ──────────────────────────────────────────────────────────────
-let _tid = 0
-const mkId = () => String(++_tid)
+const mkId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
 
 function updateLastAgent(
   prev: ThreadItem[],
@@ -176,10 +175,11 @@ function SimpleMarkdown({ text, dark = false }: { text: string; dark?: boolean }
     } else if (line.startsWith('# ')) {
       elements.push(<h1 key={i} style={{ fontSize: 18, fontWeight: 700, color: mt1, margin: '18px 0 8px' }}>{line.slice(2)}</h1>)
     } else if (/^[-*•] /.test(line)) {
+      const startI = i
       const items: string[] = []
       while (i < lines.length && /^[-*•] /.test(lines[i])) { items.push(lines[i].replace(/^[-*•] /, '')); i++ }
       elements.push(
-        <ul key={i} style={{ margin: '6px 0', paddingLeft: 0 }}>
+        <ul key={startI} style={{ margin: '6px 0', paddingLeft: 0 }}>
           {items.map((item, j) => (
             <li key={j} style={{ fontSize: 14, color: mt2, lineHeight: 1.7, display: 'flex', gap: 10, marginBottom: 3 }}>
               <span style={{ color: dark ? 'rgba(12,44,82,0.35)' : T3, marginTop: 5, flexShrink: 0, fontSize: 6 }}>●</span>
@@ -190,10 +190,11 @@ function SimpleMarkdown({ text, dark = false }: { text: string; dark?: boolean }
       )
       continue
     } else if (/^\d+\. /.test(line)) {
+      const startI = i
       const items: string[] = []
       while (i < lines.length && /^\d+\. /.test(lines[i])) { items.push(lines[i].replace(/^\d+\. /, '')); i++ }
       elements.push(
-        <ol key={i} style={{ margin: '6px 0', paddingLeft: 0 }}>
+        <ol key={startI} style={{ margin: '6px 0', paddingLeft: 0 }}>
           {items.map((item, j) => (
             <li key={j} style={{ fontSize: 14, color: mt2, lineHeight: 1.7, display: 'flex', gap: 10, marginBottom: 3 }}>
               <span style={{ color: dark ? 'rgba(12,44,82,0.45)' : T3, flexShrink: 0, minWidth: 18, fontSize: 12 }}>{j + 1}.</span>
@@ -364,6 +365,9 @@ function AgentCard({ item, onToggle, now }: {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
             <span style={{ fontSize: 10, fontFamily: 'ui-monospace,monospace', color: T2 }}>{formatElapsed(elapsedMs)}{isActive ? '…' : ''}</span>
+            {item.iterations !== undefined && item.iterations > 0 && (
+              <span title="Tool loop iterations" style={{ fontSize: 9, fontFamily: 'ui-monospace,monospace', color: T3, background: 'rgba(255,255,255,0.05)', border: `1px solid ${BORDER}`, borderRadius: 4, padding: '1px 5px' }}>×{item.iterations}</span>
+            )}
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <span className={item.status === 'working' || item.status === 'retrying' ? 'animate-pulse' : ''} style={{ width: 6, height: 6, borderRadius: '50%', background: dotColor, display: 'inline-block' }} />
               <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: T2 }}>{statusLabel}</span>
@@ -629,7 +633,7 @@ function HistorySidebar({ collapsed, onCollapse, onNew, records, loading, onLoad
                 >
                   <button onClick={() => onLoad(r)} style={{ display: 'block', textAlign: 'left', padding: '6px 28px 6px 10px', background: activeSessionId === r.id ? 'rgba(255,255,255,0.08)' : 'none', border: 'none', cursor: 'pointer', borderRadius: 6, width: '100%' }}>
                     <p style={{ fontSize: 12, color: T1, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {r.userPrompt.split(' ').slice(0, 7).join(' ')}{r.userPrompt.split(' ').length > 7 ? '…' : ''}
+                      {(() => { const clean = r.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim(); const words = clean.split(' '); return words.slice(0, 7).join(' ') + (words.length > 7 ? '…' : '') })()}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
                       <span style={{ width: 5, height: 5, borderRadius: '50%', background: r.status === 'complete' ? '#4ade80' : r.status === 'partial' ? '#facc15' : '#f87171', display: 'inline-block', flexShrink: 0 }} />
@@ -696,6 +700,8 @@ export default function WarRoomPage() {
     if (typeof window === 'undefined') return 0
     return Number(localStorage.getItem('yvon_war_room_max_output_tokens') ?? '0')
   })
+  const [collabHint, setCollabHint] = useState<{ primary: AgentId; partners: AgentId[] } | null>(null)
+
   // currentSessionId tracks the DB plan ID for the ongoing conversation — reused across turns
   const currentSessionIdRef = useRef<string | null>(null)
   // Slash command state
@@ -722,6 +728,17 @@ export default function WarRoomPage() {
   useEffect(() => {
     threadRef.current?.scrollTo({ top: threadRef.current.scrollHeight, behavior: 'smooth' })
   }, [thread])
+
+  // Persist conversation state to localStorage so it survives page refresh
+  useEffect(() => {
+    if (!ventureSlug || conversationHistory.length === 0) return
+    localStorage.setItem(`yvon_war_room_conv_history_${ventureSlug}`, JSON.stringify(conversationHistory))
+  }, [conversationHistory, ventureSlug])
+
+  useEffect(() => {
+    if (!ventureSlug || !activeSessionId) return
+    localStorage.setItem(`yvon_war_room_session_id_${ventureSlug}`, activeSessionId)
+  }, [activeSessionId, ventureSlug])
 
   // Pre-fetch engine info on mount
   useEffect(() => {
@@ -770,7 +787,35 @@ export default function WarRoomPage() {
       setHistoryLoading(true)
       fetch(`/api/war-room-plans?venture=${encodeURIComponent(v.name)}&limit=40`)
         .then(r => r.ok ? r.json() as Promise<WarRoomPlanRecord[]> : Promise.resolve([]))
-        .then(data => setHistory(data))
+        .then(data => {
+          setHistory(data)
+          // Auto-restore last session on page load.
+          // Guard 1: no active session running (ref is null = fresh load or venture switch).
+          // Guard 2: savedSessionId must exist — absence means user explicitly cleared or never had a session.
+          //          Without this guard, toggling repo mode after "Clear chat" would re-populate the thread.
+          if (data.length === 0 || currentSessionIdRef.current !== null) return
+          const savedSessionId = localStorage.getItem(`yvon_war_room_session_id_${slug}`)
+          if (!savedSessionId) return  // user cleared, or first ever visit — don't restore
+          const mostRecent = data[0]
+          const cleanPrompt = mostRecent.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+          const synthesis = mostRecent.synthesis ?? ''
+          // Restore multi-turn conversation history from localStorage (persisted across refreshes)
+          const savedConvStr = localStorage.getItem(`yvon_war_room_conv_history_${slug}`)
+          if (savedConvStr) {
+            try {
+              const savedConv = JSON.parse(savedConvStr) as { user: string; marcus: string }[]
+              if (savedConv.length > 0) setConversationHistory(savedConv)
+            } catch { /* ignore corrupt data */ }
+          }
+          currentSessionIdRef.current = savedSessionId
+          setActiveSessionId(savedSessionId)
+          // Build visual thread from the most recent DB session
+          setThread([
+            { id: mkId(), kind: 'user', text: cleanPrompt },
+            ...(mostRecent.objective ? [{ id: mkId(), kind: 'plan' as const, objective: mostRecent.objective, order: mostRecent.agentOrder, agents: mostRecent.agentsUsed }] : []),
+            ...(synthesis ? [{ id: mkId(), kind: 'synthesis' as const, text: synthesis, streaming: false }] : []),
+          ])
+        })
         .catch(() => {})
         .finally(() => setHistoryLoading(false))
 
@@ -855,20 +900,34 @@ export default function WarRoomPage() {
     setHistory([])
     setThread([]); setActiveSessionId(null); setConversationHistory([])
     currentSessionIdRef.current = null
+    const slug = getActiveVentureSlugClient()
+    if (slug) {
+      localStorage.removeItem(`yvon_war_room_conv_history_${slug}`)
+      localStorage.removeItem(`yvon_war_room_session_id_${slug}`)
+    }
     await fetch(`/api/war-room-plans?venture=${encodeURIComponent(venture)}&all=true`, { method: 'DELETE' })
   }, [venture])
 
 
   const loadSessionIntoThread = useCallback((plan: WarRoomPlanRecord) => {
     const synthesis = plan.synthesis ?? '(this session had no recorded synthesis)'
+    const cleanPrompt = plan.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
     const items: ThreadItem[] = [
-      { id: mkId(), kind: 'user', text: plan.userPrompt },
+      { id: mkId(), kind: 'user', text: cleanPrompt },
       ...(plan.objective ? [{ id: mkId(), kind: 'plan' as const, objective: plan.objective, order: plan.agentOrder, agents: plan.agentsUsed }] : []),
       { id: mkId(), kind: 'synthesis', text: synthesis, streaming: false },
     ]
+    const newHistory = [{ user: cleanPrompt, marcus: synthesis }]
     setThread(items)
-    setConversationHistory([{ user: plan.userPrompt, marcus: synthesis }])
+    setConversationHistory(newHistory)
     setActiveSessionId(plan.id)
+    currentSessionIdRef.current = plan.id
+    // Sync localStorage so refresh restores this sidebar-clicked session, not the previous active one
+    const slug = getActiveVentureSlugClient()
+    if (slug) {
+      localStorage.setItem(`yvon_war_room_conv_history_${slug}`, JSON.stringify(newHistory))
+      localStorage.setItem(`yvon_war_room_session_id_${slug}`, plan.id)
+    }
     requestAnimationFrame(() => threadRef.current?.scrollTo({ top: 0, behavior: 'auto' }))
   }, [])
 
@@ -907,6 +966,11 @@ export default function WarRoomPage() {
     setConversationHistory([])
     setActiveSessionId(null)
     currentSessionIdRef.current = null
+    const slug = getActiveVentureSlugClient()
+    if (slug) {
+      localStorage.removeItem(`yvon_war_room_conv_history_${slug}`)
+      localStorage.removeItem(`yvon_war_room_session_id_${slug}`)
+    }
   }, [])
 
   const toggleAgentExpand = useCallback((id: string) => {
@@ -957,6 +1021,7 @@ export default function WarRoomPage() {
     setSessionStatus(isApproval ? 'executing' : 'planning')
     setAgentRoster({})
     setSessionAgents([])
+    setCollabHint(null)
     synthesisIdRef.current  = null
     synthesisTextRef.current = ''
 
@@ -984,7 +1049,7 @@ export default function WarRoomPage() {
           githubContext: githubContext || undefined,
           maxOutputTokens: maxOutputTokens > 0 ? maxOutputTokens : undefined,
           files: att.length > 0 ? att.map(a => ({ base64: a.base64, mimeType: a.mimeType, name: a.name, isImage: a.isImage })) : undefined,
-          conversationHistory: conversationHistory.slice(-2),
+          conversationHistory: conversationHistory.slice(-5),
           sessionId: currentSessionIdRef.current ?? undefined,
           ...(isApproval ? {
             approved: true,
@@ -1018,6 +1083,10 @@ export default function WarRoomPage() {
           try { evt = JSON.parse(raw) } catch { continue }
 
           switch (evt.type) {
+            case 'collaboration': {
+              setCollabHint({ primary: evt.primaryAgent, partners: evt.recommendedPartners })
+              break
+            }
             case 'routing': {
               const agents = (evt.routing.specialists ?? []) as AgentId[]
               setSessionAgents(agents)
@@ -1068,7 +1137,10 @@ export default function WarRoomPage() {
               ))
               break
             }
-            case 'tool_iteration': break
+            case 'tool_iteration': {
+              setThread(prev => updateLastAgent(prev, evt.agentId, { iterations: evt.n }))
+              break
+            }
             case 'github_snapshot': {
               setSnapshot({ repo: evt.repo, branch: evt.branch, openIssues: evt.openIssues, error: evt.error })
               break
@@ -1117,7 +1189,12 @@ export default function WarRoomPage() {
                   return [...prev.slice(0, idx), { ...item, streaming: false }, ...prev.slice(idx + 1)]
                 })
               }
-              setConversationHistory(prev => [...prev, { user: msg, marcus: synthesisTextRef.current }])
+              // Only append to history when Phase 2 synthesis is present.
+              // Phase 1 (ENGAGE+PLAN) also emits plan_complete but synthesisTextRef is still empty —
+              // adding it then would pollute every subsequent agent call with a blank marcus entry.
+              if (synthesisTextRef.current) {
+                setConversationHistory(prev => [...prev, { user: msg, marcus: synthesisTextRef.current }])
+              }
               void loadHistory()
               break
             }
@@ -1127,6 +1204,16 @@ export default function WarRoomPage() {
                 currentSessionIdRef.current = evt.sessionId as string
                 setActiveSessionId(evt.sessionId as string)
               }
+              break
+            }
+            case 'handoff': {
+              // Agent handoff event — logged for debugging, no UI change needed
+              // evt.from, evt.to, evt.summary are available if needed in future
+              break
+            }
+            case 'autonomy': {
+              // Autonomy level broadcast — logged for debugging
+              // evt.agentId, evt.level, evt.action are available if needed in future
               break
             }
             case 'error': {
@@ -1160,8 +1247,14 @@ export default function WarRoomPage() {
     setThread([]); setAgentRoster({}); setSessionAgents([])
     setInput(''); setAttachments([]); setSessionStatus('idle')
     setConversationHistory([]); setActiveSessionId(null); setSlashOpen(false)
+    setCollabHint(null)
     synthesisIdRef.current = null; synthesisTextRef.current = ''
     currentSessionIdRef.current = null
+    const slug = getActiveVentureSlugClient()
+    if (slug) {
+      localStorage.removeItem(`yvon_war_room_conv_history_${slug}`)
+      localStorage.removeItem(`yvon_war_room_session_id_${slug}`)
+    }
   }
 
   const applySlash = (cmd: SlashCmd) => {
@@ -1226,6 +1319,25 @@ export default function WarRoomPage() {
 
         {/* All 13 agents as horizontal pills */}
         <AgentsBar sessionAgents={sessionAgents} agentRoster={agentRoster} />
+
+        {/* Collaboration hint — shown when Marcus recommends additional partners */}
+        {collabHint && collabHint.partners.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 8, background: 'rgba(10,14,30,0.60)', border: '1px solid rgba(255,255,255,0.08)', alignSelf: 'flex-start', flexShrink: 0 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 11, color: ACCENT }}>hub</span>
+            <span style={{ fontSize: 10, color: T2 }}>
+              {AGENT_META[collabHint.primary]?.name ?? collabHint.primary} may benefit from
+            </span>
+            {collabHint.partners.map(id => (
+              <span key={id} style={{ fontSize: 10, color: T1, display: 'flex', alignItems: 'center', gap: 3 }}>
+                <span>{AGENT_META[id]?.icon ?? '?'}</span>
+                <span>{AGENT_META[id]?.name ?? id}</span>
+              </span>
+            ))}
+            <button onClick={() => setCollabHint(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: T3, padding: 0, display: 'flex', marginLeft: 2 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 11 }}>close</span>
+            </button>
+          </div>
+        )}
 
         {/* Status bar — G1 Clear Ice — detached floating */}
         <div style={{ ...G1, borderRadius: 12, padding: '5px 16px', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, flexWrap: 'wrap', boxShadow: '0 2px 12px rgba(0,0,0,0.10)' }}>

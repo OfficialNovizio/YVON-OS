@@ -28,9 +28,10 @@ interface ProviderConfig {
   protocol:        'anthropic' | 'openai-compat'
   apiKey:          string
   baseUrl:         string
-  fastModel:       string   // primary   — routing, planning, specialist briefings
-  synthesisModel:  string   // secondary — Marcus streaming synthesis
-  tertiaryModel:   string   // tertiary  — stored for future deep-analysis / optional
+  fastModel:       string   // Haiku-tier  — routing, planning, fast specialists
+  synthesisModel:  string   // Sonnet-tier — Marcus streaming synthesis
+  tier1Model:      string   // Opus-tier   — dev-lead, raj-backend (complex reasoning)
+  tertiaryModel:   string   // stored for future deep-analysis / optional
 }
 
 // ─── Config cache ─────────────────────────────────────────────────────────────
@@ -55,7 +56,7 @@ async function loadConfig(): Promise<ProviderConfig> {
       const sb = createClient(sbUrl, sbKey)
       const { data } = await sb
         .from('ai_provider_keys')
-        .select('provider, api_key, fast_model, synthesis_model, base_url')
+        .select('provider, api_key, fast_model, synthesis_model, tier1_model, base_url, tertiary_model')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .limit(1)
@@ -68,15 +69,21 @@ async function loadConfig(): Promise<ProviderConfig> {
           (data.base_url as string | null) ??
           meta?.baseUrl ??
           ''
+        const rec = data as Record<string, unknown>
+        const resolvedFast      = (data.fast_model as string) || ''
+        const resolvedSynthesis = (data.synthesis_model as string) || ''
 
         _cache = {
           provider:        providerKey,
           protocol:        meta?.protocol ?? 'openai-compat',
           apiKey:          data.api_key as string,
           baseUrl:         resolvedBaseUrl,
-          fastModel:       (data.fast_model as string) || '',
-          synthesisModel:  (data.synthesis_model as string) || '',
-          tertiaryModel:   (data as Record<string, unknown>).tertiary_model as string ?? '',
+          fastModel:       resolvedFast,
+          synthesisModel:  resolvedSynthesis,
+          // tier1_model falls back to synthesisModel so Opus agents still run on
+          // the best available model even when not explicitly configured.
+          tier1Model:      (rec.tier1_model as string | null) || resolvedSynthesis || resolvedFast,
+          tertiaryModel:   rec.tertiary_model as string ?? '',
         }
         _expiry = Date.now() + 60_000
         return _cache!
@@ -92,6 +99,7 @@ async function loadConfig(): Promise<ProviderConfig> {
     baseUrl:         'https://api.anthropic.com',
     fastModel:       'claude-haiku-4-5-20251001',
     synthesisModel:  'claude-sonnet-4-6',
+    tier1Model:      'claude-opus-4-6',
     tertiaryModel:   '',
   }
   _expiry = Date.now() + 60_000
@@ -205,7 +213,8 @@ export async function callFast(params: {
       } : {}),
       messages: params.messages,
     })
-    return res.content[0]?.type === 'text' ? res.content[0].text : ''
+    const textBlock = res.content.find((b): b is Anthropic.TextBlock => b.type === 'text')
+    return textBlock ? textBlock.text : ''
   }
 
   // All OpenAI-compatible providers
@@ -237,7 +246,8 @@ export async function callSynthesis(params: {
       } : {}),
       messages: params.messages,
     })
-    return res.content[0]?.type === 'text' ? res.content[0].text : ''
+    const textBlock = res.content.find((b): b is Anthropic.TextBlock => b.type === 'text')
+    return textBlock ? textBlock.text : ''
   }
 
   return oaiCall(
@@ -327,8 +337,8 @@ export async function* streamWithTools(params: {
   system?:   string
   messages:  AIMessage[]
   maxTokens: number
-  /** 'fast' (specialists/planning) | 'synthesis' (Marcus). Default 'fast'. */
-  modelTier?: 'fast' | 'synthesis'
+  /** 'fast' | 'synthesis' | 'tier1'. Resolved from DB config — tier1=Opus, synthesis=Sonnet, fast=Haiku. */
+  modelTier?: 'fast' | 'synthesis' | 'tier1'
   /** Optional cap on tool loop iterations. Default 8. */
   maxIterations?: number
   /** Venture slug — required for the Github tool to resolve the active repo. */
@@ -348,24 +358,29 @@ export async function* streamWithTools(params: {
       agentId:      params.agentId,
       systemPrompt: params.system ?? '',
       userPrompt:   userMsg,
-      modelTier:    params.modelTier,
+      modelTier:    params.modelTier === 'tier1' ? 'synthesis' : params.modelTier,
     })
     return
   }
 
   const cfg = await loadConfig()
-  const model = (params.modelTier === 'synthesis' ? cfg.synthesisModel : cfg.fastModel)
+  const model = params.modelTier === 'synthesis'
+    ? cfg.synthesisModel
+    : params.modelTier === 'tier1'
+    ? (cfg.tier1Model || cfg.synthesisModel)
+    : cfg.fastModel
 
   if (cfg.protocol !== 'anthropic') {
-    // OpenAI-compatible endpoints: tool_use schema differs. Fall back to plain text.
+    // OpenAI-compatible endpoints: Anthropic tool_use schema not compatible — tools stripped.
+    // Agents respond from context only (no file reads, GitHub, or Bash available).
+    yield { kind: 'error', message: `Tool use unavailable: provider "${cfg.provider}" uses OpenAI-compatible protocol. Agents respond from context only — no file reads, no GitHub access. Switch to an Anthropic provider in Settings to enable tools.` }
     yield { kind: 'iteration', n: 1 }
     let buf = ''
-    for await (const chunk of (params.modelTier === 'synthesis'
-      ? streamSynthesis({ system: params.system, messages: params.messages, maxTokens: params.maxTokens })
-      : streamSynthesis({ system: params.system, messages: params.messages, maxTokens: params.maxTokens }))) {
+    for await (const chunk of streamSynthesis({ system: params.system, messages: params.messages, maxTokens: params.maxTokens })) {
       buf += chunk
       yield { kind: 'text', text: chunk }
     }
+    void buf
     yield { kind: 'done', reason: 'end_turn' }
     return
   }
@@ -403,6 +418,7 @@ export async function getActiveProviderInfo() {
       label:          meta?.label ?? cfg.provider,
       fastModel:      cfg.fastModel,
       synthesisModel: cfg.synthesisModel,
+      tier1Model:     cfg.tier1Model,
       tertiaryModel:  cfg.tertiaryModel,
       baseUrl:        cfg.baseUrl,
     }

@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"⚠️ MANDATORY SESSION START — READ ALL OF THESE BEFORE DOING ANYTHING ELSE:\\n\\n[1] WORKFLOW: docs/WORKFLOW.md — execution model (ENGAGE+PLAN+PERFORMING+ADJOURNING)\\n[2] STATE: docs/os/SESSION.md — global in-flight state\\n[3] FEEDBACK: docs/memory/feedback.md — CRITICAL rules (routing, approval gate, never-again)\\n[4] MARCUS: agent-department/CEO/marcus/MEMORY.md — triple-pass self-critique + personality\\n[5] OS SKILL: agent-department/shared/skills/coding/01-karpathy.md — coding rules\\n[6] OS SKILL: agent-department/shared/skills/agents/01-memory.md — memory rules\\n[7] OS SKILL: agent-department/shared/skills/operating-system/session-protocol/SKILL.md\\n[8] OS SKILL: agent-department/shared/skills/operating-system/reflection-protocol/SKILL.md\\n\\nRULES (non-negotiable):\\n- For EVERY task: run ENGAGE+PLAN in full format (Intent/Venture/Team/Memory check/Design check/One unknown/Critique check/Plan/Done condition)\\n- WAIT for user approval (Awaiting your go-ahead) before PERFORMING\\n- Triple-pass runs internally before every plan or strategic output (Pass1 Generate → Pass2 Critique → Pass3 Fix)\\n- Build check (npx tsc --noEmit) after every TypeScript change before ADJOURNING\\n- ADJOURNING required for any session with 3+ tool calls\"}}'",
+            "statusMessage": "Loading mandatory OS skills and session rules..."
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Glob|Grep",

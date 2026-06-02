@@ -16,7 +16,7 @@ export interface CollaborationConfig {
 }
 
 export const COLLAB_CONFIG: CollaborationConfig = {
-  maxSpecialists: 2,
+  maxSpecialists: 4,
   minConfidence: 0.7,
   handoffThreshold: 0.5
 }

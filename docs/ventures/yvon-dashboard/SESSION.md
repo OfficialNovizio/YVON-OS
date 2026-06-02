@@ -20,6 +20,7 @@
 
 | Date | Agent(s) | Task | Outcome | Next Step |
 |------|---------|------|---------|-----------|
+| 2026-05-29 | Marcus, Dev/Raj | War Room context bloat + session compliance automation | `VentureDocParts` role-filtering, snapshot scoped to TECHNICAL_AGENTS, SessionStart hook covers all 8 mandatory reads, tsc clean | Test War Room with real agents; verify hook on next session start |
 | 2026-05-14 | Dev, Mia, System | Health check + security + workflow redesign | `/api/health` built, `/screens/health` dash, CSP headers, Tuckman model, autonomous agent workflow | Phase 1 security assignments |
 | 2026-05-10 | Dev, Raj, Mia | GitHub integration, venture memory isolation | Supabase fixed, icons, NavBar, GitHub API route, War Room PR button | Test Draft PR flow end-to-end |
 | 2026-04-19 | Mia, Dev | CEO dashboard 3.1 fixes | Scroll reveals, background, glass fixed | Monitor feedback |

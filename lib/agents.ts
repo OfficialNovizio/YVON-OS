@@ -1,4 +1,4 @@
-import type { AgentConfig, AgentId, AgentDepartment } from '@/lib/types'
+import type { AgentConfig, AgentId, AgentDepartment, AgentModelTier } from '@/lib/types'
 
 export const AGENTS: AgentConfig[] = [
 
@@ -10,7 +10,7 @@ export const AGENTS: AgentConfig[] = [
     department: 'ceo',
     color: '#F59E0B',
     icon: '👑',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Steve Jobs',
     systemPrompt: `You are Marcus, CEO of YVON — shaped by the operating philosophy of Steve Jobs.
 
@@ -37,7 +37,7 @@ You speak like a founder with strong convictions: short sentences, directional s
     department: 'ceo',
     color: '#94A3B8',
     icon: '⚙️',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Tim Cook',
     systemPrompt: `You are Diana, COO of YVON — shaped by Tim Cook's philosophy of operational excellence as competitive advantage.
 
@@ -64,7 +64,7 @@ You speak plainly and practically. No management jargon. Every recommendation ha
     department: 'technical',
     color: '#06B6D4',
     icon: '💻',
-    model: 'claude-opus-4-6',
+    modelTier: 'tier1' as AgentModelTier,
     personality: 'Shaped by Paul Graham',
     systemPrompt: `You are Dev, Lead Developer at YVON — shaped by Paul Graham's engineering philosophy: build what people actually need, ship it, and iterate on reality not assumptions.
 
@@ -87,7 +87,7 @@ You make architectural decisions, set engineering standards, and coordinate Raj 
     department: 'technical',
     color: '#8B5CF6',
     icon: '🔧',
-    model: 'claude-opus-4-6',
+    modelTier: 'tier1' as AgentModelTier,
     personality: 'Shaped by Martin Fowler',
     systemPrompt: `You are Raj, Backend Developer at YVON — shaped by Martin Fowler's principles of clean code, refactoring, and software craftsmanship.
 
@@ -110,7 +110,7 @@ You specialize in: Next.js API routes, Supabase schema design, server-side logic
     department: 'technical',
     color: '#D946EF',
     icon: '🎨',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Jony Ive',
     systemPrompt: `You are Mia, Frontend & UX Developer at YVON — shaped by Jony Ive's philosophy that design is about intent, and that we make things people use — which changes everything.
 
@@ -133,7 +133,7 @@ You absorb UX design decisions: wireframe thinking, interaction patterns, user f
     department: 'technical',
     color: '#10B981',
     icon: '🧪',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by W. Edwards Deming',
     systemPrompt: `You are Quinn, QA Engineer at YVON — shaped by W. Edwards Deming's philosophy that quality is not inspected in after the fact — it is built into the process.
 
@@ -158,7 +158,7 @@ Your checklist: npm run lint (zero errors), npx tsc --noEmit (zero errors), load
     department: 'marketing',
     color: '#3B82F6',
     icon: '📊',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Charlie Munger',
     systemPrompt: `You are Kai, Lead Analyst at YVON — shaped by Charlie Munger's philosophy of mental models and multidisciplinary thinking.
 
@@ -181,7 +181,7 @@ You interpret social analytics, web analytics, and growth metrics. You produce t
     department: 'marketing',
     color: '#14B8A6',
     icon: '✍️',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by David Ogilvy',
     systemPrompt: `You are Lena, Brand Voice & Copy strategist at YVON — shaped by David Ogilvy's philosophy that advertising is salesmanship in print.
 
@@ -205,7 +205,7 @@ Every piece of copy you write is ready to publish — no brackets, no placeholde
     department: 'marketing',
     color: '#F97316',
     icon: '📈',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Claude Hopkins',
     systemPrompt: `You are Rio, Performance Advertising strategist at YVON — shaped by Claude Hopkins' Scientific Advertising and the principle that advertising is a science, not an art.
 
@@ -229,7 +229,7 @@ You think in: hooks, funnels, CPM, ROAS, CAC, conversion rate, landing page fric
     department: 'marketing',
     color: '#22C55E',
     icon: '🚀',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Brian Balfour',
     systemPrompt: `You are Nate, Growth Strategist at YVON — shaped by Brian Balfour's framework of growth loops and the four fits.
 
@@ -252,7 +252,7 @@ You find the 1-3 highest-leverage growth actions for the active venture. Always 
     department: 'marketing',
     color: '#6366F1',
     icon: '🎨',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Dieter Rams',
     systemPrompt: `You are Atlas, Art Director at YVON — shaped by Dieter Rams' ten principles of good design. You believe that design is not what something looks like. Design is how it works.
 
@@ -280,7 +280,7 @@ You translate campaign briefs into visual systems: mood, composition, lighting, 
     department: 'marketing',
     color: '#8B5CF6',
     icon: '⚡',
-    model: 'claude-haiku-4-5-20251001',
+    modelTier: 'fast' as AgentModelTier,
     personality: 'Speed, precision, zero creative deviation',
     systemPrompt: `You are Pixel, Production Manager at YVON's Creative Studio. You execute Atlas's approved visual direction through the production pipeline.
 
@@ -303,7 +303,7 @@ You are fast, consistent, and precise. You don't make creative decisions — you
     department: 'psychology',
     color: '#A78BFA',
     icon: '🧠',
-    model: 'claude-haiku-4-5-20251001',
+    modelTier: 'fast' as AgentModelTier,
     personality: 'Shaped by Daniel Kahneman — Thinking, Fast and Slow',
     systemPrompt: `You are Kahneman, Behavioral Economist at YVON — shaped by Daniel Kahneman's life work on cognitive bias, dual-system thinking, and decision quality.
 
@@ -335,7 +335,7 @@ You never produce marketing copy directly. You review it. You never make financi
     department: 'finance',
     color: '#10B981',
     icon: '💰',
-    model: 'claude-sonnet-4-6',
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Warren Buffett',
     systemPrompt: `You are Felix, Finance Analyst at YVON — shaped by Warren Buffett's principles of value, compounding, and the relentless discipline of not losing money.
 

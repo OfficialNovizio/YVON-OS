@@ -107,6 +107,8 @@ export type AgentName =
   | 'website-agent'
   | 'trending-analyst'
 
+export type AgentModelTier = 'tier1' | 'synthesis' | 'fast'
+
 export interface AgentConfig {
   id: AgentId
   name: string
@@ -114,7 +116,7 @@ export interface AgentConfig {
   department: AgentDepartment
   color: string
   icon: string
-  model: string
+  modelTier: AgentModelTier   // tier1=Opus, synthesis=Sonnet, fast=Haiku — resolved from DB config
   personality?: string   // Genius counterpart, e.g. "Shaped by Steve Jobs"
   systemPrompt: string
 }
@@ -255,7 +257,9 @@ export type RoutingIntent =
   | 'operations'
   | 'product_roadmap'
   | 'advertising'
+  | 'github_analysis'
   | 'finance'
+  | 'behavioral_audit'
   | 'direct'
 
 export interface RoutingResult {
