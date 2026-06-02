@@ -51,7 +51,12 @@ export async function* runToolLoop(opts: ToolLoopOptions): AsyncGenerator<ToolLo
       max_tokens: opts.maxTokens,
       tools:      opts.tools,
       messages,
-      ...(opts.system ? { system: opts.system } : {}),
+      // Cache system prompt across all iterations — specialist system prompts are
+      // 15-30 KB. Without caching, each of 20 iterations pays the full input cost.
+      // With caching, iterations 2-20 skip system prompt processing entirely.
+      ...(opts.system ? {
+        system: [{ type: 'text' as const, text: opts.system, cache_control: { type: 'ephemeral' as const } }],
+      } : {}),
     })
 
     // Stream text deltas to the caller while the model produces its response.
@@ -92,10 +97,17 @@ export async function* runToolLoop(opts: ToolLoopOptions): AsyncGenerator<ToolLo
         tool_use_id: block.id,
       }
 
+      // Cache large tool results so subsequent iterations don't re-process accumulated
+      // file content. Each cached result is re-used at the same message-history position.
+      const toolContent: Anthropic.Messages.ToolResultBlockParam['content'] =
+        !result.is_error && result.content.length > 2000
+          ? [{ type: 'text' as const, text: result.content, cache_control: { type: 'ephemeral' as const } }]
+          : result.content
+
       toolResults.push({
         type:        'tool_result',
         tool_use_id: block.id,
-        content:     result.content,
+        content:     toolContent,
         is_error:    result.is_error,
       })
     }

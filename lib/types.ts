@@ -336,6 +336,7 @@ export type WarRoomEvent =
   | { type: 'engine';           engine: 'agent_sdk' | 'client_sdk'; fastModel?: string; synthesisModel?: string; provider?: string }
   | { type: 'plan_approval_required'; plan: ExecutionPlan; routing: RoutingResult }
   | { type: 'session_id'; sessionId: string }
+  | { type: 'agent_warning'; agentId: AgentId; warning: string; reason: 'max_iterations' | 'timeout'; briefings?: string }
 
 export interface ConflictItem {
   topic: string

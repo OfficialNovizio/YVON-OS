@@ -45,7 +45,7 @@ export function bustProviderCache() {
   _expiry = 0
 }
 
-async function loadConfig(): Promise<ProviderConfig> {
+export async function loadConfig(): Promise<ProviderConfig> {
   if (_cache && Date.now() < _expiry) return _cache
 
   try {
@@ -307,7 +307,11 @@ export async function* streamSynthesis(params: {
       model:      cfg.synthesisModel,
       max_tokens: params.maxTokens,
       messages:   sdkMessages,
-      ...(params.system ? { system: params.system } : {}),
+      // Cache system prompt — synthesis is called once per session but system prompt
+      // can be 20 KB+; caching avoids re-processing on retries and CEO-only calls.
+      ...(params.system ? {
+        system: [{ type: 'text' as const, text: params.system, cache_control: { type: 'ephemeral' as const } }],
+      } : {}),
     })
     for await (const event of stream) {
       if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
@@ -358,7 +362,7 @@ export async function* streamWithTools(params: {
       agentId:      params.agentId,
       systemPrompt: params.system ?? '',
       userPrompt:   userMsg,
-      modelTier:    params.modelTier === 'tier1' ? 'synthesis' : params.modelTier,
+      modelTier:    params.modelTier,
     })
     return
   }

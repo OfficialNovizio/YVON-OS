@@ -13,8 +13,7 @@
  */
 
 import { query as agentQuery } from '@anthropic-ai/claude-agent-sdk'
-import { createClient } from '@supabase/supabase-js'
-import { PROVIDER_MODELS } from '@/lib/providers'
+import { loadConfig } from '@/lib/ai-client'
 import type { ToolLoopEvent } from '@/lib/tool-loop'
 
 /** Read-only Claude Code tools the agent is allowed to use in War Room. */
@@ -48,63 +47,14 @@ const AGENT_SDK_TOOLS: Record<string, readonly string[]> = {
   'daniel-kahneman':    [...SAFE_TOOLS],
 }
 
-interface ProviderEnv {
-  apiKey:        string
-  baseUrl:       string
-  fastModel:     string
-  synthesisModel: string
-}
-
-let _envCache: ProviderEnv | null = null
-let _envExpiry = 0
-
-async function loadProviderEnv(): Promise<ProviderEnv> {
-  if (_envCache && Date.now() < _envExpiry) return _envCache
-
-  const sbUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
-  const sbKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
-  let cfg: ProviderEnv | null = null
-
-  if (sbUrl && sbKey) {
-    const sb = createClient(sbUrl, sbKey)
-    const { data } = await sb
-      .from('ai_provider_keys')
-      .select('provider, api_key, fast_model, synthesis_model, base_url')
-      .eq('is_active', true)
-      .order('updated_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-    if (data) {
-      const meta = PROVIDER_MODELS[data.provider as keyof typeof PROVIDER_MODELS]
-      cfg = {
-        apiKey:         data.api_key as string,
-        baseUrl:        (data.base_url as string | null) ?? meta?.baseUrl ?? 'https://api.anthropic.com',
-        fastModel:      (data.fast_model as string) || '',
-        synthesisModel: (data.synthesis_model as string) || '',
-      }
-    }
-  }
-
-  if (!cfg) {
-    // Env fallback — native Anthropic
-    cfg = {
-      apiKey:         process.env.ANTHROPIC_API_KEY ?? '',
-      baseUrl:        'https://api.anthropic.com',
-      fastModel:      'claude-haiku-4-5-20251001',
-      synthesisModel: 'claude-sonnet-4-6',
-    }
-  }
-
-  _envCache = cfg
-  _envExpiry = Date.now() + 60_000
-  return cfg
-}
+// Provider config is loaded from the shared ai-client loader (single 60 s cache,
+// no duplication). This also gives agent SDK the tier1Model (Opus) for dev-lead/raj.
 
 export interface AgentSdkRunOptions {
   agentId:       string
   systemPrompt:  string
   userPrompt:    string
-  modelTier?:    'fast' | 'synthesis'
+  modelTier?:    'fast' | 'synthesis' | 'tier1'
   /** Override allowed tools (defaults to per-agent SAFE_TOOLS list). */
   allowedTools?: string[]
   /** Cwd for the subprocess. Default: project root. */
@@ -123,8 +73,12 @@ export interface AgentSdkRunOptions {
  * agents are safe but each pays the spawn tax.
  */
 export async function* runAgentSdk(opts: AgentSdkRunOptions): AsyncGenerator<ToolLoopEvent> {
-  const cfg = await loadProviderEnv()
-  const model = opts.modelTier === 'synthesis' ? cfg.synthesisModel : cfg.fastModel
+  const cfg = await loadConfig()
+  const model = opts.modelTier === 'synthesis'
+    ? cfg.synthesisModel
+    : opts.modelTier === 'tier1'
+    ? (cfg.tier1Model || cfg.synthesisModel)
+    : cfg.fastModel
   const allowedTools = opts.allowedTools ?? AGENT_SDK_TOOLS[opts.agentId] ?? SAFE_TOOLS
 
   yield { kind: 'iteration', n: 1 }

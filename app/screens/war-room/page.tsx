@@ -109,6 +109,7 @@ type ThreadItem =
   | { id: string; kind: 'agent';       agentId: AgentId; task: string; status: AgentRunStatus; output?: string; expanded: boolean; startedAt: number; endedAt?: number; tools: ToolCallEntry[]; iterations?: number }
   | { id: string; kind: 'synthesis';   text: string; streaming: boolean }
   | { id: string; kind: 'error';       message: string }
+  | { id: string; kind: 'stream_cut';  message: string; originalMessage: string; briefings?: string }
 
 // ─── Pure helpers ──────────────────────────────────────────────────────────────
 const mkId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
@@ -212,6 +213,28 @@ function SimpleMarkdown({ text, dark = false }: { text: string; dark?: boolean }
     i++
   }
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>{elements}</div>
+}
+
+// ─── Stream cut banner ────────────────────────────────────────────────────────
+function StreamCutBanner({ item, onRetry }: {
+  item: Extract<ThreadItem, { kind: 'stream_cut' }>
+  onRetry: (msg: string, briefings?: string) => void
+}) {
+  return (
+    <div style={{ ...G3, borderRadius: 12, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 14, border: '1px solid rgba(234,179,8,0.35)' }}>
+      <span style={{ fontSize: 20, flexShrink: 0 }}>⚠️</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{ fontSize: 13, color: '#fde68a', fontWeight: 700, margin: 0 }}>Session ended early</p>
+        <p style={{ fontSize: 12, color: T2, margin: '3px 0 0', lineHeight: 1.5 }}>{item.message}</p>
+      </div>
+      <button
+        onClick={() => onRetry(item.originalMessage, item.briefings)}
+        style={{ padding: '7px 16px', borderRadius: 8, background: 'rgba(234,179,8,0.18)', border: '1px solid rgba(234,179,8,0.45)', color: '#fde68a', fontSize: 12, fontWeight: 700, cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}
+      >
+        {item.briefings ? 'Get synthesis' : 'Retry'}
+      </button>
+    </div>
+  )
 }
 
 // ─── Status pills ──────────────────────────────────────────────────────────────
@@ -716,6 +739,7 @@ export default function WarRoomPage() {
   const abortRef         = useRef<AbortController | null>(null)
   const synthesisIdRef   = useRef<string | null>(null)
   const synthesisTextRef = useRef('')
+  const doneReceivedRef  = useRef(false)
 
   // Live timer — re-renders every 250ms while agents are running so elapsed timers update
   useEffect(() => {
@@ -992,19 +1016,25 @@ export default function WarRoomPage() {
     return res.ok
   }
 
-  const run = useCallback(async (approvalData?: {
-    originalMessage: string
-    plan: import('@/lib/types').ExecutionPlan
-    routing: import('@/lib/types').RoutingResult
-  }) => {
+  const run = useCallback(async (
+    approvalData?: {
+      originalMessage: string
+      plan: import('@/lib/types').ExecutionPlan
+      routing: import('@/lib/types').RoutingResult
+    },
+    retryMessage?: string,
+    ceoOnlyBriefing?: string,
+  ) => {
     const isApproval = !!approvalData
-    if (!isApproval && !input.trim()) return
+    const isCeoOnly  = !isApproval && !!ceoOnlyBriefing
+    const isRetry    = !isApproval && (!!retryMessage || isCeoOnly)
+    if (!isApproval && !isRetry && !input.trim()) return
     if (sessionStatus === 'planning' || sessionStatus === 'executing' || sessionStatus === 'synthesizing') return
 
-    const msg = isApproval ? approvalData.originalMessage : input.trim()
-    const att = isApproval ? [] : attachments
+    const msg = isApproval ? approvalData.originalMessage : (retryMessage ?? input.trim())
+    const att = isApproval || isRetry ? [] : attachments
 
-    if (!isApproval) {
+    if (!isApproval && !isRetry) {
       setInput('')
       setAttachments([])
       setSlashOpen(false)
@@ -1014,16 +1044,19 @@ export default function WarRoomPage() {
         attachments: att.length > 0 ? att.map(a => ({ preview: a.preview, mimeType: a.mimeType, name: a.name, isImage: a.isImage })) : undefined,
       }])
       setActiveSessionId(null)
-    } else {
+    } else if (isApproval) {
       setThread(prev => prev.filter(i => i.kind !== 'engage_plan'))
+    } else {
+      setThread(prev => prev.filter(i => i.kind !== 'stream_cut'))
     }
 
-    setSessionStatus(isApproval ? 'executing' : 'planning')
+    setSessionStatus(isApproval || isCeoOnly ? 'executing' : 'planning')
     setAgentRoster({})
     setSessionAgents([])
     setCollabHint(null)
-    synthesisIdRef.current  = null
+    synthesisIdRef.current   = null
     synthesisTextRef.current = ''
+    doneReceivedRef.current  = false
 
     abortRef.current?.abort()
     abortRef.current = new AbortController()
@@ -1056,6 +1089,10 @@ export default function WarRoomPage() {
             previousPlan: approvalData.plan,
             previousRouting: approvalData.routing,
           } : {}),
+          ...(isCeoOnly ? {
+            ceoOnly: true,
+            ceoOnlyBriefing,
+          } : {}),
         }),
         signal: abortRef.current.signal,
       })
@@ -1077,7 +1114,7 @@ export default function WarRoomPage() {
           if (line.startsWith(':')) continue
           if (!line.startsWith('data:')) continue
           const raw = line.slice(5).trim()
-          if (raw === '[DONE]') { setSessionStatus(prev => prev === 'awaiting_approval' ? 'awaiting_approval' : 'complete'); continue }
+          if (raw === '[DONE]') { doneReceivedRef.current = true; setSessionStatus(prev => prev === 'awaiting_approval' ? 'awaiting_approval' : 'complete'); continue }
 
           let evt: WarRoomEvent
           try { evt = JSON.parse(raw) } catch { continue }
@@ -1193,7 +1230,14 @@ export default function WarRoomPage() {
               // Phase 1 (ENGAGE+PLAN) also emits plan_complete but synthesisTextRef is still empty —
               // adding it then would pollute every subsequent agent call with a blank marcus entry.
               if (synthesisTextRef.current) {
-                setConversationHistory(prev => [...prev, { user: msg, marcus: synthesisTextRef.current }])
+                const synthesis = synthesisTextRef.current
+                setConversationHistory(prev => {
+                  const updated = [...prev, { user: msg, marcus: synthesis }]
+                  // Write synchronously — useEffect fires on next render which may be after a refresh
+                  const slug = ventureSlug ?? getActiveVentureSlugClient()
+                  if (slug) localStorage.setItem(`yvon_war_room_conv_history_${slug}`, JSON.stringify(updated))
+                  return updated
+                })
               }
               void loadHistory()
               break
@@ -1201,8 +1245,12 @@ export default function WarRoomPage() {
             case 'session_id': {
               // Store the DB plan ID — reused for all follow-up messages in this conversation
               if (!currentSessionIdRef.current) {
-                currentSessionIdRef.current = evt.sessionId as string
-                setActiveSessionId(evt.sessionId as string)
+                const newId = evt.sessionId as string
+                currentSessionIdRef.current = newId
+                setActiveSessionId(newId)
+                // Write synchronously — useEffect fires on next render which may be after a refresh
+                const slug = ventureSlug ?? getActiveVentureSlugClient()
+                if (slug) localStorage.setItem(`yvon_war_room_session_id_${slug}`, newId)
               }
               break
             }
@@ -1216,6 +1264,15 @@ export default function WarRoomPage() {
               // evt.agentId, evt.level, evt.action are available if needed in future
               break
             }
+            case 'agent_warning': {
+              const warnId = evt.agentId as AgentId
+              setAgentRoster(prev => ({ ...prev, [warnId]: 'done' }))
+              setThread(prev => updateLastAgent(prev, warnId, { status: 'done', endedAt: Date.now() }))
+              if (evt.reason === 'timeout') {
+                setThread(prev => [...prev, { id: mkId(), kind: 'stream_cut', message: evt.warning, originalMessage: msg, briefings: evt.briefings }])
+              }
+              break
+            }
             case 'error': {
               setSessionStatus('error')
               setThread(prev => [...prev, { id: mkId(), kind: 'error', message: evt.message }])
@@ -1223,6 +1280,25 @@ export default function WarRoomPage() {
             }
           }
         }
+      }
+
+      // Stream closed — if [DONE] was never received the connection was cut (timeout or network drop).
+      if (!doneReceivedRef.current) {
+        const sid = synthesisIdRef.current
+        if (sid) {
+          setThread(prev => {
+            const idx = prev.findIndex(i => i.id === sid)
+            if (idx === -1) return prev
+            const item = prev[idx] as Extract<ThreadItem, { kind: 'synthesis' }>
+            return [...prev.slice(0, idx), { ...item, streaming: false }, ...prev.slice(idx + 1)]
+          })
+        }
+        setThread(prev => [...prev, {
+          id: mkId(), kind: 'stream_cut',
+          message: 'Connection dropped mid-response — the function likely timed out. Specialist work above may be partial.',
+          originalMessage: msg,
+        }])
+        setSessionStatus('complete')
       }
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
@@ -1498,6 +1574,7 @@ export default function WarRoomPage() {
                     case 'agent':        return wrapper(<AgentCard key={item.id} item={item} onToggle={() => toggleAgentExpand(item.id)} now={now} />)
                     case 'synthesis':    return wrapper(<SynthesisBubble key={item.id} item={item} onCopy={() => handleCopy(item.id, item.text)} copied={copiedId === item.id} />)
                     case 'error':        return wrapper(<ErrorCard key={item.id} item={item} />)
+                    case 'stream_cut':   return <StreamCutBanner key={item.id} item={item} onRetry={(m, b) => void run(undefined, m, b)} />
                   }
                 })}
               </div>

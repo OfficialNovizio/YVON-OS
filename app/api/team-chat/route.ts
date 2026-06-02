@@ -733,7 +733,9 @@ ${isDemoData ? 'Workflow: tree → read models → write dart files. DO NOT writ
           emit('agent_error', { agentId, error: event.message, fatal: false })
           break
         case 'done':
-          // loop ended
+          if (event.reason === 'max_iterations_reached') {
+            emit('agent_warning', { agentId, warning: 'Hit iteration limit — output may be incomplete. Try a more focused task.', reason: 'max_iterations' })
+          }
           break
       }
     }
@@ -909,6 +911,8 @@ export async function POST(request: Request): Promise<Response> {
   let sessionId: string | undefined
   let userMaxIterations: number | undefined
   let userMaxOutputTokens: number | undefined
+  let ceoOnly: boolean
+  let ceoOnlyBriefing: string
   try {
     const body = await request.json() as {
       message?: string
@@ -933,6 +937,8 @@ export async function POST(request: Request): Promise<Response> {
       sessionId?: string
       maxIterations?: number
       maxOutputTokens?: number
+      ceoOnly?: boolean
+      ceoOnlyBriefing?: string
     }
     message               = body.message ?? ''
     ventureName           = body.ventureName ?? 'Novizio'
@@ -947,6 +953,8 @@ export async function POST(request: Request): Promise<Response> {
     previousPlan        = body.previousPlan
     previousRouting     = body.previousRouting
     sessionId           = body.sessionId
+    ceoOnly             = body.ceoOnly ?? false
+    ceoOnlyBriefing     = body.ceoOnlyBriefing ?? ''
     // Multi-file: body.files takes priority; fall back to legacy single-file fields
     const legacyBase64   = body.fileBase64 ?? body.imageBase64
     const legacyMime     = body.fileMimeType ?? body.imageMimeType
@@ -991,6 +999,64 @@ export async function POST(request: Request): Promise<Response> {
       }, 15_000)
 
       try {
+        // ── CEO-only synthesis fast path ──────────────────────────────────────
+        // Triggered when specialists already ran but timed out before CEO synthesis.
+        // Skips routing, planning, approval gate, and all specialist execution.
+        // One LLM call — completes in ~5 s regardless of task complexity.
+        if (ceoOnly && ceoOnlyBriefing) {
+          const ceoOnlyDocs    = await loadVentureContextBlock(ventureSlug)
+          const ceoOnlyDocsStr = buildVentureDocsBlock(ceoOnlyDocs)
+          const ceoOnlyHistory = conversationHistory.length > 0
+            ? `\n\nPrior conversation context (last 3 turns):\n${conversationHistory.slice(-3).map(h => `User: ${h.user.slice(0, 200)}\nMarcus: ${h.marcus.slice(0, 400)}${h.marcus.length > 400 ? '…' : ''}`).join('\n\n')}`
+            : ''
+          const ceoOnlySystem = [
+            `You are Marcus, CEO of YVON synthesising specialist briefings.\n\nActive venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}.\n\nYour job: produce a single unified answer for the user from the specialist work below.`,
+            ceoOnlyDocsStr ? `<venture-docs>\n[Live from Supabase — source of truth for this venture]\n\n${ceoOnlyDocsStr}\n</venture-docs>` : '',
+          ].filter(Boolean).join('\n\n')
+          const cleanMsgForCeo = message.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+          const ceoOnlyPrompt = `You are Marcus, CEO of YVON. Venture: ${ventureName}
+
+Specialists already completed their analysis:
+${ceoOnlyBriefing}
+
+User asked: ${cleanMsgForCeo}${ceoOnlyHistory}
+
+Synthesise the specialist findings into a concise response — 150 words max. Lead with the key insight or decision, then your recommendation.`
+
+          emit('routing', { routing: { intent: 'strategy' as RoutingIntent, specialists: ['marcus-ceo' as AgentId], reasoning: 'CEO-only synthesis (retry)' }, confidence: 1.0 })
+
+          let ceoOnlySynthesis = ''
+          for await (const chunk of streamSynthesis({
+            maxTokens: 4096,
+            messages:  [{ role: 'user', content: ceoOnlyPrompt }],
+          })) {
+            ceoOnlySynthesis += chunk
+            emit('text', { content: chunk })
+          }
+
+          const ceoOnlyElapsed = Date.now() - startTime
+          if (sessionId) {
+            updateWarRoomPlan(sessionId, {
+              synthesis:  ceoOnlySynthesis,
+              status:     'complete',
+              elapsedMs:  ceoOnlyElapsed,
+              agentsUsed: ['marcus-ceo' as AgentId],
+              steps:      [],
+            }).catch(() => {})
+          } else {
+            saveWarRoomPlan({
+              ventureName, userPrompt: message, intent: 'strategy', plan: null,
+              agentsUsed: ['marcus-ceo' as AgentId], status: 'complete',
+              synthesis: ceoOnlySynthesis, elapsedMs: ceoOnlyElapsed, steps: [],
+            }).then(id => emit('session_id', { sessionId: id })).catch(() => {})
+          }
+
+          emit('plan_complete', { elapsed: ceoOnlyElapsed })
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+          closeController()
+          return
+        }
+
         // ── Step 0: Direct-response check ───────────────────────────────────
         // No LLM call — instant heuristic. Short messages or no domain keywords
         // go straight to Marcus. Only explicit task/domain keywords trigger the pipeline.
@@ -1200,6 +1266,28 @@ Bash git commands query YVON's git history, NOT ${ventureName}'s — never use t
         emit('engine', { engine: activeEngine === 'agent_sdk' ? 'agent_sdk' : 'client_sdk', fastModel: activeProvider?.fastModel, synthesisModel: activeProvider?.synthesisModel, provider: activeProvider?.provider })
 
         emit('plan', { plan: executionPlan, routing })
+
+        // ── Early session persistence ─────────────────────────────────────────
+        // Save a partial record now — before any agent work — so the client gets
+        // session_id immediately. If the function times out before Step 5, the
+        // DB record exists and the client can restore the thread on refresh.
+        if (!sessionId) {
+          try {
+            const earlyId = await saveWarRoomPlan({
+              ventureName,
+              userPrompt:  message,
+              intent:      routing.intent,
+              plan:        executionPlan,
+              agentsUsed:  routing.specialists as AgentId[],
+              status:      'partial',
+              synthesis:   '',
+              elapsedMs:   0,
+              steps:       [],
+            })
+            sessionId = earlyId
+            emit('session_id', { sessionId: earlyId })
+          } catch { /* non-fatal — Step 5 will retry the save */ }
+        }
 
         // ── Step 3: Specialist execution (parallel or sequential) ───────────
         const useSequential = executionPlan.order === 'sequential' && routing.specialists.length > 1
@@ -1466,6 +1554,43 @@ Fix every error Quinn identified. Confirm what was changed with exact file paths
           if (latestQuinnBriefing?.content) briefings.push(latestQuinnBriefing)
         }
 
+        // ── Timeout guard ─────────────────────────────────────────────────────
+        // Only applies on Vercel (Hobby caps at 60 s, Pro at 300 s).
+        // Local dev has no timeout — guard is skipped entirely so long tasks complete.
+        const vercelTimeoutMs = process.env.VERCEL
+          ? (process.env.VERCEL_ENV === 'production' ? 50_000 : 55_000)
+          : Infinity
+        if (Date.now() - startTime > vercelTimeoutMs) {
+          const elapsedAtTimeout = Date.now() - startTime
+          // Build compact briefings string for CEO-only retry (capped at 6000 chars)
+          const timeoutBriefings = briefings
+            .filter(b => b.content)
+            .map(b => { const ag = getAgent(b.agentId); return `**${ag?.name ?? b.agentId} (${ag?.role ?? ''}):**\n${b.content.slice(0, 1500)}` })
+            .join('\n\n')
+            .slice(0, 6000)
+          // Persist briefings to DB so the session survives the timeout
+          if (sessionId) {
+            updateWarRoomPlan(sessionId, {
+              synthesis:  timeoutBriefings || '(specialists completed — CEO synthesis skipped due to timeout)',
+              status:     'partial',
+              elapsedMs:  elapsedAtTimeout,
+              agentsUsed: routing.specialists as AgentId[],
+              steps:      stepResults,
+            }).catch(() => {})
+          }
+          emit('agent_warning', {
+            agentId:   'marcus-ceo',
+            warning:   `Agents ran for ${Math.round(elapsedAtTimeout / 1000)}s and hit the function time limit. CEO synthesis was skipped — specialist work is shown above. Click Retry to get Marcus's synthesis on its own.`,
+            reason:    'timeout',
+            briefings: timeoutBriefings,
+          })
+          emit('plan_complete', { elapsed: elapsedAtTimeout })
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+          clearInterval(heartbeat)
+          closeController()
+          return
+        }
+
         // ── Step 4: CEO synthesis (streamed) ─────────────────────────────────
         const ceo = getAgent('marcus-ceo')
         const briefingText = briefings
@@ -1481,7 +1606,7 @@ Fix every error Quinn identified. Confirm what was changed with exact file paths
           : ''
 
         const historyBlock = conversationHistory.length > 0
-          ? `\n\nPrior conversation context:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus.slice(0, 800)}${h.marcus.length > 800 ? '…' : ''}`).join('\n\n')}`
+          ? `\n\nPrior conversation context (last 3 turns):\n${conversationHistory.slice(-3).map(h => `User: ${h.user.slice(0, 200)}\nMarcus: ${h.marcus.slice(0, 400)}${h.marcus.length > 400 ? '…' : ''}`).join('\n\n')}`
           : ''
         const ceoImageNote = buildFilesNote(files, 'ceo')
 
