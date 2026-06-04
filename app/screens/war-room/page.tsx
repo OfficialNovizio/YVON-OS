@@ -823,22 +823,29 @@ export default function WarRoomPage() {
           const mostRecent = data[0]
           const cleanPrompt = mostRecent.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
           const synthesis = mostRecent.synthesis ?? ''
-          // Restore multi-turn conversation history from localStorage (persisted across refreshes)
+          // Prefer DB conversationHistory (full), fall back to localStorage
           const savedConvStr = localStorage.getItem(`yvon_war_room_conv_history_${slug}`)
-          if (savedConvStr) {
-            try {
-              const savedConv = JSON.parse(savedConvStr) as { user: string; marcus: string }[]
-              if (savedConv.length > 0) setConversationHistory(savedConv)
-            } catch { /* ignore corrupt data */ }
-          }
           currentSessionIdRef.current = savedSessionId
           setActiveSessionId(savedSessionId)
-          // Build visual thread from the most recent DB session
-          setThread([
-            { id: mkId(), kind: 'user', text: cleanPrompt },
-            ...(mostRecent.objective ? [{ id: mkId(), kind: 'plan' as const, objective: mostRecent.objective, order: mostRecent.agentOrder, agents: mostRecent.agentsUsed }] : []),
-            ...(synthesis ? [{ id: mkId(), kind: 'synthesis' as const, text: synthesis, streaming: false }] : []),
-          ])
+          // Restore full multi-turn thread from DB conversationHistory (preferred)
+          // or fall back to localStorage then single-turn
+          const dbHistory = mostRecent.conversationHistory && mostRecent.conversationHistory.length > 0
+            ? mostRecent.conversationHistory
+            : null
+          const restoredHistory = dbHistory ?? (savedConvStr ? (() => {
+            try { return JSON.parse(savedConvStr) as { user: string; marcus: string }[] } catch { return null }
+          })() : null) ?? [{ user: cleanPrompt, marcus: synthesis }]
+          setConversationHistory(restoredHistory)
+          const restoredThread: ThreadItem[] = []
+          for (const [i, turn] of restoredHistory.entries()) {
+            const cleanTurn = turn.user.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+            restoredThread.push({ id: mkId(), kind: 'user', text: cleanTurn })
+            if (i === 0 && mostRecent.objective) {
+              restoredThread.push({ id: mkId(), kind: 'plan', objective: mostRecent.objective, order: mostRecent.agentOrder, agents: mostRecent.agentsUsed })
+            }
+            if (turn.marcus) restoredThread.push({ id: mkId(), kind: 'synthesis', text: turn.marcus, streaming: false })
+          }
+          setThread(restoredThread)
         })
         .catch(() => {})
         .finally(() => setHistoryLoading(false))
@@ -934,22 +941,32 @@ export default function WarRoomPage() {
 
 
   const loadSessionIntoThread = useCallback((plan: WarRoomPlanRecord) => {
-    const synthesis = plan.synthesis ?? '(this session had no recorded synthesis)'
-    const cleanPrompt = plan.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
-    const items: ThreadItem[] = [
-      { id: mkId(), kind: 'user', text: cleanPrompt },
-      ...(plan.objective ? [{ id: mkId(), kind: 'plan' as const, objective: plan.objective, order: plan.agentOrder, agents: plan.agentsUsed }] : []),
-      { id: mkId(), kind: 'synthesis', text: synthesis, streaming: false },
-    ]
-    const newHistory = [{ user: cleanPrompt, marcus: synthesis }]
+    // Use the stored multi-turn history if available, fall back to single-turn
+    const history = plan.conversationHistory && plan.conversationHistory.length > 0
+      ? plan.conversationHistory
+      : [{ user: plan.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim(), marcus: plan.synthesis ?? '' }]
+
+    // Render every turn as user bubble + synthesis bubble
+    const items: ThreadItem[] = []
+    for (const [i, turn] of history.entries()) {
+      const cleanUser = turn.user.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+      items.push({ id: mkId(), kind: 'user', text: cleanUser })
+      // Show plan banner only on the first turn (that's where the plan was)
+      if (i === 0 && plan.objective) {
+        items.push({ id: mkId(), kind: 'plan', objective: plan.objective, order: plan.agentOrder, agents: plan.agentsUsed })
+      }
+      if (turn.marcus) {
+        items.push({ id: mkId(), kind: 'synthesis', text: turn.marcus, streaming: false })
+      }
+    }
+
     setThread(items)
-    setConversationHistory(newHistory)
+    setConversationHistory(history)
     setActiveSessionId(plan.id)
     currentSessionIdRef.current = plan.id
-    // Sync localStorage so refresh restores this sidebar-clicked session, not the previous active one
     const slug = getActiveVentureSlugClient()
     if (slug) {
-      localStorage.setItem(`yvon_war_room_conv_history_${slug}`, JSON.stringify(newHistory))
+      localStorage.setItem(`yvon_war_room_conv_history_${slug}`, JSON.stringify(history))
       localStorage.setItem(`yvon_war_room_session_id_${slug}`, plan.id)
     }
     requestAnimationFrame(() => threadRef.current?.scrollTo({ top: 0, behavior: 'auto' }))
@@ -1082,8 +1099,10 @@ export default function WarRoomPage() {
           githubContext: githubContext || undefined,
           maxOutputTokens: maxOutputTokens > 0 ? maxOutputTokens : undefined,
           files: att.length > 0 ? att.map(a => ({ base64: a.base64, mimeType: a.mimeType, name: a.name, isImage: a.isImage })) : undefined,
-          conversationHistory: conversationHistory.slice(-5),
+          conversationHistory: conversationHistory.slice(-15),
           sessionId: currentSessionIdRef.current ?? undefined,
+          // Auto-approve follow-up messages in an active session — no re-approval needed
+          autoApprove: !isApproval && !isRetry && !!currentSessionIdRef.current && conversationHistory.length > 0,
           ...(isApproval ? {
             approved: true,
             previousPlan: approvalData.plan,

@@ -1107,6 +1107,7 @@ export interface SaveWarRoomPlanInput {
     status: 'complete' | 'error' | 'retried'
     retryCount: number
   }>
+  conversationHistory?: Array<{ user: string; marcus: string }>
 }
 
 export async function saveWarRoomPlan(input: SaveWarRoomPlanInput): Promise<string> {
@@ -1114,16 +1115,17 @@ export async function saveWarRoomPlan(input: SaveWarRoomPlanInput): Promise<stri
   const { data: planRow, error: planErr } = await supabase
     .from('execution_plans')
     .insert({
-      venture_name:    input.ventureName,
-      user_prompt:     input.userPrompt,
-      intent:          input.intent,
-      objective:       input.plan?.objective ?? null,
-      definition_done: input.plan?.definition_of_done ?? null,
-      agent_order:     input.plan?.order ?? 'parallel',
-      agents_used:     input.agentsUsed,
-      status:          input.status,
-      synthesis:       input.synthesis,
-      elapsed_ms:      input.elapsedMs,
+      venture_name:         input.ventureName,
+      user_prompt:          input.userPrompt,
+      intent:               input.intent,
+      objective:            input.plan?.objective ?? null,
+      definition_done:      input.plan?.definition_of_done ?? null,
+      agent_order:          input.plan?.order ?? 'parallel',
+      agents_used:          input.agentsUsed,
+      status:               input.status,
+      synthesis:            input.synthesis,
+      elapsed_ms:           input.elapsedMs,
+      conversation_history: input.conversationHistory ?? [],
     })
     .select('id')
     .single()
@@ -1157,15 +1159,17 @@ export async function updateWarRoomPlan(
     elapsedMs?: number
     agentsUsed?: AgentId[]
     steps?: SaveWarRoomPlanInput['steps']
+    conversationHistory?: Array<{ user: string; marcus: string }>
   }
 ): Promise<void> {
   await supabase
     .from('execution_plans')
     .update({
-      ...(patch.synthesis  !== undefined ? { synthesis:  patch.synthesis  } : {}),
-      ...(patch.status     !== undefined ? { status:     patch.status     } : {}),
-      ...(patch.elapsedMs  !== undefined ? { elapsed_ms: patch.elapsedMs  } : {}),
-      ...(patch.agentsUsed !== undefined ? { agents_used: patch.agentsUsed } : {}),
+      ...(patch.synthesis            !== undefined ? { synthesis:            patch.synthesis            } : {}),
+      ...(patch.status               !== undefined ? { status:               patch.status               } : {}),
+      ...(patch.elapsedMs            !== undefined ? { elapsed_ms:           patch.elapsedMs            } : {}),
+      ...(patch.agentsUsed           !== undefined ? { agents_used:          patch.agentsUsed           } : {}),
+      ...(patch.conversationHistory  !== undefined ? { conversation_history: patch.conversationHistory  } : {}),
     })
     .eq('id', planId)
 
@@ -1221,19 +1225,20 @@ export async function getWarRoomPlans(
   }
 
   return plans.map(p => ({
-    id:             p.id as string,
-    ventureName:    p.venture_name as string,
-    userPrompt:     p.user_prompt as string,
-    intent:         (p.intent as string | null) ?? null,
-    objective:      (p.objective as string | null) ?? null,
-    definitionDone: (p.definition_done as string | null) ?? null,
-    agentOrder:     (p.agent_order as 'parallel' | 'sequential') ?? 'parallel',
-    agentsUsed:     (p.agents_used as AgentId[]) ?? [],
-    status:         p.status as WarRoomPlanRecord['status'],
-    synthesis:      (p.synthesis as string | null) ?? null,
-    elapsedMs:      (p.elapsed_ms as number | null) ?? null,
-    createdAt:      p.created_at as string,
-    steps:          stepsByPlan.get(p.id as string) ?? [],
+    id:                  p.id as string,
+    ventureName:         p.venture_name as string,
+    userPrompt:          p.user_prompt as string,
+    intent:              (p.intent as string | null) ?? null,
+    objective:           (p.objective as string | null) ?? null,
+    definitionDone:      (p.definition_done as string | null) ?? null,
+    agentOrder:          (p.agent_order as 'parallel' | 'sequential') ?? 'parallel',
+    agentsUsed:          (p.agents_used as AgentId[]) ?? [],
+    status:              p.status as WarRoomPlanRecord['status'],
+    synthesis:           (p.synthesis as string | null) ?? null,
+    elapsedMs:           (p.elapsed_ms as number | null) ?? null,
+    createdAt:           p.created_at as string,
+    steps:               stepsByPlan.get(p.id as string) ?? [],
+    conversationHistory: (p.conversation_history as Array<{ user: string; marcus: string }>) ?? [],
   }))
 }
 

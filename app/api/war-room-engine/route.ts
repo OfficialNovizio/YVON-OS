@@ -8,7 +8,7 @@ export async function GET() {
   ])
   return Response.json({
     engine:         isAgent ? 'agent_sdk' : 'client_sdk',
-    fastModel:      providerInfo?.fastModel ?? 'claude-haiku-4-5-20251001',
+    fastModel:      providerInfo?.fastModel ?? 'claude-sonnet-4-6',
     synthesisModel: providerInfo?.synthesisModel ?? 'claude-sonnet-4-6',
     provider:       providerInfo?.provider ?? 'anthropic',
   })

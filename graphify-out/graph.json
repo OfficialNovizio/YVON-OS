@@ -81,7 +81,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\activity\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_activity_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -90,7 +90,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\weight-proposal\\route.ts",
       "source_location": "L24",
       "id": "route_get",
-      "community": 1,
+      "community": 0,
       "norm_label": "get()"
     },
     {
@@ -99,7 +99,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\agent-cron\\calibration\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_agent_cron_calibration_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -108,7 +108,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\agent-cron\\pulse\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_agent_cron_pulse_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -162,7 +162,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\agent-status\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_agent_status_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -171,7 +171,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\agent-status\\route.ts",
       "source_location": "L49",
       "id": "route_relativetime",
-      "community": 1,
+      "community": 0,
       "norm_label": "relativetime()"
     },
     {
@@ -180,7 +180,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\agent-status\\route.ts",
       "source_location": "L61",
       "id": "route_getdemodata",
-      "community": 1,
+      "community": 0,
       "norm_label": "getdemodata()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ai-keys\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_ai_keys_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ai-keys\\route.ts",
       "source_location": "L12",
       "id": "route_getserviceclient",
-      "community": 1,
+      "community": 0,
       "norm_label": "getserviceclient()"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ai-keys\\route.ts",
       "source_location": "L19",
       "id": "route_maskkey",
-      "community": 1,
+      "community": 0,
       "norm_label": "maskkey()"
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\war-room-plans\\route.ts",
       "source_location": "L16",
       "id": "route_delete",
-      "community": 1,
+      "community": 0,
       "norm_label": "delete()"
     },
     {
@@ -225,7 +225,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ventures\\[id]\\route.ts",
       "source_location": "L4",
       "id": "route_patch",
-      "community": 1,
+      "community": 0,
       "norm_label": "patch()"
     },
     {
@@ -243,7 +243,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\analytics\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_analytics_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -252,7 +252,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\analytics-overview\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_analytics_overview_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -261,7 +261,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\anomaly-check\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_anomaly_check_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\anomaly-check\\route.ts",
       "source_location": "L28",
       "id": "route_resolvethresholds",
-      "community": 1,
+      "community": 0,
       "norm_label": "resolvethresholds()"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\api-costs\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_api_costs_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\archive-intelligence\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_archive_intelligence_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -351,7 +351,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\big-idea\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_big_idea_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -360,7 +360,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-series\\[id]\\route.ts",
       "source_location": "L9",
       "id": "route_getventureid",
-      "community": 1,
+      "community": 0,
       "norm_label": "getventureid()"
     },
     {
@@ -369,7 +369,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\brand-dna\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_brand_dna_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -378,7 +378,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\brand-health\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_brand_health_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -387,7 +387,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\brand-health\\route.ts",
       "source_location": "L40",
       "id": "route_brandscore",
-      "community": 1,
+      "community": 0,
       "norm_label": "brandscore()"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\brand-score\\summary\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_brand_score_summary_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\briefing\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_briefing_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -423,7 +423,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\browse-fs\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_browse_fs_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\calendar-verify\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_calendar_verify_route_ts",
-      "community": 0,
+      "community": 1,
       "norm_label": "route.ts"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\calendar-verify\\route.ts",
       "source_location": "L19",
       "id": "route_getventurehandles",
-      "community": 0,
+      "community": 1,
       "norm_label": "getventurehandles()"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\calendar-verify\\route.ts",
       "source_location": "L26",
       "id": "route_scrapeforplatform",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapeforplatform()"
     },
     {
@@ -459,7 +459,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\calendar-verify\\route.ts",
       "source_location": "L34",
       "id": "route_findbestmatch",
-      "community": 0,
+      "community": 1,
       "norm_label": "findbestmatch()"
     },
     {
@@ -468,7 +468,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\calendar-verify\\route.ts",
       "source_location": "L51",
       "id": "route_verifyventure",
-      "community": 0,
+      "community": 1,
       "norm_label": "verifyventure()"
     },
     {
@@ -531,7 +531,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\channel-conviction\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_channel_conviction_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -558,7 +558,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\clothing-items\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_clothing_items_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -567,7 +567,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\clothing-items\\route.ts",
       "source_location": "L15",
       "id": "route_resolveventureid",
-      "community": 1,
+      "community": 0,
       "norm_label": "resolveventureid()"
     },
     {
@@ -630,7 +630,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\collaboration-detector\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_collaboration_detector_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -702,7 +702,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-content\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_content_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -711,7 +711,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-content-intel\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_content_intel_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -720,7 +720,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-exploit\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_exploit_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -729,7 +729,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-gaps\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_gaps_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -738,7 +738,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-intelligence\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_intelligence_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -747,7 +747,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-keywords\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_keywords_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -774,7 +774,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-settings\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_settings_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -783,7 +783,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\competitor-trending\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_competitor_trending_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -801,7 +801,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-calendar\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_calendar_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -891,7 +891,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-lab\\ideas\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_lab_ideas_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -900,7 +900,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-lab\\posts\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_lab_posts_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -918,7 +918,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-performance\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_performance_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -927,7 +927,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-performance\\route.ts",
       "source_location": "L31",
       "id": "route_classifyoutcome",
-      "community": 1,
+      "community": 0,
       "norm_label": "classifyoutcome()"
     },
     {
@@ -936,7 +936,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-performance\\measure\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_performance_measure_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -954,7 +954,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-series\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_series_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -963,7 +963,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\content-series\\[id]\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_content_series_id_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -972,7 +972,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\conversion-copy\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_conversion_copy_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1008,7 +1008,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\cse-reflection\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_cse_reflection_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1017,7 +1017,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\custom-competitor\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_custom_competitor_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1026,7 +1026,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\decisions\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_decisions_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1035,7 +1035,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\deliverables\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_deliverables_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1116,7 +1116,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\graph-html\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_graph_html_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1125,7 +1125,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\graph-summary\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_graph_summary_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1161,7 +1161,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\growth-sprint\\route.ts",
       "source_location": "L9",
       "id": "route_agentsystem",
-      "community": 0,
+      "community": 6,
       "norm_label": "agentsystem()"
     },
     {
@@ -1206,7 +1206,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\health\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_health_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1224,7 +1224,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\insights\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_insights_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\intelligence\\history\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_intelligence_history_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\intelligence\\latest\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_intelligence_latest_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\jobs\\applications\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_jobs_applications_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1296,7 +1296,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\jobs\\companies\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_jobs_companies_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1314,7 +1314,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\jobs\\resumes\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_jobs_resumes_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1323,7 +1323,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\jobs\\search\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_jobs_search_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\kai-report\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_kai_report_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\krea\\status\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_krea_status_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\linkedin\\callback\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_linkedin_callback_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1395,7 +1395,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\linkedin\\connect\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_linkedin_connect_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1404,7 +1404,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\linkedin\\me\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_linkedin_me_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1422,7 +1422,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\manual-competitor\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_manual_competitor_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1431,7 +1431,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_market_intelligence_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L170",
       "id": "route_buildcontext",
-      "community": 1,
+      "community": 0,
       "norm_label": "buildcontext()"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L234",
       "id": "route_parseagebands",
-      "community": 1,
+      "community": 0,
       "norm_label": "parseagebands()"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L342",
       "id": "route_getgeofallback",
-      "community": 1,
+      "community": 0,
       "norm_label": "getgeofallback()"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L362",
       "id": "route_buildgeobreakdown",
-      "community": 1,
+      "community": 0,
       "norm_label": "buildgeobreakdown()"
     },
     {
@@ -1476,7 +1476,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L402",
       "id": "route_getgeobreakdownfull",
-      "community": 1,
+      "community": 0,
       "norm_label": "getgeobreakdownfull()"
     },
     {
@@ -1485,7 +1485,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L436",
       "id": "route_gettamsamsom",
-      "community": 1,
+      "community": 0,
       "norm_label": "gettamsamsom()"
     },
     {
@@ -1494,7 +1494,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L529",
       "id": "route_getaudiencedemographics",
-      "community": 1,
+      "community": 0,
       "norm_label": "getaudiencedemographics()"
     },
     {
@@ -1503,7 +1503,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L663",
       "id": "route_getcustomergrowth",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcustomergrowth()"
     },
     {
@@ -1512,7 +1512,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L809",
       "id": "route_getmarketdemandindex",
-      "community": 1,
+      "community": 0,
       "norm_label": "getmarketdemandindex()"
     },
     {
@@ -1521,7 +1521,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L845",
       "id": "route_getwhitespacematrix",
-      "community": 1,
+      "community": 0,
       "norm_label": "getwhitespacematrix()"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L901",
       "id": "route_getcompetitiveposition",
-      "community": 1,
+      "community": 0,
       "norm_label": "getcompetitiveposition()"
     },
     {
@@ -1539,7 +1539,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L934",
       "id": "route_getforecast",
-      "community": 1,
+      "community": 0,
       "norm_label": "getforecast()"
     },
     {
@@ -1548,7 +1548,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L1011",
       "id": "route_getindustrygrowth",
-      "community": 1,
+      "community": 0,
       "norm_label": "getindustrygrowth()"
     },
     {
@@ -1557,7 +1557,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-intelligence\\route.ts",
       "source_location": "L1077",
       "id": "route_getsignalfeed",
-      "community": 1,
+      "community": 0,
       "norm_label": "getsignalfeed()"
     },
     {
@@ -1566,7 +1566,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\market-radar\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_market_radar_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1575,7 +1575,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\morning-brief\\goals\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_morning_brief_goals_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\network\\contacts\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_network_contacts_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\network\\interactions\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_network_interactions_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1629,7 +1629,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\posthog-ingest\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_posthog_ingest_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1638,7 +1638,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\reports\\generate\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_reports_generate_route_ts",
-      "community": 4,
+      "community": 12,
       "norm_label": "route.ts"
     },
     {
@@ -1647,7 +1647,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\reports\\generate\\route.ts",
       "source_location": "L13",
       "id": "route_isodateago",
-      "community": 4,
+      "community": 12,
       "norm_label": "isodateago()"
     },
     {
@@ -1656,7 +1656,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\reports\\generate\\route.ts",
       "source_location": "L19",
       "id": "route_genanalyticsreport",
-      "community": 4,
+      "community": 12,
       "norm_label": "genanalyticsreport()"
     },
     {
@@ -1665,7 +1665,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\reports\\generate\\route.ts",
       "source_location": "L100",
       "id": "route_genmarketingreport",
-      "community": 4,
+      "community": 12,
       "norm_label": "genmarketingreport()"
     },
     {
@@ -1674,7 +1674,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\reports\\generate\\route.ts",
       "source_location": "L171",
       "id": "route_gencompetitorreport",
-      "community": 4,
+      "community": 12,
       "norm_label": "gencompetitorreport()"
     },
     {
@@ -1692,7 +1692,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\revenue-attribution\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_revenue_attribution_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1701,7 +1701,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\roadmap\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_roadmap_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1773,7 +1773,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\settings\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_settings_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1782,7 +1782,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\signal-reliability\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_signal_reliability_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1800,7 +1800,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\skills\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_skills_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1809,7 +1809,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\social-accounts\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_social_accounts_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1818,7 +1818,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\social-commerce\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_social_commerce_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1836,7 +1836,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\social-posts\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_social_posts_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1845,7 +1845,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\social-stats\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_social_stats_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1854,7 +1854,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\sops\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_sops_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1881,7 +1881,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\tasks\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_tasks_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -1890,7 +1890,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
-      "community": 14,
+      "community": 6,
       "norm_label": "route.ts"
     },
     {
@@ -1899,7 +1899,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L43",
       "id": "route_prefetchventuregithubsnapshot",
-      "community": 6,
+      "community": 7,
       "norm_label": "prefetchventuregithubsnapshot()"
     },
     {
@@ -1908,7 +1908,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L91",
       "id": "route_loadventurecontextblock",
-      "community": 14,
+      "community": 6,
       "norm_label": "loadventurecontextblock()"
     },
     {
@@ -1917,7 +1917,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L119",
       "id": "route_loadoscontext",
-      "community": 14,
+      "community": 6,
       "norm_label": "loadoscontext()"
     },
     {
@@ -1926,7 +1926,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L138",
       "id": "route_formatgithubsnapshot",
-      "community": 14,
+      "community": 6,
       "norm_label": "formatgithubsnapshot()"
     },
     {
@@ -1935,7 +1935,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L195",
       "id": "route_classifyintent",
-      "community": 14,
+      "community": 6,
       "norm_label": "classifyintent()"
     },
     {
@@ -1944,41 +1944,41 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
       "source_location": "L212",
       "id": "route_marcusorchestrate",
-      "community": 4,
+      "community": 12,
       "norm_label": "marcusorchestrate()"
     },
     {
       "label": "isTextMime()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L333",
+      "source_location": "L337",
       "id": "route_istextmime",
-      "community": 14,
+      "community": 6,
       "norm_label": "istextmime()"
     },
     {
       "label": "buildFilesNote()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L339",
+      "source_location": "L343",
       "id": "route_buildfilesnote",
-      "community": 14,
+      "community": 6,
       "norm_label": "buildfilesnote()"
     },
     {
       "label": "fallbackPlan()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L380",
+      "source_location": "L384",
       "id": "route_fallbackplan",
-      "community": 14,
+      "community": 6,
       "norm_label": "fallbackplan()"
     },
     {
       "label": "classifyTask()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L406",
+      "source_location": "L410",
       "id": "route_classifytask",
       "community": 6,
       "norm_label": "classifytask()"
@@ -1987,45 +1987,45 @@
       "label": "buildVentureDocsBlock()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L440",
+      "source_location": "L448",
       "id": "route_buildventuredocsblock",
-      "community": 14,
+      "community": 6,
       "norm_label": "buildventuredocsblock()"
     },
     {
       "label": "getSpecialistBriefing()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L455",
+      "source_location": "L463",
       "id": "route_getspecialistbriefing",
-      "community": 0,
+      "community": 6,
       "norm_label": "getspecialistbriefing()"
     },
     {
       "label": "getSpecialistWithRetry()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L751",
+      "source_location": "L813",
       "id": "route_getspecialistwithretry",
-      "community": 14,
+      "community": 6,
       "norm_label": "getspecialistwithretry()"
     },
     {
       "label": "createHandoffSummary()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L791",
+      "source_location": "L853",
       "id": "route_createhandoffsummary",
-      "community": 14,
+      "community": 6,
       "norm_label": "createhandoffsummary()"
     },
     {
       "label": "executeSequential()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L826",
+      "source_location": "L888",
       "id": "route_executesequential",
-      "community": 14,
+      "community": 6,
       "norm_label": "executesequential()"
     },
     {
@@ -2070,7 +2070,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\trending\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_trending_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2088,7 +2088,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\venture\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_venture_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2124,7 +2124,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ventures\\[id]\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_ventures_id_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2133,7 +2133,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ventures\\[id]\\socials\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_ventures_id_socials_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2142,7 +2142,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\ventures\\[id]\\socials\\[socialId]\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_ventures_id_socials_socialid_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2151,7 +2151,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\war-room-commands\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_war_room_commands_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2160,7 +2160,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\war-room-commands\\route.ts",
       "source_location": "L19",
       "id": "route_sb",
-      "community": 1,
+      "community": 0,
       "norm_label": "sb()"
     },
     {
@@ -2169,7 +2169,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\war-room-engine\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_war_room_engine_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2178,7 +2178,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\war-room-plans\\route.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_api_war_room_plans_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -3861,7 +3861,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_screens_creative_studio_page_tsx",
-      "community": 12,
+      "community": 13,
       "norm_label": "page.tsx"
     },
     {
@@ -3870,7 +3870,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L27",
       "id": "page_isodateoffset",
-      "community": 12,
+      "community": 13,
       "norm_label": "isodateoffset()"
     },
     {
@@ -3879,7 +3879,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L187",
       "id": "page_d",
-      "community": 12,
+      "community": 13,
       "norm_label": "_d()"
     },
     {
@@ -3888,7 +3888,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L188",
       "id": "page_h",
-      "community": 12,
+      "community": 13,
       "norm_label": "_h()"
     },
     {
@@ -3897,7 +3897,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L469",
       "id": "page_callstudio",
-      "community": 12,
+      "community": 13,
       "norm_label": "callstudio()"
     },
     {
@@ -3906,7 +3906,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L491",
       "id": "page_handlebriefnext",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlebriefnext()"
     },
     {
@@ -3915,7 +3915,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L500",
       "id": "page_handlemoodnext",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlemoodnext()"
     },
     {
@@ -3924,7 +3924,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L506",
       "id": "page_handlescriptnext",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlescriptnext()"
     },
     {
@@ -3933,7 +3933,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L511",
       "id": "page_handlecaptionsnext",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlecaptionsnext()"
     },
     {
@@ -3942,7 +3942,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L524",
       "id": "page_handlerefine",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlerefine()"
     },
     {
@@ -3951,7 +3951,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L544",
       "id": "page_handlegenerateasset",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlegenerateasset()"
     },
     {
@@ -3960,7 +3960,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L567",
       "id": "page_startpolling",
-      "community": 12,
+      "community": 13,
       "norm_label": "startpolling()"
     },
     {
@@ -3969,7 +3969,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L586",
       "id": "page_handlegenerateall",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlegenerateall()"
     },
     {
@@ -3978,7 +3978,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L596",
       "id": "page_handleschedule",
-      "community": 12,
+      "community": 13,
       "norm_label": "handleschedule()"
     },
     {
@@ -3987,7 +3987,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L625",
       "id": "page_handlestorylinegenerate",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlestorylinegenerate()"
     },
     {
@@ -3996,7 +3996,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L637",
       "id": "page_handleshootgenerate",
-      "community": 12,
+      "community": 13,
       "norm_label": "handleshootgenerate()"
     },
     {
@@ -4005,7 +4005,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L643",
       "id": "page_handlecopyscene",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlecopyscene()"
     },
     {
@@ -4014,14 +4014,14 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L651",
       "id": "page_handlegenerateoutfits",
-      "community": 12,
+      "community": 13,
       "norm_label": "handlegenerateoutfits()"
     },
     {
       "label": "handleCopy()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L977",
+      "source_location": "L994",
       "id": "page_handlecopy",
       "community": 9,
       "norm_label": "handlecopy()"
@@ -4032,7 +4032,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L691",
       "id": "page_fetchhistory",
-      "community": 12,
+      "community": 13,
       "norm_label": "fetchhistory()"
     },
     {
@@ -4041,7 +4041,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L699",
       "id": "page_savesession",
-      "community": 12,
+      "community": 13,
       "norm_label": "savesession()"
     },
     {
@@ -4050,7 +4050,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L728",
       "id": "page_loadsession",
-      "community": 12,
+      "community": 13,
       "norm_label": "loadsession()"
     },
     {
@@ -4059,7 +4059,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L768",
       "id": "page_remixsession",
-      "community": 12,
+      "community": 13,
       "norm_label": "remixsession()"
     },
     {
@@ -4068,7 +4068,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\creative-studio\\page.tsx",
       "source_location": "L1930",
       "id": "page_relativedate",
-      "community": 12,
+      "community": 13,
       "norm_label": "relativedate()"
     },
     {
@@ -4671,7 +4671,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\settings\\_shared.tsx",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_app_screens_settings_shared_tsx",
-      "community": 0,
+      "community": 1,
       "norm_label": "_shared.tsx"
     },
     {
@@ -4680,7 +4680,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\settings\\_shared.tsx",
       "source_location": "L42",
       "id": "shared_is",
-      "community": 0,
+      "community": 1,
       "norm_label": "is()"
     },
     {
@@ -4770,7 +4770,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\settings\\providers\\page.tsx",
       "source_location": "L125",
       "id": "page_test",
-      "community": 6,
+      "community": 7,
       "norm_label": "test()"
     },
     {
@@ -4905,7 +4905,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\settings\\venture\\page.tsx",
       "source_location": "L461",
       "id": "page_select",
-      "community": 0,
+      "community": 1,
       "norm_label": "select()"
     },
     {
@@ -5083,7 +5083,7 @@
       "label": "onVentureChange()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L889",
+      "source_location": "L896",
       "id": "page_onventurechange",
       "community": 9,
       "norm_label": "onventurechange()"
@@ -5092,7 +5092,7 @@
       "label": "handleFiles()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L958",
+      "source_location": "L975",
       "id": "page_handlefiles",
       "community": 9,
       "norm_label": "handlefiles()"
@@ -5101,7 +5101,7 @@
       "label": "ensureAuthCookie()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1009",
+      "source_location": "L1026",
       "id": "page_ensureauthcookie",
       "community": 9,
       "norm_label": "ensureauthcookie()"
@@ -5110,7 +5110,7 @@
       "label": "reset()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1321",
+      "source_location": "L1340",
       "id": "page_reset",
       "community": 9,
       "norm_label": "reset()"
@@ -5119,7 +5119,7 @@
       "label": "applySlash()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1336",
+      "source_location": "L1355",
       "id": "page_applyslash",
       "community": 9,
       "norm_label": "applyslash()"
@@ -5128,7 +5128,7 @@
       "label": "handleInputChange()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1342",
+      "source_location": "L1361",
       "id": "page_handleinputchange",
       "community": 9,
       "norm_label": "handleinputchange()"
@@ -5137,7 +5137,7 @@
       "label": "handleKeyDown()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1358",
+      "source_location": "L1377",
       "id": "page_handlekeydown",
       "community": 9,
       "norm_label": "handlekeydown()"
@@ -5193,7 +5193,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_agent_memory_ts",
-      "community": 0,
+      "community": 6,
       "norm_label": "agent-memory.ts"
     },
     {
@@ -5202,7 +5202,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L26",
       "id": "agent_memory_client",
-      "community": 0,
+      "community": 6,
       "norm_label": "client()"
     },
     {
@@ -5211,7 +5211,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L38",
       "id": "agent_memory_getagentmemory",
-      "community": 0,
+      "community": 6,
       "norm_label": "getagentmemory()"
     },
     {
@@ -5220,7 +5220,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L70",
       "id": "agent_memory_getagentmemoryraw",
-      "community": 0,
+      "community": 6,
       "norm_label": "getagentmemoryraw()"
     },
     {
@@ -5229,7 +5229,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L86",
       "id": "agent_memory_listagentmemorystatus",
-      "community": 0,
+      "community": 6,
       "norm_label": "listagentmemorystatus()"
     },
     {
@@ -5238,7 +5238,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L100",
       "id": "agent_memory_setagentmemory",
-      "community": 0,
+      "community": 6,
       "norm_label": "setagentmemory()"
     },
     {
@@ -5247,7 +5247,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L141",
       "id": "agent_memory_getventureagentmemories",
-      "community": 0,
+      "community": 6,
       "norm_label": "getventureagentmemories()"
     },
     {
@@ -5256,7 +5256,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L235",
       "id": "agent_memory_formatventurememoriesblock",
-      "community": 0,
+      "community": 6,
       "norm_label": "formatventurememoriesblock()"
     },
     {
@@ -5265,7 +5265,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L249",
       "id": "agent_memory_saveventureagentmemory",
-      "community": 0,
+      "community": 6,
       "norm_label": "saveventureagentmemory()"
     },
     {
@@ -5274,7 +5274,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L313",
       "id": "agent_memory_savesessionmemory",
-      "community": 0,
+      "community": 6,
       "norm_label": "savesessionmemory()"
     },
     {
@@ -5283,7 +5283,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-memory.ts",
       "source_location": "L338",
       "id": "agent_memory_getsessionhistory",
-      "community": 0,
+      "community": 6,
       "norm_label": "getsessionhistory()"
     },
     {
@@ -5292,7 +5292,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-sdk-runner.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_agent_sdk_runner_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "agent-sdk-runner.ts"
     },
     {
@@ -5301,7 +5301,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-sdk-runner.ts",
       "source_location": "L206",
       "id": "agent_sdk_runner_isagentsdkenabled",
-      "community": 1,
+      "community": 0,
       "norm_label": "isagentsdkenabled()"
     },
     {
@@ -5319,7 +5319,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
-      "community": 6,
+      "community": 7,
       "norm_label": "agent-tools.ts"
     },
     {
@@ -5328,7 +5328,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
       "source_location": "L41",
       "id": "agent_tools_saferesolve",
-      "community": 6,
+      "community": 7,
       "norm_label": "saferesolve()"
     },
     {
@@ -5337,7 +5337,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
       "source_location": "L191",
       "id": "agent_tools_ok",
-      "community": 6,
+      "community": 7,
       "norm_label": "ok()"
     },
     {
@@ -5346,106 +5346,115 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
       "source_location": "L194",
       "id": "agent_tools_err",
-      "community": 6,
+      "community": 7,
       "norm_label": "err()"
+    },
+    {
+      "label": "normalizeSep()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
+      "source_location": "L213",
+      "id": "agent_tools_normalizesep",
+      "community": 7,
+      "norm_label": "normalizesep()"
     },
     {
       "label": "isBashAllowedSingle()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L211",
+      "source_location": "L217",
       "id": "agent_tools_isbashallowedsingle",
-      "community": 6,
+      "community": 7,
       "norm_label": "isbashallowedsingle()"
     },
     {
       "label": "isBashAllowed()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L228",
+      "source_location": "L252",
       "id": "agent_tools_isbashallowed",
-      "community": 6,
+      "community": 7,
       "norm_label": "isbashallowed()"
     },
     {
       "label": "execRead()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L249",
+      "source_location": "L273",
       "id": "agent_tools_execread",
-      "community": 6,
+      "community": 7,
       "norm_label": "execread()"
     },
     {
       "label": "execGlob()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L271",
+      "source_location": "L295",
       "id": "agent_tools_execglob",
-      "community": 6,
+      "community": 7,
       "norm_label": "execglob()"
     },
     {
       "label": "execGrep()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L291",
+      "source_location": "L316",
       "id": "agent_tools_execgrep",
-      "community": 6,
+      "community": 7,
       "norm_label": "execgrep()"
     },
     {
       "label": "execBash()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L326",
+      "source_location": "L396",
       "id": "agent_tools_execbash",
-      "community": 6,
+      "community": 7,
       "norm_label": "execbash()"
     },
     {
       "label": "execWebFetch()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L350",
+      "source_location": "L422",
       "id": "agent_tools_execwebfetch",
-      "community": 6,
+      "community": 7,
       "norm_label": "execwebfetch()"
     },
     {
       "label": "execGithub()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L378",
+      "source_location": "L450",
       "id": "agent_tools_execgithub",
-      "community": 6,
+      "community": 7,
       "norm_label": "execgithub()"
     },
     {
       "label": "execTodoWrite()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L507",
+      "source_location": "L595",
       "id": "agent_tools_exectodowrite",
-      "community": 6,
+      "community": 7,
       "norm_label": "exectodowrite()"
     },
     {
       "label": "executeTool()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L525",
+      "source_location": "L613",
       "id": "agent_tools_executetool",
-      "community": 6,
+      "community": 7,
       "norm_label": "executetool()"
     },
     {
       "label": "toolsForAgent()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L585",
+      "source_location": "L673",
       "id": "agent_tools_toolsforagent",
-      "community": 6,
+      "community": 7,
       "norm_label": "toolsforagent()"
     },
     {
@@ -5454,7 +5463,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agents.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_agents_ts",
-      "community": 14,
+      "community": 6,
       "norm_label": "agents.ts"
     },
     {
@@ -5463,7 +5472,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agents.ts",
       "source_location": "L355",
       "id": "agents_getagent",
-      "community": 14,
+      "community": 6,
       "norm_label": "getagent()"
     },
     {
@@ -5472,7 +5481,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agents.ts",
       "source_location": "L359",
       "id": "agents_getagentsbydepartment",
-      "community": 14,
+      "community": 6,
       "norm_label": "getagentsbydepartment()"
     },
     {
@@ -5481,7 +5490,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_ai_client_ts",
-      "community": 4,
+      "community": 12,
       "norm_label": "ai-client.ts"
     },
     {
@@ -5490,7 +5499,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
       "source_location": "L43",
       "id": "ai_client_bustprovidercache",
-      "community": 4,
+      "community": 12,
       "norm_label": "bustprovidercache()"
     },
     {
@@ -5499,7 +5508,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
       "source_location": "L48",
       "id": "ai_client_loadconfig",
-      "community": 4,
+      "community": 12,
       "norm_label": "loadconfig()"
     },
     {
@@ -5508,7 +5517,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
       "source_location": "L111",
       "id": "ai_client_oaimessages",
-      "community": 4,
+      "community": 12,
       "norm_label": "oaimessages()"
     },
     {
@@ -5517,43 +5526,43 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
       "source_location": "L118",
       "id": "ai_client_oaicall",
-      "community": 4,
+      "community": 12,
       "norm_label": "oaicall()"
     },
     {
       "label": "callFast()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L199",
+      "source_location": "L202",
       "id": "ai_client_callfast",
-      "community": 4,
+      "community": 12,
       "norm_label": "callfast()"
     },
     {
       "label": "callSynthesis()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L232",
+      "source_location": "L235",
       "id": "ai_client_callsynthesis",
-      "community": 4,
+      "community": 12,
       "norm_label": "callsynthesis()"
     },
     {
       "label": "getActiveProviderInfo()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L416",
+      "source_location": "L419",
       "id": "ai_client_getactiveproviderinfo",
-      "community": 4,
+      "community": 12,
       "norm_label": "getactiveproviderinfo()"
     },
     {
       "label": "invalidateProviderCache()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L436",
+      "source_location": "L439",
       "id": "ai_client_invalidateprovidercache",
-      "community": 4,
+      "community": 12,
       "norm_label": "invalidateprovidercache()"
     },
     {
@@ -5562,7 +5571,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_apify_ts",
-      "community": 13,
+      "community": 14,
       "norm_label": "apify.ts"
     },
     {
@@ -5571,7 +5580,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L15",
       "id": "apify_gettoken",
-      "community": 13,
+      "community": 14,
       "norm_label": "gettoken()"
     },
     {
@@ -5580,7 +5589,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L19",
       "id": "apify_isapifyconfigured",
-      "community": 13,
+      "community": 14,
       "norm_label": "isapifyconfigured()"
     },
     {
@@ -5589,7 +5598,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L61",
       "id": "apify_getcachedsnapshot",
-      "community": 13,
+      "community": 14,
       "norm_label": "getcachedsnapshot()"
     },
     {
@@ -5598,7 +5607,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L75",
       "id": "apify_upsertsnapshot",
-      "community": 13,
+      "community": 14,
       "norm_label": "upsertsnapshot()"
     },
     {
@@ -5607,7 +5616,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L102",
       "id": "apify_upsertposts",
-      "community": 13,
+      "community": 14,
       "norm_label": "upsertposts()"
     },
     {
@@ -5616,7 +5625,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L127",
       "id": "apify_runactorsync",
-      "community": 13,
+      "community": 14,
       "norm_label": "runactorsync()"
     },
     {
@@ -5625,7 +5634,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L144",
       "id": "apify_scrapeinstagramfull",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapeinstagramfull()"
     },
     {
@@ -5634,7 +5643,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L169",
       "id": "apify_scrapetiktokfull",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapetiktokfull()"
     },
     {
@@ -5643,7 +5652,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L197",
       "id": "apify_scrapelinkedinfull",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapelinkedinfull()"
     },
     {
@@ -5652,7 +5661,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L220",
       "id": "apify_scrapeyoutubefull",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapeyoutubefull()"
     },
     {
@@ -5661,7 +5670,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L254",
       "id": "apify_getsocialmetrics",
-      "community": 13,
+      "community": 14,
       "norm_label": "getsocialmetrics()"
     },
     {
@@ -5670,7 +5679,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L318",
       "id": "apify_getsocialposts",
-      "community": 13,
+      "community": 14,
       "norm_label": "getsocialposts()"
     },
     {
@@ -5679,7 +5688,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L347",
       "id": "apify_startrun",
-      "community": 13,
+      "community": 14,
       "norm_label": "startrun()"
     },
     {
@@ -5688,7 +5697,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L362",
       "id": "apify_waitforrun",
-      "community": 13,
+      "community": 14,
       "norm_label": "waitforrun()"
     },
     {
@@ -5697,7 +5706,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L378",
       "id": "apify_fetchdataset",
-      "community": 13,
+      "community": 14,
       "norm_label": "fetchdataset()"
     },
     {
@@ -5706,7 +5715,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L393",
       "id": "apify_runinstagramscraper",
-      "community": 13,
+      "community": 14,
       "norm_label": "runinstagramscraper()"
     },
     {
@@ -5715,7 +5724,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L415",
       "id": "apify_runlinkedinscraper",
-      "community": 13,
+      "community": 14,
       "norm_label": "runlinkedinscraper()"
     },
     {
@@ -5724,7 +5733,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L433",
       "id": "apify_runwebscraper",
-      "community": 13,
+      "community": 14,
       "norm_label": "runwebscraper()"
     },
     {
@@ -5733,7 +5742,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L471",
       "id": "apify_scrapeinstagramposts",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapeinstagramposts()"
     },
     {
@@ -5742,7 +5751,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L488",
       "id": "apify_scrapetiktokposts",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapetiktokposts()"
     },
     {
@@ -5751,7 +5760,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\apify.ts",
       "source_location": "L503",
       "id": "apify_scrapelinkedinposts",
-      "community": 13,
+      "community": 14,
       "norm_label": "scrapelinkedinposts()"
     },
     {
@@ -5760,7 +5769,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\archive-intelligence.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_archive_intelligence_ts",
-      "community": 4,
+      "community": 0,
       "norm_label": "archive-intelligence.ts"
     },
     {
@@ -5769,7 +5778,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\archive-intelligence.ts",
       "source_location": "L8",
       "id": "archive_intelligence_getarchiverecommendations",
-      "community": 4,
+      "community": 0,
       "norm_label": "getarchiverecommendations()"
     },
     {
@@ -5778,7 +5787,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\big-idea.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_big_idea_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "big-idea.ts"
     },
     {
@@ -5787,7 +5796,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\big-idea.ts",
       "source_location": "L9",
       "id": "big_idea_getbigidea",
-      "community": 1,
+      "community": 0,
       "norm_label": "getbigidea()"
     },
     {
@@ -5796,7 +5805,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\big-idea.ts",
       "source_location": "L29",
       "id": "big_idea_savebigidea",
-      "community": 1,
+      "community": 0,
       "norm_label": "savebigidea()"
     },
     {
@@ -5832,7 +5841,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\claude-client.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_claude_client_ts",
-      "community": 7,
+      "community": 4,
       "norm_label": "claude-client.ts"
     },
     {
@@ -5841,7 +5850,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\claude-client.ts",
       "source_location": "L14",
       "id": "claude_client_streammessage",
-      "community": 7,
+      "community": 4,
       "norm_label": "streammessage()"
     },
     {
@@ -6111,7 +6120,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\content-multiplier.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_content_multiplier_ts",
-      "community": 4,
+      "community": 12,
       "norm_label": "content-multiplier.ts"
     },
     {
@@ -6120,7 +6129,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\content-multiplier.ts",
       "source_location": "L17",
       "id": "content_multiplier_generatevariants",
-      "community": 4,
+      "community": 12,
       "norm_label": "generatevariants()"
     },
     {
@@ -6228,7 +6237,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_db_phase1_ts",
-      "community": 0,
+      "community": 1,
       "norm_label": "db-phase1.ts"
     },
     {
@@ -6237,7 +6246,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L16",
       "id": "db_phase1_getcontentscores",
-      "community": 4,
+      "community": 0,
       "norm_label": "getcontentscores()"
     },
     {
@@ -6246,7 +6255,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L33",
       "id": "db_phase1_gettopcontent",
-      "community": 0,
+      "community": 1,
       "norm_label": "gettopcontent()"
     },
     {
@@ -6255,7 +6264,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L45",
       "id": "db_phase1_getworstcontent",
-      "community": 0,
+      "community": 1,
       "norm_label": "getworstcontent()"
     },
     {
@@ -6264,7 +6273,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L57",
       "id": "db_phase1_upsertcontentscores",
-      "community": 0,
+      "community": 1,
       "norm_label": "upsertcontentscores()"
     },
     {
@@ -6273,7 +6282,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L82",
       "id": "db_phase1_mapscorecard",
-      "community": 0,
+      "community": 1,
       "norm_label": "mapscorecard()"
     },
     {
@@ -6282,7 +6291,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L104",
       "id": "db_phase1_getanomalyalerts",
-      "community": 0,
+      "community": 1,
       "norm_label": "getanomalyalerts()"
     },
     {
@@ -6291,7 +6300,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L133",
       "id": "db_phase1_createanomalyalert",
-      "community": 0,
+      "community": 1,
       "norm_label": "createanomalyalert()"
     },
     {
@@ -6300,7 +6309,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L147",
       "id": "db_phase1_acknowledgeanomaly",
-      "community": 0,
+      "community": 1,
       "norm_label": "acknowledgeanomaly()"
     },
     {
@@ -6309,7 +6318,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L154",
       "id": "db_phase1_resolveanomaly",
-      "community": 0,
+      "community": 1,
       "norm_label": "resolveanomaly()"
     },
     {
@@ -6318,7 +6327,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L161",
       "id": "db_phase1_getaudiencemomentum",
-      "community": 0,
+      "community": 1,
       "norm_label": "getaudiencemomentum()"
     },
     {
@@ -6327,7 +6336,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L188",
       "id": "db_phase1_upsertaudiencemomentum",
-      "community": 0,
+      "community": 1,
       "norm_label": "upsertaudiencemomentum()"
     },
     {
@@ -6336,7 +6345,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L205",
       "id": "db_phase1_getattributionmap",
-      "community": 0,
+      "community": 1,
       "norm_label": "getattributionmap()"
     },
     {
@@ -6345,7 +6354,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L236",
       "id": "db_phase1_createattributionentry",
-      "community": 0,
+      "community": 1,
       "norm_label": "createattributionentry()"
     },
     {
@@ -6354,7 +6363,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L253",
       "id": "db_phase1_getrevenueevents",
-      "community": 0,
+      "community": 1,
       "norm_label": "getrevenueevents()"
     },
     {
@@ -6363,7 +6372,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L298",
       "id": "db_phase1_createrevenueevent",
-      "community": 0,
+      "community": 1,
       "norm_label": "createrevenueevent()"
     },
     {
@@ -6372,7 +6381,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L336",
       "id": "db_phase1_getposthogsessionsdb",
-      "community": 0,
+      "community": 1,
       "norm_label": "getposthogsessionsdb()"
     },
     {
@@ -6381,7 +6390,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db-phase1.ts",
       "source_location": "L373",
       "id": "db_phase1_upsertposthogsession",
-      "community": 0,
+      "community": 1,
       "norm_label": "upsertposthogsession()"
     },
     {
@@ -6390,7 +6399,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
-      "community": 0,
+      "community": 1,
       "norm_label": "db.ts"
     },
     {
@@ -6399,7 +6408,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L51",
       "id": "db_getsocialstats",
-      "community": 0,
+      "community": 1,
       "norm_label": "getsocialstats()"
     },
     {
@@ -6408,7 +6417,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L64",
       "id": "db_setsocialstats",
-      "community": 0,
+      "community": 1,
       "norm_label": "setsocialstats()"
     },
     {
@@ -6417,7 +6426,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L77",
       "id": "db_getanalyticsreport",
-      "community": 0,
+      "community": 1,
       "norm_label": "getanalyticsreport()"
     },
     {
@@ -6426,7 +6435,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L88",
       "id": "db_setanalyticsreport",
-      "community": 0,
+      "community": 1,
       "norm_label": "setanalyticsreport()"
     },
     {
@@ -6435,7 +6444,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L101",
       "id": "db_gettrendingitems",
-      "community": 0,
+      "community": 1,
       "norm_label": "gettrendingitems()"
     },
     {
@@ -6444,7 +6453,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L125",
       "id": "db_upserttrendingitem",
-      "community": 0,
+      "community": 1,
       "norm_label": "upserttrendingitem()"
     },
     {
@@ -6453,7 +6462,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L142",
       "id": "db_getconversation",
-      "community": 0,
+      "community": 1,
       "norm_label": "getconversation()"
     },
     {
@@ -6462,7 +6471,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L157",
       "id": "db_createconversation",
-      "community": 0,
+      "community": 1,
       "norm_label": "createconversation()"
     },
     {
@@ -6471,7 +6480,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L170",
       "id": "db_appendmessage",
-      "community": 0,
+      "community": 1,
       "norm_label": "appendmessage()"
     },
     {
@@ -6480,7 +6489,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L184",
       "id": "db_getbriefs",
-      "community": 0,
+      "community": 1,
       "norm_label": "getbriefs()"
     },
     {
@@ -6489,7 +6498,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L202",
       "id": "db_createbrief",
-      "community": 0,
+      "community": 1,
       "norm_label": "createbrief()"
     },
     {
@@ -6498,7 +6507,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L212",
       "id": "db_markbriefread",
-      "community": 0,
+      "community": 1,
       "norm_label": "markbriefread()"
     },
     {
@@ -6507,7 +6516,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L221",
       "id": "db_getagentmemory",
-      "community": 0,
+      "community": 6,
       "norm_label": "getagentmemory()"
     },
     {
@@ -6516,7 +6525,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L238",
       "id": "db_setagentmemory",
-      "community": 0,
+      "community": 1,
       "norm_label": "setagentmemory()"
     },
     {
@@ -6525,7 +6534,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L256",
       "id": "db_deleteagentmemory",
-      "community": 1,
+      "community": 0,
       "norm_label": "deleteagentmemory()"
     },
     {
@@ -6534,7 +6543,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L271",
       "id": "db_getallagentsettings",
-      "community": 0,
+      "community": 1,
       "norm_label": "getallagentsettings()"
     },
     {
@@ -6543,7 +6552,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L286",
       "id": "db_saveagentsettings",
-      "community": 0,
+      "community": 1,
       "norm_label": "saveagentsettings()"
     },
     {
@@ -6552,7 +6561,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L304",
       "id": "db_mapventurerow",
-      "community": 0,
+      "community": 1,
       "norm_label": "mapventurerow()"
     },
     {
@@ -6561,7 +6570,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L333",
       "id": "db_getallventures",
-      "community": 0,
+      "community": 1,
       "norm_label": "getallventures()"
     },
     {
@@ -6570,7 +6579,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L338",
       "id": "db_getventurebyslug",
-      "community": 0,
+      "community": 1,
       "norm_label": "getventurebyslug()"
     },
     {
@@ -6579,7 +6588,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L343",
       "id": "db_createventure",
-      "community": 0,
+      "community": 1,
       "norm_label": "createventure()"
     },
     {
@@ -6588,7 +6597,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L373",
       "id": "db_updateventure",
-      "community": 0,
+      "community": 1,
       "norm_label": "updateventure()"
     },
     {
@@ -6597,7 +6606,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L403",
       "id": "db_deleteventure",
-      "community": 1,
+      "community": 0,
       "norm_label": "deleteventure()"
     },
     {
@@ -6606,7 +6615,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L409",
       "id": "db_getventuresocials",
-      "community": 0,
+      "community": 1,
       "norm_label": "getventuresocials()"
     },
     {
@@ -6615,7 +6624,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L424",
       "id": "db_upsertventuresocial",
-      "community": 0,
+      "community": 1,
       "norm_label": "upsertventuresocial()"
     },
     {
@@ -6624,7 +6633,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L447",
       "id": "db_deleteventuresocial",
-      "community": 1,
+      "community": 0,
       "norm_label": "deleteventuresocial()"
     },
     {
@@ -6633,7 +6642,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L453",
       "id": "db_gettasks",
-      "community": 0,
+      "community": 1,
       "norm_label": "gettasks()"
     },
     {
@@ -6642,7 +6651,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L472",
       "id": "db_createtask",
-      "community": 0,
+      "community": 1,
       "norm_label": "createtask()"
     },
     {
@@ -6651,7 +6660,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L502",
       "id": "db_updatetask",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatetask()"
     },
     {
@@ -6660,7 +6669,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L518",
       "id": "db_getdeliverables",
-      "community": 0,
+      "community": 1,
       "norm_label": "getdeliverables()"
     },
     {
@@ -6669,7 +6678,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L536",
       "id": "db_createdeliverable",
-      "community": 0,
+      "community": 1,
       "norm_label": "createdeliverable()"
     },
     {
@@ -6678,7 +6687,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L566",
       "id": "db_getsops",
-      "community": 0,
+      "community": 1,
       "norm_label": "getsops()"
     },
     {
@@ -6687,7 +6696,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L584",
       "id": "db_createsop",
-      "community": 0,
+      "community": 1,
       "norm_label": "createsop()"
     },
     {
@@ -6696,7 +6705,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L614",
       "id": "db_updatesop",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatesop()"
     },
     {
@@ -6705,7 +6714,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L628",
       "id": "db_getcontentsuggestions",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcontentsuggestions()"
     },
     {
@@ -6714,7 +6723,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L650",
       "id": "db_createcontentsuggestion",
-      "community": 0,
+      "community": 1,
       "norm_label": "createcontentsuggestion()"
     },
     {
@@ -6723,7 +6732,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L686",
       "id": "db_getcompetitorcontent",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcompetitorcontent()"
     },
     {
@@ -6732,7 +6741,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L709",
       "id": "db_upsertcompetitorcontent",
-      "community": 0,
+      "community": 1,
       "norm_label": "upsertcompetitorcontent()"
     },
     {
@@ -6741,7 +6750,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L728",
       "id": "db_getactivityfeed",
-      "community": 0,
+      "community": 1,
       "norm_label": "getactivityfeed()"
     },
     {
@@ -6759,7 +6768,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L763",
       "id": "db_getdecisions",
-      "community": 0,
+      "community": 1,
       "norm_label": "getdecisions()"
     },
     {
@@ -6768,7 +6777,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L794",
       "id": "db_createdecision",
-      "community": 0,
+      "community": 1,
       "norm_label": "createdecision()"
     },
     {
@@ -6777,7 +6786,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L820",
       "id": "db_resolvedecision",
-      "community": 0,
+      "community": 1,
       "norm_label": "resolvedecision()"
     },
     {
@@ -6786,7 +6795,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L829",
       "id": "db_getdailylogs",
-      "community": 0,
+      "community": 1,
       "norm_label": "getdailylogs()"
     },
     {
@@ -6795,7 +6804,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L856",
       "id": "db_appenddailylog",
-      "community": 0,
+      "community": 1,
       "norm_label": "appenddailylog()"
     },
     {
@@ -6804,7 +6813,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L869",
       "id": "db_getcontentcalendar",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcontentcalendar()"
     },
     {
@@ -6813,7 +6822,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L901",
       "id": "db_createcontentcalendarentry",
-      "community": 0,
+      "community": 1,
       "norm_label": "createcontentcalendarentry()"
     },
     {
@@ -6822,7 +6831,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L933",
       "id": "db_deletecontentcalendarentry",
-      "community": 1,
+      "community": 0,
       "norm_label": "deletecontentcalendarentry()"
     },
     {
@@ -6831,7 +6840,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L939",
       "id": "db_getcachedposts",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcachedposts()"
     },
     {
@@ -6840,7 +6849,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L966",
       "id": "db_upsertcachedposts",
-      "community": 0,
+      "community": 1,
       "norm_label": "upsertcachedposts()"
     },
     {
@@ -6849,7 +6858,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L985",
       "id": "db_mapcalendarrow",
-      "community": 0,
+      "community": 1,
       "norm_label": "mapcalendarrow()"
     },
     {
@@ -6858,7 +6867,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1003",
       "id": "db_getpastdueplanned",
-      "community": 0,
+      "community": 1,
       "norm_label": "getpastdueplanned()"
     },
     {
@@ -6867,7 +6876,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1016",
       "id": "db_markasposted",
-      "community": 0,
+      "community": 1,
       "norm_label": "markasposted()"
     },
     {
@@ -6876,7 +6885,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1023",
       "id": "db_markasmissed",
-      "community": 0,
+      "community": 1,
       "norm_label": "markasmissed()"
     },
     {
@@ -6885,7 +6894,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1030",
       "id": "db_replanentry",
-      "community": 0,
+      "community": 1,
       "norm_label": "replanentry()"
     },
     {
@@ -6894,7 +6903,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1055",
       "id": "db_skipentry",
-      "community": 0,
+      "community": 1,
       "norm_label": "skipentry()"
     },
     {
@@ -6903,7 +6912,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1062",
       "id": "db_getpostedentries",
-      "community": 0,
+      "community": 1,
       "norm_label": "getpostedentries()"
     },
     {
@@ -6912,32 +6921,32 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
       "source_location": "L1081",
       "id": "db_getmissedentries",
-      "community": 0,
+      "community": 1,
       "norm_label": "getmissedentries()"
     },
     {
       "label": "saveWarRoomPlan()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1112",
+      "source_location": "L1113",
       "id": "db_savewarroomplan",
-      "community": 0,
+      "community": 1,
       "norm_label": "savewarroomplan()"
     },
     {
       "label": "updateWarRoomPlan()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1152",
+      "source_location": "L1154",
       "id": "db_updatewarroomplan",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatewarroomplan()"
     },
     {
       "label": "getWarRoomPlans()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1186",
+      "source_location": "L1190",
       "id": "db_getwarroomplans",
       "community": 8,
       "norm_label": "getwarroomplans()"
@@ -6946,279 +6955,279 @@
       "label": "deleteWarRoomPlan()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1240",
+      "source_location": "L1245",
       "id": "db_deletewarroomplan",
-      "community": 1,
+      "community": 0,
       "norm_label": "deletewarroomplan()"
     },
     {
       "label": "deleteAllWarRoomPlans()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1245",
+      "source_location": "L1250",
       "id": "db_deleteallwarroomplans",
-      "community": 1,
+      "community": 0,
       "norm_label": "deleteallwarroomplans()"
     },
     {
       "label": "saveAgentSession()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1259",
+      "source_location": "L1264",
       "id": "db_saveagentsession",
-      "community": 0,
+      "community": 1,
       "norm_label": "saveagentsession()"
     },
     {
       "label": "getAgentSessions()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1271",
+      "source_location": "L1276",
       "id": "db_getagentsessions",
-      "community": 0,
+      "community": 1,
       "norm_label": "getagentsessions()"
     },
     {
       "label": "searchAgentSessions()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1296",
+      "source_location": "L1301",
       "id": "db_searchagentsessions",
-      "community": 0,
+      "community": 1,
       "norm_label": "searchagentsessions()"
     },
     {
       "label": "saveStrategyLog()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1323",
+      "source_location": "L1328",
       "id": "db_savestrategylog",
-      "community": 0,
+      "community": 1,
       "norm_label": "savestrategylog()"
     },
     {
       "label": "getPendingStrategyLogs()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1347",
+      "source_location": "L1352",
       "id": "db_getpendingstrategylogs",
-      "community": 0,
+      "community": 1,
       "norm_label": "getpendingstrategylogs()"
     },
     {
       "label": "updateStrategyLogResult()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1357",
+      "source_location": "L1362",
       "id": "db_updatestrategylogresult",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatestrategylogresult()"
     },
     {
       "label": "getStrategyLog()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1372",
+      "source_location": "L1377",
       "id": "db_getstrategylog",
-      "community": 0,
+      "community": 1,
       "norm_label": "getstrategylog()"
     },
     {
       "label": "mapStrategyLog()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1379",
+      "source_location": "L1384",
       "id": "db_mapstrategylog",
-      "community": 0,
+      "community": 1,
       "norm_label": "mapstrategylog()"
     },
     {
       "label": "getLeverTracker()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1399",
+      "source_location": "L1404",
       "id": "db_getlevertracker",
-      "community": 0,
+      "community": 1,
       "norm_label": "getlevertracker()"
     },
     {
       "label": "updateLeverTracker()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1418",
+      "source_location": "L1423",
       "id": "db_updatelevertracker",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatelevertracker()"
     },
     {
       "label": "saveBrandPsychologyNote()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1450",
+      "source_location": "L1455",
       "id": "db_savebrandpsychologynote",
-      "community": 0,
+      "community": 1,
       "norm_label": "savebrandpsychologynote()"
     },
     {
       "label": "getBrandPsychology()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1462",
+      "source_location": "L1467",
       "id": "db_getbrandpsychology",
-      "community": 0,
+      "community": 1,
       "norm_label": "getbrandpsychology()"
     },
     {
       "label": "searchSkills()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1483",
+      "source_location": "L1488",
       "id": "db_searchskills",
-      "community": 0,
+      "community": 6,
       "norm_label": "searchskills()"
     },
     {
       "label": "appendLearnedActivation()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1503",
+      "source_location": "L1508",
       "id": "db_appendlearnedactivation",
-      "community": 0,
+      "community": 1,
       "norm_label": "appendlearnedactivation()"
     },
     {
       "label": "prefetchAgentMemory()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1525",
+      "source_location": "L1530",
       "id": "db_prefetchagentmemory",
-      "community": 0,
+      "community": 6,
       "norm_label": "prefetchagentmemory()"
     },
     {
       "label": "trackSkillUsage()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1558",
+      "source_location": "L1563",
       "id": "db_trackskillusage",
-      "community": 0,
+      "community": 6,
       "norm_label": "trackskillusage()"
     },
     {
       "label": "runSkillLifecycleTransitions()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1570",
+      "source_location": "L1575",
       "id": "db_runskilllifecycletransitions",
-      "community": 0,
+      "community": 1,
       "norm_label": "runskilllifecycletransitions()"
     },
     {
       "label": "extractSocialMetric()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1660",
+      "source_location": "L1665",
       "id": "db_extractsocialmetric",
-      "community": 0,
+      "community": 1,
       "norm_label": "extractsocialmetric()"
     },
     {
       "label": "extractAnalyticsMetric()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1680",
+      "source_location": "L1685",
       "id": "db_extractanalyticsmetric",
-      "community": 0,
+      "community": 1,
       "norm_label": "extractanalyticsmetric()"
     },
     {
       "label": "insertSocialSnapshot()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1687",
+      "source_location": "L1692",
       "id": "db_insertsocialsnapshot",
-      "community": 0,
+      "community": 1,
       "norm_label": "insertsocialsnapshot()"
     },
     {
       "label": "getSocialHistory()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1716",
+      "source_location": "L1721",
       "id": "db_getsocialhistory",
-      "community": 0,
+      "community": 1,
       "norm_label": "getsocialhistory()"
     },
     {
       "label": "insertAnalyticsSnapshot()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1740",
+      "source_location": "L1745",
       "id": "db_insertanalyticssnapshot",
-      "community": 0,
+      "community": 1,
       "norm_label": "insertanalyticssnapshot()"
     },
     {
       "label": "getAnalyticsHistory()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1771",
+      "source_location": "L1776",
       "id": "db_getanalyticshistory",
-      "community": 0,
+      "community": 1,
       "norm_label": "getanalyticshistory()"
     },
     {
       "label": "insertCompetitorSnapshot()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1794",
+      "source_location": "L1799",
       "id": "db_insertcompetitorsnapshot",
-      "community": 0,
+      "community": 1,
       "norm_label": "insertcompetitorsnapshot()"
     },
     {
       "label": "getCompetitorHistory()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1811",
+      "source_location": "L1816",
       "id": "db_getcompetitorhistory",
-      "community": 0,
+      "community": 1,
       "norm_label": "getcompetitorhistory()"
     },
     {
       "label": "getGrowthBaselines()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1838",
+      "source_location": "L1843",
       "id": "db_getgrowthbaselines",
-      "community": 0,
+      "community": 1,
       "norm_label": "getgrowthbaselines()"
     },
     {
       "label": "setGrowthBaseline()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1857",
+      "source_location": "L1862",
       "id": "db_setgrowthbaseline",
-      "community": 0,
+      "community": 1,
       "norm_label": "setgrowthbaseline()"
     },
     {
       "label": "getGrowthSummary()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1880",
+      "source_location": "L1885",
       "id": "db_getgrowthsummary",
-      "community": 0,
+      "community": 1,
       "norm_label": "getgrowthsummary()"
     },
     {
       "label": "getInsights()",
       "file_type": "code",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1943",
+      "source_location": "L1948",
       "id": "db_getinsights",
-      "community": 0,
+      "community": 1,
       "norm_label": "getinsights()"
     },
     {
@@ -7506,7 +7515,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_github_ts",
-      "community": 6,
+      "community": 7,
       "norm_label": "github.ts"
     },
     {
@@ -7515,7 +7524,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L12",
       "id": "github_headers",
-      "community": 6,
+      "community": 7,
       "norm_label": "headers()"
     },
     {
@@ -7524,7 +7533,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L22",
       "id": "github_gh",
-      "community": 6,
+      "community": 7,
       "norm_label": "gh()"
     },
     {
@@ -7533,7 +7542,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L32",
       "id": "github_parserepourl",
-      "community": 6,
+      "community": 7,
       "norm_label": "parserepourl()"
     },
     {
@@ -7542,7 +7551,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L44",
       "id": "github_resolveventurerepo",
-      "community": 6,
+      "community": 7,
       "norm_label": "resolveventurerepo()"
     },
     {
@@ -7551,7 +7560,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L68",
       "id": "github_getrepoinfo",
-      "community": 6,
+      "community": 7,
       "norm_label": "getrepoinfo()"
     },
     {
@@ -7560,7 +7569,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L83",
       "id": "github_getrepotree",
-      "community": 6,
+      "community": 7,
       "norm_label": "getrepotree()"
     },
     {
@@ -7569,7 +7578,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L91",
       "id": "github_getrepofile",
-      "community": 6,
+      "community": 7,
       "norm_label": "getrepofile()"
     },
     {
@@ -7578,7 +7587,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L102",
       "id": "github_listissues",
-      "community": 6,
+      "community": 7,
       "norm_label": "listissues()"
     },
     {
@@ -7587,7 +7596,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L116",
       "id": "github_listprs",
-      "community": 6,
+      "community": 7,
       "norm_label": "listprs()"
     },
     {
@@ -7596,7 +7605,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L129",
       "id": "github_listbranches",
-      "community": 6,
+      "community": 7,
       "norm_label": "listbranches()"
     },
     {
@@ -7605,7 +7614,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L134",
       "id": "github_listcommits",
-      "community": 6,
+      "community": 7,
       "norm_label": "listcommits()"
     },
     {
@@ -7614,7 +7623,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L145",
       "id": "github_searchcode",
-      "community": 6,
+      "community": 7,
       "norm_label": "searchcode()"
     },
     {
@@ -7623,7 +7632,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L154",
       "id": "github_deleterepofile",
-      "community": 6,
+      "community": 7,
       "norm_label": "deleterepofile()"
     },
     {
@@ -7632,7 +7641,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\github.ts",
       "source_location": "L172",
       "id": "github_createorupdaterepofile",
-      "community": 6,
+      "community": 7,
       "norm_label": "createorupdaterepofile()"
     },
     {
@@ -7668,7 +7677,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_intelligence_ts",
-      "community": 0,
+      "community": 1,
       "norm_label": "intelligence.ts"
     },
     {
@@ -7677,7 +7686,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L85",
       "id": "intelligence_mapbatch",
-      "community": 0,
+      "community": 1,
       "norm_label": "mapbatch()"
     },
     {
@@ -7686,7 +7695,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L98",
       "id": "intelligence_mappitch",
-      "community": 0,
+      "community": 1,
       "norm_label": "mappitch()"
     },
     {
@@ -7695,7 +7704,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L130",
       "id": "intelligence_createbatch",
-      "community": 0,
+      "community": 1,
       "norm_label": "createbatch()"
     },
     {
@@ -7704,7 +7713,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L162",
       "id": "intelligence_updatebatchstatus",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatebatchstatus()"
     },
     {
@@ -7713,7 +7722,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L173",
       "id": "intelligence_getlatestbatch",
-      "community": 0,
+      "community": 1,
       "norm_label": "getlatestbatch()"
     },
     {
@@ -7722,7 +7731,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L184",
       "id": "intelligence_getbatchhistory",
-      "community": 0,
+      "community": 1,
       "norm_label": "getbatchhistory()"
     },
     {
@@ -7731,7 +7740,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L199",
       "id": "intelligence_insertpitches",
-      "community": 0,
+      "community": 1,
       "norm_label": "insertpitches()"
     },
     {
@@ -7740,7 +7749,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L233",
       "id": "intelligence_getpitchesbybatch",
-      "community": 0,
+      "community": 1,
       "norm_label": "getpitchesbybatch()"
     },
     {
@@ -7749,7 +7758,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L244",
       "id": "intelligence_getlatestpitches",
-      "community": 0,
+      "community": 1,
       "norm_label": "getlatestpitches()"
     },
     {
@@ -7758,7 +7767,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L253",
       "id": "intelligence_updatepitchstatus",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatepitchstatus()"
     },
     {
@@ -7767,7 +7776,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L276",
       "id": "intelligence_getlevertracker",
-      "community": 0,
+      "community": 1,
       "norm_label": "getlevertracker()"
     },
     {
@@ -7776,7 +7785,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L292",
       "id": "intelligence_updatelevertracker",
-      "community": 0,
+      "community": 1,
       "norm_label": "updatelevertracker()"
     },
     {
@@ -7785,7 +7794,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\intelligence.ts",
       "source_location": "L340",
       "id": "intelligence_insertstrategylog",
-      "community": 0,
+      "community": 1,
       "norm_label": "insertstrategylog()"
     },
     {
@@ -8226,7 +8235,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\providers.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_providers_ts",
-      "community": 6,
+      "community": 7,
       "norm_label": "providers.ts"
     },
     {
@@ -8235,7 +8244,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\providers.ts",
       "source_location": "L101",
       "id": "providers_detectproviderfromurl",
-      "community": 6,
+      "community": 7,
       "norm_label": "detectproviderfromurl()"
     },
     {
@@ -8271,7 +8280,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\reports.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_reports_ts",
-      "community": 4,
+      "community": 12,
       "norm_label": "reports.ts"
     },
     {
@@ -8280,7 +8289,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\reports.ts",
       "source_location": "L34",
       "id": "reports_mapreport",
-      "community": 4,
+      "community": 12,
       "norm_label": "mapreport()"
     },
     {
@@ -8289,7 +8298,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\reports.ts",
       "source_location": "L52",
       "id": "reports_insertreport",
-      "community": 4,
+      "community": 12,
       "norm_label": "insertreport()"
     },
     {
@@ -8298,7 +8307,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\reports.ts",
       "source_location": "L82",
       "id": "reports_getlatestreport",
-      "community": 4,
+      "community": 12,
       "norm_label": "getlatestreport()"
     },
     {
@@ -8307,7 +8316,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\reports.ts",
       "source_location": "L97",
       "id": "reports_getlatestreports",
-      "community": 4,
+      "community": 12,
       "norm_label": "getlatestreports()"
     },
     {
@@ -8316,7 +8325,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\reports.ts",
       "source_location": "L108",
       "id": "reports_getreportsbytype",
-      "community": 4,
+      "community": 12,
       "norm_label": "getreportsbytype()"
     },
     {
@@ -8559,7 +8568,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_session_manager_ts",
-      "community": 7,
+      "community": 4,
       "norm_label": "session-manager.ts"
     },
     {
@@ -8568,7 +8577,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L43",
       "id": "session_manager_validatesession",
-      "community": 7,
+      "community": 4,
       "norm_label": "validatesession()"
     },
     {
@@ -8577,7 +8586,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L65",
       "id": "session_manager_migratesession",
-      "community": 7,
+      "community": 4,
       "norm_label": "migratesession()"
     },
     {
@@ -8586,7 +8595,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L84",
       "id": "session_manager_sessionmanager",
-      "community": 7,
+      "community": 4,
       "norm_label": "sessionmanager"
     },
     {
@@ -8595,7 +8604,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L89",
       "id": "session_manager_sessionmanager_constructor",
-      "community": 7,
+      "community": 4,
       "norm_label": ".constructor()"
     },
     {
@@ -8604,7 +8613,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L91",
       "id": "session_manager_sessionmanager_getinstance",
-      "community": 7,
+      "community": 4,
       "norm_label": ".getinstance()"
     },
     {
@@ -8613,7 +8622,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L101",
       "id": "session_manager_sessionmanager_read",
-      "community": 7,
+      "community": 4,
       "norm_label": ".read()"
     },
     {
@@ -8622,7 +8631,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L116",
       "id": "session_manager_sessionmanager_update",
-      "community": 0,
+      "community": 1,
       "norm_label": ".update()"
     },
     {
@@ -8631,7 +8640,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L132",
       "id": "session_manager_sessionmanager_appendsession",
-      "community": 7,
+      "community": 4,
       "norm_label": ".appendsession()"
     },
     {
@@ -8640,7 +8649,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L144",
       "id": "session_manager_sessionmanager_flagsip",
-      "community": 7,
+      "community": 4,
       "norm_label": ".flagsip()"
     },
     {
@@ -8649,7 +8658,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L168",
       "id": "session_manager_sessionmanager_resolvesip",
-      "community": 7,
+      "community": 4,
       "norm_label": ".resolvesip()"
     },
     {
@@ -8658,7 +8667,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L181",
       "id": "session_manager_sessionmanager_subscribe",
-      "community": 7,
+      "community": 4,
       "norm_label": ".subscribe()"
     },
     {
@@ -8676,7 +8685,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L273",
       "id": "session_manager_sessionmanager_serialize",
-      "community": 7,
+      "community": 4,
       "norm_label": ".serialize()"
     },
     {
@@ -8685,7 +8694,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L322",
       "id": "session_manager_sessionmanager_createemptydata",
-      "community": 7,
+      "community": 4,
       "norm_label": ".createemptydata()"
     },
     {
@@ -8694,7 +8703,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L336",
       "id": "session_manager_sessionmanager_notifylisteners",
-      "community": 7,
+      "community": 4,
       "norm_label": ".notifylisteners()"
     },
     {
@@ -8703,7 +8712,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L345",
       "id": "session_manager_readsession",
-      "community": 7,
+      "community": 4,
       "norm_label": "readsession()"
     },
     {
@@ -8712,7 +8721,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L349",
       "id": "session_manager_updatesession",
-      "community": 7,
+      "community": 4,
       "norm_label": "updatesession()"
     },
     {
@@ -8721,7 +8730,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L353",
       "id": "session_manager_flagsip",
-      "community": 7,
+      "community": 4,
       "norm_label": "flagsip()"
     },
     {
@@ -8730,7 +8739,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\session-manager.ts",
       "source_location": "L357",
       "id": "session_manager_resolvesip",
-      "community": 7,
+      "community": 4,
       "norm_label": "resolvesip()"
     },
     {
@@ -8811,7 +8820,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_sip_manager_ts",
-      "community": 7,
+      "community": 4,
       "norm_label": "sip-manager.ts"
     },
     {
@@ -8820,7 +8829,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L49",
       "id": "sip_manager_shouldtriggersip",
-      "community": 7,
+      "community": 4,
       "norm_label": "shouldtriggersip()"
     },
     {
@@ -8829,7 +8838,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L56",
       "id": "sip_manager_calculatesipduedate",
-      "community": 7,
+      "community": 4,
       "norm_label": "calculatesipduedate()"
     },
     {
@@ -8838,7 +8847,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L65",
       "id": "sip_manager_getsippriority",
-      "community": 7,
+      "community": 4,
       "norm_label": "getsippriority()"
     },
     {
@@ -8847,7 +8856,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L77",
       "id": "sip_manager_schedulesip",
-      "community": 7,
+      "community": 4,
       "norm_label": "schedulesip()"
     },
     {
@@ -8856,7 +8865,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L102",
       "id": "sip_manager_updateagentmemorywithsip",
-      "community": 7,
+      "community": 4,
       "norm_label": "updateagentmemorywithsip()"
     },
     {
@@ -8865,7 +8874,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L138",
       "id": "sip_manager_getagentdepartment",
-      "community": 7,
+      "community": 4,
       "norm_label": "getagentdepartment()"
     },
     {
@@ -8874,7 +8883,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L161",
       "id": "sip_manager_resolvesip",
-      "community": 7,
+      "community": 4,
       "norm_label": "resolvesip()"
     },
     {
@@ -8883,7 +8892,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L188",
       "id": "sip_manager_getpendingsips",
-      "community": 7,
+      "community": 4,
       "norm_label": "getpendingsips()"
     },
     {
@@ -8892,7 +8901,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L205",
       "id": "sip_manager_getoverduesips",
-      "community": 7,
+      "community": 4,
       "norm_label": "getoverduesips()"
     },
     {
@@ -8901,7 +8910,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L215",
       "id": "sip_manager_generatesipreport",
-      "community": 7,
+      "community": 4,
       "norm_label": "generatesipreport()"
     },
     {
@@ -8910,7 +8919,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\sip-manager.ts",
       "source_location": "L243",
       "id": "sip_manager_sendsipreminders",
-      "community": 7,
+      "community": 4,
       "norm_label": "sendsipreminders()"
     },
     {
@@ -9054,7 +9063,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\social-commerce.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_social_commerce_ts",
-      "community": 4,
+      "community": 0,
       "norm_label": "social-commerce.ts"
     },
     {
@@ -9063,7 +9072,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\social-commerce.ts",
       "source_location": "L15",
       "id": "social_commerce_detectpurchaseintentposts",
-      "community": 4,
+      "community": 0,
       "norm_label": "detectpurchaseintentposts()"
     },
     {
@@ -9315,7 +9324,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-documents.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_venture_documents_ts",
-      "community": 14,
+      "community": 6,
       "norm_label": "venture-documents.ts"
     },
     {
@@ -9324,7 +9333,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-documents.ts",
       "source_location": "L24",
       "id": "venture_documents_client",
-      "community": 14,
+      "community": 6,
       "norm_label": "client()"
     },
     {
@@ -9333,7 +9342,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-documents.ts",
       "source_location": "L32",
       "id": "venture_documents_getventuredoc",
-      "community": 14,
+      "community": 6,
       "norm_label": "getventuredoc()"
     },
     {
@@ -9342,7 +9351,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-documents.ts",
       "source_location": "L51",
       "id": "venture_documents_getallventuredocs",
-      "community": 14,
+      "community": 6,
       "norm_label": "getallventuredocs()"
     },
     {
@@ -9351,7 +9360,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-documents.ts",
       "source_location": "L76",
       "id": "venture_documents_setventuredoc",
-      "community": 14,
+      "community": 6,
       "norm_label": "setventuredoc()"
     },
     {
@@ -9360,7 +9369,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-server.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_venture_server_ts",
-      "community": 0,
+      "community": 1,
       "norm_label": "venture-server.ts"
     },
     {
@@ -9369,7 +9378,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\venture-server.ts",
       "source_location": "L9",
       "id": "venture_server_getventurefromdb",
-      "community": 0,
+      "community": 1,
       "norm_label": "getventurefromdb()"
     },
     {
@@ -9378,7 +9387,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ventures.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_ventures_ts",
-      "community": 6,
+      "community": 7,
       "norm_label": "ventures.ts"
     },
     {
@@ -9387,7 +9396,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ventures.ts",
       "source_location": "L14",
       "id": "ventures_getventuretechstack",
-      "community": 6,
+      "community": 7,
       "norm_label": "getventuretechstack()"
     },
     {
@@ -9396,7 +9405,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ventures.ts",
       "source_location": "L18",
       "id": "ventures_isflutterventure",
-      "community": 6,
+      "community": 7,
       "norm_label": "isflutterventure()"
     },
     {
@@ -9441,7 +9450,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\database.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_health_database_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "database.ts"
     },
     {
@@ -9450,7 +9459,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\database.ts",
       "source_location": "L11",
       "id": "database_checkdatabasehealth",
-      "community": 1,
+      "community": 0,
       "norm_label": "checkdatabasehealth()"
     },
     {
@@ -9459,7 +9468,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\repository.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_health_repository_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "repository.ts"
     },
     {
@@ -9468,7 +9477,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\repository.ts",
       "source_location": "L9",
       "id": "repository_checkrepositoryhealth",
-      "community": 1,
+      "community": 0,
       "norm_label": "checkrepositoryhealth()"
     },
     {
@@ -9477,7 +9486,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\spend.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_health_spend_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "spend.ts"
     },
     {
@@ -9486,7 +9495,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\spend.ts",
       "source_location": "L11",
       "id": "spend_checkspend",
-      "community": 1,
+      "community": 0,
       "norm_label": "checkspend()"
     },
     {
@@ -9495,7 +9504,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\website.ts",
       "source_location": "L1",
       "id": "c_users_novy_desktop_projects_official_yvon_lib_health_website_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "website.ts"
     },
     {
@@ -9504,7 +9513,7 @@
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\health\\website.ts",
       "source_location": "L9",
       "id": "website_checkwebsitehealth",
-      "community": 1,
+      "community": 0,
       "norm_label": "checkwebsitehealth()"
     },
     {
@@ -11034,7 +11043,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L1793",
+      "source_location": "L1886",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_get",
@@ -13710,7 +13719,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L893",
+      "source_location": "L955",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_post",
@@ -17322,7 +17331,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L333",
+      "source_location": "L337",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_istextmime",
@@ -17334,7 +17343,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L339",
+      "source_location": "L343",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_buildfilesnote",
@@ -17346,7 +17355,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L380",
+      "source_location": "L384",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_fallbackplan",
@@ -17358,7 +17367,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L406",
+      "source_location": "L410",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_classifytask",
@@ -17370,7 +17379,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L440",
+      "source_location": "L448",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_buildventuredocsblock",
@@ -17382,7 +17391,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L455",
+      "source_location": "L463",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_getspecialistbriefing",
@@ -17394,7 +17403,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L751",
+      "source_location": "L813",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_getspecialistwithretry",
@@ -17406,7 +17415,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L791",
+      "source_location": "L853",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_createhandoffsummary",
@@ -17418,7 +17427,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L826",
+      "source_location": "L888",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_api_team_chat_route_ts",
       "_tgt": "route_executesequential",
@@ -17503,12 +17512,12 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L271",
+      "source_location": "L275",
       "weight": 1.0,
       "_src": "route_marcusorchestrate",
-      "_tgt": "ai_client_callfast",
+      "_tgt": "ai_client_callsynthesis",
       "source": "route_marcusorchestrate",
-      "target": "ai_client_callfast"
+      "target": "ai_client_callsynthesis"
     },
     {
       "relation": "calls",
@@ -17524,9 +17533,21 @@
     },
     {
       "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
+      "source_location": "L271",
+      "weight": 1.0,
+      "_src": "route_marcusorchestrate",
+      "_tgt": "ai_client_callfast",
+      "source": "route_marcusorchestrate",
+      "target": "ai_client_callfast"
+    },
+    {
+      "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L358",
+      "source_location": "L362",
       "weight": 1.0,
       "_src": "route_buildfilesnote",
       "_tgt": "route_istextmime",
@@ -17550,7 +17571,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L585",
+      "source_location": "L593",
       "weight": 1.0,
       "_src": "route_getspecialistbriefing",
       "_tgt": "route_classifytask",
@@ -17574,7 +17595,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L667",
+      "source_location": "L693",
       "weight": 1.0,
       "_src": "route_getspecialistbriefing",
       "_tgt": "route_buildventuredocsblock",
@@ -17586,7 +17607,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L771",
+      "source_location": "L833",
       "weight": 1.0,
       "_src": "route_getspecialistwithretry",
       "_tgt": "route_getspecialistbriefing",
@@ -17706,7 +17727,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L865",
+      "source_location": "L927",
       "weight": 1.0,
       "_src": "route_executesequential",
       "_tgt": "route_getspecialistwithretry",
@@ -17718,7 +17739,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\api\\team-chat\\route.ts",
-      "source_location": "L878",
+      "source_location": "L940",
       "weight": 1.0,
       "_src": "route_executesequential",
       "_tgt": "route_createhandoffsummary",
@@ -19794,7 +19815,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L977",
+      "source_location": "L994",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_handlecopy",
@@ -22410,7 +22431,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L889",
+      "source_location": "L896",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_onventurechange",
@@ -22422,7 +22443,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L958",
+      "source_location": "L975",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_handlefiles",
@@ -22434,7 +22455,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1009",
+      "source_location": "L1026",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_ensureauthcookie",
@@ -22446,7 +22467,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1321",
+      "source_location": "L1340",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_reset",
@@ -22458,7 +22479,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1336",
+      "source_location": "L1355",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_applyslash",
@@ -22470,7 +22491,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1342",
+      "source_location": "L1361",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_handleinputchange",
@@ -22482,7 +22503,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1358",
+      "source_location": "L1377",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_app_screens_war_room_page_tsx",
       "_tgt": "page_handlekeydown",
@@ -22506,7 +22527,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\app\\screens\\war-room\\page.tsx",
-      "source_location": "L1362",
+      "source_location": "L1381",
       "weight": 1.0,
       "_src": "page_handlekeydown",
       "_tgt": "page_applyslash",
@@ -22830,7 +22851,19 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L211",
+      "source_location": "L213",
+      "weight": 1.0,
+      "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
+      "_tgt": "agent_tools_normalizesep",
+      "source": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
+      "target": "agent_tools_normalizesep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
+      "source_location": "L217",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_isbashallowedsingle",
@@ -22842,7 +22875,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L228",
+      "source_location": "L252",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_isbashallowed",
@@ -22854,7 +22887,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L249",
+      "source_location": "L273",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_execread",
@@ -22866,7 +22899,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L271",
+      "source_location": "L295",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_execglob",
@@ -22878,7 +22911,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L291",
+      "source_location": "L316",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_execgrep",
@@ -22890,7 +22923,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L326",
+      "source_location": "L396",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_execbash",
@@ -22902,7 +22935,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L350",
+      "source_location": "L422",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_execwebfetch",
@@ -22914,7 +22947,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L378",
+      "source_location": "L450",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_execgithub",
@@ -22926,7 +22959,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L507",
+      "source_location": "L595",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_exectodowrite",
@@ -22938,7 +22971,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L525",
+      "source_location": "L613",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_executetool",
@@ -22950,7 +22983,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L585",
+      "source_location": "L673",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_agent_tools_ts",
       "_tgt": "agent_tools_toolsforagent",
@@ -22962,7 +22995,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L252",
+      "source_location": "L276",
       "weight": 1.0,
       "_src": "agent_tools_execread",
       "_tgt": "agent_tools_saferesolve",
@@ -22974,7 +23007,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L274",
+      "source_location": "L298",
       "weight": 1.0,
       "_src": "agent_tools_execglob",
       "_tgt": "agent_tools_saferesolve",
@@ -22986,7 +23019,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L302",
+      "source_location": "L327",
       "weight": 1.0,
       "_src": "agent_tools_execgrep",
       "_tgt": "agent_tools_saferesolve",
@@ -22998,7 +23031,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L265",
+      "source_location": "L289",
       "weight": 1.0,
       "_src": "agent_tools_execread",
       "_tgt": "agent_tools_ok",
@@ -23010,7 +23043,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L284",
+      "source_location": "L308",
       "weight": 1.0,
       "_src": "agent_tools_execglob",
       "_tgt": "agent_tools_ok",
@@ -23022,7 +23055,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L315",
+      "source_location": "L388",
       "weight": 1.0,
       "_src": "agent_tools_execgrep",
       "_tgt": "agent_tools_ok",
@@ -23034,7 +23067,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L344",
+      "source_location": "L416",
       "weight": 1.0,
       "_src": "agent_tools_execbash",
       "_tgt": "agent_tools_ok",
@@ -23046,7 +23079,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L370",
+      "source_location": "L442",
       "weight": 1.0,
       "_src": "agent_tools_execwebfetch",
       "_tgt": "agent_tools_ok",
@@ -23058,7 +23091,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L398",
+      "source_location": "L470",
       "weight": 1.0,
       "_src": "agent_tools_execgithub",
       "_tgt": "agent_tools_ok",
@@ -23070,7 +23103,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L515",
+      "source_location": "L603",
       "weight": 1.0,
       "_src": "agent_tools_exectodowrite",
       "_tgt": "agent_tools_ok",
@@ -23082,7 +23115,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L255",
+      "source_location": "L279",
       "weight": 1.0,
       "_src": "agent_tools_execread",
       "_tgt": "agent_tools_err",
@@ -23094,7 +23127,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L287",
+      "source_location": "L311",
       "weight": 1.0,
       "_src": "agent_tools_execglob",
       "_tgt": "agent_tools_err",
@@ -23106,7 +23139,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L322",
+      "source_location": "L332",
       "weight": 1.0,
       "_src": "agent_tools_execgrep",
       "_tgt": "agent_tools_err",
@@ -23118,7 +23151,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L329",
+      "source_location": "L399",
       "weight": 1.0,
       "_src": "agent_tools_execbash",
       "_tgt": "agent_tools_err",
@@ -23130,7 +23163,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L354",
+      "source_location": "L426",
       "weight": 1.0,
       "_src": "agent_tools_execwebfetch",
       "_tgt": "agent_tools_err",
@@ -23142,7 +23175,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L382",
+      "source_location": "L454",
       "weight": 1.0,
       "_src": "agent_tools_execgithub",
       "_tgt": "agent_tools_err",
@@ -23154,7 +23187,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L534",
+      "source_location": "L622",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_err",
@@ -23166,7 +23199,19 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L234",
+      "source_location": "L241",
+      "weight": 1.0,
+      "_src": "agent_tools_isbashallowedsingle",
+      "_tgt": "agent_tools_normalizesep",
+      "source": "agent_tools_normalizesep",
+      "target": "agent_tools_isbashallowedsingle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
+      "source_location": "L258",
       "weight": 1.0,
       "_src": "agent_tools_isbashallowed",
       "_tgt": "agent_tools_isbashallowedsingle",
@@ -23178,7 +23223,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L328",
+      "source_location": "L398",
       "weight": 1.0,
       "_src": "agent_tools_execbash",
       "_tgt": "agent_tools_isbashallowed",
@@ -23190,7 +23235,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L544",
+      "source_location": "L632",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_execread",
@@ -23202,7 +23247,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L545",
+      "source_location": "L633",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_execglob",
@@ -23214,7 +23259,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L546",
+      "source_location": "L634",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_execgrep",
@@ -23226,7 +23271,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L547",
+      "source_location": "L635",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_execbash",
@@ -23238,7 +23283,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L548",
+      "source_location": "L636",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_execwebfetch",
@@ -23250,7 +23295,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L550",
+      "source_location": "L638",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_execgithub",
@@ -23394,7 +23439,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\agent-tools.ts",
-      "source_location": "L549",
+      "source_location": "L637",
       "weight": 1.0,
       "_src": "agent_tools_executetool",
       "_tgt": "agent_tools_exectodowrite",
@@ -23478,7 +23523,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L199",
+      "source_location": "L202",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_ai_client_ts",
       "_tgt": "ai_client_callfast",
@@ -23490,7 +23535,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L232",
+      "source_location": "L235",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_ai_client_ts",
       "_tgt": "ai_client_callsynthesis",
@@ -23502,7 +23547,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L416",
+      "source_location": "L419",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_ai_client_ts",
       "_tgt": "ai_client_getactiveproviderinfo",
@@ -23514,7 +23559,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L436",
+      "source_location": "L439",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_ai_client_ts",
       "_tgt": "ai_client_invalidateprovidercache",
@@ -23526,7 +23571,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L204",
+      "source_location": "L207",
       "weight": 1.0,
       "_src": "ai_client_callfast",
       "_tgt": "ai_client_loadconfig",
@@ -23538,7 +23583,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L237",
+      "source_location": "L240",
       "weight": 1.0,
       "_src": "ai_client_callsynthesis",
       "_tgt": "ai_client_loadconfig",
@@ -23550,7 +23595,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L418",
+      "source_location": "L421",
       "weight": 1.0,
       "_src": "ai_client_getactiveproviderinfo",
       "_tgt": "ai_client_loadconfig",
@@ -23562,7 +23607,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L225",
+      "source_location": "L228",
       "weight": 1.0,
       "_src": "ai_client_callfast",
       "_tgt": "ai_client_oaimessages",
@@ -23574,7 +23619,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L257",
+      "source_location": "L260",
       "weight": 1.0,
       "_src": "ai_client_callsynthesis",
       "_tgt": "ai_client_oaimessages",
@@ -23586,7 +23631,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L221",
+      "source_location": "L224",
       "weight": 1.0,
       "_src": "ai_client_callfast",
       "_tgt": "ai_client_oaicall",
@@ -23598,7 +23643,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\ai-client.ts",
-      "source_location": "L253",
+      "source_location": "L256",
       "weight": 1.0,
       "_src": "ai_client_callsynthesis",
       "_tgt": "ai_client_oaicall",
@@ -25974,7 +26019,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1112",
+      "source_location": "L1113",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_savewarroomplan",
@@ -25986,7 +26031,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1152",
+      "source_location": "L1154",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_updatewarroomplan",
@@ -25998,7 +26043,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1186",
+      "source_location": "L1190",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getwarroomplans",
@@ -26010,7 +26055,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1240",
+      "source_location": "L1245",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_deletewarroomplan",
@@ -26022,7 +26067,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1245",
+      "source_location": "L1250",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_deleteallwarroomplans",
@@ -26034,7 +26079,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1259",
+      "source_location": "L1264",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_saveagentsession",
@@ -26046,7 +26091,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1271",
+      "source_location": "L1276",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getagentsessions",
@@ -26058,7 +26103,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1296",
+      "source_location": "L1301",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_searchagentsessions",
@@ -26070,7 +26115,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1323",
+      "source_location": "L1328",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_savestrategylog",
@@ -26082,7 +26127,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1347",
+      "source_location": "L1352",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getpendingstrategylogs",
@@ -26094,7 +26139,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1357",
+      "source_location": "L1362",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_updatestrategylogresult",
@@ -26106,7 +26151,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1372",
+      "source_location": "L1377",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getstrategylog",
@@ -26118,7 +26163,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1379",
+      "source_location": "L1384",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_mapstrategylog",
@@ -26130,7 +26175,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1399",
+      "source_location": "L1404",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getlevertracker",
@@ -26142,7 +26187,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1418",
+      "source_location": "L1423",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_updatelevertracker",
@@ -26154,7 +26199,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1450",
+      "source_location": "L1455",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_savebrandpsychologynote",
@@ -26166,7 +26211,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1462",
+      "source_location": "L1467",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getbrandpsychology",
@@ -26178,7 +26223,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1483",
+      "source_location": "L1488",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_searchskills",
@@ -26190,7 +26235,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1503",
+      "source_location": "L1508",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_appendlearnedactivation",
@@ -26202,7 +26247,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1525",
+      "source_location": "L1530",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_prefetchagentmemory",
@@ -26214,7 +26259,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1558",
+      "source_location": "L1563",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_trackskillusage",
@@ -26226,7 +26271,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1570",
+      "source_location": "L1575",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_runskilllifecycletransitions",
@@ -26238,7 +26283,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1660",
+      "source_location": "L1665",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_extractsocialmetric",
@@ -26250,7 +26295,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1680",
+      "source_location": "L1685",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_extractanalyticsmetric",
@@ -26262,7 +26307,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1687",
+      "source_location": "L1692",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_insertsocialsnapshot",
@@ -26274,7 +26319,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1716",
+      "source_location": "L1721",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getsocialhistory",
@@ -26286,7 +26331,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1740",
+      "source_location": "L1745",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_insertanalyticssnapshot",
@@ -26298,7 +26343,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1771",
+      "source_location": "L1776",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getanalyticshistory",
@@ -26310,7 +26355,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1794",
+      "source_location": "L1799",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_insertcompetitorsnapshot",
@@ -26322,7 +26367,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1811",
+      "source_location": "L1816",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getcompetitorhistory",
@@ -26334,7 +26379,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1838",
+      "source_location": "L1843",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getgrowthbaselines",
@@ -26346,7 +26391,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1857",
+      "source_location": "L1862",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_setgrowthbaseline",
@@ -26358,7 +26403,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1880",
+      "source_location": "L1885",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getgrowthsummary",
@@ -26370,7 +26415,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1943",
+      "source_location": "L1948",
       "weight": 1.0,
       "_src": "c_users_novy_desktop_projects_official_yvon_lib_db_ts",
       "_tgt": "db_getinsights",
@@ -26598,7 +26643,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1423",
+      "source_location": "L1428",
       "weight": 1.0,
       "_src": "db_updatelevertracker",
       "_tgt": "db_getlevertracker",
@@ -26646,7 +26691,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1700",
+      "source_location": "L1705",
       "weight": 1.0,
       "_src": "db_insertsocialsnapshot",
       "_tgt": "db_extractsocialmetric",
@@ -26658,7 +26703,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1755",
+      "source_location": "L1760",
       "weight": 1.0,
       "_src": "db_insertanalyticssnapshot",
       "_tgt": "db_extractanalyticsmetric",
@@ -26670,7 +26715,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1912",
+      "source_location": "L1917",
       "weight": 1.0,
       "_src": "db_getgrowthsummary",
       "_tgt": "db_getsocialhistory",
@@ -26682,7 +26727,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1888",
+      "source_location": "L1893",
       "weight": 1.0,
       "_src": "db_getgrowthsummary",
       "_tgt": "db_getanalyticshistory",
@@ -26694,7 +26739,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\Novy\\Desktop\\Projects\\Official YVON\\lib\\db.ts",
-      "source_location": "L1881",
+      "source_location": "L1886",
       "weight": 1.0,
       "_src": "db_getgrowthsummary",
       "_tgt": "db_getgrowthbaselines",

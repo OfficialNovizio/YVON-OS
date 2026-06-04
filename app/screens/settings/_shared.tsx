@@ -145,8 +145,8 @@ export function FSelect({ value, onChange, options }: {
         backgroundPosition: 'right 12px center',
       }}
     >
-      {options.map(o => (
-        <option key={o.value} value={o.value} style={{ background: '#ffffff', color: '#0c2c52' }}>
+      {options.map((o, i) => (
+        <option key={`${o.value}-${i}`} value={o.value} style={{ background: '#ffffff', color: '#0c2c52' }}>
           {o.label}
         </option>
       ))}

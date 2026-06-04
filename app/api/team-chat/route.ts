@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { getAgent, AGENTS } from '@/lib/agents'
-import { callFast, streamSynthesis, streamWithTools, getActiveProviderInfo } from '@/lib/ai-client'
+import { callFast, callSynthesis, streamSynthesis, streamWithTools, getActiveProviderInfo } from '@/lib/ai-client'
 import { resolveVentureRepo, getRepoInfo, listCommits, listIssues, getRepoTree } from '@/lib/github'
 import { getAllVentureDocs } from '@/lib/venture-documents'
 import { getAgentMemory, setAgentMemory, getVentureAgentMemories, saveVentureAgentMemory, formatVentureMemoriesBlock } from '@/lib/agent-memory'
@@ -227,9 +227,9 @@ async function marcusOrchestrate(
     const cleanMsg = message.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
 
     const historyBlock = conversationHistory && conversationHistory.length > 0
-      ? `\n\nPrior conversation (last ${Math.min(2, conversationHistory.length)} turns — use for follow-up context only):\n` +
-        conversationHistory.slice(-2).map(h =>
-          `User: ${h.user.slice(0, 200)}\nMarcus: ${h.marcus.slice(0, 300)}`
+      ? `\n\nPrior conversation (${conversationHistory.length} turns):\n` +
+        conversationHistory.map(h =>
+          `User: ${h.user}\nMarcus: ${h.marcus}`
         ).join('\n\n')
       : ''
 
@@ -238,7 +238,7 @@ async function marcusOrchestrate(
 
 User request: "${cleanMsg}"
 
-YOUR JOB: Pick the right number of specialists for this task (2 for focused tasks, 3-4 for complex multi-domain tasks). Write each one a specific brief.
+YOUR JOB: Pick the right specialists and write each one a detailed, specific brief (150-200 words each) that tells them exactly what to investigate, what questions to answer, and what output to produce.
 
 TEAM:
 dev-lead          — ${frameworkTech} architecture, full-stack decisions, code review
@@ -258,18 +258,22 @@ HARD RULES:
 1. Stack trace / exception in request → specialists: ["quinn-qa","dev-lead"]
 2. ${dbTech} auth error / login broken → specialists: ["raj-backend","dev-lead"]
 3. UI / screen / component / layout / design / styling / UX analysis or implementation → specialists: ["mia-frontend","dev-lead"]
-4. Use 2 specialists for single-domain tasks. Use 3-4 only when the task genuinely spans multiple domains (e.g. backend + frontend + QA together).
+4. Use 2 specialists for single-domain tasks. Use 3-4 only when the task genuinely spans multiple domains.
+
+ORDER RULE:
+- sequential: when specialists depend on each other (e.g. backend writes → frontend integrates, or dev fixes → QA verifies). Each agent sees the previous agent's full output.
+- parallel: when specialists work independently (reports, strategy, marketing, analysis).
+Default to sequential for technical tasks involving code changes. Default to parallel for analysis and strategy.
 
 INTENT OPTIONS (pick one):
 strategy | operations | technical_frontend | technical_backend | technical_general | qa_review | marketing_content | social_tactics | advertising | growth_data | competitor_intel | trending_content | finance | behavioral_audit | github_analysis | product_roadmap
 
-Return ONLY valid JSON — no markdown, no explanation. specialists array has 2 entries for focused tasks, 3-4 for multi-domain tasks:
-{"intent":"<intent>","specialists":["<id1>","<id2>"],"reasoning":"<one sentence>","objective":"<clear goal>","order":"parallel","each_agent_task":{"<id1>":"<specific task for id1>","<id2>":"<specific task for id2>"},"definition_of_done":"<success criteria>"}
-For 3 specialists: {"specialists":["<id1>","<id2>","<id3>"],"each_agent_task":{"<id1>":"...","<id2>":"...","<id3>":"..."},...}`
+Return ONLY valid JSON — no markdown, no explanation:
+{"intent":"<intent>","specialists":["<id1>","<id2>"],"reasoning":"<one sentence>","objective":"<clear goal>","order":"sequential|parallel","each_agent_task":{"<id1>":"<detailed 150-200 word brief for id1 — specific files, questions, expected output>","<id2>":"<detailed 150-200 word brief for id2>"},"definition_of_done":"<binary success criteria>"}`
 
     const text = await Promise.race([
-      callFast({ maxTokens: 2048, messages: [{ role: 'user', content: prompt }] }),
-      new Promise<string>((_, reject) => setTimeout(() => reject(new Error('orchestration_timeout')), 25000)),
+      callSynthesis({ maxTokens: 4096, messages: [{ role: 'user', content: prompt }] }),
+      new Promise<string>((_, reject) => setTimeout(() => reject(new Error('orchestration_timeout')), 45000)),
     ])
 
     const match = text.match(/\{[\s\S]*\}/)
@@ -299,7 +303,7 @@ For 3 specialists: {"specialists":["<id1>","<id2>","<id3>"],"each_agent_task":{"
       plan: {
         objective:          r.objective ?? cleanMsg.slice(0, 120),
         agents:             validSpecialists,
-        order:              'parallel',
+        order:              (r.order === 'sequential' ? 'sequential' : 'parallel'),
         each_agent_task:    Object.fromEntries(
           validSpecialists.map(id => [id, r.each_agent_task?.[id] ?? cleanMsg])
         ) as Partial<Record<AgentId, string>>,
@@ -416,11 +420,15 @@ function classifyTask(
 
   const isReport       = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(cleanMessage)
   const isDebugging    = !isYvon && (
+    // Stack traces, exceptions, known Flutter/Firebase error signatures
     /(\bat\s+\w|\b#\d+\s+\w|Exception|Traceback|Error:|FAILED|stacktrace|\[firebase_|\[flutter_|flutter:|\bcrash\b|\bcrashed\b|\bnot\s+working\b|\bdoesn.t\s+work\b)/i.test(cleanMessage) ||
-    /\b(fix\s+(this|the|my|it)|please\s+fix|help\s+me\s+fix|debug\s+(this|the|my)|resolve\s+(this|the)|i['']m\s+getting\s+(an?\s+)?error|i\s+get\s+(an?\s+)?error|getting\s+(an?\s+)?error|i\s+have\s+(an?\s+)?error|there.s\s+(an?\s+)?error)\b/i.test(cleanMessage)
+    // Classic "fix this / debug this" patterns
+    /\b(fix\s+(this|the|my|it)|please\s+fix|help\s+me\s+fix|debug\s+(this|the|my)|resolve\s+(this|the)|i['']m\s+getting\s+(an?\s+)?error|i\s+get\s+(an?\s+)?error|getting\s+(an?\s+)?error|i\s+have\s+(an?\s+)?error|there.s\s+(an?\s+)?error)\b/i.test(cleanMessage) ||
+    // Natural language: "solve it", "there is an error/issue", "fix the errors", "errors in X"
+    /\b(solve\s+(this|it|these|the)|there\s+(is|are)\s+(an?\s+)?(error|issue|bug|problem)|fix\s+(errors?|issues?|bugs?)|resolve\s+(errors?|issues?|bugs?)|errors?\s+(in|with|on)\s+\w|issues?\s+(in|with|on)\s+\w|check\s+(errors?|issues?|bugs?).*?(fix|solve|resolve)|still\s+(broken|failing|not\s+working)|not\s+resolved|giving\s+(me\s+)?errors?)\b/i.test(cleanMessage)
   )
   const isAction       = !isYvon && !isDebugging && !isReport &&
-    /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|make|build|set\s+up|scaffold|commit|push|upload|put)\b/i.test(cleanMessage) &&
+    /\b(update|add|create|write|change|fix|solve|delete|remove|rename|move|refactor|implement|replace|edit|modify|make|build|set\s+up|scaffold|commit|push|upload|put)\b/i.test(cleanMessage) &&
     /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package|screen|page|widget|component|layout|button|ui|view|service|controller|model)\b/i.test(cleanMessage)
   const isDemoData     = isFlutter && !isDebugging && (
     /\b(demo.?data|sample.?data|mock.?data|seed.?data|dummy.?data|fake.?data)\b/i.test(cleanMessage) ||
@@ -608,17 +616,35 @@ Read / Bash / Glob / Grep are ONLY permitted for: loading your own MEMORY.md, YV
     : isLocalMode
     ? `⚠️ LOCAL MODE but no local repo path configured — writes fall back to GitHub. Set the Local Repo Path in Venture Settings → Profile.`
     : `⛔ LOCAL WRITE PROHIBITION: You have zero local filesystem write access. Bash is read-only. Never claim to have written or edited a file locally. The only write path is Github(action=write_file).`
+  const isWindows      = process.platform === 'win32'
+  const pathSep        = isWindows ? '\\' : '/'
+  const repoSlash      = localRepoPath ? localRepoPath.replace(/\\/g, '/') : ''
+  const hasSpaces      = (localRepoPath ?? '').includes(' ')
+  const quotedRepo     = hasSpaces ? `"${localRepoPath}"` : localRepoPath
+  const quotedRepoSlash = hasSpaces ? `"${repoSlash}"` : repoSlash
+  const platformNote   = isWindows
+    ? `PLATFORM: Windows (PowerShell)\n- Commands: ls, cat, git, find\n- Path separator: \\\n- ⚠️ PATHS WITH SPACES MUST BE QUOTED: ls ${quotedRepo}${pathSep}lib — double-quote the full path\n- ⚠️ NEVER run: is, dir /s, rm, del — only ls/cat/git/find are allowed`
+    : `PLATFORM: macOS/Linux (bash)\n- Commands: ls, cat, git, find\n- Path separator: /\n- ⚠️ PATHS WITH SPACES MUST BE QUOTED: ls ${quotedRepoSlash}/lib — double-quote the full path`
+  const bashExamples   = isWindows
+    ? `Bash("ls ${quotedRepo}") or Bash("ls ${quotedRepo}${pathSep}lib") or Bash("git -C ${quotedRepo} log --oneline -5")`
+    : `Bash("ls ${quotedRepoSlash}") or Bash("ls ${quotedRepoSlash}/lib") or Bash("git -C ${quotedRepoSlash} log --oneline -5")`
+
   const toolGuidance = isLocalMode && localRepoPath
     ? `<tools-available>
 LOCAL MODE — ${ventureName} repo is on THIS machine at: ${localRepoPath}
+${platformNote}
 
-READ THE LOCAL REPO (use these for ALL file/code questions — faster and more reliable than GitHub):
-- Read(file_path): read a file — always use FULL path, e.g. Read("${localRepoPath}/lib/main.dart")
-- Glob(pattern): find files — search within ${localRepoPath}/
-- Grep(pattern): search file contents — search within ${localRepoPath}/
-- Bash(command): shell commands — e.g. Bash("ls ${localRepoPath}") or Bash("git -C ${localRepoPath} log --oneline -5")
-⚠️ ALWAYS prefix paths with ${localRepoPath}/ when using Read/Glob/Grep for the venture repo.
-⚠️ YVON OS is a separate codebase at ${YVON_OS_PATH} — do NOT confuse the two.
+READ THE LOCAL REPO — ALWAYS USE THESE FIRST (faster and more reliable than Bash):
+- Read(file_path): read a file — full path required, e.g. Read("${repoSlash}/lib/main.dart")
+- Glob(pattern): find files by pattern — searches within ${repoSlash}/
+- Grep(pattern): search file contents — searches within ${repoSlash}/
+⚡ Prefer Read/Glob/Grep over Bash for ALL file reading — they are cross-platform and never fail on path formatting.
+
+BASH — only for: checking directory contents, git log/status/diff, running scripts
+- ${bashExamples}
+- ⚠️ ALWAYS use the EXACT command name: ls (not "is", not "dir")
+- ⚠️ If the path has spaces, wrap the ENTIRE path in double quotes
+- ⚠️ YVON OS is a separate codebase at ${YVON_OS_PATH} — do NOT confuse the two
 
 WRITE TO THE LOCAL REPO:
 - Github(action=write_file, path=..., content=..., message=...): writes to ${localRepoPath}/<path> directly
@@ -626,13 +652,13 @@ WRITE TO THE LOCAL REPO:
 
 GITHUB ONLY WHEN NEEDED:
 - Github(action=issues/prs/commits): for GitHub-specific data not available locally
-- ⛔ Do NOT use Github(action=tree) or Github(action=file) for reading — use Read/Bash/Glob instead
+- ⛔ Do NOT use Github(action=tree) or Github(action=file) for reading — use Read/Glob instead
 
 - WebFetch(url): fetch a URL.
 - TodoWrite: plan multi-step work.
 
 ${flutterPathNote}
-${isDemoData ? `Workflow: Bash("ls ${localRepoPath}/lib") → Read models → write dart files. DO NOT write README files.` : isAction ? `Read the file with Read("${localRepoPath}/...") → edit → Github(action=write_file). Confirm what was done.` : isDebugging ? `Read the error → Read("${localRepoPath}/...") the file → fix it with Github(action=write_file). 150 words max.` : isReport ? 'Produce a structured markdown report (## sections, bullet points, specific data). 300–400 words.' : 'End with a 100–150 word answer.'}
+${isDemoData ? `Workflow: Read("${repoSlash}/lib") → Read models → write dart files. DO NOT write README files.` : isAction ? `Read the file with Read("${repoSlash}/...") → edit → Github(action=write_file). Confirm what was done.` : isDebugging ? `Read the error → Read("${repoSlash}/...") the file → fix it with Github(action=write_file). Confirm root cause + what was changed.` : isReport ? 'Produce a structured markdown report (## sections, bullet points, specific data).' : 'Be thorough and specific.'}
 </tools-available>`
     : `<tools-available>
 ⚠️ TWO COMPLETELY SEPARATE CODEBASES — NEVER CONFUSE THEM:
@@ -686,20 +712,56 @@ ${isDemoData ? 'Workflow: tree → read models → write dart files. DO NOT writ
   }
   const osContextBlock = osContextParts.join('\n\n')
 
-  const systemText = [agent.systemPrompt, memoryBlock, ghBlock, ventureBlock, ventureDocsBlock, snapshotBlock, osContextBlock, toolGuidance].filter(Boolean).join('\n\n')
+  const systemText = [agent.systemPrompt, memoryBlock, ghBlock, ventureBlock, ventureDocsBlock, snapshotBlock, toolGuidance].filter(Boolean).join('\n\n')
 
   // Conversation history injection — gives specialist agents multi-turn context (fix C-2)
   const historyNote = conversationHistory && conversationHistory.length > 0
-    ? `\n\n## Prior Conversation Context\n${conversationHistory.slice(-3).map(h => `**User:** ${h.user.slice(0, 300)}\n**Marcus:** ${h.marcus.slice(0, 400)}`).join('\n\n')}`
+    ? `\n\n## Prior Conversation Context\n${conversationHistory.map(h => `**User:** ${h.user}\n**Marcus:** ${h.marcus}`).join('\n\n')}`
     : ''
+
+  // ── Platform-aware read/write commands for agent prompts ─────────────────────
+  // In local mode agents must use Read() for local files, not Github(action=file).
+  // Github(action=file) calls the GitHub API — useless when the repo is on local disk.
+  const readFileCmd  = isLocalMode && localRepoPath
+    ? `Read("${repoSlash}/[relative/path/to/file]")`
+    : `Github(action=file, path=[relative/path/to/file])`
+  const writeFileCmd = `Github(action=write_file, path="[relative/path/to/file]", content="[COMPLETE file content — every line, nothing omitted]", message="fix: [description]")`
 
   let content = ''
   const userPrompt = isDemoData
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}${historyNote}\n\nCREATING FLUTTER DEMO DATA — follow the EXACT existing service pattern in this project.\n\nMANDATORY WORKFLOW:\n1. Read lib/services/demo/demo_data_service.dart (shift screen demo — the primary reference pattern)\n2. Read lib/services/demo/debt_demo_service.dart (debt screen demo — second reference)\n3. Read the relevant model file in lib/models/ for the target screen\n4. Search the GetX controller for the target screen to find the exact Firebase key it uses (look for saveData or _kKey constants)\n5. Create ONE file: lib/services/demo/[screen_name]_demo_service.dart with this exact structure:\n   - Static class [ScreenName]DemoService\n   - static final _db = FirebaseDatabaseService()\n   - static const String _kKey = 'firebaseKeyHere'  ← MUST match the controller key exactly\n   - static String build[Name]Json() { ... }  ← builds JSON matching the model's fromMap() field names exactly\n   - static Future<void> seedDemo[Name]() async { await _db.saveData(_kKey, build[Name]Json()); }\n6. Write the file to lib/services/demo/[name]_demo_service.dart\n\n⛔ NEVER create files in lib/data/ — the correct path is lib/services/demo/ ONLY\n⛔ NEVER create .py, .sh, .rb, or any non-Dart file — Flutter project only\n⛔ NEVER create multiple separate data files — ONE service class file per screen\n⛔ NEVER create README.md, merge scripts, or any helper scripts\n⛔ NEVER create files at repo root\n\nEnd with: the exact file path created and the Firebase key used.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [file path: lib/services/demo/[name]_demo_service.dart]\nconfidence: high\n---END---`
     : isAction
-    ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}${historyNote}\n\nTake direct action — do NOT just describe what to do.\nWorkflow:\n1. If editing an existing file: read it first with Github(action=file, path=...) to get current content\n2. Make the required change\n3. Commit with Github(action=write_file, path=..., content=..., message=...)\n4. If deleting: Github(action=delete_file, path=..., message=...)\nConfirm exactly what was done: file path + commit message. Keep your reply to 3–4 sentences max.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [file path changed]\nconfidence: high\n---END---`
+    ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}${historyNote}\n\nTake direct action — do NOT just describe what to do.\nWorkflow:\n1. Read the file first: ${readFileCmd}\n2. Apply the required change to the full file content\n3. Commit the complete fixed file: ${writeFileCmd}\n4. If deleting: Github(action=delete_file, path=..., message=...)\nConfirm exactly what was done: file path + commit message.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: action\nkey_output: [file path changed]\nconfidence: high\n---END---`
     : isDebugging
-    ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}${historyNote}\n\nThe user has a bug or error. DO NOT give a project overview or general assessment.\nDebugging workflow:\n1. Read the error message/stack trace carefully — identify the exact file and line\n2. Use Github(action=file, path=...) to read the relevant source file\n3. Identify the root cause\n4. If you can fix it: use Github(action=write_file) to commit the fix\n5. If you cannot directly fix it (config issue, Firebase console setting, etc.): give the exact step-by-step fix instruction\nResponse format: [Root cause in 1 sentence] → [Fix applied or exact steps to fix]. Max 200 words.\n\n---HANDOFF---\nsummary: [root cause in 1 sentence]\ntype: debug\nkey_output: [fix applied or fix steps]\nconfidence: high\n---END---`
+    ? `Venture: ${ventureName}
+
+⚠️ FIX TASK — your ONLY job is to apply code fixes. Not to analyze. Not to report. Fix and commit.
+${taskOverride
+  ? `Context: ${taskOverride.replace(/\b(review|examine|analyze|assess|investigate|inspect|survey|audit)\b/gi, 'fix')}`
+  : `User request: ${message}`
+}${imageNote ?? ''}${historyNote}
+
+MANDATORY FIX WORKFLOW — repeat for every affected file:
+1. Read the complete file: ${readFileCmd}
+2. Find ALL bugs in that file (broken imports, null safety, wrong patterns, typos — everything)
+3. Fix ALL of them in the file content at once
+4. Write the COMPLETE fixed file (every line — never omit content): ${writeFileCmd}
+5. Confirm: "Fixed [bug list] in [file]. Commit: [SHA]"
+6. Move to the next file and repeat
+
+⛔ Do NOT say "you should fix" — apply the fix yourself
+⛔ Do NOT stop after diagnosing — a diagnosis with no commit is a failure
+⛔ Do NOT write partial files — write the COMPLETE file content every time
+⛔ Do NOT skip a bug because it seems minor — fix everything you find
+
+When all files are done: list every file fixed + every commit SHA.
+
+---HANDOFF---
+summary: [list of files fixed and bugs resolved]
+type: debug
+key_output: [file paths committed + commit SHAs]
+confidence: high
+---END---`
     : isReport
     ? `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}${historyNote}\n\nUse tools to gather real data before writing. Produce a structured markdown report with ## section headers and bullet points. Be specific — include actual numbers, commit messages, issue titles, file names. 300–400 words.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: report\nkey_output: [deliverable]\nconfidence: high\n---END---`
     : `Venture: ${ventureName}\n\n${taskPrompt}${imageNote ?? ''}${historyNote}\n\nUse tools to explore the repo before answering. Final answer 100–150 words, specific and actionable.\n\n---HANDOFF---\nsummary: [1 sentence]\ntype: strategy\nkey_output: [deliverable]\nconfidence: high\n---END---`
@@ -713,7 +775,7 @@ ${isDemoData ? 'Workflow: tree → read models → write dart files. DO NOT writ
       modelTier:     agent.modelTier,  // respect per-agent tier: tier1/synthesis/fast (fix C-1)
       system:    systemText || undefined,
       maxTokens: userMaxOutputTokens ?? 8192,
-      maxIterations: userMaxIterations ?? (isDemoData ? 40 : isAction || isDebugging ? 20 : 15),
+      maxIterations: userMaxIterations ?? (isDemoData ? 40 : isDebugging ? 50 : isAction ? 30 : 30),
       messages: [{ role: 'user', content: userPrompt }],
     })) {
       switch (event.kind) {
@@ -913,6 +975,7 @@ export async function POST(request: Request): Promise<Response> {
   let userMaxOutputTokens: number | undefined
   let ceoOnly: boolean
   let ceoOnlyBriefing: string
+  let autoApprove: boolean
   try {
     const body = await request.json() as {
       message?: string
@@ -939,6 +1002,7 @@ export async function POST(request: Request): Promise<Response> {
       maxOutputTokens?: number
       ceoOnly?: boolean
       ceoOnlyBriefing?: string
+      autoApprove?: boolean
     }
     message               = body.message ?? ''
     ventureName           = body.ventureName ?? 'Novizio'
@@ -955,6 +1019,7 @@ export async function POST(request: Request): Promise<Response> {
     sessionId           = body.sessionId
     ceoOnly             = body.ceoOnly ?? false
     ceoOnlyBriefing     = body.ceoOnlyBriefing ?? ''
+    autoApprove         = body.autoApprove ?? false
     // Multi-file: body.files takes priority; fall back to legacy single-file fields
     const legacyBase64   = body.fileBase64 ?? body.imageBase64
     const legacyMime     = body.fileMimeType ?? body.imageMimeType
@@ -1007,7 +1072,7 @@ export async function POST(request: Request): Promise<Response> {
           const ceoOnlyDocs    = await loadVentureContextBlock(ventureSlug)
           const ceoOnlyDocsStr = buildVentureDocsBlock(ceoOnlyDocs)
           const ceoOnlyHistory = conversationHistory.length > 0
-            ? `\n\nPrior conversation context (last 3 turns):\n${conversationHistory.slice(-3).map(h => `User: ${h.user.slice(0, 200)}\nMarcus: ${h.marcus.slice(0, 400)}${h.marcus.length > 400 ? '…' : ''}`).join('\n\n')}`
+            ? `\n\nPrior conversation:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus}`).join('\n\n')}`
             : ''
           const ceoOnlySystem = [
             `You are Marcus, CEO of YVON synthesising specialist briefings.\n\nActive venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}.\n\nYour job: produce a single unified answer for the user from the specialist work below.`,
@@ -1085,7 +1150,7 @@ Synthesise the specialist findings into a concise response — 150 words max. Le
           })
 
           const directHistoryBlock = conversationHistory.length > 0
-            ? `\n\nPrior conversation:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus.slice(0, 200)}…`).join('\n\n')}`
+            ? `\n\nPrior conversation:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus}`).join('\n\n')}`
             : ''
           const directFileNote = buildFilesNote(files, 'specialist')
 
@@ -1218,29 +1283,38 @@ Bash git commands query YVON's git history, NOT ${ventureName}'s — never use t
                 ? (ROUTING_INTENT_MAP[routing.intent] ?? ['diana-coo', 'marcus-ceo'])
                 : validSpecialists
             } catch {
+              // Pick agents based on what the message actually needs, not a generic default
+              const isDebugMsg = /\b(fix|solve|error|bug|issue|crash|broken|not\s+working|failing)\b/i.test(cleanMsgForPlan)
+              const isActionMsg = !isDebugMsg && /\b(add|create|update|change|build|implement|refactor)\b/i.test(cleanMsgForPlan)
               routing = {
-                intent:      'strategy',
-                specialists: ['marcus-ceo', 'diana-coo'],
-                reasoning:   'Default routing — orchestration unavailable',
+                intent:      isDebugMsg ? 'qa_review' : isActionMsg ? 'technical_general' : 'strategy',
+                specialists: isDebugMsg ? ['quinn-qa', 'dev-lead'] : isActionMsg ? ['dev-lead', 'raj-backend'] : ['marcus-ceo', 'diana-coo'],
+                reasoning:   'Fallback routing — orchestration unavailable',
               }
             }
             executionPlan = fallbackPlan(routing.specialists as AgentId[], cleanMsgForPlan)
           }
 
-          // Emit plan for UI, then emit approval gate — stream closes here.
-          // The UI renders EngagePlanCard; on "Go ahead" the client re-calls
-          // with approved=true + previousPlan + previousRouting to execute Phase 2.
           const confidence = calculateRoutingConfidence(message, routing.specialists as AgentId[])
           emit('routing', { routing, confidence })
           emit('plan', { plan: executionPlan, routing })
-          // Emit engine info in Phase 1 so the client shows engine state before approval
           emit('engine', { engine: activeEngine === 'agent_sdk' ? 'agent_sdk' : 'client_sdk', fastModel: activeProvider?.fastModel, synthesisModel: activeProvider?.synthesisModel, provider: activeProvider?.provider })
-          emit('plan_approval_required', { plan: executionPlan, routing })
-          emit('plan_complete', { elapsed: Date.now() - startTime })
-          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
-          clearInterval(heartbeat)
-          closeController()
-          return
+
+          if (autoApprove) {
+            // Follow-up in active session — user already approved this session once.
+            // Skip the approval gate and fall through directly to Phase 2.
+            // The 'plan' event above sets sessionStatus='executing' on the client.
+          } else {
+            // ⛔ WORKFLOW RULE 4 — DO NOT REMOVE THIS GATE.
+            // First message of a new session: show ENGAGE+PLAN card and wait for user approval.
+            // Phase 2 only runs when the client re-sends with approved=true.
+            emit('plan_approval_required', { plan: executionPlan, routing })
+            emit('plan_complete', { elapsed: Date.now() - startTime })
+            controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+            clearInterval(heartbeat)
+            closeController()
+            return
+          }
         }
 
         // Phase 2: routing was already validated and approved in Phase 1 — emit with full confidence
@@ -1606,13 +1680,17 @@ Fix every error Quinn identified. Confirm what was changed with exact file paths
           : ''
 
         const historyBlock = conversationHistory.length > 0
-          ? `\n\nPrior conversation context (last 3 turns):\n${conversationHistory.slice(-3).map(h => `User: ${h.user.slice(0, 200)}\nMarcus: ${h.marcus.slice(0, 400)}${h.marcus.length > 400 ? '…' : ''}`).join('\n\n')}`
+          ? `\n\nPrior conversation:\n${conversationHistory.map(h => `User: ${h.user}\nMarcus: ${h.marcus}`).join('\n\n')}`
           : ''
         const ceoImageNote = buildFilesNote(files, 'ceo')
 
-        const isReportRequest = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(message)
-        const isActionRequest = !isReportRequest && !(!ventureSlug || ventureSlug === 'yvon-dashboard') && /\b(update|add|create|write|change|fix|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(message) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package|screen|page|widget|component|layout|button|ui|view|service|controller|model)\b/i.test(message)
-        const ceoPrompt = isActionRequest
+        const isReportRequest   = /\b(report|overview|summary|status|analysis|assessment|health|audit)\b/i.test(message)
+        const isDebugRequest    = !isReportRequest && !(!ventureSlug || ventureSlug === 'yvon-dashboard') && (
+          /(\bException\b|\bError:\b|\bFAILED\b|\bstacktrace\b|\bcrash\b)/i.test(message) ||
+          /\b(fix\s+(this|the|it)|solve\s+(this|it|the)|there\s+(is|are)\s+(an?\s+)?(error|issue|bug)|errors?\s+(in|with)|issues?\s+(in|with)|check\s+(errors?|issues?))\b/i.test(message)
+        )
+        const isActionRequest   = !isReportRequest && !isDebugRequest && !(!ventureSlug || ventureSlug === 'yvon-dashboard') && /\b(update|add|create|write|change|fix|solve|delete|remove|rename|move|refactor|implement|replace|edit|modify|commit|push|upload|put)\b/i.test(message) && /\b(file|files|repo|code|function|class|config|dart|kt|ts|js|py|json|yaml|yml|md|flutter|android|ios|firebase|pubspec|gradle|manifest|package|screen|page|widget|component|layout|button|ui|view|service|controller|model)\b/i.test(message)
+        const ceoPrompt = (isActionRequest || isDebugRequest)
           ? `You are Marcus, CEO of YVON. Venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}
 
 Specialists reported:
@@ -1620,13 +1698,17 @@ ${briefingText}
 
 User asked: ${message}${ceoImageNote}${historyBlock}
 
-Write a concise action summary — 3–6 sentences max. Structure it exactly like this:
-1. Which specialist(s) worked on this (use their names: Dev, Raj, Mia, etc.)
-2. Which files were changed (exact file paths from the specialist reports)
-3. The commit SHA and commit message (copy from the specialist report — do not invent)
-4. Whether it succeeded or failed
+Write a fix confirmation — NOT an analysis, NOT a recommendation, NOT "you should now do X".
+The user approved this once and expects it done. Structure:
+1. What was broken (1 sentence — root cause only)
+2. What was fixed (exact file paths + what changed — copy from specialist reports)
+3. Commit SHA if reported, or "no commit SHA in report"
+4. Status: FIXED / PARTIALLY FIXED / FAILED — be direct
 
-⚠️ CRITICAL: You do NOT have access to Bash, Read, Glob, or Grep for ${ventureName}. Those tools are blocked — calling them will fail. Do NOT attempt git commands. All information you need is in the specialist reports above. If a commit SHA is not in the reports, say "commit SHA not reported". Write only what the specialists confirmed — no assumptions.`
+If specialists only analyzed but did NOT write any files: say "Specialists diagnosed but made no code changes — the bug is not yet fixed. Here is exactly what needs to change: [list the specific fixes needed with file paths]."
+Never say "consider", "could", "should", "recommend" — state what happened.
+
+⚠️ You do NOT have access to Bash, Read, Glob, or Grep for ${ventureName}. All information is in the specialist reports above.`
           : isReportRequest
           ? `You are Marcus, CEO of YVON. Venture: ${ventureName}${ventureSlug ? ` (slug: ${ventureSlug})` : ''}
 
@@ -1718,26 +1800,37 @@ Trust the specialist reports above — they already explored the codebase and ga
         const elapsed    = Date.now() - startTime
         const hasErrors  = stepResults.some(s => s.status === 'error')
 
+        // Build the updated full conversation history for this session.
+        // conversationHistory = all prior turns from client (up to slice(-15)).
+        // Append the current turn so the DB always has the complete chat.
+        const cleanMsgForHistory = message.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+        const updatedConversationHistory = [
+          ...conversationHistory,
+          { user: cleanMsgForHistory, marcus: ceoSynthesis || briefingText },
+        ]
+
         if (sessionId) {
           updateWarRoomPlan(sessionId, {
-            synthesis:  ceoSynthesis || briefingText,
-            status:     hasErrors ? 'partial' : 'complete',
-            elapsedMs:  elapsed,
-            agentsUsed: routing.specialists as AgentId[],
-            steps:      stepResults,
+            synthesis:           ceoSynthesis || briefingText,
+            status:              hasErrors ? 'partial' : 'complete',
+            elapsedMs:           elapsed,
+            agentsUsed:          routing.specialists as AgentId[],
+            steps:               stepResults,
+            conversationHistory: updatedConversationHistory,
           }).catch(err => monitoring.warn('War Room plan update failed (non-fatal)', { error: String(err) }))
         } else {
           try {
             const newSessionId = await saveWarRoomPlan({
               ventureName,
-              userPrompt:  message,
-              intent:      routing.intent,
-              plan:        executionPlan,
-              agentsUsed:  routing.specialists as AgentId[],
-              status:      hasErrors ? 'partial' : 'complete',
-              synthesis:   ceoSynthesis || briefingText,
-              elapsedMs:   elapsed,
-              steps:       stepResults,
+              userPrompt:          message,
+              intent:              routing.intent,
+              plan:                executionPlan,
+              agentsUsed:          routing.specialists as AgentId[],
+              status:              hasErrors ? 'partial' : 'complete',
+              synthesis:           ceoSynthesis || briefingText,
+              elapsedMs:           elapsed,
+              steps:               stepResults,
+              conversationHistory: updatedConversationHistory,
             })
             emit('session_id', { sessionId: newSessionId })
           } catch (err) {

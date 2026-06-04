@@ -312,6 +312,7 @@ export interface WarRoomPlanRecord {
   elapsedMs: number | null
   createdAt: string
   steps: WarRoomStep[]
+  conversationHistory: Array<{ user: string; marcus: string }>
 }
 
 // SSE event shapes emitted by /api/team-chat

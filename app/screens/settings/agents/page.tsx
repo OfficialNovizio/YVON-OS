@@ -3,16 +3,38 @@
 import { useEffect, useState } from 'react'
 import { T, DC, FF, FTextArea, FSelect, BackLink } from '../_shared'
 import { AGENTS } from '@/lib/agents'
-import type { AgentConfig, AgentDepartment } from '@/lib/types'
+import type { AgentConfig, AgentDepartment, AgentModelTier } from '@/lib/types'
 import { getActiveVentureSlugClient } from '@/lib/venture-context'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const MODELS = [
-  { value: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5 — Fast & cheap' },
-  { value: 'claude-sonnet-4-6',          label: 'Sonnet 4.6 — Balanced' },
-  { value: 'claude-opus-4-6',            label: 'Opus 4.6 — Most capable' },
+type ModelOption = { value: string; label: string }
+
+// Placeholder while provider models load — values are empty so tierDefault returns ''
+// and AgentCard falls back to tierLabel() which shows Primary/Secondary/Tier 1.
+const FALLBACK_MODELS: ModelOption[] = [
+  { value: '', label: 'Primary' },
+  { value: '', label: 'Secondary' },
 ]
+
+function shortModelName(id: string): string {
+  if (!id) return ''
+  return id.replace('claude-', '').replace(/-\d{8}$/, '').replace(/-/g, ' ')
+}
+
+// Resolve agent's default model from its modelTier when no explicit override is saved.
+// fast → PRIMARY (index 0), synthesis → SECONDARY (index 1), tier1 → TIER1 (index 2 or 0)
+function tierDefault(tier: AgentModelTier | string, opts: ModelOption[]): string {
+  if (tier === 'fast')      return opts[0]?.value ?? ''
+  if (tier === 'tier1')     return opts[2]?.value ?? opts[0]?.value ?? ''
+  return opts[1]?.value ?? opts[0]?.value ?? ''
+}
+
+function tierLabel(tier: string): string {
+  if (tier === 'fast')  return 'Primary'
+  if (tier === 'tier1') return 'Tier 1'
+  return 'Secondary'
+}
 
 const DEPTS: { id: AgentDepartment; label: string }[] = [
   { id: 'ceo',        label: 'CEO' },
@@ -29,7 +51,7 @@ function deptColor(dept: AgentDepartment): string {
 // ─── Agent Panel (slide-in detail) ───────────────────────────────────────────
 
 function AgentPanel({
-  agent, model, prompt, memory, onModelChange, onPromptChange, onSave, saving, saved, onClose,
+  agent, model, prompt, memory, onModelChange, onPromptChange, onSave, saving, saved, onClose, models,
 }: {
   agent:         AgentConfig
   model:         string
@@ -41,6 +63,7 @@ function AgentPanel({
   saving:        boolean
   saved:         boolean
   onClose:       () => void
+  models:        ModelOption[]
 }) {
   // Memory.md editor — loads/saves via Supabase
   const [memDraft, setMemDraft]       = useState('')
@@ -88,153 +111,193 @@ function AgentPanel({
   const memDirty = memDraft !== memOriginal
   const color = deptColor(agent.department)
 
+  // G1 Clear Ice — frosted white panel (light container → navy ink)
+  // G3 Obsidian  — dark card for memory editor (dark container → white ink)
+  // G4 Prism     — iridescent card for Genius Counterpart
+
   return (
     <div style={{
-      position:   'fixed',
-      top:        0,
-      right:      0,
-      bottom:     0,
-      width:      420,
-      background: '#0a0a0a',
-      borderLeft: `1px solid ${T.border}`,
-      zIndex:     200,
-      display:    'flex',
-      flexDirection: 'column',
-      overflow:   'hidden',
+      position:        'fixed',
+      top:             0,
+      right:           0,
+      bottom:          0,
+      width:           440,
+      background:      'rgba(255,255,255,0.82)',
+      backdropFilter:  'blur(48px)',
+      WebkitBackdropFilter: 'blur(48px)',
+      borderLeft:      '1px solid rgba(255,255,255,0.60)',
+      boxShadow:       '-24px 0 64px rgba(12,44,82,0.10)',
+      zIndex:          200,
+      display:         'flex',
+      flexDirection:   'column',
+      overflow:        'hidden',
     }}>
-      {/* Header */}
-      <div style={{ padding: '20px 24px', borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', gap: 14 }}>
+
+      {/* ── Header ─────────────────────────────────────────────── */}
+      <div style={{
+        padding:      '20px 24px 18px',
+        borderBottom: '1px solid rgba(12,44,82,0.08)',
+        display:      'flex',
+        alignItems:   'center',
+        gap:          14,
+        background:   `linear-gradient(135deg, ${color}12, ${color}06)`,
+      }}>
+        {/* Dept colour strip */}
         <div style={{
-          width: 40, height: 40, borderRadius: 10,
-          background: `${color}18`, border: `1px solid ${color}30`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 20,
+          width: 4, height: 44, borderRadius: 4,
+          background: color, flexShrink: 0,
+        }} />
+        <div style={{
+          width: 44, height: 44, borderRadius: 12,
+          background: `${color}18`,
+          border:     `1.5px solid ${color}40`,
+          display:    'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize:   22, flexShrink: 0,
         }}>
           {agent.icon}
         </div>
-        <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 15, fontWeight: 600, color: T.text1, letterSpacing: '-0.02em' }}>{agent.name}</p>
-          <p style={{ fontSize: 11, color: T.text3 }}>{agent.role}</p>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: 16, fontWeight: 700, color: '#0c2c52', letterSpacing: '-0.03em', margin: 0 }}>{agent.name}</p>
+          <p style={{ fontSize: 11, color: 'rgba(12,44,82,0.50)', margin: '2px 0 0', fontWeight: 500 }}>{agent.role}</p>
         </div>
         <button
           onClick={onClose}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.text3, padding: 4 }}
-          onMouseEnter={e => (e.currentTarget.style.color = T.text1)}
-          onMouseLeave={e => (e.currentTarget.style.color = T.text3)}
+          style={{ background: 'rgba(12,44,82,0.06)', border: '1px solid rgba(12,44,82,0.12)', borderRadius: 8, cursor: 'pointer', color: 'rgba(12,44,82,0.50)', padding: '4px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 30, height: 30, flexShrink: 0, transition: 'all 0.15s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(12,44,82,0.12)'; e.currentTarget.style.color = '#0c2c52' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(12,44,82,0.06)'; e.currentTarget.style.color = 'rgba(12,44,82,0.50)' }}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>close</span>
+          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>close</span>
         </button>
       </div>
 
-      {/* Body */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* ── Body ───────────────────────────────────────────────── */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px 12px', display: 'flex', flexDirection: 'column', gap: 16, scrollbarWidth: 'thin', scrollbarColor: 'rgba(12,44,82,0.12) transparent' }}>
 
-        {/* Model */}
-        <FF label="Model">
-          <FSelect value={model} onChange={e => onModelChange(e.target.value)} options={MODELS} />
-        </FF>
+        {/* Model — G1 glass card */}
+        <div style={{ background: 'rgba(255,255,255,0.60)', border: '1px solid rgba(255,255,255,0.70)', borderRadius: 14, padding: '14px 16px', boxShadow: '0 2px 8px rgba(12,44,82,0.06)' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(12,44,82,0.45)', margin: '0 0 8px' }}>Model</p>
+          <FSelect value={model} onChange={e => onModelChange(e.target.value)} options={models} />
+        </div>
 
-        {/* Prompt extension */}
-        <FF label="System Prompt Extension">
+        {/* System Prompt Extension — G1 card */}
+        <div style={{ background: 'rgba(255,255,255,0.60)', border: '1px solid rgba(255,255,255,0.70)', borderRadius: 14, padding: '14px 16px', boxShadow: '0 2px 8px rgba(12,44,82,0.06)' }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(12,44,82,0.45)', margin: '0 0 8px' }}>System Prompt Extension</p>
           <FTextArea
             value={prompt}
             onChange={e => onPromptChange(e.target.value)}
             placeholder="Additional instructions appended to this agent's base prompt…"
-            rows={5}
+            rows={4}
           />
-        </FF>
+        </div>
 
-        {/* Personality note */}
+        {/* Genius Counterpart — G4 Prism (iridescent · plum text) */}
         {agent.personality && (
-          <div style={{ background: `${color}08`, border: `1px solid ${color}18`, borderRadius: 10, padding: '10px 14px' }}>
-            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color, marginBottom: 4 }}>Genius Counterpart</p>
-            <p style={{ fontSize: 12, color: T.text2 }}>{agent.personality}</p>
+          <div style={{
+            background:           `radial-gradient(ellipse at 30% 40%, ${color}22, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(6,182,212,0.14), transparent 60%), rgba(255,255,255,0.40)`,
+            backdropFilter:       'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border:               `1.5px solid ${color}30`,
+            borderRadius:         14,
+            padding:              '14px 16px',
+          }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color, margin: '0 0 6px' }}>Genius Counterpart</p>
+            <p style={{ fontSize: 13, fontWeight: 500, color: '#2a1240', lineHeight: 1.5, margin: 0 }}>{agent.personality}</p>
           </div>
         )}
 
-        {/* Agent MEMORY.md — live from Supabase agent_memory table */}
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: T.text3 }}>
-              MEMORY.md (Supabase)
-            </p>
+        {/* Memory.md — G3 Obsidian (dark · white ink) */}
+        <div style={{
+          background:           'linear-gradient(135deg, rgba(15,22,38,0.72), rgba(8,14,28,0.82))',
+          backdropFilter:       'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border:               '1px solid rgba(255,255,255,0.10)',
+          borderRadius:         14,
+          overflow:             'hidden',
+        }}>
+          {/* Memory header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 14, color: 'rgba(241,245,251,0.50)' }}>memory</span>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(241,245,251,0.55)', margin: 0 }}>Memory.md</p>
+            </div>
             {memUpdatedAt && (
-              <span style={{ fontSize: 10, color: T.text3 }}>
+              <span style={{ fontSize: 10, color: 'rgba(241,245,251,0.35)', fontFamily: 'ui-monospace, monospace' }}>
                 {new Date(memUpdatedAt).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
               </span>
             )}
           </div>
+
+          {/* Textarea */}
           {memLoading ? (
-            <p style={{ fontSize: 11, color: T.text3 }}>Loading…</p>
+            <p style={{ fontSize: 12, color: 'rgba(241,245,251,0.40)', padding: '16px', margin: 0 }}>Loading…</p>
           ) : (
             <>
               <textarea
                 value={memDraft}
                 onChange={e => setMemDraft(e.target.value)}
                 spellCheck={false}
-                placeholder="Rolling agent memory. Markdown is fine. Agents read this live as part of their system prompt."
+                placeholder="Rolling agent memory. Markdown is fine."
                 style={{
-                  width: '100%',
-                  minHeight: 280,
-                  background: T.surface,
-                  border: `1px solid ${T.border}`,
-                  borderRadius: 10,
-                  padding: '10px 12px',
-                  fontFamily: 'ui-monospace, SF Mono, Monaco, monospace',
-                  fontSize: 11,
-                  lineHeight: 1.55,
-                  color: T.text1,
-                  outline: 'none',
-                  resize: 'vertical',
-                  boxSizing: 'border-box',
+                  width:       '100%',
+                  minHeight:   240,
+                  background:  'transparent',
+                  border:      'none',
+                  padding:     '12px 16px',
+                  fontFamily:  'ui-monospace, SF Mono, Monaco, monospace',
+                  fontSize:    12,
+                  lineHeight:  1.65,
+                  color:       'rgba(241,245,251,0.88)',
+                  outline:     'none',
+                  resize:      'vertical',
+                  boxSizing:   'border-box',
+                  caretColor:  '#f1f5fb',
                 }}
               />
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+              {/* Memory actions */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                 <button
                   onClick={() => void saveMemory()}
                   disabled={memSaving || !memDirty}
                   style={{
-                    background: memDirty ? T.accent : T.surface,
-                    color: memDirty ? '#fff' : T.text3,
-                    border: `1px solid ${memDirty ? T.accent : T.border}`,
+                    background:   memDirty ? 'rgba(0,102,204,0.80)' : 'rgba(255,255,255,0.06)',
+                    color:        memDirty ? '#fff' : 'rgba(241,245,251,0.35)',
+                    border:       `1px solid ${memDirty ? 'rgba(0,102,204,0.50)' : 'rgba(255,255,255,0.10)'}`,
                     borderRadius: 8,
-                    padding: '6px 14px',
-                    fontFamily: T.font,
-                    fontSize: 12,
-                    cursor: memDirty && !memSaving ? 'pointer' : 'not-allowed',
-                    opacity: memSaving ? 0.6 : 1,
+                    padding:      '6px 14px',
+                    fontFamily:   T.font,
+                    fontSize:     12,
+                    fontWeight:   600,
+                    cursor:       memDirty && !memSaving ? 'pointer' : 'not-allowed',
+                    opacity:      memSaving ? 0.6 : 1,
+                    transition:   'all 0.15s',
                   }}
                 >
-                  {memSaving ? 'Saving…' : memDirty ? 'Save Memory' : 'Saved'}
+                  {memSaving ? 'Saving…' : memDirty ? 'Save Memory' : 'Up to date'}
                 </button>
-                <span style={{ fontSize: 10, color: T.text3 }}>{memDraft.length} chars</span>
-                {memSaved && <span style={{ fontSize: 11, color: '#30d158', fontWeight: 600 }}>✓ Saved to Supabase</span>}
-                {memError && <span style={{ fontSize: 11, color: '#ff453a' }}>✗ {memError}</span>}
+                <span style={{ fontSize: 10, color: 'rgba(241,245,251,0.25)', fontFamily: 'ui-monospace, monospace' }}>{memDraft.length} chars</span>
+                {memSaved  && <span style={{ fontSize: 11, color: '#30d158', fontWeight: 600, marginLeft: 'auto' }}>✓ Saved</span>}
+                {memError  && <span style={{ fontSize: 11, color: '#ff6b6b', marginLeft: 'auto' }}>✗ {memError}</span>}
               </div>
             </>
           )}
         </div>
 
-        {/* Legacy structured memory entries (unused for now, kept for back-compat) */}
+        {/* Legacy FTS memory entries */}
         {memory.length > 0 && (
-          <div>
-            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: T.text3, marginBottom: 10 }}>
-              Stored Memory (FTS)
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {memory.map((m, i) => (
-                <div key={i} style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: '8px 12px' }}>
-                  <p style={{ fontSize: 10, fontWeight: 600, color: T.text3, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 3 }}>{m.key}</p>
-                  <p style={{ fontSize: 12, color: T.text2, lineHeight: 1.5 }}>{m.value}</p>
-                </div>
-              ))}
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(12,44,82,0.45)', margin: 0 }}>Stored Memory</p>
+            {memory.map((m, i) => (
+              <div key={i} style={{ background: 'rgba(255,255,255,0.50)', border: '1px solid rgba(255,255,255,0.60)', borderRadius: 10, padding: '8px 12px' }}>
+                <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(12,44,82,0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 2px' }}>{m.key}</p>
+                <p style={{ fontSize: 12, color: '#0c2c52', lineHeight: 1.5, margin: 0 }}>{m.value}</p>
+              </div>
+            ))}
           </div>
         )}
       </div>
 
-      {/* Footer */}
-      <div style={{ padding: '16px 24px', borderTop: `1px solid ${T.border}`, display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+      {/* ── Footer ─────────────────────────────────────────────── */}
+      <div style={{ padding: '14px 24px', borderTop: '1px solid rgba(12,44,82,0.08)', background: 'rgba(255,255,255,0.40)', display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
         <button
           onClick={onSave}
           disabled={saving}
@@ -242,7 +305,7 @@ function AgentPanel({
             background:    saved ? '#30d158' : T.accent,
             color:         '#fff',
             border:        'none',
-            borderRadius:  8,
+            borderRadius:  10,
             padding:       '9px 24px',
             fontFamily:    T.font,
             fontSize:      13,
@@ -263,11 +326,14 @@ function AgentPanel({
 // ─── Agent Card ───────────────────────────────────────────────────────────────
 
 function AgentCard({
-  agent, model, saved, onClick,
-}: { agent: AgentConfig; model: string; saved: boolean; onClick: () => void }) {
+  agent, model, saved, onClick, models,
+}: { agent: AgentConfig; model: string; saved: boolean; onClick: () => void; models: ModelOption[] }) {
   const [hov, setHov] = useState(false)
   const color = deptColor(agent.department)
-  const modelLabel = MODELS.find(m => m.value === model)?.label.split(' — ')[0] ?? 'Haiku 4.5'
+  // Use explicit saved model, fall back to tier-based default from provider
+  const effectiveModel = model || tierDefault(agent.modelTier, models)
+  const matchedLabel   = models.find(m => m.value === effectiveModel)?.label.split(' — ')[0]
+  const modelLabel     = matchedLabel ?? (shortModelName(effectiveModel) || tierLabel(agent.modelTier))
 
   return (
     <button
@@ -275,31 +341,36 @@ function AgentCard({
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        background:   hov ? 'rgba(255,255,255,0.06)' : T.surface,
-        border:       `1px solid ${hov ? T.borderHov : T.border}`,
-        borderRadius: 14,
+        background:   hov ? `rgba(255,255,255,0.68)` : 'rgba(255,255,255,0.42)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border:       `1px solid ${hov ? `${color}40` : 'rgba(255,255,255,0.60)'}`,
+        borderRadius: 16,
         padding:      '18px 20px',
         cursor:       'pointer',
         textAlign:    'left',
         fontFamily:   T.font,
-        transition:   'all 0.15s',
+        transition:   'all 0.18s',
         display:      'flex',
         flexDirection:'column',
         gap:          12,
+        boxShadow:    hov ? `0 4px 24px ${color}18` : '0 2px 8px rgba(12,44,82,0.06)',
       }}
     >
       {/* Icon + saved badge */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div style={{
-          width: 38, height: 38, borderRadius: 10,
-          background: `${color}18`, border: `1px solid ${color}28`,
+          width: 40, height: 40, borderRadius: 12,
+          background: `${color}18`, border: `1.5px solid ${color}35`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 18,
+          fontSize: 20,
+          boxShadow: hov ? `0 0 12px ${color}30` : 'none',
+          transition: 'box-shadow 0.18s',
         }}>
           {agent.icon}
         </div>
         {saved && (
-          <span style={{ fontSize: 10, fontWeight: 600, color: '#30d158', background: 'rgba(48,209,88,0.1)', border: '1px solid rgba(48,209,88,0.2)', borderRadius: 20, padding: '2px 8px' }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: '#30d158', background: 'rgba(48,209,88,0.12)', border: '1px solid rgba(48,209,88,0.25)', borderRadius: 20, padding: '2px 8px' }}>
             Saved
           </span>
         )}
@@ -307,23 +378,24 @@ function AgentCard({
 
       {/* Name + role */}
       <div>
-        <p style={{ fontSize: 14, fontWeight: 600, color: T.text1, letterSpacing: '-0.02em', marginBottom: 3 }}>{agent.name}</p>
-        <p style={{ fontSize: 11, color: T.text3 }}>{agent.role}</p>
+        <p style={{ fontSize: 14, fontWeight: 700, color: '#0c2c52', letterSpacing: '-0.03em', margin: '0 0 2px' }}>{agent.name}</p>
+        <p style={{ fontSize: 11, color: 'rgba(12,44,82,0.50)', margin: 0, fontWeight: 500 }}>{agent.role}</p>
       </div>
 
       {/* Model pill */}
       <span style={{
         display:      'inline-flex',
         alignItems:   'center',
+        gap:          4,
         fontSize:     10,
-        fontWeight:   600,
-        letterSpacing:'0.04em',
+        fontWeight:   700,
+        letterSpacing:'0.05em',
         textTransform:'uppercase',
         color:        color,
-        background:   `${color}10`,
-        border:       `1px solid ${color}20`,
-        borderRadius: 6,
-        padding:      '3px 8px',
+        background:   `${color}12`,
+        border:       `1px solid ${color}28`,
+        borderRadius: 8,
+        padding:      '3px 10px',
         alignSelf:    'flex-start',
       }}>
         {modelLabel}
@@ -335,14 +407,15 @@ function AgentCard({
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function AgentsSettingsPage() {
-  const [ventureId,   setVentureId]   = useState<string | null>(null)
-  const [activeDept,  setActiveDept]  = useState<AgentDepartment | 'all'>('all')
-  const [panelAgent,  setPanelAgent]  = useState<AgentConfig | null>(null)
-  const [models,      setModels]      = useState<Record<string, string>>({})
-  const [prompts,     setPrompts]     = useState<Record<string, string>>({})
-  const [memory]      = useState<Record<string, { key: string; value: string }[]>>({})
-  const [saving,      setSaving]      = useState<Record<string, boolean>>({})
-  const [saved,       setSaved]       = useState<Record<string, boolean>>({})
+  const [ventureId,      setVentureId]      = useState<string | null>(null)
+  const [activeDept,     setActiveDept]     = useState<AgentDepartment | 'all'>('all')
+  const [panelAgent,     setPanelAgent]     = useState<AgentConfig | null>(null)
+  const [models,         setModels]         = useState<Record<string, string>>({})
+  const [prompts,        setPrompts]        = useState<Record<string, string>>({})
+  const [memory]         = useState<Record<string, { key: string; value: string }[]>>({})
+  const [saving,         setSaving]         = useState<Record<string, boolean>>({})
+  const [saved,          setSaved]          = useState<Record<string, boolean>>({})
+  const [providerModels, setProviderModels] = useState<ModelOption[]>(FALLBACK_MODELS)
 
   // War Room engine state
   const [engineInfo,    setEngineInfo]    = useState<{ engine: string; fastModel: string; synthesisModel: string } | null>(null)
@@ -353,9 +426,20 @@ export default function AgentsSettingsPage() {
 
   useEffect(() => {
     void fetchSettings()
+    // war-room-engine already returns fastModel + synthesisModel from the active provider.
+    // Use this to build providerModels — avoids a second fetch to /api/ai-keys.
     fetch('/api/war-room-engine')
-      .then(r => r.json() as Promise<{ engine: string; fastModel: string; synthesisModel: string }>)
-      .then(setEngineInfo)
+      .then(r => r.json() as Promise<{ engine: string; fastModel?: string; synthesisModel?: string }>)
+      .then(info => {
+        setEngineInfo({ engine: info.engine, fastModel: info.fastModel ?? '', synthesisModel: info.synthesisModel ?? '' })
+        const fast  = info.fastModel  ?? ''
+        const synth = info.synthesisModel ?? ''
+        if (!fast && !synth) return
+        const opts: ModelOption[] = []
+        if (fast)  opts.push({ value: fast,  label: `Primary — ${shortModelName(fast)}` })
+        if (synth) opts.push({ value: synth, label: `Secondary — ${shortModelName(synth)}` })
+        setProviderModels(opts)
+      })
       .catch(() => {})
       .finally(() => setEngineLoading(false))
   }, [])
@@ -393,7 +477,7 @@ export default function AgentsSettingsPage() {
         body:    JSON.stringify({
           ventureId,
           agentId,
-          model:                 models[agentId] ?? 'claude-haiku-4-5-20251001',
+          model:                 models[agentId] || tierDefault(AGENTS.find(a => a.id === agentId)?.modelTier ?? 'synthesis', providerModels),
           systemPromptExtension: prompts[agentId] ?? '',
         }),
       })
@@ -494,6 +578,7 @@ export default function AgentsSettingsPage() {
                 model={models[agent.id] ?? ''}
                 saved={saved[agent.id] ?? false}
                 onClick={() => setPanelAgent(agent)}
+                models={providerModels}
               />
             ))}
           </div>
@@ -596,7 +681,7 @@ export default function AgentsSettingsPage() {
           />
           <AgentPanel
             agent={panelAgent}
-            model={models[panelAgent.id] ?? ''}
+            model={models[panelAgent.id] || tierDefault(panelAgent.modelTier, providerModels)}
             prompt={prompts[panelAgent.id] ?? ''}
             memory={memory[panelAgent.id] ?? []}
             onModelChange={m => setModels(prev => ({ ...prev, [panelAgent.id]: m }))}
@@ -605,6 +690,7 @@ export default function AgentsSettingsPage() {
             saving={saving[panelAgent.id] ?? false}
             saved={saved[panelAgent.id] ?? false}
             onClose={() => setPanelAgent(null)}
+            models={providerModels}
           />
         </>
       )}

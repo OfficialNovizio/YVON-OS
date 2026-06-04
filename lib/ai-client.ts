@@ -97,7 +97,7 @@ export async function loadConfig(): Promise<ProviderConfig> {
     protocol:        'anthropic',
     apiKey:          process.env.ANTHROPIC_API_KEY ?? '',
     baseUrl:         'https://api.anthropic.com',
-    fastModel:       'claude-haiku-4-5-20251001',
+    fastModel:       'claude-sonnet-4-6',
     synthesisModel:  'claude-sonnet-4-6',
     tier1Model:      'claude-opus-4-6',
     tertiaryModel:   '',
@@ -194,7 +194,10 @@ async function* oaiStream(
   }
 }
 
-// ─── callFast — non-streaming fast model (haiku-tier) ────────────────────────
+// ─── callFast — non-streaming primary model ───────────────────────────────────
+// Uses fastModel (PRIMARY — whatever the user configured as their best model).
+// For DeepSeek: deepseek-v4-pro. For Anthropic default: Sonnet (not Haiku).
+// CEO + Technical agents use this tier. Others use callSynthesis.
 
 export async function callFast(params: {
   system?:   string

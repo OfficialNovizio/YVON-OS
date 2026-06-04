@@ -198,7 +198,9 @@ function err(message: string): ToolResult {
 // ─── Bash allowlist ───────────────────────────────────────────────────────────
 
 const BASH_ALLOWED_PREFIXES = [
-  'ls', 'pwd', 'cat', 'head', 'tail', 'wc', 'find', 'tree', 'file', 'stat',
+  'ls', 'pwd', 'cat', 'head', 'tail', 'wc', 'tree', 'file', 'stat',
+  // 'find' removed — on Windows PowerShell it runs C:\Windows\System32\find.exe
+  // (a text search tool, not Unix find). Use Glob/Grep instead.
   'git status', 'git log', 'git diff', 'git show', 'git branch', 'git remote',
   'git -C',  // allows: git -C /local/repo/path log/status/diff/branch
   'npm ls', 'npm view', 'npm outdated',
@@ -208,13 +210,20 @@ const BASH_ALLOWED_PREFIXES = [
 // Safe read-only pipe targets: head, tail, sort, wc, grep (with literal pattern only)
 const SAFE_PIPE_TARGET = /^(head(\s+(-\d+|-n\s+\d+))?|tail(\s+(-\d+|-n\s+\d+))?|sort(\s+-[a-zA-Z0-9]+)*|wc(\s+-[a-zA-Z]+)?|grep(\s+-[a-zA-Z]+)*(\s+"[^"]*"|\s+'[^']*'|\s+\S+))$/
 
+function normalizeSep(p: string): string {
+  return p.replace(/\\/g, '/')
+}
+
 function isBashAllowedSingle(cmd: string, localRepoPath?: string): boolean {
   const trimmed = cmd.trim()
+  // Block shell injection characters. Allow backslashes for Windows paths.
   if (/[;&|`$(){}<>]|\.\.\//.test(trimmed)) return false
   if (!BASH_ALLOWED_PREFIXES.some(prefix => trimmed === prefix || trimmed.startsWith(prefix + ' '))) return false
+
+  // ── Unix absolute paths (/...) ────────────────────────────────────────────
   if (/(?:^|\s)\//.test(trimmed)) {
     if (!localRepoPath) return false
-    const absPaths = trimmed.match(/(?:^|\s)(\/[^\s]+)/g)
+    const absPaths = trimmed.match(/(?:^|\s)(\/[^\s"']+)/g)
     if (!absPaths) return false
     return absPaths.every(p => {
       const cleaned = p.trim()
@@ -222,6 +231,21 @@ function isBashAllowedSingle(cmd: string, localRepoPath?: string): boolean {
       return !rel.startsWith('..') && !isAbsolute(rel)
     })
   }
+
+  // ── Windows absolute paths (C:\... or C:/...) ────────────────────────────
+  if (/(?:^|\s)"?[A-Za-z]:[\\\/]/.test(trimmed)) {
+    if (!localRepoPath) return false
+    // Extract path tokens — quoted ("C:\path with spaces") or unquoted
+    const winPaths = trimmed.match(/"([A-Za-z]:[\\\/][^"]*)"|([A-Za-z]:[\\\/]\S*)/g) ?? []
+    if (winPaths.length === 0) return false
+    const repoNorm = normalizeSep(localRepoPath)
+    return winPaths.every(raw => {
+      const cleaned = normalizeSep(raw.replace(/^"|"$/g, ''))
+      // Path must be the repo itself or a subdirectory of it
+      return cleaned === repoNorm || cleaned.startsWith(repoNorm + '/')
+    })
+  }
+
   return true
 }
 
@@ -288,6 +312,7 @@ async function execGlob(input: { pattern: string; path?: string }, ctx?: ToolCon
   }
 }
 
+// Pure Node.js grep — no shell dependency, works on Windows and macOS identically.
 async function execGrep(input: {
   pattern: string
   path?: string
@@ -300,26 +325,71 @@ async function execGrep(input: {
   try {
     const localRepoPath = ctx?.repoMode === 'local' ? ctx?.localRepoPath : undefined
     const target = input.path ? safeResolve(input.path, localRepoPath) : REPO_ROOT
-    const mode = input.output_mode ?? 'files_with_matches'
-    // POSIX grep -r (universally available; ripgrep not guaranteed on the host)
-    const flags: string[] = ['-r', '-E', '--exclude-dir=node_modules', '--exclude-dir=.next', '--exclude-dir=.git', '--exclude-dir=dist', '--exclude-dir=build', '--exclude-dir=graphify-out']
-    if (input['-i']) flags.push('-i')
-    if (mode === 'files_with_matches') flags.push('-l')
-    else if (mode === 'count') flags.push('-c')
-    else if (input['-n']) flags.push('-n')
-    if (input.glob) flags.push(`--include=${input.glob}`)
-    const limit = Math.min(MAX_GREP_ROWS, input.head_limit ?? 100)
-    const cmd = `grep ${flags.map(f => f.includes(' ') ? JSON.stringify(f) : f).join(' ')} -- ${JSON.stringify(input.pattern)} ${JSON.stringify(target)} 2>/dev/null | head -${limit}`
-    const { stdout } = await execP(cmd, { shell: '/bin/bash', maxBuffer: 5_000_000, timeout: 30_000 })
-    const out = stdout.trim()
-    if (!out) return ok('(no matches)', `grep "${input.pattern}": 0 matches`)
-    const rows = out.split('\n').length
-    return ok(out, `grep "${input.pattern}": ${rows} row${rows === 1 ? '' : 's'}`)
+    const mode   = input.output_mode ?? 'files_with_matches'
+    const limit  = Math.min(MAX_GREP_ROWS, input.head_limit ?? 100)
+    const reFlags = input['-i'] ? 'gi' : 'g'
+    let re: RegExp
+    try { re = new RegExp(input.pattern, reFlags) } catch { return err(`Invalid regex: ${input.pattern}`) }
+
+    const EXCLUDED = /[\\/](node_modules|\.next|\.git|dist|build|graphify-out)([\\/]|$)/
+
+    // ── Collect candidate files ───────────────────────────────────────────────
+    const stat = await fs.stat(target).catch(() => null)
+    if (!stat) return err(`Path not found: ${target}`)
+
+    let files: string[] = []
+    if (stat.isFile()) {
+      files = [target]
+    } else {
+      // Recursive file walk
+      const walk = async (dir: string) => {
+        const entries = await fs.readdir(dir, { withFileTypes: true })
+        for (const e of entries) {
+          const full = resolve(dir, e.name)
+          if (EXCLUDED.test(full)) continue
+          if (e.isDirectory()) await walk(full)
+          else if (e.isFile()) {
+            if (input.glob) {
+              // Simple glob: *.dart or **/*.ts — just check extension / filename
+              const globPat = input.glob.replace(/\*\*\//, '').replace(/\*/g, '.*').replace(/\./g, '\\.')
+              if (!new RegExp(globPat + '$', 'i').test(e.name)) continue
+            }
+            files.push(full)
+          }
+        }
+      }
+      await walk(target)
+    }
+
+    // ── Search files ──────────────────────────────────────────────────────────
+    const results: string[] = []
+    for (const file of files) {
+      if (results.length >= limit) break
+      let text: string
+      try { text = await fs.readFile(file, 'utf-8') } catch { continue }
+      re.lastIndex = 0
+      if (mode === 'files_with_matches') {
+        if (re.test(text)) results.push(file)
+      } else if (mode === 'count') {
+        const count = (text.match(re) ?? []).length
+        if (count > 0) results.push(`${file}: ${count}`)
+      } else {
+        // content mode
+        const lines = text.split('\n')
+        for (let i = 0; i < lines.length && results.length < limit; i++) {
+          re.lastIndex = 0
+          if (re.test(lines[i])) {
+            results.push(input['-n'] ? `${file}:${i + 1}: ${lines[i]}` : `${file}: ${lines[i]}`)
+          }
+        }
+      }
+    }
+
+    if (results.length === 0) return ok('(no matches)', `grep "${input.pattern}": 0 matches`)
+    const out = results.join('\n')
+    return ok(out, `grep "${input.pattern}": ${results.length} result(s)`)
   } catch (e) {
-    // grep exits 1 when no matches — treat as empty
-    const msg = e instanceof Error ? e.message : String(e)
-    if (/Command failed.*exit code 1/i.test(msg)) return ok('(no matches)', `grep "${input.pattern}": 0 matches`)
-    return err(msg)
+    return err(e instanceof Error ? e.message : String(e))
   }
 }
 
@@ -331,9 +401,11 @@ async function execBash(input: { command: string; description: string; timeout?:
   try {
     const timeout = Math.min(30_000, input.timeout ?? 10_000)
     const cwd = (ctx?.repoMode === 'local' && ctx?.localRepoPath) ? ctx.localRepoPath : REPO_ROOT
+    // Use platform-native shell — /bin/bash on macOS/Linux, powershell.exe on Windows
+    const shell = process.platform === 'win32' ? 'powershell.exe' : '/bin/bash'
     const { stdout, stderr } = await execP(input.command, {
       cwd,
-      shell: '/bin/bash',
+      shell,
       maxBuffer: MAX_BASH_OUTPUT,
       timeout,
     })
@@ -441,7 +513,7 @@ async function execGithub(
         if (!input.path)    return err('action=write_file requires a path argument')
         if (!input.content) return err('action=write_file requires a content argument')
         if (!input.message) return err('action=write_file requires a message (commit message) argument')
-        // Local mode: write directly to the cloned repo on this machine
+        // Local mode: write directly to the cloned repo, then git-commit for a real SHA
         if (ctx.repoMode === 'local' && ctx.localRepoPath) {
           try {
             const localRoot = ctx.localRepoPath
@@ -453,9 +525,25 @@ async function execGithub(
             await fs.mkdir(dirname(targetPath), { recursive: true })
             const existed = await fs.stat(targetPath).then(() => true).catch(() => false)
             await fs.writeFile(targetPath, input.content, 'utf-8')
+
+            // Git-commit the write so a real SHA is available for Marcus's synthesis.
+            // Uses the same shell as execBash (PowerShell on Windows, bash on Mac/Linux).
+            let sha = ''
+            try {
+              const shell  = process.platform === 'win32' ? 'powershell.exe' : '/bin/bash'
+              const gitAdd = await execP(`git -C "${localRoot}" add "${targetPath}"`, { shell, timeout: 10_000 })
+              void gitAdd
+              const gitMsg = input.message.replace(/"/g, "'")
+              const gitCommit = await execP(`git -C "${localRoot}" commit -m "${gitMsg}"`, { shell, timeout: 10_000 })
+              const shaMatch = gitCommit.stdout.match(/\[[\w/]+ ([a-f0-9]+)\]/)
+              sha = shaMatch?.[1] ?? ''
+            } catch { /* git not initialised or nothing staged — file was still written */ }
+
+            const status = existed ? 'updated' : 'created'
+            const shaNote = sha ? `\nCommit SHA: ${sha}` : '\n(no git commit — file written to disk only)'
             return ok(
-              `File ${existed ? 'updated' : 'created'} locally: ${targetPath}`,
-              `local write ${input.path}: ${existed ? 'updated' : 'created'} ✓`
+              `File ${status} locally: ${targetPath}${shaNote}`,
+              `local write ${input.path}: ${status} ✓${sha ? ' SHA:' + sha.slice(0, 7) : ''}`
             )
           } catch (e) {
             return err(`Local write failed: ${e instanceof Error ? e.message : String(e)}`)

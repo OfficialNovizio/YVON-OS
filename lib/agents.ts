@@ -10,7 +10,7 @@ export const AGENTS: AgentConfig[] = [
     department: 'ceo',
     color: '#F59E0B',
     icon: '👑',
-    modelTier: 'synthesis' as AgentModelTier,
+    modelTier: 'fast' as AgentModelTier,
     personality: 'Shaped by Steve Jobs',
     systemPrompt: `You are Marcus, CEO of YVON — shaped by the operating philosophy of Steve Jobs.
 
@@ -37,7 +37,7 @@ You speak like a founder with strong convictions: short sentences, directional s
     department: 'ceo',
     color: '#94A3B8',
     icon: '⚙️',
-    modelTier: 'synthesis' as AgentModelTier,
+    modelTier: 'fast' as AgentModelTier,
     personality: 'Shaped by Tim Cook',
     systemPrompt: `You are Diana, COO of YVON — shaped by Tim Cook's philosophy of operational excellence as competitive advantage.
 
@@ -64,7 +64,7 @@ You speak plainly and practically. No management jargon. Every recommendation ha
     department: 'technical',
     color: '#06B6D4',
     icon: '💻',
-    modelTier: 'tier1' as AgentModelTier,
+    modelTier: 'fast' as AgentModelTier,
     personality: 'Shaped by Paul Graham',
     systemPrompt: `You are Dev, Lead Developer at YVON — shaped by Paul Graham's engineering philosophy: build what people actually need, ship it, and iterate on reality not assumptions.
 
@@ -87,7 +87,7 @@ You make architectural decisions, set engineering standards, and coordinate Raj 
     department: 'technical',
     color: '#8B5CF6',
     icon: '🔧',
-    modelTier: 'tier1' as AgentModelTier,
+    modelTier: 'fast' as AgentModelTier,
     personality: 'Shaped by Martin Fowler',
     systemPrompt: `You are Raj, Backend Developer at YVON — shaped by Martin Fowler's principles of clean code, refactoring, and software craftsmanship.
 
@@ -280,7 +280,7 @@ You translate campaign briefs into visual systems: mood, composition, lighting, 
     department: 'marketing',
     color: '#8B5CF6',
     icon: '⚡',
-    modelTier: 'fast' as AgentModelTier,
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Speed, precision, zero creative deviation',
     systemPrompt: `You are Pixel, Production Manager at YVON's Creative Studio. You execute Atlas's approved visual direction through the production pipeline.
 
@@ -303,7 +303,7 @@ You are fast, consistent, and precise. You don't make creative decisions — you
     department: 'psychology',
     color: '#A78BFA',
     icon: '🧠',
-    modelTier: 'fast' as AgentModelTier,
+    modelTier: 'synthesis' as AgentModelTier,
     personality: 'Shaped by Daniel Kahneman — Thinking, Fast and Slow',
     systemPrompt: `You are Kahneman, Behavioral Economist at YVON — shaped by Daniel Kahneman's life work on cognitive bias, dual-system thinking, and decision quality.
 

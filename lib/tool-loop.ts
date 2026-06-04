@@ -37,7 +37,7 @@ export interface ToolLoopOptions {
   toolContext?:  ToolContext
 }
 
-const DEFAULT_MAX_ITERATIONS = 8
+const DEFAULT_MAX_ITERATIONS = 30
 
 export async function* runToolLoop(opts: ToolLoopOptions): AsyncGenerator<ToolLoopEvent> {
   const messages: Anthropic.Messages.MessageParam[] = [...opts.initialMessages]
