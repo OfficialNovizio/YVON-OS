@@ -10,6 +10,7 @@ import {
 import AnalyticsSubNav from '../_subnav';
 import TimelineToggle from '@/app/components/TimelineToggle';
 import { useVentureSlug } from '@/lib/use-venture-slug';
+import { useSocialPanels } from '../_use-social-panels';
 
 // ─── Glass constants ──────────────────────────────────────────────────────────
 const ACCENT = '#0066cc';
@@ -26,6 +27,13 @@ const PLATFORM_META = {
 } as const;
 
 type PlatformKey = keyof typeof PLATFORM_META;
+
+// Split a caption into its description text and hashtags.
+function splitCaption(caption: string): { text: string; tags: string[] } {
+  const tags = (caption.match(/#[\p{L}\p{N}_]+/gu) ?? []).slice(0, 8);
+  const text = caption.replace(/#[\p{L}\p{N}_]+/gu, '').replace(/\s+/g, ' ').trim();
+  return { text, tags };
+}
 
 
 // ─── Charts ───────────────────────────────────────────────────────────────────
@@ -119,12 +127,19 @@ function DumbbellChart({ items }: {
   );
 }
 
-function FormatHeatmap({ data }: { data: Record<string, Record<string, { eng: number; conv: number; leader: string }>> }) {
-  const platforms = ['instagram','tiktok','linkedin','youtube'] as PlatformKey[];
+function FormatHeatmap({ data, platforms }: { data: Record<string, Record<string, { eng: number; conv: number; leader: string }>>; platforms: PlatformKey[] }) {
   const formats = Object.keys(data);
-  const maxEng = Math.max(...formats.flatMap(f =>
+  const maxEng = Math.max(0, ...formats.flatMap(f =>
     platforms.map(p => data[f]?.[p]?.eng ?? 0)
   ));
+
+  if (platforms.length === 0 || formats.length === 0) {
+    return (
+      <div className="py-8 text-center text-[13px]" style={{ color: 'rgba(0,0,0,0.35)' }}>
+        No format benchmarks yet — connect platforms and fetch posts via Refresh.
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-hidden rounded-xl">
@@ -240,6 +255,7 @@ function Shimmer({ className }: { className?: string }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SocialMediaPage() {
+  const { isOn: panelOn } = useSocialPanels();
   const router = useRouter();
   const ventureSlug = useVentureSlug();
   const [period, setPeriod] = useState('30D');
@@ -286,7 +302,7 @@ export default function SocialMediaPage() {
     fetch('/api/social-stats', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ venture: ventureSlug, platforms, refresh: false }),
+      body: JSON.stringify({ venture: ventureSlug, platforms, refresh: false, includePosts: true }),
     })
       .then(r => r.json())
       .then(data => {
@@ -314,7 +330,7 @@ export default function SocialMediaPage() {
     fetch('/api/social-stats', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ venture: ventureSlug, platforms, refresh: true }),
+      body: JSON.stringify({ venture: ventureSlug, platforms, refresh: true, includePosts: true }),
     })
       .then(r => r.json())
       .then(data => {
@@ -536,35 +552,73 @@ export default function SocialMediaPage() {
             )}
           </div>
 
-          {/* Posts table (below bubble) */}
-          <div className="ana-glass rounded-[16px] overflow-hidden">
-            <div className="px-5 py-3 border-b grid gap-3" style={{ borderColor: 'rgba(0,0,0,0.06)', gridTemplateColumns: '30px 1fr 80px 70px 70px 70px 70px' }}>
-              {['#','Post','Platform','Views','Likes','Comments','Shares'].map(h => (
-                <span key={h} className="text-[9px] font-bold uppercase tracking-wider" style={{ color: 'rgba(0,0,0,0.35)' }}>{h}</span>
-              ))}
+          {/* Posts — content preview cards */}
+          {filteredPosts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredPosts.slice(0, 9).map((post, i) => {
+                const { text, tags } = splitCaption(post.caption || '');
+                const pmeta = PLATFORM_META[post.platform as PlatformKey] ?? { label: post.platform, icon: 'public', color: '#666' };
+                return (
+                  <a
+                    key={post.post_id ?? i}
+                    href={post.url || undefined}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="ana-glass rounded-[18px] overflow-hidden flex flex-col transition-transform hover:scale-[1.01]"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {/* Thumbnail */}
+                    <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1', background: 'rgba(0,0,0,0.06)' }}>
+                      {post.thumbnail_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={post.thumbnail_url} alt="" referrerPolicy="no-referrer" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="material-symbols-outlined" style={{ fontSize: 34, color: 'rgba(0,0,0,0.15)' }}>{pmeta.icon}</span>
+                        </div>
+                      )}
+                      <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full" style={{ background: pmeta.color, color: '#fff', letterSpacing: '0.04em' }}>
+                        {pmeta.label}
+                      </span>
+                    </div>
+                    {/* Body */}
+                    <div className="p-3 flex flex-col gap-2 flex-1">
+                      <p className="text-[12px] leading-snug" style={{ color: 'rgba(0,0,0,0.72)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {text || 'Untitled'}
+                      </p>
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap gap-x-2 gap-y-0.5">
+                          {tags.map(t => <span key={t} className="text-[10px] font-semibold" style={{ color: ACCENT }}>{t}</span>)}
+                        </div>
+                      )}
+                      {/* Metrics */}
+                      <div className="mt-auto pt-2 grid grid-cols-4 gap-1" style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+                        {[
+                          { icon: 'visibility', v: post.views },
+                          { icon: 'favorite', v: post.likes },
+                          { icon: 'mode_comment', v: post.comments },
+                          { icon: 'share', v: post.shares },
+                        ].map((m, idx) => (
+                          <div key={idx} className="flex flex-col items-center gap-0.5">
+                            <span className="material-symbols-outlined" style={{ fontSize: 14, color: 'rgba(0,0,0,0.4)' }}>{m.icon}</span>
+                            <span className="text-[11px] font-mono font-semibold" style={{ color: 'rgba(0,0,0,0.7)' }}>{fmt(m.v)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
             </div>
-            {filteredPosts.length > 0 ? filteredPosts.slice(0, 5).map((post, i) => (
-              <div key={post.post_id ?? i} className="px-5 py-3 grid gap-3 items-center hover:bg-black/[0.02] transition-colors"
-                style={{ gridTemplateColumns: '30px 1fr 80px 70px 70px 70px 70px', borderTop: i > 0 ? '1px solid rgba(0,0,0,0.06)' : 'none' }}>
-                <span className="text-[11px] font-mono" style={{ color: 'rgba(0,0,0,0.25)' }}>{(i+1).toString().padStart(2,'0')}</span>
-                <p className="text-[12px] truncate font-medium" style={{ color: 'rgba(0,0,0,0.7)' }}>{post.caption || 'Untitled'}</p>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-center" style={{ background: `${PLATFORM_META[post.platform as PlatformKey]?.color ?? '#666'}15`, color: PLATFORM_META[post.platform as PlatformKey]?.color ?? '#666' }}>
-                  {PLATFORM_META[post.platform as PlatformKey]?.label ?? post.platform}
-                </span>
-                <span className="text-[12px] font-mono font-semibold" style={{ color: 'rgba(0,0,0,0.6)' }}>{fmt(post.views)}</span>
-                <span className="text-[12px] font-mono font-semibold" style={{ color: 'rgba(0,0,0,0.6)' }}>{fmt(post.likes)}</span>
-                <span className="text-[12px] font-mono font-semibold" style={{ color: 'rgba(0,0,0,0.6)' }}>{fmt(post.comments)}</span>
-                <span className="text-[12px] font-mono font-semibold" style={{ color: 'rgba(0,0,0,0.6)' }}>{fmt(post.shares)}</span>
-              </div>
-            )) : (
-              <div className="px-5 py-6 text-center text-[12px]" style={{ color: 'rgba(0,0,0,0.3)' }}>
-                {allPosts.length === 0 ? 'No posts fetched yet' : 'No posts match the filter'}
-              </div>
-            )}
-          </div>
+          ) : (
+            <div className="ana-glass rounded-[16px] px-5 py-8 text-center text-[12px]" style={{ color: 'rgba(0,0,0,0.35)' }}>
+              {allPosts.length === 0 ? 'No posts fetched yet — click Refresh' : 'No posts match the filter'}
+            </div>
+          )}
         </section>
 
         {/* ── SECTION 3: Format × Platform Heatmap ──────────────────────── */}
+        {panelOn('formatHeatmap') && (
         <section className="flex flex-col gap-4">
           <div>
             <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Format × Platform Performance</h2>
@@ -573,7 +627,7 @@ export default function SocialMediaPage() {
             </p>
           </div>
           <div className="ana-glass rounded-[20px] p-5">
-            <FormatHeatmap data={formatBenchmarks} />
+            <FormatHeatmap data={formatBenchmarks} platforms={connectedPlatforms} />
           </div>
           <div className="ana-glass rounded-[16px] px-6 py-4 flex items-start gap-4">
             <span className="material-symbols-outlined text-[#059669] text-[18px] mt-0.5">trending_up</span>
@@ -585,8 +639,10 @@ export default function SocialMediaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* ── SECTION 4: Audience Momentum — Dumbbell ───────────────────── */}
+        {panelOn('audienceMomentum') && (
         <section className="flex flex-col gap-4">
           <div>
             <h2 className="text-[18px] font-semibold" style={{ letterSpacing: '-0.28px', color: '#000000' }}>Audience Momentum</h2>
@@ -604,8 +660,10 @@ export default function SocialMediaPage() {
             )}
           </div>
         </section>
+        )}
 
         {/* ── SECTION 5: Revenue Bridge — Waterfall Chart ──────────────── */}
+        {panelOn('revenueBridge') && (
         <section className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div>
@@ -634,6 +692,7 @@ export default function SocialMediaPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* ── SECTION 6: Connected Accounts Summary ─────────────────────── */}
         <section className="flex flex-col gap-4">

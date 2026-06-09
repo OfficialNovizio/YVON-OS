@@ -2,15 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-const subTabs = [
-  { label: 'Overview',      href: '/screens/competitor' },
-  { label: 'Content Intel', href: '/screens/competitor/content-intel' },
-  { label: 'Content Gaps',  href: '/screens/competitor/content-gaps' },
-  { label: 'Keywords',      href: '/screens/competitor/keywords' },
-  { label: 'Alerts',        href: '/screens/competitor/alerts' },
-  { label: 'Reports',       href: '/screens/competitor/reports' },
-];
+import { COMPETITOR_TABS } from '@/lib/competitor-tabs';
+import { useCompetitorTabs } from './_use-competitor-tabs';
 
 const INK    = '#0a2547';
 const INK_4  = 'rgba(10,37,71,0.52)';
@@ -20,6 +13,8 @@ const P_INK4 = 'rgba(220,228,248,0.45)';
 
 export default function CompetitorSubNav() {
   const pathname = usePathname();
+  const { isOn } = useCompetitorTabs();
+  const subTabs = COMPETITOR_TABS.filter(t => isOn(t.id));
 
   return (
     <header className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 pt-[96px]">

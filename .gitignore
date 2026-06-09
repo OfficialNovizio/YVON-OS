@@ -31,3 +31,6 @@ Thumbs.db
 .claude/settings.local.json
 .claude/mcps/
 .vercel
+
+# Hermes runtime clone (aux-tools sidecar) — large, fetched via npm run hermes:setup
+hermes/vendor/

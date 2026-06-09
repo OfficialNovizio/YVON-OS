@@ -31,9 +31,8 @@ function fmtN(n: number) {
   return n >= 1_000_000 ? (n / 1_000_000).toFixed(1) + 'M' : n >= 1_000 ? Math.round(n / 1_000) + 'K' : String(n)
 }
 
-export default function CompetitorContentGapsPage() {
+export function GapsSection({ ventureSlug }: { ventureSlug: string }) {
   const router = useRouter()
-  const ventureSlug = useVentureSlug()
   const [liveGaps, setLiveGaps] = useState<GapData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -57,12 +56,9 @@ export default function CompetitorContentGapsPage() {
 
   if (loading && !liveGaps) {
     return (
-      <main className="min-h-screen pb-24">
-        <CompetitorSubNav />
-        <div className="flex items-center justify-center py-32">
-          <span className="material-symbols-outlined animate-spin text-[36px]" style={{ color: 'rgba(0,0,0,0.15)' }}>refresh</span>
-        </div>
-      </main>
+      <div className="flex items-center justify-center py-32">
+        <span className="material-symbols-outlined animate-spin text-[36px]" style={{ color: 'rgba(0,0,0,0.15)' }}>refresh</span>
+      </div>
     )
   }
 
@@ -73,9 +69,7 @@ export default function CompetitorContentGapsPage() {
   const gapCount = highPriority.length
 
   return (
-    <main className="min-h-screen pb-24">
-      <CompetitorSubNav />
-      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px] space-y-8">
+    <div className="space-y-8">
 
         {/* ── Hero ───────────────────────────────────────────────────── */}
         <section style={{ ...G3, padding: 40 }}>
@@ -305,16 +299,17 @@ export default function CompetitorContentGapsPage() {
             </div>
           </section>
         </>}
+    </div>
+  )
+}
 
-        <footer className="border-t flex items-center justify-between py-6" style={{ borderColor: L1 }}>
-          <p style={{ fontSize: 11, color: INK_4 }}>© 2026 YVON Intelligence. Built for Excellence.</p>
-          <div className="flex items-center gap-5">
-            {['Privacy', 'Terms', 'Support'].map(l => (
-              <a key={l} href="#" style={{ fontSize: 11, color: INK_4 }} className="hover:opacity-70 transition-opacity">{l}</a>
-            ))}
-          </div>
-        </footer>
-
+export default function CompetitorContentGapsPage() {
+  const ventureSlug = useVentureSlug()
+  return (
+    <main className="min-h-screen pb-24">
+      <CompetitorSubNav />
+      <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px]">
+        <GapsSection ventureSlug={ventureSlug} />
       </div>
     </main>
   )

@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import type { AgentId, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord } from '@/lib/types'
+import type { AgentId, AgentRunStatus, WarRoomEvent, WarRoomPlanRecord, WarRoomStep, WarRoomPhase, PhaseStatus } from '@/lib/types'
+import PhaseStepper, { type PhaseState, type QAPassResult } from './_PhaseStepper'
 import { getActiveVentureSlugClient } from '@/lib/venture-context'
 import { supabaseClient } from '@/lib/supabase-client'
 
@@ -106,7 +107,7 @@ type ThreadItem =
   | { id: string; kind: 'user';        text: string; attachments?: Array<{ preview?: string; mimeType: string; name: string; isImage: boolean }> }
   | { id: string; kind: 'plan';        objective: string; order: string; agents: AgentId[] }
   | { id: string; kind: 'engage_plan'; originalMessage: string; plan: import('@/lib/types').ExecutionPlan; routing: import('@/lib/types').RoutingResult }
-  | { id: string; kind: 'agent';       agentId: AgentId; task: string; status: AgentRunStatus; output?: string; expanded: boolean; startedAt: number; endedAt?: number; tools: ToolCallEntry[]; iterations?: number }
+  | { id: string; kind: 'agent';       agentId: AgentId; task: string; status: AgentRunStatus; output?: string; fullOutput?: string; expanded: boolean; startedAt: number; endedAt?: number; tools: ToolCallEntry[]; iterations?: number }
   | { id: string; kind: 'synthesis';   text: string; streaming: boolean }
   | { id: string; kind: 'error';       message: string }
   | { id: string; kind: 'stream_cut';  message: string; originalMessage: string; briefings?: string }
@@ -138,6 +139,60 @@ function patchLastAgentTools(
       return [...prev.slice(0, i), { ...item, tools: fn(item.tools) }, ...prev.slice(i + 1)]
   }
   return prev
+}
+
+// ─── History restore ────────────────────────────────────────────────────────────
+// Rebuild a persisted step into the same agent card shown during the live run,
+// including its tool-call breakdown.
+function stepToAgentItem(step: WarRoomStep): Extract<ThreadItem, { kind: 'agent' }> {
+  return {
+    id:         mkId(),
+    kind:       'agent',
+    agentId:    step.agentId,
+    task:       step.taskBrief ?? '',
+    status:     step.status === 'error' ? 'error' : 'done',
+    output:     step.outputContent ? step.outputContent.slice(0, 200) : undefined,
+    fullOutput: step.outputContent ?? undefined,
+    expanded:   false,
+    startedAt:  0,
+    endedAt:    0,
+    tools: (step.toolCalls ?? []).map(tc => ({
+      id:        mkId(),
+      name:      tc.name,
+      input:     tc.input,
+      startedAt: 0,
+      endedAt:   0,
+      summary:   tc.summary ?? undefined,
+      isError:   tc.isError,
+    })),
+  }
+}
+
+// Build the full restored thread for a saved plan: per turn → user bubble,
+// plan banner (turn 0), the turn's agent cards (with tools), then synthesis.
+function buildThreadFromPlan(
+  plan: WarRoomPlanRecord,
+  history: { user: string; marcus: string }[],
+): ThreadItem[] {
+  const items: ThreadItem[] = []
+  const steps = plan.steps ?? []
+  const singleTurn = history.length === 1
+  for (const [i, turn] of history.entries()) {
+    const cleanUser = turn.user.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+    items.push({ id: mkId(), kind: 'user', text: cleanUser })
+    if (i === 0 && plan.objective) {
+      items.push({ id: mkId(), kind: 'plan', objective: plan.objective, order: plan.agentOrder, agents: plan.agentsUsed })
+    }
+    // Agent cards for this turn, in stored order. Legacy rows default turn_index=0;
+    // for a single-turn session attach all steps so nothing is lost.
+    const turnSteps = steps.filter(s => (s.turnIndex ?? 0) === i)
+    const effectiveSteps = turnSteps.length > 0 ? turnSteps : (singleTurn ? steps : [])
+    for (const step of effectiveSteps) items.push(stepToAgentItem(step))
+    if (turn.marcus) {
+      items.push({ id: mkId(), kind: 'synthesis', text: turn.marcus, streaming: false })
+    }
+  }
+  return items
 }
 
 // ─── Markdown renderer ─────────────────────────────────────────────────────────
@@ -358,8 +413,9 @@ function shortToolInput(name: string, input: unknown): string {
   return JSON.stringify(input).slice(0, 80)
 }
 
-function AgentCard({ item, onToggle, now }: {
+function AgentCard({ item, onToggle, now, todos }: {
   item: Extract<ThreadItem, { kind: 'agent' }>; onToggle: () => void; now: number
+  todos?: Array<{ content: string; status: string; activeForm: string }>
 }) {
   const meta = AGENT_META[item.agentId]
   const isActive = item.status === 'working' || item.status === 'retrying'
@@ -395,34 +451,85 @@ function AgentCard({ item, onToggle, now }: {
               <span className={item.status === 'working' || item.status === 'retrying' ? 'animate-pulse' : ''} style={{ width: 6, height: 6, borderRadius: '50%', background: dotColor, display: 'inline-block' }} />
               <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', color: T2 }}>{statusLabel}</span>
             </div>
-            {item.output && (
-              <button onClick={onToggle} style={{ color: T2, background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: 15 }}>{item.expanded ? 'expand_less' : 'expand_more'}</span>
-              </button>
-            )}
+            <button onClick={onToggle} style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              padding: '2px 8px', borderRadius: 6,
+              background: item.expanded ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.03)',
+              border: `1px solid ${BORDER}`, cursor: 'pointer',
+              fontSize: 10, fontWeight: 600, color: T2,
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 14 }}>{item.expanded ? 'expand_less' : 'expand_more'}</span>
+              {item.expanded ? 'Hide' : `Details${item.tools.length > 0 ? ` (${item.tools.length} tools)` : ''}`}
+            </button>
           </div>
         </div>
-        {item.tools.length > 0 && (
-          <div style={{ padding: '8px 12px', borderTop: `1px solid ${BORDER}` }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontFamily: 'ui-monospace,monospace' }}>
-              {item.tools.map(t => {
-                const inFlight = !t.endedAt
-                return (
-                  <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, lineHeight: 1.4 }}>
-                    <span style={{ color: inFlight ? 'rgba(250,204,21,0.70)' : t.isError ? 'rgba(248,113,113,0.70)' : 'rgba(52,211,153,0.70)' }}>{inFlight ? '⏵' : t.isError ? '✗' : '✓'}</span>
-                    <span style={{ fontWeight: 600, color: T1 }}>{t.name}</span>
-                    <span style={{ flex: 1, color: T2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shortToolInput(t.name, t.input)}</span>
-                    <span style={{ fontSize: 10, color: T2, flexShrink: 0 }}>{formatElapsed((t.endedAt ?? now) - t.startedAt)}{inFlight ? '…' : ''}</span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        )}
-        {item.expanded && item.output && (
-          <div style={{ padding: '12px', borderTop: `1px solid ${BORDER}` }}>
-            <p style={{ fontSize: 12, lineHeight: 1.6, color: T2, margin: 0 }}>{item.output}</p>
-          </div>
+
+        {/* COLLAPSIBLE: Agent execution details — todos + tools + full output */}
+        {item.expanded && (
+          <>
+            {/* Todos */}
+            {todos && todos.length > 0 && (
+              <div style={{ padding: '6px 12px', borderTop: `1px solid ${BORDER}` }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: T3, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>Todo List</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {todos.map((t, i) => {
+                    const done = t.status === 'completed'
+                    const active = t.status === 'in_progress'
+                    return (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, opacity: done ? 0.5 : 1 }}>
+                        <span style={{ color: done ? '#4ade80' : active ? '#facc15' : T3, flexShrink: 0 }}>
+                          {done ? '✓' : active ? '→' : '·'}
+                        </span>
+                        <span style={{ color: active ? T1 : T2, fontWeight: active ? 600 : 400 }}>
+                          {active ? t.activeForm : t.content}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Tool calls */}
+            {item.tools.length > 0 && (
+              <div style={{ padding: '8px 12px', borderTop: `1px solid ${BORDER}` }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: T3, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>Tools Used</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontFamily: 'ui-monospace,monospace' }}>
+                  {item.tools.map(t => {
+                    const inFlight = !t.endedAt
+                    const icon = t.name === 'Read' ? '📖' : t.name === 'Write' || t.name === 'Github' ? '✏️' : t.name === 'Grep' ? '🔍' : t.name === 'Glob' ? '🔎' : t.name === 'Bash' ? '⚡' : t.name === 'TodoWrite' ? '📋' : t.name === 'WebFetch' ? '🌐' : t.name === 'WebSearch' ? '🔎' : '🔧'
+                    return (
+                      <div key={t.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, lineHeight: 1.4 }}>
+                        <span>{icon}</span>
+                        <span style={{ color: inFlight ? 'rgba(250,204,21,0.70)' : t.isError ? 'rgba(248,113,113,0.70)' : 'rgba(52,211,153,0.70)' }}>{inFlight ? '⏵' : t.isError ? '✗' : '✓'}</span>
+                        <span style={{ fontWeight: 600, color: T1 }}>{t.name}</span>
+                        <span style={{ flex: 1, color: T2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{shortToolInput(t.name, t.input)}</span>
+                        <span style={{ fontSize: 10, color: T2, flexShrink: 0 }}>{formatElapsed((t.endedAt ?? now) - t.startedAt)}{inFlight ? '…' : ''}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Full agent output — the actual analysis/fix report */}
+            {item.fullOutput && (
+              <div style={{ padding: '12px', borderTop: `1px solid ${BORDER}` }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: T3, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>Full Output</div>
+                <div style={{
+                  fontSize: 12, lineHeight: 1.7, color: T2,
+                  whiteSpace: 'pre-wrap',
+                  maxHeight: 400, overflowY: 'auto',
+                  background: 'rgba(0,0,0,0.15)',
+                  borderRadius: 8,
+                  padding: '10px 12px',
+                  border: '1px solid rgba(255,255,255,0.04)',
+                }}>
+                  {item.fullOutput}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -725,6 +832,21 @@ export default function WarRoomPage() {
   })
   const [collabHint, setCollabHint] = useState<{ primary: AgentId; partners: AgentId[] } | null>(null)
 
+  // ── Phase stepper state (visible pipeline tracking) ──────────────────────
+  const [currentPhase, setCurrentPhase] = useState<WarRoomPhase | null>(null)
+  const [phaseStates, setPhaseStates] = useState<Record<WarRoomPhase, PhaseState>>(() => {
+    const init = {} as Record<WarRoomPhase, PhaseState>
+    for (const p of (['plan', 'execute', 'validate', 'synthesize'] as const)) {
+      init[p] = { phase: p, status: 'pending' }
+    }
+    return init
+  })
+  const [qaResults, setQaResults] = useState<QAPassResult[]>([])
+  const [phaseRetryCount, setPhaseRetryCount] = useState(0)
+  const [escalationMsg, setEscalationMsg] = useState<string | null>(null)
+  // Agent todo lists — tracks the latest TodoWrite output per agent for visual display
+  const [agentTodos, setAgentTodos] = useState<Record<string, Array<{ content: string; status: string; activeForm: string }>>>({})
+
   // currentSessionId tracks the DB plan ID for the ongoing conversation — reused across turns
   const currentSessionIdRef = useRef<string | null>(null)
   // Slash command state
@@ -836,16 +958,7 @@ export default function WarRoomPage() {
             try { return JSON.parse(savedConvStr) as { user: string; marcus: string }[] } catch { return null }
           })() : null) ?? [{ user: cleanPrompt, marcus: synthesis }]
           setConversationHistory(restoredHistory)
-          const restoredThread: ThreadItem[] = []
-          for (const [i, turn] of restoredHistory.entries()) {
-            const cleanTurn = turn.user.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
-            restoredThread.push({ id: mkId(), kind: 'user', text: cleanTurn })
-            if (i === 0 && mostRecent.objective) {
-              restoredThread.push({ id: mkId(), kind: 'plan', objective: mostRecent.objective, order: mostRecent.agentOrder, agents: mostRecent.agentsUsed })
-            }
-            if (turn.marcus) restoredThread.push({ id: mkId(), kind: 'synthesis', text: turn.marcus, streaming: false })
-          }
-          setThread(restoredThread)
+          setThread(buildThreadFromPlan(mostRecent, restoredHistory))
         })
         .catch(() => {})
         .finally(() => setHistoryLoading(false))
@@ -946,21 +1059,8 @@ export default function WarRoomPage() {
       ? plan.conversationHistory
       : [{ user: plan.userPrompt.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim(), marcus: plan.synthesis ?? '' }]
 
-    // Render every turn as user bubble + synthesis bubble
-    const items: ThreadItem[] = []
-    for (const [i, turn] of history.entries()) {
-      const cleanUser = turn.user.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
-      items.push({ id: mkId(), kind: 'user', text: cleanUser })
-      // Show plan banner only on the first turn (that's where the plan was)
-      if (i === 0 && plan.objective) {
-        items.push({ id: mkId(), kind: 'plan', objective: plan.objective, order: plan.agentOrder, agents: plan.agentsUsed })
-      }
-      if (turn.marcus) {
-        items.push({ id: mkId(), kind: 'synthesis', text: turn.marcus, streaming: false })
-      }
-    }
-
-    setThread(items)
+    // Render every turn as user bubble + plan banner + agent cards (with tools) + synthesis
+    setThread(buildThreadFromPlan(plan, history))
     setConversationHistory(history)
     setActiveSessionId(plan.id)
     currentSessionIdRef.current = plan.id
@@ -1007,6 +1107,17 @@ export default function WarRoomPage() {
     setConversationHistory([])
     setActiveSessionId(null)
     currentSessionIdRef.current = null
+    // Reset phase stepper
+    setCurrentPhase(null)
+    setQaResults([])
+    setPhaseRetryCount(0)
+    setEscalationMsg(null)
+    setAgentTodos({})
+    const init = {} as Record<WarRoomPhase, PhaseState>
+    for (const p of (['plan', 'execute', 'validate', 'synthesize'] as const)) {
+      init[p] = { phase: p, status: 'pending' }
+    }
+    setPhaseStates(init)
     const slug = getActiveVentureSlugClient()
     if (slug) {
       localStorage.removeItem(`yvon_war_room_conv_history_${slug}`)
@@ -1074,6 +1185,19 @@ export default function WarRoomPage() {
     synthesisIdRef.current   = null
     synthesisTextRef.current = ''
     doneReceivedRef.current  = false
+    // Reset phase stepper for new session (not for approval/retry continuations)
+    if (!isApproval && !isRetry && !isCeoOnly) {
+      setCurrentPhase(null)
+      setQaResults([])
+      setPhaseRetryCount(0)
+      setEscalationMsg(null)
+      setAgentTodos({})
+      const init = {} as Record<WarRoomPhase, PhaseState>
+      for (const p of (['plan', 'execute', 'validate', 'synthesize'] as const)) {
+        init[p] = { phase: p, status: 'pending' }
+      }
+      setPhaseStates(init)
+    }
 
     abortRef.current?.abort()
     abortRef.current = new AbortController()
@@ -1168,7 +1292,12 @@ export default function WarRoomPage() {
             }
             case 'agent_complete': {
               setAgentRoster(prev => ({ ...prev, [evt.agentId]: 'done' }))
-              setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, { status: 'done', endedAt: Date.now(), output: evt.previewText }))
+              setThread(prev => updateLastAgent(prev, evt.agentId as AgentId, {
+                status: 'done',
+                endedAt: Date.now(),
+                output: evt.previewText,
+                fullOutput: (evt.fullOutput as string) ?? evt.previewText,
+              }))
               break
             }
             case 'agent_error': {
@@ -1191,6 +1320,10 @@ export default function WarRoomPage() {
               setThread(prev => patchLastAgentTools(prev, evt.agentId as AgentId, tools =>
                 tools.map(t => t.id === id ? { ...t, endedAt: Date.now(), summary: evt.summary as string, isError: !!evt.is_error } : t),
               ))
+              // Track TodoWrite results per agent for visual rendering
+              if (evt.tool === 'TodoWrite' && evt.todoItems) {
+                setAgentTodos(prev => ({ ...prev, [evt.agentId as string]: evt.todoItems! }))
+              }
               break
             }
             case 'tool_iteration': {
@@ -1281,6 +1414,55 @@ export default function WarRoomPage() {
             case 'autonomy': {
               // Autonomy level broadcast — logged for debugging
               // evt.agentId, evt.level, evt.action are available if needed in future
+              break
+            }
+            // ── Phase visibility (v4 — live pipeline progress) ──────────────
+            case 'phase_enter': {
+              const raw = evt.phase as string
+              const valid = ['plan','execute','validate','synthesize'] as const
+              if (raw && (valid as readonly string[]).includes(raw)) {
+                const phase = raw as WarRoomPhase
+                setCurrentPhase(phase)
+                setPhaseStates(prev => ({
+                  ...prev,
+                  [phase]: { phase, status: (evt.status as PhaseStatus) ?? 'active' },
+                }))
+              }
+              break
+            }
+            case 'phase_complete': {
+              const raw = evt.phase as string
+              const valid = ['plan','execute','validate','synthesize'] as const
+              if (raw && (valid as readonly string[]).includes(raw)) {
+                const phase = raw as WarRoomPhase
+                setPhaseStates(prev => ({
+                  ...prev,
+                  [phase]: { ...prev[phase], status: 'complete' },
+                }))
+              }
+              break
+            }
+            // ── Validator verdicts (v4 — automatic QA gate) ─────────────────
+            case 'validator_verdict': {
+              setQaResults(prev => [...prev, {
+                pass: (evt.pass as number) ?? 1,
+                maxPasses: (evt.maxPasses as number) ?? 1,
+                status: (evt.status as 'PASS' | 'FAIL') ?? 'PASS',
+                errors: (evt.errors as string[]) ?? [],
+              }])
+              break
+            }
+            case 'validator_gate_blocked': {
+              setEscalationMsg(evt.message as string)
+              break
+            }
+            // ── Agent lifecycle ────────────────────────────────────────────
+            case 'agent_empty_output': {
+              setPhaseRetryCount(prev => prev + 1)
+              break
+            }
+            case 'agent_retry': {
+              setPhaseRetryCount(prev => prev + 1)
               break
             }
             case 'agent_warning': {
@@ -1563,6 +1745,15 @@ export default function WarRoomPage() {
               </div>
             ) : (
               <div style={{ padding: '20px 20px 8px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+                {/* Phase progress stepper — visible during execution */}
+                <PhaseStepper
+                  currentPhase={currentPhase}
+                  phases={phaseStates}
+                  qaResults={qaResults}
+                  retryCount={phaseRetryCount}
+                  escalationMessage={escalationMsg}
+                  isVisible={isRunning && currentPhase !== null}
+                />
                 {thread.map(item => {
                   const deletable = !isRunning && (item.kind === 'user' || item.kind === 'synthesis' || item.kind === 'agent' || item.kind === 'error')
                   const wrapper = (child: React.ReactNode) => (
@@ -1590,7 +1781,7 @@ export default function WarRoomPage() {
                         onCancel={() => { setThread(prev => prev.filter(i => i.kind !== 'engage_plan')); setSessionStatus('idle') }}
                       />
                     )
-                    case 'agent':        return wrapper(<AgentCard key={item.id} item={item} onToggle={() => toggleAgentExpand(item.id)} now={now} />)
+                    case 'agent':        return wrapper(<AgentCard key={item.id} item={item} onToggle={() => toggleAgentExpand(item.id)} now={now} todos={agentTodos[item.agentId]} />)
                     case 'synthesis':    return wrapper(<SynthesisBubble key={item.id} item={item} onCopy={() => handleCopy(item.id, item.text)} copied={copiedId === item.id} />)
                     case 'error':        return wrapper(<ErrorCard key={item.id} item={item} />)
                     case 'stream_cut':   return <StreamCutBanner key={item.id} item={item} onRetry={(m, b) => void run(undefined, m, b)} />

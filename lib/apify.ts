@@ -9,11 +9,17 @@ const MAX_POSTS = 10
 const CACHE_TTL_HOURS = 24
 
 // Read from Supabase Vault (encrypted at rest, service-role only).
-// Falls back to APIFY_TOKEN env var for backward compatibility.
-import { getRequiredSecret } from '@/lib/secrets'
+// Accepts either secret name: the newer `apify_api_key`, or `APIFY_TOKEN`
+// (the key every other Apify route + the Settings UI use). getSecret checks
+// the Vault then the matching env var for each name.
+import { getSecret } from '@/lib/secrets'
 
 export async function getToken(): Promise<string> {
-  return getRequiredSecret('apify_api_key')
+  const token = (await getSecret('apify_api_key')) ?? (await getSecret('APIFY_TOKEN'))
+  if (!token) {
+    throw new Error('Apify token not set — add `apify_api_key` or `APIFY_TOKEN` in Vault or env')
+  }
+  return token
 }
 
 export async function isApifyConfigured(): Promise<boolean> {
@@ -44,6 +50,7 @@ export interface SocialMetrics {
 export interface SocialPost {
   post_id:         string
   url:             string
+  thumbnail_url:   string
   caption:         string
   post_type:       string
   likes:           number
@@ -101,25 +108,29 @@ async function upsertSnapshot(
 
 async function upsertPosts(ventureSlug: string, platform: string, posts: SocialPost[]) {
   if (!posts.length) return
-  await supabase.from('social_posts').upsert(
-    posts.map(p => ({
-      venture_slug:    ventureSlug,
-      platform,
-      post_id:         p.post_id,
-      url:             p.url,
-      caption:         p.caption.slice(0, 500),
-      post_type:       p.post_type,
-      likes:           p.likes,
-      comments:        p.comments,
-      shares:          p.shares,
-      saves:           p.saves,
-      views:           p.views,
-      reach:           p.reach,
-      engagement_rate: p.engagement_rate,
-      published_at:    p.published_at,
-    })),
-    { onConflict: 'venture_slug,platform,post_id' },
-  )
+  const rows = posts.map(p => ({
+    venture_slug:    ventureSlug,
+    platform,
+    post_id:         p.post_id,
+    url:             p.url,
+    thumbnail_url:   p.thumbnail_url,
+    caption:         p.caption.slice(0, 500),
+    post_type:       p.post_type,
+    likes:           p.likes,
+    comments:        p.comments,
+    shares:          p.shares,
+    saves:           p.saves,
+    views:           p.views,
+    reach:           p.reach,
+    engagement_rate: p.engagement_rate,
+    published_at:    p.published_at,
+  }))
+  const { error } = await supabase.from('social_posts').upsert(rows, { onConflict: 'venture_slug,platform,post_id' })
+  // Resilience: if migration 048 (thumbnail_url) hasn't run yet, retry without that column.
+  if (error && /thumbnail_url/.test(error.message)) {
+    const rowsNoThumb = rows.map(({ thumbnail_url: _omit, ...rest }) => rest)
+    await supabase.from('social_posts').upsert(rowsNoThumb, { onConflict: 'venture_slug,platform,post_id' })
+  }
 }
 
 // ── Sync actor runner (cheaper than async start/poll on free plan) ─────────────
@@ -141,6 +152,16 @@ async function runActorSync(token: string, actorId: string, input: Record<string
 
 export type ScraperResult = { metrics: Omit<SocialMetrics, 'platform' | 'handle' | 'fetched_at' | 'from_cache'>; posts: SocialPost[]; raw: unknown }
 
+// Best-effort thumbnail/preview image from a scraped post item (field names vary by actor).
+function pickThumb(v: Record<string, unknown>): string {
+  for (const k of ['displayUrl', 'thumbnailUrl', 'thumbnail', 'coverUrl', 'cover', 'imageUrl', 'image']) {
+    const val = v[k]
+    if (typeof val === 'string' && val) return val
+  }
+  if (Array.isArray(v.images) && typeof v.images[0] === 'string') return v.images[0] as string
+  return ''
+}
+
 export async function scrapeInstagramFull(token: string, handle: string): Promise<ScraperResult> {
   const items = await runActorSync(token, 'apify~instagram-profile-scraper', {
     usernames: [handle.replace('@', '')],
@@ -155,10 +176,11 @@ export async function scrapeInstagramFull(token: string, handle: string): Promis
   return {
     metrics: { followers, following: Number(p.followsCount ?? 0), posts_count: Number(p.postsCount ?? 0), avg_likes, avg_comments, avg_views: 0, engagement_rate: followers > 0 ? (avg_likes + avg_comments) / followers : 0 },
     posts: pArr.slice(0, MAX_POSTS).map(v => ({
-      post_id: String(v.id ?? v.shortCode ?? ''), url: String(v.url ?? ''), caption: String(v.caption ?? '').slice(0, 500),
+      post_id: String(v.id ?? v.shortCode ?? ''), url: String(v.url ?? ''), thumbnail_url: pickThumb(v), caption: String(v.caption ?? '').slice(0, 500),
       post_type: v.type === 'Video' ? 'reel' : v.type === 'Sidecar' ? 'carousel' : 'static',
       likes: Number(v.likesCount ?? 0), comments: Number(v.commentsCount ?? 0), shares: 0, saves: 0,
-      views: Number(v.videoViewCount ?? 0), reach: 0,
+      // IG "views"/plays: prefer the unified play count, fall back to legacy video views. (Public only — accurate reach/views need Graph API Insights.)
+      views: Number(v.videoPlayCount ?? v.igPlayCount ?? v.playCount ?? v.videoViewCount ?? 0), reach: 0,
       engagement_rate: followers > 0 ? (Number(v.likesCount ?? 0) + Number(v.commentsCount ?? 0)) / followers : 0,
       published_at: String(v.timestamp ?? new Date().toISOString()),
     })),
@@ -183,7 +205,7 @@ export async function scrapeTikTokFull(token: string, handle: string): Promise<S
   return {
     metrics: { followers, following: Number(p.following ?? 0), posts_count: Number(p.video ?? 0), avg_likes, avg_comments, avg_views, engagement_rate: avg_views > 0 ? (avg_likes + avg_comments) / avg_views : 0 },
     posts: vArr.slice(0, MAX_POSTS).map(v => ({
-      post_id: String(v.id ?? ''), url: String(v.webVideoUrl ?? ''), caption: String(v.text ?? '').slice(0, 500),
+      post_id: String(v.id ?? ''), url: String(v.webVideoUrl ?? ''), thumbnail_url: pickThumb(v), caption: String(v.text ?? '').slice(0, 500),
       post_type: 'short',
       likes: Number(v.diggCount ?? 0), comments: Number(v.commentCount ?? 0), shares: Number(v.shareCount ?? 0), saves: Number(v.collectCount ?? 0),
       views: Number(v.playCount ?? 0), reach: 0,
@@ -206,7 +228,7 @@ export async function scrapeLinkedInFull(token: string, handle: string): Promise
   return {
     metrics: { followers, following: 0, posts_count: Number(p.postsCount ?? 0), avg_likes, avg_comments, avg_views: 0, engagement_rate: followers > 0 ? (avg_likes + avg_comments) / followers : 0 },
     posts: pArr.slice(0, MAX_POSTS).map(v => ({
-      post_id: String(v.id ?? v.urn ?? ''), url: String(v.url ?? ''), caption: String(v.text ?? '').slice(0, 500),
+      post_id: String(v.id ?? v.urn ?? ''), url: String(v.url ?? ''), thumbnail_url: pickThumb(v), caption: String(v.text ?? '').slice(0, 500),
       post_type: v.type === 'ARTICLE' ? 'article' : 'static',
       likes: Number(v.likesCount ?? v.numLikes ?? 0), comments: Number(v.commentsCount ?? v.numComments ?? 0), shares: Number(v.sharesCount ?? 0), saves: 0,
       views: Number(v.impressionsCount ?? 0), reach: 0,
@@ -233,7 +255,7 @@ export async function scrapeYouTubeFull(token: string, handle: string): Promise<
     metrics: { followers, following: 0, posts_count: Number(ch.videoCount ?? 0), avg_likes, avg_comments: 0, avg_views, engagement_rate: avg_views > 0 ? avg_likes / avg_views : 0 },
     posts: vArr.slice(0, MAX_POSTS).map(v => ({
       post_id: String(v.id ?? v.videoId ?? ''), url: String(v.url ?? `https://youtube.com/watch?v=${v.id ?? ''}`),
-      caption: String(v.title ?? '').slice(0, 500),
+      thumbnail_url: pickThumb(v), caption: String(v.title ?? '').slice(0, 500),
       post_type: Number(v.durationSeconds ?? 9999) < 60 ? 'short' : 'long video',
       likes: Number(v.likeCount ?? 0), comments: Number(v.commentCount ?? 0), shares: 0, saves: 0,
       views: Number(v.viewCount ?? v.views ?? 0), reach: 0,
@@ -328,7 +350,7 @@ export async function getSocialPosts(
     .order('published_at', { ascending: false })
     .limit(limit)
   return (data ?? []).map(r => ({
-    post_id: r.post_id, url: r.url ?? '', caption: r.caption ?? '', post_type: r.post_type ?? 'static',
+    post_id: r.post_id, url: r.url ?? '', thumbnail_url: r.thumbnail_url ?? '', caption: r.caption ?? '', post_type: r.post_type ?? 'static',
     likes: r.likes ?? 0, comments: r.comments ?? 0, shares: r.shares ?? 0, saves: r.saves ?? 0,
     views: r.views ?? 0, reach: r.reach ?? 0, engagement_rate: Number(r.engagement_rate ?? 0),
     published_at: r.published_at ?? new Date().toISOString(),

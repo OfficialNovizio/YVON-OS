@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+
 const ACCENT = '#0066cc';
 const GREEN  = '#047857';
 const VIOLET = '#4f46e5';
@@ -24,7 +26,7 @@ const BRIEFING_BLOCKS = [
   { label: 'Risk if skipped', color: '#dc2626', body: 'Loss of market share to Everlane who are prepping a similar transparency push.' },
 ];
 
-function StrategicBriefing() {
+export function StrategicBriefing() {
   return (
     <div style={{ ...G1, padding: 22 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
@@ -103,7 +105,7 @@ const CHANNELS = [
   { ch: 'LinkedIn',  reach: '0.6M', eng: '5.2%', engGood: true,  cac: '$11.40', role: 'Build',    roleCls: GREEN },
 ];
 
-function PulseAndChannel() {
+export function PulseAndChannel() {
   return (
     <div style={{ ...G4, padding: 22 }}>
       {/* Brand Pulse */}
@@ -158,7 +160,24 @@ function PulseAndChannel() {
 }
 
 // ── CEO Readout — V3: Obsidian (violet-tinted) ────────────────────────────────
-function CeoReadout() {
+interface LatestBrief { id: string; content: string; date: string }
+
+export function CeoReadout() {
+  const [brief, setBrief]     = useState<LatestBrief | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/brief/latest')
+      .then(r => r.json())
+      .then((d: { brief?: LatestBrief | null }) => setBrief(d.brief ?? null))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const dateLabel = brief
+    ? new Date(brief.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+    : 'Daily · 06:00';
+
   return (
     <div style={{
       ...G3,
@@ -171,25 +190,22 @@ function CeoReadout() {
           <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I3d, margin: 0 }}>CEO Readout</p>
           <span style={{ fontSize: 12, color: I3d, fontWeight: 600, textTransform: 'none', letterSpacing: '-0.005em' }}>Marcus · AI CEO agent</span>
         </div>
-        <span style={{ fontSize: 12, color: VIOLET, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase' }}>Daily · 06:00</span>
+        <span style={{ fontSize: 12, color: VIOLET, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase' }}>{dateLabel}</span>
       </div>
 
-      <p style={{ fontSize: 19, fontStyle: 'italic', fontWeight: 500, lineHeight: 1.5, color: I3, letterSpacing: '-0.015em', maxWidth: 900, margin: 0 }}>
-        <span style={{ fontSize: 36, color: VIOLET, lineHeight: 0, verticalAlign: '-10px', marginRight: 4, fontFamily: 'serif' }}>&ldquo;</span>
-        The momentum is shifting toward radical honesty. Our audience isn&apos;t just buying linen —
-        they&apos;re buying our integrity. Move from <em>telling</em> to <em>showing</em> our supply chain by end of month.
-        <span style={{ fontSize: 36, color: VIOLET, lineHeight: 0, verticalAlign: '-20px', marginLeft: 2, fontFamily: 'serif' }}>&rdquo;</span>
-      </p>
-
-      <p style={{ fontSize: 11, color: I3c, marginTop: 14, fontWeight: 500, letterSpacing: '0.04em' }}>
-        Drafted from Analytics #12, Marketing #08, Competitor #05 · Confidence 0.87
-      </p>
-
-      <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-        <button className="ceo-ghost-btn">⬇ Export</button>
-        <button className="ceo-ghost-btn">↑ Share</button>
-        <button className="ceo-ghost-btn" style={{ marginLeft: 'auto' }}>Ask Marcus a follow-up</button>
-      </div>
+      {loading ? (
+        <p style={{ fontSize: 15, color: I3c, margin: 0, fontWeight: 500 }}>Loading latest brief…</p>
+      ) : brief ? (
+        <p style={{ fontSize: 19, fontStyle: 'italic', fontWeight: 500, lineHeight: 1.5, color: I3, letterSpacing: '-0.015em', maxWidth: 900, margin: 0, whiteSpace: 'pre-wrap' }}>
+          <span style={{ fontSize: 36, color: VIOLET, lineHeight: 0, verticalAlign: '-10px', marginRight: 4, fontFamily: 'serif' }}>&ldquo;</span>
+          {brief.content}
+          <span style={{ fontSize: 36, color: VIOLET, lineHeight: 0, verticalAlign: '-20px', marginLeft: 2, fontFamily: 'serif' }}>&rdquo;</span>
+        </p>
+      ) : (
+        <p style={{ fontSize: 15, color: I3c, margin: 0, fontWeight: 500, lineHeight: 1.55 }}>
+          Marcus hasn&apos;t published a brief yet. The daily brief runs on a schedule (06:00) and will appear here once generated.
+        </p>
+      )}
     </div>
   );
 }

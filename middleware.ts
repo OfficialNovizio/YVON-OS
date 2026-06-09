@@ -23,10 +23,13 @@ const SELF_AUTHED_PREFIXES = [
   '/api/stripe-webhook',  // Stripe signature
   '/api/linkedin/callback', // OAuth callback (IS the auth flow)
   '/api/linkedin/connect',  // OAuth initiation
+  '/api/instagram/graph/callback', // Meta OAuth callback (IS the auth flow)
+  '/api/instagram/graph/connect',  // Meta OAuth initiation
   '/api/route-intent',       // Internal routing classifier (server-to-server)
   '/api/agent-session-memory', // ADJOURNING writes — verified by CRON_SECRET header
   '/api/health',          // intentionally public health check
   '/api/social-accounts', // Venture social accounts — read-only, no auth needed
+  '/api/team-chat',       // War Room v4 — structural approval gate + validators (self-authed for local dev)
 ]
 
 /** Rate limit configuration per route type */

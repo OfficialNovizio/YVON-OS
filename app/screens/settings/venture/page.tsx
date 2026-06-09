@@ -1314,20 +1314,86 @@ function BrandDocsTab({ ventureSlug }: { ventureSlug: string }) {
   )
 }
 
+function InstagramInsightsCard() {
+  const [st, setSt] = useState<{ connected: boolean; hasBusinessAccount: boolean; appConfigured: boolean } | null>(null)
+  const [msg, setMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/instagram/graph/status').then(r => r.json()).then(setSt).catch(() => setSt(null))
+    const p = new URLSearchParams(window.location.search)
+    if (p.get('ig_connected') === '1') setMsg('Instagram connected ✓')
+    else if (p.get('ig_connected') === 'no_business_account') setMsg('Connected, but no IG Business account is linked to your Facebook Page. Link an Instagram Business/Creator account to the Page, then reconnect.')
+    else if (p.get('ig_error')) setMsg(`Connection failed: ${p.get('ig_error')}`)
+  }, [])
+
+  const connected = !!(st?.connected && st?.hasBusinessAccount)
+
+  return (
+    <div style={{ ...G2, overflow: 'hidden', padding: '14px 18px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <span className="material-symbols-outlined" style={{ fontSize: 22, color: T.text2 }}>insights</span>
+        <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: T.text1 }}>Instagram Insights (Graph API)</p>
+          <p style={{ fontSize: 11, color: T.text3, marginTop: 2 }}>Reach, views, saves, shares, watch time — official owner-only metrics. Needs an IG Business/Creator account.</p>
+        </div>
+        <span style={{
+          display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, fontWeight: 600, textTransform: 'uppercase',
+          letterSpacing: '0.06em', padding: '3px 10px', borderRadius: 20,
+          background: connected ? 'rgba(48,209,88,0.1)' : 'rgba(255,255,255,0.05)',
+          color: connected ? '#30d158' : T.text3, border: `1px solid ${connected ? 'rgba(48,209,88,0.2)' : T.border}`,
+        }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: connected ? '#30d158' : T.text3 }} />
+          {connected ? 'Connected' : 'Not connected'}
+        </span>
+        <a
+          href="/api/instagram/graph/connect"
+          style={{
+            fontSize: 11, fontWeight: 700, textDecoration: 'none', padding: '7px 14px', borderRadius: 8,
+            background: T.accent, color: '#fff', whiteSpace: 'nowrap',
+          }}
+        >
+          {connected ? 'Reconnect' : 'Connect'}
+        </a>
+      </div>
+      {st && !st.appConfigured && (
+        <p style={{ fontSize: 11, color: '#fbbf24', marginTop: 10 }}>
+          First add <strong>META_APP_ID</strong> and <strong>META_APP_SECRET</strong> in Settings → App Secrets, and add <code>{'{origin}'}/api/instagram/graph/callback</code> to your Meta app&apos;s Valid OAuth Redirect URIs.
+        </p>
+      )}
+      {msg && <p style={{ fontSize: 11, color: msg.includes('✓') ? '#30d158' : '#fbbf24', marginTop: 10 }}>{msg}</p>}
+    </div>
+  )
+}
+
 function IntegrationsTab({ venture, socials }: { venture: VentureConfig; socials: VentureSocial[] }) {
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [apifyConfigured, setApifyConfigured] = useState<boolean | null>(null)
+
+  // Real Apify check — is a token actually stored? (Vault `apify_api_key` or `APIFY_TOKEN`)
+  useEffect(() => {
+    fetch('/api/secrets')
+      .then(r => r.json())
+      .then((d: { secrets?: { name: string }[] }) => {
+        const names = (d.secrets ?? []).map(s => s.name)
+        setApifyConfigured(names.includes('apify_api_key') || names.includes('APIFY_TOKEN'))
+      })
+      .catch(() => setApifyConfigured(false))
+  }, [])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       {/* GitHub — live connection card */}
       <GitHubCard venture={venture} />
 
+      {/* Instagram Insights (Graph API) — live connection card */}
+      <InstagramInsightsCard />
+
       {/* Other integrations */}
       {INTEGRATIONS.map(item => {
         const isGA4    = item.key === 'ga4'
         const isApify  = item.key === 'apify'
         const social   = socials.some(s => s.platform === item.key)
-        const connected = isGA4 ? Boolean(venture.ga4PropertyId) : isApify ? true : social
+        const connected = isGA4 ? Boolean(venture.ga4PropertyId) : isApify ? (apifyConfigured === true) : social
         const isExp    = expanded === item.key
 
         return (
@@ -1366,7 +1432,11 @@ function IntegrationsTab({ venture, socials }: { venture: VentureConfig; socials
               <div style={{ padding: '0 18px 16px', borderTop: `1px solid ${T.border}` }}>
                 <p style={{ fontSize: 12, color: T.text3, marginTop: 12, lineHeight: 1.6 }}>
                   {isApify
-                    ? 'Apify token is read from APIFY_TOKEN environment variable. Set it in your Vercel dashboard.'
+                    ? (apifyConfigured === null
+                        ? 'Checking Apify token…'
+                        : apifyConfigured
+                        ? 'Apify token found in the Vault (Settings → App Secrets, key `apify_api_key`; `APIFY_TOKEN` also accepted).'
+                        : 'No Apify token found. Add `apify_api_key` in Settings → App Secrets to enable Instagram/LinkedIn scraping.')
                     : isGA4
                     ? `GA4 Property ID: ${venture.ga4PropertyId || '(not set — add it in the Profile tab)'}`
                     : social

@@ -73,9 +73,24 @@ export async function loadConfig(): Promise<ProviderConfig> {
         const resolvedFast      = (data.fast_model as string) || ''
         const resolvedSynthesis = (data.synthesis_model as string) || ''
 
+        // Detect protocol: check base URL for Anthropic-compatible endpoints.
+        // DeepSeek, OpenRouter, and others expose an /anthropic endpoint that
+        // supports the full Anthropic tool_use schema. If the URL points to one
+        // of these, use the Anthropic protocol so tools (Read, Bash, Github, etc.)
+        // are available to agents.
+        let protocol: ProviderConfig['protocol'] = meta?.protocol ?? 'openai-compat'
+        if (protocol !== 'anthropic' && resolvedBaseUrl) {
+          const urlLower = resolvedBaseUrl.toLowerCase()
+          if (urlLower.includes('/anthropic') ||
+              urlLower.includes('api.deepseek.com') ||
+              urlLower.includes('openrouter.ai')) {
+            protocol = 'anthropic'
+          }
+        }
+
         _cache = {
           provider:        providerKey,
-          protocol:        meta?.protocol ?? 'openai-compat',
+          protocol,
           apiKey:          data.api_key as string,
           baseUrl:         resolvedBaseUrl,
           fastModel:       resolvedFast,
@@ -208,9 +223,11 @@ export async function callFast(params: {
 
   if (cfg.protocol === 'anthropic') {
     const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
+    const thinking = getThinkingConfig(cfg.fastModel, 'fast')
     const res = await client.messages.create({
       model:      cfg.fastModel,
       max_tokens: params.maxTokens,
+      ...(thinking ? { thinking } : {}),
       ...(params.system ? {
         system: [{ type: 'text' as const, text: params.system, cache_control: { type: 'ephemeral' as const } }],
       } : {}),
@@ -241,9 +258,11 @@ export async function callSynthesis(params: {
 
   if (cfg.protocol === 'anthropic') {
     const client = new Anthropic({ apiKey: cfg.apiKey, ...(cfg.baseUrl ? { baseURL: cfg.baseUrl } : {}) })
+    const thinking = getThinkingConfig(cfg.synthesisModel, 'synthesis')
     const res = await client.messages.create({
       model:      cfg.synthesisModel,
       max_tokens: params.maxTokens,
+      ...(thinking ? { thinking } : {}),
       ...(params.system ? {
         system: [{ type: 'text' as const, text: params.system, cache_control: { type: 'ephemeral' as const } }],
       } : {}),
@@ -306,10 +325,12 @@ export async function* streamSynthesis(params: {
       }
     }
 
+    const thinking = getThinkingConfig(cfg.synthesisModel, 'synthesis')
     const stream = client.messages.stream({
       model:      cfg.synthesisModel,
       max_tokens: params.maxTokens,
       messages:   sdkMessages,
+      ...(thinking ? { thinking } : {}),
       // Cache system prompt — synthesis is called once per session but system prompt
       // can be 20 KB+; caching avoids re-processing on retries and CEO-only calls.
       ...(params.system ? {
@@ -354,6 +375,8 @@ export async function* streamWithTools(params: {
   repoMode?: 'github' | 'local'
   /** Absolute local path to the venture's cloned repo (only used when repoMode=local) */
   localRepoPath?: string
+  /** When true, strips write_file and delete_file from Github tool schema. For validators/QA. */
+  readOnly?: boolean
 }): AsyncGenerator<ToolLoopEvent> {
   // Engine switch: WAR_ROOM_ENGINE=agent_sdk routes through Claude Agent SDK
   // (full Claude Code engine, subprocess). Only used for YVON Dashboard — product
@@ -398,15 +421,38 @@ export async function* streamWithTools(params: {
   const LOCAL_FS_TOOL_NAMES = ['Read', 'Glob', 'Grep', 'Bash']
   // In GitHub mode: strip FS tools from schema so the model doesn't try to call them.
   // In local mode: include them — user has explicitly enabled local filesystem access.
-  const tools = toolsForAgent(params.agentId).filter(t =>
+  let tools = toolsForAgent(params.agentId).filter(t =>
     isProductVenture && !isLocalMode ? !LOCAL_FS_TOOL_NAMES.includes(t.name) : true
   )
+
+  // ⛔ READ-ONLY MODE: Strip write actions from Github tool schema.
+  // Used by validators (Quinn QA, Kahneman, Felix) — they REPORT errors, never fix.
+  if (params.readOnly) {
+    tools = tools.map(t => {
+      if (t.name !== 'Github') return t
+      // Remove write_file and delete_file from the Github action enum
+      const schema = { ...t, input_schema: { ...t.input_schema } }
+      const props = schema.input_schema.properties as Record<string, unknown>
+      const actionProp = props['action'] as { enum?: string[] } | undefined
+      if (actionProp?.enum) {
+        actionProp.enum = actionProp.enum.filter(a => a !== 'write_file' && a !== 'delete_file')
+      }
+      // Also update description to note writes are blocked
+      if (schema.description) {
+        schema.description = schema.description.replace(/WRITE:.*?(?=\bREAD\b|$)/, 'WRITE: ⛔ BLOCKED (read-only mode). ')
+      }
+      return schema
+    })
+  }
+
+  const thinkingConfig = getThinkingConfig(model, params.modelTier)
 
   yield* runToolLoop({
     client,
     model,
     maxTokens:       params.maxTokens,
     system:          params.system,
+    thinking:        thinkingConfig,
     tools,
     initialMessages: params.messages.map(m => ({ role: m.role, content: m.content })),
     maxIterations:   params.maxIterations,
@@ -434,9 +480,225 @@ export async function getActiveProviderInfo() {
   }
 }
 
+// ─── Semantic Intent Classification ────────────────────────────────────────────
+// Replaces keyword-based routing with Claude-powered semantic understanding.
+// Uses the fast model (Haiku-tier) for speed; falls back to synthesis model
+// (Sonnet-tier) if confidence is low. Preserves all HARD RULES from the original
+// keyword classifier — stack traces → QA, auth errors → backend, UI → frontend,
+// and the SCREEN RULE (screen/component analysis NEVER routes to strategy).
+
+export interface SemanticIntentResult {
+  command: 'fix' | 'improve' | 'analyze' | 'report' | 'suggest'
+  domain: 'technical' | 'marketing' | 'finance' | 'strategy' | 'mixed'
+  layer: 'frontend' | 'backend' | 'fullstack' | 'data' | 'content' | 'visual' | 'none'
+  confidence: number
+  reasoning: string
+}
+
+interface ClassifierCacheEntry {
+  result: SemanticIntentResult
+  expiry: number
+}
+
+const _classifierCache = new Map<string, ClassifierCacheEntry>()
+
+function buildClassifierSystemPrompt(ventureName: string, techStack: string): string {
+  const isFlutter = techStack.includes('Flutter')
+  const dbTech    = techStack.includes('Firebase') ? 'Firebase' : 'Supabase'
+  const frameworkTech = isFlutter ? 'Flutter/Dart' : 'Next.js/TypeScript'
+  const frontendScope = isFlutter
+    ? 'Flutter screens, widgets, navigation, mobile UX, Dart UI code'
+    : 'React/Next.js UI components, Tailwind CSS, layout, UX'
+
+  return `You are an intent classifier for a multi-agent AI system. Given a user message, classify it into exactly one command, domain, and layer. Return JSON only — no explanation.
+
+VENTURE: ${ventureName} — ${techStack}
+
+COMMAND (pick exactly one):
+- fix        — something is broken, bug, error, crash, not working, needs repair
+- improve    — something works but could be better, optimize, enhance, upgrade
+- analyze    — deep investigation, understand why something happened, root cause
+- report     — gather information and present findings, overview, status update
+- suggest    — advisory, what should we do, recommendation, options
+
+DOMAIN (pick exactly one):
+- technical  — code, infrastructure, deployment, architecture, APIs, database
+- marketing  — content, ads, brand, social media, copy, visuals, growth
+- finance    — budget, P&L, pricing, revenue, costs, runway
+- strategy   — business direction, priorities, OKRs, competitive positioning
+- mixed      — genuinely spans two or more domains
+
+LAYER (pick exactly one):
+- frontend   — UI, screens, components, styling, layout, visual design, UX
+- backend    — APIs, database, server logic, auth, data models
+- fullstack  — touches both frontend and backend
+- data       — analytics, metrics, numbers, trends, statistics
+- content    — copy, messaging, brand voice, captions, creative
+- visual     — images, art direction, mood boards, design assets
+- none       — no specific technical layer (strategy/finance questions)
+
+HARD RULES — these override everything above:
+1. Any pasted error, stack trace, exception, crash → command:fix, domain:technical, layer:fullstack
+2. Auth error, login not working, ${dbTech} auth → command:fix, domain:technical, layer:backend
+3. UI / screen / component / layout / design / styling / UX → layer:frontend (even if the message also mentions data or logic)
+4. ⛔ SCREEN RULE: Any request to "analyze", "review", "explain", or "check" a screen, component, widget, or page → domain:technical, layer:frontend. The word "screen" in an app context means UI — it NEVER routes to strategy or operations.
+5. "Create a report on the code" or "report on the repo" → command:report (NOT fix/improve). Report requests override action keywords.
+6. Strategy/business keywords (OKRs, priorities, pricing model, competitive position) without code/technical context → domain:strategy
+
+Return ONLY valid JSON:
+{"command":"<command>","domain":"<domain>","layer":"<layer>","confidence":<0-1>,"reasoning":"<one sentence>"}`
+}
+
+export async function classifyIntentSemantic(
+  message: string,
+  ventureName?: string,
+  ventureSlug?: string,
+): Promise<SemanticIntentResult> {
+  const cleanMsg = message.replace(/^\[CONTEXT:[^\]]+\][^\n]*\n*/i, '').trim()
+
+  // Cache key: hash of message + venture
+  const cacheKey = `${cleanMsg.slice(0, 200)}|${ventureSlug ?? ''}`
+  const cached = _classifierCache.get(cacheKey)
+  if (cached && Date.now() < cached.expiry) return cached.result
+
+  const techStack = ventureSlug
+    ? (await import('@/lib/ventures')).VENTURE_TECH_STACK[ventureSlug] ?? 'web/mobile app'
+    : 'web/mobile app'
+  const name = ventureName ?? 'Novizio'
+  const systemPrompt = buildClassifierSystemPrompt(name, techStack)
+
+  const fallback: SemanticIntentResult = {
+    command: 'analyze',
+    domain: 'strategy',
+    layer: 'none',
+    confidence: 0.5,
+    reasoning: 'Classifier unavailable — fallback to strategy analysis',
+  }
+
+  try {
+    // First pass: fast model (Haiku-tier) for speed
+    const raw = await callFast({
+      system: systemPrompt,
+      messages: [{ role: 'user', content: cleanMsg }],
+      maxTokens: 512,
+    })
+
+    const match = raw.match(/\{[\s\S]*\}/)
+    if (!match) {
+      // Retry with synthesis model — sometimes fast models produce malformed JSON
+      const retryRaw = await callSynthesis({
+        system: systemPrompt,
+        messages: [{ role: 'user', content: cleanMsg }],
+        maxTokens: 512,
+      })
+      const retryMatch = retryRaw.match(/\{[\s\S]*\}/)
+      if (!retryMatch) {
+        _classifierCache.set(cacheKey, { result: fallback, expiry: Date.now() + 30_000 })
+        return fallback
+      }
+      const parsed = JSON.parse(retryMatch[0]) as Record<string, unknown>
+      return validateAndCache(parsed, cacheKey, fallback)
+    }
+
+    const parsed = JSON.parse(match[0]) as Record<string, unknown>
+    const result = validateAndCache(parsed, cacheKey, fallback)
+
+    // Low confidence → escalate to synthesis model with extended context
+    if (result.confidence < 0.85) {
+      const retryRaw = await callSynthesis({
+        system: `${systemPrompt}\n\nYour previous classification had low confidence (${result.confidence}). Re-read the user message carefully and re-classify with higher precision.`,
+        messages: [{ role: 'user', content: cleanMsg }],
+        maxTokens: 512,
+      })
+      const retryMatch = retryRaw.match(/\{[\s\S]*\}/)
+      if (retryMatch) {
+        try {
+          const retryParsed = JSON.parse(retryMatch[0]) as Record<string, unknown>
+          const retryResult = validateAndCache(retryParsed, cacheKey, fallback)
+          if (retryResult.confidence > result.confidence) return retryResult
+        } catch { /* keep original */ }
+      }
+    }
+
+    return result
+  } catch {
+    _classifierCache.set(cacheKey, { result: fallback, expiry: Date.now() + 30_000 })
+    return fallback
+  }
+}
+
+const VALID_COMMANDS = new Set(['fix', 'improve', 'analyze', 'report', 'suggest'])
+const VALID_DOMAINS  = new Set(['technical', 'marketing', 'finance', 'strategy', 'mixed'])
+const VALID_LAYERS   = new Set(['frontend', 'backend', 'fullstack', 'data', 'content', 'visual', 'none'])
+
+function validateAndCache(
+  raw: Record<string, unknown>,
+  cacheKey: string,
+  fallback: SemanticIntentResult,
+): SemanticIntentResult {
+  const command = typeof raw.command === 'string' && VALID_COMMANDS.has(raw.command)
+    ? (raw.command as SemanticIntentResult['command'])
+    : fallback.command
+  const domain = typeof raw.domain === 'string' && VALID_DOMAINS.has(raw.domain)
+    ? (raw.domain as SemanticIntentResult['domain'])
+    : fallback.domain
+  const layer = typeof raw.layer === 'string' && VALID_LAYERS.has(raw.layer)
+    ? (raw.layer as SemanticIntentResult['layer'])
+    : fallback.layer
+  const confidence = typeof raw.confidence === 'number' && raw.confidence >= 0 && raw.confidence <= 1
+    ? raw.confidence
+    : 0.7
+  const reasoning = typeof raw.reasoning === 'string'
+    ? raw.reasoning.slice(0, 200)
+    : ''
+
+  const result: SemanticIntentResult = { command, domain, layer, confidence, reasoning }
+  // Cache for 60 seconds — prevents redundant calls on retries and follow-ups
+  _classifierCache.set(cacheKey, { result, expiry: Date.now() + 60_000 })
+  return result
+}
+
 // ─── Invalidate cache (call after saving a new key in settings) ───────────────
 
 export function invalidateProviderCache() {
   _cache  = null
   _expiry = 0
+}
+
+// ─── Thinking Configuration ─────────────────────────────────────────────────
+// Extended / Adaptive Thinking for Claude models. DeepSeek and other providers
+// using the Anthropic wire protocol don't support the thinking parameter.
+
+export type ThinkingConfig = { type: 'adaptive' } | { type: 'enabled'; budget_tokens: number }
+
+/**
+ * Returns the appropriate thinking config for a given model and tier.
+ * - Opus 4.8 → adaptive (model decides dynamically)
+ * - Sonnet 4.6/4.7 → extended (fixed budget, 2000–4000 tokens)
+ * - Haiku / non-Claude → undefined (no thinking)
+ */
+export function getThinkingConfig(
+  model: string,
+  tier?: 'fast' | 'synthesis' | 'tier1',
+): ThinkingConfig | undefined {
+  // Only Claude models support the thinking API
+  if (!model.includes('claude')) return undefined
+
+  const isOpus = model.includes('opus')
+
+  if (isOpus) {
+    // Opus 4.8 supports adaptive thinking — model decides per-query
+    return { type: 'adaptive' as const }
+  }
+
+  // Sonnet-tier: extended thinking with fixed budget
+  if (tier === 'tier1') {
+    return { type: 'enabled' as const, budget_tokens: 4000 }
+  }
+  if (tier === 'synthesis') {
+    return { type: 'enabled' as const, budget_tokens: 2000 }
+  }
+  // Fast tier: no thinking (Haiku doesn't support it, and fast responses
+  // for routing/planning don't benefit from extended reasoning)
+  return undefined
 }

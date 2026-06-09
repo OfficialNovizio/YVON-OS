@@ -423,15 +423,20 @@ export default function AgentsSettingsPage() {
   const [engineSaving,  setEngineSaving]  = useState(false)
   const [engineSaved,   setEngineSaved]   = useState(false)
   const [engineError,   setEngineError]   = useState('')
+  // Engine v2 — per-session isolation (parallel sessions without cross-talk)
+  const [engineV2,       setEngineV2]       = useState(false)
+  const [engineV2Saving, setEngineV2Saving] = useState(false)
+  const [engineV2Saved,  setEngineV2Saved]  = useState(false)
 
   useEffect(() => {
     void fetchSettings()
     // war-room-engine already returns fastModel + synthesisModel from the active provider.
     // Use this to build providerModels — avoids a second fetch to /api/ai-keys.
     fetch('/api/war-room-engine')
-      .then(r => r.json() as Promise<{ engine: string; fastModel?: string; synthesisModel?: string }>)
+      .then(r => r.json() as Promise<{ engine: string; engineV2?: boolean; fastModel?: string; synthesisModel?: string }>)
       .then(info => {
         setEngineInfo({ engine: info.engine, fastModel: info.fastModel ?? '', synthesisModel: info.synthesisModel ?? '' })
+        setEngineV2(!!info.engineV2)
         const fast  = info.fastModel  ?? ''
         const synth = info.synthesisModel ?? ''
         if (!fast && !synth) return
@@ -485,6 +490,25 @@ export default function AgentsSettingsPage() {
       setTimeout(() => setSaved(prev => ({ ...prev, [agentId]: false })), 3000)
     } finally {
       setSaving(prev => ({ ...prev, [agentId]: false }))
+    }
+  }
+
+  async function saveEngineV2(on: boolean) {
+    setEngineV2Saving(true); setEngineError('')
+    try {
+      const res = await fetch('/api/secrets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'WAR_ROOM_ENGINE_V2', value: on ? '1' : '', description: 'War Room per-session isolation engine (A1)' }),
+      })
+      const data = await res.json() as { ok?: boolean; error?: string }
+      if (!res.ok || data.error) throw new Error(data.error ?? `HTTP ${res.status}`)
+      setEngineV2(on)
+      setEngineV2Saved(true); setTimeout(() => setEngineV2Saved(false), 2500)
+    } catch (e) {
+      setEngineError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setEngineV2Saving(false)
     }
   }
 
@@ -651,6 +675,33 @@ export default function AgentsSettingsPage() {
                 {engineSaving && <p style={{ fontSize: 11, color: T.text3, marginTop: 10 }}>Saving…</p>}
                 {engineSaved  && <p style={{ fontSize: 11, color: '#30d158', marginTop: 10, fontWeight: 600 }}>✓ Engine mode saved</p>}
                 {engineError  && <p style={{ fontSize: 11, color: '#ff453a', marginTop: 10 }}>✗ {engineError}</p>}
+
+                {/* ── Engine v2: per-session isolation ──────────────────────── */}
+                <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${T.border}`, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: T.text3, letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>
+                      Per-Session Engine (v2)
+                    </p>
+                    <p style={{ fontSize: 12, color: T.text2, lineHeight: 1.6, marginBottom: 0 }}>
+                      Isolates every War Room run in its own context so multiple sessions run in parallel without cross-talk, and caches file reads per session (less token waste). Safe to leave on; off = legacy behaviour.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => { if (!engineV2Saving) void saveEngineV2(!engineV2) }}
+                    disabled={engineV2Saving}
+                    style={{
+                      flexShrink: 0, width: 52, height: 30, borderRadius: 15, border: 'none',
+                      cursor: engineV2Saving ? 'default' : 'pointer',
+                      background: engineV2 ? '#30d158' : T.border, position: 'relative', transition: 'background 0.2s',
+                      opacity: engineV2Saving ? 0.6 : 1,
+                    }}
+                    aria-label="Toggle per-session engine"
+                  >
+                    <span style={{ position: 'absolute', top: 3, left: engineV2 ? 25 : 3, width: 24, height: 24, borderRadius: '50%', background: '#fff', transition: 'left 0.2s' }} />
+                  </button>
+                </div>
+                {engineV2Saving && <p style={{ fontSize: 11, color: T.text3, marginTop: 8 }}>Saving…</p>}
+                {engineV2Saved  && <p style={{ fontSize: 11, color: '#30d158', marginTop: 8, fontWeight: 600 }}>✓ Per-session engine {engineV2 ? 'enabled' : 'disabled'}</p>}
 
                 <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${T.border}` }}>
                   <p style={{ fontSize: 11, fontWeight: 600, color: T.text3, letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginBottom: 6 }}>

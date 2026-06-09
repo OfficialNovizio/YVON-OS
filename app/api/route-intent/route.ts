@@ -1,6 +1,81 @@
-import { callFast } from '@/lib/ai-client'
+import { callFast, classifyIntentSemantic } from '@/lib/ai-client'
 import { VENTURE_TECH_STACK } from '@/lib/ventures'
-import type { RoutingResult } from '@/lib/types'
+import type { RoutingResult, RoutingIntent, AgentId } from '@/lib/types'
+
+// ─── Specialist routing map ──────────────────────────────────────────────────
+// Maps semantic {command, domain, layer} → routing intent + 2-3 specialists.
+// Used after classifyIntentSemantic returns the classified intent.
+
+interface SemanticKey {
+  command: string
+  domain: string
+  layer: string
+}
+
+function mapSemanticToRouting(key: SemanticKey): { intent: RoutingIntent; specialists: AgentId[] } {
+  const { command, domain, layer } = key
+
+  // Technical domain
+  if (domain === 'technical') {
+    if (command === 'fix' || command === 'improve') {
+      if (layer === 'frontend') return { intent: 'technical_frontend', specialists: ['mia-frontend', 'dev-lead'] }
+      if (layer === 'backend') return { intent: 'technical_backend', specialists: ['raj-backend', 'dev-lead'] }
+      return { intent: 'qa_review', specialists: ['quinn-qa', 'dev-lead'] }
+    }
+    if (command === 'analyze') {
+      if (layer === 'frontend') return { intent: 'technical_frontend', specialists: ['mia-frontend', 'dev-lead'] }
+      if (layer === 'backend') return { intent: 'technical_backend', specialists: ['raj-backend', 'dev-lead'] }
+      return { intent: 'technical_general', specialists: ['dev-lead', 'quinn-qa'] }
+    }
+    if (command === 'report') {
+      return { intent: 'github_analysis', specialists: ['dev-lead', 'quinn-qa'] }
+    }
+    return { intent: 'technical_general', specialists: ['dev-lead', 'quinn-qa'] }
+  }
+
+  // Marketing domain
+  if (domain === 'marketing') {
+    if (command === 'fix' || command === 'improve') {
+      if (layer === 'content') return { intent: 'marketing_content', specialists: ['lena-brand', 'kai-analyst'] }
+      if (layer === 'visual') return { intent: 'content_create', specialists: ['atlas-art-director', 'lena-brand'] }
+      return { intent: 'advertising', specialists: ['rio-ads', 'nate-growth'] }
+    }
+    if (command === 'analyze') {
+      if (layer === 'data') return { intent: 'growth_data', specialists: ['kai-analyst', 'nate-growth'] }
+      return { intent: 'competitor_intel', specialists: ['kai-analyst', 'rio-ads'] }
+    }
+    if (command === 'report') {
+      return { intent: 'competitor_intel', specialists: ['kai-analyst', 'lena-brand'] }
+    }
+    if (command === 'suggest') {
+      return { intent: 'marketing_content', specialists: ['lena-brand', 'kai-analyst'] }
+    }
+    return { intent: 'social_tactics', specialists: ['kai-analyst', 'lena-brand'] }
+  }
+
+  // Finance domain
+  if (domain === 'finance') {
+    return { intent: 'finance', specialists: ['felix-finance', 'marcus-ceo'] }
+  }
+
+  // Strategy domain — always goes to Marcus + Diana
+  if (domain === 'strategy') {
+    if (command === 'suggest') return { intent: 'strategy', specialists: ['marcus-ceo', 'felix-finance'] }
+    return { intent: 'strategy', specialists: ['marcus-ceo', 'diana-coo'] }
+  }
+
+  // Mixed domain
+  if (domain === 'mixed') {
+    return { intent: 'strategy', specialists: ['marcus-ceo', 'dev-lead'] }
+  }
+
+  // Fallback
+  return { intent: 'strategy', specialists: ['marcus-ceo', 'diana-coo'] }
+}
+
+// ─── Legacy keyword classifier (fallback only) ──────────────────────────────
+// Kept as a safety net when the semantic classifier is unavailable.
+// Not the primary path — classifyIntentSemantic handles all normal traffic.
 
 function buildClassifierPrompt(ventureName: string, techStack: string): string {
   const isFlutter = techStack.includes('Flutter')
@@ -69,6 +144,25 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: 'message is required' }, { status: 400 })
   }
 
+  // ── Primary path: semantic intent classification ─────────────────────
+  try {
+    const semantic = await classifyIntentSemantic(message, activeVentureName, ventureSlug)
+    const { intent, specialists } = mapSemanticToRouting({
+      command: semantic.command,
+      domain: semantic.domain,
+      layer: semantic.layer,
+    })
+
+    return Response.json({
+      intent,
+      specialists,
+      reasoning: `[${semantic.command}/${semantic.domain}/${semantic.layer}] ${semantic.reasoning}`,
+    } as RoutingResult)
+  } catch {
+    // Fall through to legacy keyword classifier
+  }
+
+  // ── Fallback: legacy keyword classifier ───────────────────────────────
   const techStack        = VENTURE_TECH_STACK[ventureSlug] ?? 'web/mobile app'
   const classifierPrompt = buildClassifierPrompt(activeVentureName, techStack)
 

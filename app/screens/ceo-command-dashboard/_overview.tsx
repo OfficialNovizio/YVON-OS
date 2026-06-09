@@ -223,7 +223,7 @@ const KPIS = [
   },
 ];
 
-function OverviewKPIs() {
+export function OverviewKPIs() {
   return (
     <div className="ceo-kpi-grid">
       {KPIS.map(k => (

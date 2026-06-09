@@ -1,0 +1,26 @@
+# YVON Agent Engine — dual local + container-host stack.
+#
+# Local (Mac/Windows):  docker compose up        → orchestrator on localhost:8787
+# Production:           same file on the container host (Railway/Fly/Render/VM).
+#
+# Bootstrap connection secrets (SUPABASE_URL/SERVICE_ROLE/DATABASE_URL) come from
+# the host environment — these are connection bootstrap, NOT changeable feature
+# settings (those live in Supabase Vault). The Hermes sidecar is added in Part B.
+services:
+  orchestrator:
+    build:
+      context: .
+      dockerfile: orchestrator/Dockerfile
+    ports:
+      - "${ORCHESTRATOR_PORT:-8787}:8787"
+    environment:
+      ORCHESTRATOR_PORT: 8787
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+      DATABASE_URL: ${DATABASE_URL:-}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8787/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

@@ -119,7 +119,7 @@ const DEMO_FALLBACK: AgentStatusResponse = {
 };
 
 // ── Agent Kanban — V1 ──────────────────────────────────────────────────────────
-function AgentKanban() {
+export function AgentKanban() {
   const [data, setData] = useState<AgentStatusResponse>(DEMO_FALLBACK);
   const [lastSync, setLastSync] = useState('');
 
@@ -174,7 +174,7 @@ const REPORT_FALLBACKS = {
   competitor: { body: 'Reformation prepping a transparency push. Everlane testing a Fiber Trace module in beta. Gen Z intent gap: 12%.', ts: '18h ago' },
 };
 
-function IntelligenceFeedPanel() {
+export function IntelligenceFeedPanel() {
   const [reports, setReports] = useState<ReportsData|null>(null);
   useEffect(() => {
     fetch('/api/intelligence/latest').then(r => r.json()).then((d: { sourceReports?: ReportsData }) => {
@@ -238,7 +238,7 @@ const KEY_NUMBERS = [
   { label: 'Brand Health', delta: '↑ +2 pts',   deltaGood: true, value: '74',    unit: '',   sub: 'Composite · social + survey · 0–100',       spark: [62,64,65,67,69,70,72,74], color: '#a78bfa' },
 ];
 
-function KeyNumbers() {
+export function KeyNumbers() {
   return (
     <div style={{ ...G2, padding: 22, display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>

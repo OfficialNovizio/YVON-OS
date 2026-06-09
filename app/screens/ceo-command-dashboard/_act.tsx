@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import type { Decision, DecisionUrgency, DecisionAction } from '@/lib/types';
 
 const ACCENT = '#0066cc';
 const GREEN  = '#047857';
@@ -38,7 +39,7 @@ const DECISIONS = [
 ];
 
 // ── Decision Queue — V3: Obsidian ─────────────────────────────────────────────
-function DecisionQueue({ onWarRoom }: { onWarRoom: () => void }) {
+export function DecisionQueue({ onWarRoom }: { onWarRoom: () => void }) {
   const [idx, setIdx]   = useState(0);
   const [fade, setFade] = useState(false);
   const d = DECISIONS[idx];
@@ -119,7 +120,7 @@ const PRIORITIES = [
   { tier: 'URGENT',    title: 'Server scaling alert',       desc: 'API latency spiked 340% — auto-scale configured.', owner: 'Dev' },
 ];
 
-function Priorities() {
+export function Priorities() {
   const counts: Record<string, number> = {};
   for (const p of PRIORITIES) counts[p.tier] = (counts[p.tier] || 0) + 1;
 
@@ -158,6 +159,106 @@ function Priorities() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// ── Decisions Waiting — V3: Obsidian (live: /api/decisions) ────────────────────
+const URGENCY_META: Record<DecisionUrgency, { label: string; bg: string }> = {
+  'critical':  { label: 'CRITICAL',  bg: '#dc2626' },
+  'today':     { label: 'TODAY',     bg: '#d97706' },
+  'this-week': { label: 'THIS WEEK', bg: '#0066cc' },
+};
+
+function decisionTimeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const h = Math.floor(diff / 3600000);
+  if (h < 1)  return 'Just now';
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+export function DecisionsLive() {
+  const [decisions, setDecisions] = useState<Decision[]>([]);
+  const [loading, setLoading]     = useState(true);
+  const [busy, setBusy]           = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/decisions?resolved=false')
+      .then(r => r.json())
+      .then((d: { decisions?: Decision[] }) => setDecisions(d.decisions ?? []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function resolve(id: string, action: DecisionAction) {
+    setBusy(id);
+    try {
+      await fetch('/api/decisions', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action }),
+      });
+      setDecisions(prev => prev.filter(d => d.id !== id));
+    } catch {
+      /* leave it in the list on failure */
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const actionBtn = (label: string, onClick: () => void, opts?: { solid?: boolean; danger?: boolean; disabled?: boolean }) => (
+    <button
+      onClick={onClick}
+      disabled={opts?.disabled}
+      style={{
+        flex: 1, padding: '11px 14px', borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: opts?.disabled ? 'not-allowed' : 'pointer',
+        fontFamily: 'inherit', transition: 'all 180ms ease', opacity: opts?.disabled ? 0.5 : 1,
+        border: opts?.solid ? 'none' : `1px solid rgba(255,255,255,0.20)`,
+        background: opts?.solid ? I3 : 'transparent',
+        color: opts?.solid ? '#0c0d10' : opts?.danger ? '#fca5a5' : I3b,
+      }}
+    >
+      {label}
+    </button>
+  );
+
+  return (
+    <div style={{ ...G3, padding: 22, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I3d, margin: 0 }}>Decisions Waiting</p>
+        <span style={{ fontSize: 13, fontWeight: 800, color: I3c }}>{decisions.length} open</span>
+      </div>
+
+      {loading ? (
+        <p style={{ fontSize: 14, color: I3d, fontWeight: 500, margin: 0 }}>Loading…</p>
+      ) : decisions.length === 0 ? (
+        <p style={{ fontSize: 15, color: I3c, fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
+          You&apos;re clear — no decisions waiting. New decisions raised by agents will appear here for approval.
+        </p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {decisions.map(d => {
+            const u = URGENCY_META[d.urgency] ?? URGENCY_META['this-week'];
+            return (
+              <div key={d.id} style={{ padding: 18, borderRadius: 16, background: 'rgba(255,255,255,0.07)', border: `1px solid ${L3}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                  <span className="text-[11px] font-bold px-3 py-1.5 rounded-full text-white" style={{ background: u.bg, letterSpacing: '0.14em' }}>{u.label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: I3d }}>{d.agentId} · {decisionTimeAgo(d.createdAt)}</span>
+                </div>
+                <p style={{ margin: '0 0 16px', fontSize: 17, fontWeight: 700, lineHeight: 1.35, letterSpacing: '-0.01em', color: I3 }}>
+                  {d.question || d.decisionText}
+                </p>
+                <div style={{ display: 'flex', gap: 10 }}>
+                  {actionBtn('Reject',  () => resolve(d.id, 'rejected'), { danger: true, disabled: busy === d.id })}
+                  {actionBtn('Defer',   () => resolve(d.id, 'deferred'),  { disabled: busy === d.id })}
+                  {actionBtn('Approve', () => resolve(d.id, 'approved'),  { solid: true, disabled: busy === d.id })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

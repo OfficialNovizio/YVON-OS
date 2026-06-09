@@ -21,6 +21,7 @@ export default function AnalyticsPage() {
   const ventureSlug = useVentureSlug();
   const [period, setPeriod] = useState('30D');
   const [data, setData] = useState<any>(null);
+  const [brandHealth, setBrandHealth] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,6 +32,15 @@ export default function AnalyticsPage() {
       .then(d => setData(d))
       .catch(() => {})
       .finally(() => setLoading(false));
+  }, [ventureSlug, period]);
+
+  // Brand Health — relocated here from the dissolved Portfolio tab.
+  useEffect(() => {
+    if (!ventureSlug) return;
+    fetch(`/api/brand-health?venture=${ventureSlug}&period=${period}`)
+      .then(r => r.json())
+      .then(d => setBrandHealth(d))
+      .catch(() => {});
   }, [ventureSlug, period]);
 
   const hasAnyData = data?.signals?.length > 0 || data?.cacChannels?.length > 0;
@@ -112,6 +122,40 @@ export default function AnalyticsPage() {
                 </div>
               );
             })}
+          </section>
+        )}
+
+        {/* ── 1b. Brand Health (relocated from Portfolio) — only if data ── */}
+        {brandHealth?.hasData && brandHealth?.ourScore != null && (
+          <section style={{ ...G1, padding: 24 }}>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: '0 0 4px' }}>Brand Health</p>
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: I1, letterSpacing: '-0.02em', margin: 0 }}>Score vs Competitors</h2>
+              </div>
+              <button
+                onClick={() => router.push('/screens/competitor')}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full active:scale-95"
+                style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase', color: I1c, border: `1px solid ${L1}` }}
+              >
+                Competitor detail <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { label: 'Our Score',        v: brandHealth.ourScore,        accent: true },
+                { label: 'Competitor Avg',   v: brandHealth.compAvg },
+                { label: 'Target',           v: brandHealth.target },
+                { label: 'Best Competitor',  v: brandHealth.bestCompetitor?.brandScore ?? brandHealth.bestCompetitor },
+              ].map(s => (
+                <div key={s.label}>
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: I1d, margin: '0 0 4px' }}>{s.label}</p>
+                  <p style={{ fontFamily: 'ui-monospace,monospace', fontSize: 28, fontWeight: 700, letterSpacing: '-0.02em', color: s.accent ? ACCENT : I1, margin: 0 }}>
+                    {s.v == null ? '—' : (typeof s.v === 'number' ? s.v : String(s.v))}
+                  </p>
+                </div>
+              ))}
+            </div>
           </section>
         )}
 

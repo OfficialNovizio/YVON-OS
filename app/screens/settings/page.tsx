@@ -62,6 +62,14 @@ const HUB_CARDS = [
     tags:  ['Slash Commands', 'Prompts'],
   },
   {
+    key:   'panels',
+    color: '#30d158',
+    icon:  'tune',
+    title: 'Dashboard Panels',
+    desc:  'Show or hide panels on the Command dashboard. Disabled panels can be re-enabled here any time — nothing is deleted.',
+    tags:  ['Command', 'Visibility', 'Reversible'],
+  },
+  {
     key:   'danger',
     color: SC.danger,
     icon:  'warning',

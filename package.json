@@ -15,7 +15,13 @@
     "codegraph:serve": "C:/Users/Novy/AppData/Roaming/Python/Python314/Scripts/code-review-graph.exe serve",
     "curator": "node scripts/curator.mjs",
     "insights": "node scripts/insights.mjs",
-    "reflect": "node scripts/self-reflect.mjs"
+    "reflect": "node scripts/self-reflect.mjs",
+    "engine:dev": "tsx orchestrator/server.ts",
+    "engine:up": "docker compose up --build",
+    "engine:down": "docker compose down",
+    "hermes:sync": "node scripts/hermes-sync.mjs",
+    "hermes:setup": "node scripts/hermes-setup.mjs",
+    "test:a1": "tsx scripts/test-a1-session.ts"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.150",

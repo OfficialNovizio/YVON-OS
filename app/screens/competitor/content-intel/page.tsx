@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import CompetitorSubNav from '../_subnav'
 import { useVentureSlug } from '@/lib/use-venture-slug'
 import { getCached, setCache } from '@/lib/session-cache'
+import { AlertsSection } from '../alerts/page'
 
 const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' }
 const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)'
@@ -517,6 +518,15 @@ export default function CompetitorContentIntelPage() {
             </div>
           </section>
         )}
+
+        {/* ── What changed (folded-in Alerts) ──────────────────────── */}
+        <section className="pt-2">
+          <div className="flex items-center gap-2 mb-4" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: INK_4 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 14, color: ACCENT }}>notifications_active</span>
+            What changed · Alerts
+          </div>
+          <AlertsSection ventureSlug={ventureSlug} />
+        </section>
 
         <footer className="border-t flex items-center justify-between py-6" style={{ borderColor: L1 }}>
           <p style={{ fontSize: 11, color: INK_4 }}>© 2026 YVON Intelligence. Built for Excellence.</p>

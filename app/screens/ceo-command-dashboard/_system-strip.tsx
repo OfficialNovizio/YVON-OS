@@ -350,8 +350,18 @@ function SessionSyncPanel() {
 }
 
 // ── System Strip — outer V4, inner V1 ─────────────────────────────────────────
-export default function SystemStrip() {
+interface SystemStripShow { graph?: boolean; tokens?: boolean; workload?: boolean; sessions?: boolean }
+
+export default function SystemStrip({ show }: { show?: SystemStripShow }) {
   const [open, setOpen] = useState(false);
+  const s = { graph: true, tokens: true, workload: true, sessions: true, ...show };
+
+  const labels = [
+    s.graph    && 'Project Graph',
+    s.tokens   && 'Token Usage',
+    s.workload && 'Workload',
+    s.sessions && 'Session Sync',
+  ].filter(Boolean).join(' · ');
 
   return (
     <div style={{ ...G4, overflow: 'hidden' }}>
@@ -367,7 +377,7 @@ export default function SystemStrip() {
           System
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 12, fontSize: 13, fontWeight: 600, color: I4c }}>
-          <span className="ceo-system-label">Project Graph · Token Usage · Workload · Session Sync</span>
+          <span className="ceo-system-label">{labels}</span>
           <span style={{ display: 'inline-flex', alignItems: 'center', transition: 'transform 240ms ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
         </span>
       </div>
@@ -375,10 +385,10 @@ export default function SystemStrip() {
       {/* Expandable content */}
       <div style={{ maxHeight: open ? 640 : 0, overflow: 'hidden', transition: 'max-height 320ms ease', padding: open ? '0 14px 14px' : '0 14px' }}>
         <div className="ceo-system-4col">
-          <ProjectGraphPanel />
-          <TokenUsagePanel />
-          <WorkloadCalendarPanel />
-          <SessionSyncPanel />
+          {s.graph    && <ProjectGraphPanel />}
+          {s.tokens   && <TokenUsagePanel />}
+          {s.workload && <WorkloadCalendarPanel />}
+          {s.sessions && <SessionSyncPanel />}
         </div>
       </div>
 

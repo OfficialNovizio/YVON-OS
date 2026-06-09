@@ -273,6 +273,35 @@ export interface SpecialistBriefing {
   content: string
 }
 
+// ─── Semantic Intent Classification ────────────────────────────────────────────
+
+export type CommandType = 'fix' | 'improve' | 'analyze' | 'report' | 'suggest'
+
+export interface IntentClassification {
+  command: CommandType
+  domain: 'technical' | 'marketing' | 'finance' | 'strategy' | 'mixed'
+  layer: 'frontend' | 'backend' | 'fullstack' | 'data' | 'content' | 'visual' | 'none'
+  confidence: number
+  reasoning: string
+}
+
+// ─── War Room Phase Visibility ─────────────────────────────────────────────────
+// v3 pipeline: Plan → Execute → Synthesize
+// Old phases (diagnose, fix, verify, audit) are deprecated but kept in the
+// type union for backward compatibility with stored session records.
+
+export type WarRoomPhase = 'plan' | 'execute' | 'validate' | 'synthesize' | 'diagnose' | 'fix' | 'verify' | 'audit'
+export type PhaseStatus = 'pending' | 'active' | 'complete' | 'failed'
+
+export interface PhaseEvent {
+  phase: WarRoomPhase
+  status: PhaseStatus
+  passNumber?: number
+  maxPasses?: number
+  errors?: string[]
+  agentId?: AgentId
+}
+
 // ─── War Room Execution ───────────────────────────────────────────────────────
 
 export interface ExecutionPlan {
@@ -287,6 +316,15 @@ export type AgentRunStatus = 'idle' | 'working' | 'done' | 'error' | 'retrying'
 
 // ─── War Room Plan History ─────────────────────────────────────────────────────
 
+/** A single tool invocation by an agent, persisted so history can rebuild the
+ *  agent card's tool breakdown exactly as it appeared during the live run. */
+export interface WarRoomToolCall {
+  name: string
+  input: unknown
+  summary: string | null
+  isError: boolean
+}
+
 export interface WarRoomStep {
   id: string
   planId: string
@@ -295,6 +333,10 @@ export interface WarRoomStep {
   outputContent: string | null
   status: 'complete' | 'error' | 'retried'
   retryCount: number
+  /** Tool calls this agent made during the step (for history restore). */
+  toolCalls: WarRoomToolCall[]
+  /** Which conversation turn (0-based) this step belongs to, for multi-turn sessions. */
+  turnIndex: number
   createdAt: string
 }
 
@@ -320,7 +362,7 @@ export type WarRoomEvent =
   | { type: 'routing';        routing: RoutingResult; confidence: number }
   | { type: 'plan';           plan: ExecutionPlan | null; routing: RoutingResult }
   | { type: 'agent_start';    agentId: AgentId; task: string }
-  | { type: 'agent_complete'; agentId: AgentId; previewText: string; tokensUsed?: number }
+  | { type: 'agent_complete'; agentId: AgentId; previewText: string; fullOutput?: string; tokensUsed?: number }
   | { type: 'agent_error';    agentId: AgentId; error: string; fatal: boolean }
   | { type: 'retry';          agentId: AgentId; attempt: number }
   | { type: 'handoff';        from: AgentId; to: AgentId; summary: string }
@@ -331,13 +373,22 @@ export type WarRoomEvent =
   | { type: 'plan_complete';    elapsed: number }
   | { type: 'error';            message: string }
   | { type: 'tool_call_start';  agentId: AgentId; tool: string; input: unknown; tool_use_id: string }
-  | { type: 'tool_call_result'; agentId: AgentId; tool: string; summary: string; is_error: boolean; tool_use_id: string }
+  | { type: 'tool_call_result'; agentId: AgentId; tool: string; summary: string; is_error: boolean; tool_use_id: string; todoItems?: Array<{ content: string; status: string; activeForm: string }> | null }
   | { type: 'tool_iteration';   agentId: AgentId; n: number }
   | { type: 'github_snapshot';  ok: boolean; repo: string | null; branch: string | null; openIssues: number | null; error: string | null }
   | { type: 'engine';           engine: 'agent_sdk' | 'client_sdk'; fastModel?: string; synthesisModel?: string; provider?: string }
   | { type: 'plan_approval_required'; plan: ExecutionPlan; routing: RoutingResult }
   | { type: 'session_id'; sessionId: string }
   | { type: 'agent_warning'; agentId: AgentId; warning: string; reason: 'max_iterations' | 'timeout'; briefings?: string }
+  // Phase visibility events — War Room pipeline stages
+  | { type: 'phase_enter'; phase: WarRoomPhase; status: PhaseStatus; passNumber?: number; maxPasses?: number }
+  | { type: 'phase_complete'; phase: WarRoomPhase }
+  | { type: 'qa_pass_result'; pass: number; maxPasses: number; status: 'PASS' | 'FAIL'; errors: string[] }
+  | { type: 'escalation'; from: AgentId; to: AgentId; reason: string }
+  | { type: 'agent_empty_output'; agentId: AgentId; attempt: number }
+  | { type: 'agent_retry'; agentId: AgentId; attempt: number; reason: string }
+  | { type: 'validator_verdict'; department: string; validatorId: AgentId; status: 'PASS' | 'FAIL'; errors: string[]; pass: number; maxPasses: number }
+  | { type: 'validator_gate_blocked'; message: string; validators: unknown[] }
 
 export interface ConflictItem {
   topic: string

@@ -15,11 +15,12 @@
 
 import type Anthropic from '@anthropic-ai/sdk'
 import { executeTool, type ToolContext } from './agent-tools'
+import type { ThinkingConfig } from './ai-client'
 
 export type ToolLoopEvent =
   | { kind: 'text';        text: string }
   | { kind: 'tool_call';   name: string; input: unknown; tool_use_id: string }
-  | { kind: 'tool_result'; name: string; summary: string; is_error: boolean; tool_use_id: string }
+  | { kind: 'tool_result'; name: string; summary: string; is_error: boolean; tool_use_id: string; todoItems?: Array<{ content: string; status: string; activeForm: string }> | null }
   | { kind: 'iteration';   n: number }
   | { kind: 'done';        reason: string }
   | { kind: 'error';       message: string }
@@ -29,6 +30,8 @@ export interface ToolLoopOptions {
   model:         string
   maxTokens:     number
   system?:       string
+  /** Extended/Adaptive thinking config (Claude models only). */
+  thinking?:     ThinkingConfig
   tools:         Anthropic.Messages.Tool[]
   initialMessages: Anthropic.Messages.MessageParam[]
   /** Cap on how many tool_use rounds. Prevents runaway loops. Default 8. */
@@ -38,6 +41,55 @@ export interface ToolLoopOptions {
 }
 
 const DEFAULT_MAX_ITERATIONS = 30
+const CACHE_MIN_CHARS = 2000
+
+/**
+ * Anthropic allows at most 4 blocks with `cache_control` per request.
+ *
+ * The previous implementation stamped `cache_control` on the system prompt PLUS
+ * every large tool result, and those breakpoints persisted in the message array
+ * across iterations. A read-heavy turn (e.g. CEO verification reading 5+ files)
+ * accumulated >4 breakpoints and the API rejected the ENTIRE request — killing
+ * the loop mid-task with an error ("stops at 'let me verify…'").
+ *
+ * Fix: keep stored tool results clean (no cache_control) and, at send time,
+ * place a SINGLE breakpoint on the most recent large tool result. Anthropic
+ * caches the entire prefix up to a breakpoint, so one trailing breakpoint
+ * (plus the system breakpoint = 2 total) preserves the token savings while
+ * never exceeding the 4-block ceiling, regardless of how many tools run.
+ */
+function withTrailingCacheBreakpoint(
+  messages: Anthropic.Messages.MessageParam[],
+): Anthropic.Messages.MessageParam[] {
+  for (let mi = messages.length - 1; mi >= 0; mi--) {
+    const msg = messages[mi]
+    if (msg.role !== 'user' || !Array.isArray(msg.content)) continue
+
+    let placed = false
+    const newContent = msg.content.map(block => {
+      if (placed || typeof block !== 'object' || block.type !== 'tool_result') return block
+      const c = block.content
+      const text = typeof c === 'string'
+        ? c
+        : Array.isArray(c)
+          ? c.filter(b => b.type === 'text').map(b => (b as { text: string }).text).join('')
+          : ''
+      if (text.length <= CACHE_MIN_CHARS) return block
+      placed = true
+      return {
+        ...block,
+        content: [{ type: 'text' as const, text, cache_control: { type: 'ephemeral' as const } }],
+      }
+    })
+
+    if (placed) {
+      const cloned = [...messages]
+      cloned[mi] = { ...msg, content: newContent }
+      return cloned
+    }
+  }
+  return messages
+}
 
 export async function* runToolLoop(opts: ToolLoopOptions): AsyncGenerator<ToolLoopEvent> {
   const messages: Anthropic.Messages.MessageParam[] = [...opts.initialMessages]
@@ -49,8 +101,11 @@ export async function* runToolLoop(opts: ToolLoopOptions): AsyncGenerator<ToolLo
     const stream = opts.client.messages.stream({
       model:      opts.model,
       max_tokens: opts.maxTokens,
+      ...(opts.thinking ? { thinking: opts.thinking } : {}),
       tools:      opts.tools,
-      messages,
+      // Single trailing cache breakpoint — see withTrailingCacheBreakpoint.
+      // Never exceeds Anthropic's 4-block cache_control ceiling.
+      messages:   withTrailingCacheBreakpoint(messages),
       // Cache system prompt across all iterations — specialist system prompts are
       // 15-30 KB. Without caching, each of 20 iterations pays the full input cost.
       // With caching, iterations 2-20 skip system prompt processing entirely.
@@ -89,25 +144,26 @@ export async function* runToolLoop(opts: ToolLoopOptions): AsyncGenerator<ToolLo
       yield { kind: 'tool_call', name: block.name, input: block.input, tool_use_id: block.id }
 
       const result = await executeTool(block.name, block.input, opts.toolContext ?? {})
+      // For TodoWrite, include parsed todo items so the UI can render them visually
+      const todoItems = block.name === 'TodoWrite' && !result.is_error
+        ? (block.input as { todos?: Array<{ content: string; status: string; activeForm: string }> })?.todos ?? null
+        : null
       yield {
         kind: 'tool_result',
         name: block.name,
         summary: result.summary,
         is_error: result.is_error,
         tool_use_id: block.id,
+        todoItems,
       }
 
-      // Cache large tool results so subsequent iterations don't re-process accumulated
-      // file content. Each cached result is re-used at the same message-history position.
-      const toolContent: Anthropic.Messages.ToolResultBlockParam['content'] =
-        !result.is_error && result.content.length > 2000
-          ? [{ type: 'text' as const, text: result.content, cache_control: { type: 'ephemeral' as const } }]
-          : result.content
-
+      // Store tool results WITHOUT cache_control — the breakpoint is applied
+      // dynamically at send time (withTrailingCacheBreakpoint) so we never
+      // accumulate more than the 4-block cache_control limit across iterations.
       toolResults.push({
         type:        'tool_result',
         tool_use_id: block.id,
-        content:     toolContent,
+        content:     result.content,
         is_error:    result.is_error,
       })
     }

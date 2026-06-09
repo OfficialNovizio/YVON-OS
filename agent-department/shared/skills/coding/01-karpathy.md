@@ -72,21 +72,27 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 5. Tool Boundaries — NEVER HALLUCINATE WRITES ⛔
 
-**You have zero local filesystem write access. This is a hard constraint, not a preference.**
+**No `Write`, `Edit`, or `Save` tools exist in your palette. The ONLY write tool in any mode is `Github(action=write_file)`. Never claim a write happened without the visible tool call to prove it.**
 
-### Two codebases — venture-scoped tool rules ⚠️
+### Two codebases + Two modes — venture-scoped tool rules ⚠️
 
-There are always two separate codebases in scope. Which one matters depends on the **active venture**.
+There are always two separate codebases in scope. The venture app can be accessed in one of two modes: **GitHub mode** (reads/writes via GitHub API) or **Local mode** (reads via local filesystem, writes via `Github(action=write_file)` to the local clone). Check your system prompt for the active mode — it tells you which is in effect.
 
-| Codebase | What it is | Tools |
-|----------|-----------|-------|
-| **YVON OS** | The AI operating system — Next.js at `/Users/novysingh/StudioProjects/YVON2.0/` | `Read`, `Bash`, `Glob`, `Grep` |
-| **Venture app** | The actual product (Hourbour Flutter, Novizio store, etc.) | `Github(action=...)` only |
+| Codebase | What it is | GitHub mode tools | Local mode tools |
+|----------|-----------|-------------------|------------------|
+| **YVON OS** | The AI operating system — Next.js at `/Users/novysingh/StudioProjects/YVON2.0/` | `Read`, `Bash`, `Glob`, `Grep` | `Read`, `Bash`, `Glob`, `Grep` |
+| **Venture app** | The actual product (Hourbour Flutter, Novizio store, etc.) | `Github(action=...)` only | `Read`/`Glob`/`Grep` for reading · `Github(action=write_file)` for writing |
 
-**When active venture = Hourbour (or any non-YVON venture):**
+**When active venture = Hourbour (or any non-YVON venture) — GITHUB MODE:**
 - ALL questions about the venture's code, commits, files, bugs → `Github(action=...)` only
 - `Read` / `Bash` / `Glob` / `Grep` are permitted ONLY for loading your own MEMORY.md and YVON system docs (WORKFLOW.md, SESSION.md). They cannot see the venture's codebase.
-- `Bash git log` shows YVON's commits. Running it to answer questions about Hourbour returns wrong data. Always use `Github(action=commits)` for the venture's history.
+- `Bash git log` shows YVON's commits. Running it to answer questions about the venture returns wrong data. Always use `Github(action=commits)` for the venture's history.
+
+**When active venture = Hourbour (or any non-YVON venture) — LOCAL MODE:**
+- Reading the venture's code: use `Read`, `Glob`, `Grep` with the full local repo path (check your system prompt for the exact path — it will be something like `/Users/.../project/`)
+- Writing the venture's code: still use `Github(action=write_file)` — it writes to the local clone at the configured repo path, NOT to GitHub
+- `Bash` git commands (`git log`, `git status`, `git diff`) against the local repo path are valid — they query the venture's actual git history (unlike GitHub mode where they'd see YVON's history instead)
+- ⚠️ `Bash` commands without the local repo path still query YVON OS — always prefix with the full path
 
 **When active venture = YVON Dashboard:**
 - The codebase in question IS the YVON OS local filesystem
@@ -95,7 +101,7 @@ There are always two separate codebases in scope. Which one matters depends on t
 
 **The test before every tool call:**
 > "Is the user asking about [venture name]'s product, or about YVON itself?"
-> Venture product → Github. YVON OS → Read/Bash.
+> Venture product → check your system prompt for mode. GitHub mode: Github tools only. Local mode: Read/Glob/Grep for reading, Github(action=write_file) for writing. YVON OS → Read/Bash.
 
 ### What you CAN do
 - Read YVON OS files with `Read(file_path)` — docs, agent memory, YVON source code
@@ -103,14 +109,23 @@ There are always two separate codebases in scope. Which one matters depends on t
 - Run read-only shell commands with `Bash`: `ls`, `cat`, `find`, `git log`, `git status`, `git diff` — against the YVON OS directory only
 - Read or write the venture's GitHub repo with `Github(action=...)` — this is the only path to the venture's actual codebase
 
-### What you CANNOT do — ever
-- Write, edit, create, or delete files on the local machine
-- Run `Bash` write commands (`echo >`, `sed -i`, `mkdir`, `cp`, `mv`, `rm`, etc.) — they are blocked
-- There is no `Write` tool, no `Edit` tool, no `Save` tool in your palette
+### What you CANNOT do — ever (all modes)
+- ⛔ **NEVER DELETE FILES.** `Github(action=delete_file)` is STRUCTURALLY BLOCKED for all agents. No agent can delete files. Period. If deletion is needed, tell the user to do it manually.
+- ⛔ **NEVER WRITE TO FILES NOT IN YOUR APPROVED PLAN.** If your task brief doesn't list a file, you CANNOT write to it. The tool will block you.
+- Use any tool called `Write`, `Edit`, or `Save` — they don't exist. The ONLY write tool is `Github(action=write_file)`.
+- Run `Bash` write commands (`echo >`, `sed -i`, `mkdir`, `cp`, `mv`, `rm`, etc.) — they are blocked in all modes
+- Claim to have "written locally" or "edited a file" without a visible `Github(action=write_file)` tool call in your output
+- In GitHub mode: claim to have read the venture's code via `Read`/`Bash` — those tools can only see the YVON OS codebase, not the venture repo
+- In local mode: use `Github(action=file)` or `Github(action=tree)` for reading — those call the GitHub API, not the local clone. Use `Read`/`Glob`/`Grep` instead.
 
-### The only write path
-`Github(action=write_file)` — creates or updates a file directly in the venture's GitHub repo via the API. No git push needed. It commits immediately.
-`Github(action=delete_file)` — deletes a file from the repo. Same mechanism.
+### The only write path (all modes)
+`Github(action=write_file, path="...", content="...", message="...")` — the single write tool. Where it writes depends on the active mode:
+- **GitHub mode:** commits directly to the venture's GitHub repo via the API. No git push needed. It commits immediately.
+- **Local mode:** writes to the local clone at the configured repo path on this machine. No GitHub commit is made — changes go directly to your local filesystem.
+
+`Github(action=delete_file, path="...", message="...")` — same mechanism. Local mode deletes from the local clone; GitHub mode deletes from the repo.
+
+⚠️ You do not control which mode is active — follow the mode-specific guidance in your system prompt. The tool call is the proof in both modes.
 
 ### Forbidden phrases — never say these
 - "I've updated the file locally"

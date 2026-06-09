@@ -1,6 +1,6 @@
 'use client';
 
-import type { TabId } from './page';
+import type { ViewId } from './page';
 
 // Page-level ink (outside glass cards — sits on background image)
 const INK    = '#0a2547';
@@ -102,15 +102,12 @@ function PageHead() {
   );
 }
 
-const TABS: { id: TabId; label: string; badge?: boolean }[] = [
-  { id: 'overview',  label: 'Overview' },
-  { id: 'situation', label: 'Situation' },
-  { id: 'act',       label: 'Act', badge: true },
-  { id: 'done',      label: 'Done' },
-  { id: 'context',   label: 'Context' },
+const TABS: { id: ViewId; label: string }[] = [
+  { id: 'briefing',   label: 'Briefing' },
+  { id: 'operations', label: 'Operations' },
 ];
 
-function TabStrip({ active, onChange, actCount }: { active: TabId; onChange: (t: TabId) => void; actCount: number }) {
+function TabStrip({ active, onChange }: { active: ViewId; onChange: (t: ViewId) => void }) {
   return (
     <nav className="ceo-tab-strip">
       {TABS.map(t => (
@@ -123,11 +120,6 @@ function TabStrip({ active, onChange, actCount }: { active: TabId; onChange: (t:
           style={{ color: active === t.id ? '#0c0d10' : P_INK4, border: 'none', background: active === t.id ? 'rgba(255,255,255,0.92)' : 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
         >
           {t.label}
-          {t.badge && actCount > 0 && (
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center" style={{ background: '#dc2626', color: '#fff', letterSpacing: '0.05em' }}>
-              ●{actCount}
-            </span>
-          )}
         </button>
       ))}
     </nav>
@@ -135,17 +127,17 @@ function TabStrip({ active, onChange, actCount }: { active: TabId; onChange: (t:
 }
 
 interface CeoHeaderProps {
-  active: TabId;
-  onChange: (t: TabId) => void;
-  actCount: number;
+  active: ViewId;
+  onChange: (t: ViewId) => void;
+  showTicker?: boolean;
 }
 
-export default function CeoHeader({ active, onChange, actCount }: CeoHeaderProps) {
+export default function CeoHeader({ active, onChange, showTicker = false }: CeoHeaderProps) {
   return (
     <header>
-      <Ticker />
+      {showTicker && <Ticker />}
       <PageHead />
-      <TabStrip active={active} onChange={onChange} actCount={actCount} />
+      <TabStrip active={active} onChange={onChange} />
     </header>
   );
 }

@@ -15,85 +15,56 @@ const I1='#0c2c52', I1b='#1a3e6e', I1d='rgba(12,44,82,0.48)', I1e='rgba(12,44,82
 const G2: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(36,99,180,0.42),rgba(20,70,140,0.55))', backdropFilter: 'blur(30px) saturate(190%)', WebkitBackdropFilter: 'blur(30px) saturate(190%)', border: '1px solid rgba(180,210,255,0.40)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.40),inset 0 -1px 0 rgba(0,30,80,0.25),0 18px 50px -10px rgba(10,40,100,0.40)' };
 const I2b='rgba(244,248,255,0.85)', I2c='rgba(244,248,255,0.68)', I2d='rgba(244,248,255,0.48)', I2e='rgba(244,248,255,0.25)', L2='rgba(255,255,255,0.14)';
 
-// ── Activity Log — V1: Clear Ice ───────────────────────────────────────────────
-const ACTIVITY = [
-  { name: 'Kai',    task: 'Analytics report delivered',      when: '4h ago',          day: 'today' },
-  { name: 'Marcus', task: 'Morning CEO brief published',     when: '6h ago',          day: 'today' },
-  { name: 'Mia',    task: 'Brand voice guidelines updated',  when: '8h ago',          day: 'today' },
-  { name: 'Dev',    task: 'Size guide page pushed',          when: 'Yesterday 18:42', day: 'yesterday' },
-];
+// ── Activity Log — V1: Clear Ice (live: agent-status completedToday) ────────────
+interface CompletedAgent { name: string; dept: string; currentTask: string; when?: string }
+interface AgentStatusResp { completedToday?: CompletedAgent[]; isDemo?: boolean }
 
-function ActivityLog() {
-  const [filter, setFilter] = useState<'today' | 'yesterday' | '7d'>('today');
-  const today     = ACTIVITY.filter(a => a.day === 'today');
-  const yesterday = ACTIVITY.filter(a => a.day === 'yesterday');
-  const dayLabel  = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+export function ActivityLog() {
+  const [items, setItems]     = useState<CompletedAgent[]>([]);
+  const [isDemo, setIsDemo]   = useState(false);
+  const [loading, setLoading] = useState(true);
+  const dayLabel = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  useEffect(() => {
+    function load() {
+      fetch('/api/agent-status')
+        .then(r => r.json())
+        .then((d: AgentStatusResp) => { setItems(d.completedToday ?? []); setIsDemo(!!d.isDemo); })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+    }
+    load();
+    const id = setInterval(load, 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <div style={{ ...G1, padding: 22 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, margin: 0 }}>Agent Activity Log</p>
-          <span style={{ fontSize: 11, color: I1e, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 800 }}>({filter})</span>
+          {isDemo && <span style={{ fontSize: 11, color: I1e, letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 800 }}>· demo</span>}
         </div>
-        <div style={{ display: 'flex', gap: 4 }}>
-          {(['today', 'yesterday', '7d'] as const).map(k => (
-            <button
-              key={k}
-              onClick={() => setFilter(k)}
-              className="ceo-ghost-btn"
-              style={{ padding: '6px 12px', fontSize: 12, letterSpacing: '0.10em', textTransform: 'uppercase', background: filter === k ? I1 : 'rgba(255,255,255,0.6)', color: filter === k ? '#fff' : I1b }}
-            >
-              {k === '7d' ? 'Last 7' : k}
-            </button>
-          ))}
-        </div>
+        <span style={{ fontSize: 13, color: I1d, fontWeight: 600 }}>{items.length} completed today</span>
       </div>
 
-      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, padding: '14px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, padding: '4px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
         Today · {dayLabel}
         <span style={{ flex: 1, height: 1, background: L1, display: 'inline-block' }} />
       </div>
 
-      {today.map((a, i) => (
-        <div key={i} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${L1}` }}>
+      {loading ? (
+        <p style={{ fontSize: 14, color: I1d, fontWeight: 500, padding: '12px 4px', margin: 0 }}>Loading…</p>
+      ) : items.length === 0 ? (
+        <p style={{ fontSize: 14, color: I1d, fontWeight: 500, padding: '12px 4px', margin: 0 }}>No completed tasks yet today.</p>
+      ) : items.map((a, i) => (
+        <div key={`${a.name}-${i}`} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${L1}` }}>
           <span style={{ width: 18, height: 18, borderRadius: '50%', background: GREEN, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>✓</span>
           <span style={{ fontSize: 14, fontWeight: 700, color: I1 }}>{a.name}</span>
-          <span style={{ fontSize: 14, color: I1b, fontWeight: 500 }}>{a.task}</span>
-          <span style={{ fontSize: 12, color: I1d, fontWeight: 600 }}>{a.when}</span>
+          <span style={{ fontSize: 14, color: I1b, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{a.currentTask}</span>
+          <span style={{ fontSize: 12, color: I1d, fontWeight: 600 }}>{a.when ?? ''}</span>
         </div>
       ))}
-
-      {filter !== 'today' && yesterday.length > 0 && (
-        <>
-          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d, padding: '14px 4px 6px', display: 'flex', alignItems: 'center', gap: 10 }}>
-            Yesterday
-            <span style={{ flex: 1, height: 1, background: L1, display: 'inline-block' }} />
-          </div>
-          {yesterday.map((a, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '24px 110px 1fr auto', gap: 12, alignItems: 'center', padding: '10px 4px', borderBottom: `1px solid ${L1}` }}>
-              <span style={{ width: 18, height: 18, borderRadius: '50%', background: GREEN, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>✓</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: I1 }}>{a.name}</span>
-              <span style={{ fontSize: 13, color: I1b }}>{a.task}</span>
-              <span style={{ fontSize: 11, color: I1d, fontWeight: 500 }}>{a.when}</span>
-            </div>
-          ))}
-        </>
-      )}
-
-      <div className="ceo-act-stats" style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${L1}` }}>
-        {[
-          { label: 'Today',     v: '4',   c: I1 },
-          { label: 'This Week', v: '26',  c: I1 },
-          { label: 'Avg / Day', v: '5.2', c: I1 },
-          { label: 'SLA Hit',   v: '96%', c: GREEN },
-        ].map(s => (
-          <div key={s.label}>
-            <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I1d }}>{s.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1, color: s.c }}>{s.v}</div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
@@ -184,7 +155,7 @@ function SourceCard({ kind, report }: { kind: 'analytics' | 'marketing' | 'compe
   );
 }
 
-function SourceReportsPanel() {
+export function SourceReportsPanel() {
   const [reports, setReports] = useState<SourceReportsData | null>(null);
 
   useEffect(() => {

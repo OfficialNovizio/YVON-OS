@@ -2,14 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-const subTabs = [
-  { label: 'Overview',     href: '/screens/analytics' },
-  { label: 'Market',       href: '/screens/analytics/market', badge: 'NEW' },
-  { label: 'Portfolio',    href: '/screens/analytics/portfolio' },
-  { label: 'Social Media', href: '/screens/analytics/social-media' },
-  { label: 'Reports',      href: '/screens/analytics/reports' },
-];
+import { ANALYTICS_TABS } from '@/lib/analytics-tabs';
+import { useAnalyticsTabs } from './_use-analytics-tabs';
 
 const INK    = '#0a2547';
 const INK_4  = 'rgba(10,37,71,0.52)';
@@ -19,6 +13,10 @@ const P_INK4 = 'rgba(220,228,248,0.45)';
 
 export default function AnalyticsSubNav() {
   const pathname = usePathname();
+  const { isOn } = useAnalyticsTabs();
+
+  // Registry order, filtered by visibility flags (Portfolio off by default).
+  const subTabs = ANALYTICS_TABS.filter(t => isOn(t.id));
 
   return (
     <header className="max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto px-6 pt-[96px]">
@@ -73,14 +71,6 @@ export default function AnalyticsSubNav() {
               }}
             >
               {t.label}
-              {'badge' in t && t.badge && (
-                <span
-                  className="text-[8px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center"
-                  style={{ background: ACCENT, color: '#fff', letterSpacing: '0.05em' }}
-                >
-                  {t.badge}
-                </span>
-              )}
             </Link>
           );
         })}

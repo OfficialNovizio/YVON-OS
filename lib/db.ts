@@ -37,6 +37,7 @@ import type {
   AttributionPath,
   WarRoomPlanRecord,
   WarRoomStep,
+  WarRoomToolCall,
   ExecutionPlan,
   AgentSession,
   StrategyLogEntry,
@@ -1106,8 +1107,35 @@ export interface SaveWarRoomPlanInput {
     outputContent: string | null
     status: 'complete' | 'error' | 'retried'
     retryCount: number
+    toolCalls?: WarRoomToolCall[]
+    turnIndex?: number
   }>
   conversationHistory?: Array<{ user: string; marcus: string }>
+}
+
+// Trim tool-call payloads before storing. The War Room UI only ever renders
+// short fields (file_path, pattern, command, action+path, …) — never the full
+// `content` of a write_file — so dropping/capping large strings here avoids
+// bloating execution_steps and the history-load payload with zero display loss.
+function trimToolInput(input: unknown): unknown {
+  if (!input || typeof input !== 'object') return input
+  const out: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(input as Record<string, unknown>)) {
+    if (k === 'content') { out[k] = `[${typeof v === 'string' ? v.length : 0} chars omitted]`; continue }
+    if (typeof v === 'string' && v.length > 500) { out[k] = v.slice(0, 500) + '…'; continue }
+    out[k] = v
+  }
+  return out
+}
+
+function sanitizeToolCallsForStore(toolCalls?: WarRoomToolCall[]): WarRoomToolCall[] {
+  if (!toolCalls || toolCalls.length === 0) return []
+  return toolCalls.map(tc => ({
+    name:    tc.name,
+    isError: tc.isError,
+    summary: tc.summary ? tc.summary.slice(0, 500) : null,
+    input:   trimToolInput(tc.input),
+  }))
 }
 
 export async function saveWarRoomPlan(input: SaveWarRoomPlanInput): Promise<string> {
@@ -1144,6 +1172,8 @@ export async function saveWarRoomPlan(input: SaveWarRoomPlanInput): Promise<stri
         output_content: s.outputContent,
         status:         s.status,
         retry_count:    s.retryCount,
+        tool_calls:     sanitizeToolCallsForStore(s.toolCalls),
+        turn_index:     s.turnIndex ?? 0,
       }))
     )
   }
@@ -1182,6 +1212,8 @@ export async function updateWarRoomPlan(
         output_content: s.outputContent,
         status:         s.status,
         retry_count:    s.retryCount,
+        tool_calls:     sanitizeToolCallsForStore(s.toolCalls),
+        turn_index:     s.turnIndex ?? 0,
       }))
     )
   }
@@ -1219,6 +1251,8 @@ export async function getWarRoomPlans(
       outputContent: (s.output_content as string | null) ?? null,
       status:        s.status as WarRoomStep['status'],
       retryCount:    (s.retry_count as number) ?? 0,
+      toolCalls:     (s.tool_calls as WarRoomToolCall[] | null) ?? [],
+      turnIndex:     (s.turn_index as number | null) ?? 0,
       createdAt:     s.created_at as string,
     })
     stepsByPlan.set(s.plan_id as string, list)

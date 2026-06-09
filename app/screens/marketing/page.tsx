@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useMarketingTabs } from './_use-marketing-tabs';
 import GrowthSprintTab from './_growth-sprint';
 import CommunityTab from './_community';
 import TeamChatTab from './_team-chat';
@@ -82,8 +83,16 @@ function EditModal({ title, children, onClose }: { title: string; children: Reac
 
 export default function MarketingPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab]       = useState('Brand Identity');
+  const { visibleLabels } = useMarketingTabs();
+  const [activeTab, setActiveTab]       = useState('Content');
   const [activeFilter, setActiveFilter] = useState('ALL');
+
+  // Keep the active tab valid as visibility changes (Settings toggles).
+  useEffect(() => {
+    if (visibleLabels.length && !visibleLabels.includes(activeTab)) {
+      setActiveTab(visibleLabels[0]);
+    }
+  }, [visibleLabels, activeTab]);
 
   // ── Brand Identity edit state ────────────────────────────────────────────
   type EditTarget = null | 'positioning' | `pillar-${0|1|2}` | 'voice';
@@ -99,7 +108,7 @@ export default function MarketingPage() {
     setEditTarget(null);
   }
 
-  const tabs = ['Brand Identity', 'Growth Strategy', 'Tactics Library', 'Content', 'Community', 'Growth Sprint', 'Team'];
+  const tabs = visibleLabels;
 
   const filteredTactics = activeFilter === 'ALL'       ? tactics
     : activeFilter === 'ACTIVE'    ? tactics.filter(t => ['Active run','Ongoing','Deployed','40% Complete'].includes(t.status.label))
