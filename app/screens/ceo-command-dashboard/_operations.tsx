@@ -6,7 +6,7 @@
 import type { CommandPanelId } from '@/lib/command-panels';
 import { AgentKanban } from './_situation';
 import { ActivityLog, SourceReportsPanel } from './_done';
-import SystemStrip from './_system-strip';
+import { ProjectGraphPanel, WorkloadCalendarPanel, SessionSyncPanel } from './_system-strip';
 import { TokenUsagePanel } from './_token-usage-panel';
 import EmptyTab from './_empty-tab';
 
@@ -15,12 +15,10 @@ interface OperationsTabProps {
 }
 
 export default function OperationsTab({ isOn }: OperationsTabProps) {
-  const anySystem =
-    isOn('systemGraph') || isOn('systemSessions') || isOn('workloadCalendar');
-
   const anyOn =
     isOn('agentStatus') || isOn('activityLog') || isOn('sourceReports') ||
-    isOn('systemTokens') || anySystem;
+    isOn('systemTokens') || isOn('systemGraph') ||
+    isOn('systemSessions') || isOn('workloadCalendar');
 
   if (!anyOn) return <EmptyTab />;
 
@@ -30,16 +28,13 @@ export default function OperationsTab({ isOn }: OperationsTabProps) {
       {isOn('systemTokens')  && <TokenUsagePanel />}
       {isOn('activityLog')   && <ActivityLog />}
       {isOn('sourceReports') && <SourceReportsPanel />}
-      {anySystem && (
-        <SystemStrip
-          show={{
-            graph:    isOn('systemGraph'),
-            tokens:   false, // Token Usage is now always visible above
-            workload: isOn('workloadCalendar'),
-            sessions: isOn('systemSessions'),
-          }}
-        />
-      )}
+
+      {/* System panels — directly visible, no accordion */}
+      <div className="ceo-system-4col">
+        {isOn('systemGraph')    && <ProjectGraphPanel />}
+        {isOn('systemSessions') && <SessionSyncPanel />}
+        {isOn('workloadCalendar') && <WorkloadCalendarPanel />}
+      </div>
     </div>
   );
 }

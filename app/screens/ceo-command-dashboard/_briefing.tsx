@@ -8,7 +8,6 @@ import type { CommandPanelId } from '@/lib/command-panels';
 import { CeoReadout, StrategicBriefing, PulseAndChannel } from './_context';
 import { DecisionsLive, Priorities } from './_act';
 import { IntelligenceFeedPanel, KeyNumbers } from './_situation';
-import { OverviewKPIs } from './_overview';
 import EmptyTab from './_empty-tab';
 
 interface BriefingTabProps {
@@ -18,7 +17,7 @@ interface BriefingTabProps {
 export default function BriefingTab({ isOn }: BriefingTabProps) {
   const anyOn =
     isOn('ceoReadout') || isOn('decisions') || isOn('intelligenceFeed') ||
-    isOn('strategicBriefing') || isOn('kpiGauges') || isOn('keyNumbers') ||
+    isOn('strategicBriefing') || isOn('keyNumbers') ||
     isOn('pulseChannel') || isOn('priorities');
 
   if (!anyOn) return <EmptyTab />;
@@ -29,7 +28,6 @@ export default function BriefingTab({ isOn }: BriefingTabProps) {
       {isOn('decisions')         && <DecisionsLive />}
       {isOn('intelligenceFeed')  && <IntelligenceFeedPanel />}
       {isOn('strategicBriefing') && <StrategicBriefing />}
-      {isOn('kpiGauges')         && <OverviewKPIs />}
       {isOn('keyNumbers')        && <KeyNumbers />}
       {isOn('pulseChannel')      && <PulseAndChannel />}
       {isOn('priorities')        && <Priorities />}

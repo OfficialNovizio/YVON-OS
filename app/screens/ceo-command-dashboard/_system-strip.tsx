@@ -74,7 +74,7 @@ function runForces(nodes: SimNode[], edgeSet: Set<string>) {
 const COMM_COLORS = ['#0066cc', '#7c3aed', '#059669', '#d97706', '#dc2626', '#0891b2', '#9333ea', '#16a34a'];
 function commColor(c: number) { return COMM_COLORS[c % COMM_COLORS.length]; }
 
-function ProjectGraphPanel() {
+export function ProjectGraphPanel() {
   const [meta, setMeta] = useState<Pick<GraphData,'totalNodes'|'totalEdges'|'totalCommunities'> | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
@@ -164,7 +164,7 @@ function fmtCost(u: number) { if (u < 0.001) return '<$0.001'; if (u < 1) return
 function modelShort(m: string) { if (m.includes('opus')) return 'Opus'; if (m.includes('sonnet')) return 'Sonnet'; if (m.includes('haiku')) return 'Haiku'; return m.split('-').pop() ?? m; }
 function modelColor(m: string) { if (m.includes('opus')) return VIOLET; if (m.includes('sonnet')) return ACCENT; if (m.includes('haiku')) return GREEN; return '#64748b'; }
 
-function TokenUsagePanel() {
+export function TokenUsagePanel() {
   const [data, setData] = useState<TokenData | null>(null);
 
   useEffect(() => {
@@ -239,7 +239,7 @@ function calColor(v: number) {
   return 'rgba(5,150,105,0.95)';
 }
 
-function WorkloadCalendarPanel() {
+export function WorkloadCalendarPanel() {
   return (
     <SysPanel title="Workload Calendar" right="May 2026">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, margin: '6px 0 10px' }}>
@@ -272,7 +272,7 @@ interface SessionSyncData {
   markdownRow: string | null
 }
 
-function SessionSyncPanel() {
+export function SessionSyncPanel() {
   const [data, setData]     = useState<SessionSyncData | null>(null)
   const [syncing, setSyncing] = useState(false)
   const [syncResult, setSyncResult] = useState<string | null>(null)
