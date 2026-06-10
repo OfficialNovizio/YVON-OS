@@ -7,6 +7,7 @@ import type { CommandPanelId } from '@/lib/command-panels';
 import { AgentKanban } from './_situation';
 import { ActivityLog, SourceReportsPanel } from './_done';
 import SystemStrip from './_system-strip';
+import { TokenUsagePanel } from './_token-usage-panel';
 import EmptyTab from './_empty-tab';
 
 interface OperationsTabProps {
@@ -15,24 +16,25 @@ interface OperationsTabProps {
 
 export default function OperationsTab({ isOn }: OperationsTabProps) {
   const anySystem =
-    isOn('systemGraph') || isOn('systemTokens') ||
-    isOn('systemSessions') || isOn('workloadCalendar');
+    isOn('systemGraph') || isOn('systemSessions') || isOn('workloadCalendar');
 
   const anyOn =
-    isOn('agentStatus') || isOn('activityLog') || isOn('sourceReports') || anySystem;
+    isOn('agentStatus') || isOn('activityLog') || isOn('sourceReports') ||
+    isOn('systemTokens') || anySystem;
 
   if (!anyOn) return <EmptyTab />;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {isOn('agentStatus')   && <AgentKanban />}
+      {isOn('systemTokens')  && <TokenUsagePanel />}
       {isOn('activityLog')   && <ActivityLog />}
       {isOn('sourceReports') && <SourceReportsPanel />}
       {anySystem && (
         <SystemStrip
           show={{
             graph:    isOn('systemGraph'),
-            tokens:   isOn('systemTokens'),
+            tokens:   false, // Token Usage is now always visible above
             workload: isOn('workloadCalendar'),
             sessions: isOn('systemSessions'),
           }}

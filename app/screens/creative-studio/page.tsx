@@ -3,20 +3,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import type { CalendarPlatform, CalendarContentType, SceneOutfit, ClothingItem } from '@/lib/types'
+import KaisRead from '@/app/components/KaisRead'
+import { useVentureSlug } from '@/lib/use-venture-slug'
 
-// ── Glass system ────────────────────────────────────────────────────────────────
-const G1 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
-const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
-const GCARD = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
-const CARD_BG = 'rgba(241,245,251,0.06)', CARD_BORDER = 'rgba(241,245,251,0.10)';
-const G2 = { background: 'linear-gradient(135deg,rgba(0,102,204,0.28),rgba(0,160,255,0.18))', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 18px 50px -10px rgba(0,60,160,0.40)' };
-const I2 = '#f4f8ff', I2d = 'rgba(244,248,255,0.48)';
-const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
-const I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
-const G4 = { background: 'radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))', backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
-const I4 = '#2a1240', I4d = 'rgba(42,18,64,0.48)';
-const ACCENT = '#0066cc';
-const INK_4  = 'rgba(10,37,71,0.52)';
+// ── Glass system (shared tokens) ────────────────────────────────────────────────
+import { G1, I1, I1c, I1d, L1, GCARD, CARD_BG, CARD_BORDER, G2, I2, I2d, G3, I3c, I3d, G4, I4, I4d, ACCENT, INK_4 } from './_glass-tokens'
 
 const PLATFORM_TO_CAL: Record<string, CalendarPlatform> = {
   'Instagram': 'IG', 'TikTok': 'TT', 'LinkedIn': 'LI', 'YouTube': 'YT',
@@ -183,60 +174,8 @@ const ASPECT_TO_PX: Record<string, { width: number; height: number }> = {
   '16:9': { width: 1368, height: 768 },
 }
 
-// ── Demo sessions (shown until real sessions exist in DB) ──────────────────────
-const _D = (days: number) => new Date(Date.now() - days * 86400000).toISOString()
-const _H = (hrs: number)  => new Date(Date.now() - hrs  * 3600000).toISOString()
-
-const DEMO_SESSIONS: StudioSession[] = [
-  // Single ──────────────────────────────────────────────────────────────────────
-  {
-    id: 'demo-s1', created_at: _D(2), mode: 'single',
-    brief: { campaignName: 'Spring Drop SS25', objective: 'Launch SS25 hero pieces to Gen Z founders', audience: 'Gen Z founders 22–30, style-conscious', tone: 'Premium / Cinematic', platform: 'Instagram', contentType: 'Reel' },
-    moods: null, selected_mood_name: 'Raw Tension',
-    script_data: { systemRoute: 'System 1', systemRationale: 'IG discovery is almost always System 1.', script: "You've always known what you want. You just needed the clothes to prove it. Novizio SS25 — arriving this week.", psychologyBreakdown: { L1_firstImpression: 'Authority before logic fires', L2_desireHook: 'The viewer becomes the version of themselves they\'ve been building toward', L6_spreadMechanic: 'Identity confirmation — people share what confirms who they are' }, primaryLever: 'L2 — Aspirational Identity Gap' },
-    captions_data: null, prompts_data: { psychologyBrief: 'All 4 images make the viewer want to become more intentional.', prompts: [{ title: 'Power Walk', version: 'V1.0', text: 'Editorial fashion close-up.', psychologyLayer: 'L1 + L2', systemOneEffect: 'Confidence transfer in 2 seconds' }] },
-    image_urls: null, storyline_data: null, shot_list_data: null,
-  },
-  {
-    id: 'demo-s2', created_at: _D(5), mode: 'single',
-    brief: { campaignName: 'Founder Story', objective: 'Build brand trust through authentic founder narrative', audience: 'Millennial professionals 28–38 who value craftsmanship', tone: 'Authentic / Raw', platform: 'LinkedIn', contentType: 'Article' },
-    moods: null, selected_mood_name: 'Quiet Authority',
-    script_data: { systemRoute: 'System 2', systemRationale: 'LinkedIn articles engage deliberate processing.', script: "Three years ago I couldn't find clothes that matched how I thought. So I built them. Here's what I learned.", psychologyBreakdown: { L1_firstImpression: 'Authenticity signal — imperfection as credibility', L2_desireHook: 'The reader becomes someone who builds, not just buys', L6_spreadMechanic: 'Curiosity gap — the hook implies a hard-won lesson' }, primaryLever: 'L6 — Curiosity Gap' },
-    captions_data: null, prompts_data: null, image_urls: null, storyline_data: null, shot_list_data: null,
-  },
-  // Storyline ───────────────────────────────────────────────────────────────────
-  {
-    id: 'demo-st1', created_at: _D(1), mode: 'storyline',
-    brief: { campaignName: 'Summer Lookbook', objective: 'Showcase 3 summer looks across a day-in-the-life narrative', audience: 'Gen Z style-conscious women 20–28', tone: 'Authentic / Raw', platform: 'Instagram', contentType: 'Reel' },
-    moods: null, selected_mood_name: 'Golden Hour Drift',
-    script_data: null, captions_data: null, prompts_data: null, image_urls: null,
-    storyline_data: { storylineTitle: 'One Day, Three Looks', totalDuration: 38, hook: 'Three looks. One weekend. Zero compromises.', scenes: [], platformFit: { instagram_reel: { maxDuration: 90, fits: true, recommendation: 'Perfect for IG Reel.' }, tiktok: { maxDuration: 60, fits: true, recommendation: 'Fits TikTok well.' }, youtube_short: { maxDuration: 60, fits: true, recommendation: 'Good fit for YouTube Shorts.' } }, noSoundSummary: '4/5 — strong visual narrative', editingNotes: 'Cut on beat. Warm filter throughout.' },
-    shot_list_data: null,
-  },
-  {
-    id: 'demo-st2', created_at: _D(4), mode: 'storyline',
-    brief: { campaignName: 'Brand Origin Film', objective: 'Tell the Novizio origin story in under 60 seconds', audience: 'Fashion-forward professionals who care about intentional brands', tone: 'Minimal / Quiet Luxury', platform: 'TikTok', contentType: 'Video' },
-    moods: null, selected_mood_name: 'Monolith',
-    script_data: null, captions_data: null, prompts_data: null, image_urls: null,
-    storyline_data: { storylineTitle: 'Built Different', totalDuration: 52, hook: 'Most fashion brands start with a mood board. We started with a question.', scenes: [], platformFit: { instagram_reel: { maxDuration: 90, fits: true, recommendation: 'Strong IG crosspost.' }, tiktok: { maxDuration: 60, fits: true, recommendation: 'Fits at 52s.' }, youtube_short: { maxDuration: 60, fits: false, recommendation: 'Trim to 55s for YT Short.' } }, noSoundSummary: '5/5 — every scene tells the story visually', editingNotes: 'Minimal music. Let silence carry scenes 1 and 4.' },
-    shot_list_data: null,
-  },
-  // Shoot ───────────────────────────────────────────────────────────────────────
-  {
-    id: 'demo-sh1', created_at: _H(8), mode: 'shoot',
-    brief: { campaignName: 'Product Detail Week', objective: 'Show craftsmanship — stitching, fabric, silhouette', audience: 'Quality-conscious buyers researching before purchase', tone: 'Minimal / Quiet Luxury', platform: 'Instagram', contentType: 'Carousel' },
-    moods: null, selected_mood_name: 'Still Life Study',
-    script_data: null, captions_data: null, prompts_data: null, image_urls: null, storyline_data: null,
-    shot_list_data: { briefTitle: 'Still Life Series', postingNote: 'Post midweek 12–2pm when buyers browse.', captionDraft: "The details that don't photograph themselves. We made them photograph themselves.", hashtags: ['#Novizio', '#QuietLuxury', '#FashionDetails', '#SlowFashion', '#CraftFirst', '#SS25'], shots: [] },
-  },
-  {
-    id: 'demo-sh2', created_at: _D(3), mode: 'shoot',
-    brief: { campaignName: 'Street Cast — Vol.1', objective: 'Authentic street-style campaign with real people', audience: 'Gen Z discovery audience — broad reach', tone: 'Bold / Disruptive', platform: 'TikTok', contentType: 'Video' },
-    moods: null, selected_mood_name: 'Raw Signal',
-    script_data: null, captions_data: null, prompts_data: null, image_urls: null, storyline_data: null,
-    shot_list_data: { briefTitle: 'Handheld Reality', postingNote: 'Post Friday 6–8pm for weekend discovery peak on TikTok.', captionDraft: 'Real people. Real fits. No stylist required.', hashtags: ['#Novizio', '#StreetStyle', '#RealFashion', '#NoPosing', '#StreetCast', '#GRWM'], shots: [] },
-  },
-]
+// ── Sessions (fetched from Supabase on mount) ──────────────────────────────────
+const DEMO_SESSIONS: StudioSession[] = []
 
 const KREA_MODELS = [
   { id: 'bfl/flux-1-dev',       label: 'Flux Dev',       note: 'Fast · ~4s' },
@@ -347,6 +286,7 @@ function SchedulePanel({
 
 export default function CreativeStudioPage() {
   const searchParams = useSearchParams()
+  const ventureSlug = useVentureSlug()
   const [step, setStep]         = useState(0)
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState<string | null>(null)
@@ -843,6 +783,11 @@ export default function CreativeStudioPage() {
           </div>
         </div>
       )}
+
+      {/* Kai's Read — live intelligence for Creative Studio */}
+      <div className="mb-6">
+        <KaisRead ventureSlug={ventureSlug} variant="inline" />
+      </div>
 
       {/* Mode toggle */}
       <div className="flex items-center justify-center mb-8">
@@ -1918,9 +1863,8 @@ export default function CreativeStudioPage() {
 
       {/* ── Inline Session History — shown on Brief step only ───────────── */}
       {step === 0 && (() => {
-        const pool       = sessions.length > 0 ? sessions : DEMO_SESSIONS
+        const pool       = sessions
         const filtered   = pool.filter(s => s.mode === mode)
-        const isDemoData = sessions.length === 0
         if (filtered.length === 0) return null
 
         const modeLabel = mode === 'single' ? 'Single Content' : mode === 'storyline' ? 'Storyline' : 'Shoot Mode'
@@ -1947,11 +1891,6 @@ export default function CreativeStudioPage() {
                 Recent · {modeLabel}
               </p>
               <div className="flex-1 h-px" style={{ background: `linear-gradient(to right,${modeColor}35,transparent)` }} />
-              {isDemoData && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'rgba(251,191,36,0.10)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.20)' }}>
-                  demo
-                </span>
-              )}
               <span className="text-[11px]" style={{ color: I1d }}>{filtered.length} session{filtered.length !== 1 ? 's' : ''}</span>
               <button onClick={fetchHistory} className="active:scale-95 transition-all" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: I3d }}>
                 <span className="material-symbols-outlined" style={{ fontSize: 14 }}>refresh</span>

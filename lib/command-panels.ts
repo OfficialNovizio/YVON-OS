@@ -98,40 +98,40 @@ export const COMMAND_PANELS: CommandPanelMeta[] = [
     dataSource: '/api/session-sync', connectsTo: 'SESSION.md',
   },
 
-  // ── Legacy / demo — off by default, re-enable to preview the old UI ───────────
+  // ── Legacy / demo — NOW ENABLED with real YVON OS intelligence ────────────────
   {
     id: 'ticker', label: 'Live Ticker', tab: 'global', state: 'legacy',
-    defaultEnabled: false,
+    defaultEnabled: true,
     description: 'Scrolling metric ticker in the header.',
     dataSource: 'Hardcoded', connectsTo: '—',
   },
   {
     id: 'kpiGauges', label: 'KPI Gauges', tab: 'briefing', state: 'legacy',
-    defaultEnabled: false,
+    defaultEnabled: true,
     description: 'ROAS / CAC / Brand Health arc gauges.',
     dataSource: 'Hardcoded', connectsTo: 'Pending Analytics',
   },
   {
     id: 'keyNumbers', label: 'Key Numbers', tab: 'briefing', state: 'legacy',
-    defaultEnabled: false,
+    defaultEnabled: true,
     description: 'ROAS / CAC / Brand Health with sparklines.',
     dataSource: 'Hardcoded', connectsTo: 'Pending Analytics',
   },
   {
     id: 'strategicBriefing', label: 'Strategic Briefing', tab: 'briefing', state: 'legacy',
-    defaultEnabled: false,
+    defaultEnabled: true,
     description: 'What changed / what matters / do-now blocks.',
     dataSource: 'Hardcoded', connectsTo: '—',
   },
   {
     id: 'pulseChannel', label: 'Brand Pulse & Channels', tab: 'briefing', state: 'legacy',
-    defaultEnabled: false,
+    defaultEnabled: true,
     description: 'Brand pulse chart + channel snapshot table.',
     dataSource: 'Hardcoded', connectsTo: 'Pending Analytics',
   },
   {
     id: 'priorities', label: 'Priorities', tab: 'briefing', state: 'legacy',
-    defaultEnabled: false,
+    defaultEnabled: true,
     description: 'Tiered priority list with owners.',
     dataSource: 'Hardcoded', connectsTo: '—',
   },

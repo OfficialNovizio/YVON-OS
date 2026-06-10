@@ -11,7 +11,6 @@
  */
 
 import { getAgent, AGENTS } from '@/lib/agents'
-import { streamWithTools, loadConfig } from '@/lib/ai-client'
 import { COLLABORATION_GRAPH, calculateRoutingConfidence, recommendCollaboration } from '@/lib/collaboration-manager'
 import type { AgentId, RoutingResult, ExecutionPlan, SpecialistBriefing, WarRoomToolCall } from '@/lib/types'
 import type { ModeContext } from './mode-resolver'
@@ -19,6 +18,10 @@ import {
   buildSpecialistBrief, buildAnalyzerBrief, buildFixerBrief, buildValidatorBrief,
   type RepoSnapshot, type VentureDocParts, type OsContext,
 } from './brief-builder'
+import { spawnHermesAgentStream, type HermesSpawnParams } from '@/lib/hermes-spawn'
+
+/** Environment flag to switch between Hermes Agent (default) and legacy Anthropic API. */
+const USE_HERMES_AGENTS = process.env.HERMES_AGENTS_ENABLED !== 'false'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -36,7 +39,9 @@ export interface StepResult {
 
 type EmitFn = (type: string, data: Record<string, unknown>) => void
 
-// ─── Empty-output detection + auto-retry ─────────────────────────────────────
+// ─── Hermes-powered specialist execution ───────────────────────────────────────
+// Replaces the one-shot Anthropic API call with a full Hermes Agent subprocess
+// that has real file tools, iterative loops, graph memory, and persistent state.
 
 async function runSpecialistWithRetry(
   agentId: AgentId,
@@ -51,52 +56,37 @@ async function runSpecialistWithRetry(
     emit: EmitFn
   },
 ): Promise<SpecialistBriefing & { toolCalls: WarRoomToolCall[] }> {
-  const MAX_ATTEMPTS = 3
+  const MAX_ATTEMPTS = 2
   let currentPrompt = params.userPrompt
-  // Collect tool calls across all attempts so the persisted step mirrors the
-  // live agent card (tool_use_id keyed so results land on the right call).
-  const toolCallMap = new Map<string, WarRoomToolCall>()
-  const toolCalls = (): WarRoomToolCall[] => [...toolCallMap.values()]
+  const toolCalls: WarRoomToolCall[] = []
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       let content = ''
-      for await (const event of streamWithTools({
-        agentId,
-        ventureSlug:   params.ventureSlug,
-        repoMode:       params.mode.isLocalMode ? 'local' : 'github',
-        localRepoPath:  params.mode.localRepoPath,
-        modelTier:      params.modelTier,
-        system:         params.systemPrompt,
-        maxTokens:      params.maxOutputTokens,
-        maxIterations:  params.maxIterations,
-        messages:       [{ role: 'user', content: currentPrompt }],
-      })) {
-        switch (event.kind) {
-          case 'text':
-            content += event.text
-            break
-          case 'tool_call':
-            toolCallMap.set(event.tool_use_id, { name: event.name, input: event.input, summary: null, isError: false })
-            params.emit('tool_call_start', { agentId, tool: event.name, input: event.input, tool_use_id: event.tool_use_id })
-            break
-          case 'tool_result': {
-            const tc = toolCallMap.get(event.tool_use_id)
-            if (tc) { tc.summary = event.summary; tc.isError = event.is_error }
-            params.emit('tool_call_result', { agentId, tool: event.name, summary: event.summary, is_error: event.is_error, tool_use_id: event.tool_use_id, todoItems: (event as any).todoItems ?? null })
-            break
+
+      if (USE_HERMES_AGENTS) {
+        // ── Hermes Agent path ──────────────────────────────────────────────────
+        params.emit('hermes_agent_start', { agentId, attempt })
+        
+        for await (const event of spawnHermesAgentStream({
+          agentId,
+          task: currentPrompt,
+          systemContext: params.systemPrompt,
+          repoMode: params.mode.isLocalMode ? 'local' : 'github',
+          localRepoPath: params.mode.localRepoPath,
+          ventureSlug: params.ventureSlug,
+          ventureName: undefined,
+          maxOutputTokens: params.maxOutputTokens,
+          timeoutMs: 600_000,
+        })) {
+          switch (event.kind) {
+            case 'agent_complete':
+              content = event.fullOutput || event.previewText || ''
+              break
+            case 'error':
+              params.emit('agent_error', { agentId, error: event.message, fatal: true })
+              break
           }
-          case 'iteration':
-            params.emit('tool_iteration', { agentId, n: event.n })
-            break
-          case 'error':
-            params.emit('agent_error', { agentId, error: event.message, fatal: false })
-            break
-          case 'done':
-            if (event.reason === 'max_iterations_reached') {
-              params.emit('agent_warning', { agentId, warning: 'Hit iteration limit — output may be incomplete.', reason: 'max_iterations' })
-            }
-            break
         }
       }
 
@@ -114,20 +104,20 @@ async function runSpecialistWithRetry(
       params.emit('agent_complete', {
         agentId,
         previewText: fullText.slice(0, 200),
-        fullOutput: fullText,  // ← full agent output preserved in chat history
+        fullOutput: fullText,
       })
-      return { agentId, content: fullText, toolCalls: toolCalls() }
+      return { agentId, content: fullText, toolCalls }
     } catch (err) {
       if (attempt < MAX_ATTEMPTS) {
         params.emit('retry', { agentId, attempt })
       } else {
         params.emit('agent_error', { agentId, error: String(err), fatal: true })
-        return { agentId, content: '', toolCalls: toolCalls() }
+        return { agentId, content: '', toolCalls }
       }
     }
   }
 
-  return { agentId, content: '', toolCalls: toolCalls() }
+  return { agentId, content: '', toolCalls }
 }
 
 // ─── Main execute function ───────────────────────────────────────────────────

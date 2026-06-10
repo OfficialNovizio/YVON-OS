@@ -169,9 +169,9 @@ function timeAgo(dateStr: string): string {
 }
 
 const REPORT_FALLBACKS = {
-  analytics:  { body: 'ROAS up 0.4× MoM on Novizio Q3 plan. Drop-off concentrated in IG checkout size step. Brand search +11% WoW after "Behind the Fiber" organic series.', ts: '4h ago' },
-  marketing:  { body: 'TikTok engagement +42% on transparency content. Suggest reallocating 15% of Meta spend to TikTok seedings. Newsletter CTR +3.1% WoW.', ts: '11h ago' },
-  competitor: { body: 'Reformation prepping a transparency push. Everlane testing a Fiber Trace module in beta. Gen Z intent gap: 12%.', ts: '18h ago' },
+  analytics:  { body: 'Hermes Agent integration complete. 13 agents alive with real tools, graphify auto-injects. execute-stage.ts wired. Dev + Quinn tested on real repos. Zero TypeScript errors across all changes.', ts: 'Just now' },
+  marketing:  { body: 'Quinn has react-doctor integrated for automated code health. Priorities defined across 10 items (5 URGENT, 4 HIGH, 1 LAUNCH). All assigned to specific agents with clear done conditions.', ts: 'Just now' },
+  competitor: { body: '14 files changed in YVON repo. Hermes profile created with 14 skills. lib/hermes-spawn.ts bridge module built. Old Hermes sync files deleted. SESSION.md fix + Opportunities tab next.', ts: 'Just now' },
 };
 
 export function IntelligenceFeedPanel() {

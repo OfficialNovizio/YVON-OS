@@ -14,7 +14,6 @@
 import { getAgent, AGENTS } from '@/lib/agents'
 import { getAgentMemory, getVentureAgentMemories, formatVentureMemoriesBlock } from '@/lib/agent-memory'
 import { prefetchAgentMemory, searchSkills, trackSkillUsage } from '@/lib/db'
-import { buildHermesSkillBlock } from '@/lib/hermes-skills'
 import fs from 'fs/promises'
 import path from 'path'
 import { loadConfig } from '@/lib/ai-client'
@@ -235,14 +234,13 @@ async function buildRecallBlock(
     .slice(0, 8)
     .filter(Boolean)
 
-  const [dbMemory, fileMemory, matchedSkills, ventureMemories, hermesBlock] = await Promise.all([
+  const [dbMemory, fileMemory, matchedSkills, ventureMemories] = await Promise.all([
     prefetchAgentMemory(agentId, ventureName, message).catch(() => ''),
     getAgentMemory(agentId, ventureName, 8).catch(() => ''),
     (keywords.length > 0 ? searchSkills(keywords, agentId, 3) : Promise.resolve([])).catch(() => []),
     (ventureSlug && ventureSlug !== 'yvon-dashboard'
       ? getVentureAgentMemories(ventureSlug, agentId, keywords)
       : Promise.resolve([])).catch(() => []),
-    buildHermesSkillBlock(agentId).catch(() => ''),
   ])
 
   for (const skill of matchedSkills) trackSkillUsage(skill.name).catch(() => {})
@@ -258,7 +256,6 @@ async function buildRecallBlock(
       : '',
     formatVentureMemoriesBlock(ventureMemories),
     skillsBlock,
-    hermesBlock,
   ].filter(Boolean).join('\n\n')
 }
 

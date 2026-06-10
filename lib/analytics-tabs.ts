@@ -6,7 +6,7 @@
 // standalone Competitor dashboard); its route files remain on disk so it can be
 // re-enabled at any time.
 
-export type AnalyticsTabId = 'overview' | 'market' | 'portfolio' | 'social-media' | 'reports'
+export type AnalyticsTabId = 'overview' | 'market' | 'content' | 'portfolio' | 'social-media' | 'reports'
 
 export type AnalyticsTabState = 'live' | 'legacy'
 
@@ -33,6 +33,12 @@ export const ANALYTICS_TABS: AnalyticsTabMeta[] = [
     defaultEnabled: true,
     description: 'Market size, the customer, growth, and where to play.',
     dataSource: '/api/market-intelligence', connectsTo: 'GA4 · social',
+  },
+  {
+    id: 'content', label: 'Content', href: '/screens/analytics/content', state: 'live',
+    defaultEnabled: true,
+    description: 'Content health, top posts, platform priority, format conversion, and operations calendar.',
+    dataSource: '/api/analytics-overview · /api/social-stats', connectsTo: 'Marketing · Creative Studio',
   },
   {
     id: 'social-media', label: 'Social Media', href: '/screens/analytics/social-media', state: 'live',

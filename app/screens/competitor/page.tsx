@@ -3,28 +3,12 @@
 import { useEffect, useState } from 'react';
 import CompetitorSubNav from './_subnav';
 import PositioningMap, { type CompetitorPoint } from './_positioning-map';
-import CompetitorRow from './_competitor-row';
-import { useVentureSlug } from '@/lib/use-venture-slug';
+import CompetitorRow from './_competitor-row'
+import KaisRead from '@/app/components/KaisRead'
+import { useVentureSlug } from '@/lib/use-venture-slug'
 import { getCached, setCache, clearCache } from '@/lib/session-cache';
 
-// ── Glass variants ──────────────────────────────────────────────────────────────
-const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
-const I1 = '#0c2c52', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
-
-const G2 = { background: 'linear-gradient(135deg,rgba(0,102,204,0.28),rgba(0,160,255,0.18))', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30),inset 0 -1px 0 rgba(0,0,0,0.10),0 18px 50px -10px rgba(0,60,160,0.40)' };
-const I2 = '#f4f8ff', I2d = 'rgba(244,248,255,0.48)';
-
-const G3 = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
-const I3c = 'rgba(241,245,251,0.75)';
-
-const G4 = { background: 'radial-gradient(120% 80% at 0% 0%,rgba(255,150,200,0.32),transparent 55%),radial-gradient(120% 80% at 100% 100%,rgba(120,200,255,0.40),transparent 55%),linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.12))', backdropFilter: 'blur(30px) saturate(200%)', WebkitBackdropFilter: 'blur(30px) saturate(200%)', border: '1px solid rgba(255,255,255,0.50)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(180,80,160,0.30)' };
-const I4 = '#2a1240', I4d = 'rgba(42,18,64,0.48)';
-
-const ACCENT  = '#0066cc';
-const INK_4   = 'rgba(10,37,71,0.52)';
-const ANCHOR_COLOR  = '#fbbf24';
-const ANCHOR_BG     = 'rgba(251,191,36,0.08)';
-const ANCHOR_BORDER = 'rgba(251,191,36,0.25)';
+import { G1, G2, G3, G4, I1, I1c, I1d, I2, I2d, I3c, I4, I4d, L1, ACCENT, INK_4, ANCHOR_COLOR, ANCHOR_BG, ANCHOR_BORDER } from './_glass-tokens'
 
 // ── Helpers ─────────────────────────────────────────────────────────────────────
 
@@ -223,6 +207,9 @@ export default function CompetitorPage() {
             </button>
           </div>
         </div>
+
+        {/* ── Kai's Read — competitive intelligence layer ── */}
+        <KaisRead ventureSlug={ventureSlug} variant="dark" context="Competitor analysis — rival brand tracking, share of voice, engagement trends" />
 
         {/* ── 2. Market Intelligence KPIs ────────────────────── */}
         {kpis.length > 0 && (

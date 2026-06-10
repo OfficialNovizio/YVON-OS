@@ -4,13 +4,20 @@ import { callFast } from '@/lib/ai-client'
 
 export const runtime = 'nodejs'
 
-// Dynamic band: competitors should be 500x–1000x our size.
-// At 100 followers → 50k–100k benchmark range (exactly what makes sense for seed).
-function getBand(followers: number) {
-  const min = Math.max(followers * 500, 5_000)
-  const max = Math.max(followers * 1_000, 10_000)
-  const stretchMax = Math.max(followers * 5_000, 100_000)
-  return { min, max, stretchMax }
+// ── Band calculation — 4 tiers now ───────────────────────────────────────────
+// micro:    100x–500x  your followers (floor 10K,  cap 50K)
+// small:    500x–1000x your followers (floor 50K,  cap 100K)
+// stretch:  1000x–5000x (floor 100K, cap 500K)
+// anchor:   1M+
+
+function getBands(followers: number) {
+  const microMin  = Math.max(followers * 100,  10_000)
+  const microMax  = Math.max(followers * 500,  50_000)
+  const smallMin  = Math.max(followers * 500,  50_000)
+  const smallMax  = Math.max(followers * 1_000, 100_000)
+  const stretchMin = Math.max(followers * 1_000, 100_000)
+  const stretchMax = Math.max(followers * 5_000, 500_000)
+  return { microMin, microMax, smallMin, smallMax, stretchMin, stretchMax }
 }
 
 function fmtBand(n: number) {
@@ -18,31 +25,42 @@ function fmtBand(n: number) {
   return (n / 1_000).toFixed(0) + 'K'
 }
 
-// Country-aware fallbacks: keyed as "industry:country" then "industry" then default
-const FALLBACKS: Record<string, { benchmark: string[]; stretch: string[]; anchor: string }> = {
+// ── Country-aware fallbacks — now with micro tier ────────────────────────────
+interface FallbackSet {
+  micro: string[]
+  small: string[]
+  stretch: string[]
+  anchor: string
+}
+
+const FALLBACKS: Record<string, FallbackSet> = {
   'fashion e-commerce:IN': {
-    benchmark: ['Bunaai', 'Suta', 'Label Ritu Kumar'],
-    stretch: ['Libas', 'Global Desi'],
-    anchor: 'FabIndia',
+    micro:    ['The Loom', 'Okhai', 'Karagiri'],
+    small:    ['Bunaai', 'Suta', 'Label Ritu Kumar'],
+    stretch:  ['Libas', 'Global Desi'],
+    anchor:   'FabIndia',
   },
   'fashion e-commerce': {
-    benchmark: ['Elaluz', 'Mate the Label', 'Lisa Says Gah'],
-    stretch: ['Staud', 'Reformation'],
-    anchor: 'Zara',
+    micro:    ['Mate the Label', 'Lisa Says Gah', 'Elaluz'],
+    small:    ['Staud', 'Reformation', 'Aya Muse'],
+    stretch:  ['Ganni', 'Cult Gaia'],
+    anchor:   'Zara',
   },
   'fintech:IN': {
-    benchmark: ['Fi Money', 'Jupiter', 'Slice'],
-    stretch: ['Groww', 'Zerodha'],
-    anchor: 'Paytm',
+    micro:    ['Fi Money', 'Jupiter', 'Niyo'],
+    small:    ['Slice', 'Freo', 'OneCard'],
+    stretch:  ['Groww', 'Zerodha'],
+    anchor:   'Paytm',
   },
   fintech: {
-    benchmark: ['Lili', 'Klar', 'Suits App'],
-    stretch: ['N26', 'Starling Bank'],
-    anchor: 'Revolut',
+    micro:    ['Lili', 'Klar', 'Suits App'],
+    small:    ['Mercury', 'Brex', 'Ramp'],
+    stretch:  ['N26', 'Starling Bank'],
+    anchor:   'Revolut',
   },
 }
 
-function getFallback(industryKey: string, countryCode: string) {
+function getFallback(industryKey: string, countryCode: string): FallbackSet {
   return FALLBACKS[`${industryKey}:${countryCode.toUpperCase()}`]
     ?? FALLBACKS[industryKey]
     ?? FALLBACKS['fashion e-commerce']
@@ -54,6 +72,133 @@ const COUNTRY_NAMES: Record<string, string> = {
   CA: 'Canada', AU: 'Australia', IN: 'India', AE: 'UAE', NL: 'Netherlands',
   JP: 'Japan', KR: 'South Korea', SG: 'Singapore', BR: 'Brazil',
 }
+
+// ── Venture profile enrichment ───────────────────────────────────────────────
+
+interface VentureProfile {
+  name: string
+  industry: string
+  country: string
+  countryName: string
+  followers: number
+  subcategories: string[]
+  brandTier: string
+  pricePoint: number
+  audience: {
+    ageRange: string
+    gender: string
+    incomeTier: string
+    region: string
+  }
+}
+
+async function resolveVentureProfile(ventureSlug: string, fallbackFollowers: number, fallbackCountry: string): Promise<VentureProfile> {
+  let country = fallbackCountry
+  let followers = fallbackFollowers
+  let subcategories: string[] = []
+  let brandTier = ''
+  let pricePoint = 0
+  let audience = { ageRange: '', gender: '', incomeTier: '', region: 'all' }
+
+  try {
+    const { data: venture } = await supabase
+      .from('ventures')
+      .select('name, operating_countries, market_subcategories, brand_tier, avg_price_point, target_audience')
+      .eq('slug', ventureSlug)
+      .limit(1)
+      .single()
+
+    if (venture) {
+      if (venture.operating_countries?.length) {
+        country = venture.operating_countries[0] as string
+      }
+      subcategories = (venture.market_subcategories ?? []) as string[]
+      brandTier = (venture.brand_tier ?? '') as string
+      pricePoint = (venture.avg_price_point ?? 0) as number
+
+      const ta = venture.target_audience as Record<string, unknown> | null
+      if (ta) {
+        audience = {
+          ageRange: (ta.age_range ?? ta.ageRange ?? '') as string,
+          gender: (ta.gender ?? '') as string,
+          incomeTier: (ta.income_tier ?? ta.incomeTier ?? '') as string,
+          region: (ta.region ?? 'all') as string,
+        }
+      }
+
+      // Sum latest followers across all platforms
+      const { data: snapshots } = await supabase
+        .from('social_snapshots')
+        .select('followers, platform, captured_at')
+        .eq('venture_slug', ventureSlug)
+        .not('followers', 'is', null)
+        .order('captured_at', { ascending: false })
+
+      if (snapshots?.length) {
+        const latestPerPlatform = new Map<string, number>()
+        for (const s of snapshots) {
+          if (!latestPerPlatform.has(s.platform)) {
+            latestPerPlatform.set(s.platform, s.followers as number)
+          }
+        }
+        const total = Array.from(latestPerPlatform.values()).reduce((a, b) => a + b, 0)
+        if (total > 0) followers = total
+      }
+    }
+  } catch { /* use defaults */ }
+
+  const countryCode = country.toUpperCase()
+  const countryName = COUNTRY_NAMES[countryCode] ?? country
+  const industry = ventureSlug === 'hourbour' ? 'fintech' : 'fashion e-commerce'
+
+  return {
+    name: ventureSlug === 'hourbour' ? 'Hourbour' : 'Novizio',
+    industry,
+    country: countryCode,
+    countryName,
+    followers,
+    subcategories,
+    brandTier,
+    pricePoint,
+    audience,
+  }
+}
+
+function buildVentureContext(profile: VentureProfile): string {
+  const parts: string[] = []
+
+  if (profile.subcategories.length > 0) {
+    const labels = profile.subcategories
+      .map(c => c.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()))
+      .slice(0, 4)
+    parts.push(`Product focus: ${labels.join(', ')}`)
+  }
+
+  if (profile.brandTier) {
+    parts.push(`Brand tier: ${profile.brandTier}`)
+  }
+
+  if (profile.pricePoint > 0) {
+    parts.push(`Average price point: ~₹${profile.pricePoint.toLocaleString('en-IN')}`)
+  }
+
+  if (profile.audience.ageRange) {
+    parts.push(`Target age: ${profile.audience.ageRange}`)
+  }
+  if (profile.audience.gender) {
+    parts.push(`Target gender: ${profile.audience.gender}`)
+  }
+  if (profile.audience.incomeTier) {
+    parts.push(`Income tier: ${profile.audience.incomeTier}`)
+  }
+  if (profile.audience.region && profile.audience.region !== 'all') {
+    parts.push(`Region: ${profile.audience.region}`)
+  }
+
+  return parts.length > 0 ? `\n\nVenture context for ${profile.name}:\n${parts.join('\n')}` : ''
+}
+
+// ─── POST handler ────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
   try {
@@ -72,41 +217,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'brandName required' }, { status: 400 })
     }
 
-    // If ventureSlug provided, pull real data from DB: country + latest follower count
+    // Resolve full venture profile when ventureSlug is provided
+    let ventureCtx = ''
     if (ventureSlug) {
-      const { data: venture } = await supabase
-        .from('ventures')
-        .select('operating_countries')
-        .eq('slug', ventureSlug)
-        .limit(1)
-        .single()
-
-      if (venture?.operating_countries?.length) {
-        country = venture.operating_countries[0] as string
-      }
-
-      // Sum latest followers across all platforms for this venture
-      const { data: snapshots } = await supabase
-        .from('social_snapshots')
-        .select('followers, platform, scraped_at')
-        .eq('venture_slug', ventureSlug)
-        .not('followers', 'is', null)
-        .order('scraped_at', { ascending: false })
-
-      if (snapshots?.length) {
-        // Take the most recent snapshot per platform, sum them
-        const latestPerPlatform = new Map<string, number>()
-        for (const s of snapshots) {
-          if (!latestPerPlatform.has(s.platform)) {
-            latestPerPlatform.set(s.platform, s.followers as number)
-          }
-        }
-        const total = Array.from(latestPerPlatform.values()).reduce((a, b) => a + b, 0)
-        if (total > 0) currentFollowers = total
-      }
+      const profile = await resolveVentureProfile(ventureSlug, currentFollowers, country)
+      country = profile.country
+      currentFollowers = profile.followers
+      ventureCtx = buildVentureContext(profile)
     }
 
-    const band = getBand(currentFollowers)
+    const bands = getBands(currentFollowers)
     const industryKey = industry?.toLowerCase() ?? 'fashion e-commerce'
     const countryCode = country.toUpperCase()
     const fallback = getFallback(industryKey, countryCode)
@@ -115,40 +235,48 @@ export async function POST(req: NextRequest) {
     const raw = await callFast({
       messages: [{
         role: 'user',
-        content: `You are a brand strategist. The brand "${brandName}" currently has approximately ${currentFollowers} social media followers and targets the ${countryName} market.
+        content: `You are a brand strategist. "${brandName}" has ~${currentFollowers.toLocaleString()} social followers and targets the ${countryName} market.${ventureCtx}
 
-Find realistic, size-matched competitors in the "${industry ?? 'fashion e-commerce'}" space.
+Find realistic, size-matched competitors in ${industry ?? 'fashion e-commerce'}.
 
 Return ONLY this JSON — no explanation, no markdown:
 {
-  "benchmark": ["Brand A", "Brand B", "Brand C"],
-  "stretch": ["Brand D", "Brand E"],
-  "anchor": "Brand F"
+  "micro": ["Brand A", "Brand B", "Brand C"],
+  "small": ["Brand D", "Brand E", "Brand F"],
+  "stretch": ["Brand G", "Brand H"],
+  "anchor": "Brand I"
 }
 
-Rules:
-- "benchmark": exactly 3 brands with ${fmtBand(band.min)}–${fmtBand(band.max)} followers — realistic peers that ${brandName} can close the gap on within 12 months. MUST be from or primarily targeting ${countryName}.
-- "stretch": exactly 2 brands with ${fmtBand(band.max)}–${fmtBand(band.stretchMax)} followers — visible horizon to study strategy. Same ${countryName} market.
-- "anchor": exactly 1 well-known brand with 1M+ followers — directional inspiration only, not a direct competitor
-- All brands must be real, active, and in the same niche as "${brandName}"
-- Prioritise brands with strong ${countryName} audience and relevance — avoid US-only giants if ${countryName} !== "United States"
-- CRITICAL: Do NOT return brands you know have 500K+ followers as "benchmark". Pick genuinely small, niche brands. If unsure about exact follower counts, err on the side of smaller, lesser-known brands.
+Tier rules (sizes are approximate — err on the side of smaller brands):
+- "micro": exactly 3 brands with ${fmtBand(bands.microMin)}–${fmtBand(bands.microMax)} followers. These are the closest peers — same niche, same customer profile, similar price point. ${brandName} should be able to match or beat their engagement within 6 months.${ventureCtx ? ' Match the venture context above — same product categories, same price tier, same audience demographics.' : ''}
+- "small": exactly 3 brands with ${fmtBand(bands.smallMin)}–${fmtBand(bands.smallMax)} followers. Realistic benchmark peers for a 12-month growth target. Same ${countryName} market.
+- "stretch": exactly 2 brands with ${fmtBand(bands.stretchMin)}–${fmtBand(bands.stretchMax)} followers. Visible horizon — study their strategy, but they're ahead of you.
+- "anchor": exactly 1 well-known brand with 1M+ followers. Directional inspiration only. Must be in the same industry category.
+
+Critical rules:
+- All brands must be real, active, and in the ${industryKey} space
+- Prioritise brands with strong ${countryName} audience — avoid US-only giants unless ${countryName} is US
+- CRITICAL: Do NOT put 500K+ brands in "micro" or "small". Pick genuinely niche brands
+- If venture context mentions specific product categories (e.g., sarees, ethnic wear), prioritise competitors in those same categories
+- If a brand tier is specified (e.g., premium, luxury), find similarly-positioned brands
 - Do NOT include "${brandName}" itself`,
       }],
-      maxTokens: 256,
+      maxTokens: 384,
     })
 
     const match = raw.trim().match(/\{[\s\S]*\}/)
     if (match) {
       try {
         const parsed = JSON.parse(match[0]) as {
-          benchmark?: string[]
+          micro?: string[]
+          small?: string[]
           stretch?: string[]
           anchor?: string
         }
-        if (parsed.benchmark?.length && parsed.stretch?.length && parsed.anchor) {
+        if (parsed.micro?.length && parsed.small?.length && parsed.stretch?.length && parsed.anchor) {
           return NextResponse.json({
-            benchmark: parsed.benchmark.slice(0, 3),
+            micro: parsed.micro.slice(0, 3),
+            small: parsed.small.slice(0, 3),
             stretch: parsed.stretch.slice(0, 2),
             anchor: parsed.anchor,
           })
@@ -156,10 +284,21 @@ Rules:
       } catch { /* fall through */ }
     }
 
-    return NextResponse.json(fallback)
+    // Fallback to static lists
+    return NextResponse.json({
+      micro: fallback.micro,
+      small: fallback.small,
+      stretch: fallback.stretch,
+      anchor: fallback.anchor,
+    })
   } catch (err) {
     console.error('[auto-competitors]', err)
-    return NextResponse.json(FALLBACKS['fashion e-commerce'], { status: 200 })
+    const fb = FALLBACKS['fashion e-commerce']
+    return NextResponse.json({
+      micro: fb.micro,
+      small: fb.small,
+      stretch: fb.stretch,
+      anchor: fb.anchor,
+    }, { status: 200 })
   }
 }
-

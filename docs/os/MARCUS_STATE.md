@@ -8,20 +8,23 @@
 ## Active Venture
 ```
 last_venture: yvon-dashboard
-switched_at: 2026-05-14
+switched_at: 2026-06-09
 ```
 
 ## Last Agent Activated
 ```
 novizio:        none — no venture-specific sessions in recent history
 hourbour:       none — no venture-specific sessions in recent history
-yvon-dashboard: Raj + Mia — Studio History (Load & Remix) — 2026-05-21
+yvon-dashboard: Marcus (CEO audit) + Dev + Raj + Mia + Quinn — Full agent/system audit + react-doctor integration — 2026-06-09
 ```
 
 ## In-Flight Work
-> Tasks that have started but are not complete. Marcus picks these up first before taking new tasks.
 ```
-none — all tasks complete
+yvon-dashboard | Phase 1-3 dashboard fixes | Squad: Dev+Raj+Mia+Quinn | Awaiting Stark go-ahead
+  - Phase 1: Fix SESSION.md, delete dead code, fix NavBar
+  - Phase 2: Create Opportunities tab, extract components
+  - Phase 3: Quinn QA hardening
+```
 ```
 
 ## Waiting

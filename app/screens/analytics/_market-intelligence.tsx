@@ -14,12 +14,7 @@ import {
 } from 'recharts';
 import type { MarketIntelligenceData } from '@/app/api/market-intelligence/route';
 
-// ── Glass + ink tokens (match analytics/page.tsx) ───────────────────────────────
-const G1: React.CSSProperties = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
-const G3: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
-const I1 = '#0c2c52', I1b = '#1a3e6e', I1c = 'rgba(12,44,82,0.65)', I1d = 'rgba(12,44,82,0.48)', L1 = 'rgba(12,44,82,0.10)';
-const I3 = '#f1f5fb', I3c = 'rgba(241,245,251,0.75)', I3d = 'rgba(241,245,251,0.45)';
-const ACCENT = '#0066cc', GREEN = '#059669', AMBER = '#d97706', RED = '#dc2626', INK_4 = 'rgba(10,37,71,0.52)';
+import { G1, G3, I1, I1b, I1c, I1d, I3, I3c, I3d, L1, ACCENT, GREEN, AMBER, RED, INK_4 } from './_glass-tokens'
 
 interface Props { ventureSlug: string; countries: string[] }
 

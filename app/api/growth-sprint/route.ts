@@ -1,6 +1,7 @@
 import { callFast, streamSynthesis } from '@/lib/ai-client'
 import { getAgent } from '@/lib/agents'
 import { getAgentMemory } from '@/lib/agent-memory'
+import { supabase } from '@/lib/supabase'
 import type { AgentId } from '@/lib/types'
 
 export const maxDuration = 60
@@ -67,6 +68,162 @@ function defScore(): ViralityScore {
   return { shareability: 3, relatability: 3, hook_strength: 3, platform_native: 3, trend_fit: 3, total: 15 }
 }
 
+// ─── Data collector — queries Supabase for real venture metrics ─────────────
+
+interface VentureDataSnapshot {
+  followers: { instagram: number | null; tiktok: number | null; linkedin: number | null }
+  recentPosts: { platform: string; format: string; postedAt: string; outcome: string | null; outcomeDelta: number | null }[]
+  contentHealth: { planned: number; published: number; missed: number; autoQueued: number }
+  competitors: { name: string; followers: number; engagementRate: number | null }[]
+  latestPitches: { hook: string; status: string }[]
+  hasAnyData: boolean
+}
+
+async function collectVentureData(slug: string): Promise<VentureDataSnapshot> {
+  const snapshot: VentureDataSnapshot = {
+    followers: { instagram: null, tiktok: null, linkedin: null },
+    recentPosts: [],
+    contentHealth: { planned: 0, published: 0, missed: 0, autoQueued: 0 },
+    competitors: [],
+    latestPitches: [],
+    hasAnyData: false,
+  }
+
+  try {
+    // 1. Content performance — recent measured outcomes
+    const { data: perfRows } = await supabase
+      .from('content_performance')
+      .select('platform, format, posted_at, outcome, outcome_delta')
+      .eq('venture_slug', slug)
+      .not('measured_at', 'is', null)
+      .order('measured_at', { ascending: false })
+      .limit(20)
+
+    if (perfRows && perfRows.length > 0) {
+      snapshot.hasAnyData = true
+      snapshot.recentPosts = perfRows.map(r => ({
+        platform: r.platform,
+        format: r.format,
+        postedAt: r.posted_at,
+        outcome: r.outcome as string | null,
+        outcomeDelta: r.outcome_delta as number | null,
+      }))
+    }
+
+    // 2. Content calendar health — counts
+    const { data: calEntries } = await supabase
+      .from('content_calendar')
+      .select('status')
+      .eq('venture_slug', slug)
+
+    if (calEntries) {
+      snapshot.hasAnyData = true
+      snapshot.contentHealth.planned = calEntries.length
+      snapshot.contentHealth.published = calEntries.filter(e => e.status === 'posted').length
+      snapshot.contentHealth.missed = calEntries.filter(e => e.status === 'missed').length
+      snapshot.contentHealth.autoQueued = calEntries.filter(e => e.status === 'auto_post').length
+    }
+
+    // 3. Competitor intelligence — latest signals
+    const { data: compRows } = await supabase
+      .from('competitors')
+      .select('name, followers, engagement_rate')
+      .eq('venture_slug', slug)
+      .order('updated_at', { ascending: false })
+      .limit(5)
+
+    if (compRows && compRows.length > 0) {
+      snapshot.hasAnyData = true
+      snapshot.competitors = compRows.map(c => ({
+        name: c.name,
+        followers: c.followers,
+        engagementRate: c.engagement_rate as number | null,
+      }))
+    }
+
+    // 4. Token usage — model and cost
+    const { data: tokenRows } = await supabase
+      .from('token_usage')
+      .select('model, cost_usd, input_tokens, output_tokens')
+      .order('created_at', { ascending: false })
+      .limit(10)
+
+    if (tokenRows && tokenRows.length > 0) {
+      snapshot.hasAnyData = true
+      const totalCost = tokenRows.reduce((s, r) => s + (r.cost_usd || 0), 0)
+      const totalTokens = tokenRows.reduce((s, r) => s + (r.input_tokens || 0) + (r.output_tokens || 0), 0)
+      // Store in followers object as a hack — we'll format it separately
+      snapshot.followers.instagram = totalTokens
+      snapshot.followers.tiktok = totalCost
+    }
+  } catch { /* non-fatal — return empty snapshot */ }
+
+  return snapshot
+}
+
+function formatDataSnapshot(d: VentureDataSnapshot): string {
+  if (!d.hasAnyData) {
+    return `NO LIVE DATA AVAILABLE. The venture has no content performance history, no calendar entries, and no competitors tracked. Connect social accounts in Settings and start posting to build a data foundation.`
+  }
+
+  const lines: string[] = ['REAL VENTURE DATA (from Supabase):', '']
+
+  // Followers / token usage
+  if (d.followers.instagram !== null) {
+    lines.push(`AI Token Usage: ${(d.followers.instagram as number).toLocaleString()} tokens | $${(d.followers.tiktok as number).toFixed(2)} spent`)
+  }
+
+  // Content health
+  const h = d.contentHealth
+  lines.push(`Content Calendar: ${h.planned} planned | ${h.published} published | ${h.missed} missed | ${h.autoQueued} auto-queued`)
+
+  // Recent content performance
+  if (d.recentPosts.length > 0) {
+    const summary = d.recentPosts.slice(0, 10)
+    const overperformed = summary.filter(p => p.outcome === 'overperformed').length
+    const underperformed = summary.filter(p => p.outcome === 'underperformed').length
+    const met = summary.filter(p => p.outcome === 'met').length
+    const avgDelta = summary.filter(p => p.outcomeDelta !== null).reduce((s, p) => s + (p.outcomeDelta ?? 0), 0) / (summary.length || 5)
+
+    lines.push(`Recent Content Performance (last ${summary.length} measured posts):`)
+    lines.push(`  Overperformed: ${overperformed} | Met: ${met} | Underperformed: ${underperformed}`)
+    lines.push(`  Avg delta vs benchmark: ${avgDelta > 0 ? '+' : ''}${avgDelta.toFixed(1)}%`)
+
+    const platformBreakdown = new Map<string, { count: number; overperformed: number }>()
+    for (const p of summary) {
+      const entry = platformBreakdown.get(p.platform) ?? { count: 0, overperformed: 0 }
+      entry.count++
+      if (p.outcome === 'overperformed') entry.overperformed++
+      platformBreakdown.set(p.platform, entry)
+    }
+    for (const [platform, stats] of platformBreakdown) {
+      lines.push(`  ${platform}: ${stats.count} posts, ${stats.overperformed} overperformed (${((stats.overperformed / stats.count) * 100).toFixed(0)}% hit rate)`)
+    }
+  } else {
+    lines.push('Content Performance: No measured posts yet — first posts will establish baselines')
+  }
+
+  // Competitors
+  if (d.competitors.length > 0) {
+    lines.push(`Tracked Competitors (${d.competitors.length}):`)
+    for (const c of d.competitors) {
+      const er = c.engagementRate !== null ? `${(c.engagementRate * 100).toFixed(1)}% ER` : 'no ER data'
+      lines.push(`  ${c.name}: ${c.followers.toLocaleString()} followers, ${er}`)
+    }
+  } else {
+    lines.push('Competitors: None tracked — add competitors in Settings')
+  }
+
+  // Latest pitches
+  if (d.latestPitches.length > 0) {
+    const approved = d.latestPitches.filter(p => p.status === 'approved').length
+    const pending = d.latestPitches.filter(p => p.status === 'pending').length
+    lines.push(`Latest Intelligence Pitches: ${d.latestPitches.length} total | ${approved} approved | ${pending} pending`)
+  }
+
+  return lines.join('\n')
+}
+
 // ─── Pitch parser ──────────────────────────────────────────────────────────────
 
 function parsePitches(text: string): Omit<ContentPitch, 'id' | 'virality'>[] {
@@ -112,6 +269,11 @@ export async function POST(request: Request): Promise<Response> {
 
         if (phase === 'auto-brief') {
 
+          // Collect real venture data from Supabase
+          const ventureSlug = venture.toLowerCase()
+          const ventureSnapshot = await collectVentureData(ventureSlug)
+          const ventureData = formatDataSnapshot(ventureSnapshot)
+
           const sprintMode = mode ?? '48h'
 
           // ══════════════════════════════════════════════════════════════
@@ -126,7 +288,7 @@ export async function POST(request: Request): Promise<Response> {
               maxTokens: 200,
               messages: [{
                 role: 'user',
-                content: `Venture: ${venture}. RAPID SPRINT — 1 hour window.
+                content: `${ventureData}\n\nVenture: ${venture}. RAPID SPRINT — 1 hour window.
 
 You are Kai. One trend is spiking RIGHT NOW. Give:
 
@@ -185,7 +347,7 @@ Tactic: [tactic name]`,
               maxTokens: 300,
               messages: [{
                 role: 'user',
-                content: `Venture: ${venture}. RAPID SPRINT — 6 hour window.
+                content: `${ventureData}\n\nVenture: ${venture}. RAPID SPRINT — 6 hour window.
 
 You are Kai. Be fast and decisive:
 
@@ -279,7 +441,7 @@ Tactic: [tactic name]`,
               maxTokens: 500,
               messages: [{
                 role: 'user',
-                content: `Venture: ${venture}. You are Kai opening the Growth Sprint Room.
+                content: `${ventureData}\n\nVenture: ${venture}. You are Kai opening the Growth Sprint Room.
 
 Deliver the sprint opening brief in this EXACT format (no deviation):
 

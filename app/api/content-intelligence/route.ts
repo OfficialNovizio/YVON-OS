@@ -60,13 +60,10 @@ function getVentureDesc(ventureId: string): string {
 // ─── POST ───────────────────────────────────────────────────────────────────────
 
 export async function POST(request: Request): Promise<Response> {
+  // Auth: accept either CRON_SECRET (for cron) or cookie-based venture context (for UI)
   const cronSecret = request.headers.get('authorization')?.replace('Bearer ', '')
-  if (!await getSecret('CRON_SECRET')) {
-    return Response.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
-  }
-  if (cronSecret !== await getSecret('CRON_SECRET')) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const storedSecret = await getSecret('CRON_SECRET')
+  const isCron = storedSecret && cronSecret === storedSecret
 
   const cookieStore = await cookies()
   const slug = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'

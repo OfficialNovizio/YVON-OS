@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useVentureSlug } from '@/lib/use-venture-slug'
+import KaisRead from '@/app/components/KaisRead'
 import type { ContentCalendarEntry, CalendarContentType, CalendarPlatform, CalendarStatus, ContentPitch, IntelligenceBatch } from '@/lib/types'
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -46,47 +48,10 @@ const REACH_BENCH: Record<string, Record<string, number>> = {
 const CONTENT_TYPES: CalendarContentType[] = ['Reel', 'Short', 'Carousel', 'Post', 'Article', 'Static']
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-const SUGGESTIONS = [
-  {
-    brand: 'NOV', brandColor: '#0066cc',
-    icon: 'play_circle',
-    priority: 'High Priority',
-    title: 'Process Transparency Reel',
-    desc: 'Show linen production from raw material to finished garment. Behind-the-scenes supplier footage. Founder narration.',
-    why: '3.2× revenue multiplier. Highest-converting topic.',
-    platform: 'TT' as CalendarPlatform, contentType: 'Reel' as CalendarContentType,
-    agent: 'Brief Atlas',
-    agentRoute: '/screens/war-room?q=Brief+Atlas%3A+Create+a+Process+Transparency+Reel+for+Novizio+showing+linen+production',
-  },
-  {
-    brand: 'NOV', brandColor: '#0066cc',
-    icon: 'photo_library',
-    priority: 'Medium Priority',
-    title: 'Founder Factory Visit Carousel',
-    desc: 'Behind-the-scenes at Lisbon supplier. 8-slide carousel with founder narration. Authenticity-first format.',
-    why: '2.8× revenue multiplier. Trust signal for Gen-Z buyers.',
-    platform: 'IG' as CalendarPlatform, contentType: 'Carousel' as CalendarContentType,
-    agent: 'Brief Atlas',
-    agentRoute: '/screens/war-room?q=Brief+Atlas%3A+Create+a+Founder+Factory+Visit+carousel+for+Novizio',
-  },
-  {
-    brand: 'HRB', brandColor: 'rgba(255,255,255,0.55)',
-    icon: 'savings',
-    priority: 'High Priority',
-    title: '£50 Saved Automatically',
-    desc: 'Real user story format. Show the Hourbour app saving money in real time. Relatable, sub-60s format.',
-    why: '#1 trending keyword: "best app for saving money UK". Neobank comparison wave.',
-    platform: 'TT' as CalendarPlatform, contentType: 'Short' as CalendarContentType,
-    agent: 'Brief Lena',
-    agentRoute: '/screens/war-room?q=Brief+Lena%3A+Write+copy+for+a+TikTok+about+saving+%C2%A350+automatically+using+Hourbour',
-  },
-]
+// ── Suggestions are now generated live by the Content Intelligence engine.
+// Click "Generate Suggestions" to run the full Kai→Blue Ocean→Lena→Kahneman pipeline.
 
-const TOP_POSTS = [
-  { n: '01', brand: 'NOV', platform: 'TT', title: 'How our linen is made — factory tour', views: '28.4K', eng: '9.1%', type: 'Reel', positive: true, assetUrl: null, postUrl: 'https://tiktok.com' },
-  { n: '02', brand: 'NOV', platform: 'IG', title: 'Supplier factory visit — Lisbon', views: '14.2K', eng: '6.8%', type: 'Carousel', positive: true, assetUrl: null, postUrl: 'https://instagram.com' },
-  { n: '03', brand: 'HRB', platform: 'TT', title: 'I saved £50 automatically this week', views: '8.6K', eng: '4.2%', type: 'Short', positive: false, assetUrl: null, postUrl: 'https://tiktok.com' },
-]
+
 
 const PLATFORM_NAMES: Record<string, string> = { TT: 'TikTok', IG: 'Instagram', LI: 'LinkedIn', YT: 'YouTube' }
 
@@ -100,123 +65,11 @@ const SIGNAL_TYPE_META: Record<string, { label: string; color: string; icon: str
 
 const VISUAL_FORMATS = ['Reel', 'Short', 'Carousel', 'Static']
 
-const DEMO_PITCHES: ContentPitch[] = [
-  {
-    id: 'demo-1', ventureId: 'novizio', batchId: null, rank: 1,
-    platform: 'TikTok', format: 'Reel',
-    category: 'competitor_gap',
-    intelligenceSource: 'Zara, H&M, ASOS all post 12–15 reels/week — zero factory transparency content. Gap is unclaimed in the entire 8K–50K tier.',
-    ourMove: 'Film our Lisbon linen supplier. Founder narration. No cuts. Real time. 90 seconds. Show the hands, the machines, the fabric.',
-    hookA: 'You\'ve seen the look — now see who folds the sleeves before it lands on your doorstep.',
-    hookB: 'Most brands hide this. We\'re showing you exactly where your clothes come from.',
-    leverPrimary: 'L6 — Curiosity Gap',
-    psychologyScore: 87,
-    system1ScoreA: 82,
-    runRecommendation: 'A',
-    marketEffect: 'Shifts perception from "manufactured brand" to "maker with a heartbeat" — Novizio becomes the relatable premium choice.',
-    vsCurrent: 'Product shots avg 1.1% eng rate → transparency reels target 4.2% (our own top-3 posts are all process content at 2× avg)',
-    viralMechanism: 'L6 Curiosity Gap — "brands hide this" creates pattern interrupt that demands completion; 38% of viewers share to Stories',
-    fullProposal: {
-      signalType: 'GAP_OPPORTUNITY',
-      growthHypothesis: 'IF we post a 90s linen production reel THEN saves rate increases 40% BECAUSE authenticity triggers purchase intent in the 18–34 segment before competitors respond',
-      scoreBreakdown: { E: 82, R: 74, G: 91, B: 88, T: 65 },
-      cseScore: 80,
-    },
-    status: 'pending', generatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'demo-2', ventureId: 'novizio', batchId: null, rank: 2,
-    platform: 'Instagram', format: 'Carousel',
-    category: 'unclaimed_territory',
-    intelligenceSource: 'Our own data: behind-the-scenes posts avg 6.1% eng vs 2.8% for product shots. 3 of our top 5 posts are supplier/process content.',
-    ourMove: 'Trace a single linen shirt: raw flax → weaving → dyeing → cutting → sewing → inspection → delivery. One supplier\'s hands in every frame. 8 slides.',
-    hookA: '8 slides. 1 garment. The story your clothes can\'t tell you.',
-    hookB: 'From the Lisbon factory floor to your wardrobe — told in 8 slides.',
-    leverPrimary: 'L3 — Story Arc + Social Proof',
-    psychologyScore: 79,
-    system1ScoreA: 76,
-    runRecommendation: 'A',
-    marketEffect: 'Builds loyalty with sustainability-conscious buyers — the cohort most likely to purchase full-price and refer 2+ friends.',
-    vsCurrent: 'Standard product carousels avg 2.8% eng → supplier story format targets 6.1% (validated by our own top-5 post pattern)',
-    viralMechanism: 'L3 Social Proof — real supply chain data activates authenticity bias; saves spikes when content uses a number anchor ("8 slides")',
-    fullProposal: {
-      signalType: 'PROVEN_FORMAT',
-      growthHypothesis: 'IF we launch a supplier story carousel THEN saves rate triples vs product carousels BECAUSE authenticity content earns Stories shares at 3× the rate of product posts',
-      scoreBreakdown: { E: 90, R: 68, G: 75, B: 92, T: 58 },
-      cseScore: 77,
-    },
-    status: 'pending', generatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'demo-3', ventureId: 'novizio', batchId: null, rank: 3,
-    platform: 'TikTok', format: 'Short',
-    category: 'blue_ocean',
-    intelligenceSource: '"sustainable fashion UK" trending +340% past 7 days. Zero brand in the 8K–50K tier has posted in this window — giant brands take 72h to respond.',
-    ourMove: 'Sub-45s founder-to-camera educational short. Debunk the top 3 greenwashing claims using real Novizio production numbers. No script. Calm and confident.',
-    hookA: 'This is what sustainable fashion actually looks like — not what brands want you to think.',
-    hookB: 'I checked 12 "eco-friendly" brands so you don\'t have to. Here\'s what I found.',
-    leverPrimary: 'L8 — Contrarian Framing',
-    psychologyScore: 84,
-    system1ScoreA: 88,
-    runRecommendation: 'A',
-    marketEffect: 'Positions Novizio as the category educator — the brand that tells the truth when others hide behind vague sustainability claims.',
-    vsCurrent: 'Standard brand content avg 5K views → trend-surfing educational shorts target 30K+ (FYP algorithm surfaces topical content first in the 72h window)',
-    viralMechanism: 'L8 Contrarian — "not what brands want you to think" triggers cognitive dissonance; viewers tag brands they bought from',
-    fullProposal: {
-      signalType: 'SEO_WINDOW',
-      growthHypothesis: 'IF we post within 48h THEN FYP reach exceeds 25K views BECAUSE the search term peaks before major brand responses kick in at the 72h mark',
-      scoreBreakdown: { E: 75, R: 95, G: 82, B: 85, T: 88 },
-      cseScore: 85,
-    },
-    status: 'pending', generatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'demo-4', ventureId: 'novizio', batchId: null, rank: 4,
-    platform: 'Instagram', format: 'Reel',
-    category: 'competitor_gap',
-    intelligenceSource: 'Zara "sustainability" campaign detected (brand monitoring alert). First-mover counter-narrative window: 5 days before topic saturates.',
-    ourMove: 'Response reel: analyse Zara\'s campaign claims vs Novizio\'s actual production data. Founder on camera. Calm, factual, 60 seconds. Zero anger, all receipts.',
-    hookA: 'Zara just launched a "sustainable" collection. Here\'s why we\'re not impressed.',
-    hookB: 'A big brand made a bold sustainability claim. Let\'s look at the actual numbers.',
-    leverPrimary: 'L1 — Competitive Contrast (Reactive)',
-    psychologyScore: 91,
-    system1ScoreA: 89,
-    runRecommendation: 'A',
-    marketEffect: 'Locks in first-mover advantage on the "honest premium fashion" positioning before Zara\'s campaign saturates the audience\'s feed.',
-    vsCurrent: 'Baseline brand content avg 5K views → reactive competitor response content targets 40K+ (competitor news events amplify organic reach 8× in fashion)',
-    viralMechanism: 'L1 Competitive Contrast — competitor news creates natural sharing trigger; viewers tag friends who bought from the competitor',
-    fullProposal: {
-      signalType: 'URGENCY_WINDOW',
-      growthHypothesis: 'IF we post this within 5 days THEN share rate is 3× our baseline BECAUSE competitor campaign news acts as a cultural Schelling point — audiences amplify contrast stories',
-      scoreBreakdown: { E: 85, R: 88, G: 95, B: 86, T: 92 },
-      cseScore: 89,
-    },
-    status: 'pending', generatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'demo-5', ventureId: 'hourbour', batchId: null, rank: 5,
-    platform: 'LinkedIn', format: 'Article',
-    category: 'blue_ocean',
-    intelligenceSource: 'Hourbour funnel: Awareness 48K → Interest 9.6K (80% drop). Root cause: value prop not understood in first 5 seconds. LinkedIn fintech content is dominated by product announcements — no brand owns "honest money psychology" format.',
-    ourMove: 'Long-form LinkedIn article: the psychology of why people set up savings apps and never use them. Feature 3 real Hourbour user moments. End with product CTA.',
-    hookA: 'The reason 80% of people abandon their savings app on day one (and how Hourbour fixes it).',
-    hookB: 'You set up a savings app. You used it for 3 days. Here\'s the actual psychology of why you stopped.',
-    leverPrimary: 'L2 — Problem–Solution Framing',
-    psychologyScore: 76,
-    system1ScoreA: 71,
-    runRecommendation: 'A',
-    marketEffect: 'Establishes Hourbour as the "honest fintech" voice on LinkedIn — differentiates from Monzo/Revolut\'s product-first content.',
-    vsCurrent: 'No LinkedIn content strategy → 3.8% avg eng benchmark in fintech tier; article format outperforms standard posts 2.8× on LinkedIn',
-    viralMechanism: 'L2 Problem-Solution — "80% abandon" statistic creates self-recognition trigger; financially-aware audience tags colleagues and partners',
-    fullProposal: {
-      signalType: 'FUNNEL_FIX',
-      growthHypothesis: 'IF we publish this article THEN LinkedIn-sourced signups increase 25% in 14 days BECAUSE B2B-adjacent 28–40 audience is underserved by fintech content on LinkedIn',
-      scoreBreakdown: { E: 72, R: 65, G: 78, B: 90, T: 70 },
-      cseScore: 74,
-    },
-    status: 'pending', generatedAt: new Date().toISOString(),
-  },
-]
+// No fabricated data. No demo reports. What you see is real.
+// Pitches are generated live by the Content Intelligence engine or Growth Sprint.
+const DEMO_PITCHES: ContentPitch[] = []
+
+
 
 const PASS_REASONS: { value: string; label: string; desc: string }[] = [
   { value: 'already_done',  label: 'Already done',   desc: "We've covered this recently" },
@@ -480,6 +333,7 @@ function PostModal({ mode, initial, saving, onSave, onClose }: {
 
 export default function ContentTab() {
   const router = useRouter();
+  const ventureSlug = useVentureSlug();
 
   const [entries, setEntries]             = useState<ContentCalendarEntry[]>([]);
   const [missedEntries, setMissedEntries] = useState<ContentCalendarEntry[]>([]);
@@ -731,8 +585,11 @@ export default function ContentTab() {
   }
   async function handleVerify() {
     setVerifying(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setVerifying(false); setVerifyDone(true);
+    try {
+      const res = await fetch('/api/calendar-verify', { method: 'POST' });
+      if (res.ok) setVerifyDone(true);
+    } catch { /* non-fatal */ }
+    setVerifying(false);
   }
 
   const today      = new Date();
@@ -751,6 +608,7 @@ export default function ContentTab() {
   const missed    = missedEntries.length;
   const autoCount = autoQueue.length;
   const execPct   = planned > 0 ? Math.round((published / planned) * 100) : 0;
+  const monthName = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   return (
     <div className="space-y-8">
@@ -760,7 +618,7 @@ export default function ContentTab() {
           <div>
             <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: 0 }}>Content Health</p>
             <p style={{ fontSize: 11, color: I1c, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-              May 2026 · calendar execution rate
+              {monthName} · calendar execution rate
             </p>
           </div>
           <button
@@ -773,10 +631,10 @@ export default function ContentTab() {
         </div>
         <div className="grid grid-cols-4 gap-4 mb-5">
           {[
-            { label: 'Posts Planned', value: String(planned || 16), color: I1 },
-            { label: 'Published',     value: String(published || 11), color: '#10b981' },
-            { label: 'Missed',        value: String(missed || 3),     color: '#f87171' },
-            { label: 'Auto-Queued',   value: String(autoCount || 2),  color: '#34c759' },
+            { label: 'Posts Planned', value: String(planned), color: I1 },
+            { label: 'Published',     value: String(published), color: '#10b981' },
+            { label: 'Missed',        value: String(missed),     color: '#f87171' },
+            { label: 'Auto-Queued',   value: String(autoCount),  color: '#34c759' },
           ].map(s => (
             <div key={s.label} className="text-center">
               <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 32, fontWeight: 700, letterSpacing: '-0.04em', color: s.color, lineHeight: 1 }}>{s.value}</p>
@@ -787,13 +645,16 @@ export default function ContentTab() {
         <div className="space-y-1.5">
           <div className="flex justify-between text-[11px]" style={{ color: I1c, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
             <span>Execution rate</span>
-            <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: '#10b981', fontWeight: 700 }}>{execPct || 69}%</span>
+            <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', color: '#10b981', fontWeight: 700 }}>{execPct}%</span>
           </div>
           <div className="w-full h-2 rounded-full" style={{ background: L1 }}>
-            <div className="h-2 rounded-full transition-all duration-700" style={{ width: `${execPct || 69}%`, background: 'linear-gradient(90deg, #0066cc, #10b981)' }} />
+            <div className="h-2 rounded-full transition-all duration-700" style={{ width: `${execPct}%`, background: 'linear-gradient(90deg, #0066cc, #10b981)' }} />
           </div>
         </div>
       </section>
+
+      {/* ── Kai's Read — live intelligence ────────────────────────────── */}
+      <KaisRead ventureSlug={ventureSlug} variant="dark" />
 
       {/* ── Weight Proposal Panel — only shown when self-learning proposes a weight change ── */}
       {weightProposals.length > 0 && weightProposals.map(proposal => (
@@ -1251,52 +1112,15 @@ export default function ContentTab() {
       {/* ── 3. Top Posts This Month — V1 Clear Ice ───────────────────────────── */}
       <section>
         <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I1d, margin: '0 0 20px' }}>Top Posts This Month</p>
-        <div className="ana-glass overflow-hidden">
-          {TOP_POSTS.map((p, i) => (
-            <div key={p.n} className="flex items-center justify-between px-6 py-5 hover:bg-white/[0.02] transition-colors"
-              style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
-              <div className="flex items-center gap-5">
-                <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 20, fontWeight: 300, color: 'rgba(0,0,0,0.30)', width: 28 }}>{p.n}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded"
-                    style={{ background: 'rgba(0,102,204,0.20)', color: '#5ba8ff', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.brand}</span>
-                  {(() => { const cfg = PLATFORM_CFG[p.platform as CalendarPlatform]; return <span className="inline-flex items-center justify-center w-5 h-5 rounded text-[8px] font-bold text-white" style={cfg.bgStyle}>{cfg.label}</span>; })()}
-                </div>
-                <div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: 'rgba(0,0,0,0.90)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.title}</h3>
-                  <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>{p.type} · May 2026</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="text-right">
-                  <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 16, fontWeight: 700, color: p.positive ? '#10b981' : '#eef0f8' }}>{p.views}</p>
-                  <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>views</p>
-                </div>
-                <div className="text-right">
-                  <p style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 16, fontWeight: 700, color: '#10b981' }}>{p.eng}</p>
-                  <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.45)', fontFamily: 'InstrumentSans, Inter, sans-serif' }}>eng rate</p>
-                </div>
-                {p.assetUrl ? (
-                  <button
-                    style={{ fontSize: 12, fontWeight: 700, color: '#0066cc', background: 'rgba(0,102,204,0.08)', border: '1px solid rgba(0,102,204,0.18)', padding: '7px 14px', borderRadius: 10, cursor: 'pointer', whiteSpace: 'nowrap' }}
-                    className="active:scale-95 hover:opacity-80 transition-opacity">
-                    View
-                  </button>
-                ) : (
-                  <a href={p.postUrl} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 12, fontWeight: 700, color: '#0066cc', background: 'rgba(0,102,204,0.08)', border: '1px solid rgba(0,102,204,0.18)', padding: '7px 14px', borderRadius: 10, cursor: 'pointer', whiteSpace: 'nowrap', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
-                    className="active:scale-95 hover:opacity-80 transition-opacity">
-                    View on {PLATFORM_NAMES[p.platform] ?? p.platform}
-                    <span className="material-symbols-outlined" style={{ fontSize: 12 }}>open_in_new</span>
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="ana-glass p-12 flex flex-col items-center gap-4 text-center">
+          <span className="material-symbols-outlined" style={{ fontSize: 36, color: I1d }}>analytics</span>
+          <p style={{ fontSize: 14, fontWeight: 600, color: I1, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+            No post performance data yet
+          </p>
+          <p style={{ fontSize: 12, color: I1d, maxWidth: 360, lineHeight: 1.6, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
+            Connect Instagram and TikTok via Settings → Social Accounts. Post performance data populates automatically from Apify scrapers.
+          </p>
         </div>
-        <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.35)', marginTop: 10, fontFamily: 'InstrumentSans, Inter, sans-serif' }}>
-          Pattern: transparency &amp; behind-the-scenes content outperforms product posts 2:1. Double down.
-        </p>
       </section>
 
       {/* ── 4. Platform Priority — V1 / Format Conv — V4 ──────────────────────── */}
@@ -1319,22 +1143,14 @@ export default function ContentTab() {
         </div>
         <div>
           <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: I4d, margin: '0 0 16px' }}>Format Conversion Rate</p>
-          <div className="ana-glass-v4 p-5 flex flex-col gap-5">
-            {[
-              { label: 'Short-form Video (TikTok)', pct: '9.1%', width: '91%', color: '#10b981' },
-              { label: 'Carousel (Instagram)',       pct: '6.8%', width: '68%', color: '#0066cc' },
-              { label: 'Text Posts (LinkedIn)',      pct: '4.1%', width: '41%', color: I4b },
-            ].map(f => (
-              <div key={f.label}>
-                <div className="flex justify-between mb-1.5">
-                  <span style={{ fontSize: 12, color: I4b }}>{f.label}</span>
-                  <span style={{ fontFamily: 'ui-monospace, "Geist Mono", monospace', fontSize: 12, fontWeight: 700, color: f.color }}>{f.pct}</span>
-                </div>
-                <div className="w-full h-1.5 rounded-full" style={{ background: L4 }}>
-                  <div className="h-1.5 rounded-full" style={{ width: f.width, background: f.color }} />
-                </div>
-              </div>
-            ))}
+          <div className="ana-glass-v4 p-12 flex flex-col items-center gap-4 text-center">
+            <span className="material-symbols-outlined" style={{ fontSize: 36, color: I4d }}>conversion_path</span>
+            <p style={{ fontSize: 14, fontWeight: 600, color: I4 }}>
+              No conversion data yet
+            </p>
+            <p style={{ fontSize: 12, color: I4d, maxWidth: 360, lineHeight: 1.6 }}>
+              Format conversion rates populate after content goes live and the Content Performance engine measures outcomes (7-day lag).
+            </p>
           </div>
         </div>
       </section>

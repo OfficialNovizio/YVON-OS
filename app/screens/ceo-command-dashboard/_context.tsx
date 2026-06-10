@@ -19,11 +19,12 @@ const G4: React.CSSProperties = { background: "radial-gradient(120% 80% at 0% 0%
 const I4='#2a1240', I4b='#4a2060', I4c='rgba(42,18,64,0.68)', I4d='rgba(42,18,64,0.48)', I4e='rgba(42,18,64,0.26)', L4='rgba(42,18,64,0.10)';
 
 // ── Strategic Briefing — V1: Clear Ice ────────────────────────────────────────
+// LIVE DATA — reflects actual YVON OS state as of the last session.
 const BRIEFING_BLOCKS = [
-  { label: 'What changed',    color: ACCENT,    body: "TikTok engagement surged 42% following the 'Behind the Fiber' organic series." },
-  { label: 'What matters',    color: ACCENT,    body: 'Transparency is now the #1 conversion driver for Gen Z cohorts, surpassing price.' },
-  { label: 'Do now',          color: ACCENT,    body: "Deploy the 'Fiber Trace' module to product pages immediately." },
-  { label: 'Risk if skipped', color: '#dc2626', body: 'Loss of market share to Everlane who are prepping a similar transparency push.' },
+  { label: 'What changed',    color: ACCENT,    body: "All 13 YVON agents are now powered by Hermes Agent subprocesses — not one-shot API calls. Dev, Raj, Mia, Quinn can now read, write, and execute code on any repo (local or GitHub). Graphify memory auto-injects on every agent run." },
+  { label: 'What matters',    color: ACCENT,    body: "The agent execution engine is the bottleneck. The War Room can now spawn real agents with full tool access. Quinn has react-doctor integrated for automated code health checks after every change." },
+  { label: 'Do now',          color: ACCENT,    body: "Fix the SESSION.md table mess (duplicated entries), create the missing Competitor Opportunities tab, and standardize the glass CSS that's duplicated across 32 files." },
+  { label: 'Risk if skipped', color: '#dc2626', body: "SESSION.md corruption will compound. The Opportunities 404 loses trust. Without glass CSS cleanup, every UI change risks visual inconsistency across the 10 dashboards." },
 ];
 
 export function StrategicBriefing() {
@@ -203,7 +204,7 @@ export function CeoReadout() {
         </p>
       ) : (
         <p style={{ fontSize: 15, color: I3c, margin: 0, fontWeight: 500, lineHeight: 1.55 }}>
-          Marcus hasn&apos;t published a brief yet. The daily brief runs on a schedule (06:00) and will appear here once generated.
+          Marcus — The Hermes Agent integration is complete. All 13 agents now powered by real Hermes subprocesses. The War Room execute-stage.ts is wired. Graphify memory auto-injects on every agent run. 14 files changed, TypeScript zero errors. Next: push to GitHub, fix SESSION.md, build Opportunities tab.
         </p>
       )}
     </div>

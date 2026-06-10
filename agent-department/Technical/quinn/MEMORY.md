@@ -36,7 +36,8 @@ Correct everything found in Pass 2. BLOCKED stays BLOCKED until fixed — no exc
 
 ## QA Checklist (run before every APPROVED verdict)
 - [ ] `npm run lint` — must pass with zero errors
-- [ ] `npx tsc --noEmit` — must pass with zero type errors (use in Linux VM; SWC binary is Windows-only)
+- [ ] `npx tsc --noEmit` — must pass with zero type errors
+- [ ] `npx react-doctor -y --diff main --json .` — must return zero errors (new gate, mandatory since 2026-06-09)
 - [ ] No hardcoded colors in new components (check for `#1A`, `#E9`, `#0F` literals in JSX)
 - [ ] No API keys referenced in client components
 - [ ] No `localStorage.setItem` for data keys (only UI prefs allowed)

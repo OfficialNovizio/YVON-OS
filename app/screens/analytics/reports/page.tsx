@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import AnalyticsSubNav from '../_subnav';
 import TimelineToggle from '@/app/components/TimelineToggle';
 import { useVentureSlug } from '@/lib/use-venture-slug';
@@ -31,109 +32,13 @@ interface KaiReport {
   keyMetrics: { label: string; value: string; delta: string; positive: boolean }[];
 }
 
-// ─── Seed data (shown until user generates their first real report) ───────────
+// No seed data — the dashboard never fabricates reports.
+// Reports come from two sources:
+// 1. Supabase kai_reports table (populated by Kai's daily cron at 06:00 UTC)
+// 2. Manual generation via the Generate button (spawns Kai Hermes agent)
+// Until either runs, the Reports tab shows an honest empty state.
 
-const SEED_REPORTS: KaiReport[] = [
-  {
-    id: 'kai-2026-05-13',
-    generatedAt: '2026-05-13T09:14:00Z',
-    venture: 'All Ventures',
-    period: 'May 6–13, 2026',
-    summary: 'Novizio TikTok surged +31% on process-transparency content. Hourbour email funnel conversion fell 8pts — action required this week.',
-    situation: {
-      title: 'Situation',
-      body:
-        'Both ventures are in their highest-activity period of Q2. Novizio generated 3.8× ROAS on TikTok paid spend, driven by the "factory transparency" creative set launched May 8. Instagram engagement is healthy at 6.3% but reach has plateaued since April 22. Hourbour email funnel conversion dropped from 18% to 10% following the May 7 onboarding copy refresh — a regression, not a trend. Overall brand health index sits at 82/100, up 4pts from the prior 7-day window.',
-    },
-    diagnosis: {
-      title: 'Diagnosis',
-      body:
-        "Novizio's TikTok spike is causally linked to one creative format: factory-floor process content. The effect is short-window — typical half-life is 10–14 days before replication dilutes novelty. The Instagram reach plateau is a distribution issue, not a content quality issue; hashtag strategy is stale (avg tag age: 112 days). Hourbour's email conversion regression traces directly to the May 7 copy change — the new headline buries the primary value proposition below the fold on mobile (68% of opens). CAC on paid is holding at $8.20 — below the $12 target, which is healthy, but Hourbour's acquisition spend is 34% under-paced against the Q2 plan.",
-    },
-    action: {
-      title: 'Action',
-      body:
-        '1. Brief Atlas on 2 more factory-floor TikTok concepts this week while the format has tail lift. 2. Refresh Novizio Instagram hashtag set — target 60% niche (<500K posts), 30% mid, 10% broad. 3. Revert Hourbour email headline to v1 copy (or A/B test v3) — expected to recover 5–6pts conversion within one send cycle. 4. Increase Hourbour paid spend by +$800/week to close the Q2 pacing gap before June cutoff.',
-    },
-    prescription: {
-      title: 'Kai Prescription',
-      body:
-        "This week's highest-leverage action is the Hourbour email headline fix — it is the only change that is a pure regression fix with near-zero execution risk and recovers measurable revenue within 48 hours. TikTok brief is second priority; delay past 14 days and the format window closes. Instagram hashtag refresh is a low-cost background task — assign to Lena alongside next caption batch. The Hourbour spend increase should be approved by Stark before execution.",
-    },
-    keyMetrics: [
-      { label: 'ROAS', value: '3.8×', delta: '+0.4× vs prior week', positive: true },
-      { label: 'CAC', value: '$8.20', delta: '−$1.10 vs target', positive: true },
-      { label: 'Brand Health', value: '82/100', delta: '+4pts vs last week', positive: true },
-      { label: 'HRB Email CVR', value: '10%', delta: '−8pts regression', positive: false },
-    ],
-  },
-  {
-    id: 'kai-2026-05-06',
-    generatedAt: '2026-05-06T09:08:00Z',
-    venture: 'Novizio',
-    period: 'Apr 29–May 6, 2026',
-    summary: 'ROAS steady at 3.4×. Instagram reach down 11% week-over-week. TikTok CAC improved to $4.20 — best channel by margin.',
-    situation: {
-      title: 'Situation',
-      body:
-        "Novizio Q2 opening week performance came in at 3.4× ROAS — on target but not breakthrough. TikTok is the standout channel: $4.20 CAC, 22% engagement rate on top post. Instagram reach fell 11% WoW, likely tied to the algorithm's shift toward Reels-first distribution. Content calendar has 3 posts missed this week — all scheduled IG carousels.",
-    },
-    diagnosis: {
-      title: 'Diagnosis',
-      body:
-        "The 3 missed IG posts represent a production gap, not a strategy gap. Carousel production time is currently 4.5 hours per post; target is 2.5 hours. TikTok's performance validates the process-transparency positioning. The ROAS plateau at 3.4× is likely a creative fatigue signal — top ad set has been running 22 days with no refresh.",
-    },
-    action: {
-      title: 'Action',
-      body:
-        '1. Refresh top TikTok ad set — brief Pixel on 3 new variants. 2. Address carousel production bottleneck — evaluate Canva automation template with Atlas. 3. Push missed IG posts as a Reels format instead of static carousels.',
-    },
-    prescription: {
-      title: 'Kai Prescription',
-      body:
-        "Highest-leverage action: ad creative refresh. Running a 22-day-old creative on a $X00/day budget is burning margin. Even a 10% ROAS improvement on refreshed creative returns more than any other action this week. Production bottleneck is a Week 2 problem — do not let it block this week's paid performance fix.",
-    },
-    keyMetrics: [
-      { label: 'ROAS', value: '3.4×', delta: 'Flat vs prior week', positive: true },
-      { label: 'TikTok CAC', value: '$4.20', delta: '−$0.30 vs prior', positive: true },
-      { label: 'IG Reach', value: '−11%', delta: 'WoW decline', positive: false },
-      { label: 'Missed Posts', value: '3', delta: 'Production gap', positive: false },
-    ],
-  },
-  {
-    id: 'kai-2026-04-29',
-    generatedAt: '2026-04-29T09:22:00Z',
-    venture: 'Hourbour',
-    period: 'Apr 22–29, 2026',
-    summary: 'Hourbour MRR +12% MoM. Trial-to-paid conversion at 22% — above SaaS median. CAC by paid channel needs audit.',
-    situation: {
-      title: 'Situation',
-      body:
-        'Hourbour closed April with MRR growth of +12% MoM, above the 8% Q2 target. Trial-to-paid conversion improved to 22%, driven by the new onboarding email sequence launched April 14. Paid social CAC increased from $18 to $24 over 30 days — a trend that requires intervention before May budget commitment.',
-    },
-    diagnosis: {
-      title: 'Diagnosis',
-      body:
-        'The CAC increase on paid is concentrated in the Meta prospecting campaign. Click-to-trial rate is stable at 3.1%, but trial activation (completing the first savings rule) dropped from 54% to 41%. This suggests the ad is attracting a lower-intent audience segment — likely due to the broadened age targeting applied April 20.',
-    },
-    action: {
-      title: 'Action',
-      body:
-        '1. Revert Meta targeting to 25–38 demographic (pre-April-20 setting). 2. Add "activate your first rule" push notification at T+2 hours post-signup. 3. Review May budget split — consider shifting 20% of Meta budget to TikTok test.',
-    },
-    prescription: {
-      title: 'Kai Prescription',
-      body:
-        'Reverting the targeting is a 5-minute change with a 2-week payback window — do it first. The push notification requires dev effort; queue it as a Week 2 sprint item. MRR momentum is real — do not let CAC creep erode the growth story before Series A conversations.',
-    },
-    keyMetrics: [
-      { label: 'MRR Growth', value: '+12%', delta: 'vs 8% target', positive: true },
-      { label: 'Trial→Paid', value: '22%', delta: 'Above SaaS median', positive: true },
-      { label: 'Meta CAC', value: '$24', delta: '+$6 vs 30d prior', positive: false },
-      { label: 'Activation Rate', value: '41%', delta: '−13pts vs prior', positive: false },
-    ],
-  },
-];
+const SEED_REPORTS: KaiReport[] = []
 
 const STORAGE_KEY = 'yvon_kai_reports';
 
@@ -226,6 +131,7 @@ function HistoryCard({
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function AnalyticsReportsPage() {
+  const router = useRouter();
   const ventureSlug = useVentureSlug();
   const [reports, setReports] = useState<KaiReport[]>([]);
   const [activeId, setActiveId] = useState<string>('');
@@ -291,7 +197,86 @@ export default function AnalyticsReportsPage() {
       .finally(() => setGenerating(false));
   }
 
-  if (!activeReport) return null;
+  if (!activeReport) {
+    return (
+      <main className="min-h-screen pb-24">
+        <AnalyticsSubNav />
+        <div className="px-6 max-w-[1200px] 2xl:max-w-[min(92vw,1700px)] mx-auto mt-[18px]">
+          {/* Header row — keep the Generate button accessible */}
+          <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
+            <div>
+              <h2 className="text-[22px] font-bold mb-1" style={{ letterSpacing: '-0.024em', color: '#0c2c52' }}>
+                Intelligence Reports
+              </h2>
+              <p className="text-[13px]" style={{ color: I1c }}>
+                Kai analyses all venture signals and produces a prioritised action brief.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <TimelineToggle options={['7D','30D','90D']} value={reportPeriod} onChange={setReportPeriod} />
+              <button
+                onClick={handleGenerate}
+                disabled={generating}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-200 disabled:opacity-50"
+                style={{
+                  background: generating ? 'rgba(0,102,204,0.3)' : 'rgba(0,102,204,0.85)',
+                  color: '#fff',
+                  border: '1px solid rgba(0,102,204,0.6)',
+                  boxShadow: generating ? 'none' : '0 0 24px -4px rgba(0,102,204,0.55)',
+                  cursor: generating ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {generating ? (
+                  <><span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" style={{ display: 'inline-block' }} /> Generating…</>
+                ) : (
+                  <><span className="material-symbols-outlined text-[16px]">auto_awesome</span> Generate Kai Report</>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Empty state — honest, clear, actionable */}
+          <div className="flex flex-col items-center justify-center py-20 text-center gap-5">
+            <span className="material-symbols-outlined text-[56px]" style={{ color: 'rgba(0,0,0,0.10)' }}>description</span>
+            <h2 style={{ fontSize: 22, fontWeight: 700, color: 'rgba(0,0,0,0.55)', margin: 0 }}>
+              No Reports Yet
+            </h2>
+            <p className="max-w-lg" style={{ fontSize: 14, color: 'rgba(0,0,0,0.45)', lineHeight: 1.65 }}>
+              Reports are generated by <strong>Kai</strong>, the YVON analyst agent. They come from two sources:
+            </p>
+            <div className="flex flex-col gap-3 text-left max-w-md" style={{ fontSize: 12, color: 'rgba(0,0,0,0.5)', lineHeight: 1.6 }}>
+              <div className="flex items-start gap-3 p-3 rounded-xl" style={{ background: 'rgba(0,102,204,0.06)', border: '1px solid rgba(0,102,204,0.12)' }}>
+                <span className="material-symbols-outlined text-[16px] shrink-0 mt-0.5" style={{ color: '#0066cc' }}>schedule</span>
+                <div>
+                  <strong style={{ color: '#0c2c52' }}>Daily cron — 06:00 UTC</strong>
+                  <p style={{ margin: '2px 0 0' }}>Kai automatically pulls analytics data, detects anomalies, and writes a report every morning. First report arrives tomorrow.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-xl" style={{ background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.08)' }}>
+                <span className="material-symbols-outlined text-[16px] shrink-0 mt-0.5" style={{ color: 'rgba(0,0,0,0.4)' }}>touch_app</span>
+                <div>
+                  <strong style={{ color: '#0c2c52' }}>Manual generation</strong>
+                  <p style={{ margin: '2px 0 0' }}>Click <strong>Generate Kai Report</strong> above to spawn Kai now. Requires social accounts to be connected with data.</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-3">
+              <button
+                onClick={() => router.push('/screens/analytics/social-media')}
+                className="px-5 py-2.5 rounded-full text-[13px] font-semibold active:scale-95"
+                style={{ background: 'rgba(0,0,0,0.06)', color: 'rgba(0,0,0,0.6)' }}
+              >
+                Connect Social Accounts
+              </button>
+            </div>
+            <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.3)', marginTop: 8 }}>
+              No fabricated data. No demo reports. What you see is real.
+            </p>
+          </div>
+        </div>
+      </main>
+    )
+  }
 
   const formattedDate = new Date(activeReport.generatedAt).toLocaleDateString('en-GB', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',

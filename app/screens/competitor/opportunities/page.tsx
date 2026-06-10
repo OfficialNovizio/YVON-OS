@@ -3,8 +3,8 @@
 // Opportunities — merges Content Gaps + Keywords into one "where to play" tab.
 import CompetitorSubNav from '../_subnav'
 import { useVentureSlug } from '@/lib/use-venture-slug'
-import { GapsSection } from '../content-gaps/page'
-import { KeywordsSection } from '../keywords/page'
+import { GapsSection } from '../content-gaps/_gaps-section'
+import { KeywordsSection } from '../keywords/_keywords-section'
 
 const INK = '#0a2547', INK_4 = 'rgba(10,37,71,0.52)', ACCENT = '#0066cc'
 

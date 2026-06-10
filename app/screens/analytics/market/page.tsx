@@ -7,11 +7,7 @@ import CountryFilterBar from '../_country-bar';
 import { useVentureSlug } from '@/lib/use-venture-slug';
 import type { TargetAudience } from '@/lib/types';
 
-// ── Glass variants ──────────────────────────────────────────────────────────────
-const G1 = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
-const I1='#0c2c52', I1c='rgba(12,44,82,0.65)';
-const INK_4  = 'rgba(10,37,71,0.52)';
-const ACCENT = '#0066cc';
+import { G1, I1, I1c, ACCENT, INK_4 } from '../_glass-tokens'
 
 export default function AnalyticsMarketPage() {
   const ventureSlug = useVentureSlug();

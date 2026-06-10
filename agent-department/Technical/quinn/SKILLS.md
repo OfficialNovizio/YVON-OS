@@ -52,7 +52,7 @@
 | Before any QA session | `skills/operating-system/triple-pass-protocol/SKILL.md` |
 | After any session with ≥3 tool calls | `skills/operating-system/reflection-protocol/SKILL.md` |
 | Before issuing any APPROVED verdict | `skills/custom/security-test-checklist/SKILL.md` |
-| Auditing error logs for a feature | `skills/custom/error-log-audit/SKILL.md` |
+| After any code change (tsc clean), before APPROVED | `npx react-doctor -y --diff main --json .` (see TOOLS.md § React Doctor) |
 | Writing structured implementation plans | `skills/superpowers/writing-plans/SKILL.md` |
 | Finishing a development branch | `skills/superpowers/finishing-a-development-branch/SKILL.md` |
 | Receiving a code review | `skills/superpowers/receiving-code-review/SKILL.md` |

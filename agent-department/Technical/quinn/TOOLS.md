@@ -101,6 +101,45 @@ Quinn does not write to any other route. She reads from all routes as part of te
 
 ---
 
+## React Doctor — Code Health Analyzer
+
+Quinn runs `react-doctor` after every code change to get a structured health report before issuing APPROVED.
+
+**Installation:** `npm install react-doctor` (already installed in project)
+
+**Run (full scan):**
+```bash
+npx react-doctor -y --json . > react-doctor-report.json
+```
+
+**Run (diff only — faster, for incremental QA):**
+```bash
+npx react-doctor -y --diff main --json . > react-doctor-report.json
+```
+
+**Run (staged files — pre-commit hook):**
+```bash
+npx react-doctor -y --staged --json .
+```
+
+**Key flags:**
+- `--json` — machine-readable output for parsing
+- `--diff main` — scan only changed files vs main
+- `--staged` — scan only git staged files
+- `--blocking warning` — fail on warnings too
+- `--dead-code` — detect unused files/exports/deps
+- `--no-score` — skip score API (offline safe)
+
+**When Quinn uses it:**
+1. After any code change (tsc clean) → run react-doctor diff scan
+2. Before issuing APPROVED → run full scan
+3. Weekly Pulse → include react-doctor score trend
+4. PR review → attach JSON report as artifact
+
+**QA checklist addition:** After `npx tsc --noEmit` and `npm run lint` pass, run `npx react-doctor -y --diff main --json .` and verify zero errors before APPROVED.
+
+---
+
 ## Future Tools
 
 | Tool | Purpose | Status |

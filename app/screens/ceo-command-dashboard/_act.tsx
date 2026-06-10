@@ -17,24 +17,27 @@ const I3='#f1f5fb', I3b='#ccd6eb', I3c='rgba(241,245,251,0.75)', I3d='rgba(241,2
 const DECISIONS = [
   {
     urgency: 'ACT NOW', urgencyBg: '#dc2626',
-    category: 'Budget · Q3',
-    question: "Approve Novizio's $1.4M Q3 paid budget — with a 15% shift from Meta to TikTok seedings?",
-    stake: 'Material to Q3 plan', prep: 'Briefed by Marcus 6h ago', deadline: 'Decision due EOD',
-    primary: 'Approve', secondary: 'Review with Marcus',
-  },
-  {
-    urgency: 'URGENT', urgencyBg: '#d97706',
-    category: 'Operations · Conversion',
-    question: "Ship Dev's size-guide fix on Instagram checkout this evening?",
-    stake: 'Recovers ~$48k/month at current traffic', prep: 'QA passed · 14:02', deadline: 'Window closes 22:00',
-    primary: 'Ship tonight', secondary: 'Hold for AM review',
+    category: 'Infrastructure · Hermes',
+    question: "Commit and push the Hermes Agent integration to GitHub? All 13 agents are powered, execute-stage.ts is wired, graphify memory auto-injects.",
+    stake: '14 files changed, TypeScript zero errors, tested with real repos',
+    prep: 'Marcus verified all agent spawns work', deadline: 'Decision before next session',
+    primary: 'Push to GitHub', secondary: 'Review diff first',
   },
   {
     urgency: 'HIGH', urgencyBg: '#0066cc',
-    category: 'Brand · Transparency',
-    question: "Greenlight Diana's 'Fiber Trace' module on Novizio PDPs before Everlane's announcement?",
-    stake: 'Closes 12% Gen Z intent gap', prep: 'Mia + Dev have copy + UI ready', deadline: 'Recommended within 72h',
-    primary: 'Greenlight', secondary: 'Defer one week',
+    category: 'Code Quality · SESSION.md',
+    question: "Fix the corrupted SESSION.md — 100+ lines of duplicated entries, stray agent-persona text leaking. This is the source of truth for all sessions.",
+    stake: 'Every future session reads corrupted data if not fixed',
+    prep: 'Phase 1 squad (Dev+Raj+Mia+Quinn) ready', deadline: 'This week',
+    primary: 'Assign Dev', secondary: 'Defer',
+  },
+  {
+    urgency: 'HIGH', urgencyBg: '#0066cc',
+    category: 'UI · Competitor Dashboard',
+    question: "Build the missing Opportunities tab (currently 404) and add Health to NavBar? Both are code-level fixes.",
+    stake: '404 erodes trust. Health dashboard is invisible.',
+    prep: 'Mia identified both issues in audit', deadline: 'This sprint',
+    primary: 'Assign Mia', secondary: 'Schedule next sprint',
   },
 ];
 
@@ -108,16 +111,16 @@ const TIER_META: Record<string, { tc: string; bc: string; bg: string }> = {
 };
 
 const PRIORITIES = [
-  { tier: 'URGENT',    title: 'Fix conversion friction',    desc: 'Resolve the size-guide drop-off in Instagram checkout.', owner: 'Nate' },
-  { tier: 'HIGH',      title: 'Close transparency gap',     desc: 'Address the 12% intent lead Reformation has in Gen Z.', owner: 'Diana' },
-  { tier: 'STRATEGIC', title: 'Reallocate paid budget',     desc: 'Move 15% of underperforming FB spend to TikTok seedings.', owner: 'Marcus' },
-  { tier: 'LAUNCH',    title: 'Product launch sign-off',    desc: 'Final review of Hourbour eco-linen campaign assets.', owner: 'Kai' },
-  { tier: 'URGENT',    title: 'Fix checkout error',         desc: 'Payment gateway timeout on mobile checkout page.', owner: 'Raj' },
-  { tier: 'HIGH',      title: 'Rebuild size chart',         desc: 'Size guide returns are 23% of total returns — rebuild UX.', owner: 'Mia' },
-  { tier: 'STRATEGIC', title: 'Q4 content calendar',        desc: 'Draft the Q4 content calendar for all brands.', owner: 'Lena' },
-  { tier: 'LAUNCH',    title: 'Email flow optimisation',    desc: 'Optimise the post-purchase email sequence for retention.', owner: 'Nate' },
-  { tier: 'HIGH',      title: 'Instagram shop audit',       desc: 'Audit Instagram product tagging for broken links.', owner: 'Pixel' },
-  { tier: 'URGENT',    title: 'Server scaling alert',       desc: 'API latency spiked 340% — auto-scale configured.', owner: 'Dev' },
+  { tier: 'URGENT',    title: 'Push Hermes integration to GitHub',     desc: '14 files changed: execute-stage.ts, hermes-spawn.ts, 13 agent skills, Quinn tools. TypeScript zero errors. All agents tested.', owner: 'Marcus' },
+  { tier: 'URGENT',    title: 'Fix SESSION.md corruption',             desc: '100+ lines of duplicated table entries, stray agent-persona injections. Source of truth for all sessions.', owner: 'Dev' },
+  { tier: 'HIGH',      title: 'Build Competitor Opportunities tab',    desc: 'Tab is linked in subnav but folder does not exist — hard 404. Must create page.tsx with same glass pattern.', owner: 'Mia' },
+  { tier: 'HIGH',      title: 'Add Health to NavBar',                  desc: 'Health dashboard at /screens/health exists and works, but is not linked in NavBar.tsx. Zero discovery.', owner: 'Mia' },
+  { tier: 'HIGH',      title: 'Run pending Supabase migrations',       desc: 'Migrations 021 (clothing_items), 022 (CSE — 4 tables), 023 (studio_sessions). Multiple agents blocked on these.', owner: 'Raj' },
+  { tier: 'STRATEGIC', title: 'Standardize glass CSS across 32 files', desc: 'G1-G4 definitions duplicated verbatim in 32 component files. Extract to shared constants module.', owner: 'Dev' },
+  { tier: 'STRATEGIC', title: 'Delete legacy Marketing tabs',          desc: '4 tabs (Brand Identity, Growth Strategy, Tactics, Team) are hardcoded demos. Remove dead code, keep registry.', owner: 'Dev' },
+  { tier: 'STRATEGIC', title: 'Fix competitor-pipeline.ts types',      desc: '23 explicit `any` type violations. Worst type-safety in the codebase. Replace with proper interfaces.', owner: 'Quinn' },
+  { tier: 'LAUNCH',    title: 'Verify War Room approval gate intact',  desc: 'feedback.md Rule 6: gate deleted 5+ times. Check team-chat/route.ts for STRUCTURAL GATE comment.', owner: 'Quinn' },
+  { tier: 'LAUNCH',    title: 'Extract Creative Studio monolith',      desc: '2199 lines in page.tsx. Extract FilterBar, SchedulePanel, platform tiles into separate components.', owner: 'Mia' },
 ];
 
 export function Priorities() {

@@ -234,6 +234,7 @@ export async function callFast(params: {
       messages: params.messages,
     })
     const textBlock = res.content.find((b): b is Anthropic.TextBlock => b.type === 'text')
+    trackTokenUsage({ model: cfg.fastModel, inputTokens: res.usage.input_tokens, outputTokens: res.usage.output_tokens, cacheReadTokens: (res.usage as any).cache_read_input_tokens, route: 'call-fast' })
     return textBlock ? textBlock.text : ''
   }
 
@@ -269,6 +270,7 @@ export async function callSynthesis(params: {
       messages: params.messages,
     })
     const textBlock = res.content.find((b): b is Anthropic.TextBlock => b.type === 'text')
+    trackTokenUsage({ model: cfg.synthesisModel, inputTokens: res.usage.input_tokens, outputTokens: res.usage.output_tokens, cacheReadTokens: (res.usage as any).cache_read_input_tokens, route: 'call-synthesis' })
     return textBlock ? textBlock.text : ''
   }
 
@@ -342,6 +344,9 @@ export async function* streamSynthesis(params: {
         yield event.delta.text
       }
     }
+    // Track usage after stream completes
+    const finalMsg = await stream.finalMessage()
+    trackTokenUsage({ model: cfg.synthesisModel, inputTokens: finalMsg.usage.input_tokens, outputTokens: finalMsg.usage.output_tokens, route: 'stream-synthesis' })
     return
   }
 
@@ -701,4 +706,49 @@ export function getThinkingConfig(
   // Fast tier: no thinking (Haiku doesn't support it, and fast responses
   // for routing/planning don't benefit from extended reasoning)
   return undefined
+}
+
+// ─── Token Usage Tracking ─────────────────────────────────────────────────────
+// Fire-and-forget: writes token usage to Supabase after every LLM call completes.
+// Never blocks the response — failures are silent.
+
+async function trackTokenUsage(params: {
+  agentId?: string
+  route?: string
+  model: string
+  inputTokens: number
+  outputTokens: number
+  cacheReadTokens?: number
+  cacheCreationTokens?: number
+  ventureId?: string
+}): Promise<void> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!supabaseUrl || !supabaseKey) return
+
+  try {
+    await fetch(`${supabaseUrl}/rest/v1/token_usage`, {
+      method: 'POST',
+      headers: {
+        apikey:        supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+        Prefer:        'return=minimal',
+      },
+      body: JSON.stringify({
+        agent_id:              params.agentId ?? null,
+        route:                 params.route ?? 'unknown',
+        model:                 params.model,
+        input_tokens:          params.inputTokens,
+        output_tokens:         params.outputTokens,
+        cache_read_tokens:     params.cacheReadTokens ?? 0,
+        cache_creation_tokens: params.cacheCreationTokens ?? 0,
+        cost_usd:              0, // computed server-side or estimated later
+        venture_id:            params.ventureId ?? null,
+      }),
+      signal: AbortSignal.timeout(3000), // 3s timeout, don't block
+    })
+  } catch {
+    // silent — tracking is best-effort, never blocks the response
+  }
 }

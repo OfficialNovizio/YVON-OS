@@ -6,14 +6,7 @@ import AnalyticsSubNav from '../_subnav';
 import TimelineToggle from '@/app/components/TimelineToggle';
 import { useVentureSlug } from '@/lib/use-venture-slug';
 
-// ── Glass ────────────────────────────────────────────────────────────────────
-const G1: React.CSSProperties = { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(32px) saturate(160%)', WebkitBackdropFilter: 'blur(32px) saturate(160%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.70),inset 0 -1px 0 rgba(255,255,255,0.10),0 18px 50px -10px rgba(20,60,120,0.28)' };
-const I1='#0c2c52', I1c='rgba(12,44,82,0.65)', I1d='rgba(12,44,82,0.48)', L1='rgba(12,44,82,0.10)';
-const G2: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(36,99,180,0.42),rgba(20,70,140,0.55))', backdropFilter: 'blur(30px) saturate(190%)', WebkitBackdropFilter: 'blur(30px) saturate(190%)', border: '1px solid rgba(180,210,255,0.40)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.40),inset 0 -1px 0 rgba(0,30,80,0.25),0 18px 50px -10px rgba(10,40,100,0.40)' };
-const I2='#f4f8ff', I2c='rgba(244,248,255,0.68)', I2d='rgba(244,248,255,0.48)';
-const G3: React.CSSProperties = { background: 'linear-gradient(135deg,rgba(15,22,38,0.58),rgba(8,14,28,0.72))', backdropFilter: 'blur(34px) saturate(140%)', WebkitBackdropFilter: 'blur(34px) saturate(140%)', border: '1px solid rgba(255,255,255,0.16)', borderRadius: 22, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18),inset 0 -1px 0 rgba(0,0,0,0.30),0 22px 60px -12px rgba(0,10,40,0.55)' };
-const I3='#f1f5fb', I3c='rgba(241,245,251,0.75)', I3d='rgba(241,245,251,0.45)', L3='rgba(255,255,255,0.10)';
-const ACCENT = '#0066cc';
+import { G1, G2, G3, I1, I1c, I1d, I2, I2c, I2d, I3, I3c, I3d, L1, L3, ACCENT } from '../_glass-tokens'
 
 export default function AnalyticsPortfolioPage() {
   const router = useRouter();
@@ -70,9 +63,9 @@ export default function AnalyticsPortfolioPage() {
     const industry    = ventureSlug === 'hourbour' ? 'fintech' : 'fashion e-commerce';
 
     // Tier-appropriate fallbacks when AI is unavailable
-    const FALLBACK: Record<string, { benchmark: string[]; stretch: string[]; anchor: string }> = {
-      novizio:  { benchmark: ['Rouje', 'By Far', 'Rhode'], stretch: ['Reformation', 'Staud'], anchor: 'Zara' },
-      hourbour: { benchmark: ['Lili', 'Klar', 'Suits App'], stretch: ['N26', 'Starling Bank'], anchor: 'Revolut' },
+    const FALLBACK: Record<string, { micro: string[]; small: string[]; stretch: string[]; anchor: string }> = {
+      novizio:  { micro: ['Mate the Label', 'Lisa Says Gah', 'Elaluz'], small: ['Rouje', 'By Far', 'Rhode'], stretch: ['Reformation', 'Staud'], anchor: 'Zara' },
+      hourbour: { micro: ['Lili', 'Klar', 'Suits App'], small: ['Mercury', 'Brex', 'Ramp'], stretch: ['N26', 'Starling Bank'], anchor: 'Revolut' },
     };
     const fallback = FALLBACK[ventureSlug] ?? FALLBACK.novizio;
 
@@ -83,18 +76,21 @@ export default function AnalyticsPortfolioPage() {
     })
       .then(r => r.json())
       .then((suggestions: any) => {
-        const benchmark: string[] = suggestions.benchmark?.length ? suggestions.benchmark : fallback.benchmark;
-        const stretch:   string[] = suggestions.stretch?.length   ? suggestions.stretch   : fallback.stretch;
-        const anchor:    string   = suggestions.anchor            || fallback.anchor;
+        const micro:   string[] = suggestions.micro?.length   ? suggestions.micro   : fallback.micro;
+        const small:   string[] = suggestions.small?.length   ? suggestions.small   : fallback.small;
+        const stretch: string[] = suggestions.stretch?.length ? suggestions.stretch : fallback.stretch;
+        const anchor:  string   = suggestions.anchor          || fallback.anchor;
         return [
-          ...benchmark.map((n: string) => ({ brandName: n, tier: 'benchmark' })),
-          ...stretch.map((n: string)   => ({ brandName: n, tier: 'stretch' })),
+          ...micro.map((n: string)   => ({ brandName: n, tier: 'benchmark' })),
+          ...small.map((n: string)   => ({ brandName: n, tier: 'benchmark' })),
+          ...stretch.map((n: string) => ({ brandName: n, tier: 'stretch' })),
           { brandName: anchor, tier: 'anchor' },
         ];
       })
       .catch(() => [
-        ...fallback.benchmark.map(n => ({ brandName: n, tier: 'benchmark' })),
-        ...fallback.stretch.map(n   => ({ brandName: n, tier: 'stretch' })),
+        ...fallback.micro.map(n  => ({ brandName: n, tier: 'benchmark' })),
+        ...fallback.small.map(n  => ({ brandName: n, tier: 'benchmark' })),
+        ...fallback.stretch.map(n => ({ brandName: n, tier: 'stretch' })),
         { brandName: fallback.anchor, tier: 'anchor' },
       ])
       .then(competitors => {

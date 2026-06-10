@@ -10,7 +10,9 @@ import {
 import AnalyticsSubNav from '../_subnav';
 import TimelineToggle from '@/app/components/TimelineToggle';
 import { useVentureSlug } from '@/lib/use-venture-slug';
-import { useSocialPanels } from '../_use-social-panels';
+import { useSocialPanels } from '../_use-social-panels'
+import KaisRead from '@/app/components/KaisRead'
+import DataSourceNotes from '../_data-source-notes';
 
 // ─── Glass constants ──────────────────────────────────────────────────────────
 const ACCENT = '#0066cc';
@@ -515,6 +517,9 @@ export default function SocialMediaPage() {
           </div>
         </section>
 
+        {/* ── Data Source Notes — what each platform can/can't deliver ── */}
+        <DataSourceNotes />
+
         {/* ── SECTION 2: Content Intelligence — Bubble Chart ────────────── */}
         <section className="flex flex-col gap-4">
           <div className="flex items-start justify-between">
@@ -734,26 +739,7 @@ export default function SocialMediaPage() {
 
         {/* ── SECTION 7: Kai Situation Report ───────────────────────────── */}
         <section className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#0066cc] text-[18px]">auto_awesome</span>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0066cc]">Kai · Social Situation Report</span>
-            </div>
-          </div>
-          <div className="ana-glass rounded-[20px] p-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { label: 'Situation', text: `Connected ${accounts.length} platform${accounts.length !== 1 ? 's' : ''} for ${ventureSlug === 'hourbour' ? 'Hourbour' : 'Novizio'}. ${accounts.length > 0 ? `${accounts.map(a => PLATFORM_META[a.platform as PlatformKey]?.label).join(', ')} tracked.` : 'No social accounts linked yet.'}`, accent: '#000' },
-                { label: 'Diagnosis', text: accounts.length === 0 ? 'Link accounts in Settings → Venture → Social Accounts to enable diagnosis.' : 'Connect platforms to your brand calendar and Apify will surface actionable trend patterns weekly.', accent: ORANGE },
-                { label: 'Action', text: accounts.length === 0 ? 'Go to Settings and connect at least one social account to begin.' : `Top action: refresh data for ${accounts[0]?.handleOrUrl ?? 'your primary account'} to see live performance.`, accent: ACCENT },
-              ].map(item => (
-                <div key={item.label} className="flex flex-col gap-2">
-                  <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: item.accent }}>{item.label}</span>
-                  <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(0,0,0,0.65)' }}>{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <KaisRead ventureSlug={ventureSlug} variant="light" />
         </section>
 
       </div>
