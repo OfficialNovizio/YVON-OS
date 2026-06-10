@@ -52,6 +52,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -115,6 +116,7 @@ jobs:
 
   prepare-for-deploy:
     runs-on: ubuntu-latest
+    environment: production
     if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && !contains(github.head_ref, '[skip-deploy]')
     steps:
       - uses: actions/checkout@v4
