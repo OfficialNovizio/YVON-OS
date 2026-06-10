@@ -232,6 +232,11 @@ export function OverviewKPIs() {
           <div>
             <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I1d }}>{k.k}</span>
             <span style={{ fontSize: 10, fontWeight: 600, color: I1e, marginLeft: 8 }}>{k.subtitle}</span>
+            <span style={{
+              fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: '#d97706', marginLeft: 8, padding: '2px 6px', borderRadius: 4,
+              background: 'rgba(217,119,6,0.10)', border: '1px solid rgba(217,119,6,0.20)',
+            }}>NO LIVE DATA</span>
           </div>
 
           {/* Gauges */}
