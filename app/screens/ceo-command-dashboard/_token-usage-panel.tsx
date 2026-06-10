@@ -90,12 +90,13 @@ export function TokenUsagePanel() {
     return recent.map(d => ({ date: d.date.slice(5), costUsd: d.costUsd, pct: Math.max(4, (d.costUsd / max) * 90) }));
   }, [data]);
 
-  // Budget calculations — real DeepSeek balance (already reflects actual spending)
+  // Balance — raw numbers from DeepSeek API + usage tracking. No derived math.
   const deepseekBalance = balance?.total ?? null;
   const budgetUsed = data?.totals.costUsd ?? 0;
-  const originalBudget = deepseekBalance ? deepseekBalance + budgetUsed : 50;
-  const budgetLeft = deepseekBalance ?? 50;
-  const budgetPct = originalBudget > 0 ? Math.min(100, (budgetUsed / originalBudget) * 100) : 0;
+
+  // Budget bar: spent vs total balance (the only two real numbers we have)
+  const totalForBar = deepseekBalance ? deepseekBalance + budgetUsed : 50;
+  const budgetPct = totalForBar > 0 ? Math.min(100, (budgetUsed / totalForBar) * 100) : 0;
   const budgetColor = budgetPct > 90 ? RED : budgetPct > 70 ? AMBER : GREEN;
   const budgetLabel = balance ? 'DeepSeek Balance' : 'Est. Budget';
 
@@ -131,23 +132,44 @@ export function TokenUsagePanel() {
       ) : (
         <>
           {/* Budget bar */}
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: I1d }}>
-                {budgetLabel}
-              </span>
-              <span style={{ fontSize: 10, fontWeight: 800, color: budgetColor }}>
-                {fmtCost(budgetLeft)} left of {fmtCost(originalBudget)}
-              </span>
+          {balance && (
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: I1d }}>
+                  {budgetLabel}
+                </span>
+                <span style={{ fontSize: 10, fontWeight: 800, color: budgetColor }}>
+                  {fmtCost(deepseekBalance!)} remaining · {fmtCost(budgetUsed)} spent
+                </span>
+              </div>
+              <div style={{ height: 6, borderRadius: 3, background: 'rgba(12,44,82,0.08)', overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%', width: `${budgetPct}%`, borderRadius: 3,
+                  background: budgetColor,
+                  transition: 'width 400ms ease',
+                }} />
+              </div>
             </div>
-            <div style={{ height: 6, borderRadius: 3, background: 'rgba(12,44,82,0.08)', overflow: 'hidden' }}>
-              <div style={{
-                height: '100%', width: `${budgetPct}%`, borderRadius: 3,
-                background: budgetColor,
-                transition: 'width 400ms ease',
-              }} />
+          )}
+          {!balance && (
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: I1d }}>
+                  Est. Budget
+                </span>
+                <span style={{ fontSize: 10, fontWeight: 800, color: budgetColor }}>
+                  {fmtCost(budgetUsed)} spent · $50.00 budget
+                </span>
+              </div>
+              <div style={{ height: 6, borderRadius: 3, background: 'rgba(12,44,82,0.08)', overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%', width: `${budgetPct}%`, borderRadius: 3,
+                  background: budgetColor,
+                  transition: 'width 400ms ease',
+                }} />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Bar chart */}
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 70, marginBottom: 12 }}>
@@ -163,8 +185,8 @@ export function TokenUsagePanel() {
           {/* KPI grid — 5 columns: cost, budget left, tokens, cache, requests */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8 }}>
             {[
-              { label: 'Total cost',  v: fmtCost(budgetUsed),      c: budgetUsed > 0 ? I1 : I1d },
-              { label: 'Left',        v: fmtCost(budgetLeft),      c: budgetLeft > 0 ? GREEN : I1d },
+              { label: 'Balance',    v: balance ? fmtCost(deepseekBalance!) : '—', c: balance ? GREEN : I1d },
+              { label: 'Spent',      v: fmtCost(budgetUsed),      c: budgetUsed > 0 ? I1 : I1d },
               { label: 'Tokens',      v: fmt(data.totals.totalTokens), c: data.totals.totalTokens > 0 ? I1 : I1d },
               { label: 'Cache hit',   v: `${data.cacheHitRate}%`,  c: data.cacheHitRate > 30 ? GREEN : AMBER },
               { label: 'Requests',    v: data.totals.requests.toLocaleString(), c: data.totals.requests > 0 ? I1 : I1d },

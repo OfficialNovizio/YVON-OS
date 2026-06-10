@@ -20,7 +20,7 @@ export type CommandPanelId =
   | 'systemTokens'
   | 'systemSessions'
   | 'ticker'
-  | 'keyNumbers'
+  | 'kpiGauges'
   | 'strategicBriefing'
   | 'pulseChannel'
   | 'priorities'
@@ -105,9 +105,9 @@ export const COMMAND_PANELS: CommandPanelMeta[] = [
     dataSource: 'Hardcoded', connectsTo: '—',
   },
   {
-    id: 'keyNumbers', label: 'Key Numbers', tab: 'briefing', state: 'legacy',
+    id: 'kpiGauges', label: 'KPI Gauges', tab: 'briefing', state: 'legacy',
     defaultEnabled: true,
-    description: 'ROAS / CAC / Brand Health with sparklines.',
+    description: 'ROAS / CAC / Brand Health arc gauges.',
     dataSource: 'Hardcoded', connectsTo: 'Pending Analytics',
   },
   {

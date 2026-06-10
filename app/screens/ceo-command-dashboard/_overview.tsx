@@ -147,7 +147,115 @@ function OverviewContext({ onGoFull }: { onGoFull: () => void }) {
   );
 }
 
-// ── KPI Gauges removed — numbers were hardcoded, no live data source ──────────
+// ── Arc Gauge ──────────────────────────────────────────────────────────────────
+function ArcGauge({ pct, displayValue, color, label, delta, up }: {
+  pct: number; displayValue: string; color: string; label: string; delta: string; up: boolean;
+}) {
+  const cx = 44, cy = 46, r = 30;
+  const startAngle = 135;
+  const totalSweep = 270;
+  const toRad = (deg: number) => (deg - 90) * (Math.PI / 180);
+  const arcPath = (endAngle: number) => {
+    const x1 = cx + r * Math.cos(toRad(startAngle));
+    const y1 = cy + r * Math.sin(toRad(startAngle));
+    const x2 = cx + r * Math.cos(toRad(endAngle));
+    const y2 = cy + r * Math.sin(toRad(endAngle));
+    const large = endAngle - startAngle > 180 ? 1 : 0;
+    return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+  };
+  const fillEnd = startAngle + totalSweep * Math.min(Math.max(pct, 0), 1);
+  const endX = cx + r * Math.cos(toRad(fillEnd));
+  const endY = cy + r * Math.sin(toRad(fillEnd));
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flex: 1 }}>
+      <svg width="88" height="80" viewBox="0 0 88 84" style={{ overflow: 'visible' }}>
+        {/* Track */}
+        <path d={arcPath(startAngle + totalSweep)} fill="none" stroke="rgba(12,44,82,0.08)" strokeWidth="6" strokeLinecap="round" />
+        {/* Fill */}
+        {pct > 0.01 && (
+          <>
+            <path d={arcPath(fillEnd)} fill="none" stroke={color} strokeWidth="6" strokeLinecap="round"
+              style={{ filter: `drop-shadow(0 0 4px ${color}66)` }} />
+            <circle cx={endX} cy={endY} r="4.5" fill={color} opacity="0.25" />
+            <circle cx={endX} cy={endY} r="2.5" fill={color} />
+          </>
+        )}
+        {/* Center value */}
+        <text x={cx} y={cy + 6} textAnchor="middle" fontSize="15" fontWeight="800"
+          fill={I1} fontFamily="'SF Pro Display', Inter, sans-serif" letterSpacing="-0.4">
+          {displayValue}
+        </text>
+        {/* Pct label */}
+        <text x={cx} y={cy + 20} textAnchor="middle" fontSize="9" fontWeight="700"
+          fill={I1d} fontFamily="'SF Pro Display', Inter, sans-serif" letterSpacing="0.08em">
+          {Math.round(pct * 100)}%
+        </text>
+      </svg>
+      <span style={{ fontSize: 10, fontWeight: 800, color, letterSpacing: '0.12em', textTransform: 'uppercase' }}>{label}</span>
+      <span style={{ fontSize: 11, fontWeight: 800, color: up ? GREEN : '#dc2626' }}>{delta}</span>
+    </div>
+  );
+}
+
+// ── KPI Cards — arc gauges per venture ────────────────────────────────────────
+const KPIS = [
+  {
+    k: 'ROAS · MoM', subtitle: 'Target 5.0×',
+    ventures: [
+      { name: 'Novizio',  color: '#E94560', displayValue: '3.8×', pct: 3.8 / 5.0, delta: '↑ +0.4', up: true  },
+      { name: 'Hourbour', color: '#0066cc', displayValue: '2.1×', pct: 2.1 / 5.0, delta: '↑ +0.2', up: true  },
+    ],
+  },
+  {
+    k: 'CAC · Blended', subtitle: 'Efficiency vs target',
+    ventures: [
+      { name: 'Novizio',  color: '#E94560', displayValue: '$8.2',  pct: 7.0 / 8.2,  delta: '↓ −12%', up: true },
+      { name: 'Hourbour', color: '#0066cc', displayValue: '$14.5', pct: 12.0 / 14.5, delta: '↓ −6%',  up: true },
+    ],
+  },
+  {
+    k: 'Brand Health', subtitle: 'Score / 80 target',
+    ventures: [
+      { name: 'Novizio',  color: '#E94560', displayValue: '74', pct: 74 / 80, delta: '↑ +2 pts', up: true },
+      { name: 'Hourbour', color: '#0066cc', displayValue: '67', pct: 67 / 80, delta: '↑ +1 pt',  up: true },
+    ],
+  },
+];
+
+export function OverviewKPIs() {
+  return (
+    <div className="ceo-kpi-grid">
+      {KPIS.map(k => (
+        <div key={k.k} style={{ ...G1, padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Header */}
+          <div>
+            <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase', color: I1d }}>{k.k}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: I1e, marginLeft: 8 }}>{k.subtitle}</span>
+          </div>
+
+          {/* Gauges */}
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+            {k.ventures.map(v => (
+              <ArcGauge key={v.name} pct={v.pct} displayValue={v.displayValue}
+                color={v.color} label={v.name} delta={v.delta} up={v.up} />
+            ))}
+          </div>
+
+          {/* Divider + legend */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 4, borderTop: `1px solid ${L1}` }}>
+            {k.ventures.map(v => (
+              <div key={v.name} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: v.color, display: 'inline-block' }} />
+                <span style={{ fontSize: 10, fontWeight: 700, color: I1d }}>{v.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // ── Overview Tab ───────────────────────────────────────────────────────────────
 interface OverviewTabProps { onJump: (tab: TabId) => void; actCount: number; }
@@ -166,6 +274,9 @@ export default function OverviewTab({ onJump, actCount }: OverviewTabProps) {
       </div>
       <div className="ov-context">
         <OverviewContext onGoFull={() => onJump('context')} />
+      </div>
+      <div className="ov-kpis">
+        <OverviewKPIs />
       </div>
     </div>
   );

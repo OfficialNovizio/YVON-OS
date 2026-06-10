@@ -212,55 +212,7 @@ export function IntelligenceFeedPanel() {
   );
 }
 
-// ── Key Numbers — V2: Azure Tint ───────────────────────────────────────────────
-function Sparkline({ values, color = ACCENT }: { values: number[]; color?: string }) {
-  const w = 420, h = 36, pad = 2;
-  const max = Math.max(...values), min = Math.min(...values), range = max - min || 1;
-  const pts = values.map((v, i) => {
-    const x = pad + (i / (values.length - 1)) * (w - pad * 2);
-    const y = h - pad - ((v - min) / range) * (h - pad * 2);
-    return [x, y] as [number, number];
-  });
-  const d    = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
-  const fill = `${d} L${pts[pts.length-1][0]},${h} L${pts[0][0]},${h} Z`;
-  return (
-    <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" style={{ display: 'block' }}>
-      <defs></defs>
-      <path d={fill} fill={color} opacity="0.18" />
-      <path d={d} stroke={color} strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-const KEY_NUMBERS = [
-  { label: 'ROAS',         delta: '↑ +0.4 MoM', deltaGood: true, value: '3.8',   unit: '×',  sub: 'Trailing 8 weeks · Blended across paid',  spark: [3.0,3.1,3.3,3.2,3.4,3.5,3.6,3.8], color: '#7eb8ff' },
-  { label: 'CAC',          delta: '↓ −12% MoM', deltaGood: true, value: '$8.20', unit: '',   sub: 'Cost per acquisition · Blended',            spark: [10.2,10.0,9.6,9.3,9.1,8.8,8.4,8.2], color: '#10b981' },
-  { label: 'Brand Health', delta: '↑ +2 pts',   deltaGood: true, value: '74',    unit: '',   sub: 'Composite · social + survey · 0–100',       spark: [62,64,65,67,69,70,72,74], color: '#a78bfa' },
-];
-
-export function KeyNumbers() {
-  return (
-    <div style={{ ...G2, padding: 22, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-        <p style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I2d, margin: 0 }}>Key Numbers</p>
-        <span style={{ fontSize: 12, color: I2d, fontWeight: 800, letterSpacing: '0.16em', textTransform: 'uppercase' }}>3 of 3</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 18, flex: 1 }}>
-        {KEY_NUMBERS.map((k, i) => (
-          <div key={k.label} style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingBottom: 18, borderBottom: i < 2 ? `1px solid ${L2}` : 'none' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '0.18em', textTransform: 'uppercase', color: I2d }}>{k.label}</span>
-              <span style={{ fontSize: 13, fontWeight: 800, color: '#10b981' }}>{k.delta}</span>
-            </div>
-            <span style={{ fontSize: 52, fontWeight: 800, letterSpacing: '-0.035em', lineHeight: 1, color: I2 }}>{k.value}</span>
-            <Sparkline values={k.spark} color={k.color} />
-            <span style={{ fontSize: 13, color: I2c, fontWeight: 600, marginTop: 2 }}>{k.sub}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+// ── Key Numbers removed — hardcoded ROAS/CAC/Brand Health, replaced by KPI arc gauges ──
 
 // ── Situation Tab ──────────────────────────────────────────────────────────────
 export default function SituationTab() {
@@ -268,7 +220,6 @@ export default function SituationTab() {
     <div className="ceo-situation-grid">
       <div className="sit-full"><AgentKanban /></div>
       <div className="sit-feed"><IntelligenceFeedPanel /></div>
-      <div className="sit-numbers"><KeyNumbers /></div>
     </div>
   );
 }
