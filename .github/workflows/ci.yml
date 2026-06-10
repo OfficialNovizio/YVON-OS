@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - master
       - dev
       - develop
     paths-ignore:
@@ -42,6 +43,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: TypeScript check
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run typecheck
 
   build:
@@ -55,6 +61,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build application
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run build
 
   test:
@@ -104,7 +115,7 @@ jobs:
 
   prepare-for-deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && !contains(github.head_ref, '[skip-deploy]')
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && !contains(github.head_ref, '[skip-deploy]')
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -114,12 +125,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build application
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run build
 
   deploy-production:
     needs: prepare-for-deploy
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && !contains(github.head_ref, '[skip-deploy]')
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && !contains(github.head_ref, '[skip-deploy]')
     environment: production
     steps:
       - uses: actions/checkout@v4
@@ -130,6 +146,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build application
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run build
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
@@ -150,36 +171,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build application
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run build
       - name: Deploy to Vercel (development)
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-
-# Branch Protection Rules for Review Workflow
-branch_protection_rules:
-  main:
-    required_pull_requests: 1
-    required_status_checks: [passing]
-    enforce_administration: true
-    required_conversation_resolution: true
-    allows_force_pushes: false
-    requires_linear_history: true
-    head_filters:
-      - allow:
-          branch_names:
-            regex: '^(?!.*[\\\\]).*$'
-
-# Code Review Protocol for YVON
-review_protocols:
-  war_room_sessions:
-    max_specialists: 2
-    required_for: [strategy, budget, brand-direction]
-
-  pulse_checks:
-    frequency: weekly
-    responsible_agent: quinn
-    frequency: weekly
-    responsible_agent: quinn
-
-  sip_required_when: [3+ tool_calls, data_tasks, content_publishing]
