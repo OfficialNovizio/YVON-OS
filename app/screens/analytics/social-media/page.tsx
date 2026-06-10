@@ -254,6 +254,111 @@ function Shimmer({ className }: { className?: string }) {
   return <div className={`bg-black/5 animate-pulse rounded-xl ${className ?? ''}`} />;
 }
 
+// ─── Facebook Graph Enrichment Component ──────────────────────────────────────
+
+function FacebookGraphEnrich({ ventureSlug, posts, onEnriched }: {
+  ventureSlug: string
+  posts: any[]
+  onEnriched: () => void
+}) {
+  const [status, setStatus] = useState<'idle' | 'checking' | 'enriching' | 'done' | 'unconfigured'>('idle')
+  const [message, setMessage] = useState('')
+  const [enriched, setEnriched] = useState(0)
+
+  // Check if Facebook Graph is configured
+  useEffect(() => {
+    setStatus('checking')
+    fetch('/api/instagram-insights')
+      .then(r => r.json())
+      .then(d => setStatus(d.configured ? 'idle' : 'unconfigured'))
+      .catch(() => setStatus('unconfigured'))
+  }, [])
+
+  // Count posts that could be enriched (Instagram only, reach=0)
+  const enrichable = posts.filter((p: any) =>
+    p.platform === 'instagram' && !p.reach
+  ).length
+
+  // Count posts already enriched
+  const enrichedCount = posts.filter((p: any) =>
+    p.platform === 'instagram' && p.reach > 0
+  ).length
+
+  async function handleEnrich() {
+    setStatus('enriching')
+    setMessage('')
+    try {
+      const res = await fetch('/api/instagram-insights', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ventureSlug }),
+      })
+      const d = await res.json()
+      setEnriched(d.enriched ?? 0)
+      setMessage(d.message ?? 'Done')
+      setStatus('done')
+      onEnriched()
+    } catch (e) {
+      setMessage(String(e))
+      setStatus('idle')
+    }
+  }
+
+  if (status === 'unconfigured') {
+    return (
+      <section className="ana-glass rounded-[20px] p-4" style={{ border: '1px solid rgba(217,119,6,0.2)', background: 'rgba(217,119,6,0.04)' }}>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="material-symbols-outlined text-[16px]" style={{ color: '#d97706' }}>link_off</span>
+          <h3 style={{ fontSize: 13, fontWeight: 700, color: '#d97706', margin: 0 }}>Facebook Graph API not connected</h3>
+        </div>
+        <p style={{ fontSize: 11, color: 'rgba(0,0,0,0.5)', lineHeight: 1.5 }}>
+          Connect Facebook Graph to unlock <strong>reach, saves, and shares</strong> for Instagram posts.
+          Add <code style={{ background: 'rgba(0,0,0,0.06)', padding: '1px 4px', borderRadius: 4 }}>FACEBOOK_GRAPH_TOKEN</code> to Supabase Vault.
+        </p>
+      </section>
+    )
+  }
+
+  if (enrichable === 0 && enrichedCount === 0) return null
+
+  return (
+    <section className="ana-glass rounded-[20px] p-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-[16px]" style={{ color: enrichedCount > 0 ? GREEN : ACCENT }}>
+            {enrichedCount > 0 ? 'verified' : 'insights'}
+          </span>
+          <div>
+            <h3 style={{ fontSize: 13, fontWeight: 700, color: '#0c2c52', margin: 0 }}>
+              Instagram Insights (Facebook Graph)
+            </h3>
+            <p style={{ fontSize: 10, color: 'rgba(0,0,0,0.5)', margin: 0 }}>
+              {enrichedCount > 0
+                ? `${enrichedCount} enriched · ${enrichable} need enrichment`
+                : `${enrichable} posts need enrichment (reach, saves, shares)`}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={handleEnrich}
+          disabled={status === 'enriching' || enrichable === 0}
+          className="px-4 py-2 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all active:scale-95"
+          style={{
+            background: status === 'enriching' ? 'rgba(0,0,0,0.06)' : enrichable > 0 ? ACCENT : 'rgba(0,0,0,0.06)',
+            color: enrichable > 0 ? '#fff' : 'rgba(0,0,0,0.3)',
+            cursor: enrichable > 0 ? 'pointer' : 'not-allowed',
+          }}
+        >
+          {status === 'enriching' ? 'Enriching…' : `Enrich ${enrichable} posts`}
+        </button>
+      </div>
+      {message && (
+        <p style={{ fontSize: 10, color: GREEN, margin: '6px 0 0', fontWeight: 600 }}>{message}</p>
+      )}
+    </section>
+  )
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function SocialMediaPage() {
@@ -519,6 +624,9 @@ export default function SocialMediaPage() {
 
         {/* ── Data Source Notes — what each platform can/can't deliver ── */}
         <DataSourceNotes />
+
+        {/* ── Facebook Graph Enrichment — fills reach/saves/shares gaps ── */}
+        <FacebookGraphEnrich ventureSlug={ventureSlug} posts={allPosts} onEnriched={handleRefresh} />
 
         {/* ── SECTION 2: Content Intelligence — Bubble Chart ────────────── */}
         <section className="flex flex-col gap-4">

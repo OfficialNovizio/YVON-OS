@@ -333,6 +333,31 @@ export async function getSocialMetrics(
   await upsertSnapshot(ventureSlug, platform, handle, result.metrics, result.raw)
   await upsertPosts(ventureSlug, platform, result.posts)
 
+  // Auto-enrich Instagram posts with Facebook Graph API (reach, saves, shares)
+  // Runs in background — doesn't block the scrape response.
+  if (platform === 'instagram') {
+    import('./facebook-graph').then(({ enrichPostsWithGraphData, isFacebookGraphConfigured }) => {
+      isFacebookGraphConfigured().then(configured => {
+        if (!configured) return
+        // Query the posts we just saved to get their IDs
+        supabase.from('social_posts')
+          .select('id, post_id, venture_slug')
+          .eq('venture_slug', ventureSlug)
+          .eq('platform', 'instagram')
+          .eq('reach', 0)
+          .order('published_at', { ascending: false })
+          .limit(10)
+          .then(({ data }) => {
+            if (data?.length) {
+              enrichPostsWithGraphData(data as Parameters<typeof enrichPostsWithGraphData>[0])
+                .catch(() => {})
+            }
+          })
+          .then(undefined, () => {})
+      })
+    }).then(undefined, () => {})
+  }
+
   return { platform, handle, ...result.metrics, fetched_at: new Date().toISOString(), from_cache: false }
 }
 
