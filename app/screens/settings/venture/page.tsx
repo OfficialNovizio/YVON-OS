@@ -1233,8 +1233,8 @@ function BrandDocsTab({ ventureSlug }: { ventureSlug: string }) {
       <div>
         <h2 style={{ fontSize: 16, fontWeight: 600, color: I1, margin: 0, marginBottom: 4 }}>Brand Docs</h2>
         <p style={{ fontSize: 12, color: I1c, lineHeight: 1.6, margin: 0 }}>
-          Source of truth for this venture's identity. War Room agents pull these live from Supabase as their venture context.
-          Replaces the legacy <code style={{ fontFamily: 'monospace', fontSize: 11 }}>docs/ventures/{ventureSlug}/*.md</code> files.
+          Source of truth for this venture{"'"}s identity. War Room agents pull these live from Supabase as their venture context.
+          {/* Replaces the legacy <code style={{ fontFamily: 'monospace', fontSize: 11 }}>docs/ventures/{ventureSlug}/*.md</code> files. */}
         </p>
       </div>
 
@@ -2122,7 +2122,7 @@ function CompetitorsTab({ ventureSlug }: { ventureSlug: string }) {
       <div style={{ ...G1, padding: 20 }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: I1, margin: '0 0 4px' }}>Add a Competitor</p>
         <p style={{ fontSize: 11, color: I1d, margin: '0 0 14px', lineHeight: 1.5 }}>
-          Enter the brand name and their exact Instagram handle. We'll scrape their profile
+          Enter the brand name and their exact Instagram handle. We{"'"}ll scrape their profile
           immediately and add them to your Competitor dashboard.
         </p>
 
@@ -2176,7 +2176,7 @@ function CompetitorsTab({ ventureSlug }: { ventureSlug: string }) {
         </div>
         <p style={{ fontSize: 12, color: 'rgba(244,248,255,0.60)', lineHeight: 1.6, margin: '0 0 14px' }}>
           Paste up to 10 competitors (one per line) as <code style={{ fontFamily: 'monospace', fontSize: 11 }}>Brand Name = @handle</code>.
-          We'll scrape all profiles, rank them by engagement + growth, and pick the top 5.
+          We{"'"}ll scrape all profiles, rank them by engagement + growth, and pick the top 5.
           Trending reels from each competitor are also detected.
         </p>
 

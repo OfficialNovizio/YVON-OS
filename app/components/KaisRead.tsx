@@ -248,7 +248,7 @@ export default function KaisRead({ ventureSlug, context, variant = 'dark' }: Pro
       <span className="material-symbols-outlined text-[18px] shrink-0 mt-0.5" style={{ color: profile.accentColor }}>psychology</span>
       <div>
         <p className="text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: profile.accentColor }}>
-          Kai's Read · {profile.name}
+          {"Kai's Read"} · {profile.name}
         </p>
         <p className="text-[13px] leading-relaxed" style={{ color: I1, margin: 0 }}>
           <strong>{data.situation}</strong> {data.diagnosis}

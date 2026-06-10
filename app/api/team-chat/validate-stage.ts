@@ -334,7 +334,7 @@ export async function runValidateStage(params: ValidateStageParams): Promise<Val
 
   const validators: ValidatorResult[] = []
   const validatorSteps: StepResult[] = []
-  let updatedBriefings = [...briefings]
+  const updatedBriefings = [...briefings]
 
   // Only validate if the department actually produced output AND has agents in the plan
   for (const dept of departments) {

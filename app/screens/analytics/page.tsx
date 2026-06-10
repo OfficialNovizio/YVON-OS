@@ -189,7 +189,7 @@ export default function AnalyticsPage() {
             <div className="col-span-5 flex flex-col justify-center items-center text-center" style={{ ...G3, background: 'linear-gradient(135deg, rgba(0,102,204,0.15), rgba(8,14,28,0.72))', border: '1px solid rgba(0,102,204,0.20)', padding: 24 }}>
               <span className="material-symbols-outlined text-[28px] mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>auto_awesome</span>
               <p style={{ fontSize: 13, color: I3c, margin: 0 }}>
-                Kai's Read is now at the top of this page.
+                {"Kai's Read"} is now at the top of this page.
               </p>
               <button onClick={() => router.push('/screens/analytics/reports')}
                 className="mt-3 flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-semibold transition-all active:scale-95"

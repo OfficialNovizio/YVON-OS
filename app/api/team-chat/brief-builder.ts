@@ -71,8 +71,8 @@ const MANDATORY_SKILL_PATHS = [
   'PROJECT.md',  // ← Living project knowledge base — structure, workflow, ventures, rules
 ]
 
-let _mandatorySkillsCache: string | null = null
-let _mandatorySkillsLoaded = false
+const _mandatorySkillsCache: string | null = null
+const _mandatorySkillsLoaded = false
 
 async function loadMandatorySkills(): Promise<string> {
   const root = process.cwd()
