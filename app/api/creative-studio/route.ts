@@ -6,7 +6,8 @@ import { cookies } from 'next/headers'
 import { callFast, callSynthesis } from '@/lib/ai-client'
 import { getClothingItems } from '@/lib/clothing'
 import { supabase } from '@/lib/supabase'
-import type { ClothingItem } from '@/lib/types'
+import { getVentureFromDB } from '@/lib/venture-server'
+import type { ClothingItem, VentureConfig } from '@/lib/types'
 
 export const maxDuration = 60
 
@@ -52,9 +53,49 @@ function extractJson(raw: string): string {
   return raw
 }
 
+// Build rich venture context for injection into agent prompts
+function buildVentureContext(v: VentureConfig): string {
+  const lines: string[] = []
+  lines.push(`VENTURE: ${v.name} (${v.slug})`)
+  if (v.tagline) lines.push(`Tagline: ${v.tagline}`)
+  if (v.description) lines.push(`Description: ${v.description}`)
+  if (v.brandType) lines.push(`Brand Type: ${v.brandType}`)
+  if (v.brandTier) lines.push(`Brand Tier: ${v.brandTier}`)
+  if (v.avgPricePoint) lines.push(`Avg Price Point: $${v.avgPricePoint}`)
+  if (v.brandBigIdea) {
+    const bi = v.brandBigIdea
+    if (bi.brandNameMeaning) lines.push(`Brand Meaning: ${bi.brandNameMeaning}`)
+    if (bi.idealPerson) lines.push(`Ideal Person: ${bi.idealPerson} (${bi.idealPersonTraits ?? ''})`)
+    if (bi.missionBeyondProduct) lines.push(`Mission: ${bi.missionBeyondProduct}`)
+    if (bi.platformFocus) lines.push(`Platform Focus: ${bi.platformFocus}`)
+  }
+  if (v.targetAudience) {
+    const ta = v.targetAudience
+    const parts: string[] = []
+    if (ta.ageRange) parts.push(`Age: ${ta.ageRange}`)
+    if (ta.gender) parts.push(`Gender: ${ta.gender}`)
+    if (ta.incomeTier) parts.push(`Income: ${ta.incomeTier}`)
+    if (ta.region) parts.push(`Region: ${ta.region}`)
+    if (ta.description) parts.push(`Description: ${ta.description}`)
+    if (parts.length) lines.push(`Target Audience: ${parts.join(' | ')}`)
+  }
+  if (v.operatingCountries?.length) lines.push(`Operating Countries: ${v.operatingCountries.join(', ')}`)
+  if (v.marketSubcategories?.length) lines.push(`Market: ${v.marketSubcategories.join(' > ')}`)
+  return lines.join('\n')
+}
+
 export async function POST(request: Request): Promise<Response> {
   const cookieStore = await cookies()
   const ventureId = cookieStore.get('yvon_active_venture')?.value ?? 'novizio'
+
+  // Fetch real venture profile for agent context
+  let ventureContext = `VENTURE: ${ventureId}`
+  try {
+    const venture = await getVentureFromDB(ventureId)
+    ventureContext = buildVentureContext(venture)
+  } catch {
+    // If DB fails, agents still get the slug — better than nothing
+  }
 
   let body: RequestBody
   try {
@@ -73,7 +114,9 @@ export async function POST(request: Request): Promise<Response> {
       case 'generate-mood': {
         if (!brief) return Response.json({ error: 'Missing brief' }, { status: 400 })
 
-        const prompt = `You are Atlas, Art Director at YVON (${ventureId}).
+        const prompt = `You are Atlas, Art Director at YVON.
+
+${ventureContext}
 
 Campaign Brief:
 - Name: ${brief.campaignName}
@@ -170,6 +213,8 @@ Return ONLY valid JSON with no markdown:
 
         const prompt = `You are Lena (Brand Copywriter) running the Kahneman Consumer Psychology LEAN Protocol.
 
+${ventureContext}
+
 Campaign: ${brief.campaignName}
 Platform: ${brief.platform} | Format: ${brief.contentType || 'Post'}
 Audience: ${brief.audience}
@@ -177,7 +222,7 @@ Tone: ${brief.tone}
 Script context: ${body.script ?? 'Not provided'}
 
 STEP 1 — PRE-CONTENT CHECKLIST:
-Brand: ${ventureId} | Surface: ${brief.platform} post | Goal: ${brief.objective} | Stage: growing
+Brand: venture context loaded above | Surface: ${brief.platform} post | Goal: ${brief.objective} | Stage: growing
 
 STEP 4 — GENERATE A/B VARIANTS:
 Each variant must test a GENUINELY DIFFERENT psychological lever — not tonal rewrites of the same mechanism.
@@ -201,7 +246,7 @@ Return ONLY valid JSON with no markdown:
     "system1Score": "4"
   },
   "runRecommendation": "Run A first because [specific reason tied to brand stage and lever logic]",
-  "tripleCapStatus": "No cap issues — both levers fresh for ${ventureId}"
+  "tripleCapStatus": "No cap issues — both levers fresh for this venture"
 }`
 
         const raw = await callSynthesis({ messages: [{ role: 'user', content: prompt }], maxTokens: 2500 })
@@ -275,7 +320,9 @@ Return ONLY valid JSON with no markdown:
       case 'generate-storyline': {
         if (!brief) return Response.json({ error: 'Missing brief' }, { status: 400 })
 
-        const prompt = `You are Atlas (Art Director) + Lena (Brand Copywriter) at YVON, creating a VIDEO STORYLINE for ${ventureId}.
+        const prompt = `You are Atlas (Art Director) + Lena (Brand Copywriter) at YVON, creating a VIDEO STORYLINE.
+
+${ventureContext}
 
 Campaign Brief:
 - Name: ${brief.campaignName}
@@ -463,7 +510,9 @@ Return ONLY valid JSON with no markdown:
             ? 'HORIZONTAL 16:9 — hold phone landscape. Rule-of-thirds subject placement. Strong focal element left or right.'
             : 'SQUARE 1:1 — hold phone portrait then crop square in-app. Strong centred focal point that reads at thumbnail scale.'
 
-        const prompt = `You are Atlas (Art Director) + Pixel (Production Pipeline) at YVON creating a phone-shoot brief for ${ventureId}.
+        const prompt = `You are Atlas (Art Director) + Pixel (Production Pipeline) at YVON creating a phone-shoot brief.
+
+${ventureContext}
 
 Campaign:
 - Name: ${brief.campaignName}
