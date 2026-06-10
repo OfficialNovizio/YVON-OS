@@ -30,6 +30,8 @@ const SELF_AUTHED_PREFIXES = [
   '/api/health',          // intentionally public health check
   '/api/social-accounts', // Venture social accounts — read-only, no auth needed
   '/api/team-chat',       // War Room v4 — structural approval gate + validators (self-authed for local dev)
+  '/api/graph-summary',   // CEO Project Graph panel — read-only codegraph data
+  '/api/graph-html',      // CEO Project Graph full-view HTML page
 ]
 
 /** Rate limit configuration per route type */

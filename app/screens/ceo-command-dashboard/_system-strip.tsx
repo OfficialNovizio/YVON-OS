@@ -36,7 +36,7 @@ function Chip({ label, value }: { label: string; value: string }) {
 // ── Project Graph ──────────────────────────────────────────────────────────────
 interface GraphNode { id: string; label: string; community: number; degree: number }
 interface GraphEdge { source: string; target: string }
-interface GraphData  { nodes: GraphNode[]; edges: GraphEdge[]; totalNodes: number; totalEdges: number; totalCommunities: number }
+interface GraphData  { nodes: GraphNode[]; edges: GraphEdge[]; totalNodes: number; totalEdges: number; totalCommunities: number; error?: string }
 interface SimNode extends GraphNode { x: number; y: number; vx: number; vy: number }
 
 const W = 400, H = 170;
@@ -84,10 +84,17 @@ export function ProjectGraphPanel() {
   const rafRef   = useRef<number>(0);
   const frameRef = useRef(0);
 
+  const [error, setError]   = useState<string | null>(null);
+
   useEffect(() => {
     fetch('/api/graph-summary')
       .then(r => r.json())
       .then((d: GraphData) => {
+        if (!d.nodes || d.nodes.length === 0 || d.totalNodes === 0) {
+          setMeta({ totalNodes: 0, totalEdges: 0, totalCommunities: 0 });
+          setError(d.error ?? 'No graph data yet. Run npm run graphify:build to generate.');
+          return;
+        }
         setMeta({ totalNodes: d.totalNodes, totalEdges: d.totalEdges, totalCommunities: d.totalCommunities });
         simNodes.current = d.nodes.map(n => ({ ...n, x: W / 2 + (Math.random() - 0.5) * W * 0.7, y: H / 2 + (Math.random() - 0.5) * H * 0.7, vx: 0, vy: 0 }));
         simEdges.current = d.edges;
@@ -101,7 +108,10 @@ export function ProjectGraphPanel() {
         };
         rafRef.current = requestAnimationFrame(step);
       })
-      .catch(() => {});
+      .catch((err) => {
+        setMeta({ totalNodes: 0, totalEdges: 0, totalCommunities: 0 });
+        setError(err?.message ?? 'Failed to load graph data');
+      });
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
@@ -112,10 +122,20 @@ export function ProjectGraphPanel() {
   for (const n of nodes) nodeIdx[n.id] = n;
 
   return (
-    <SysPanel title="Project Graph" right={<a href="/api/graph-html" target="_blank" rel="noreferrer" style={{ color: ACCENT }}>Full view →</a>}>
+    <SysPanel title="Project Graph" right={meta && meta.totalNodes > 0 ? <a href="/api/graph-html" target="_blank" rel="noreferrer" style={{ color: ACCENT }}>Full view →</a> : null}>
       {!meta ? (
         <div style={{ height: 170, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: 20, height: 20, border: `2px solid ${L1}`, borderTopColor: ACCENT, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        </div>
+      ) : meta.totalNodes === 0 ? (
+        <div style={{ height: 170, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '0 24px' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 32, color: 'rgba(12,44,82,0.15)' }}>hub</span>
+          <p style={{ fontSize: 12, fontWeight: 600, color: I1d, textAlign: 'center', margin: 0 }}>
+            {error ?? 'No graph data yet'}
+          </p>
+          <p style={{ fontSize: 10, color: 'rgba(12,44,82,0.3)', margin: 0 }}>
+            Run <code style={{ background: 'rgba(12,44,82,0.06)', padding: '1px 6px', borderRadius: 4, fontSize: 10 }}>npm run graphify:build</code> to generate the project graph
+          </p>
         </div>
       ) : (
         <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display: 'block', borderRadius: 10, background: 'rgba(12,44,82,0.04)' }}>
