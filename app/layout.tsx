@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { WorkspaceProvider } from '@/lib/WorkspaceContext'
 import { Shell } from '@/components/Shell'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 export const metadata: Metadata = {
   title: 'YVON OS · Mission Control',
@@ -13,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="dark">
       <body className="bg-background text-on-surface bg-yvon-image min-h-screen">
         <WorkspaceProvider>
-          <Shell>{children}</Shell>
+          <ErrorBoundary>
+            <Shell>{children}</Shell>
+          </ErrorBoundary>
         </WorkspaceProvider>
       </body>
     </html>
