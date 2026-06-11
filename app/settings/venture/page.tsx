@@ -838,6 +838,42 @@ export default function VentureSettingsPage() {
                     <input placeholder="com.app.id" className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
                   </div>
                 )}
+                {deploymentPlatforms.includes('aws') && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">AWS Region / URL</label>
+                    <input placeholder="us-east-1 or console.aws.amazon.com" className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+                  </div>
+                )}
+                {deploymentPlatforms.includes('railway') && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Railway Project URL</label>
+                    <input placeholder="project.up.railway.app" className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+                  </div>
+                )}
+                {deploymentPlatforms.includes('netlify') && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Netlify Site URL</label>
+                    <input placeholder="site-name.netlify.app" className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+                  </div>
+                )}
+                {deploymentPlatforms.includes('cloudflare') && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Cloudflare Domain</label>
+                    <input placeholder="site.pages.dev" className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+                  </div>
+                )}
+                {deploymentPlatforms.includes('firebase') && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Firebase Project ID</label>
+                    <input placeholder="project-id" className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+                  </div>
+                )}
+                {deploymentPlatforms.includes('custom') && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Custom URL / Notes</label>
+                    <input placeholder="https://..." className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+                  </div>
+                )}
               </div>
             </Card>
           )}
