@@ -52,6 +52,22 @@
     {
       "path": "/api/cse-reflection",
       "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/agent-cron/henry-filter",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/agent-cron/nexus-code",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/agent-cron/steve-qa",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/agent-cron/knox-security",
+      "schedule": "*/30 * * * *"
     }
   ]
 }

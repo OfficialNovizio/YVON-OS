@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { PageHeader, StatusBadge, Card, Avatar } from '@/components/ui'
 import { Modal } from '@/components/Modal'
 import { useLiveData } from '@/lib/use-live-data'
-import { Check, Clock, X, ArrowUpRight, RefreshCw, Search } from 'lucide-react'
+import { Check, Clock, X, ArrowUpRight, Search } from 'lucide-react'
 
 type Idea = {
   id: string
@@ -28,7 +28,7 @@ const SEED: Idea[] = [
 type FilterMode = 'all' | 'promoted' | 'not-promoted'
 
 export default function IdeaFeedPage() {
-  const { data, loading, refetch } = useLiveData<{ ideas: Idea[] }>({
+  const { data } = useLiveData<{ ideas: Idea[] }>({
     url: '/api/idea-feed',
     mockData: { ideas: SEED },
     pollIntervalMs: 30000,
