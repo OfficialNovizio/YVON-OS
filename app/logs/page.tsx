@@ -1,9 +1,12 @@
 'use client'
 import { useState } from 'react'
 import { PageHeader, StatusBadge, Avatar, Card } from '@/components/ui'
+import { useLiveData } from '@/lib/use-live-data'
+
 const TYPES = ['All', 'Task', 'Post', 'Email', 'Security', 'Deploy']
 type Log = { id: string; agent: string; type: string; tone: 'blue' | 'green' | 'red' | 'yellow' | 'muted'; text: string; time: string }
-const LOGS: Log[] = [
+
+const MOCK_LOGS: Log[] = [
   { id: 'l1', agent: 'KX', type: 'Security', tone: 'red', text: 'Stopped a credential leak, queued key rotation', time: '02:14' },
   { id: 'l2', agent: 'NX', type: 'Deploy', tone: 'blue', text: 'Opened PR #142 to GitHub', time: '03:09' },
   { id: 'l3', agent: 'LE', type: 'Task', tone: 'green', text: 'Rendered 8 post concepts', time: '04:51' },
@@ -11,9 +14,18 @@ const LOGS: Log[] = [
   { id: 'l5', agent: 'SC', type: 'Post', tone: 'yellow', text: 'Scheduled LinkedIn carousel for Thu 15:00', time: '07:02' },
   { id: 'l6', agent: 'IS', type: 'Task', tone: 'green', text: 'Flagged 4 new trends across workspaces', time: '07:40' },
 ]
+
 export default function LogsPage() {
   const [filter, setFilter] = useState('All')
-  const shown = LOGS.filter((l) => filter === 'All' || l.type === filter)
+
+  const { data } = useLiveData<{ logs: Log[] }>({
+    url: '/api/logs',
+    pollIntervalMs: 15000,
+    mockData: { logs: MOCK_LOGS },
+  })
+
+  const logs = data?.logs && data.logs.length > 0 ? data.logs : MOCK_LOGS
+  const shown = logs.filter((l) => filter === 'All' || l.type === filter)
   return (
     <div>
       <PageHeader title="Logs" subtitle="System-wide activity and audit trail behind Live Activity and every approval gate." />

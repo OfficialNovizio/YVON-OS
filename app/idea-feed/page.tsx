@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PageHeader, StatusBadge, Card, Avatar } from '@/components/ui'
 import { Modal } from '@/components/Modal'
-import { Check, Clock, X, ArrowUpRight } from 'lucide-react'
+import { useLiveData } from '@/lib/use-live-data'
+import { Check, Clock, X, ArrowUpRight, RefreshCw } from 'lucide-react'
 
 type Idea = { id: string; title: string; type: string; tone: 'blue' | 'yellow' | 'green'; by: string; score: number; detail: string }
 const SEED: Idea[] = [
@@ -16,9 +17,19 @@ const SEED: Idea[] = [
 ]
 
 export default function IdeaFeedPage() {
-  const [ideas, setIdeas] = useState<Idea[]>(SEED)
+  const { data, loading, refetch } = useLiveData<{ ideas: Idea[] }>({
+    url: '/api/idea-feed',
+    mockData: { ideas: SEED },
+    pollIntervalMs: 30000,
+  })
+
+  const liveIdeas = data?.ideas ?? SEED
+  const [ideas, setIdeas] = useState<Idea[]>(liveIdeas)
   const [sel, setSel] = useState<Idea | null>(null)
   const act = (id: string) => { setIdeas((xs) => xs.filter((x) => x.id !== id)); setSel(null) }
+
+  // Sync local state when live data arrives (preserves local actions like approve/dismiss)
+  useEffect(() => { if (data?.ideas) setIdeas(data.ideas) }, [data])
 
   return (
     <div>
