@@ -14,6 +14,7 @@ ALTER TABLE ventures ADD COLUMN IF NOT EXISTS android_app_url TEXT;
 ALTER TABLE ventures ADD COLUMN IF NOT EXISTS hosting_platform TEXT;
 ALTER TABLE ventures ADD COLUMN IF NOT EXISTS product_categories JSONB;
 ALTER TABLE ventures ADD COLUMN IF NOT EXISTS deployment_platforms TEXT[];
+ALTER TABLE ventures ADD COLUMN IF NOT EXISTS deployment_config JSONB;
 
 COMMENT ON COLUMN ventures.operating_cities      IS 'Cities where the brand operates';
 COMMENT ON COLUMN ventures.ios_app_url           IS 'Apple App Store URL for iOS app';
@@ -21,3 +22,4 @@ COMMENT ON COLUMN ventures.android_app_url       IS 'Google Play Store URL for A
 COMMENT ON COLUMN ventures.hosting_platform      IS 'Hosting platform: vercel, aws, railway, custom, etc.';
 COMMENT ON COLUMN ventures.product_categories    IS 'Hierarchical product categories: [{category, subcategories[]}]';
 COMMENT ON COLUMN ventures.deployment_platforms  IS 'Connected deployment platforms: [vercel,aws,supabase,ga4,...]';
+COMMENT ON COLUMN ventures.deployment_config     IS 'Per-platform config: {vercel: {url, token}, aws: {region, accessKey}, ...}';

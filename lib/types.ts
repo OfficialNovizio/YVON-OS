@@ -226,6 +226,7 @@ export interface VentureConfig {
   hostingPlatform?: string
   productCategories?: ProductCategory[]
   deploymentPlatforms?: string[]
+  deploymentConfig?: Record<string, Record<string, string>>
 }
 
 export interface ProductCategory {
