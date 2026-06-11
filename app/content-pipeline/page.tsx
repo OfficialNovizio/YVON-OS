@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PageHeader, StatusBadge, Avatar, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
+import { useLiveData } from '@/lib/use-live-data'
 import { Plus, LayoutGrid, CalendarDays, ChevronLeft, ChevronRight, Youtube, Sparkles } from 'lucide-react'
 
 const STAGES = ['Ideas', 'Scripting', 'Thumbnails', 'Filming', 'Editing', 'Ready', 'Published'] as const
@@ -36,7 +37,15 @@ const SEED: Item[] = [
 const dot = ['#abc7ff', '#abc7ff', '#ffb693', '#5ee0ff', '#5ee0ff', '#4ade80', '#8b919f']
 
 export default function ContentPipelinePage() {
+  const { data: liveItems, loading } = useLiveData<Item[]>({
+    url: '/api/content-feed?type=pipeline',
+    mockData: SEED,
+    pollIntervalMs: 30000,
+  })
   const [items, setItems] = useState<Item[]>(SEED)
+  useEffect(() => {
+    if (liveItems) setItems(liveItems)
+  }, [liveItems])
   const [sel, setSel] = useState<Item | null>(null)
   const [view, setView] = useState<'board' | 'calendar'>('board')
   const [adding, setAdding] = useState(false)

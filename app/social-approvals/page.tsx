@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { PageHeader, StatusBadge, Avatar, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
+import { useLiveData } from '@/lib/use-live-data'
 import { Check, Upload, Send, CalendarClock, ChevronRight, SkipForward, Sparkles } from 'lucide-react'
 
 type Post = {
@@ -14,33 +15,6 @@ type Post = {
   recommended: 'A' | 'B'
 }
 
-const POSTS: Post[] = [
-  {
-    id: 'p1',
-    platform: 'Instagram',
-    from: "Claude ran my business",
-    variantA: 'I gave one business to a team of AI agents for 7 days. Here is exactly what shipped, what broke, and what I would never hand off.',
-    variantB: 'For 7 days my company ran on agents. The wins were real — and so were the failures. A thread on what actually happened.',
-    recommended: 'A',
-  },
-  {
-    id: 'p2',
-    platform: 'LinkedIn',
-    from: 'The memory system',
-    variantA: 'Most AI setups forget everything. Mine remembers — here is the vectorized memory system that makes my agents smart.',
-    variantB: 'I built a shared brain for my agents. Semantic search, per-workspace visibility, and it changed everything.',
-    recommended: 'B',
-  },
-  {
-    id: 'p3',
-    platform: 'Instagram',
-    from: 'Decision Queue',
-    variantA: 'I wake up to 7 decisions. Everything else was handled overnight. This one screen runs my company.',
-    variantB: 'The only screen I open each morning shows me 7 things. Here is why that changed how I work.',
-    recommended: 'A',
-  },
-]
-
 const SWATCHES = ['#6d5bd0', '#1f6f5c', '#7a3b8f', '#b5532a', '#274b78', '#9a7b2e', '#2e7d6b', '#823f3f']
 
 export default function SocialApprovalsPage() {
@@ -50,13 +24,34 @@ export default function SocialApprovalsPage() {
   const [confirm, setConfirm] = useState<null | 'post' | 'schedule'>(null)
   const [done, setDone] = useState<string[]>([])
 
-  const post = POSTS[idx]
+  const { data } = useLiveData<{ posts: Post[] }>({
+    url: '/api/social-approvals',
+    pollIntervalMs: 60000,
+  })
+
+  const posts = data?.posts ?? []
+  const post = posts[idx]
+
+  // Guard: no posts yet
+  if (posts.length === 0 || !post) {
+    return (
+      <div>
+        <PageHeader
+          title="Social Approvals"
+          subtitle="For each post, Leonardo generates 8 images and William drafts A/B copy."
+        />
+        <div className="glass-card p-8 text-center">
+          <p className="text-on-surface-variant text-[14px]">No posts awaiting review. New batches arrive from the Content Pipeline and Trend Radar.</p>
+        </div>
+      </div>
+    )
+  }
   const next = () => {
     setDone((d) => [...d, post.id])
     setImg(0)
     setVariant('A')
     setConfirm(null)
-    setIdx((i) => Math.min(POSTS.length - 1, i + 1))
+    setIdx((i) => Math.min(posts.length - 1, i + 1))
   }
 
   return (
@@ -64,14 +59,14 @@ export default function SocialApprovalsPage() {
       <PageHeader
         title="Social Approvals"
         subtitle="For each post, Leonardo generates 8 images and William drafts A/B copy. Pick one and post now or schedule."
-        actions={<StatusBadge tone="yellow">{done.length} of {POSTS.length} cleared</StatusBadge>}
+        actions={<StatusBadge tone="yellow">{done.length} of {posts.length} cleared</StatusBadge>}
       />
 
       <Card className="p-4">
         {/* post header */}
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <StatusBadge tone="blue">{post.platform} post</StatusBadge>
-          <span className="text-[12px] text-on-surface-variant">from “{post.from}” · {idx + 1} of {POSTS.length} in the experiment</span>
+          <span className="text-[12px] text-on-surface-variant">from “{post.from}” · {idx + 1} of {posts.length} in the experiment</span>
           <span className="ml-auto flex items-center gap-1.5 text-[12px] text-on-surface-variant">
             <Avatar initials="LE" /> Leonardo generated 8 images
           </span>
@@ -132,13 +127,13 @@ export default function SocialApprovalsPage() {
           <button className="btn-ghost !py-2" onClick={() => setConfirm('schedule')}>
             <CalendarClock size={14} /> Schedule
           </button>
-          <button className="btn-ghost ml-auto !py-2" onClick={next} disabled={idx === POSTS.length - 1}>
+          <button className="btn-ghost ml-auto !py-2" onClick={next} disabled={idx === posts.length - 1}>
             <SkipForward size={14} /> Skip
           </button>
         </div>
       </Card>
 
-      {done.length === POSTS.length && (
+      {done.length === posts.length && (
         <Card className="mt-4 flex items-center gap-3 p-4">
           <Sparkles size={16} style={{ color: 'var(--ws-accent)' }} />
           <p className="text-[13px] text-on-surface-variant">Queue cleared — every post approved. New batches arrive from the Content Pipeline and Trend Radar.</p>

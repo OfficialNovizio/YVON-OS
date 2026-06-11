@@ -1,9 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
+import { useLiveData } from '@/lib/use-live-data'
 import { RefreshCw, Plus, AlertTriangle, Wrench, RotateCw } from 'lucide-react'
+
+// ── Types ──────────────────────────────────────────────
+
+type SchedulerFeedItem = {
+  id: string
+  title: string
+  platform: string
+  day: string       // "2026-06-18"
+  time: string      // "09:00"
+  status: string
+  workspace: string
+  type: string
+}
+
+type SchedulerFeed = { items: SchedulerFeedItem[]; total: number }
 
 const PLATFORMS = ['All', 'YouTube', 'LinkedIn', 'Instagram', 'TikTok'] as const
 const PCOLOR: Record<string, string> = { YouTube: '#ff5a5f', LinkedIn: '#5b8def', Instagram: '#c95bd0', TikTok: '#5ee0ff' }
@@ -21,12 +37,54 @@ const SEED: Slot[] = [
   { id: 's7', day: 5, time: '18:00', platform: 'TikTok', title: 'War Room clip' },
 ]
 
+// ── Helpers ────────────────────────────────────────────
+
+/** Convert API date string "2026-06-18" → DAYS index (Mon=0 … Sun=6). */
+function apiDayToIndex(dayStr: string): number {
+  const date = new Date(dayStr + 'T00:00:00Z')
+  const jsDay = date.getUTCDay() // 0=Sun … 6=Sat
+  return jsDay === 0 ? 6 : jsDay - 1
+}
+
+/** Map an API feed item to a calendar Slot. Returns null for unknown platforms. */
+function feedItemToSlot(item: SchedulerFeedItem): Slot | null {
+  const platform = item.platform as keyof typeof PCOLOR
+  if (!(platform in PCOLOR)) return null
+  return {
+    id: item.id,
+    day: apiDayToIndex(item.day),
+    time: item.time,
+    platform,
+    title: item.title,
+  }
+}
+
+// ── Page ───────────────────────────────────────────────
+
 export default function SchedulerPage() {
-  const [slots, setSlots] = useState<Slot[]>(SEED)
+  const { data, loading, refetch } = useLiveData<SchedulerFeed>({
+    url: '/api/content-feed?type=scheduler',
+    pollIntervalMs: 30000,
+  })
+
+  // Derive slots from live feed (fall back to SEED when empty).
+  const liveSlots: Slot[] = useMemo(() => {
+    if (!data?.items || data.items.length === 0) return SEED
+    return data.items.map(feedItemToSlot).filter((s): s is Slot => s !== null)
+  }, [data])
+
+  const [slots, setSlots] = useState<Slot[]>(liveSlots)
   const [filter, setFilter] = useState<(typeof PLATFORMS)[number]>('All')
   const [dragId, setDragId] = useState<string | null>(null)
   const [overDay, setOverDay] = useState<number | null>(null)
   const [fix, setFix] = useState(false)
+
+  // Sync local state when live data arrives (keeps drag-drop working).
+  useEffect(() => {
+    if (!loading && liveSlots.length > 0) {
+      setSlots(liveSlots)
+    }
+  }, [liveSlots, loading])
 
   const shown = slots.filter((s) => filter === 'All' || s.platform === filter)
   const drop = (day: number) => {
@@ -43,7 +101,7 @@ export default function SchedulerPage() {
         subtitle="Schedule across every platform. Drag a card to any day to balance the queue and keep your posting frequency active."
         actions={
           <>
-            <button className="btn-ghost"><RefreshCw size={15} /> Refine</button>
+            <button className="btn-ghost" onClick={() => refetch()}><RefreshCw size={15} /> Refine</button>
             <button className="btn-accent"><Plus size={15} /> Schedule next slot</button>
           </>
         }
@@ -108,8 +166,8 @@ export default function SchedulerPage() {
               <AlertTriangle size={15} className="text-tertiary" /> Failure triage
             </h4>
             <div className="rounded-xl bg-tertiary/10 p-3">
-              <p className="text-[12px] text-on-surface">A LinkedIn post didn’t go out — token expired.</p>
-              <p className="mt-0.5 text-[11px] text-on-surface-variant">“Agent roster carousel” · 401 auth</p>
+              <p className="text-[12px] text-on-surface">A LinkedIn post didn't go out — token expired.</p>
+              <p className="mt-0.5 text-[11px] text-on-surface-variant">"Agent roster carousel" · 401 auth</p>
               <div className="mt-2 flex gap-2">
                 <button className="btn-accent !py-1 !text-[11px]" onClick={() => setFix(true)}><RotateCw size={12} /> Reauthorize</button>
                 <button className="btn-ghost !py-1 !text-[11px]"><Wrench size={12} /> Create fix task</button>
@@ -136,7 +194,7 @@ export default function SchedulerPage() {
         footer={
           <>
             <button className="btn-ghost !py-1.5 !text-xs" onClick={() => setFix(false)}>Cancel</button>
-            <button className="btn-accent !py-1.5 !text-xs" onClick={() => setFix(false)}>I’ll reconnect</button>
+            <button className="btn-accent !py-1.5 !text-xs" onClick={() => setFix(false)}>I'll reconnect</button>
           </>
         }
       >
