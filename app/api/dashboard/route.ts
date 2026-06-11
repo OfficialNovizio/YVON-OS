@@ -26,7 +26,7 @@ export async function GET(): Promise<Response> {
       ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/decision-queue`
       : 'http://localhost:3000/api/decision-queue'
 
-    let decisions = { total: 0, critical: 0, posts: 0, codeReviews: 0, warRoom: 0, security: 0 }
+    const decisions: { total: number; critical: number; posts: number; codeReviews: number; warRoom: number; security: number } = { total: 0, critical: 0, posts: 0, codeReviews: 0, warRoom: 0, security: 0 }
 
     try {
       const qRes = await fetch(queueUrl)

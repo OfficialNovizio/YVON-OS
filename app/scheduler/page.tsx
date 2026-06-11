@@ -166,8 +166,8 @@ export default function SchedulerPage() {
               <AlertTriangle size={15} className="text-tertiary" /> Failure triage
             </h4>
             <div className="rounded-xl bg-tertiary/10 p-3">
-              <p className="text-[12px] text-on-surface">A LinkedIn post didn't go out — token expired.</p>
-              <p className="mt-0.5 text-[11px] text-on-surface-variant">"Agent roster carousel" · 401 auth</p>
+              <p className="text-[12px] text-on-surface">A LinkedIn post didn&apos;t go out — token expired.</p>
+              <p className="mt-0.5 text-[11px] text-on-surface-variant">&ldquo;Agent roster carousel&rdquo; · 401 auth</p>
               <div className="mt-2 flex gap-2">
                 <button className="btn-accent !py-1 !text-[11px]" onClick={() => setFix(true)}><RotateCw size={12} /> Reauthorize</button>
                 <button className="btn-ghost !py-1 !text-[11px]"><Wrench size={12} /> Create fix task</button>
@@ -194,7 +194,7 @@ export default function SchedulerPage() {
         footer={
           <>
             <button className="btn-ghost !py-1.5 !text-xs" onClick={() => setFix(false)}>Cancel</button>
-            <button className="btn-accent !py-1.5 !text-xs" onClick={() => setFix(false)}>I'll reconnect</button>
+            <button className="btn-accent !py-1.5 !text-xs" onClick={() => setFix(false)}>I&apos;ll reconnect</button>
           </>
         }
       >

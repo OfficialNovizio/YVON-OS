@@ -67,7 +67,7 @@ export default function YouTubeStudioPage() {
             {(ytData.subscribers).toLocaleString()} subs · {(ytData.totalViews ?? 0).toLocaleString()} views · {ytData.videoCount ?? 0} videos
           </span>
         ) : (
-          <span className="text-[12px] text-on-surface-variant">While footage with the editor → when it's back → ready to upload</span>
+          <span className="text-[12px] text-on-surface-variant">While footage with the editor → when it&apos;s back → ready to upload</span>
         )}
       </div>
 
