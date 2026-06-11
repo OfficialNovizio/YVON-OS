@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { WORKSPACE_MAP, type WorkspaceKey, type Workspace } from './workspaces'
 
 const STORAGE_KEY = 'yvon_active_workspace'
-const VALID_KEYS: WorkspaceKey[] = ['vibe', 'canela', 'valhalla', 'bydesign']
+const VALID_KEYS: WorkspaceKey[] = ['vibe', 'canela', 'valhalla', 'bydesign', 'novizio', 'hourbour']
 const DEFAULT: WorkspaceKey = 'vibe'
 
 function getStoredWorkspace(): WorkspaceKey {
@@ -22,6 +22,15 @@ function persistWorkspace(key: WorkspaceKey) {
   try { localStorage.setItem(STORAGE_KEY, key) } catch { /* ignore */ }
 }
 
+/** Sync the venture cookie so API routes scope data to the active venture. */
+function syncVentureCookie(key: WorkspaceKey) {
+  if (typeof document === 'undefined') return
+  const ws = WORKSPACE_MAP[key]
+  if (ws?.isVenture && ws.ventureSlug) {
+    document.cookie = `yvon_active_venture=${ws.ventureSlug};path=/;max-age=${60 * 60 * 24 * 365};SameSite=Lax`
+  }
+}
+
 type Ctx = {
   workspace: Workspace
   setWorkspace: (k: WorkspaceKey) => void
@@ -33,9 +42,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [key, setKey] = useState<WorkspaceKey>(DEFAULT)
   const [mounted, setMounted] = useState(false)
 
-  // Restore persisted workspace on mount
   useEffect(() => {
-    setKey(getStoredWorkspace())
+    const stored = getStoredWorkspace()
+    setKey(stored)
+    syncVentureCookie(stored)
     setMounted(true)
   }, [])
 
@@ -44,9 +54,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const handleSetWorkspace = (k: WorkspaceKey) => {
     setKey(k)
     persistWorkspace(k)
+    syncVentureCookie(k)
   }
 
-  // Prevent hydration mismatch by rendering with default until client mount
   if (!mounted) {
     return (
       <WorkspaceCtx.Provider value={{ workspace: WORKSPACE_MAP[DEFAULT], setWorkspace: handleSetWorkspace }}>

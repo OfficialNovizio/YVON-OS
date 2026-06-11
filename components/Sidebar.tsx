@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { WORKSPACES } from '@/lib/workspaces'
+import { WORKSPACES, WORKSPACE_MAP } from '@/lib/workspaces'
 import type { WorkspaceKey } from '@/lib/workspaces'
 
 interface SidebarProps {
@@ -29,6 +29,7 @@ const NAV_SECTIONS: NavSection[] = [
   {
     heading: 'Command Center',
     items: [
+      { label: 'Dashboard Home', href: '/dashboard', icon: 'dashboard' },
       { label: 'Decision Queue', href: '/decision-queue', icon: 'filter_list', badge: 7 },
       { label: 'Task Board', href: '/task-board', icon: 'view_kanban' },
       { label: 'Advisory Council', href: '/advisory-council', icon: 'groups' },
@@ -89,7 +90,6 @@ const NAV_SECTIONS: NavSection[] = [
     heading: 'System',
     items: [
       { label: 'Email Inbox', href: '/inbox', icon: 'inbox' },
-      { label: 'Dashboard Home', href: '/dashboard', icon: 'dashboard' },
       { label: 'Settings', href: '/settings', icon: 'settings' },
       { label: 'Hardware', href: '/hardware', icon: 'dns' },
       { label: 'Projects', href: '/projects', icon: 'folder' },
@@ -134,7 +134,7 @@ export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
                 <div className="text-[10px] text-on-surface-variant tracking-widest uppercase">Mission Control</div>
               </div>
             </div>
-            {/* Workspace selector */}
+            {/* Workspace / Venture selector */}
             <button
               onClick={() => {
                 const idx = WORKSPACES.findIndex((w: { key: WorkspaceKey }) => w.key === workspace.key)
@@ -143,7 +143,9 @@ export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
               }}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.02] text-xs text-on-surface-variant hover:bg-white/[0.05] transition"
             >
-              <span className="text-[10px] tracking-widest text-on-surface-variant">WORKSPACE</span>
+              <span className="text-[10px] tracking-widest text-on-surface-variant">
+                {WORKSPACE_MAP[workspace.key]?.isVenture ? 'VENTURE' : 'WORKSPACE'}
+              </span>
               <span className="flex-1 text-left text-on-surface font-medium">
                 {wsLabel}
               </span>
