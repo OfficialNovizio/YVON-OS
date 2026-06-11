@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useWorkspace } from '@/lib/WorkspaceContext'
@@ -18,6 +19,8 @@ interface NavItem {
   href: string
   icon: string
   badge?: number
+  /** When true, the badge value comes from live API counts (overrides static badge) */
+  liveBadge?: boolean
 }
 
 interface NavSection {
@@ -30,8 +33,8 @@ const NAV_SECTIONS: NavSection[] = [
     heading: 'Command Center',
     items: [
       { label: 'Dashboard Home', href: '/dashboard', icon: 'dashboard' },
-      { label: 'Decision Queue', href: '/decision-queue', icon: 'filter_list', badge: 7 },
-      { label: 'Task Board', href: '/task-board', icon: 'view_kanban' },
+      { label: 'Decision Queue', href: '/decision-queue', icon: 'filter_list', liveBadge: true },
+      { label: 'Task Board', href: '/task-board', icon: 'view_kanban', liveBadge: true },
       { label: 'Advisory Council', href: '/advisory-council', icon: 'groups' },
       { label: 'Agents', href: '/agents', icon: 'smart_toy' },
       { label: 'Org Chart', href: '/org-chart', icon: 'account_tree' },
@@ -111,6 +114,63 @@ export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
   const pathname = usePathname()
   const { workspace } = useWorkspace()
 
+  // Live badge counts fetched from API (with mock fallback)
+  const [liveCounts, setLiveCounts] = useState<Record<string, number>>({
+    '/decision-queue': 0,
+    '/task-board': 0,
+  })
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadCounts() {
+      try {
+        // Fetch dashboard for decision queue count
+        const dashRes = await fetch('/api/dashboard')
+        const decisionCount: number = dashRes.ok
+          ? ((await dashRes.json()).decisions?.total ?? 7)
+          : 7
+
+        // Fetch task board for proposed count
+        let proposedCount = 0
+        try {
+          const taskRes = await fetch('/api/task-board')
+          if (taskRes.ok) {
+            const taskData = await taskRes.json()
+            proposedCount =
+              taskData.tasks?.filter((t: { stage: string }) => t.stage === 'proposed').length ?? 0
+          }
+        } catch {
+          proposedCount = 2 // mock fallback
+        }
+
+        if (!cancelled) {
+          setLiveCounts({
+            '/decision-queue': decisionCount,
+            '/task-board': proposedCount || 2,
+          })
+        }
+      } catch {
+        // Full mock fallback when APIs are unreachable
+        if (!cancelled) {
+          setLiveCounts({
+            '/decision-queue': 7,
+            '/task-board': 2,
+          })
+        }
+      }
+    }
+
+    loadCounts()
+    return () => { cancelled = true }
+  }, [])
+
+  /** Resolve the effective badge count for a nav item */
+  function getBadge(item: NavItem): number | undefined {
+    if (item.liveBadge) return liveCounts[item.href] ?? item.badge ?? 0
+    return item.badge
+  }
+
   const handleNav = () => {
     mobileClose?.()
   }
@@ -169,6 +229,9 @@ export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
             <ul className="space-y-0.5">
               {section.items.map((item) => {
                 const active = isActive(pathname, item.href)
+                const badgeCount = getBadge(item)
+                const showBadge = badgeCount != null && badgeCount > 0
+
                 return (
                   <li key={item.href}>
                     <Link
@@ -180,14 +243,14 @@ export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
                         {item.icon}
                       </span>
                       {mode === 'full' && <span className="flex-1 truncate">{item.label}</span>}
-                      {mode === 'full' && item.badge && item.badge > 0 && (
-                        <span className="chip chip-accent text-[10px] px-1.5 py-0.5">
-                          {item.badge}
+                      {mode === 'full' && showBadge && (
+                        <span className="bg-red-500/20 text-red-300 text-[10px] px-1.5 py-0.5 rounded-full leading-none font-medium">
+                          {badgeCount! > 99 ? '99+' : badgeCount}
                         </span>
                       )}
-                      {mode === 'icons' && item.badge && item.badge > 0 && (
-                        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent text-[#06121f] text-[9px] font-bold flex items-center justify-center">
-                          {item.badge > 9 ? '9+' : item.badge}
+                      {mode === 'icons' && showBadge && (
+                        <span className="absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full bg-red-500/20 text-red-300 text-[9px] font-bold flex items-center justify-center px-1">
+                          {badgeCount! > 9 ? '9+' : badgeCount}
                         </span>
                       )}
                     </Link>

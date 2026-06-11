@@ -28,6 +28,26 @@ const STATUS: Record<Status, { color: string; label: string }> = {
   idle: { color: '#8b919f', label: 'Idle' },
 }
 
+/* ── Workspace definitions ─────────────────────────────────────────────── */
+
+type Workspace = {
+  id: string
+  name: string
+  accent: string
+  rooms: string[]
+}
+
+const WORKSPACES: Workspace[] = [
+  { id: 'novizio', name: 'Novizio', accent: '#c08bff', rooms: ['personal', 'masters', 'kanela', 'commons'] },
+  { id: 'hourbour', name: 'Hourbour', accent: '#5ee0ff', rooms: ['bydesign', 'valhalla', 'commons'] },
+]
+
+function getWorkspaceForRoom(roomId: string): Workspace | undefined {
+  return WORKSPACES.find((w) => w.rooms.includes(roomId))
+}
+
+/* ── Rooms ─────────────────────────────────────────────────────────────── */
+
 type Room = { id: string; name: string; accent: string; x0: number; y0: number; x1: number; y1: number; table?: boolean }
 const ROOMS: Room[] = [
   { id: 'personal', name: 'Personal HQ', accent: '#abc7ff', x0: 0, y0: 0, x1: 3, y1: 3 },
@@ -37,6 +57,8 @@ const ROOMS: Room[] = [
   { id: 'commons', name: 'Commons', accent: '#aec7f9', x0: 3.6, y0: 3.8, x1: 6.6, y1: 6.8, table: true },
   { id: 'valhalla', name: 'Valhalla', accent: '#c08bff', x0: 7.2, y0: 3.8, x1: 10.2, y1: 6.8 },
 ]
+
+/* ── Agents ────────────────────────────────────────────────────────────── */
 
 type Agent = { id: string; name: string; role: string; room: string; status: Status; gx: number; gy: number; task: string }
 const AGENTS: Agent[] = [
@@ -63,16 +85,17 @@ const AGENTS: Agent[] = [
   { id: 'saga', name: 'Saga', role: 'A&R', room: 'valhalla', status: 'idle', gx: 9.4, gy: 5.8, task: 'Idle' },
 ]
 
-const TABS: { id: string | null; label: string }[] = [
-  { id: null, label: 'Whole floor' },
-  { id: 'personal', label: 'Personal HQ' },
-  { id: 'masters', label: 'Masters' },
-  { id: 'kanela', label: 'Kanela' },
-  { id: 'bydesign', label: 'By Design' },
-  { id: 'valhalla', label: 'Valhalla' },
+/* ── Workspace-level tabs ──────────────────────────────────────────────── */
+
+type Tab = { id: string | null; label: string; accent?: string }
+const TABS: Tab[] = [
+  { id: null, label: 'Whole Floor' },
+  ...WORKSPACES.map((w) => ({ id: w.id, label: w.name, accent: w.accent })),
 ]
 
-function RoomShape({ r, dim }: { r: Room; dim: boolean }) {
+/* ── Components ────────────────────────────────────────────────────────── */
+
+function RoomShape({ r, dim, workspaceAccent }: { r: Room; dim: boolean; workspaceAccent?: string | null }) {
   const i = 0.12
   const A = pt(r.x0 + i, r.y0 + i, PLAT)
   const B = pt(r.x1 - i, r.y0 + i, PLAT)
@@ -87,6 +110,10 @@ function RoomShape({ r, dim }: { r: Room; dim: boolean }) {
     <g style={{ opacity: dim ? 0.25 : 1, transition: 'opacity 200ms ease' }}>
       <polygon points={poly([B, C, C0, B0])} fill="#0c0c0f" opacity={0.85} />
       <polygon points={poly([D, C, C0, D0])} fill="#161620" opacity={0.9} />
+      {/* Workspace background tint layer */}
+      {workspaceAccent && (
+        <polygon points={poly([A, B, C, D])} fill={workspaceAccent} fillOpacity={0.08} />
+      )}
       <polygon points={poly([A, B, C, D])} fill={r.accent} fillOpacity={0.14} stroke={r.accent} strokeOpacity={0.55} strokeWidth={1} />
       {r.table && <ellipse cx={center.x} cy={center.y} rx={34} ry={17} fill="#ffffff" fillOpacity={0.06} stroke={r.accent} strokeOpacity={0.4} />}
       <text x={label.x} y={label.y} textAnchor="middle" fontSize={9} letterSpacing={1.5} fill={r.accent} fillOpacity={0.7} fontWeight={700}>
@@ -114,6 +141,33 @@ function Desk({ gx, gy, dim }: { gx: number; gy: number; dim: boolean }) {
     </g>
   )
 }
+
+function MeetingTable({ gx, gy, accent, agentCount }: { gx: number; gy: number; accent: string; agentCount: number }) {
+  const center = pt(gx, gy, PLAT)
+  const tableRx = 44
+  const tableRy = 22
+  return (
+    <g>
+      {/* Table shadow on floor */}
+      <ellipse cx={center.x} cy={center.y + 4} rx={tableRx + 2} ry={tableRy + 2} fill="#000" fillOpacity={0.25} />
+      {/* Table rim / edge */}
+      <ellipse cx={center.x} cy={center.y} rx={tableRx} ry={tableRy} fill="#1a1a28" stroke={accent} strokeOpacity={0.55} strokeWidth={1.5} />
+      {/* Table surface */}
+      <ellipse cx={center.x} cy={center.y - 1.5} rx={tableRx - 5} ry={tableRy - 5} fill="#1e1e30" stroke={accent} strokeOpacity={0.2} strokeWidth={0.5} />
+      {/* Subtle glow around table */}
+      <ellipse cx={center.x} cy={center.y} rx={tableRx + 8} ry={tableRy + 6} fill="none" stroke={accent} strokeOpacity={0.12} strokeWidth={3} />
+      {/* Meeting indicator label */}
+      <text x={center.x} y={center.y + 6} textAnchor="middle" fontSize={8} fontWeight={700} fill={accent} fillOpacity={0.9}>
+        MEETING
+      </text>
+      <text x={center.x} y={center.y + 16} textAnchor="middle" fontSize={7} fill={accent} fillOpacity={0.5}>
+        {agentCount} agents in standup
+      </text>
+    </g>
+  )
+}
+
+/* ── Page ──────────────────────────────────────────────────────────────── */
 
 export default function OfficePage() {
   const [active, setActive] = useState<string | null>(null)
@@ -158,6 +212,51 @@ export default function OfficePage() {
     setPan({ x: 0, y: 0 })
   }
 
+  // ── Derived workspace state ──────────────────────────────────────────
+
+  const activeWorkspace = WORKSPACES.find((w) => w.id === active) ?? null
+
+  /** Room IDs visible under the current workspace filter */
+  const visibleRoomIds = activeWorkspace ? activeWorkspace.rooms : ROOMS.map((r) => r.id)
+
+  const isAgentVisible = (a: Agent) => (activeWorkspace ? activeWorkspace.rooms.includes(a.room) : true)
+
+  // Detect meetings: 3+ standup agents in a workspace
+  const meetings = useMemo(() => {
+    return WORKSPACES.map((ws) => {
+      const standupAgents = AGENTS.filter((a) => a.status === 'standup' && ws.rooms.includes(a.room))
+      if (standupAgents.length < 3) return null
+      const wsRooms = ROOMS.filter((r) => ws.rooms.includes(r.id))
+      const cx = (Math.min(...wsRooms.map((r) => r.x0)) + Math.max(...wsRooms.map((r) => r.x1))) / 2
+      const cy = (Math.min(...wsRooms.map((r) => r.y0)) + Math.max(...wsRooms.map((r) => r.y1))) / 2
+      return { workspace: ws, cx, cy, agents: standupAgents }
+    }).filter(Boolean) as { workspace: Workspace; cx: number; cy: number; agents: Agent[] }[]
+  }, [])
+
+  // When viewing a specific workspace, only show that workspace's meeting
+  const visibleMeetings = activeWorkspace
+    ? meetings.filter((m) => m.workspace.id === activeWorkspace.id)
+    : meetings
+
+  // Compute meeting-table positions for standup agents
+  const meetingPositions = useMemo(() => {
+    const map = new Map<string, { gx: number; gy: number }>()
+    for (const meeting of visibleMeetings) {
+      meeting.agents.forEach((agent, i) => {
+        const angle = (i / meeting.agents.length) * Math.PI * 2 - Math.PI / 2
+        const radius = 1.3
+        map.set(agent.id, {
+          gx: meeting.cx + Math.cos(angle) * radius,
+          gy: meeting.cy + Math.sin(angle) * radius * 0.55,
+        })
+      })
+    }
+    return map
+  }, [visibleMeetings])
+
+  // Collect agent IDs currently positioned at a meeting table
+  const meetingAgentIds = new Set(meetingPositions.keys())
+
   const sorted = [...AGENTS].sort((a, b) => a.gx + a.gy - (b.gx + b.gy))
 
   return (
@@ -167,6 +266,7 @@ export default function OfficePage() {
         subtitle="Your agents, live on the floor. A room per workspace, a shared commons, and they coordinate across teams. Real state, never faked."
       />
 
+      {/* ── Workspace tabs + status legend ────────────────────────────── */}
       <div className="mb-3 flex flex-wrap items-center gap-2">
         {TABS.map((t) => {
           const on = active === t.id
@@ -176,9 +276,11 @@ export default function OfficePage() {
               onClick={() => setActive(t.id)}
               className="rounded-full border px-3 py-1.5 text-[12px] font-semibold transition"
               style={
-                on
-                  ? { background: 'var(--ws-accent-soft)', borderColor: 'var(--ws-glow)', color: 'var(--ws-accent)' }
-                  : { borderColor: 'rgba(255,255,255,0.08)', color: '#c1c6d6' }
+                on && t.accent
+                  ? { background: `${t.accent}20`, borderColor: `${t.accent}60`, color: t.accent }
+                  : on
+                    ? { background: 'var(--ws-accent-soft)', borderColor: 'var(--ws-glow)', color: 'var(--ws-accent)' }
+                    : { borderColor: 'rgba(255,255,255,0.08)', color: '#c1c6d6' }
               }
             >
               {t.label}
@@ -198,6 +300,7 @@ export default function OfficePage() {
         </div>
       </div>
 
+      {/* ── 3D canvas ─────────────────────────────────────────────────── */}
       <div
         className={`glass-card relative h-[600px] select-none overflow-hidden ${grabbing ? 'office-grabbing' : 'office-grab'}`}
         onWheel={onWheel}
@@ -229,20 +332,44 @@ export default function OfficePage() {
             transformOrigin: 'center',
           }}
         >
+          {/* ── SVG layer: rooms, desks, meeting tables ──────────────── */}
           <svg viewBox={`0 0 ${VW} ${VH}`} width={VW} height={VH} className="absolute inset-0">
             {ROOMS.map((r) => (
-              <RoomShape key={r.id} r={r} dim={active != null && active !== r.id} />
+              <RoomShape
+                key={r.id}
+                r={r}
+                dim={active != null && !visibleRoomIds.includes(r.id)}
+                workspaceAccent={getWorkspaceForRoom(r.id)?.accent ?? null}
+              />
             ))}
-            {AGENTS.map((a) => (
-              <Desk key={a.id} gx={a.gx} gy={a.gy - 0.55} dim={active != null && active !== a.room} />
+
+            {/* Meeting tables */}
+            {visibleMeetings.map((m) => (
+              <MeetingTable
+                key={m.workspace.id}
+                gx={m.cx}
+                gy={m.cy}
+                accent={m.workspace.accent}
+                agentCount={m.agents.length}
+              />
+            ))}
+
+            {/* Agent desks — hide desks for agents gathered at a meeting table */}
+            {AGENTS.filter((a) => !meetingAgentIds.has(a.id)).map((a) => (
+              <Desk key={a.id} gx={a.gx} gy={a.gy - 0.55} dim={active != null && !isAgentVisible(a)} />
             ))}
           </svg>
 
+          {/* ── HTML layer: agent buttons ─────────────────────────────── */}
           <div className="absolute inset-0">
             {sorted.map((a) => {
-              const p = pt(a.gx, a.gy, PLAT)
-              const dim = active != null && active !== a.room
+              const meetingPos = meetingPositions.get(a.id)
+              const displayGx = meetingPos ? meetingPos.gx : a.gx
+              const displayGy = meetingPos ? meetingPos.gy : a.gy
+              const p = pt(displayGx, displayGy, PLAT)
+              const dim = active != null && !isAgentVisible(a)
               const st = STATUS[a.status]
+              const inMeeting = !!meetingPos
               return (
                 <button
                   key={a.id}
@@ -254,15 +381,27 @@ export default function OfficePage() {
                     transform: 'translate(-50%, -100%)',
                     zIndex: Math.round(p.y),
                     opacity: dim ? 0.3 : 1,
-                    transition: 'opacity 200ms ease',
+                    transition: 'opacity 200ms ease, left 400ms ease, top 400ms ease',
                   }}
                 >
                   <div className="flex flex-col items-center">
+                    {/* Meeting glow ring */}
+                    {inMeeting && (
+                      <div
+                        className="absolute -inset-3 -top-6 rounded-full"
+                        style={{
+                          background: `radial-gradient(ellipse at center, ${st.color}25 0%, transparent 70%)`,
+                        }}
+                      />
+                    )}
                     <span
                       className="mb-1 whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold"
                       style={{ background: 'rgba(10,10,14,0.8)', borderColor: 'rgba(255,255,255,0.1)', color: '#e2e2e2' }}
                     >
                       {a.name}
+                      {inMeeting && (
+                        <span className="ml-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: st.color, boxShadow: `0 0 4px ${st.color}` }} />
+                      )}
                     </span>
                     <div className={a.status === 'moving' ? 'office-bob' : ''}>
                       <div className="mx-auto h-1.5 w-1.5 rounded-full" style={{ background: st.color }} />
@@ -287,6 +426,7 @@ export default function OfficePage() {
           </div>
         </div>
 
+        {/* ── Agent tooltip ─────────────────────────────────────────────── */}
         {selected && (
           <div
             className="absolute bottom-4 left-4 z-30 w-72 rounded-2xl border border-white/10 bg-surface-container/95 p-4 backdrop-blur-xl"

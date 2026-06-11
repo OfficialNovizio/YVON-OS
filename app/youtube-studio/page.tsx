@@ -4,12 +4,22 @@ import { useState } from 'react'
 import { PageHeader, StatusBadge, Card, Avatar } from '@/components/ui'
 import { Modal } from '@/components/Modal'
 import { useLiveData } from '@/lib/use-live-data'
-import { ExternalLink, Package, Check, Copy, Wand2, Image as ImageIcon, BarChart3 } from 'lucide-react'
+import { ExternalLink, Package, Check, Copy, Wand2, Image as ImageIcon, BarChart3, Trophy, ToggleLeft, ToggleRight } from 'lucide-react'
 
 const TITLES = [
   'I gave my entire business to AI agents for 7 days',
   'What happened when AI agents ran my company',
   'My company ran on AI agents for a week (it broke)',
+  '7 days, 23 agents, 1 founder: the autopilot test',
+]
+
+const VARIANT_A_TITLES = [
+  'I gave my entire business to AI agents for 7 days',
+  'My company ran on AI agents for a week',
+]
+
+const VARIANT_B_TITLES = [
+  'What happened when AI agents ran my company',
   '7 days, 23 agents, 1 founder: the autopilot test',
 ]
 
@@ -44,6 +54,13 @@ export default function YouTubeStudioPage() {
   const [showDesc, setShowDesc] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  // A/B test state
+  const [variantAIdx, setVariantAIdx] = useState(0)
+  const [variantBIdx, setVariantBIdx] = useState(0)
+  const [liveVariant, setLiveVariant] = useState<'A' | 'B'>('A')
+  const variantACTR = 8.2
+  const variantBCTR = 6.1
+
   const copy = () => { setCopied(true); setTimeout(() => setCopied(false), 1500) }
 
   return (
@@ -72,7 +89,7 @@ export default function YouTubeStudioPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]">
-        {/* title + thumbnail */}
+        {/* title + thumbnail + A/B test */}
         <div className="space-y-4">
           <Card className="p-4">
             <h4 className="mb-2 text-sm font-semibold text-on-surface">Title workshop</h4>
@@ -85,6 +102,97 @@ export default function YouTubeStudioPage() {
                   {t}
                 </button>
               ))}
+            </div>
+          </Card>
+
+          {/* ── A/B Test ──────────────────────────────────────── */}
+          <Card className="p-4">
+            <h4 className="mb-3 text-sm font-semibold text-on-surface flex items-center gap-2">
+              A/B Test
+              <span className="text-[11px] font-normal text-on-surface-variant">· Title thumbnail split test</span>
+            </h4>
+            <div className="grid grid-cols-2 gap-4">
+              {/* Variant A */}
+              <div className="rounded-xl border p-3" style={{ borderColor: liveVariant === 'A' ? 'var(--ws-accent)' : 'rgba(255,255,255,0.08)', background: liveVariant === 'A' ? 'var(--ws-accent-soft)' : 'rgba(255,255,255,0.02)' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-on-surface-variant">Variant A</span>
+                  {liveVariant === 'A' && (
+                    <StatusBadge tone="green">Live</StatusBadge>
+                  )}
+                </div>
+                <p className="text-[13px] text-on-surface leading-snug mb-2">{VARIANT_A_TITLES[variantAIdx]}</p>
+                <button
+                  onClick={() => setVariantAIdx((v) => (v + 1) % VARIANT_A_TITLES.length)}
+                  className="text-[10px] text-on-surface-variant hover:text-on-surface transition mb-3"
+                >
+                  ↻ Swap title
+                </button>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-on-surface-variant">CTR</span>
+                    <span className="text-[14px] font-bold text-on-surface">{variantACTR}%</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="h-full rounded-full transition-all" style={{ width: `${variantACTR * 10}%`, background: 'linear-gradient(90deg, #4ade80, #22c55e)' }} />
+                  </div>
+                  {variantACTR > variantBCTR && (
+                    <div className="flex items-center gap-1 text-emerald-400">
+                      <Trophy size={12} />
+                      <span className="text-[11px] font-semibold">Winner</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Variant B */}
+              <div className="rounded-xl border p-3" style={{ borderColor: liveVariant === 'B' ? 'var(--ws-accent)' : 'rgba(255,255,255,0.08)', background: liveVariant === 'B' ? 'var(--ws-accent-soft)' : 'rgba(255,255,255,0.02)' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-on-surface-variant">Variant B</span>
+                  {liveVariant === 'B' && (
+                    <StatusBadge tone="green">Live</StatusBadge>
+                  )}
+                </div>
+                <p className="text-[13px] text-on-surface leading-snug mb-2">{VARIANT_B_TITLES[variantBIdx]}</p>
+                <button
+                  onClick={() => setVariantBIdx((v) => (v + 1) % VARIANT_B_TITLES.length)}
+                  className="text-[10px] text-on-surface-variant hover:text-on-surface transition mb-3"
+                >
+                  ↻ Swap title
+                </button>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-on-surface-variant">CTR</span>
+                    <span className="text-[14px] font-bold text-on-surface">{variantBCTR}%</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                    <div className="h-full rounded-full transition-all" style={{ width: `${variantBCTR * 10}%`, background: 'linear-gradient(90deg, #4ade80, #22c55e)' }} />
+                  </div>
+                  {variantBCTR > variantACTR && (
+                    <div className="flex items-center gap-1 text-emerald-400">
+                      <Trophy size={12} />
+                      <span className="text-[11px] font-semibold">Winner</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Toggle live variant */}
+            <div className="mt-3 flex items-center gap-3 pt-3 border-t border-white/6">
+              <span className="text-[12px] text-on-surface-variant">Live variant:</span>
+              <button
+                onClick={() => setLiveVariant((v) => (v === 'A' ? 'B' : 'A'))}
+                className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[12px] font-semibold text-on-surface hover:border-white/20 transition"
+              >
+                {liveVariant === 'A' ? (
+                  <><ToggleRight size={16} style={{ color: 'var(--ws-accent)' }} /> Variant A</>
+                ) : (
+                  <><ToggleRight size={16} style={{ color: 'var(--ws-accent)' }} /> Variant B</>
+                )}
+              </button>
+              <span className="text-[11px] text-on-surface-variant">
+                {liveVariant === 'A' ? 'A is live on YouTube' : 'B is live on YouTube'}
+              </span>
             </div>
           </Card>
 

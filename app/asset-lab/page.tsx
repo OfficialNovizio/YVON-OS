@@ -155,7 +155,7 @@ export default function AssetLabPage() {
         ))}
       </div>
 
-      {/* ── Type filter ── */}
+      {/* ── Type filter chips ── */}
       <div className="mb-4 flex flex-wrap gap-1.5">
         {types.map((t) => (
           <button
@@ -173,16 +173,19 @@ export default function AssetLabPage() {
         ))}
       </div>
 
-      {/* ── Gallery grid + brand kit sidebar ── */}
+      {/* ── Masonry gallery grid + brand kit sidebar ── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_260px]">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-3">
           {shown.map((a) => (
             <button
               key={a.id}
               onClick={() => setSel(a)}
-              className="group overflow-hidden rounded-xl border border-white/8 text-left transition-colors hover:border-white/15"
+              className="break-inside-avoid mb-3 group overflow-hidden rounded-xl border border-white/8 text-left transition-colors hover:border-white/15 w-full"
             >
-              <div className="aspect-video bg-white/[0.03]">
+              <div
+                className="bg-white/[0.03]"
+                style={{ aspectRatio: `${a.width}/${a.height}` }}
+              >
                 {a.thumbnailUrl ? (
                   <img
                     src={a.thumbnailUrl}

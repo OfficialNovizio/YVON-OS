@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
-import { ExternalLink, Plus, Send, CalendarClock, RefreshCw, Mail } from 'lucide-react'
+import { ExternalLink, Plus, Send, CalendarClock, RefreshCw, Mail, Trophy, TrendingUp } from 'lucide-react'
 import { useLiveData } from '@/lib/use-live-data'
 import type { NewsletterFeed, KitBroadcast, KitSequence, KitGrowthSource, KitDraft, KitAnalytics } from '@/app/api/newsletter/route'
 
@@ -93,6 +93,22 @@ function fmtRate(v: number | null): string {
   return `${v}%`
 }
 
+function ProgressBar({ value, max = 100 }: { value: number | null; max?: number }) {
+  if (value == null) return <span className="text-[12px] text-on-surface-variant">—</span>
+  const pct = Math.min(100, (value / max) * 100)
+  return (
+    <div className="flex items-center gap-2 min-w-[100px]">
+      <span className="text-[12px] font-semibold text-on-surface w-10 text-right">{value}%</span>
+      <div className="flex-1 h-2 rounded-full bg-white/[0.06] overflow-hidden">
+        <div
+          className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #4ade80, #22c55e)' }}
+        />
+      </div>
+    </div>
+  )
+}
+
 function kitConnectedLabel(connected?: boolean, healthy?: boolean): { tone: 'green' | 'yellow' | 'red'; text: string } {
   if (connected && healthy) return { tone: 'green', text: 'Connected to Kit' }
   if (connected && !healthy) return { tone: 'yellow', text: 'Kit API degraded' }
@@ -125,6 +141,12 @@ export default function NewsletterPage() {
   const feed = data ?? FALLBACK
   const { total_subscribers, new_30d, subscriber_history, segments, draft, broadcasts, top_performer_note, sequences, growth_sources, analytics } = feed
   const kit = kitConnectedLabel(feed.kit_connected, feed.api_healthy)
+
+  // Find the top performer among sent broadcasts
+  const sentBroadcasts = broadcasts.filter((b) => b.status === 'sent' && b.click_rate != null)
+  const topPerformer = sentBroadcasts.length > 0
+    ? sentBroadcasts.reduce((best, b) => (b.click_rate ?? 0) > (best.click_rate ?? 0) ? b : best)
+    : null
 
   return (
     <div>
@@ -221,23 +243,59 @@ export default function NewsletterPage() {
       {/* ─── BROADCASTS ───────────────────────────────────────── */}
 
       {tab === 'Broadcasts' && (
-        <Card className="p-4">
-          {broadcasts.map((b) => {
-            const label = b.status === 'sent'
-              ? `#${b.issue} ${b.subject}`
-              : `#${b.issue} ${b.subject}`
-            const sTone = b.status === 'sent' ? 'green' : b.status === 'sending' ? 'yellow' : 'yellow'
-            return (
-              <div key={b.id} className="flex flex-wrap items-center gap-3 border-b border-white/6 py-3 last:border-0">
-                <span className="flex-1 text-[13px] text-on-surface">{label}</span>
-                <span className="text-[12px] text-on-surface-variant">Open {fmtRate(b.open_rate)}</span>
-                <span className="text-[12px] text-on-surface-variant">Click {fmtRate(b.click_rate)}</span>
-                <StatusBadge tone={sTone}>{b.status === 'sent' ? 'Sent' : b.status === 'sending' ? 'Sending' : 'Draft'}</StatusBadge>
+        <div className="space-y-4">
+          {/* Top performer callout */}
+          {topPerformer && (
+            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Trophy size={16} style={{ color: '#4ade80' }} />
+                <span className="text-sm font-semibold text-emerald-300">Top Performer</span>
               </div>
-            )
-          })}
-          <p className="mt-3 rounded-lg bg-white/[0.03] p-3 text-[12px] text-on-surface-variant">{top_performer_note}</p>
-        </Card>
+              <p className="text-[13px] text-on-surface">
+                <span className="font-semibold">#{topPerformer.issue} “{topPerformer.subject}”</span>
+                {' — '}
+                <span className="text-emerald-400 font-semibold">{topPerformer.open_rate}% open</span>
+                {' · '}
+                <span className="text-emerald-400 font-semibold">{topPerformer.click_rate}% click</span>
+              </p>
+              <p className="mt-1.5 text-[12px] text-on-surface-variant flex items-center gap-1">
+                <TrendingUp size={12} className="text-emerald-400" />
+                {top_performer_note}
+              </p>
+            </div>
+          )}
+
+          {/* Past sends table */}
+          <Card className="p-4">
+            {/* Table header */}
+            <div className="flex items-center gap-3 border-b border-white/6 pb-2 mb-1 text-[11px] font-semibold uppercase tracking-wide text-on-surface-variant/60">
+              <span className="flex-1">Broadcast</span>
+              <span className="w-[140px] text-center">Open rate</span>
+              <span className="w-[140px] text-center">Click rate</span>
+              <span className="w-[80px] text-center">Status</span>
+            </div>
+
+            {broadcasts.map((b) => {
+              const sTone = b.status === 'sent' ? 'green' : b.status === 'sending' ? 'yellow' : 'yellow'
+              return (
+                <div key={b.id} className="flex items-center gap-3 border-b border-white/6 py-3 last:border-0">
+                  <span className="flex-1 text-[13px] text-on-surface">
+                    #{b.issue} {b.subject}
+                  </span>
+                  <span className="w-[140px]">
+                    <ProgressBar value={b.open_rate} />
+                  </span>
+                  <span className="w-[140px]">
+                    <ProgressBar value={b.click_rate} />
+                  </span>
+                  <span className="w-[80px] text-center">
+                    <StatusBadge tone={sTone}>{b.status === 'sent' ? 'Sent' : b.status === 'sending' ? 'Sending' : 'Draft'}</StatusBadge>
+                  </span>
+                </div>
+              )
+            })}
+          </Card>
+        </div>
       )}
 
       {/* ─── SEQUENCES ────────────────────────────────────────── */}

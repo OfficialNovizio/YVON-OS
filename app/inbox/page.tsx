@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import { PageHeader, StatusBadge, Avatar, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
 import { useLiveData } from '@/lib/use-live-data'
-import { PenSquare, Zap, Send, CornerUpRight, Archive, Clock, Check, Loader2, AlertTriangle } from 'lucide-react'
+import { PenSquare, Zap, Send, CornerUpRight, Archive, Clock, Check, Loader2, AlertTriangle, MessageSquare } from 'lucide-react'
 
 // ── Types matching /api/inbox ──
 
@@ -38,6 +38,48 @@ type InboxResponse = {
   contacts: Record<string, Contact>
 }
 
+// ── Mock recent threads ──
+
+type ThreadSummary = {
+  subject: string
+  date: string
+  direction: 'in' | 'out'
+}
+
+const MOCK_THREADS: Record<string, ThreadSummary[]> = {
+  m1: [
+    { subject: 'Re: Cinematic site for the new collection — timeline?', date: '2h ago', direction: 'in' },
+    { subject: 'Initial pitch sent — Brightwave scope', date: 'Yesterday', direction: 'out' },
+    { subject: 'Portfolio link — fashion cinematic reel', date: 'Jun 8', direction: 'out' },
+    { subject: 'Intro from DTC Collective — Maria Solano', date: 'Jun 5', direction: 'in' },
+  ],
+  m2: [
+    { subject: 'Valhalla — closing set at VVVV?', date: '1h ago', direction: 'in' },
+    { subject: 'Availability for festival season Q3', date: 'Jun 7', direction: 'out' },
+    { subject: 'VVVV 2025 aftermovie — Valhalla highlight', date: 'May 28', direction: 'in' },
+  ],
+  m3: [
+    { subject: 'Revised SaaS retainer agreement', date: '3h ago', direction: 'in' },
+    { subject: 'Contract draft v2 — comments inline', date: 'Jun 6', direction: 'out' },
+    { subject: 'Retainer scope update — Q2 addendum', date: 'May 30', direction: 'in' },
+  ],
+  m5: [
+    { subject: 'Q3 check-in — portfolio review', date: '1d ago', direction: 'in' },
+    { subject: 'Q2 deck + metrics shared', date: 'Jun 2', direction: 'out' },
+    { subject: 'Quarterly review — calendar poll', date: 'May 25', direction: 'in' },
+  ],
+  m6: [
+    { subject: 'Re: DJ booking availability — August dates', date: '4h ago', direction: 'in' },
+    { subject: 'Café Mantra — residency inquiry follow-up', date: 'Jun 4', direction: 'out' },
+    { subject: 'August lineup — initial interest', date: 'May 29', direction: 'in' },
+  ],
+  m7: [
+    { subject: 'AI ops consulting — exploratory call', date: '5h ago', direction: 'in' },
+    { subject: 'Agent workflow thread on X — thanks for the link', date: 'Jun 7', direction: 'out' },
+    { subject: 'ScaleUp Labs — cold inbound', date: 'Jun 6', direction: 'in' },
+  ],
+}
+
 // ── Fallback mock data (shown while loading / on error) ──
 
 const FALLBACK: InboxResponse = {
@@ -50,11 +92,11 @@ const FALLBACK: InboxResponse = {
   mails: [
     { id: 'm1', account: 'personal', from: 'Maria Solano · Brightwave Studio', initials: 'MS', subject: 'Re: Cinematic site for the new collection — timeline?', snippet: 'Hi Maria — thanks for reaching out. A July launch is doable…', tone: 'blue', tag: 'Reply now', draft: 'Hi Maria,\n\nThanks for reaching out — a July launch is absolutely doable. Cinematic single-page sites in this style run €5k depending on scope. The fastest way forward is a quick 20-minute call this week — does Thursday or Friday morning work for you?\n\nBest,\nStark' },
     { id: 'm2', account: 'personal', from: 'Jonas Weber · VVVV Festival', initials: 'JW', subject: 'Valhalla — closing set at VVVV?', snippet: 'We are finalizing the lineup and would love Valhalla for the closing…', tone: 'blue', tag: 'Reply now', draft: 'Hey Jonas,\n\nClosing set sounds amazing — Valhalla would love that. Could you send over the date, stage, and set length? Happy to lock it in once we have the details.\n\nCheers,\nStark' },
-    { id: 'm3', account: 'business', from: 'Legal · Hartmann & Vogel', initials: 'HV', subject: 'Revised SaaS retainer agreement', snippet: 'Please find attached the revised retainer with the changes…', tone: 'yellow', tag: 'Escalate', draft: 'Hi — received, thank you. I’ll review the revised clauses and revert by end of week. Could you confirm the notice period change in section 4?\n\nBest,\nStark' },
+    { id: 'm3', account: 'business', from: 'Legal · Hartmann & Vogel', initials: 'HV', subject: 'Revised SaaS retainer agreement', snippet: 'Please find attached the revised retainer with the changes…', tone: 'yellow', tag: 'Escalate', draft: 'Hi — received, thank you. I\'ll review the revised clauses and revert by end of week. Could you confirm the notice period change in section 4?\n\nBest,\nStark' },
     { id: 'm4', account: 'business', from: 'Stripe Billing', initials: 'ST', subject: 'Action required — re: your payout account', snippet: 'We need to verify some details about your payout account…', tone: 'red', tag: 'Flagged', draft: '' },
-    { id: 'm5', account: 'business', from: 'Peakbridge Ventures', initials: 'PV', subject: 'Q3 check-in — portfolio review', snippet: 'Hi Stark — we’d like to schedule the quarterly portfolio review for next week…', tone: 'muted', tag: 'Schedule', draft: 'Hi team,\n\nHappy to do the Q3 review. Thursday or Friday afternoon works best — let me know which slot you prefer and I’ll confirm.\n\nBest,\nStark' },
-    { id: 'm6', account: 'consulting', from: 'Café Mantra · events', initials: 'CM', subject: 'Re: DJ booking availability — August dates', snippet: 'We’d love to have Valhalla play the August session…', tone: 'muted', tag: 'Reply now', draft: 'Hey — great to hear from you! Valhalla is open for the August session. Could you share the date and set length? Happy to lock it in.\n\nCheers,\nStark' },
-    { id: 'm7', account: 'consulting', from: 'Liora Chen · ScaleUp Labs', initials: 'LC', subject: 'AI ops consulting — exploratory call', snippet: 'We saw your agent workflow system and are curious about bringing it in-house…', tone: 'blue', tag: 'Lead', draft: 'Hi Liora,\n\nGreat to hear ScaleUp Labs is interested. Happy to walk through the system — let me know what timezone and preferred day next week, and I’ll send a calendar invite.\n\nBest,\nStark' },
+    { id: 'm5', account: 'business', from: 'Peakbridge Ventures', initials: 'PV', subject: 'Q3 check-in — portfolio review', snippet: 'Hi Stark — we\'d like to schedule the quarterly portfolio review for next week…', tone: 'muted', tag: 'Schedule', draft: 'Hi team,\n\nHappy to do the Q3 review. Thursday or Friday afternoon works best — let me know which slot you prefer and I\'ll confirm.\n\nBest,\nStark' },
+    { id: 'm6', account: 'consulting', from: 'Café Mantra · events', initials: 'CM', subject: 'Re: DJ booking availability — August dates', snippet: 'We\'d love to have Valhalla play the August session…', tone: 'muted', tag: 'Reply now', draft: 'Hey — great to hear from you! Valhalla is open for the August session. Could you share the date and set length? Happy to lock it in.\n\nCheers,\nStark' },
+    { id: 'm7', account: 'consulting', from: 'Liora Chen · ScaleUp Labs', initials: 'LC', subject: 'AI ops consulting — exploratory call', snippet: 'We saw your agent workflow system and are curious about bringing it in-house…', tone: 'blue', tag: 'Lead', draft: 'Hi Liora,\n\nGreat to hear ScaleUp Labs is interested. Happy to walk through the system — let me know what timezone and preferred day next week, and I\'ll send a calendar invite.\n\nBest,\nStark' },
     { id: 'm8', account: 'newsletter', from: 'Substack Digest', initials: 'SD', subject: 'Your weekly roundup — top 5 reads in AI + business', snippet: 'This week: agent orchestration patterns, a CEO who replaced middle management with AI…', tone: 'muted', tag: 'Read later', draft: '' },
     { id: 'm9', account: 'newsletter', from: 'Fashion United · Insider Brief', initials: 'FU', subject: 'DTC brands pivot to AI-first operations', snippet: 'A growing number of direct-to-consumer brands are restructuring around agentic workflows…', tone: 'muted', tag: 'Read later', draft: '' },
   ],
@@ -91,6 +133,10 @@ export default function InboxPage() {
   const [triage, setTriage] = useState(false)
   const [tIdx, setTIdx] = useState(0)
 
+  // ── Inbox Zero mock state ──
+  const [inboxZeroPct] = useState(67)
+  const [nextSweepTime] = useState('18:00')
+
   // ── Derived ──
   const filteredMails = useMemo(
     () => (accountFilter === 'All' ? mails : mails.filter((m) => m.account === accountFilter)),
@@ -98,6 +144,8 @@ export default function InboxPage() {
   )
 
   const sel = filteredMails.find((m) => m.id === selId)
+  const contact = sel ? contacts[sel.id] : undefined
+  const threads = sel ? (MOCK_THREADS[sel.id] ?? []) : []
 
   // Init draft when selected mail changes
   const pick = (m: Mail) => {
@@ -115,6 +163,11 @@ export default function InboxPage() {
   }
 
   const tMail = mails[tIdx]
+
+  // ── Derive sender name + company from sel.from ──
+  const senderParts = sel?.from ? sel.from.split(' · ') : []
+  const senderName = senderParts[0] ?? ''
+  const senderCompany = senderParts[1] ?? ''
 
   // ── Loading state ──
   if (loading && !data) {
@@ -166,13 +219,42 @@ export default function InboxPage() {
 
       {errorBanner}
 
+      {/* ── Inbox Zero protocol indicator ── */}
+      <div className="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] px-4 py-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <StatusBadge tone="green">Inbox Zero · twice daily</StatusBadge>
+            <span className="text-[12px] text-on-surface-variant">
+              {inboxZeroPct}% done · next sweep at {nextSweepTime}
+            </span>
+          </div>
+          <span className="text-[11px] text-on-surface-variant/60">
+            {sent.length} sent · {mails.length - sent.length} to clear
+          </span>
+        </div>
+        {/* Progress bar */}
+        <div className="h-1.5 w-full rounded-full bg-white/[0.06] overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: `${inboxZeroPct}%`,
+              background: 'linear-gradient(90deg, var(--ws-accent), #34d399)',
+            }}
+          />
+        </div>
+        <div className="mt-1.5 flex items-center justify-between text-[10px] text-on-surface-variant/50">
+          <span>Today&apos;s sweep</span>
+          <span>{inboxZeroPct}%</span>
+        </div>
+      </div>
+
+      {/* ── Account filters + source indicator ── */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <StatusBadge tone="green">Inbox-zero protocol · twice daily</StatusBadge>
-        <span className="text-[12px] text-on-surface-variant">
-          {sent.length} sent · {mails.length - sent.length} to clear · {accounts.length} accounts
-        </span>
         <span className="text-[11px] text-on-surface-variant/60">
           {source === 'live' ? '● Live' : '◌ Cached'}
+        </span>
+        <span className="text-[12px] text-on-surface-variant">
+          {accounts.length} accounts
         </span>
         <div className="ml-auto flex gap-1.5">
           <button
@@ -196,7 +278,7 @@ export default function InboxPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[300px_1fr_280px]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[300px_1fr_320px]">
         {/* ── Email list ── */}
         <Card className="h-fit overflow-hidden p-0">
           {filteredMails.map((m) => (
@@ -263,22 +345,35 @@ export default function InboxPage() {
           </div>
         </Card>
 
-        {/* ── Contact panel ── */}
+        {/* ── Contact intelligence panel (right rail) ── */}
         <Card className="h-fit p-4">
-          <h4 className="mb-1 text-sm font-semibold text-on-surface">
-            What we know about {sel.from.split(' · ')[0]}
-          </h4>
-          {contacts[sel.id] ? (
-            <>
-              <div className="mb-3 flex items-center gap-2">
-                <StatusBadge tone="blue">{contacts[sel.id].rel}</StatusBadge>
-                <StatusBadge tone="muted">{contacts[sel.id].value}</StatusBadge>
+          {/* Sender name + company header */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2.5">
+              <Avatar initials={sel.initials} />
+              <div>
+                <p className="text-[13px] font-semibold text-on-surface">{senderName}</p>
+                {senderCompany && (
+                  <p className="text-[11px] text-on-surface-variant/70">{senderCompany}</p>
+                )}
               </div>
+            </div>
+          </div>
+
+          {contact ? (
+            <>
+              {/* Relationship status + value */}
+              <div className="mb-3 flex flex-wrap items-center gap-2">
+                <StatusBadge tone="blue">{contact.rel}</StatusBadge>
+                <StatusBadge tone="muted">{contact.value}</StatusBadge>
+              </div>
+
+              {/* Contact memory notes */}
               <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-on-surface-variant/60">
                 Contact memory
               </p>
               <ul className="space-y-1.5">
-                {contacts[sel.id].notes.map((n) => (
+                {contact.notes.map((n) => (
                   <li key={n} className="flex gap-2 text-[12px] text-on-surface-variant">
                     <span
                       className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
@@ -288,6 +383,50 @@ export default function InboxPage() {
                   </li>
                 ))}
               </ul>
+
+              {/* Recent threads timeline */}
+              {threads.length > 0 && (
+                <>
+                  <p className="mt-4 mb-2 text-[11px] font-semibold uppercase tracking-wide text-on-surface-variant/60">
+                    Recent threads
+                  </p>
+                  <div className="space-y-2">
+                    {threads.map((t, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        {/* Timeline dot + line */}
+                        <div className="flex flex-col items-center pt-1">
+                          <div
+                            className="h-1.5 w-1.5 rounded-full shrink-0"
+                            style={{
+                              background: t.direction === 'in'
+                                ? 'var(--ws-accent)'
+                                : 'var(--ws-accent-soft)',
+                            }}
+                          />
+                          {i < threads.length - 1 && (
+                            <div className="mt-0.5 h-full w-px bg-white/[0.08]" style={{ minHeight: 20 }} />
+                          )}
+                        </div>
+                        {/* Thread info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[12px] text-on-surface-variant leading-snug truncate">
+                            {t.subject}
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <MessageSquare
+                              size={11}
+                              className="text-on-surface-variant/40 shrink-0"
+                            />
+                            <span className="text-[10px] text-on-surface-variant/50">
+                              {t.date} · {t.direction === 'in' ? 'Received' : 'Sent'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </>
           ) : (
             <p className="text-[12px] text-on-surface-variant">No contact data available.</p>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { PageHeader, StatusBadge, Avatar, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
 import { useLiveData } from '@/lib/use-live-data'
-import { Plus, LayoutGrid, CalendarDays, ChevronLeft, ChevronRight, Youtube, Sparkles } from 'lucide-react'
+import { Plus, LayoutGrid, CalendarDays, ChevronLeft, ChevronRight, Youtube, Sparkles, Lightbulb, Briefcase, Users } from 'lucide-react'
 
 const STAGES = ['Ideas', 'Scripting', 'Thumbnails', 'Filming', 'Editing', 'Ready', 'Published'] as const
 
@@ -36,6 +36,55 @@ const SEED: Item[] = [
 
 const dot = ['#abc7ff', '#abc7ff', '#ffb693', '#5ee0ff', '#5ee0ff', '#4ade80', '#8b919f']
 
+// ── Strategy pillars with mock video ideas ─────────────────────────────
+
+type PillarCard = {
+  id: string
+  title: string
+  format: string
+  estimatedViews?: string
+  priority: 'High' | 'Medium'
+}
+
+type Pillar = {
+  name: string
+  icon: typeof Lightbulb
+  description: string
+  cards: PillarCard[]
+}
+
+const PILLARS: Pillar[] = [
+  {
+    name: 'Agent Tech',
+    icon: Lightbulb,
+    description: 'Deep dives into AI tooling, agent architectures, and shipping with code-gen',
+    cards: [
+      { id: 'at1', title: 'Building a multi-agent memory system from scratch', format: 'Tutorial · 12 min', estimatedViews: '85k', priority: 'High' },
+      { id: 'at2', title: 'I let Claude Code refactor my entire SaaS — here is what shipped', format: 'Case study · 18 min', estimatedViews: '120k', priority: 'High' },
+      { id: 'at3', title: 'The Decision Queue pattern: how I run 13 agents from one screen', format: 'Deep dive · 15 min', estimatedViews: '95k', priority: 'Medium' },
+    ],
+  },
+  {
+    name: 'Business Building',
+    icon: Briefcase,
+    description: 'Founder stories, revenue models, and building in public with AI leverage',
+    cards: [
+      { id: 'bb1', title: 'I built a $10k MRR SaaS with AI agents in 30 days', format: 'Build in public · 20 min', estimatedViews: '150k', priority: 'High' },
+      { id: 'bb2', title: 'The exact funnel that turned my newsletter into a product', format: 'Case study · 14 min', priority: 'Medium' },
+    ],
+  },
+  {
+    name: 'Creator Life',
+    icon: Users,
+    description: 'Behind-the-scenes, workflows, and the reality of being an AI-first creator',
+    cards: [
+      { id: 'cl1', title: 'A week in the life of an AI-first YouTube creator', format: 'Vlog · 22 min', estimatedViews: '60k', priority: 'High' },
+      { id: 'cl2', title: 'My content engine: from idea to published with zero manual editing', format: 'Walkthrough · 16 min', estimatedViews: '78k', priority: 'Medium' },
+      { id: 'cl3', title: 'Why I stopped editing my own videos (and you should too)', format: 'Essay · 10 min', priority: 'Medium' },
+    ],
+  },
+]
+
 export default function ContentPipelinePage() {
   const { data: liveItems, loading } = useLiveData<Item[]>({
     url: '/api/content-feed?type=pipeline',
@@ -47,7 +96,7 @@ export default function ContentPipelinePage() {
     if (liveItems) setItems(liveItems)
   }, [liveItems])
   const [sel, setSel] = useState<Item | null>(null)
-  const [view, setView] = useState<'board' | 'calendar'>('board')
+  const [view, setView] = useState<'kanban' | 'strategy' | 'calendar'>('kanban')
   const [adding, setAdding] = useState(false)
   const [draft, setDraft] = useState('')
 
@@ -71,8 +120,11 @@ export default function ContentPipelinePage() {
         actions={
           <>
             <div className="flex rounded-full border border-white/8 bg-white/[0.03] p-1">
-              <button onClick={() => setView('board')} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold" style={view === 'board' ? { background: 'var(--ws-accent)', color: '#06121f' } : { color: '#c1c6d6' }}>
-                <LayoutGrid size={13} /> Board
+              <button onClick={() => setView('kanban')} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold" style={view === 'kanban' ? { background: 'var(--ws-accent)', color: '#06121f' } : { color: '#c1c6d6' }}>
+                <LayoutGrid size={13} /> Kanban
+              </button>
+              <button onClick={() => setView('strategy')} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold" style={view === 'strategy' ? { background: 'var(--ws-accent)', color: '#06121f' } : { color: '#c1c6d6' }}>
+                <Sparkles size={13} /> Strategy
               </button>
               <button onClick={() => setView('calendar')} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold" style={view === 'calendar' ? { background: 'var(--ws-accent)', color: '#06121f' } : { color: '#c1c6d6' }}>
                 <CalendarDays size={13} /> Calendar
@@ -90,7 +142,7 @@ export default function ContentPipelinePage() {
         <span className="text-[12px] text-on-surface-variant">1 video / week · {items.filter((i) => i.stage === 0).length} ideas in queue · {items.filter((i) => i.stage === 6).length} published</span>
       </div>
 
-      {view === 'board' ? (
+      {view === 'kanban' ? (
         <div className="scroll-x flex gap-3 overflow-x-auto pb-2">
           {STAGES.map((stage, si) => {
             const col = items.filter((i) => i.stage === si)
@@ -125,6 +177,8 @@ export default function ContentPipelinePage() {
             )
           })}
         </div>
+      ) : view === 'strategy' ? (
+        <StrategyView pillars={PILLARS} />
       ) : (
         <CalendarView items={items} />
       )}
@@ -208,6 +262,74 @@ export default function ContentPipelinePage() {
     </div>
   )
 }
+
+// ── Strategy View ──────────────────────────────────────────────────────
+
+function StrategyView({ pillars }: { pillars: Pillar[] }) {
+  const priorityColor = (p: PillarCard['priority']) =>
+    p === 'High' ? { background: '#4ade8022', color: '#4ade80', border: '1px solid #4ade8055' } : { background: 'rgba(255,255,255,0.05)', color: '#8b919f', border: '1px solid rgba(255,255,255,0.12)' }
+
+  return (
+    <div className="space-y-6">
+      <p className="text-[12px] text-on-surface-variant">
+        Content strategy pillars — each pillar has 2-3 video ideas aligned with a theme. Drag to reorder, promote to Kanban when ready.
+      </p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {pillars.map((pillar) => {
+          const Icon = pillar.icon
+          return (
+            <div key={pillar.name} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+              {/* Pillar header */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: 'var(--ws-accent-soft)' }}>
+                  <Icon size={18} style={{ color: 'var(--ws-accent)' }} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-on-surface">{pillar.name}</h4>
+                  <p className="text-[11px] text-on-surface-variant">{pillar.cards.length} ideas</p>
+                </div>
+              </div>
+              <p className="mb-4 text-[12px] text-on-surface-variant leading-relaxed">{pillar.description}</p>
+
+              {/* Cards */}
+              <div className="space-y-2.5">
+                {pillar.cards.map((card) => (
+                  <div key={card.id} className="rounded-xl border border-white/6 bg-white/[0.04] p-3 hover:border-white/12 transition">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-[13px] text-on-surface leading-snug flex-1">{card.title}</p>
+                      <span
+                        className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
+                        style={priorityColor(card.priority)}
+                      >
+                        {card.priority}
+                      </span>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between text-[11px] text-on-surface-variant">
+                      <span>{card.format}</span>
+                      {card.estimatedViews && (
+                        <span className="flex items-center gap-1">
+                          <Youtube size={10} />
+                          {card.estimatedViews}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add card placeholder */}
+              <button className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-white/10 py-2.5 text-[12px] text-on-surface-variant hover:border-white/20 hover:text-on-surface transition">
+                <Plus size={13} /> Add idea
+              </button>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// ── Calendar View ──────────────────────────────────────────────────────
 
 function CalendarView({ items }: { items: Item[] }) {
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']

@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { ClaudeRequestBody, AgentId } from '@/lib/types'
 import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
+import { getPersonalityExtension } from '@/lib/agent-personalities'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -67,6 +68,17 @@ export async function POST(request: Request): Promise<Response> {
     route: routeLabel,
   } = body
 
+  // If agentId is provided, append the agent's personality baseline to the system prompt.
+  // This gives the LLM the agent's distinct voice, convictions, and quality bar.
+  // Backward-compatible: if no agentId, systemPrompt is used as-is.
+  let effectiveSystemPrompt = systemPrompt
+  if (agentId) {
+    const ext = getPersonalityExtension(agentId)
+    if (ext) {
+      effectiveSystemPrompt = (systemPrompt ?? '') + ext
+    }
+  }
+
   if (!userMessage) {
     return Response.json({ error: 'userMessage is required' }, { status: 400 })
   }
@@ -82,8 +94,8 @@ export async function POST(request: Request): Promise<Response> {
         const baseParams = {
           model: resolvedModel,
           max_tokens: 2048,
-          system: systemPrompt
-            ? [{ type: 'text' as const, text: systemPrompt, cache_control: { type: 'ephemeral' as const } }]
+          system: effectiveSystemPrompt
+            ? [{ type: 'text' as const, text: effectiveSystemPrompt, cache_control: { type: 'ephemeral' as const } }]
             : [],
           messages: [{ role: 'user' as const, content: userMessage }],
         }
