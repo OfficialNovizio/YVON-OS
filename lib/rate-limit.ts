@@ -1,104 +1,104 @@
-/**
- * lib/rate-limit.ts — In-memory sliding window rate limiter for Edge Middleware.
- *
- * This is a **best-effort** guard for Vercel serverless. Each instance has its
- * own isolated memory, so at high concurrency the actual limit is ~instanceCount × limit.
- *
- * For exact limits in production, replace with Upstash Redis:
- *   https://upstash.com/docs/redis/sdks/ratelimit-ts/overview
- *   const { Ratelimit } = await import('@upstash/ratelimit')
- *   const { Redis } = await import('@upstash/redis')
- *   export const rateLimit = new Ratelimit({
- *     redis: Redis.fromEnv(),
- *     limiter: Ratelimit.slidingWindow(10, '10 s'),
- *   })
- */
+// In-memory rate limiter for Next.js middleware.
+// Tracks requests per IP with a 60-second sliding window.
+// Auto-cleanup runs every 60s to prevent memory leaks from stale entries.
 
 interface RateLimitEntry {
   count: number
-  resetAt: number
+  resetTime: number
+}
+
+interface RateLimitConfig {
+  /** Window duration in milliseconds */
+  windowMs: number
+  /** Maximum requests allowed within the window */
+  maxRequests: number
 }
 
 const store = new Map<string, RateLimitEntry>()
 
-// Auto-cleanup stale entries every 5 minutes to prevent memory leak
-if (typeof setInterval !== 'undefined') {
-  setInterval(() => {
-    const now = Date.now()
-    for (const [key, entry] of store) {
-      if (entry.resetAt < now) store.delete(key)
-    }
-  }, 300_000)
-}
+// Auto-cleanup every 60s — removes entries whose window has expired.
+const CLEANUP_INTERVAL = 60_000
 
-export interface RateLimitResult {
-  allowed: boolean
-  remaining: number
-  resetInSeconds: number
+let cleanupTimer: ReturnType<typeof setInterval> | null = null
+
+function ensureCleanup(): void {
+  if (cleanupTimer) return
+  cleanupTimer = setInterval(() => {
+    const now = Date.now()
+    for (const [key, entry] of Array.from(store.entries())) {
+      if (now >= entry.resetTime) {
+        store.delete(key)
+      }
+    }
+  }, CLEANUP_INTERVAL)
 }
 
 /**
- * @param key — Unique identifier (IP, userId, route+ip, etc.)
- * @param limit — Max requests in the window
- * @param windowSeconds — Sliding window duration
+ * Check whether a request from `ip` to `path` should be rate-limited.
+ *
+ * Returns `allowed: true` when no matching config exists or the request
+ * is within limits. Returns `allowed: false` with retry metadata when
+ * the limit has been exceeded.
  */
 export function checkRateLimit(
-  key: string,
-  limit = 60,
-  windowSeconds = 60,
-): RateLimitResult {
-  const now = Date.now()
-  const windowMs = windowSeconds * 1000
-  const entry = store.get(key)
+  ip: string,
+  path: string,
+  configs: Record<string, RateLimitConfig>,
+): { allowed: boolean; remaining: number; resetTime: number } {
+  ensureCleanup()
 
-  if (!entry || entry.resetAt < now) {
-    store.set(key, { count: 1, resetAt: now + windowMs })
-    return { allowed: true, remaining: limit - 1, resetInSeconds: windowSeconds }
+  // Longest-prefix match so /api/claude/xyz is covered by /api/claude config
+  let matchedConfig: RateLimitConfig | undefined
+  let matchedPrefix = ''
+  for (const prefix of Object.keys(configs)) {
+    if (path.startsWith(prefix) && prefix.length > matchedPrefix.length) {
+      matchedConfig = configs[prefix]
+      matchedPrefix = prefix
+    }
   }
 
-  entry.count += 1
-  const remaining = Math.max(0, limit - entry.count)
-  const resetInSeconds = Math.max(0, Math.ceil((entry.resetAt - now) / 1000))
+  if (!matchedConfig) {
+    return { allowed: true, remaining: -1, resetTime: 0 }
+  }
+
+  const key = `${ip}:${matchedPrefix}`
+  const now = Date.now()
+  const entry = store.get(key)
+
+  // New window — first request in this period
+  if (!entry || now >= entry.resetTime) {
+    const newEntry: RateLimitEntry = {
+      count: 1,
+      resetTime: now + matchedConfig.windowMs,
+    }
+    store.set(key, newEntry)
+    return {
+      allowed: true,
+      remaining: matchedConfig.maxRequests - 1,
+      resetTime: newEntry.resetTime,
+    }
+  }
+
+  // Existing window — increment
+  entry.count++
+
+  if (entry.count > matchedConfig.maxRequests) {
+    return {
+      allowed: false,
+      remaining: 0,
+      resetTime: entry.resetTime,
+    }
+  }
 
   return {
-    allowed: entry.count <= limit,
-    remaining,
-    resetInSeconds,
+    allowed: true,
+    remaining: matchedConfig.maxRequests - entry.count,
+    resetTime: entry.resetTime,
   }
 }
 
-/**
- * Higher-order middleware wrapper for API routes.
- *
- * Usage:
- *   import { withRateLimit } from '@/lib/rate-limit'
- *   export const GET = withRateLimit(60, 60)(async (req) => { ... })
- */
-export function withRateLimit(limit = 60, windowSeconds = 60) {
-  return function <T extends Request>(
-    handler: (req: T, ...args: unknown[]) => Promise<Response>,
-  ) {
-    return async (req: T, ...args: unknown[]): Promise<Response> => {
-      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-        ?? req.headers.get('x-real-ip')
-        ?? 'anonymous'
-      const route = new URL(req.url).pathname
-      const result = checkRateLimit(`${ip}:${route}`, limit, windowSeconds)
-
-      if (!result.allowed) {
-        return Response.json(
-          { error: 'Too many requests' },
-          {
-            status: 429,
-            headers: {
-              'Retry-After': String(result.resetInSeconds),
-              'X-RateLimit-Remaining': '0',
-            },
-          },
-        )
-      }
-
-      return handler(req, ...args)
-    }
-  }
+/** Pre-configured rate limits for API routes. */
+export const API_RATE_LIMITS: Record<string, RateLimitConfig> = {
+  '/api/claude': { windowMs: 60_000, maxRequests: 60 },
+  '/api/settings': { windowMs: 60_000, maxRequests: 30 },
 }

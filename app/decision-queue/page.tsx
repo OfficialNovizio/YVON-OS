@@ -5,8 +5,9 @@ import { Card, PageHeader, StatusBadge, Avatar } from '@/components/ui'
 import {
   Mail, ShieldAlert, Megaphone, GitMerge, Search, Sparkles,
   Clock, Send, Pencil, Check, ChevronRight, ChevronLeft,
-  Calendar, BrainCircuit, FileText
+  Calendar, BrainCircuit, FileText, Zap
 } from 'lucide-react'
+import { getStats, type HenryStats } from '@/lib/henry-learning'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface DecisionAction {
@@ -74,6 +75,7 @@ export default function DecisionQueuePage() {
   const [triageMode, setTriageMode] = useState(false)
   const [triageIdx, setTriageIdx] = useState(0)
   const [actingId, setActingId] = useState<string | null>(null)
+  const [henryStats, setHenryStats] = useState<HenryStats>(() => getStats())
 
   const fetchQueue = useCallback(async () => {
     setLoading(true)
@@ -82,6 +84,8 @@ export default function DecisionQueuePage() {
       const json = await res.json()
       if (res.ok) setData(json)
       else setError(json.error ?? 'Failed to load queue')
+      // Refresh Henry stats after fetch
+      setHenryStats(getStats())
     } catch {
       setError('Network error')
     } finally {
@@ -172,6 +176,12 @@ export default function DecisionQueuePage() {
                 <span>{new Date(triageItem.createdAt).toLocaleDateString()}</span>
               </div>
 
+              {/* Henry filter label */}
+              <div className="mt-1 flex items-center gap-1 text-[10px] text-on-surface-variant/60">
+                <Avatar initials="HN" color="#8B5CF6" />
+                <span>Filtered by Henry</span>
+              </div>
+
               {/* Action buttons */}
               <div className="mt-5 flex flex-wrap items-center gap-2">
                 {triageItem.actions.map((a) => (
@@ -246,6 +256,39 @@ export default function DecisionQueuePage() {
           </>
         }
       />
+
+      {/* ── Henry auto-handle stats bar ────────────────────────────────────── */}
+      <Card className="mb-5 flex flex-wrap items-center gap-4 p-3">
+        <div className="flex items-center gap-2">
+          <Avatar initials="HN" color="#8B5CF6" />
+          <span className="text-sm font-semibold text-on-surface">Henry</span>
+        </div>
+        <div className="h-5 w-px bg-white/10" />
+        <div className="flex items-center gap-1.5 text-[13px] text-on-surface-variant">
+          <Zap size={14} style={{ color: '#8B5CF6' }} />
+          <span>
+            Auto-handled <span className="font-semibold text-on-surface">{henryStats.autoHandled}</span> today
+          </span>
+        </div>
+        <div className="h-5 w-px bg-white/10" />
+        <div className="flex items-center gap-1.5 text-[13px] text-on-surface-variant">
+          <Send size={14} style={{ color: 'var(--ws-accent)' }} />
+          <span>
+            Escalated <span className="font-semibold text-on-surface">{henryStats.escalated}</span>
+          </span>
+        </div>
+        {henryStats.totalDecisions > 0 && (
+          <>
+            <div className="h-5 w-px bg-white/10" />
+            <div className="text-[13px] text-on-surface-variant">
+              Approval rate{' '}
+              <span className="font-semibold text-green-400">
+                {(henryStats.approvalRate * 100).toFixed(0)}%
+              </span>
+            </div>
+          </>
+        )}
+      </Card>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_320px]">
         {/* Main feed */}
@@ -325,6 +368,11 @@ export default function DecisionQueuePage() {
                             {item.agent}
                           </span>
                         </div>
+                        {/* Henry filter label */}
+                        <div className="mt-1 flex items-center gap-1 text-[10px] text-on-surface-variant/60">
+                          <Avatar initials="HN" color="#8B5CF6" />
+                          <span>Filtered by Henry</span>
+                        </div>
                       </div>
                     </div>
                   </Card>
@@ -388,6 +436,61 @@ export default function DecisionQueuePage() {
                 Learns what you defer, surfaces less over time.
               </li>
             </ul>
+          </Card>
+
+          {/* Henry Learning */}
+          <Card className="p-4">
+            <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-on-surface">
+              <Avatar initials="HN" color="#8B5CF6" /> Henry&apos;s learning
+            </h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[13px] text-on-surface-variant">Auto-handled today</span>
+                <span className="text-sm font-semibold" style={{ color: '#8B5CF6' }}>{henryStats.autoHandled}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[13px] text-on-surface-variant">Escalated to you</span>
+                <span className="text-sm font-semibold text-on-surface">{henryStats.escalated}</span>
+              </div>
+              {henryStats.totalDecisions > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-[13px] text-on-surface-variant">Approval rate</span>
+                  <span className="text-sm font-semibold text-green-400">
+                    {(henryStats.approvalRate * 100).toFixed(0)}%
+                  </span>
+                </div>
+              )}
+              {henryStats.typeConfidence.length > 0 && (
+                <div className="pt-2 border-t border-white/5">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-on-surface-variant/60">
+                    Type confidence
+                  </p>
+                  <div className="space-y-1.5">
+                    {henryStats.typeConfidence.slice(0, 5).map((tc) => (
+                      <div key={tc.type} className="flex items-center justify-between text-[11px]">
+                        <span className="text-on-surface-variant truncate max-w-[120px]">{tc.type}</span>
+                        <div className="flex items-center gap-1.5">
+                          {tc.canAutoHandle && (
+                            <span className="text-[9px] text-green-400">auto</span>
+                          )}
+                          <span
+                            className={
+                              tc.confidence > 0.9
+                                ? 'text-green-400'
+                                : tc.confidence > 0.6
+                                ? 'text-yellow-400'
+                                : 'text-on-surface-variant'
+                            }
+                          >
+                            {(tc.confidence * 100).toFixed(0)}%
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </Card>
 
           {/* Workspace filter */}

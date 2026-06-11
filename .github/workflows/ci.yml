@@ -25,6 +25,17 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:unit
+
   typecheck:
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +48,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [lint, typecheck]
+    needs: [lint, unit-tests, typecheck]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

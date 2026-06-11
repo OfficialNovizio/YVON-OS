@@ -9,6 +9,8 @@
     "lint": "next lint",
     "typecheck": "npx tsc --noEmit",
     "test": "echo 'No tests yet — placeholder for CI' && exit 0",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:a1": "tsx scripts/test-a1-session.ts",
@@ -52,16 +54,21 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^16.2.9",
     "@playwright/test": "^1.60.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^6.0.2",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.22.0",
     "eslint-config-next": "^15.2.4",
+    "jsdom": "^29.1.1",
     "lighthouse": "^13.4.0",
     "pg": "^8.20.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^4.1.8"
   }
 }

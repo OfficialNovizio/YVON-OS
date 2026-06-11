@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { PageHeader, StatusBadge, Avatar, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
 import { useLiveData } from '@/lib/use-live-data'
-import { Check, Upload, Send, CalendarClock, ChevronRight, SkipForward, Sparkles } from 'lucide-react'
+import { Check, Upload, Send, CalendarClock, ChevronRight, SkipForward, Sparkles, RefreshCw } from 'lucide-react'
 
 type Post = {
   id: string
@@ -23,6 +23,35 @@ export default function SocialApprovalsPage() {
   const [variant, setVariant] = useState<'A' | 'B'>('A')
   const [confirm, setConfirm] = useState<null | 'post' | 'schedule'>(null)
   const [done, setDone] = useState<string[]>([])
+  const [regenerating, setRegenerating] = useState(false)
+  const [regeneratedVariants, setRegeneratedVariants] = useState<{ text: string; label: string }[] | null>(null)
+
+  const handleRegenerate = async () => {
+    if (!post || regenerating) return
+    setRegenerating(true)
+    try {
+      const res = await fetch('/api/william/copy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: `Social post about: ${post.from}. Platform: ${post.platform}.`,
+          brandVoice: {
+            brand: 'YVON',
+            tone: 'confident, technical, direct',
+            audience: 'founders, builders, operators',
+          },
+          count: 2,
+        }),
+      })
+      if (!res.ok) throw new Error('Regenerate failed')
+      const data = await res.json()
+      setRegeneratedVariants(data.variants ?? null)
+    } catch (err) {
+      console.error('[social-approvals] regenerate error:', err)
+    } finally {
+      setRegenerating(false)
+    }
+  }
 
   const { data } = useLiveData<{ posts: Post[] }>({
     url: '/api/social-approvals',
@@ -51,6 +80,7 @@ export default function SocialApprovalsPage() {
     setImg(0)
     setVariant('A')
     setConfirm(null)
+    setRegeneratedVariants(null)
     setIdx((i) => Math.min(posts.length - 1, i + 1))
   }
 
@@ -101,21 +131,52 @@ export default function SocialApprovalsPage() {
 
           {/* copy variants */}
           <div className="space-y-3">
-            {(['A', 'B'] as const).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                className="block w-full rounded-xl border p-3 text-left transition"
-                style={{ borderColor: variant === v ? 'var(--ws-glow)' : 'rgba(255,255,255,0.08)', background: variant === v ? 'var(--ws-accent-soft)' : 'transparent' }}
-              >
-                <div className="mb-1.5 flex items-center gap-2">
-                  <span className="text-[12px] font-semibold text-on-surface">Variant {v}</span>
-                  {post.recommended === v && <StatusBadge tone="green">recommended</StatusBadge>}
-                  <Avatar initials="WM" />
-                </div>
-                <p className="text-[12px] leading-relaxed text-on-surface-variant">{v === 'A' ? post.variantA : post.variantB}</p>
-              </button>
-            ))}
+            {(regeneratedVariants && regeneratedVariants.length >= 2
+              ? regeneratedVariants
+              : [
+                  { text: post.variantA, label: 'Variant A' },
+                  { text: post.variantB, label: 'Variant B' },
+                ]
+            ).map((v, vi) => {
+              const vLabel = vi === 0 ? ('A' as const) : ('B' as const)
+              return (
+                <button
+                  key={vi}
+                  onClick={() => setVariant(vLabel)}
+                  className="block w-full rounded-xl border p-3 text-left transition"
+                  style={{
+                    borderColor:
+                      variant === vLabel ? 'var(--ws-glow)' : 'rgba(255,255,255,0.08)',
+                    background:
+                      variant === vLabel ? 'var(--ws-accent-soft)' : 'transparent',
+                  }}
+                >
+                  <div className="mb-1.5 flex items-center gap-2">
+                    <span className="text-[12px] font-semibold text-on-surface">
+                      {v.label}
+                    </span>
+                    {!regeneratedVariants && post.recommended === vLabel && (
+                      <StatusBadge tone="green">recommended</StatusBadge>
+                    )}
+                    <Avatar initials="WM" />
+                  </div>
+                  <p className="text-[12px] leading-relaxed text-on-surface-variant">
+                    {v.text}
+                  </p>
+                </button>
+              )
+            })}
+            <button
+              className="btn-ghost w-full !justify-center !py-2 !text-xs"
+              onClick={handleRegenerate}
+              disabled={regenerating}
+            >
+              {regenerating ? (
+                <><RefreshCw size={13} className="animate-spin" /> Regenerating…</>
+              ) : (
+                <><RefreshCw size={13} /> Regenerate with William</>
+              )}
+            </button>
           </div>
         </div>
 
@@ -156,7 +217,15 @@ export default function SocialApprovalsPage() {
       >
         <div className="rounded-xl border border-white/8 p-3">
           <div className="mb-2 aspect-[1.4] rounded-lg" style={{ background: `linear-gradient(135deg, ${SWATCHES[img]}, #111)` }} />
-          <p className="text-[12px] leading-relaxed text-on-surface">{variant === 'A' ? post.variantA : post.variantB}</p>
+          <p className="text-[12px] leading-relaxed text-on-surface">
+            {regeneratedVariants
+              ? variant === 'A'
+                ? regeneratedVariants[0]?.text ?? post.variantA
+                : regeneratedVariants[1]?.text ?? post.variantB
+              : variant === 'A'
+              ? post.variantA
+              : post.variantB}
+          </p>
         </div>
         {confirm === 'schedule' && (
           <p className="mt-3 flex items-center gap-1.5 text-[12px] text-on-surface-variant">

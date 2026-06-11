@@ -61,6 +61,32 @@ export default function AssetLabPage() {
   const [tab, setTab] = useState<'gallery' | 'generate' | 'thumbnails'>('gallery')
   const [search, setSearch] = useState('')
   const [assets, setAssets] = useState<Asset[]>(FALLBACK_ASSETS)
+  const [genPrompt, setGenPrompt] = useState('')
+  const [genLoading, setGenLoading] = useState(false)
+  const [genResults, setGenResults] = useState<Array<{ url: string; id: string; prompt: string; source: string }>>([])
+
+  const handleGenerate = async () => {
+    if (!genPrompt.trim() || genLoading) return
+    setGenLoading(true)
+    try {
+      const res = await fetch('/api/leonardo/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: genPrompt.trim(),
+          count: 4,
+          brandKit,
+        }),
+      })
+      if (!res.ok) throw new Error('Generate failed')
+      const data = await res.json()
+      setGenResults(data.images ?? [])
+    } catch (err) {
+      console.error('[asset-lab] generate error:', err)
+    } finally {
+      setGenLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (data?.assets) setAssets(data.assets)
@@ -173,7 +199,86 @@ export default function AssetLabPage() {
         ))}
       </div>
 
+      {/* ── Tab content ── */}
+      {tab === 'generate' && (
+        <div className="mb-6">
+          <Card className="p-5">
+            <h3 className="mb-3 text-sm font-semibold text-on-surface">
+              Generate with Leonardo
+            </h3>
+            <div className="flex gap-2">
+              <input
+                placeholder="Describe the image you want…"
+                value={genPrompt}
+                onChange={(e) => setGenPrompt(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleGenerate()}
+                className="flex-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-[13px] text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-white/20"
+              />
+              <button
+                className="btn-accent !py-2.5 !px-5 shrink-0"
+                onClick={handleGenerate}
+                disabled={genLoading || !genPrompt.trim()}
+              >
+                {genLoading ? (
+                  <><RefreshCw size={15} className="animate-spin" /> Generating…</>
+                ) : (
+                  <><Sparkles size={15} /> Generate</>
+                )}
+              </button>
+            </div>
+            {brandKit && (
+              <div className="mt-2 flex items-center gap-2 text-[11px] text-on-surface-variant">
+                <span>Brand kit:</span>
+                <span className="text-on-surface">{brandKit.style}</span>
+                <span>·</span>
+                <span>{brandKit.persona}</span>
+                <div className="flex gap-1 ml-1">
+                  {brandKit.colors.map((c) => (
+                    <span key={c} className="h-3 w-3 rounded-sm border border-white/10" style={{ background: c }} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </Card>
+
+          {genResults.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+              {genResults.map((img, i) => (
+                <div
+                  key={img.id || i}
+                  className="overflow-hidden rounded-xl border border-white/8 bg-white/[0.03]"
+                >
+                  <div className="aspect-square">
+                    <img
+                      src={img.url}
+                      alt={img.prompt}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-2">
+                    <p className="truncate text-[10px] text-on-surface-variant">{img.prompt}</p>
+                    <span className="text-[9px] text-on-surface-variant/60">
+                      {img.source === 'mock' ? 'Mock' : 'Leonardo'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {genResults.length === 0 && !genLoading && genPrompt && (
+            <Card className="mt-4 p-8 text-center">
+              <p className="text-[13px] text-on-surface-variant">
+                No images generated yet. Write a prompt and click Generate.
+              </p>
+            </Card>
+          )}
+        </div>
+      )}
+
       {/* ── Masonry gallery grid + brand kit sidebar ── */}
+      {tab !== 'generate' && (
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_260px]">
         <div className="columns-2 md:columns-3 lg:columns-4 gap-3">
           {shown.map((a) => (
@@ -234,6 +339,7 @@ export default function AssetLabPage() {
           </div>
         </Card>
       </div>
+      )}
 
       {/* ── Asset detail modal ── */}
       <Modal

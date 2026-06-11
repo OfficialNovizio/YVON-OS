@@ -185,6 +185,27 @@ export default function TrendRadarPage() {
     pollIntervalMs: 60000,
   })
 
+  const [scanning, setScanning] = useState(false)
+
+  const handleIsaacScan = async () => {
+    setScanning(true)
+    try {
+      const res = await fetch('/api/isaac/scan')
+      if (res.ok) {
+        const scanData = await res.json()
+        // Isaac data takes priority — merge into TrendRadar shape
+        if (scanData.trends?.length) {
+          // Trigger a refetch of the main data to reflect new trends
+          refetch()
+        }
+      }
+    } catch (err) {
+      console.error('[trend-radar] isaac scan error:', err)
+    } finally {
+      setScanning(false)
+    }
+  }
+
   const trends = data?.trends ?? MOCK.trends
   const stats = data?.stats ?? MOCK.stats
 
@@ -220,8 +241,9 @@ export default function TrendRadarPage() {
         title="Trend Radar · Isaac"
         subtitle="Isaac identifies trends across your workspaces — research and trend analysis feeding decision-making and content creation"
         actions={
-          <button className="btn-ghost" onClick={refetch}>
-            <RefreshCw size={15} /> Refresh
+          <button className="btn-ghost" onClick={handleIsaacScan} disabled={scanning}>
+            <RefreshCw size={15} className={scanning ? 'animate-spin' : ''} />{' '}
+            {scanning ? 'Scanning…' : 'Refresh'}
           </button>
         }
       />

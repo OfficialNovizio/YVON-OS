@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { Card, PageHeader, StatusBadge, Avatar } from '@/components/ui'
 import KaisRead from '@/components/KaisRead'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { Github, ExternalLink, GitPullRequest, ShieldCheck, Plus } from 'lucide-react'
+import { Github, ExternalLink, GitPullRequest, ShieldCheck, Plus, FileText } from 'lucide-react'
 
 const projects = [
   { name: 'Idea-Feed MVP', status: 'needs you', tone: 'yellow' as const, progress: 72 },
@@ -16,15 +16,80 @@ const projects = [
 ]
 
 type Tone = 'yellow' | 'green' | 'muted' | 'blue'
-type Col = { title: string; tone?: Tone; cards: { t: string; agent: string }[] }
 
-const columns: Col[] = [
-  { title: 'Triage', cards: [{ t: 'Onboarding tooltip overlaps shortcut', agent: 'NX' }, { t: 'Cart badge count on mobile', agent: 'NX' }] },
-  { title: 'Planning', cards: [{ t: 'Stream counter on home, 4 subtasks', agent: 'NX' }, { t: 'Decision-queue keyboard shortcuts', agent: 'NX' }] },
-  { title: 'In progress', tone: 'muted', cards: [{ t: 'Apple sign-in flow', agent: 'NX' }, { t: 'Shopify webhook retry', agent: 'NX' }] },
-  { title: 'Steve QA', tone: 'blue', cards: [{ t: 'Brain search relevance tuning', agent: 'ST' }, { t: 'Venue CSV import validation', agent: 'ST' }] },
-  { title: 'Needs review', tone: 'yellow', cards: [{ t: 'Voice-memo intake to structured idea', agent: 'NX' }] },
-  { title: 'Done', tone: 'green', cards: [{ t: 'Push notification opt-in', agent: 'NX' }, { t: 'Discount-code field at checkout', agent: 'NX' }] },
+interface KanbanCard {
+  id: string
+  t: string
+  agent: string
+}
+
+interface KanbanColumn {
+  key: string
+  title: string
+  tone?: Tone
+  cards: KanbanCard[]
+}
+
+const initialColumns: KanbanColumn[] = [
+  {
+    key: 'triage',
+    title: 'Triage',
+    cards: [
+      { id: 't1', t: 'Onboarding tooltip overlaps shortcut', agent: 'NX' },
+      { id: 't2', t: 'Cart badge count on mobile', agent: 'NX' },
+    ],
+  },
+  {
+    key: 'planning',
+    title: 'Planning',
+    cards: [
+      { id: 'p1', t: 'Stream counter on home, 4 subtasks', agent: 'NX' },
+      { id: 'p2', t: 'Decision-queue keyboard shortcuts', agent: 'NX' },
+    ],
+  },
+  {
+    key: 'backlog',
+    title: 'Backlog',
+    tone: 'muted',
+    cards: [
+      { id: 'b1', t: 'Dark mode toggle for dashboard', agent: 'NX' },
+    ],
+  },
+  {
+    key: 'in-progress',
+    title: 'In progress',
+    tone: 'muted',
+    cards: [
+      { id: 'ip1', t: 'Apple sign-in flow', agent: 'NX' },
+      { id: 'ip2', t: 'Shopify webhook retry', agent: 'NX' },
+    ],
+  },
+  {
+    key: 'steve-qa',
+    title: 'Steve QA',
+    tone: 'blue',
+    cards: [
+      { id: 'sq1', t: 'Brain search relevance tuning', agent: 'ST' },
+      { id: 'sq2', t: 'Venue CSV import validation', agent: 'ST' },
+    ],
+  },
+  {
+    key: 'needs-review',
+    title: 'Needs review',
+    tone: 'yellow',
+    cards: [
+      { id: 'nr1', t: 'Voice-memo intake to structured idea', agent: 'NX' },
+    ],
+  },
+  {
+    key: 'done',
+    title: 'Done',
+    tone: 'green',
+    cards: [
+      { id: 'd1', t: 'Push notification opt-in', agent: 'NX' },
+      { id: 'd2', t: 'Discount-code field at checkout', agent: 'NX' },
+    ],
+  },
 ]
 
 const dotColor: Record<Tone, string> = {
@@ -37,6 +102,49 @@ const dotColor: Record<Tone, string> = {
 export default function SoftwarePipelinePage() {
   const { workspace } = useWorkspace()
   const [activeProduct, setActiveProduct] = useState<string | null>(null)
+  const [columns, setColumns] = useState<KanbanColumn[]>(initialColumns)
+  const [decisionToast, setDecisionToast] = useState<string | null>(null)
+
+  /** Move a card from one column to another by card id */
+  const moveCard = useCallback((cardId: string, toKey: string) => {
+    setColumns((prev) => {
+      let cardToMove: KanbanCard | null = null
+      const next = prev.map((col) => {
+        if (col.cards.some((c) => c.id === cardId)) {
+          const idx = col.cards.findIndex((c) => c.id === cardId)
+          cardToMove = col.cards[idx]
+          return { ...col, cards: col.cards.filter((c) => c.id !== cardId) }
+        }
+        return col
+      })
+      if (!cardToMove) return prev
+      return next.map((col) => {
+        if (col.key === toKey) {
+          return { ...col, cards: [...col.cards, cardToMove!] }
+        }
+        return col
+      })
+    })
+  }, [])
+
+  /** Approve a Planning task → moves to Backlog */
+  const handleApprove = useCallback((cardId: string) => {
+    moveCard(cardId, 'backlog')
+  }, [moveCard])
+
+  /** Start a Backlog task → moves to In progress (claimed by Nexus) */
+  const handleStart = useCallback((cardId: string) => {
+    moveCard(cardId, 'in-progress')
+  }, [moveCard])
+
+  /** Create Decision — simulates creating a Decision Queue item */
+  const handleCreateDecision = useCallback((cardId: string) => {
+    const card = columns.flatMap((c) => c.cards).find((c) => c.id === cardId)
+    const title = card?.t ?? 'Unknown task'
+    setDecisionToast(`📋 Decision created for "${title}" — routed to Decision Queue`)
+    setTimeout(() => setDecisionToast(null), 4000)
+    // Keep card in Needs review — decision is a separate workflow item
+  }, [columns])
 
   return (
     <div>
@@ -55,6 +163,13 @@ export default function SoftwarePipelinePage() {
         }
       />
 
+      {/* Decision toast */}
+      {decisionToast && (
+        <div className="mb-4 px-4 py-2.5 rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-200 text-xs animate-in fade-in slide-in-from-top-2">
+          {decisionToast}
+        </div>
+      )}
+
       {/* portfolio */}
       <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {projects.map((p) => (
@@ -71,7 +186,7 @@ export default function SoftwarePipelinePage() {
         ))}
       </div>
 
-      {/* QA gate explainer */}
+      {/* QA gate explainer — updated to show BACKLOG step */}
       <Card className="mb-4 flex flex-wrap items-center gap-3 p-3 text-[12px] text-on-surface-variant">
         <span className="flex items-center gap-1.5">
           <GitPullRequest size={14} style={{ color: 'var(--ws-accent)' }} /> Nexus opens PRs only
@@ -91,7 +206,7 @@ export default function SoftwarePipelinePage() {
         {/* kanban */}
         <div className="scroll-x flex gap-3 overflow-x-auto pb-2">
           {columns.map((col) => (
-            <div key={col.title} className="kanban-col">
+            <div key={col.key} className="kanban-col">
               <div className="mb-2.5 flex items-center justify-between px-1">
                 <span className="flex items-center gap-2 text-[13px] font-semibold text-on-surface">
                   {col.tone && <span className="h-2 w-2 rounded-full" style={{ background: dotColor[col.tone] }} />}
@@ -101,14 +216,54 @@ export default function SoftwarePipelinePage() {
               </div>
               <div className="space-y-2.5">
                 {col.cards.map((c) => (
-                  <div key={c.t} className="kanban-card">
+                  <div key={c.id} className="kanban-card">
                     <p className="text-[13px] leading-snug text-on-surface">{c.t}</p>
-                    <div className="mt-2.5 flex items-center justify-between">
+                    <div className="mt-2.5 flex items-center justify-between gap-2">
                       <Avatar initials={c.agent} />
-                      {col.title === 'Needs review' && <button className="btn-accent !px-3 !py-1 !text-[11px]">Review</button>}
+
+                      {/* Planning: Approve → Backlog */}
+                      {col.key === 'planning' && (
+                        <button
+                          onClick={() => handleApprove(c.id)}
+                          className="btn-ghost !px-2.5 !py-1 !text-[11px] text-emerald-300 hover:bg-emerald-500/10"
+                        >
+                          Approve
+                        </button>
+                      )}
+
+                      {/* Backlog: Start → In progress */}
+                      {col.key === 'backlog' && (
+                        <button
+                          onClick={() => handleStart(c.id)}
+                          className="btn-accent !px-2.5 !py-1 !text-[11px]"
+                        >
+                          Start
+                        </button>
+                      )}
+
+                      {/* Needs review: Review + Create Decision */}
+                      {col.key === 'needs-review' && (
+                        <div className="flex items-center gap-1.5">
+                          <button className="btn-accent !px-2.5 !py-1 !text-[11px]">Review</button>
+                          <button
+                            onClick={() => handleCreateDecision(c.id)}
+                            className="btn-ghost !px-2.5 !py-1 !text-[11px] text-amber-300 hover:bg-amber-500/10"
+                            title="Create a Decision Queue item for this task"
+                          >
+                            <FileText size={13} className="mr-1" />
+                            Create Decision
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
+                {/* Empty state */}
+                {col.cards.length === 0 && (
+                  <div className="kanban-card opacity-50">
+                    <p className="text-[12px] text-on-surface-variant italic text-center py-3">No tasks</p>
+                  </div>
+                )}
               </div>
             </div>
           ))}

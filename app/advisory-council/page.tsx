@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Card, PageHeader, StatusBadge } from '@/components/ui'
-import { Play, CalendarPlus, Radio, Check, ListPlus, UserPlus, MessageCircleQuestion, X, Pause } from 'lucide-react'
+import { Play, CalendarPlus, Radio, Check, ListPlus, UserPlus, MessageCircleQuestion, X, Pause, Volume2, Loader2 } from 'lucide-react'
 
 const council = [
   { initials: 'H', name: 'Henry', color: '#abc7ff' },
@@ -39,6 +39,54 @@ const transcript = [
 
 export default function AdvisoryCouncilPage() {
   const [warRoom, setWarRoom] = useState(false)
+  const [speaking, setSpeaking] = useState<{ recIndex: number; audioUrl: string; loading: boolean } | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  const handleListen = useCallback(async (recIndex: number, text: string, voiceId: string) => {
+    // If already loading this one, ignore
+    if (speaking?.recIndex === recIndex && speaking?.loading) return
+    // If already playing this one, pause
+    if (speaking?.recIndex === recIndex && audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause()
+      setSpeaking(null)
+      return
+    }
+    // If playing a different one, stop it
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
+
+    setSpeaking({ recIndex, audioUrl: '', loading: true })
+
+    try {
+      const res = await fetch('/api/heygen/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.slice(0, 500), voiceId }),
+      })
+      if (!res.ok) throw new Error('Failed to generate speech')
+      const data = await res.json()
+      const url = data.audioUrl as string
+      setSpeaking({ recIndex, audioUrl: url, loading: false })
+
+      const audio = new Audio(url)
+      audioRef.current = audio
+      audio.onended = () => setSpeaking(null)
+      audio.onerror = () => setSpeaking(null)
+      await audio.play()
+    } catch {
+      setSpeaking(null)
+    }
+  }, [speaking])
+
+  const stopAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
+    setSpeaking(null)
+  }, [])
 
   return (
     <div>
@@ -77,10 +125,24 @@ export default function AdvisoryCouncilPage() {
             {/* audio player */}
             <div className="mt-4 flex items-center gap-3 rounded-xl bg-white/[0.03] p-3">
               <button
-                className="flex h-9 w-9 items-center justify-center rounded-full text-black/80"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-black/80 transition hover:opacity-80"
                 style={{ background: 'var(--ws-accent)' }}
+                onClick={() =>
+                  handleListen(
+                    -1,
+                    'Productize the agent-as-a-service offer now — turn I run your agents into a fixed €2k/mo retainer, before the category name consolidates. First step: package the Maria engagement as the template.',
+                    'henry'
+                  )
+                }
+                disabled={speaking?.recIndex === -1 && speaking?.loading}
               >
-                <Play size={16} />
+                {speaking?.recIndex === -1 && speaking?.loading ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : speaking?.recIndex === -1 && audioRef.current && !audioRef.current.paused ? (
+                  <Pause size={16} />
+                ) : (
+                  <Volume2 size={16} />
+                )}
               </button>
               <div className="flex h-8 flex-1 items-center gap-[3px]">
                 {Array.from({ length: 56 }).map((_, i) => (
@@ -89,12 +151,28 @@ export default function AdvisoryCouncilPage() {
                     className="w-[3px] rounded-full"
                     style={{
                       height: `${20 + Math.abs(Math.sin(i * 0.7)) * 70}%`,
-                      background: i < 18 ? 'var(--ws-accent)' : 'rgba(255,255,255,0.14)',
+                      background:
+                        speaking?.recIndex === -1 && !speaking?.loading
+                          ? i < 18
+                            ? 'var(--ws-accent)'
+                            : 'rgba(255,255,255,0.14)'
+                          : 'rgba(255,255,255,0.08)',
                     }}
                   />
                 ))}
               </div>
-              <span className="text-[11px] tabular-nums text-on-surface-variant">1:24 / 4:53</span>
+              <span className="text-[11px] tabular-nums text-on-surface-variant">
+                {speaking?.recIndex === -1 && speaking?.loading
+                  ? 'Generating…'
+                  : speaking?.recIndex === -1
+                  ? '▶ Playing'
+                  : '1:24 / 4:53'}
+              </span>
+              {speaking?.recIndex === -1 && !speaking?.loading && (
+                <button onClick={stopAudio} className="text-on-surface-variant hover:text-on-surface">
+                  <X size={13} />
+                </button>
+              )}
             </div>
             <div className="mt-2 flex -space-x-1.5">
               {council.map((c) => (
@@ -138,6 +216,35 @@ export default function AdvisoryCouncilPage() {
                 <button className="btn-accent !py-1.5 !text-xs">Accept</button>
                 <button className="btn-ghost !py-1.5 !text-xs">Assign</button>
                 <button className="btn-ghost !py-1.5 !text-xs">Ask follow-up</button>
+                <button
+                  className="btn-ghost !py-1.5 !text-xs"
+                  onClick={() =>
+                    handleListen(
+                      recommendations.indexOf(r),
+                      `${r.title}. ${r.body}`,
+                      // Pick voice based on "by" field
+                      r.by.toLowerCase().includes('henry')
+                        ? 'henry'
+                        : r.by.toLowerCase().includes('nexus')
+                        ? 'nexus'
+                        : r.by.toLowerCase().includes('strategist')
+                        ? 'strategist'
+                        : 'william'
+                    )
+                  }
+                  disabled={
+                    speaking?.recIndex === recommendations.indexOf(r) && speaking?.loading
+                  }
+                >
+                  {speaking?.recIndex === recommendations.indexOf(r) && speaking?.loading ? (
+                    <Loader2 size={13} className="animate-spin" />
+                  ) : speaking?.recIndex === recommendations.indexOf(r) ? (
+                    <Pause size={13} />
+                  ) : (
+                    <Volume2 size={13} />
+                  )}{' '}
+                  Listen
+                </button>
               </div>
             </Card>
           ))}
