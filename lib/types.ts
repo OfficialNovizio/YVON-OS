@@ -219,6 +219,17 @@ export interface VentureConfig {
   marketSubcategories?: string[]
   // Target audience profile (migration 033)
   targetAudience?: TargetAudience
+  // Settings → Venture detail page fields (migration 050)
+  operatingCities?: string[]
+  iosAppUrl?: string
+  androidAppUrl?: string
+  hostingPlatform?: string
+  productCategories?: ProductCategory[]
+}
+
+export interface ProductCategory {
+  category: string
+  subcategories: string[]
 }
 
 export interface TargetAudience {
@@ -227,6 +238,10 @@ export interface TargetAudience {
   incomeTier?: string
   region?: 'urban' | 'suburban' | 'rural' | 'all'
   description?: string
+  // Extended fields (Settings → Venture detail)
+  ageGroups?: string[]
+  socialStatus?: string[]
+  interests?: string[]
 }
 
 // ─── Briefs ──────────────────────────────────────────────────────────────────

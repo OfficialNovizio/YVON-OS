@@ -328,6 +328,11 @@ function mapVentureRow(r: Record<string, unknown>): VentureConfig {
     targetAudience:     r.target_audience ? (r.target_audience as VentureConfig['targetAudience']) : undefined,
     brandTier:          (r.brand_tier as VentureConfig['brandTier']) ?? undefined,
     avgPricePoint:      (r.avg_price_point as number) ?? undefined,
+    operatingCities:    (r.operating_cities as string[]) ?? undefined,
+    iosAppUrl:          (r.ios_app_url as string) ?? undefined,
+    androidAppUrl:      (r.android_app_url as string) ?? undefined,
+    hostingPlatform:    (r.hosting_platform as string) ?? undefined,
+    productCategories:  r.product_categories ? (r.product_categories as VentureConfig['productCategories']) : undefined,
   }
 }
 
@@ -398,6 +403,11 @@ export async function updateVenture(
   if (data.targetAudience      !== undefined) update.target_audience      = data.targetAudience
   if (data.brandTier           !== undefined) update.brand_tier           = data.brandTier
   if (data.avgPricePoint       !== undefined) update.avg_price_point      = data.avgPricePoint
+  if (data.operatingCities      !== undefined) update.operating_cities     = data.operatingCities
+  if (data.iosAppUrl            !== undefined) update.ios_app_url          = data.iosAppUrl
+  if (data.androidAppUrl        !== undefined) update.android_app_url      = data.androidAppUrl
+  if (data.hostingPlatform      !== undefined) update.hosting_platform     = data.hostingPlatform
+  if (data.productCategories    !== undefined) update.product_categories   = data.productCategories
   await supabase.from('ventures').update(update).eq('id', id)
 }
 

@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight } from 'lucide-react'
+import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight } from 'lucide-react'
 
 interface SystemInfo {
   systemHealth: {
@@ -79,13 +80,19 @@ export default function SettingsPage() {
       <PageHeader title="Settings" subtitle="System preferences, API connections, and profile." />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Profile */}
-        <Card className="p-4">
-          <div className="flex items-center gap-2 mb-3"><User size={16} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold text-on-surface">Profile</h3></div>
-          <p className="text-[13px] text-on-surface">CEO Marcus · YVON OS</p>
-          <p className="text-[12px] text-on-surface-variant/60 mt-1">{s?.agentsLive ?? '—'} agents active · 4 departments</p>
-          <StatusBadge tone={s?.status === 'healthy' ? 'green' : 'yellow'}>{s?.status ?? 'Unknown'}</StatusBadge>
-        </Card>
+        {/* Venture Profile — clickable, opens detail page */}
+        <Link href="/settings/venture">
+          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group">
+            <div className="flex items-center gap-2 mb-3">
+              <User size={16} style={{ color: 'var(--ws-accent)' }} />
+              <h3 className="text-sm font-semibold text-on-surface flex-1">Venture · {workspace.name}</h3>
+              <ChevronRight size={14} className="text-on-surface-variant/30 group-hover:text-on-surface-variant transition" />
+            </div>
+            <p className="text-[13px] text-on-surface">{workspace.business}</p>
+            <p className="text-[12px] text-on-surface-variant/60 mt-1">{s?.agentsLive ?? '—'} agents active · 4 departments</p>
+            <StatusBadge tone={s?.status === 'healthy' ? 'green' : 'yellow'}>{s?.status ?? 'Unknown'}</StatusBadge>
+          </Card>
+        </Link>
 
         {/* Preferences */}
         <Card className="p-4">
