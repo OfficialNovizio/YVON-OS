@@ -7,7 +7,7 @@ import { Card, StatusBadge } from '@/components/ui'
 import {
   Loader2, Save, Plus, Trash2, ExternalLink, ArrowLeft,
   Globe, Server, Database, Cpu, Activity, Shield, Smartphone,
-  Monitor, Github, Bell, ChevronRight, ChevronDown, Check, X,
+  Monitor, GitBranch as Github, Bell, ChevronRight, ChevronDown, Check, X,
   Cloud, Flame, BarChart3, Bug, Link2, Wifi, WifiOff,
 } from 'lucide-react'
 
