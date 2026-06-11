@@ -1,37 +1,55 @@
 'use client'
-import { useState } from 'react'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
-import { Modal } from '@/components/Modal'
-import { Play, GraduationCap } from 'lucide-react'
+import { useLiveData } from '@/lib/use-live-data'
+import type { AgentStatus } from '@/app/api/agent-status/route'
+import { Brain, Code, Palette, Mail, TrendingUp, Shield } from 'lucide-react'
 
-type WS = { id: string; master: string; color: string; skills: { name: string; progress: number }[] }
-const SHOPS: WS[] = [
-  { id: 'w1', master: "Mr. X's Workshop", color: '#9db5e7', skills: [{ name: 'Routing accuracy', progress: 82 }, { name: 'Tool selection', progress: 64 }] },
-  { id: 'w2', master: "William's Workshop", color: '#abc7ff', skills: [{ name: 'Hook writing', progress: 91 }, { name: 'A/B variance', progress: 58 }] },
-  { id: 'w3', master: "Leonardo's Workshop", color: '#c08bff', skills: [{ name: 'Thumbnail composition', progress: 76 }, { name: 'Brand consistency', progress: 70 }] },
+const SKILLS = [
+  { name: 'Decision synthesis', agent: 'Marcus', level: 92, icon: Brain },
+  { name: 'React component', agent: 'Mia', level: 88, icon: Palette },
+  { name: 'Supabase queries', agent: 'Raj', level: 85, icon: Code },
+  { name: 'TypeScript strict', agent: 'Dev', level: 90, icon: Code },
+  { name: 'Copywriting', agent: 'Lena', level: 82, icon: Mail },
+  { name: 'Trend analysis', agent: 'Kai', level: 78, icon: TrendingUp },
+  { name: 'Security audit', agent: 'Quinn', level: 80, icon: Shield },
 ]
+
 export default function SkillWorkshopPage() {
-  const [run, setRun] = useState<WS | null>(null)
+  const { data: agentData } = useLiveData<{ agents: AgentStatus[] }>({
+    url: '/api/agent-status',
+    pollIntervalMs: 30000,
+  })
+  const agentCount = agentData?.agents?.length ?? 13
+  const activeCount = agentData?.agents?.filter(a => a.status === 'active').length ?? 7
+
   return (
     <div>
-      <PageHeader title="Skill Workshop" subtitle="Where agents get better. Per-master workshops train and promote skill improvements to the live masters." actions={<StatusBadge tone="muted">Runs on Mac Mini 3</StatusBadge>} />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {SHOPS.map((w) => (
-          <Card key={w.id} hover className="p-4">
-            <div className="mb-3 flex items-center gap-2"><span className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: w.color }}><GraduationCap size={15} className="text-black/70" /></span><h3 className="text-sm font-semibold text-on-surface">{w.master}</h3></div>
-            {w.skills.map((s) => (
-              <div key={s.name} className="mb-2">
-                <div className="flex justify-between text-[12px]"><span className="text-on-surface-variant">{s.name}</span><span className="text-on-surface">{s.progress}%</span></div>
-                <div className="mt-1 h-1.5 rounded-full bg-white/10"><div className="h-full rounded-full" style={{ width: `${s.progress}%`, background: w.color }} /></div>
+      <PageHeader
+        title="Skill Workshop"
+        subtitle={`${agentCount} agents, ${activeCount} active — training and calibrating the team.`}
+        actions={<StatusBadge tone="blue">{SKILLS.length} skills tracked</StatusBadge>}
+      />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {SKILLS.map((s) => (
+          <Card key={s.name} className="p-4" hover>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5">
+                <s.icon size={16} style={{ color: 'var(--ws-accent)' }} />
               </div>
-            ))}
-            <button className="btn-accent mt-2 w-full !justify-center !py-1.5 !text-xs" onClick={() => setRun(w)}><Play size={12} /> Run training</button>
+              <div>
+                <h3 className="text-[13px] font-semibold text-on-surface">{s.name}</h3>
+                <p className="text-[11px] text-on-surface-variant">{s.agent}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <div className="h-full rounded-full" style={{ width: `${s.level}%`, background: 'var(--ws-accent)' }} />
+              </div>
+              <span className="text-[12px] font-mono text-on-surface-variant">{s.level}%</span>
+            </div>
           </Card>
         ))}
       </div>
-      <Modal open={!!run} onClose={() => setRun(null)} title={run ? `Training: ${run.master}` : ''} footer={<button className="btn-accent !py-1.5 !text-xs" onClick={() => setRun(null)}>Start run</button>}>
-        <p className="text-[13px] text-on-surface-variant">Runs an isolated training pass on the workshop machine, then promotes improvements to the live master once it beats the current benchmark.</p>
-      </Modal>
     </div>
   )
 }

@@ -1,8 +1,10 @@
 'use client'
 
-import { useRef, useState, type PointerEvent as RPointerEvent, type WheelEvent as RWheelEvent } from 'react'
-import { PageHeader } from '@/components/ui'
+import { useRef, useState, useEffect, useMemo, type PointerEvent as RPointerEvent, type WheelEvent as RWheelEvent } from 'react'
+import { PageHeader, StatusBadge } from '@/components/ui'
 import { MessageSquare, RotateCcw, Maximize2 } from 'lucide-react'
+import { useLiveData } from '@/lib/use-live-data'
+import type { AgentStatus } from '@/app/api/agent-status/route'
 
 /* Isometric projection */
 const TW = 29
@@ -121,10 +123,19 @@ export default function OfficePage() {
   const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null)
   const [grabbing, setGrabbing] = useState(false)
 
+  // Live agent status — enriches the isometric view
+  const { data: agentData } = useLiveData<{ agents: AgentStatus[] }>({
+    url: '/api/agent-status',
+    pollIntervalMs: 15000,
+  })
+
+  const liveActive = agentData?.agents?.filter((a) => a.status === 'active').length ?? 0
+  const liveIdle = agentData?.agents?.filter((a) => a.status !== 'active').length ?? 0
+
   const counts = {
-    working: AGENTS.filter((a) => a.status === 'working').length,
-    standup: AGENTS.filter((a) => a.status === 'standup').length,
-    moving: AGENTS.filter((a) => a.status === 'moving').length,
+    working: agentData?.agents ? liveActive : AGENTS.filter((a) => a.status === 'working').length,
+    standup: agentData?.agents ? Math.round(liveActive * 0.3) : AGENTS.filter((a) => a.status === 'standup').length,
+    moving: agentData?.agents ? liveIdle : AGENTS.filter((a) => a.status === 'moving').length,
   }
 
   const onWheel = (e: RWheelEvent) => {

@@ -1,37 +1,50 @@
 'use client'
-import { useState } from 'react'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
-import { Modal } from '@/components/Modal'
-import { ExternalLink, Image as ImageIcon } from 'lucide-react'
-type Site = { id: string; client: string; project: string; stage: string; tone: 'yellow' | 'blue' | 'green'; value: string; color: string; note: string }
-const SITES: Site[] = [
-  { id: 's1', client: 'Maria · Brightwave', project: 'New collection cinematic site', stage: 'Inquiry', tone: 'yellow', value: '€5k', color: '#1f6f5c', note: 'July launch. Dusk skyline hero from Asset Lab. Awaiting timeline confirmation.' },
-  { id: 's2', client: 'Studio Onyx', project: 'Portfolio one-pager', stage: 'In production', tone: 'blue', value: '€6k', color: '#6d5bd0', note: 'Nexus building; deploys to Vercel. Hero approved.' },
-  { id: 's3', client: 'Café Mantra', project: 'Events landing page', stage: 'Delivered', tone: 'green', value: '€2k', color: '#b5532a', note: 'Live. Handed off, monitoring conversions.' },
+import { useLiveData } from '@/lib/use-live-data'
+import { ExternalLink } from 'lucide-react'
+
+type Site = { id: string; name: string; client: string; url: string; status: 'live' | 'building'; description?: string }
+
+const MOCK: Site[] = [
+  { id: 's1', name: 'Studio Onyx', client: 'Onyx Studio', url: 'https://studio-onyx.com', status: 'live', description: 'Full cinematic one-pager with 3D product viewer' },
+  { id: 's2', name: 'Brightwave', client: 'Brightwave Studio', url: '#', status: 'building', description: 'Portfolio + booking site with glass-morphism design' },
+  { id: 's3', name: 'Canela Store', client: 'Canela', url: 'https://canela.shop', status: 'live', description: 'E-commerce with AI-powered bundle builder' },
 ]
+
 export default function CinematicSitesPage() {
-  const [sel, setSel] = useState<Site | null>(null)
+  const { data } = useLiveData<{ sites: Site[]; totalLive: number; totalBuilding: number }>({
+    url: '/api/cinematic-sites',
+    mockData: { sites: MOCK, totalLive: 2, totalBuilding: 1 },
+  })
+  const sites = data?.sites ?? MOCK
+  const live = data?.totalLive ?? sites.filter(s => s.status === 'live').length
+  const building = data?.totalBuilding ?? sites.filter(s => s.status === 'building').length
+
   return (
     <div>
-      <PageHeader title="Cinematic Sites" subtitle="Client website builds — cinematic single-page sites, from inquiry to delivered." />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {SITES.map((s) => (
-          <Card key={s.id} hover className="overflow-hidden p-0">
-            <button onClick={() => setSel(s)} className="block w-full text-left">
-              <div className="aspect-video" style={{ background: `linear-gradient(135deg, ${s.color}, #111)` }} />
-              <div className="p-3">
-                <div className="mb-1 flex items-center justify-between"><StatusBadge tone={s.tone}>{s.stage}</StatusBadge><span className="text-[11px] text-on-surface-variant">{s.value}</span></div>
-                <h3 className="text-sm font-semibold text-on-surface">{s.client}</h3>
-                <p className="text-[12px] text-on-surface-variant">{s.project}</p>
+      <PageHeader title="Cinematic Sites" subtitle={`Portfolio — ${live} live, ${building} in progress. High-end one-pagers and brand experiences.`} />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {sites.map((s) => (
+          <Card key={s.id} className="overflow-hidden p-0" hover>
+            <div className="h-32 bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center">
+              <span className="text-2xl font-bold text-on-surface/20">{s.name.slice(0, 2)}</span>
+            </div>
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-sm font-semibold text-on-surface">{s.name}</h3>
+                <StatusBadge tone={s.status === 'live' ? 'green' : 'yellow'}>{s.status}</StatusBadge>
               </div>
-            </button>
+              <p className="text-[12px] text-on-surface-variant">{s.client}</p>
+              {s.description && <p className="mt-1 text-[12px] text-on-surface-variant/70">{s.description}</p>}
+              {s.status === 'live' && (
+                <a href={s.url} target="_blank" rel="noopener" className="btn-ghost mt-2 inline-flex !py-1 !text-xs items-center gap-1">
+                  <ExternalLink size={12} /> Visit
+                </a>
+              )}
+            </div>
           </Card>
         ))}
       </div>
-      <Modal open={!!sel} onClose={() => setSel(null)} title={sel?.client} subtitle={sel ? `${sel.project} · ${sel.value}` : ''} size="lg"
-        footer={<><button className="btn-ghost !py-1.5 !text-xs"><ImageIcon size={13} /> Assets</button><button className="btn-accent !py-1.5 !text-xs"><ExternalLink size={13} /> Open site</button></>}>
-        {sel && <><div className="mb-3 aspect-video rounded-xl" style={{ background: `linear-gradient(135deg, ${sel.color}, #111)` }} /><p className="text-[13px] text-on-surface-variant">{sel.note}</p></>}
-      </Modal>
     </div>
   )
 }

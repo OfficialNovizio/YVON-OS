@@ -90,6 +90,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: 'Email Inbox', href: '/inbox', icon: 'inbox' },
       { label: 'Dashboard Home', href: '/dashboard', icon: 'dashboard' },
+      { label: 'Settings', href: '/settings', icon: 'settings' },
       { label: 'Hardware', href: '/hardware', icon: 'dns' },
       { label: 'Projects', href: '/projects', icon: 'folder' },
       { label: 'People', href: '/people', icon: 'people' },

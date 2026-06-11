@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
+import { useLiveData } from '@/lib/use-live-data'
 import { Mail, ChevronRight, ChevronLeft } from 'lucide-react'
 
 const STAGES = ['Lead', 'Conversation', 'Proposal', 'Won'] as const
@@ -15,7 +16,11 @@ const SEED: Deal[] = [
 ]
 
 export default function ConsultingCRMPage() {
-  const [deals, setDeals] = useState<Deal[]>(SEED)
+  const { data } = useLiveData<{ deals: Deal[]; activeDeals: number; totalValue: number }>({
+    url: '/api/consulting',
+    mockData: { deals: SEED, activeDeals: SEED.length, totalValue: 16200 },
+  })
+  const [deals, setDeals] = useState<Deal[]>(data?.deals ?? SEED)
   const [sel, setSel] = useState<Deal | null>(null)
   const move = (d: Deal, dir: number) => {
     const ns = Math.max(0, Math.min(STAGES.length - 1, d.stage + dir))
