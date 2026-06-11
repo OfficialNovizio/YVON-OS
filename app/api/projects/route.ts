@@ -8,5 +8,10 @@ const MOCK: Project[] = [
 ]
 
 export async function GET(): Promise<Response> {
-  return Response.json({ projects: MOCK, source: 'mock' })
+  try {
+    return Response.json({ projects: MOCK, source: 'mock' })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return Response.json({ projects: [], source: 'error', error: msg }, { status: 200 })
+  }
 }

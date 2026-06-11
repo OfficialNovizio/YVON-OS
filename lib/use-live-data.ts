@@ -4,7 +4,7 @@
 // Every page calls this instead of inline fetch + useState + useEffect.
 // Handles loading, error, and mock-fallback uniformly.
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 interface UseLiveDataOptions<T> {
   url: string
@@ -32,6 +32,12 @@ export function useLiveData<T = unknown>({
   const [error, setError] = useState<string | null>(null)
   const [source, setSource] = useState<'live' | 'mock' | 'error'>('mock')
 
+  // Keep mockData in a ref so useCallback is stable and doesn't need
+  // mockData in its dependency array (mockData is often an inline object
+  // that changes identity every render).
+  const mockRef = useRef(mockData)
+  mockRef.current = mockData
+
   const fetchData = useCallback(async () => {
     if (!enabled) return
     setLoading(true)
@@ -46,8 +52,9 @@ export function useLiveData<T = unknown>({
       const msg = err instanceof Error ? err.message : String(err)
       setError(msg)
       setSource('error')
-      // Keep mock data visible on error
-      if (mockData) setData(mockData)
+      // Keep mock data visible on error — read latest from ref
+      const fallback = mockRef.current
+      if (fallback) setData(fallback)
     } finally {
       setLoading(false)
     }
@@ -63,4 +70,3 @@ export function useLiveData<T = unknown>({
 
   return { data, loading, error, refetch: fetchData, source }
 }
-// No aliases — prefer useLiveData directly.

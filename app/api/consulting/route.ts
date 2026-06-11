@@ -7,5 +7,10 @@ const MOCK: Deal[] = [
 ]
 
 export async function GET(): Promise<Response> {
-  return Response.json({ deals: MOCK, activeDeals: 3, totalValue: 37000, source: 'mock' })
+  try {
+    return Response.json({ deals: MOCK, activeDeals: 3, totalValue: 37000, source: 'mock' })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return Response.json({ deals: [], source: 'error', error: msg }, { status: 200 })
+  }
 }

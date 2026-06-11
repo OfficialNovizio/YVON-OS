@@ -16,5 +16,10 @@ const MOCK_IDEAS: Idea[] = [
 ]
 
 export async function GET(req: NextRequest): Promise<Response> {
-  return Response.json({ ideas: MOCK_IDEAS, source: 'mock' })
+  try {
+    return Response.json({ ideas: MOCK_IDEAS, source: 'mock' })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return Response.json({ ideas: [], source: 'error', error: msg }, { status: 200 })
+  }
 }

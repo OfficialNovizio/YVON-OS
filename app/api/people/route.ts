@@ -10,5 +10,10 @@ const MOCK: Person[] = [
 ]
 
 export async function GET(req: NextRequest): Promise<Response> {
-  return Response.json({ people: MOCK, source: 'mock' })
+  try {
+    return Response.json({ people: MOCK, source: 'mock' })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return Response.json({ people: [], source: 'error', error: msg }, { status: 200 })
+  }
 }
