@@ -80,9 +80,11 @@ export async function POST(request: Request): Promise<Response> {
 
   // Append TOON-formatted data block to system prompt (Claude-optimized contextual data)
   // This is where decision queues, venture context, session history are injected.
-  // TOON format saves ~80% tokens vs JSON on Claude models.
+  // TOON format saves ~41.5% tokens vs JSON (verified live benchmark 2026-06-11).
+  // The parsing instruction below tells the LLM how to read the format.
   if (dataBlock) {
-    effectiveSystemPrompt = (effectiveSystemPrompt ?? '') + '\n\n' + dataBlock
+    const toonInstruction = '\n\n[DATA FORMAT: The following data uses TOON (Token-Optimized Object Notation). Each line is a record. Fields are separated by | (pipe). The first character is the type prefix: D=decision, V=venture, S=session, T=task, C=competitor. Empty/missing values are marked as -. Parse each line by splitting on | and mapping fields positionally.]\n\n'
+    effectiveSystemPrompt = (effectiveSystemPrompt ?? '') + toonInstruction + dataBlock
   }
 
   if (!userMessage) {
