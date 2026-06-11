@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { PageHeader, StatusBadge, Card, Avatar } from '@/components/ui'
 import { Modal } from '@/components/Modal'
-import { ExternalLink, Package, Check, Copy, Wand2, Image as ImageIcon } from 'lucide-react'
+import { useLiveData } from '@/lib/use-live-data'
+import { ExternalLink, Package, Check, Copy, Wand2, Image as ImageIcon, BarChart3 } from 'lucide-react'
 
 const TITLES = [
   'I gave my entire business to AI agents for 7 days',
@@ -31,6 +32,11 @@ CHAPTERS
 ${CHAPTERS.join('\n')}`
 
 export default function YouTubeStudioPage() {
+  const { data: ytData } = useLiveData<{ subscribers?: number; totalViews?: number; videoCount?: number }>({
+    url: '/api/youtube?ventureId=novizio',
+    pollIntervalMs: 120000,
+  })
+
   const [title, setTitle] = useState(0)
   const [character, setCharacter] = useState('Talking head')
   const [bg, setBg] = useState('Studio')
@@ -55,7 +61,14 @@ export default function YouTubeStudioPage() {
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <StatusBadge tone="yellow">1 video upload-ready</StatusBadge>
-        <span className="text-[12px] text-on-surface-variant">While footage with the editor → when it’s back → ready to upload</span>
+        {ytData?.subscribers ? (
+          <span className="flex items-center gap-1 text-[12px] text-on-surface-variant">
+            <BarChart3 size={12} style={{ color: 'var(--ws-accent)' }} />
+            {(ytData.subscribers).toLocaleString()} subs · {(ytData.totalViews ?? 0).toLocaleString()} views · {ytData.videoCount ?? 0} videos
+          </span>
+        ) : (
+          <span className="text-[12px] text-on-surface-variant">While footage with the editor → when it's back → ready to upload</span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]">

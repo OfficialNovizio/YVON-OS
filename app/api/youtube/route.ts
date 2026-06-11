@@ -1,5 +1,25 @@
 import { getChannelStats } from '@/lib/youtube'
-import { setSocialStats, insertSocialSnapshot } from '@/lib/db'
+import { setSocialStats, insertSocialSnapshot, getSocialStats } from '@/lib/db'
+
+// GET — return cached YouTube stats for the active venture (read-only, no auth required)
+export async function GET(request: Request): Promise<Response> {
+  const { searchParams } = new URL(request.url)
+  const ventureId = searchParams.get('ventureId') ?? 'novizio'
+
+  try {
+    const stats = await getSocialStats(ventureId, 'youtube')
+    if (!stats) {
+      return Response.json({
+        subscribers: 0, totalViews: 0, videoCount: 0, latestVideos: [],
+        source: 'empty',
+      })
+    }
+    return Response.json({ ...stats, source: 'live' })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    return Response.json({ error: msg, source: 'error' }, { status: 200 })
+  }
+}
 
 export async function POST(request: Request): Promise<Response> {
   if (!process.env.YOUTUBE_API_KEY) {
