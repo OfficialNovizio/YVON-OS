@@ -225,6 +225,7 @@ export interface VentureConfig {
   androidAppUrl?: string
   hostingPlatform?: string
   productCategories?: ProductCategory[]
+  deploymentPlatforms?: string[]
 }
 
 export interface ProductCategory {

@@ -333,6 +333,7 @@ function mapVentureRow(r: Record<string, unknown>): VentureConfig {
     androidAppUrl:      (r.android_app_url as string) ?? undefined,
     hostingPlatform:    (r.hosting_platform as string) ?? undefined,
     productCategories:  r.product_categories ? (r.product_categories as VentureConfig['productCategories']) : undefined,
+    deploymentPlatforms: (r.deployment_platforms as string[]) ?? undefined,
   }
 }
 
@@ -408,6 +409,7 @@ export async function updateVenture(
   if (data.androidAppUrl        !== undefined) update.android_app_url      = data.androidAppUrl
   if (data.hostingPlatform      !== undefined) update.hosting_platform     = data.hostingPlatform
   if (data.productCategories    !== undefined) update.product_categories   = data.productCategories
+  if (data.deploymentPlatforms  !== undefined) update.deployment_platforms = data.deploymentPlatforms
   await supabase.from('ventures').update(update).eq('id', id)
 }
 
