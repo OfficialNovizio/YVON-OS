@@ -1,5 +1,5 @@
 {
-  "buildCommand": "node scripts/migrate.mjs && next build",
+  "buildCommand": "next build",
   "crons": [
     {
       "path": "/api/trending",
