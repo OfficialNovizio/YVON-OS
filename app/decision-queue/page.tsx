@@ -394,7 +394,7 @@ export default function DecisionQueuePage() {
           <Card className="p-4">
             <h4 className="mb-2 text-sm font-semibold text-on-surface">Workspaces</h4>
             <div className="flex flex-wrap gap-1.5">
-              {['all', 'vibe', 'bydesign', 'canela', 'valhalla'].map((w) => (
+              {['all', 'novizio', 'hourbour'].map((w) => (
                 <button
                   key={w}
                   onClick={() => setWsFilter(w)}

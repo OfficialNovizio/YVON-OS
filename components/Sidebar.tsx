@@ -109,7 +109,7 @@ function isActive(pathname: string, href: string): boolean {
 // ── Component ────────────────────────────────────────────────────────────────
 export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
   const pathname = usePathname()
-  const { workspace, setWorkspace } = useWorkspace()
+  const { workspace } = useWorkspace()
 
   const handleNav = () => {
     mobileClose?.()
@@ -134,23 +134,18 @@ export function Sidebar({ mode, onToggle, mobileClose }: SidebarProps) {
                 <div className="text-[10px] text-on-surface-variant tracking-widest uppercase">Mission Control</div>
               </div>
             </div>
-            {/* Workspace / Venture selector */}
-            <button
-              onClick={() => {
-                const idx = WORKSPACES.findIndex((w: { key: WorkspaceKey }) => w.key === workspace.key)
-                const next = WORKSPACES[(idx + 1) % WORKSPACES.length]
-                setWorkspace(next.key)
-              }}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.02] text-xs text-on-surface-variant hover:bg-white/[0.05] transition"
-            >
+            {/* Venture badge — read-only display, switching is in the TopBar pill */}
+            <div className="w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.02] text-xs">
               <span className="text-[10px] tracking-widest text-on-surface-variant">
-                {WORKSPACE_MAP[workspace.key]?.isVenture ? 'VENTURE' : 'WORKSPACE'}
+                VENTURE
               </span>
               <span className="flex-1 text-left text-on-surface font-medium">
                 {wsLabel}
               </span>
-              <span className="material-symbols-outlined text-[16px]">unfold_more</span>
-            </button>
+              {WORKSPACE_MAP[workspace.key]?.isVenture && (
+                <span className="h-2 w-2 rounded-full shrink-0" style={{ background: workspace.accent }} />
+              )}
+            </div>
           </>
         ) : (
           /* Icon-only mode — just the logo */

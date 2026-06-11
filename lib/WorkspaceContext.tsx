@@ -4,14 +4,13 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { WORKSPACE_MAP, type WorkspaceKey, type Workspace } from './workspaces'
 
 const STORAGE_KEY = 'yvon_active_workspace'
-const VALID_KEYS: WorkspaceKey[] = ['vibe', 'canela', 'valhalla', 'bydesign', 'novizio', 'hourbour']
-const DEFAULT: WorkspaceKey = 'vibe'
+const DEFAULT: WorkspaceKey = 'novizio'
 
 function getStoredWorkspace(): WorkspaceKey {
   if (typeof window === 'undefined') return DEFAULT
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored && (VALID_KEYS as string[]).includes(stored)) {
+    if (stored === 'novizio' || stored === 'hourbour') {
       return stored as WorkspaceKey
     }
   } catch { /* localStorage blocked */ }
@@ -26,7 +25,7 @@ function persistWorkspace(key: WorkspaceKey) {
 function syncVentureCookie(key: WorkspaceKey) {
   if (typeof document === 'undefined') return
   const ws = WORKSPACE_MAP[key]
-  if (ws?.isVenture && ws.ventureSlug) {
+  if (ws?.ventureSlug) {
     document.cookie = `yvon_active_venture=${ws.ventureSlug};path=/;max-age=${60 * 60 * 24 * 365};SameSite=Lax`
   }
 }

@@ -1,14 +1,57 @@
 'use client'
 
-import { useState } from 'react'
-import { ChevronsUpDown, Check } from 'lucide-react'
-import { WORKSPACES, WORKSPACE_MAP } from '@/lib/workspaces'
+import { useState, useEffect } from 'react'
+import { ChevronsUpDown, Check, Loader2 } from 'lucide-react'
 import { useWorkspace } from '@/lib/WorkspaceContext'
+import { WORKSPACE_MAP } from '@/lib/workspaces'
+
+interface Venture {
+  slug: string
+  name: string
+  color: string
+  pending?: number
+}
+
+// Color → accent mapping for the live dot
+const VENTURE_ACCENTS: Record<string, string> = {
+  novizio: '#E94560',
+  hourbour: '#3B82F6',
+}
 
 export function WorkspaceSwitcher() {
   const { workspace, setWorkspace } = useWorkspace()
   const [open, setOpen] = useState(false)
-  const isVenture = WORKSPACE_MAP[workspace.key]?.isVenture
+  const [ventures, setVentures] = useState<Venture[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/ventures')
+      .then((r) => r.json())
+      .then((data: Venture[]) => {
+        if (Array.isArray(data)) {
+          setVentures(
+            data.map((v) => ({
+              slug: v.slug,
+              name: v.name,
+              color: v.color ?? VENTURE_ACCENTS[v.slug] ?? '#6366f1',
+              pending: v.pending ?? 0,
+            })),
+          )
+        }
+      })
+      .catch(() => {
+        // Fallback to hardcoded ventures
+        setVentures([
+          { slug: 'novizio', name: 'Novizio', color: '#E94560' },
+          { slug: 'hourbour', name: 'Hourbour', color: '#3B82F6' },
+        ])
+      })
+      .finally(() => setLoading(false))
+  }, [])
+
+  const currentVenture = ventures.find((v) => v.slug === workspace.key)
+  const displayName = currentVenture?.name ?? workspace.name
+  const displayColor = currentVenture?.color ?? workspace.accent
 
   return (
     <div className="relative">
@@ -17,12 +60,23 @@ export function WorkspaceSwitcher() {
         className="flex w-full items-center justify-between rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2 text-left transition hover:bg-white/[0.06]"
       >
         <span className="flex items-center gap-2.5 min-w-0">
-          <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: workspace.accent }} />
+          <span
+            className="h-2.5 w-2.5 rounded-full shrink-0"
+            style={{ background: displayColor }}
+          />
           <span className="min-w-0">
             <span className="block text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant/60">
-              {isVenture ? 'Venture' : 'Workspace'}
+              Venture
             </span>
-            <span className="block text-sm font-semibold text-on-surface truncate">{workspace.name}</span>
+            <span className="block text-sm font-semibold text-on-surface truncate">
+              {loading ? (
+                <span className="inline-flex items-center gap-1">
+                  <Loader2 size={12} className="animate-spin" /> Loading…
+                </span>
+              ) : (
+                displayName
+              )}
+            </span>
           </span>
         </span>
         <ChevronsUpDown size={15} className="text-on-surface-variant shrink-0" />
@@ -32,28 +86,37 @@ export function WorkspaceSwitcher() {
         <>
           <div className="fixed inset-0 z-20" onClick={() => setOpen(false)} />
           <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-30 overflow-hidden rounded-xl border border-white/10 bg-surface-container shadow-2xl max-h-[340px] overflow-y-auto">
-            {WORKSPACES.map((w) => (
+            {ventures.length === 0 && !loading && (
+              <div className="px-3 py-4 text-center text-xs text-on-surface-variant">
+                No ventures found
+              </div>
+            )}
+            {ventures.map((v) => (
               <button
-                key={w.key}
+                key={v.slug}
                 onClick={() => {
-                  setWorkspace(w.key)
+                  setWorkspace(v.slug as any)
                   setOpen(false)
                 }}
                 className="flex w-full items-center justify-between px-3 py-2.5 text-left transition hover:bg-white/5"
               >
                 <span className="flex items-center gap-2.5 min-w-0">
-                  <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ background: w.accent }} />
+                  <span
+                    className="h-2.5 w-2.5 rounded-full shrink-0"
+                    style={{ background: v.color }}
+                  />
                   <span className="min-w-0">
                     <span className="block text-sm font-medium text-on-surface truncate">
-                      {w.name}
-                      {w.isVenture && <span className="ml-1.5 text-[10px] text-on-surface-variant/50">(venture)</span>}
+                      {v.name}
                     </span>
                     <span className="block text-[11px] text-on-surface-variant truncate">
-                      {w.business} · {w.theme}
+                      {v.slug}
                     </span>
                   </span>
                 </span>
-                {w.key === workspace.key && <Check size={15} className="shrink-0" style={{ color: 'var(--ws-accent)' }} />}
+                {v.slug === workspace.key && (
+                  <Check size={15} className="shrink-0" style={{ color: 'var(--ws-accent)' }} />
+                )}
               </button>
             ))}
           </div>
