@@ -66,17 +66,23 @@ export async function POST(request: Request): Promise<Response> {
     agentId,
     ventureId,
     route: routeLabel,
+    dataBlock,        // TOON-formatted context (Claude-optimized, 80%+ token savings)
   } = body
 
   // If agentId is provided, append the agent's personality baseline to the system prompt.
-  // This gives the LLM the agent's distinct voice, convictions, and quality bar.
-  // Backward-compatible: if no agentId, systemPrompt is used as-is.
   let effectiveSystemPrompt = systemPrompt
   if (agentId) {
     const ext = getPersonalityExtension(agentId)
     if (ext) {
       effectiveSystemPrompt = (systemPrompt ?? '') + ext
     }
+  }
+
+  // Append TOON-formatted data block to system prompt (Claude-optimized contextual data)
+  // This is where decision queues, venture context, session history are injected.
+  // TOON format saves ~80% tokens vs JSON on Claude models.
+  if (dataBlock) {
+    effectiveSystemPrompt = (effectiveSystemPrompt ?? '') + '\n\n' + dataBlock
   }
 
   if (!userMessage) {

@@ -679,6 +679,7 @@ export interface ClaudeRequestBody {
   model?: string
   ventureId?: string
   route?: string  // e.g. 'individual-chat' | 'war-room' | 'briefing'
+  dataBlock?: string  // TOON-formatted context — Claude-optimized, ~80% token savings vs JSON
 }
 
 // ─── Decisions ────────────────────────────────────────────────────────────────
