@@ -5,23 +5,43 @@ import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
 import KaisRead from '@/components/KaisRead'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { TrendingUp, Plus, ArrowUpRight } from 'lucide-react'
+import { useLiveData } from '@/lib/use-live-data'
+import { TrendingUp, Plus, ArrowUpRight, RefreshCw } from 'lucide-react'
 
 type Trend = { id: string; topic: string; platform: string; strength: number; tone: 'green' | 'yellow' | 'blue'; detail: string }
-const TRENDS: Trend[] = [
+
+const MOCK_TRENDS: Trend[] = [
   { id: 't1', topic: '“Agent-as-a-service” is forming as a category', platform: 'X / LinkedIn', strength: 88, tone: 'green', detail: 'Mentions up 3x in 30 days. Founders are searching for done-for-you agent ops. Window to claim the name.' },
   { id: 't2', topic: 'Voice-memo → task workflows', platform: 'TikTok', strength: 74, tone: 'yellow', detail: 'Short demos of talking to your tools are trending. Good fit for a Shorts series.' },
   { id: 't3', topic: 'Cozy/“deep sea” e-commerce aesthetics', platform: 'Instagram', strength: 69, tone: 'blue', detail: 'Muted greens performing for shop content — aligns with Canela theme.' },
   { id: 't4', topic: 'Cinematic single-page sites', platform: 'YouTube', strength: 64, tone: 'blue', detail: 'Demand rising for high-end one-pagers. Feeds the Cinematic Sites offer.' },
 ]
+
 export default function TrendRadarPage() {
   const { workspace } = useWorkspace()
   const [sel, setSel] = useState<Trend | null>(null)
+
+  const { data, loading, refetch } = useLiveData<{ trends: Trend[] }>({
+    url: '/api/trend-radar',
+    mockData: { trends: MOCK_TRENDS },
+    pollIntervalMs: 60000,
+  })
+
+  const trends = data?.trends?.length ? data.trends : MOCK_TRENDS
+
   return (
     <div>
-      <PageHeader title="Trend Radar · Isaac" subtitle="Isaac identifies trends across your workspaces — feeding content ideas and strategic decisions." />
+      <PageHeader
+        title="Trend Radar · Isaac"
+        subtitle="Isaac identifies trends across your workspaces — feeding content ideas and strategic decisions."
+        actions={
+          <button className="btn-ghost" onClick={refetch}>
+            <RefreshCw size={15} /> Refresh
+          </button>
+        }
+      />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {TRENDS.map((t) => (
+        {trends.map((t) => (
           <Card key={t.id} hover className="p-4">
             <div className="mb-1.5 flex items-center gap-2">
               <StatusBadge tone={t.tone}><TrendingUp size={11} /> {t.strength}</StatusBadge>
