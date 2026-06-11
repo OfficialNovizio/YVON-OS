@@ -109,16 +109,19 @@ export default function SettingsPage() {
     setWD(loadBool(LS_KEYS.weeklyDigest, true))
   }, [])
 
-  const setNotifications = useCallback((v: boolean) => { setN(v); saveBool(LS_KEYS.notifications, v) }, [])
-  const setAutoApprove    = useCallback((v: boolean) => { setAA(v); saveBool(LS_KEYS.autoApprove, v) }, [])
+  const mkToggle = (key: string, setter: (v: boolean) => void) =>
+    useCallback((v: boolean) => { setter(v); saveBool(key, v) }, [key, setter])
+
+  const setNotifications = mkToggle(LS_KEYS.notifications, setN)
+  const setAutoApprove    = mkToggle(LS_KEYS.autoApprove, setAA)
   const setDarkMode       = useCallback((v: boolean) => {
     setDM(v); saveBool(LS_KEYS.darkMode, v)
     document.documentElement.classList.toggle('dark', v)
     if (!v) document.documentElement.classList.add('light')
   }, [])
-  const setCompactSidebar = useCallback((v: boolean) => { setCS(v); saveBool(LS_KEYS.compactSidebar, v) }, [])
-  const setTelegramNudge  = useCallback((v: boolean) => { setTN(v); saveBool(LS_KEYS.telegramNudge, v) }, [])
-  const setWeeklyDigest   = useCallback((v: boolean) => { setWD(v); saveBool(LS_KEYS.weeklyDigest, v) }, [])
+  const setCompactSidebar = mkToggle(LS_KEYS.compactSidebar, setCS)
+  const setTelegramNudge  = mkToggle(LS_KEYS.telegramNudge, setTN)
+  const setWeeklyDigest   = mkToggle(LS_KEYS.weeklyDigest, setWD)
 
   useEffect(() => {
     fetch('/api/dashboard')
