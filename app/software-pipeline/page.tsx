@@ -86,77 +86,80 @@ export default function SoftwarePipelinePage() {
         </span>
       </Card>
 
-      {/* kanban */}
-      <div className="scroll-x flex gap-3 overflow-x-auto pb-2">
-        {columns.map((col) => (
-          <div key={col.title} className="kanban-col">
-            <div className="mb-2.5 flex items-center justify-between px-1">
-              <span className="flex items-center gap-2 text-[13px] font-semibold text-on-surface">
-                {col.tone && <span className="h-2 w-2 rounded-full" style={{ background: dotColor[col.tone] }} />}
-                {col.title}
-              </span>
-              <span className="text-[11px] text-on-surface-variant">{col.cards.length}</span>
-            </div>
-            <div className="space-y-2.5">
-              {col.cards.map((c) => (
-                <div key={c.t} className="kanban-card">
-                  <p className="text-[13px] leading-snug text-on-surface">{c.t}</p>
-                  <div className="mt-2.5 flex items-center justify-between">
-                    <Avatar initials={c.agent} />
-                    {col.title === 'Needs review' && <button className="btn-accent !px-3 !py-1 !text-[11px]">Review</button>}
+      {/* ── Main grid: kanban + right rail ── */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_280px]">
+        {/* kanban */}
+        <div className="scroll-x flex gap-3 overflow-x-auto pb-2">
+          {columns.map((col) => (
+            <div key={col.title} className="kanban-col">
+              <div className="mb-2.5 flex items-center justify-between px-1">
+                <span className="flex items-center gap-2 text-[13px] font-semibold text-on-surface">
+                  {col.tone && <span className="h-2 w-2 rounded-full" style={{ background: dotColor[col.tone] }} />}
+                  {col.title}
+                </span>
+                <span className="text-[11px] text-on-surface-variant">{col.cards.length}</span>
+              </div>
+              <div className="space-y-2.5">
+                {col.cards.map((c) => (
+                  <div key={c.t} className="kanban-card">
+                    <p className="text-[13px] leading-snug text-on-surface">{c.t}</p>
+                    <div className="mt-2.5 flex items-center justify-between">
+                      <Avatar initials={c.agent} />
+                      {col.title === 'Needs review' && <button className="btn-accent !px-3 !py-1 !text-[11px]">Review</button>}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Right panel */}
-      <div className="space-y-4">
-        {/* Quick Actions */}
-        <Card className="p-4">
-          <h3 className="mb-3 text-sm font-semibold text-on-surface">Quick Actions</h3>
-          <div className="space-y-2">
-            <Link href="/idea-feed" className="btn-accent w-full !justify-center text-xs">
-              <Plus size={14} /> New Idea
-            </Link>
-            <Link href="/decision-queue" className="btn-ghost w-full !justify-center text-xs">
-              Review Queue
-            </Link>
-          </div>
-        </Card>
+        {/* Right panel */}
+        <div className="space-y-4">
+          {/* Quick Actions */}
+          <Card className="p-4">
+            <h3 className="mb-3 text-sm font-semibold text-on-surface">Quick Actions</h3>
+            <div className="space-y-2">
+              <Link href="/idea-feed" className="btn-accent w-full !justify-center text-xs">
+                <Plus size={14} /> New Idea
+              </Link>
+              <Link href="/decision-queue" className="btn-ghost w-full !justify-center text-xs">
+                Review Queue
+              </Link>
+            </div>
+          </Card>
 
-        {/* KaisRead */}
-        <KaisRead ventureSlug={workspace.key} variant="dark" context="software-pipeline" />
+          {/* KaisRead */}
+          <KaisRead ventureSlug={workspace.key} variant="dark" context="software-pipeline" />
 
-        {/* Filter by product */}
-        <Card className="p-4">
-          <h3 className="mb-2 text-sm font-semibold text-on-surface">Filter</h3>
-          <div className="space-y-1.5">
-            <button
-              onClick={() => setActiveProduct(null)}
-              className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition ${
-                activeProduct === null ? 'bg-white/[0.08] text-on-surface' : 'text-on-surface-variant hover:bg-white/[0.04]'
-              }`}
-            >
-              All products
-            </button>
-            {projects.map((p) => (
+          {/* Filter by product */}
+          <Card className="p-4">
+            <h3 className="mb-2 text-sm font-semibold text-on-surface">Filter</h3>
+            <div className="space-y-1.5">
               <button
-                key={p.name}
-                onClick={() => setActiveProduct(p.name)}
+                onClick={() => setActiveProduct(null)}
                 className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition ${
-                  activeProduct === p.name
-                    ? 'bg-white/[0.08] text-on-surface'
-                    : 'text-on-surface-variant hover:bg-white/[0.04]'
+                  activeProduct === null ? 'bg-white/[0.08] text-on-surface' : 'text-on-surface-variant hover:bg-white/[0.04]'
                 }`}
               >
-                {p.name}
+                All products
               </button>
-            ))}
-          </div>
-        </Card>
+              {projects.map((p) => (
+                <button
+                  key={p.name}
+                  onClick={() => setActiveProduct(p.name)}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs cursor-pointer transition ${
+                    activeProduct === p.name
+                      ? 'bg-white/[0.08] text-on-surface'
+                      : 'text-on-surface-variant hover:bg-white/[0.04]'
+                  }`}
+                >
+                  {p.name}
+                </button>
+              ))}
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   )

@@ -179,17 +179,18 @@ export default function IdeaFeedPage() {
           ))}
         </select>
 
-        {/* Promotion filter toggle */}
-        <div className="flex rounded-lg border border-outline-variant overflow-hidden">
+        {/* Promotion filter toggle — CSS custom property pills */}
+        <div className="flex flex-wrap gap-1.5">
           {(['all', 'not-promoted', 'promoted'] as FilterMode[]).map((mode) => (
             <button
               key={mode}
               onClick={() => setFilterMode(mode)}
-              className={`px-3 py-2 text-[13px] font-medium transition-colors ${
+              className="rounded-full border px-3 py-1.5 text-[12px] font-semibold transition"
+              style={
                 filterMode === mode
-                  ? 'bg-primary text-white'
-                  : 'bg-surface text-on-surface-variant hover:bg-surface-variant'
-              }`}
+                  ? { background: 'var(--ws-accent-soft)', borderColor: 'var(--ws-glow)', color: 'var(--ws-accent)' }
+                  : { borderColor: 'rgba(255,255,255,0.08)', color: '#c1c6d6' }
+              }
             >
               {mode === 'all' ? 'All ideas' : mode === 'promoted' ? 'Promoted' : 'Not promoted'}
             </button>
