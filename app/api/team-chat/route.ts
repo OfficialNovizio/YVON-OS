@@ -25,7 +25,7 @@ import { exec } from 'child_process'
 import { promisify } from 'util'
 const execP = promisify(exec)
 
-export const maxDuration = 600
+export const maxDuration = 300  // Vercel hobby plan limit
 
 const YVON_OS_PATH = process.cwd()
 
