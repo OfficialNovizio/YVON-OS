@@ -1,0 +1,41 @@
+# 05 · Org Chart
+
+> The organizational view of the agent company — who reports to whom, across the personal team and every workspace.
+
+## Purpose
+
+Where the **Agents** page shows the *hardware* layout, the Org Chart shows the *organizational* structure: the personal C-suite, the shared workspace-level master agents, the per-workspace teams, and the skill workshops that continuously improve them. The owner describes themselves as a "top-heavy multi-tasker" and wants Hermes/Henry to coordinate the personal team while keeping a clean overview.
+
+## Page header
+
+- Title: **Org Chart**, breadcrumb `Vibe with AI / Org Chart`.
+- Search ("Find an agent or jump anywhere…").
+- Top bar: **System healthy**, **agents live** counter.
+
+## Tiers (top → bottom)
+
+The chart is laid out as horizontal bands, each a tier of the organization:
+
+1. **Personal Layer** *(serves the owner directly, cross-workspace)* — the C-suite:
+   - **Nexus** — CTO
+   - **Steve** — QA
+   - **Knox** — Security Officer
+   - **Wolf** — Finance Officer
+   - (Henry / Henri Matisse — Chief of Staff — coordinates this layer)
+
+2. **Workspace Tier** *(shared across all workspaces — "masters")* — master agents that work for every workspace, e.g. **Mr. X**, **William** (copywriting), **Leonardo** (image gen), **Ivy**, **Isaac** (trends). These are the reusable specialists.
+
+3. **Per-workspace teams** *(report to their workspace head)* — each business gets its own roster, color-coded by workspace:
+   - **Canela** (e-commerce): Aria, Nyx, Lucia, Estelle…
+   - **By Design** (app/agency): Viola, Hana, Atlas…
+   - **Valhalla** (music): Fenrir, Saga…
+
+4. **Skill Workshop** *(bottom band)* — per-master "workshops" (Mr. X's Workshop, William's Workshop, Leonardo's Workshop…) that constantly improve the master agents above. Links to `07-skill-workshop.md`.
+
+## Cards
+
+Each agent appears as a card with avatar, name, role, and workspace color. Cards connect with lines showing reporting/coordination relationships.
+
+## Design intent
+
+Keep a clean overview of a growing multi-agent org: a stable personal C-suite at top, reusable master specialists in the middle, project-specific teams per workspace, and a continuous-improvement layer underneath. Mirrors how a real company scales from founders → shared functions → business units.

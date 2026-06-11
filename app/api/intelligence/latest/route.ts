@@ -5,7 +5,7 @@
 import { cookies } from 'next/headers'
 import { getLatestReports } from '@/lib/reports'
 import { getLatestBatch, getPitchesByBatch } from '@/lib/intelligence'
-import { mockReports, mockBatch, mockPitches } from '@/demo'
+import { mockReports, mockBatch, mockPitches } from '@/lib/demo'
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url)

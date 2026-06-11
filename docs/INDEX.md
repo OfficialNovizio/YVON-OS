@@ -1,34 +1,76 @@
-# docs/ — YVON Project Documentation Index
-
-All project-level `.md` files live here. Organised into 4 subfolders by type.
-`CLAUDE.md` stays at the root — required by Claude Code.
-Auto-generated files (`graphify-out/`) stay with their tooling.
+# Venture Registry
+> Marcus reads this to understand what ventures exist and what to load for each.
+> One source of truth for venture status and default load manifest.
 
 ---
 
-## Subfolders
+## Active Ventures
 
-| Folder | Purpose | Key files |
-|--------|---------|-----------|
-| [`os/`](os/INDEX.md) | YVON OS runtime — session state, context, roadmap, user prefs | SESSION.md, CONTEXT.md |
-| [`memory/`](memory/INDEX.md) | Persistent design rules and never-again patterns across agents | feedback.md |
-| [`reference/`](reference/INDEX.md) | Static reference docs — stack, pages, env, security, specs | STACK.md, SECURITY.md |
-| [`dev/`](dev/INDEX.md) | Developer tooling docs | CODE_REVIEW_GRAPH.md |
+| Venture | Slug | Type | Status | Default venture |
+|---------|------|------|--------|----------------|
+| [Novizio](novizio/) | `novizio` | Fashion DTC e-commerce | Active | — |
+| [Hourbour](hourbour/) | `hourbour` | Fintech SaaS | Active | — |
+| [YVON Dashboard](yvon-dashboard/) | `yvon-os` | Internal BI platform | Active | ✅ fallback |
+
+**Default venture** — if cookie `yvon_active_venture` is missing and SESSION.md has no clear active venture, load `yvon-dashboard`. Never guess between Novizio and Hourbour.
 
 ---
 
-## How these folders relate
+## Load Manifest — what Marcus loads per venture
+
+| File | Novizio | Hourbour | yvon-dashboard | When |
+|------|---------|---------|----------------|------|
+| `SESSION.md` | ✅ | ✅ | ✅ | Always — first read |
+| `CONTEXT.md` | ✅ | ✅ | ✅ | Always |
+| `FEEDBACK.md` | ✅ 🔴 always · 🟡 if relevant | ✅ | ✅ | Always (🔴 minimum) |
+| `BRAND.md` | If: copy, marketing, content, brand decision | ✅ same | ✅ same | On demand |
+| `DESIGN.md` | If: any UI, visual, component, asset work | ✅ same | ✅ same | On demand |
+| `ISSUES.md` | If: starting any task — check for blockers first | ✅ same | ✅ same | Start of task |
+| `METRICS.md` | If: analytics, finance, KPI review, or target-setting | ✅ same | ✅ same | On demand |
+| `AGENTS.md` | If: routing a task, checking agent ownership, multi-agent task | ✅ same | ✅ same | On demand |
+
+---
+
+## File Roles — one job per file
+
+| File | Job | NOT for |
+|------|-----|---------|
+| `SESSION.md` | What happened, what's next, what's blocked | Why decisions were made |
+| `CONTEXT.md` | Why + when decisions were locked (strategic) | Rolling state or rules |
+| `FEEDBACK.md` | Rules from errors/corrections — 🔴🟡🟢 tagged, dated | Strategic decisions |
+| `BRAND.md` | Who this venture is to the world | Visual execution |
+| `DESIGN.md` | How this venture looks in code and assets | Brand positioning |
+| `ISSUES.md` | Open bugs, gaps, blockers — priority-tagged | Closed issues older than 30 days |
+| `METRICS.md` | KPI targets, current baselines, alert thresholds | Raw data or individual session results |
+| `AGENTS.md` | Which agents own what for this venture, routing notes | Agent MEMORY.md content (stays in agent files) |
+
+**The CONTEXT vs FEEDBACK razor:**
+- CONTEXT.md → *decision + WHY it was made + date locked*
+- FEEDBACK.md → *rule derived from an error or correction — no WHY needed, just the rule*
+
+---
+
+## Venture Switch Protocol (Marcus)
 
 ```
-CLAUDE.md (root)
-  ↓ reads on session start
-  docs/os/SESSION.md        ← rolling session continuity
-  docs/os/CONTEXT.md        ← permanent architecture locks
-  docs/os/USER.md           ← Stark's working preferences
-  docs/memory/feedback.md   ← design rules Marcus reads at every Forming
-  docs/reference/*          ← loaded on demand per task type
+Stark: "switch to [venture]"
+    ↓
+1. Save current venture state → ventures/[current]/SESSION.md
+2. Output VENTURE SWITCH marker in conversation (hard boundary)
+3. Load new venture: SESSION.md + CONTEXT.md + FEEDBACK.md
+4. Load BRAND.md / DESIGN.md only if task requires it
+5. Re-read each agent's Quick Context row for the new venture
+6. ENGAGE: "Switching to [venture]. Last active [date]. [In Flight task]. Continue or new task?"
 ```
 
-**Load order at session start:** SESSION.md → CONTEXT.md → memory/feedback.md → agent MEMORY.md
-**Load on demand:** reference/* (only the file relevant to the task)
-**Never load all at once** — scope to what the task needs.
+**For deep UI or brand work: recommend new session.** Structural isolation beats instructed isolation.
+
+---
+
+## Cross-Venture Rules
+
+Rules that apply across all ventures live in:
+- `docs/memory/feedback.md` — agent behaviour, routing, self-improvement rules
+- `docs/memory/design.md` — shared UI/design patterns across all ventures
+
+Never put a cross-venture rule inside a venture file.

@@ -1,0 +1,60 @@
+# 01 · Decision Queue
+
+> **The single most important new page in the redesign.** The owner calls it the screen they need each morning: it shows "seven things that actually need me" while everything else has been handled by agents overnight.
+
+## Purpose
+
+The Decision Queue is the human-decision funnel. Agents across all workspaces produce a large volume of proposed tasks, pending posts, and draft emails. **Henry (chief of staff) digests everything the team is doing across all workspaces, filters out as much as he can decide himself, and only lets through the items that genuinely need the owner's review or decision.** It directly solves the old system's bottleneck: proposed tasks never reviewed, posts pending approval, and emails awaiting replies all piling up.
+
+## Page header
+
+- Title: **Decision Queue**.
+- A summary line: "Everything in one feed … Aggregated across every page, curated by Henry, trimmed to ~X%."
+- A reduction stat (e.g. "~XX% reduction") showing how much Henry filtered out.
+- **Search** button and a **Clear my queue** (focus/triage) button top-right.
+- A section header: **"NEEDS YOU NOW · 7 decisions"** — the count of items requiring action.
+
+## The decision items (main feed)
+
+Each row is a self-contained decision card. Observed item types and their inline actions:
+
+1. **Email reply** — e.g. "Reply to Maria — Cinematic Site inquiry (~€5k)." Shows a short context line and a generated reply draft. Inline actions: **Send (approve draft)**, **Edit & send**, **Open thread**. The owner can review and send the draft without leaving the page.
+
+2. **Security stop / credential leak** — e.g. "Knox stopped an action before it shipped a credential." Knox (security officer) halted a workflow because of a credential/key leak. Inline actions: **Approve rotation** (rotate the leaked key), and **see what was stopped**. This is a safety interrupt surfaced as a decision.
+
+3. **Post approvals** — e.g. "3 posts staged for Mon–Wed — give the word." The owner can **Approve postings / approve all three LinkedIn posts** at once, or open each to review individually.
+
+4. **Code / PR merge gate** — e.g. an item ready for final review where the owner can **Approve & merge** (or send back). Ties into the Software Pipeline review stage.
+
+Each card carries: an originating agent avatar, a workspace tag, a short brief, a confidence/priority indicator, and one or more action buttons sized so the owner can clear items quickly without stalling the team.
+
+## Right-hand rail
+
+**Workspace filter** — a list of workspaces (All workspaces, Vibe with AI, By Design, Canela, Valhalla) to scope the queue to one project.
+
+**"How it's flowing"** — live metrics about the queue itself:
+- Avg time to clear (e.g. ~24h)
+- Items cleared today
+- Items Henry auto-handled / handled (e.g. "40 FYIs")
+
+**"Henry's nudge plan"** — explains the escalation behavior:
+- Telegram pings for open/unanswered decisions.
+- Morning brief — what's waiting and why.
+- The nudging cadence so the team is never blocked on the owner.
+
+## "Clear my queue" mode (focus / one-by-one)
+
+A dedicated mode where the owner steps through items **one at a time** instead of scanning the whole list:
+
+- Each item shows a **more detailed brief**.
+- The owner can **read the draft**, **edit** it, **make the decision**, and **keep going** to the next.
+- A **Defer (snooze)** option: choose to revisit **after a day, tonight, tomorrow morning, or in a couple of days**. When the deferral elapses, **Henry nudges again via Telegram**.
+
+## Learning behavior (design intent)
+
+Henry **learns over time** how the owner makes decisions, what they defer, and how to filter better — so the number of items reaching the queue **goes down over time**. The explicit goal is fewer and fewer decisions surfaced as trust and pattern-learning accumulate.
+
+## Related screens
+
+- Items here are aggregated from: Task Board (*Proposed* / *Review* stages), Social Approvals, Email Inbox (*Review* drafts), and Software Pipeline (review/merge gate).
+- Telegram is the out-of-app nudge channel.

@@ -1,157 +1,101 @@
-// GET /api/agent-status?ventureId=x
-// Returns live agent status derived from tasks + activity_feed.
-// Falls back to demo data when no live data exists — remove getDemoData() when real tasks flow.
+// GET  /api/agent-status — live agent heartbeat / activity
+// Returns which agents are running, what they're working on, and health status.
+// Wired from YVON 2.0's agent_memory and agent_sessions tables.
 
-import { cookies } from 'next/headers'
-import { getTasks, getActivityFeed } from '@/lib/db'
-import type { AgentId } from '@/lib/types'
+import { createClient } from '@supabase/supabase-js'
 
-// ── Agent display config ────────────────────────────────────────────────────────
-const AGENT_META: Record<string, {
-  name: string
-  role: 'tech' | 'brand' | 'ops' | 'exec'
-  dept: string
-  idle: string
-}> = {
-  'marcus-ceo':         { name: 'Marcus', role: 'exec',  dept: 'Executive',  idle: 'Standby · CEO agent' },
-  'diana-coo':          { name: 'Diana',  role: 'exec',  dept: 'Strategy',   idle: 'Standby · brand transparency' },
-  'dev-lead':           { name: 'Dev',    role: 'tech',  dept: 'Technical',  idle: 'Standby · engineering' },
-  'raj-backend':        { name: 'Raj',    role: 'tech',  dept: 'Technical',  idle: 'Standby · infra' },
-  'mia-frontend':       { name: 'Mia',    role: 'brand', dept: 'Brand',      idle: 'Standby · UI/UX' },
-  'quinn-qa':           { name: 'Quinn',  role: 'tech',  dept: 'Technical',  idle: 'Standby · QA' },
-  'kai-analyst':        { name: 'Kai',    role: 'tech',  dept: 'Marketing',  idle: 'Standby · analytics' },
-  'lena-brand':         { name: 'Lena',   role: 'ops',   dept: 'Operations', idle: 'Standby · brand copy' },
-  'rio-ads':            { name: 'Rio',    role: 'brand', dept: 'Marketing',  idle: 'Standby · paid ads' },
-  'nate-growth':        { name: 'Nate',   role: 'ops',   dept: 'Operations', idle: 'Standby · growth' },
-  'atlas-art-director': { name: 'Atlas',  role: 'ops',   dept: 'Operations', idle: 'Standby · art direction' },
-  'pixel-production':   { name: 'Pixel',  role: 'brand', dept: 'Brand',      idle: 'Standby · creative' },
-  'felix-finance':      { name: 'Felix',  role: 'exec',  dept: 'Strategy',   idle: 'Standby · finance' },
-}
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
-export interface AgentStatusItem {
+export interface AgentStatus {
   id: string
   name: string
-  role: 'tech' | 'brand' | 'ops' | 'exec'
-  dept: string
-  status: 'active' | 'idle' | 'done'
-  currentTask: string
-  when?: string
+  role: string
+  department: string
+  status: 'active' | 'idle' | 'offline'
+  currentTask: string | null
+  lastActive: string | null
+  machine: string
+  avatar?: string
 }
 
-export interface AgentStatusResponse {
-  active: AgentStatusItem[]
-  idle: AgentStatusItem[]
-  completedToday: AgentStatusItem[]
-  isDemo: boolean
-  fetchedAt: string
-}
-
-function relativeTime(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const m = Math.floor(diff / 60000)
-  const h = Math.floor(diff / 3600000)
-  if (m < 5)  return 'Just now'
-  if (m < 60) return `${m}m ago`
-  if (h < 24) return `${h}h ago`
-  if (h < 48) return 'Yesterday'
-  return `${Math.floor(h / 24)}d ago`
-}
-
-// ── Demo fallback ── remove when real tasks flow ────────────────────────────────
-function getDemoData(): AgentStatusResponse {
-  return {
-    active: [
-      { id: 'kai-analyst', name: 'Kai',  role: 'tech',  dept: 'Marketing', status: 'active', currentTask: 'Analyzing analytics data' },
-      { id: 'rio-ads',     name: 'Rio',  role: 'brand', dept: 'Marketing', status: 'active', currentTask: 'Running TikTok ad campaigns' },
-      { id: 'dev-lead',    name: 'Dev',  role: 'tech',  dept: 'Technical', status: 'active', currentTask: 'Building size guide page' },
-    ],
-    idle: [
-      { id: 'diana-coo',          name: 'Diana',  role: 'exec',  dept: 'Strategy',   status: 'idle', currentTask: 'Standby · brand transparency' },
-      { id: 'raj-backend',        name: 'Raj',    role: 'tech',  dept: 'Technical',  status: 'idle', currentTask: 'Standby · infra' },
-      { id: 'mia-frontend',       name: 'Mia',    role: 'brand', dept: 'Brand',      status: 'idle', currentTask: 'Standby · voice ops' },
-      { id: 'lena-brand',         name: 'Lena',   role: 'ops',   dept: 'Operations', status: 'idle', currentTask: 'Standby · supply chain' },
-      { id: 'nate-growth',        name: 'Nate',   role: 'ops',   dept: 'Operations', status: 'idle', currentTask: 'Standby · conversion ops' },
-      { id: 'quinn-qa',           name: 'Quinn',  role: 'tech',  dept: 'Technical',  status: 'idle', currentTask: 'Standby · QA' },
-      { id: 'atlas-art-director', name: 'Atlas',  role: 'ops',   dept: 'Operations', status: 'idle', currentTask: 'Standby · logistics' },
-      { id: 'pixel-production',   name: 'Pixel',  role: 'brand', dept: 'Brand',      status: 'idle', currentTask: 'Standby · creative' },
-      { id: 'felix-finance',      name: 'Felix',  role: 'exec',  dept: 'Strategy',   status: 'idle', currentTask: 'Standby · finance' },
-      { id: 'marcus-ceo',         name: 'Marcus', role: 'exec',  dept: 'Executive',  status: 'idle', currentTask: 'Standby · CEO agent' },
-    ],
-    completedToday: [
-      { id: 'kai-analyst', name: 'Kai',    role: 'tech',  dept: 'Today', status: 'done', currentTask: 'Analytics report delivered',     when: '4h ago' },
-      { id: 'marcus-ceo',  name: 'Marcus', role: 'exec',  dept: 'Today', status: 'done', currentTask: 'Morning CEO brief published',     when: '6h ago' },
-      { id: 'mia-frontend',name: 'Mia',    role: 'brand', dept: 'Today', status: 'done', currentTask: 'Brand voice guidelines updated',  when: '8h ago' },
-      { id: 'dev-lead',    name: 'Dev',    role: 'tech',  dept: 'Today', status: 'done', currentTask: 'Size guide page pushed',          when: 'Yesterday' },
-    ],
-    isDemo: true,
-    fetchedAt: new Date().toISOString(),
-  }
-}
-
-export async function GET(request: Request): Promise<Response> {
-  const url         = new URL(request.url)
-  const cookieStore = await cookies()
-  const vId = url.searchParams.get('ventureId') || cookieStore.get('yvon_active_venture')?.value || 'novizio'
-
+export async function GET(): Promise<Response> {
   try {
-    const todayStart = new Date()
-    todayStart.setHours(0, 0, 0, 0)
+    // Get recent agent sessions (last 2 hours)
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
 
-    const [tasks, activities] = await Promise.all([
-      getTasks(vId),
-      getActivityFeed(vId, 200),
-    ])
+    const { data: sessions, error } = await supabase
+      .from('agent_sessions')
+      .select('*')
+      .gte('created_at', twoHoursAgo)
+      .order('created_at', { ascending: false })
+      .limit(50)
 
-    // Agents with in-progress tasks → Active
-    const inProgressTasks = tasks.filter(t => t.status === 'in-progress' && t.agentId)
-    const activeAgentMap  = new Map<string, string>() // agentId → task title
-    for (const t of inProgressTasks) {
-      if (t.agentId && !activeAgentMap.has(t.agentId)) {
-        activeAgentMap.set(t.agentId, t.title)
+    if (error) {
+      // Graceful fallback: return static agent roster
+      return Response.json({
+        agents: STATIC_ROSTER.map((a) => ({ ...a, status: 'offline' as const, currentTask: null, lastActive: null })),
+        machinesOnline: 1,
+        agentsLive: 0,
+        totalAgents: STATIC_ROSTER.length,
+      })
+    }
+
+    // Build live agent map from sessions
+    const agentMap = new Map<string, { lastActive: string; taskCount: number; latestTask: string | null }>()
+    for (const s of sessions ?? []) {
+      const existing = agentMap.get(s.agent_name) ?? { lastActive: s.created_at, taskCount: 0, latestTask: null }
+      existing.taskCount++
+      if (!existing.latestTask && s.title) existing.latestTask = s.title
+      if (s.created_at > existing.lastActive) existing.lastActive = s.created_at
+      agentMap.set(s.agent_name, existing)
+    }
+
+    // Map static roster with live activity
+    const agents: AgentStatus[] = STATIC_ROSTER.map((a) => {
+      const live = agentMap.get(a.name)
+      if (!live) return { ...a, status: 'offline', currentTask: null, lastActive: null }
+      const active = new Date(live.lastActive).getTime() > Date.now() - 30 * 60 * 1000
+      return {
+        ...a,
+        status: active ? 'active' : 'idle',
+        currentTask: live.latestTask,
+        lastActive: live.lastActive,
       }
-    }
+    })
 
-    // Activity events today → Done Today (most recent per agent)
-    const todayActivities = activities.filter(a => new Date(a.createdAt) >= todayStart && a.agentId)
-    const doneMap = new Map<string, { task: string; when: string }>()
-    for (const act of todayActivities) {
-      if (!act.agentId || doneMap.has(act.agentId)) continue
-      doneMap.set(act.agentId, { task: act.message, when: relativeTime(act.createdAt) })
-    }
-
-    const hasRealData = inProgressTasks.length > 0 || todayActivities.length > 0
-    if (!hasRealData) {
-      return Response.json(getDemoData(), { headers: { 'Cache-Control': 'no-store' } })
-    }
-
-    // Build active + idle arrays from all known agents
-    const active: AgentStatusItem[]  = []
-    const idle:   AgentStatusItem[]  = []
-
-    for (const [id, meta] of Object.entries(AGENT_META)) {
-      if (activeAgentMap.has(id)) {
-        active.push({ id, ...meta, status: 'active', currentTask: activeAgentMap.get(id)! })
-      } else {
-        idle.push({ id, ...meta, status: 'idle', currentTask: meta.idle })
-      }
-    }
-
-    // Build completedToday from activity map
-    const completedToday: AgentStatusItem[] = []
-    for (const [id, info] of doneMap.entries()) {
-      const meta = AGENT_META[id as AgentId]
-      if (!meta) continue
-      completedToday.push({ id, ...meta, status: 'done', currentTask: info.task, when: info.when, dept: 'Today' })
-    }
-
-    return Response.json(
-      { active, idle, completedToday, isDemo: false, fetchedAt: new Date().toISOString() } satisfies AgentStatusResponse,
-      { headers: { 'Cache-Control': 'no-store' } }
-    )
+    return Response.json({
+      agents,
+      machinesOnline: 1,
+      agentsLive: agents.filter((a) => a.status === 'active').length,
+      totalAgents: agents.length,
+    })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    console.error('[agent-status]', msg)
-    // On error always return demo data so the UI never breaks
-    return Response.json(getDemoData(), { headers: { 'Cache-Control': 'no-store' } })
+    return Response.json({
+      agents: STATIC_ROSTER.map((a) => ({ ...a, status: 'offline' as const, currentTask: null, lastActive: null })),
+      machinesOnline: 0,
+      agentsLive: 0,
+      totalAgents: STATIC_ROSTER.length,
+      error: msg,
+    }, { status: 500 })
   }
 }
+
+const STATIC_ROSTER: Omit<AgentStatus, 'status' | 'currentTask' | 'lastActive'>[] = [
+  { id: 'marcus', name: 'Marcus', role: 'CEO', department: 'Command', machine: 'Linux VPS', avatar: '/avatars/agents/marcus-ceo.svg' },
+  { id: 'diana', name: 'Diana', role: 'COO', department: 'Command', machine: 'Linux VPS', avatar: '/avatars/agents/diana-coo.svg' },
+  { id: 'dev', name: 'Dev', role: 'Lead Developer', department: 'Technical', machine: 'Linux VPS', avatar: '/avatars/agents/dev-lead.svg' },
+  { id: 'raj', name: 'Raj', role: 'Backend Engineer', department: 'Technical', machine: 'Linux VPS', avatar: '/avatars/agents/raj-backend.svg' },
+  { id: 'mia', name: 'Mia', role: 'Frontend Engineer', department: 'Technical', machine: 'Linux VPS', avatar: '/avatars/agents/mia-frontend.svg' },
+  { id: 'quinn', name: 'Quinn', role: 'QA Engineer', department: 'Technical', machine: 'Linux VPS' },
+  { id: 'kai', name: 'Kai', role: 'Analyst', department: 'Marketing', machine: 'Linux VPS', avatar: '/avatars/agents/kai-analyst.svg' },
+  { id: 'lena', name: 'Lena', role: 'Brand Strategist', department: 'Marketing', machine: 'Linux VPS', avatar: '/avatars/agents/lena-brand.svg' },
+  { id: 'rio', name: 'Rio', role: 'Ads Manager', department: 'Marketing', machine: 'Linux VPS', avatar: '/avatars/agents/rio-ads.svg' },
+  { id: 'nate', name: 'Nate', role: 'Growth Hacker', department: 'Marketing', machine: 'Linux VPS', avatar: '/avatars/agents/nate-growth.svg' },
+  { id: 'atlas', name: 'Atlas', role: 'Art Director', department: 'Marketing', machine: 'Linux VPS', avatar: '/avatars/agents/atlas-art-director.svg' },
+  { id: 'pixel', name: 'Pixel', role: 'Production', department: 'Marketing', machine: 'Linux VPS', avatar: '/avatars/agents/pixel-production.svg' },
+  { id: 'felix', name: 'Felix', role: 'Finance Officer', department: 'Finance', machine: 'Linux VPS', avatar: '/avatars/agents/felix-finance.svg' },
+]
