@@ -7,7 +7,7 @@ import { Card, StatusBadge } from '@/components/ui'
 import {
   Loader2, Save, Plus, Trash2, ExternalLink, ArrowLeft,
   Globe, Server, Database, Cpu, Activity, Shield, Smartphone,
-  Monitor, GitBranch as Github, Bell, ChevronRight, ChevronDown, Check, X,
+  Monitor, GitBranch, Bell, ChevronRight, ChevronDown, Check, X,
   Cloud, Flame, BarChart3, Bug, Link2, Wifi, WifiOff,
 } from 'lucide-react'
 
@@ -667,7 +667,7 @@ export default function VentureSettingsPage() {
       {tab === 'technical' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Card className="p-4">
-            <div className="flex items-center gap-2 mb-2"><Github size={15} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold">Repository</h3></div>
+            <div className="flex items-center gap-2 mb-2"><GitBranch size={15} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold">Repository</h3></div>
             <div className="flex flex-col gap-1 mb-2">
               <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Repo URL</label>
               <input value={repoUrl} onChange={e => setRepoUrl(e.target.value)} placeholder="github.com/user/repo"
