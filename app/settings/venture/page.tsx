@@ -126,6 +126,7 @@ const DEPLOYMENT_PLATFORMS = [
   { id: 'railway', label: 'Railway', desc: 'Full-stack platform', icon: '🚂', category: 'hosting' },
   { id: 'netlify', label: 'Netlify', desc: 'Jamstack hosting', icon: '🔺', category: 'hosting' },
   { id: 'cloudflare', label: 'Cloudflare', desc: 'Edge network & workers', icon: '🌐', category: 'hosting' },
+  { id: 'website', label: 'Website', desc: 'Custom domain & hosting', icon: '🌍', category: 'hosting' },
   { id: 'supabase', label: 'Supabase', desc: 'Database, auth, storage', icon: '⚡', category: 'data' },
   { id: 'firebase', label: 'Firebase', desc: 'Google backend platform', icon: '🔥', category: 'data' },
   { id: 'ga4', label: 'Google Analytics', desc: 'Traffic & conversion tracking', icon: '📊', category: 'analytics' },
@@ -476,7 +477,7 @@ export default function VentureSettingsPage() {
   // ── Loading ───────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full">
         <Link href="/settings" className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface mb-3"><ArrowLeft size={14} /> Back to Settings</Link>
         <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-on-surface-variant" /></div>
       </div>
@@ -484,7 +485,7 @@ export default function VentureSettingsPage() {
   }
   if (!venture) {
     return (
-      <div className="max-w-6xl mx-auto">
+      <div className="w-full">
         <Link href="/settings" className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface mb-3"><ArrowLeft size={14} /> Back to Settings</Link>
         <div className="text-center py-12 text-on-surface-variant">No venture data found</div>
       </div>
@@ -494,7 +495,7 @@ export default function VentureSettingsPage() {
   const s = sysHealth
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="w-full">
       {/* Header */}
       <Link href="/settings" className="inline-flex items-center gap-1 text-xs text-on-surface-variant hover:text-on-surface mb-2">
         <ArrowLeft size={14} /> Back to Settings
@@ -695,16 +696,18 @@ export default function VentureSettingsPage() {
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-2"><Server size={15} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold">Software Status</h3></div>
             <div className="space-y-2">
-              {[
-                { icon: Monitor, label: 'Website', url: websiteUrl, tone: websiteUrl ? 'green' : undefined },
-                { icon: Smartphone, label: 'iOS App', url: iosAppUrl, tone: iosAppUrl ? 'green' : undefined },
-                { icon: Smartphone, label: 'Android App', url: androidAppUrl, tone: androidAppUrl ? 'green' : undefined },
-              ].map(item => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-[13px]"><item.icon size={13} className="text-on-surface-variant" /><span className="text-on-surface-variant">{item.label}</span></div>
-                  {item.tone ? <StatusBadge tone="green">Deployed</StatusBadge> : <span className="text-xs text-on-surface-variant/40">Not linked</span>}
-                </div>
-              ))}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[13px]"><Monitor size={13} className="text-on-surface-variant" /><span className="text-on-surface-variant">Website</span></div>
+                {websiteUrl ? <StatusBadge tone="green">Deployed</StatusBadge> : <span className="text-xs text-on-surface-variant/40">Not linked</span>}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[13px]"><Smartphone size={13} className="text-on-surface-variant" /><span className="text-on-surface-variant">iOS App</span></div>
+                {iosAppUrl ? <StatusBadge tone="green">Live</StatusBadge> : <span className="text-xs text-on-surface-variant/40">Not configured</span>}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-[13px]"><Smartphone size={13} className="text-on-surface-variant" /><span className="text-on-surface-variant">Android App</span></div>
+                {androidAppUrl ? <StatusBadge tone="green">Live</StatusBadge> : <span className="text-xs text-on-surface-variant/40">Not configured</span>}
+              </div>
             </div>
           </Card>
 
@@ -717,21 +720,20 @@ export default function VentureSettingsPage() {
             </div>
           </Card>
 
-          {notionUrl && (
-            <Card className="p-4">
-              <div className="flex flex-col gap-1 mb-2">
-                <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Notion Workspace</label>
-                <input value={notionUrl} onChange={e => setNotionUrl(e.target.value)}
-                  className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-white/20" />
-              </div>
-            </Card>
-          )}
+          <Card className="p-4">
+            <div className="flex flex-col gap-1 mb-2">
+              <label className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">Notion Workspace</label>
+              <input value={notionUrl} onChange={e => setNotionUrl(e.target.value)} placeholder="notion.so/workspace"
+                className="bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/30 focus:outline-none focus:border-white/20" />
+            </div>
+            {notionUrl && <a href={notionUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-on-surface-variant hover:text-on-surface inline-flex items-center gap-1"><ExternalLink size={11} /> Open</a>}
+          </Card>
         </div>
       )}
 
       {/* ════ SOCIAL TAB ════ */}
       {tab === 'social' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
           {SOCIAL_PLATFORMS.map(p => {
             const existing = socials.find(s => s.platform === p.id)
             return (
@@ -758,7 +760,7 @@ export default function VentureSettingsPage() {
       {tab === 'deployment' && (
         <div className="space-y-4">
           {/* Connected platforms grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {DEPLOYMENT_PLATFORMS.map(dp => {
               const connected = deploymentPlatforms.includes(dp.id)
               return (
