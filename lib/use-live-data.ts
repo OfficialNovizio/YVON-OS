@@ -63,6 +63,4 @@ export function useLiveData<T = unknown>({
 
   return { data, loading, error, refetch: fetchData, source }
 }
-
-// Alias: useLiveData is useLiveData. Re-export for convenience.
-export { useLiveData as useLiveQuery } from './use-live-data'
+// No aliases — prefer useLiveData directly.

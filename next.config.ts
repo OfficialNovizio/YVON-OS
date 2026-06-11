@@ -51,7 +51,7 @@ const nextConfig: NextConfig = {
       { source: '/marketing-agent', destination: '/agents/lena-brand',       permanent: true },
       { source: '/coding-agent',    destination: '/agents/dev-lead',          permanent: true },
       { source: '/website-agent',   destination: '/agents/zara-competitor',   permanent: true },
-      { source: '/agent-manager',   destination: '/settings',                 permanent: true },
+      { source: '/agent-manager',   destination: '/agents',                    permanent: true },
     ]
   },
 }
