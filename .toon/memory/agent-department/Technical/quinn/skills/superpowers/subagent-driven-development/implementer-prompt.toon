@@ -1,0 +1,76 @@
+#MEM id=subagent-driven-development source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/subagent-driven-development/implementer-prompt.md savings=8%
+M|Impl|tx|Use this template when dispatching an implementer subagent.
+M|Impl|tx|```
+M|Impl|Task|
+M|Impl|desc|"im Task N: [task name]"
+M|Impl|pm|\|
+M|Impl|You |[task name]
+M|Task|tx|[FULL TEXT of task from plan - paste it here, don't make subagent read file]
+M|Cont|[Sce|where this fits, dependencies, architectural context]
+M|Befo|If y|
+M|Befo|it|The requirements or acceptance criteria
+M|Befo|it|The approach or implementation st
+M|Befo|it|Dependencies or assumptions
+M|Befo|it|Anything unclear in the task description
+M|Befo|tx|**Ask them now.** Raise any concerns before starting work.
+M|Your|Once|
+M|Your|tx|1. im exactly what the task specifies
+M|Your|tx|2. Write tests (following TDD if task says to)
+M|Your|tx|3. Verify implementation works
+M|Your|tx|4. Commit your work
+M|Your|tx|5. Self-rv (see below)
+M|Your|tx|6. rp back
+M|Your|Work|[directory]
+M|Your|**Wh|** If you encounter something unexpected or unclear, **ask questions**.
+M|Your|tx|It's always OK to pause and clarify. Don't guess or make assumptions.
+M|Code|tx|You reason best abt code you can hold in context at once, and your edits are more
+M|Code|reli|
+M|Code|it|Follow the file structure defined in the plan
+M|Code|it|Each file shd have one clear responsibility w/ a well-defined if
+M|Code|it|If a file you're creating is growing beyond the plan's intent, stop and rp
+M|Code|tx|it as DONE_WITH_CONCERNS — don't split files on your own w/o plan guidance
+M|Code|it|If an existing file you're modifying is already large or tangled, work carefully
+M|Code|tx|and note it as a concern in your rp
+M|Code|it|In existing codebases, follow established patterns. Improve code you're touching
+M|Code|tx|the way a good developer wld, but don't restructure things outside your task.
+M|When|tx|It is always OK to stop and say "this is too hard for me." Bad work is worse than
+M|When|tx|no work. You will not be penalized for escalating.
+M|When|**ST|**
+M|When|it|The task requires architectural decisions w/ multiple valid approaches
+M|When|it|You need to understand code beyond what was provided and can't find clarity
+M|When|it|You feel uncertain abt whether your approach is correct
+M|When|it|The task involves restructuring existing code in ways the plan didn't anticipate
+M|When|it|You've been reading file after file trying to understand the sy w/o progress
+M|When|**Ho|** rp back w/ status blk or NEEDS_CONTEXT. Describe
+M|When|tx|specifically what you're stuck on, what you've tried, and what kind of help you need.
+M|When|tx|The controller can provide more context, re-dispatch w/ a more capable md,
+M|When|tx|or break the task into smaller pieces.
+M|Befo|Revi|
+M|Befo|**Co|**
+M|Befo|it|Did I fully im everything in the spec?
+M|Befo|it|Did I miss any requirements?
+M|Befo|it|Are there edge cases I didn't handle?
+M|Befo|qual|**
+M|Befo|it|Is this my best work?
+M|Befo|it|Are names clear and accurate (match what things do, not how they work)?
+M|Befo|it|Is the code clean and maintainable?
+M|Befo|**Di|**
+M|Befo|it|Did I avoid overbuilding (YAGNI)?
+M|Befo|it|Did I only bd what was requested?
+M|Befo|it|Did I follow existing patterns in the codebase?
+M|Befo|**Te|**
+M|Befo|it|Do tests actually verify behavior (not just mock behavior)?
+M|Befo|it|Did I follow TDD if required?
+M|Befo|it|Are tests comprehensive?
+M|Befo|tx|If you find issues during self-rv, fix them now before reporting.
+M|Repo|When|
+M|Repo|- **|** DONE \| DONE_WITH_CONCERNS \| blk \| NEEDS_CONTEXT
+M|Repo|it|What you implemented (or what you attempted, if blk)
+M|Repo|it|What you tested and tst results
+M|Repo|it|Files changed
+M|Repo|it|Self-rv findings (if any)
+M|Repo|it|Any issues or concerns
+M|Repo|tx|Use DONE_WITH_CONCERNS if you done the work but have doubts abt correctness.
+M|Repo|tx|Use blk if you cannot complete the task. Use NEEDS_CONTEXT if you need
+M|Repo|tx|information that wasn't provided. Never silently produce work you're unsure abt.
+M|Repo|tx|```

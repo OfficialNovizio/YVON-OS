@@ -1,0 +1,38 @@
+#MEM id=quality-of-earnings source=/root/yvon/agent-department/Finance/felix/skills/operating-system/quality-of-earnings/SKILL.md savings=18%
+M||tx|---
+M||name|qual-of-earnings
+M||desc|Distinguishes recurring vs. transactional rv. Weights hb MRR and nz rv differently. Prevents consolidated reporting from overstating or understating financial health.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Not all rv is equal. A business w/ $10,000 MRR is fundamentally more valuable than one w/ $10,000 in one-time sales — bc MRR compounds and the one-time sale must be re-acquired. fx never consolidates hb and nz rv w/o clearly flagging their different qual.
+M|Purp|tx|---
+M|Reve|tx|\| rv tp \| Source \| qual \| Why \|
+M|Reve|tx|\|-------------\|--------\|---------\|-----\|
+M|Reve|tx|\| Subscription MRR \| hb \| Highest \| Recurring, predictable, compounding, sticky \|
+M|Reve|tx|\| Expansion MRR \| hb \| hi \| Existing cs growth — zero additional CAC \|
+M|Reve|tx|\| Trial-to-paid conversion \| hb \| md-hi \| Pipeline signal — not yet recurring \|
+M|Reve|tx|\| Repeat purchase rv \| nz \| md \| cs loyalty, lower re-acquisition CAC \|
+M|Reve|tx|\| New cs rv \| nz \| md-lo \| Transactional — requires full CAC to acquire again \|
+M|Reve|tx|\| pd launch / promo spike \| nz \| lo \| Seasonal, non-repeatable — flattering but not a tn \|
+M|Reve|tx|---
+M|When|it|Any consolidated yv rv rp
+M|When|it|Any month where nz has a pd launch or promotional activity
+M|When|it|Any comparison btw nz and hb financial perf
+M|When|it|Investor updates (qual of earnings is what sophisticated investors actually assess)
+M|When|it|Any rp where MRR and transactional rv appear in the same table
+M|When|tx|---
+M|Step|tx|Never add hb MRR + nz rv into a single line w/o first showing each separately w/ its qual label and composition.
+M|Step|If N|
+M|Step|"Nov|$18,000 (+40% MoM). Note: $6,000 is attributable to the SS26 launch — non-recurring. Baseline rv ex-launch: $12,000 (+0% MoM tn)."
+M|Step|When|
+M|Step|it|hb MRR growth is a stronger signal than nz rv growth — state this explicitly
+M|Step|it|hb NRR > 100% is a stronger health signal than nz repeat purchase improvement
+M|Step|it|Never present them as equivalent signals in an executive summary
+M|Step|In i|lead w/ hb MRR (highest qual, most investable). nz follows as complementary rv. Never present them as equivalent business lines w/o explaining the md difference.
+M|Step|tx|---
+M|Outp|When|
+M|Outp|tx|```
+M|Outp|⚠️ R|$[X] of this month's reported rv is [one-time / promotional / non-recurring]
+M|Outp|Base|$X
+M|Outp|Tren|[what the cleaned number actually tells us]
+M|Outp|tx|```

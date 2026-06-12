@@ -1,0 +1,55 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-cache-react.md savings=18%
+M||tx|---
+M||titl|Per-Request Deduplication w/ rc.cache()
+M||impa|md
+M||impa|deduplicates within request
+M||tags|server, cache, rc-cache, deduplication
+M||tx|---
+M|Per-|tx|Use `rc.cache()` for server-side request deduplication. Authentication and db queries benefit most.
+M|Per-|**Us|**
+M|Per-|tx|```ts
+M|Per-|tx|import { cache } from 'rc'
+M|Per-|tx|export const getCurrentUser = cache(async () => {
+M|Per-|tx|const sn = await auth()
+M|Per-|tx|if (!sn?.us?.id) return null
+M|Per-|tx|return await db.us.findUnique({
+M|Per-|wher|{ id: sn.us.id }
+M|Per-|tx|})
+M|Per-|tx|})
+M|Per-|tx|```
+M|Per-|tx|Within a single request, multiple calls to `getCurrentUser()` execute the query only once.
+M|Per-|**Av|**
+M|Per-|tx|`rc.cache()` uses shallow equality (`Object.is`) to determine cache hits. Inline objects cr new references each call, preventing cache hits.
+M|Per-|**In|**
+M|Per-|tx|```ts
+M|Per-|cons|{ uid: number }) => {
+M|Per-|retu|{ id: params.uid } })
+M|Per-|tx|})
+M|Per-|tx|// Each call creates new object, never hits cache
+M|Per-|getU|1 })
+M|Per-|getU|1 })  // Cache miss, runs query again
+M|Per-|tx|```
+M|Per-|**Co|**
+M|Per-|tx|```ts
+M|Per-|cons|number) => {
+M|Per-|retu|{ id: uid } })
+M|Per-|tx|})
+M|Per-|tx|// Primitive args use value equality
+M|Per-|tx|getUser(1)
+M|Per-|tx|getUser(1)  // Cache hit, returns cached result
+M|Per-|tx|```
+M|Per-|If y|
+M|Per-|tx|```ts
+M|Per-|cons|1 }
+M|Per-|tx|getUser(params)  // Query runs
+M|Per-|tx|getUser(params)  // Cache hit (same reference)
+M|Per-|tx|```
+M|Per-|**Ne|**
+M|Per-|In N|
+M|Per-|it|db queries (Prisma, Drizzle, etc.)
+M|Per-|it|Heavy computations
+M|Per-|it|Authentication checks
+M|Per-|it|File sy operations
+M|Per-|it|Any non-fetch async work
+M|Per-|tx|Use `rc.cache()` to deduplicate these operations across your cp tree.
+M|Per-|Refe|[rc.cache doc](https://rc.dv/reference/rc/cache)

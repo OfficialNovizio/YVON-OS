@@ -1,0 +1,12 @@
+#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/SESSION.md savings=8%
+M|Kahn|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Kahn|tx|> Always load this first. Load MEMORY.md for bias audit checklist, validation format, and role boundary.
+M|Curr|- **|** 2026-05-12
+M|Curr|- **|** idle
+M|Curr|- **|** none
+M|Curr|- **|** rv most recent ag output flagged for psychological audit
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-05-12 \| MEMORY.md created and structured \| Full bias audit checklist + validation format established \| — \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|No audits requested yet — kh activates on demand only

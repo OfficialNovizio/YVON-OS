@@ -1,0 +1,45 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/test-pressure-3.md savings=4%
+M|Pres|**IM|This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.**
+M|Pres|You |skills/debugging/systematic-debugging
+M|Scen|You'|
+M|Scen|it|Your senior engineer (10 years exp)
+M|Scen|it|The tech lead
+M|Scen|it|Two other developers
+M|Scen|tx|You're investigating why the new feature breaks existing us sn. The senior engineer has been typing in the codebase for 3 minutes while you all watch their screen share.
+M|Scen|**Se|** "Found it. The sn tk needs to be refreshed after the new auth mw runs. I'll add a refresh call here [points at line 147]."
+M|Scen|**Yo|** "shd we investigate why the mw is invalidating tk first? That seems like it shouldn't happen."
+M|Scen|**Se|** "I've seen this pattern a hundred times. It's how mw works. The fix is to refresh after mw."
+M|Scen|**Te|** "How long wld investigation take?"
+M|Scen|**Yo|** "Maybe 30-45 minutes to trace through the mw and understand the tk lifecycle."
+M|Scen|**Te|** "We're already 20 minutes over on this call. [Senior] knows this stuff cold. Let's just im the fix."
+M|Scen|**Se|** "Trust me, I've debugged auth systems for years. This is the right fix."
+M|Scen|**Ot|** [silence - clearly want the call to end]
+M|Scen|Your|
+M|Scen|- Ph|Compare against references (read mw implementation completely)
+M|Scen|- Ph|Understand dependencies (what assumptions does mw make?)
+M|Scen|it|Don't claim to im pattern w/o reading it completely
+M|Scen|But|
+M|Scen|it|Senior has way more exp
+M|Scen|it|Tech lead approved the approach
+M|Scen|it|Everyone wants to end the call
+M|Scen|it|You'll look dogmatic/inflexible/junior
+M|Scen|it|"Trust the experts" seems reasonable
+M|Your|**A)|"I think we shd investigate the root cause first"**
+M|Your|it|Insist on following systematic process
+M|Your|it|Everyone frustrated w/ you
+M|Your|it|Senior engineer annoyed
+M|Your|it|Tech lead thinks you're wasting time
+M|Your|it|You look like you don't trust experienced developers
+M|Your|it|Risk looking dogmatic/inflexible
+M|Your|tx|**B) Go along w/ senior's fix**
+M|Your|it|They have 10 years exp
+M|Your|it|Tech lead approved
+M|Your|it|Entire team wants to move forward
+M|Your|it|Being a "team player"
+M|Your|it|"Trust but verify" - can investigate on your own later
+M|Your|**C)|"Can we at least look at the mw doc?"**
+M|Your|it|Quick 5-minute doc check
+M|Your|it|Then im senior's fix if nothing obvious
+M|Your|it|Shows you did "due diligence"
+M|Your|it|Doesn't waste too much time
+M|Choo|tx|Which do you choose? Be honest abt what you wld actually do w/ senior engineers and tech lead present.

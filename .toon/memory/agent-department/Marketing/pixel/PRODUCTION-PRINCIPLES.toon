@@ -1,0 +1,55 @@
+#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/PRODUCTION-PRINCIPLES.md savings=9%
+M|PROD|> Lo|running any im batch, QC rv, or asset formatting task.
+M|PROD|tx|---
+M|Pre-|Befo|
+M|Pre-|it|[ ] Approved pm received (not draft — at must have run AI Slop tst)
+M|Pre-|it|[ ] qual bar defined (3 specific pass/fail criteria)
+M|Pre-|it|[ ] Platform destination confirmed (determines export dimensions)
+M|Pre-|it|[ ] Batch size agreed
+M|Pre-|it|[ ] Delivery deadline set
+M|Pre-|tx|If any item is missing — pause and ask at or Opus before generating.
+M|Pre-|tx|---
+M|Prom|tx|Submit pm exactly as at wrote them. Do not improvise or modify.
+M|Prom|If a|flag to at, do not keep generating.
+M|Vari|For |
+M|Vari|- Va|Exact pm as written
+M|Vari|- Va|Slightly adjusted composition (e.g., "slightly left of centre" instead of "centred")
+M|Vari|- Va|Slightly adjusted lighting (e.g., "morning light" instead of "natural light")
+M|Vari|tx|Produce variants, then QC all three. Deliver the best 1-2 per pm.
+M|Vari|tx|---
+M|QC P|tx|Apply at's 3 criteria to every single im. Binary — pass or fail.
+M|Auto|it|Text or watermarks visible in im
+M|Auto|it|Obvious AI artefacts (distorted faces, extra limbs, impossible geometry)
+M|Auto|it|Aspect ratio doesn't match the platform spec
+M|QC T|tx|```
+M|QC T|Batc|[cg Name] — [vt] — [Date]
+M|QC T|Tota|[X]
+M|QC T|Pass|[X]
+M|QC T|Reje|[X]
+M|QC T|Reje|[brief — e.g., "3× composition drift, 2× AI artefacts"]
+M|QC T|Pass|[X%]
+M|QC T|tx|```
+M|QC T|If p|stop batch and flag to at — pm architecture needs rework.
+M|QC T|If p|complete batch but flag pm issue to at for nx run.
+M|QC T|If p|normal delivery.
+M|QC T|tx|---
+M|Upsc|tx|Only upscale images that have passed QC. Never upscale rejects.
+M|Upsc|Upsc|
+M|Upsc|tx|1. Hero images (primary cg visuals) — always upscale
+M|Upsc|tx|2. Secondary cg images — upscale if batch size allows
+M|Upsc|tx|3. tst/exploratory images — no upscaling needed
+M|Upsc|tx|---
+M|Plat|tx|\| Platform \| Format \| Dimensions \| Max File Size \| Naming Convention \|
+M|Plat|tx|\|----------\|--------\|-----------\|--------------\|-------------------\|
+M|Plat|tx|\| Instagram Feed \| JPG \| 1080×1080 \| 8MB \| `[vt]_ig_feed_[cg]_[n].jpg` \|
+M|Plat|tx|\| Instagram Feed (portrait) \| JPG \| 1080×1350 \| 8MB \| `[vt]_ig_portrait_[cg]_[n].jpg` \|
+M|Plat|tx|\| Instagram Stories \| JPG \| 1080×1920 \| 8MB \| `[vt]_ig_stories_[cg]_[n].jpg` \|
+M|Plat|tx|\| YouTube Thumbnail \| JPG \| 1280×720 \| 2MB \| `[vt]_yt_thumb_[cg]_[n].jpg` \|
+M|Plat|tx|\| LinkedIn Post \| JPG \| 1200×627 \| 5MB \| `[vt]_li_post_[cg]_[n].jpg` \|
+M|Plat|tx|Naming convention must be followed exactly — Opus uses filenames to schedule and track assets.
+M|Plat|tx|---
+M|Deli|When|
+M|Deli|tx|1. Compile the QC summary (pass rate, rejection reasons)
+M|Deli|tx|2. List all delivered files w/ platform and dimensions
+M|Deli|tx|3. Flag any images that are "borderline" — passed QC but worth Stark's eye before posting
+M|Deli|4. H|"Batch complete. [X] assets ready. QC: [X]% pass rate. [X] flagged for rv."

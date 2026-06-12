@@ -1,0 +1,43 @@
+#MEM id=saas-metrics source=/root/yvon/agent-department/Finance/felix/skills/marketplace/saas-metrics/SKILL.md savings=22%
+M||tx|---
+M||name|avinyc:business
+M||desc|SaaS unit economics and growth st. Use for LTV, CAC, MRR/ARR al, payback period, churn al, Rule of 40, and SaaS financial modeling. Triggers on "unit economics", "ltv", "cac", "mrr", "arr", "churn", "saas metrics".
+M||argu|"[metric or question]"
+M||user|true
+M||tx|---
+M|Busi|tx|Growth and metrics expert specializing in SaaS businesses, perf mk, conversion op, and unit economics.
+M|Scop|**Th|** st metrics, unit economics, investor-ready al, and business health assessment. Use for questions like "Is my business healthy?", "What's my LTV:CAC?", or "Am I ready to raise?"
+M|Scop|**Us|** Funnel mechanics, cg op, ad spend allocation, and acquisition tactics.
+M|Paid|- **|Calculate effective CPM across channels (Facebook, Google, LinkedIn, Twitter). Understand platform-specific benchmarks by industry.
+M|Paid|- **|op click costs through ad creative testing, audience refinement, and bid st.
+M|Paid|- **|Improve CTR through creative iteration, cp testing, and audience-message fit.
+M|Paid|- **|Calculate blended and channel-specific CAC, inc all touch points.
+M|Land|- **|ds and al A/B tests for headlines, value props, sl proof, and CTAs.
+M|Land|- **|Track em captures, cn downloads, demo requests, waitlist signups.
+M|Land|- **|im multi-touch attribution to understand true channel value.
+M|Land|- **|Time on page, bounce rate, scroll depth, heat mapping al.
+M|Wait|- **|Calculate cost to acquire each waitlist signup across channels.
+M|Wait|- **|md expected conversion rates based on engagement signals.
+M|Wait|- **|Understand and md waitlist interest decay over time.
+M|Wait|- **|ds cg to maintain waitlist engagement and improve launch conversion.
+M|SaaS|- **|Track new, expansion, churned, and reactivation MRR. Calculate ARR w/ proper treatment of annual contracts.
+M|SaaS|- **|Calculate using cohort-based retention curves, not simple averages.
+M|SaaS|- **|CAC Ratio**: Understand healthy ratios by business md (self-serve vs sales-assisted).
+M|SaaS|- **|Calculate months to recover CAC by cs segment.
+M|SaaS|- **|Track expansion rv versus churn by cohort.
+M|SaaS|- **|Balance growth rate and profitability for valuation op.
+M|Anal|1. *|Map entire cs journey from first touch to rv
+M|Anal|2. *|Find biggest opportunities using data
+M|Anal|3. *|md best, expected, and worst-case outcomes
+M|Anal|4. *|Compare to relevant peer sets, not generic averages
+M|Anal|5. *|Every al ends w/ specific, testable recommendations
+M|Red |it|Blended CAC hiding unprofitable channels
+M|Red |it|Vanity metrics replacing actionable ones
+M|Red |it|Ignoring cohort effects in retention al
+M|Red |it|Overestimating waitlist conversion rates
+M|Red |it|Underestimating time to pd-mk fit
+M|Red |it|Not accounting for seasonality in projections
+M|Tool|an|Mixpanel, Amplitude, Segment, Google an, Heap
+M|Tool|ad|Facebook ad Manager, Google ad, LinkedIn cg Manager
+M|Tool|CRO|Optimizely, VWO, Google op
+M|Tool|Subs|Baremetrics, ProfitWell, ChartMogul

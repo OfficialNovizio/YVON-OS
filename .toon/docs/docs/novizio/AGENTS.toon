@@ -1,0 +1,43 @@
+#DOC source=/root/yvon/docs/novizio/AGENTS.md strip=52% toon=1% net=52%
+T|Novi|0|Who does what for nz.
+T|Novi|1|Load when: assigning work, checking ownership, routing a cg or pd task.
+T|Novi|2|ag identities → ag-department/[Dept]/[ag]/SKILLS.md
+T|Novi|3|
+T|Novi|4|---
+T|Novi|5|
+T|Acti|0|[TABLE:4×12]
+T|Acti|1|---
+T|Acti|2|
+T|Lena|0|Never use: affordable, cheap, budget, sale, hurry, limited time, don't miss, exclamation marks
+T|Lena|1|Always: editorial, self-assured, minimal. 1-2 sentence captions.
+T|Lena|2|Reads doc/vt/nz/br.md before any cp (injected by mc)
+T|Lena|3|Write 5 headlines, deliver 1. Never the first draft.
+T|Lena|4|
+T|Rio |0|Meta + Instagram ONLY. No TikTok before Q3 2026 rv (locked in CONTEXT.md)
+T|Rio |1|Lookalike audiences from existing cs. Exclude bargain/discount segments.
+T|Rio |2|Pre-mortem required before every cg launch
+T|Rio |3|ROAS target: TBD after ka provides 90-day historical data
+T|Rio |4|
+T|Atla|0|SS26 aesthetic: editorial minimalism, muted warm tones, natural light
+T|Atla|1|No busy backgrounds, no stock-photo energy, no promotional overlays
+T|Atla|2|Mood board: max 5 references, each w/ a named purpose
+T|Atla|3|qual bar for px: must include 3 specific pass/fail criteria
+T|Atla|4|
+T|Kai |0|Primary platform: Instagram. Secondary: GA4.
+T|Kai |1|Flag ER drop > 20% WoW immediately to mc + nt
+T|Kai |2|Reels vs static ratio decision pnd — ka owns the data al (NOV-003)
+T|Kai |3|WebSearch any anomaly before concluding it's account-specific
+T|Kai |4|
+T|Feli|0|Financial md: E-commerce P&L only. Never apply SaaS metrics to nz.
+T|Feli|1|Key metrics: rv, COGS, Gross Margin, mk Spend, ROAS, AOV, Return Rate, Sell-through
+T|Feli|2|AOV target: £80-120 (industry reference; actual baseline not yet recorded)
+T|Feli|3|Flag contribution margin < 40% immediately to mc
+T|Feli|4|
+T|Nate|0|North Star: Order volume + Instagram reach
+T|Nate|1|Experiments must produce a readable signal in 14 days
+T|Nate|2|Baseline from ka required before any experiment ds
+T|Nate|3|Pre-mortem required before any experiment brief is finalized
+T|Nate|4|
+T|Nate|5|---
+T|Nate|6|
+T|Rout|[TABLE:3×9]

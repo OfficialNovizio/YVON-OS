@@ -1,0 +1,74 @@
+#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/CREATIVE-PRINCIPLES.md savings=14%
+M|CREA|> Lo|building visual systems, writing pm architecture, or directing any im production.
+M|CREA|tx|---
+M|Pre-|Befo|
+M|Pre-|tx|1. Active vt (nz or hb) — aesthetic rules differ completely
+M|Pre-|tx|2. cg goal from Alex's brief — what is this im trying to achieve?
+M|Pre-|3. P|1, Stories 9:16, YouTube thumbnail 16:9, LinkedIn 1200×627?
+M|Pre-|tx|4. Any existing br assets — logos, approved colours, past cn to stay consistent w/
+M|Pre-|tx|Never produce pm architecture w/o knowing the platform and cg goal.
+M|Pre-|tx|---
+M|Prom|A we|
+M|Prom|tx|```
+M|Prom|tx|[SUBJECT] [ACTION/STATE], [SETTING], [LIGHTING], [COMPOSITION], [STYLE], [tc]
+M|Prom|Exam|
+M|Prom|tx|"Minimal white linen shirt, draped on wooden chair, soft natural window light,
+M|Prom|tx|rule of thirds, editorial fashion photography, 4k, no text overlays"
+M|Prom|Exam|
+M|Prom|tx|"Clean smartphone screen showing financial dashboard, desk w/ coffee,
+M|Prom|tx|soft ambient light, centred composition, modern lifestyle pd photography, 4k"
+M|Prom|tx|```
+M|Comp|tx|\| cp \| What to specify \|
+M|Comp|tx|\|-----------\|----------------\|
+M|Comp|tx|\| Subject \| What/who is the primary visual element \|
+M|Comp|tx|\| Action/State \| What are they doing / how are they positioned \|
+M|Comp|tx|\| Setting \| Environment — be specific (not just "outdoors") \|
+M|Comp|| Li|"soft natural", "golden hour", "studio softbox" \|
+M|Comp|tx|\| Composition \| Rule of thirds / centred / negative space / close-up \|
+M|Comp|| St|editorial, lifestyle, flat lay, illustration \|
+M|Comp|tx|\| tc \| Resolution, aspect ratio, "no text", "no watermark" \|
+M|Nega|Alwa|
+M|Nega|it|`no text overlays, no watermarks, no harsh shadows, no blurry backgrounds`
+M|Nega|- Ve|see br sections in SKILLS.md
+M|Nega|tx|---
+M|Mood|When|
+M|Mood|tx|```
+M|Dire|[One|the feeling this visual cg shd evoke]
+M|Refe|tx|[Description of the im aesthetic — or URL if available]
+M|Refe|Why |[one sentence]
+M|Refe|tx|[Description]
+M|Refe|Why |[one sentence]
+M|Refe|tx|[Description]
+M|Refe|Why |[one sentence]
+M|What|tx|[2-3 specific things that wld break the aesthetic]
+M|Colo|tx|[3-5 hex values or colour names — must align to br tk]
+M|Colo|tx|```
+M|Colo|tx|---
+M|Qual|For |
+M|Qual|tx|```
+M|Qual|✅ PA|
+M|Qual|tx|1. [Specific visual rule — e.g., "No busy backgrounds"]
+M|Qual|tx|2. [Lighting rule — e.g., "Natural light only, no harsh shadows"]
+M|Qual|tx|3. [br rule — e.g., "Colour palette stays within nz warm neutrals"]
+M|Qual|❌ AU|
+M|Qual|it|Text or watermarks appear in im
+M|Qual|it|br colours are violated
+M|Qual|it|Style drifts from the brief (e.g., commercial photography instead of editorial)
+M|Qual|tx|```
+M|Qual|tx|Three criteria only. If QC is too complex, px slows down. Keep it binary.
+M|Qual|tx|---
+M|Plat|tx|\| Platform \| Format \| Dimensions \| Notes \|
+M|Plat|tx|\|----------\|--------\|-----------\|-------\|
+M|Plat|tx|\| Instagram Feed \| Square \| 1080×1080 \| Most common \|
+M|Plat|tx|\| Instagram Feed \| Portrait \| 1080×1350 \| Better reach \|
+M|Plat|| In|16 \|
+M|Plat|| Yo|9, needs text room \|
+M|Plat|tx|\| LinkedIn Post \| Landscape \| 1200×627 \| Clean, professional \|
+M|Plat|tx|\| LinkedIn Banner \| Wide \| 1584×396 \| Profile header \|
+M|Plat|tx|---
+M|AI S|Befo|
+M|AI S|it|Does the im look like a stock photo? → Reject
+M|AI S|it|Are there any obvious AI artefacts (extra fingers, distorted text, uncanny faces)? → Reject
+M|AI S|it|Does it feel like it belongs in a cg for this br? → If not, rewrite the pm
+M|AI S|it|wld Stark stop scrolling for this? → If not, try a different composition
+M|AI S|If 2|rewrite the pm before sending to production.

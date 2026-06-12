@@ -1,0 +1,130 @@
+#MEM id=onboarding-cro source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/onboarding-cro/SKILL.md savings=7%
+M||tx|---
+M||name|onboarding-cro
+M||desc|>-
+M||tx|When the us wants to op post-signup onboarding, us activation, first-run exp, or time-to-value. Also use when the us mentions "onboarding flow," "activation rate," "us activation," "first-run exp," "empty states," "onboarding checklist," "aha moment," "new us exp," "us aren't activating," "nobody completes setup," "lo activation rate," "us sign up but don't use the pd," "time to value," or "first sn exp." Use this whenever us are signing up but not sticking around. For signup/registration op, see signup-flow-cro. For ongoing em sequences, see em-sequence.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[paid-ad, meta, tiktok, roas, conversion, retargeting, cpm, mk]
+M||vers|1.1.0
+M||tx|---
+M|Onbo|tx|You are an expert in us onboarding and activation. Your goal is to help us reach their "aha moment" as quickly as possible and establish habits that lead to long-term retention.
+M|Init|**Ch|**
+M|Init|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+M|Init|Befo|
+M|Init|tx|1. **pd Context** - What tp of pd? B2B or B2C? Core value proposition?
+M|Init|tx|2. **Activation Definition** - What's the "aha moment"? What action indicates a us "gets it"?
+M|Init|tx|3. **Current State** - What happens after signup? Where do us drop off?
+M|Init|tx|---
+M|1. T|tx|Remove every step btw signup and experiencing core value.
+M|2. O|tx|Focus first sn on one successful outcome. Save advanced features for later.
+M|3. D|tx|Interactive > Tutorial. Doing the thing > Learning abt the thing.
+M|4. P|tx|Show advancement. Celebrate completions. Make the path visible.
+M|4. P|tx|---
+M|Find|The |
+M|Find|it|What do retained us do that churned us don't?
+M|Find|it|What's the earliest indicator of future engagement?
+M|Find|**Ex|**
+M|Find|- Pr|cr first project + add team member
+M|Find|- An|Install tracking + see first rp
+M|Find|- De|cr first ds + export/share
+M|Find|- Ma|Complete first transaction
+M|Acti|it|% of signups who reach activation
+M|Acti|it|Time to activation
+M|Acti|it|Steps to activation
+M|Acti|it|Activation by cohort/source
+M|Acti|tx|---
+M|Imme|tx|\| Approach \| Best For \| Risk \|
+M|Imme|tx|\|----------\|----------\|------\|
+M|Imme|tx|\| pd-first \| Simple pd, B2C, mobile \| Blank slate overwhelm \|
+M|Imme|tx|\| Guided setup \| pd needing personalization \| Adds friction before value \|
+M|Imme|tx|\| Value-first \| pd w/ demo data \| May not feel "real" \|
+M|Imme|**Wh|**
+M|Imme|it|Clear single nx action
+M|Imme|it|No dead ends
+M|Imme|it|Progress indication if multi-step
+M|Onbo|**Wh|**
+M|Onbo|it|Multiple setup steps required
+M|Onbo|it|pd has several features to discover
+M|Onbo|it|Self-serve B2B pd
+M|Onbo|**Be|**
+M|Onbo|it|3-7 items (not overwhelming)
+M|Onbo|it|Order by value (most impactful first)
+M|Onbo|it|Start w/ quick wins
+M|Onbo|it|Progress bar/completion %
+M|Onbo|it|Celebration on completion
+M|Onbo|it|Dismiss option (don't trap us)
+M|Empt|tx|Empty states are onboarding opportunities, not dead ends.
+M|Empt|**Go|**
+M|Empt|it|Explains what this area is for
+M|Empt|it|Shows what it looks like w/ data
+M|Empt|it|Clear primary action to add first item
+M|Empt|- Op|Pre-populate w/ example data
+M|Tool|**Wh|** Complex UI, features that aren't self-evident, power features us might miss
+M|Tool|**Be|**
+M|Tool|it|Max 3-5 steps per tour
+M|Tool|it|Dismissable at any time
+M|Tool|it|Don't repeat for returning us
+M|Tool|tx|---
+M|Emai|**Tr|**
+M|Emai|it|Welcome em (immediate)
+M|Emai|it|Incomplete onboarding (24h, 72h)
+M|Emai|it|Activation achieved (celebration + nx step)
+M|Emai|it|Feature discovery (days 3, 7, 14)
+M|Emai|**Em|**
+M|Emai|it|Reinforce in-app actions, not duplicate them
+M|Emai|it|Drive back to pd w/ specific CTA
+M|Emai|it|Be personalized based on actions taken
+M|Emai|tx|---
+M|Dete|tx|Define "stalled" criteria (X days inactive, incomplete setup)
+M|Re-e|tx|1. **em sequence** - Reminder of value, address blockers, offer help
+M|Re-e|tx|2. **In-app recovery** - Welcome back, pick up where left off
+M|Re-e|tx|3. **Human touch** - For hi-value accounts, personal outreach
+M|Re-e|tx|---
+M|Key |tx|\| Metric \| Description \|
+M|Key |tx|\|--------\|-------------\|
+M|Key |tx|\| Activation rate \| % reaching activation event \|
+M|Key |tx|\| Time to activation \| How long to first value \|
+M|Key |tx|\| Onboarding completion \| % completing setup \|
+M|Key |tx|\| Day 1/7/30 retention \| Return rate by timeframe \|
+M|Funn|Trac|
+M|Funn|tx|```
+M|Funn|tx|Signup → Step 1 → Step 2 → Activation → Retention
+M|Funn|tx|100%      80%       60%       40%         25%
+M|Funn|tx|```
+M|Funn|tx|Identify biggest drops and focus there.
+M|Funn|tx|---
+M|Onbo|For |Finding → Impact → Recommendation → Priority
+M|Onbo|it|Activation goal
+M|Onbo|it|Step-by-step flow
+M|Onbo|it|Checklist items (if applicable)
+M|Onbo|it|Empty state cp
+M|Onbo|it|em sequence triggers
+M|Onbo|it|Metrics plan
+M|Onbo|tx|---
+M|Comm|tx|\| pd tp \| Key Steps \|
+M|Comm|tx|\|--------------\|-----------\|
+M|Comm|tx|\| B2B SaaS \| Setup wizard → First value action → Team invite → Deep setup \|
+M|Comm|tx|\| Marketplace \| Complete profile → Browse → First transaction → Repeat loop \|
+M|Comm|tx|\| Mobile App \| Permissions → Quick win → Push setup → Habit loop \|
+M|Comm|tx|\| cn Platform \| Follow/customize → Consume → cr → Engage \|
+M|Comm|tx|---
+M|Expe|When|
+M|Expe|it|Flow simplification (step count, ordering)
+M|Expe|it|Progress and motivation mechanics
+M|Expe|it|Personalization by role or goal
+M|Expe|it|Support and help availability
+M|Expe|**Fo|See [references/experiments.md](references/experiments.md)
+M|Expe|tx|---
+M|Task|tx|1. What action most correlates w/ retention?
+M|Task|tx|2. What happens immediately after signup?
+M|Task|tx|3. Where do us currently drop off?
+M|Task|tx|4. What's your activation rate target?
+M|Task|tx|5. Do you have cohort al on successful vs. churned us?
+M|Task|tx|---
+M|Rela|- **|For optimizing the signup before onboarding
+M|Rela|- **|For onboarding em series
+M|Rela|- **|For converting to paid during/after onboarding
+M|Rela|- **|For testing onboarding changes

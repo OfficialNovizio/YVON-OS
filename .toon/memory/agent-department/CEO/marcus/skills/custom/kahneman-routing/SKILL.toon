@@ -1,0 +1,45 @@
+#MEM id=kahneman-routing source=/root/yvon/agent-department/CEO/marcus/skills/custom/kahneman-routing/SKILL.md savings=11%
+M||tx|---
+M||name|kh-routing
+M||desc|mc's gate for routing hi-stakes decisions to kh before delivering to Stark. Defines which decision tp require a bias audit, what to send, how to interpret the verdict, and how to incorporate it into the final recommendation.
+M||vers|1.0.0
+M||tx|---
+M|Purp|Marc|narrative fallacy and confirmation bias. He constructs a compelling st story and then selects evidence to support it. kh is the corrective.
+M|Purp|tx|This skill tells mc exactly when to invoke kh, what to pass, and what to do w/ the result.
+M|Purp|tx|---
+M|When|Rout|
+M|When|tx|\| Trigger \| Why \|
+M|When|tx|\|---------\|-----\|
+M|When|tx|\| st recommendation involves a spend decision > current monthly burn \| hi financial stakes; sunk cost and overconfidence risk \|
+M|When|tx|\| mk direction stated as fact ("the mk is moving toward X") \| Narrative fallacy — this is an interpretation, not a fact \|
+M|When|tx|\| Recommendation reverses a prior decision \| Confirmation bias likely — mc may be rationalising a flip \|
+M|When|tx|\| Only confirming evidence cited in the brief \| Active confirmation bias signal \|
+M|When|tx|\| fx's projection is the primary basis for a st call \| Overconfidence in projections — fx's identified fl mode \|
+M|When|tx|\| nt's ICE scores drive the priority ranking \| Planning fallacy + ICE overconfidence — nt's identified fl mode \|
+M|When|tx|\| Decision affects both vt simultaneously \| Cross-vt scope increases narrative complexity and er surface \|
+M|When|tx|---
+M|What|tx|```
+M|What|Deci|[one sentence — what mc is recommending]
+M|What|Basi|[what evidence supports it]
+M|What|Coun|[what argues against it — if mc can't name any, that's the bias]
+M|What|Assu|[what must be true for this recommendation to hold]
+M|What|Agen|[which ag's output this is based on — ka / nt / fx / ro]
+M|What|tx|```
+M|What|tx|---
+M|Inte|tx|\| Verdict \| What it means for mc \|
+M|Inte|tx|\|---------\|--------------------------\|
+M|Inte|tx|\| 🟢 Clear \| Deliver as planned — bias check passed \|
+M|Inte|tx|\| 🟡 Caution \| Incorporate kh's reframe before delivery. Do not deliver the original w/o the correction. \|
+M|Inte|tx|\| 🔴 Block \| Do not deliver. Rebuild the recommendation w/ kh's correction as the starting point, not a patch. \|
+M|Inte|**If|** mc does not argue w/ the verdict. He rebuilds, rt back to kh, and only delivers after a second 🟢 or 🟡.
+M|Inte|tx|---
+M|The |Befo|
+M|The |tx|> "What wld have to be true for this recommendation to be wrong?"
+M|The |tx|If mc cannot name a specific condition — that is the bias. rt to kh regardless of whether any of the triggers above apply.
+M|The |tx|---
+M|What|Kahn|
+M|What|it|Operational updates (dn's domain)
+M|What|it|Morning briefs (data reporting, not st judgment)
+M|What|it|Routing decisions (which ag to activate)
+M|What|it|Requests for definitions or explanations
+M|What|Rout|st recommendations, priority calls, go/no-go decisions, resource allocation choices.

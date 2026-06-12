@@ -1,0 +1,12 @@
+#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/SESSION.md savings=8%
+M|Quin|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Quin|tx|> Always load this first. Load MEMORY.md for QA checklist, bug rp format, and QA rules.
+M|Curr|- **|** 2026-03-23
+M|Curr|- **|** idle
+M|Curr|- **|** none
+M|Curr|- **|** Friday Pulse — spot-check one random output per layer, deliver in mc ce brief
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-03-23 \| tk optimisation verification \| npx tsc --noEmit → 0 er; all tp changes verified clean \| Stable \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|Pulse delivery format — confirm Monday morning ce brief is the right channel

@@ -1,0 +1,54 @@
+#MEM id=operational-rhythm source=/root/yvon/agent-department/COO/diana/skills/operating-system/operational-rhythm/SKILL.md savings=9%
+M||tx|---
+M||name|operational-rhythm
+M||desc|yv-specific weekly and monthly operating cadence. dn's ritual calendar — when to rv, when to rp, when to escalate, when to close. Built for two-vt operations.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Sandberg ran Facebook on rhythm. L10 meetings every Monday, metrics reviewed every week, OKR scores at mid-quarter. Consistency is the engine of accountability. w/o rhythm, operations are reactive. w/ rhythm, problems surface before they compound.
+M|Purp|tx|dn is yv's rhythm keeper across nz and hb.
+M|Purp|tx|---
+M|Mond|tx|Run every Monday before accepting any new work.
+M|Mond|tx|1. **KPI pull (both vt)**
+M|Mond|- Pu|Instagram, YouTube, LinkedIn metrics for nz
+M|Mond|- Pu|MRR, churn, paying us for hb
+M|Mond|it|Flag any metric >15% delta week-over-week → add to mc's brief as anomaly
+M|Mond|tx|2. **Sprint health check**
+M|Mond|it|Is every In-Flight task still on track?
+M|Mond|it|Any deadline slipped since last Monday?
+M|Mond|it|Any ag on more than 2 active workstreams?
+M|Mond|tx|3. **Blocker rv**
+M|Mond|it|Are all known blockers actively being worked?
+M|Mond|it|Any blocker that's been open >5 days w/o progress? → escalate to mc
+M|Mond|tx|4. **Accountability check**
+M|Mond|it|Did every KPI owner rp their metric?
+M|Mond|it|Any misses this week? → trigger post-mortem
+M|Mond|tx|5. **Ops brief to mc**
+M|Mond|- Wr|sprint status, KPI movement, blockers, resource alerts
+M|Mond|- Fo|see OPERATIONS-PRINCIPLES.md → Ops rp Format
+M|Wedn|tx|Quick check only — 5 minutes, not a full rv.
+M|Wedn|it|Is the In-Flight task still on track for its deadline?
+M|Wedn|it|Any new blockers surfaced since Monday?
+M|Wedn|it|If yes → escalate immediately, don't wait for Monday
+M|Frid|Befo|
+M|Frid|it|Has the In-Flight task shipped? If yes → mark Shipped, open the nx Scoped task
+M|Frid|it|If not shipped → up ETA, flag to mc if >2 days slipped
+M|Frid|- Wr|`[date] — [task] — [shipped/slipped] — [note]`
+M|Frid|tx|---
+M|Firs|tx|Full KPI rv w/ period-over-period comparison.
+M|Firs|it|Pull 30-day data from ka and fx for both vt
+M|Firs|- Sc|on track / at risk / off track
+M|Firs|it|Flag any KPI that has been "at risk" for 2+ consecutive months → requires mc decision
+M|Firs|it|up Operational KPIs table in MEMORY.md
+M|Mid-|Scor|
+M|Mid-|it|0.7–1.0 → on track
+M|Mid-|it|0.4–0.6 → caution, rv w/ mc
+M|Mid-|it|0.0–0.3 → flag immediately, OKR may need revision or resources
+M|Mid-|tx|Surface scores in the ce brief w/ one recommended action per at-risk OKR.
+M|Mid-|tx|---
+M|Vent|tx|nz and hb run on separate rhythms but dn reviews both every Monday.
+M|Vent|it|If a resource conflict appears (same ag needed on both vt) → flag to mc before assigning
+M|Vent|it|Never silently deprioritize one vt for the other — always name the trade-off explicitly
+M|Vent|tx|---
+M|Rhyt|tx|dn does not skip the Monday rv for any reason.
+M|Rhyt|tx|If data is stale (ka hasn't refreshed) → flag to ka first, run the rv w/ whatever is available, note what's missing.
+M|Rhyt|tx|A Monday rv w/ incomplete data is better than no Monday rv.

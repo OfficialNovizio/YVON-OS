@@ -1,0 +1,147 @@
+#MEM id=examples source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-revenue-growth-metrics/examples/warning-signs.md savings=4%
+M|Exam|**Co|** MarketingFlow (SMB mk automation SaaS)
+M|Exam|**St|** Early growth, post-Seed
+M|Exam|**Cu|** 2,000 accounts, 10,000 us
+M|Exam|**Pe|** Monthly snapshot
+M|Exam|tx|---
+M|MRR/|tx|```
+M|MRR/|Star|$500,000
+M|MRR/|+ Ne|$100,000 (200 new accounts)
+M|MRR/|+ Ex|$5,000 (minimal upsells)
+M|MRR/|- Ch|$50,000 (120 accounts churned)
+M|MRR/|- Co|$10,000 (40 accounts downgraded)
+M|MRR/|Endi|$545,000
+M|MRR/|MRR |9% MoM (but driven entirely by new cs acquisition)
+M|MRR/|ARR|$6.5M
+M|MRR/|tx|```
+M|ARPA|tx|```
+M|ARPA|tx|ARPA = $545,000 / 2,000 accounts = $272/month
+M|ARPA|tx|ARPU = $545,000 / 10,000 us = $54.50/month
+M|ARPA|tx|Average seats per account = 5 us
+M|ARPA|tx|```
+M|Reve|tx|```
+M|Reve|New |$100K (20% of base — very hi)
+M|Reve|Expa|$5K (1% of base — very lo)
+M|Reve|Chur|$50K (10% of base — crisis level)
+M|Reve|Cont|$10K (2% of base — concerning)
+M|Reve|tx|```
+M|Reve|tx|---
+M|Chur|tx|```
+M|Chur|Logo|120 / 2,000 = 6% monthly (~50% annual)
+M|Chur|Reve|$50K / $500K = 10% monthly (~69% annual)
+M|Chur|tx|```
+M|Chur|al|** rv churn > logo churn = losing bigger cs. Crisis signal.
+M|NRR|tx|```
+M|NRR|Star|$6M
+M|NRR|Expa|$60K (annual)
+M|NRR|Chur|$600K (annual)
+M|NRR|Cont|$120K (annual)
+M|NRR|Endi|$5.34M
+M|NRR|tx|NRR = $5.34M / $6M = 89%
+M|NRR|tx|```
+M|NRR|al|** NRR <100% = contracting base. Losing rv from existing cs faster than expanding them.
+M|Quic|tx|```
+M|Quic|tx|Gains = $100K + $5K = $105K
+M|Quic|tx|Losses = $50K + $10K = $60K
+M|Quic|tx|Quick Ratio = $105K / $60K = 1.75
+M|Quic|tx|```
+M|Quic|al|** Quick Ratio <2 = leaky bucket. Barely outpacing losses.
+M|Quic|tx|---
+M|Coho|tx|\| Cohort \| Month 3 Retention \| Month 6 Retention \| Month 12 Retention \|
+M|Coho|tx|\|--------\|-------------------\|-------------------\|---------------------\|
+M|Coho|tx|\| 12 months ago \| 82% \| 75% \| 68% \|
+M|Coho|tx|\| 6 months ago \| 75% \| 65% \| TBD \|
+M|Coho|tx|\| Current \| 68% (on track) \| TBD \| TBD \|
+M|Coho|al|** Newer cohorts churning FASTER than older cohorts. pd-mk fit is degrading.
+M|Coho|tx|---
+M|🚨 C|**Un|**
+M|🚨 C|it|6% monthly logo churn = ~50% annual (crisis level)
+M|🚨 C|it|10% monthly rv churn = ~69% annual (existential threat)
+M|🚨 C|it|rv churn > logo churn = losing hi-value cs
+M|🚨 C|it|Churn rate increasing (was 4% six months ago)
+M|🚨 C|**Co|**
+M|🚨 C|it|Newer cs churn faster than older cs
+M|🚨 C|- Mo|75% → 65% → on track for 58%
+M|🚨 C|it|This signals pd-mk fit is getting WORSE, not better
+M|🚨 C|**No|**
+M|🚨 C|it|Expansion rv only 1% of MRR (shd be 10-30%)
+M|🚨 C|it|NRR at 89% (contracting, not expanding)
+M|🚨 C|it|Only 5% of cs have ever expanded
+M|🚨 C|**Le|**
+M|🚨 C|it|Quick Ratio 1.75 (barely exceeding losses)
+M|🚨 C|it|Losing $60K/month, only gaining $105K/month
+M|🚨 C|- Ru|need 200 new cs/month just to stay flat
+M|🚨 C|**Re|**
+M|🚨 C|it|90% of growth from new cs acquisition
+M|🚨 C|it|If acquisition slows, rv will shrink immediately
+M|🚨 C|it|Retention is broken—scaling will just accelerate the problem
+M|🚨 C|tx|---
+M|📊 R|tx|**Why is churn increasing?**
+M|📊 R|it|pd qual degrading?
+M|📊 R|it|Wrong cs segment (poor fit)?
+M|📊 R|it|Onboarding failures?
+M|📊 R|it|Competitive pressure?
+M|📊 R|it|Pricing too hi for value delivered?
+M|📊 R|tx|**Why are newer cohorts worse?**
+M|📊 R|it|cs acquisition qual degrading?
+M|📊 R|it|pd changes breaking key use cases?
+M|📊 R|it|Support qual declining as company scales?
+M|📊 R|tx|**Why no expansion?**
+M|📊 R|it|No upsell paths in packaging?
+M|📊 R|it|cs not reaching "aha moment" where they'd expand?
+M|📊 R|it|pd doesn't grow w/ cs needs?
+M|📊 R|tx|---
+M|🛑 S|tx|Do NOT increase mk spend until retention is fixed. Scaling a leaky bucket just burns cash faster.
+M|🛑 S|**Wh|** At current churn rates, every dollar spent acquiring cs leaks out within 12 months. Fix the bucket first.
+M|🛑 S|tx|---
+M|🔥 P|**In|**
+M|🔥 P|tx|1. Run churn interviews w/ 20-30 churned cs
+M|🔥 P|tx|2. Segment churn by cohort, use case, cs size
+M|🔥 P|tx|3. Identify top 3 churn reasons
+M|🔥 P|**Qu|**
+M|🔥 P|tx|1. Improve onboarding (70% of churn happens in first 60 days)
+M|🔥 P|tx|2. Proactive support for at-risk accounts (identify usage drop-offs)
+M|🔥 P|tx|3. Re-engage dormant accounts before they churn
+M|🔥 P|**Go|** Reduce logo churn from 6% to 4% within 8 weeks, target 3% within 16 weeks.
+M|🔥 P|tx|---
+M|🔥 P|**Cr|**
+M|🔥 P|tx|1. Introduce premium tier (advanced features)
+M|🔥 P|tx|2. Usage-based add-ons (additional seats, integrations)
+M|🔥 P|tx|3. Cross-sell complementary features
+M|🔥 P|**Id|**
+M|🔥 P|tx|1. Which cs use pd heavily? (Target for upsell)
+M|🔥 P|tx|2. Which cs hit usage limits? (Offer expansion)
+M|🔥 P|**Go|** Increase expansion MRR from 1% to 5% of base within 12 weeks.
+M|🔥 P|tx|---
+M|🔥 P|**Tr|**
+M|🔥 P|tx|1. Weekly cohort retention dashboards
+M|🔥 P|tx|2. Compare new cohorts to baseline (75% at Month 6)
+M|🔥 P|tx|3. Don't scale until new cohorts retain BETTER than old cohorts
+M|🔥 P|**Pr|**
+M|🔥 P|tx|1. Fix onboarding (time-to-value)
+M|🔥 P|tx|2. Improve core use cases (reduce churn reasons)
+M|🔥 P|tx|3. Add sticky features (integrations, data accumulation)
+M|🔥 P|**Go|** Reverse cohort degradation tn within 16 weeks. New cohorts shd retain at 75%+ by Month 6.
+M|🔥 P|tx|---
+M|✅ Su|Do N|
+M|✅ Su|it|[ ] Logo churn <4% monthly (ideally <3%)
+M|✅ Su|it|[ ] rv churn <5% monthly
+M|✅ Su|it|[ ] NRR >100% (expansion exceeds churn)
+M|✅ Su|it|[ ] Quick Ratio >2.5 (ideally >4)
+M|✅ Su|it|[ ] New cohorts retain same or better than old cohorts
+M|✅ Su|it|[ ] Expansion MRR >5% of total MRR
+M|✅ Su|**Ti|** 12-16 weeks to fix. Then reassess scaling.
+M|✅ Su|tx|---
+M|Fina|**Cu|**
+M|Fina|it|Need 200 new cs/month just to offset churn
+M|Fina|- Ne|only 80 cs/month after churn
+M|Fina|it|90% of acquisition spend wasted on replacing churned cs
+M|Fina|**If|**
+M|Fina|it|Need 60 new cs/month to offset churn
+M|Fina|- Ne|140 cs/month (75% more efficient)
+M|Fina|it|Acquisition budget goes 3x further
+M|Fina|**If|**
+M|Fina|it|Existing base grows 10%/year w/o new cs
+M|Fina|it|All new acquisition is net growth
+M|Fina|it|Can afford higher CAC bc LTV increases 2-3x
+M|Fina|**Bo|** Fixing retention is worth 6-12 months of paused growth. Don't skip this.

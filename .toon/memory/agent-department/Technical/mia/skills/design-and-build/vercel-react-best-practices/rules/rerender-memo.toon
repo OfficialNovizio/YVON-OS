@@ -1,0 +1,35 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-memo.md savings=6%
+M||tx|---
+M||titl|Extract to Memoized cp
+M||impa|md
+M||impa|enables early returns
+M||tags|rerender, memo, useMemo, op
+M||tx|---
+M|Extr|tx|Extract expensive work into memoized cp to enable early returns before computation.
+M|Extr|**In|**
+M|Extr|tx|```tsx
+M|Extr|func|Props) {
+M|Extr|tx|const avatar = useMemo(() => {
+M|Extr|tx|const id = computeAvatarId(us)
+M|Extr|tx|return <Avatar id={id} />
+M|Extr|tx|}, [us])
+M|Extr|tx|if (loading) return <Skeleton />
+M|Extr|tx|return <div>{avatar}</div>
+M|Extr|tx|}
+M|Extr|tx|```
+M|Extr|**Co|**
+M|Extr|tx|```tsx
+M|Extr|cons|{ us: us }) {
+M|Extr|tx|const id = useMemo(() => computeAvatarId(us), [us])
+M|Extr|tx|return <Avatar id={id} />
+M|Extr|tx|})
+M|Extr|func|Props) {
+M|Extr|tx|if (loading) return <Skeleton />
+M|Extr|tx|return (
+M|Extr|tx|<div>
+M|Extr|tx|<UserAvatar us={us} />
+M|Extr|tx|</div>
+M|Extr|tx|)
+M|Extr|tx|}
+M|Extr|tx|```
+M|Extr|**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, manual memoization w/ `memo()` and `useMemo()` is not necessary. The compiler automatically optimizes re-renders.

@@ -1,0 +1,24 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/14--social-approvals-posts.md strip=6% toon=2% net=8%
+T|14 ·|0|Everything regarding posts: for each post idea, Leonardo generates 8 images and William drafts A/B cp; the owner clicks an im and posts now or schedules. Sidebar badge: 6 pnd.
+T|14 ·|1|
+T|Purp|0|The approval surface for sl posts. For each post, the sy presents generated imagery and cp variants so the owner just picks and approves — then posts immediately or sends it to the Scheduler. This is one of the main feeders of the Decision Queue (the "ap all three LinkedIn posts" tp items).
+T|Purp|1|
+T|Page|0|Title: sl Approvals, breadcrumb Vibe w/ AI / sl Approvals.
+T|Page|1|A "X of Y in the queue" progress indicator and rv each / batch controls.
+T|Page|2|Top bar: sy healthy, ag live.
+T|Page|3|Sidebar badge shows the pnd count (6).
+T|Page|4|
+T|The |0|Post context header — e.g. "Instagram post · from 'Claude ran my business'" w/ a "1 of 3 in the experiment" indicator and a "Leonardo generated 8 images" note.
+T|The |1|cp variants (A/B) — two text columns prepared by William (copywriting ag):
+T|The |2|Variant A and Variant B, each the full ct (e.g. "I gave one business to a team of AI ag for 7 days. Here's exactly what shipped, what broke…"), so the owner can choose the stronger hook. Marked recommended on one.
+T|The |3|im grid — 8 generated images from Leonardo in a grid; the owner clicks an im to select it for the post. Includes an "Upload your own im" option.
+T|The |4|
+K|Acti|0|Post now — publish immediately to the platform.
+K|Acti|1|Schedule — push to the Scheduler (15) to place on the posting calendar.
+K|Acti|2|ap/skip controls to move through the queue; batch ap (e.g. ap all three in an experiment).
+K|Acti|3|
+T|Agen|0|Leonardo — generates the 8 candidate images (Asset Lab).
+T|Agen|1|William — drafts the A/B ct variants.
+T|Agen|2|hy escalates pnd approvals into the Decision Queue.
+T|Agen|3|
+T|Work|Post idea → Leonardo (8 images) + William (A/B cp) → owner picks im + cp → Post now or Schedule → appears on the Scheduler calendar and later in sl an.

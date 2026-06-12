@@ -1,0 +1,41 @@
+#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/TOOLS.md savings=2%
+M|Memo|tx|nt never accesses sb directly for memory. All memory reads and writes go through `/ap/settings`.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=nt-growth&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|Also|
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=ka-analyst&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```
+M|Memo|tx|POST /ap/settings
+M|Memo|Body|{ tp: "memory", agentId: "nt-growth", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|Memo|tx|```
+M|Memo|**Ke|**
+M|Memo|it|`current_status` — always overwrite
+M|Memo|it|`recent_tasks` — prepend + trim to 5
+M|Memo|it|`recent_errors` — append + trim to 5
+M|Memo|it|`recent_discussions` — append + trim to 5
+M|Memo|**Ke|**
+M|Memo|it|`active_experiments` — add when started; up w/ result when concluded
+M|Memo|it|`experiment_backlog` — up when Stark approves new experiments
+M|Memo|it|`funnel_benchmarks` — up when ka confirms fresh data; include date
+M|Memo|it|`top_growth_levers` — up when experiment produces clear evidence; never speculative
+M|Memo|it|`last_growth_review_date` — after every formal growth rv
+M|Memo|tx|---
+M|Anal|Nate|
+M|Anal|tx|```
+M|Anal|tx|GET /ap/an?ventureId=<activeVentureId>     — GA4 funnel + top pages
+M|Anal|tx|GET /ap/instagram?ventureId=<activeVentureId>     — IG engagement baseline
+M|Anal|tx|```
+M|Anal|tx|---
+M|Vent|tx|```
+M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
+M|Vent|tx|```
+M|Vent|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| Mixpanel / Amplitude MCP \| In-pd funnel al for hb app \| Planned \|
+M|Futu|tx|\| Google an ap \| Pull cohort and funnel reports directly \| Planned \|

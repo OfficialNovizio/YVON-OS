@@ -1,0 +1,12 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/29--projects-system.md strip=3% toon=3% net=6%
+T|29 ·|0|A page for the portfolio of projects/workspaces. Appears as a project…-page.md entry in the creator's own Briefings folder (screenshot 181510; filename truncated in the capture).
+T|29 ·|1|
+T|Purp|0|A cross-workspace view of the owner's projects — the businesses each workspace represents (Vibe w/ AI, Canela, Valhalla, By ds) plus any client/bd projects. Gives the owner the single-pane "overview of all the projects" the walkthrough repeatedly emphasizes, while partners are scoped to just their own workspace.
+T|Purp|1|
+T|What|0|A list/grid of projects w/ status, owning workspace, and key metrics.
+T|What|1|Likely overlaps w/ the Software Pipeline portfolio view (which already lists Idea-Feed MVP, By ds, Canela Shop, Mission Control, Valhalla Tools) but framed at the business/project level rather than the codebase level.
+T|What|2|Entry points to each project's dedicated mission control (each project "needs their own ds pages customized").
+T|What|3|
+T|Rela|0|Ties to Workspaces & ds sy (26) — the multi-tenant md — and the Software Pipeline portfolio (22).
+T|Rela|1|
+T|Rela|2|Confidence: Inferred. Named in the creator's Briefings folder; no dedicated UI screenshot. The filename was partially cut off in the capture, so even the exact page name is approximate. Treat as ds intent.

@@ -1,0 +1,83 @@
+SKILL|sketch|"Throwaway HTML mockups: 2-3 design variants to compare."
+STEP|1|User wants a production component — use `claude-design` or build it properly
+STEP|2|User wants a polished one-off HTML artifact (landing page, deck) — `claude-design`
+STEP|3|User wants a diagram — `excalidraw`, `architecture-diagram`
+STEP|4|The design is already locked — just build it
+STEP|5|**Feel.** "What should this feel like? Adjectives, emotions, a vibe." — *"calm, editorial, like Linear"* tells you more than *"minimal"*.
+STEP|6|**References.** "What apps, sites, or products capture the feel you're imagining?" — actual references beat abstract descriptions.
+STEP|7|**Core action.** "What's the single most important thing a user does on this screen?" — the variants should all serve this well; if they don't, they're just decoration.
+STEP|8|**Density:** compact / airy / ultra-dense (pick two contrasting poles)
+STEP|9|**Emphasis:** content-first / action-first / tool-first
+STEP|10|**Aesthetic:** editorial / utilitarian / playful
+STEP|11|**Layout:** single-column / sidebar / split-pane
+STEP|12|**Grounding:** card-based / bare-content / document-style
+STEP|13|Variant naming:** describe the stance, not the number.
+STEP|14|Inline `<style>` — no build step, no external CSS
+STEP|15|System fonts or one Google Font via `<link>`
+STEP|16|Tailwind via CDN (`<script src="https://cdn.tailwindcss.com"></script>`) is fine
+STEP|17|Realistic fake content — actual sentences, actual names, not "Lorem ipsum"
+STEP|18|**Interactive**: links clickable, hovers real, at least one state transition (open/close, filter, toggle). A frozen static image is a worse spike than a sloppy animated one.
+STEP|19|Verify variants visually — use Hermes' browser tools.** Don't just write HTML and hope it renders; load each variant and look at it:
+STEP|20|Default CSS reset + system font stack** for fast starts:
+STEP|21|Layout: ...
+STEP|22|Typography: ...
+STEP|23|Color: ...
+STEP|24|Interaction: ...
+STEP|25|Strong at: ...
+STEP|26|Weak at: ...
+STEP|27|The kind of user or use case this variant actually serves
+STEP|28|My take:** Utilitarian dense for power users, calm editorial for content-forward audiences. Playful split is weakest — tries to do both and commits to neither.
+STEP|29|**Click a primary action** and something visible happens (state change, modal, toast, navigation feint)
+STEP|30|**See one meaningful state transition** (filter a list, toggle a mode, open/close a panel)
+STEP|31|**Hover recognizable affordances** (buttons, rows, tabs)
+STEP|32|**Consistency gaps** — two winning variants from different sketches made independent choices that haven't been composed together yet
+STEP|33|**Unsketched screens** — referenced but never explored
+STEP|34|**State coverage** — happy path sketched, but not empty / loading / error / 1000-items
+STEP|35|**Responsive gaps** — validated at one viewport; does it hold at mobile / ultrawide?
+STEP|36|**Interaction patterns** — static layouts exist; transitions, drag, scroll behavior don't
+STEP|37|Create `sketches/` (or `.planning/sketches/` if the user is using GSD conventions) in the repo root
+STEP|38|One subdir per variant: `NNN-stance-name/index.html` + `README.md`
+STEP|39|Tell the user how to open them: `open sketches/001-calm-editorial/index.html` on macOS, `xdg-open` on Linux, `start` on Windows
+STEP|40|Keep variants disposable — a sketch that you felt the need to preserve should be promoted into real project code, not curated as an asset
+STEP|41|Typical tool sequence for one variant:**
+PIT|User wants a production component — use `claude-design` or build it properly
+PIT|User wants a polished one-off HTML artifact (landing page, deck) — `claude-design`
+PIT|User wants a diagram — `excalidraw`, `architecture-diagram`
+PIT|The design is already locked — just build it
+PIT|**Feel.** "What should this feel like? Adjectives, emotions, a vibe." — *"calm, editorial, like Linear"* tells you more than *"minimal"*.
+PIT|**References.** "What apps, sites, or products capture the feel you're imagining?" — actual references beat abstract descriptions.
+PIT|**Core action.** "What's the single most important thing a user does on this screen?" — the variants should all serve this well; if they don't, they're just decoration.
+PIT|**Density:** compact / airy / ultra-dense (pick two contrasting poles)
+PIT|**Emphasis:** content-first / action-first / tool-first
+PIT|**Aesthetic:** editorial / utilitarian / playful
+PIT|**Layout:** single-column / sidebar / split-pane
+PIT|**Grounding:** card-based / bare-content / document-style
+PIT|Variant naming:** describe the stance, not the number.
+PIT|Inline `<style>` — no build step, no external CSS
+PIT|System fonts or one Google Font via `<link>`
+PIT|Tailwind via CDN (`<script src="https://cdn.tailwindcss.com"></script>`) is fine
+PIT|Realistic fake content — actual sentences, actual names, not "Lorem ipsum"
+PIT|**Interactive**: links clickable, hovers real, at least one state transition (open/close, filter, toggle). A frozen static image is a worse spike than a sloppy animated one.
+PIT|Verify variants visually — use Hermes' browser tools.** Don't just write HTML and hope it renders; load each variant and look at it:
+PIT|Default CSS reset + system font stack** for fast starts:
+PIT|Layout: ...
+PIT|Typography: ...
+PIT|Color: ...
+PIT|Interaction: ...
+PIT|Strong at: ...
+PIT|Weak at: ...
+PIT|The kind of user or use case this variant actually serves
+PIT|My take:** Utilitarian dense for power users, calm editorial for content-forward audiences. Playful split is weakest — tries to do both and commits to neither.
+PIT|**Click a primary action** and something visible happens (state change, modal, toast, navigation feint)
+PIT|**See one meaningful state transition** (filter a list, toggle a mode, open/close a panel)
+PIT|**Hover recognizable affordances** (buttons, rows, tabs)
+PIT|**Consistency gaps** — two winning variants from different sketches made independent choices that haven't been composed together yet
+PIT|**Unsketched screens** — referenced but never explored
+PIT|**State coverage** — happy path sketched, but not empty / loading / error / 1000-items
+PIT|**Responsive gaps** — validated at one viewport; does it hold at mobile / ultrawide?
+PIT|**Interaction patterns** — static layouts exist; transitions, drag, scroll behavior don't
+PIT|Create `sketches/` (or `.planning/sketches/` if the user is using GSD conventions) in the repo root
+PIT|One subdir per variant: `NNN-stance-name/index.html` + `README.md`
+PIT|Tell the user how to open them: `open sketches/001-calm-editorial/index.html` on macOS, `xdg-open` on Linux, `start` on Windows
+PIT|Keep variants disposable — a sketch that you felt the need to preserve should be promoted into real project code, not curated as an asset
+PIT|Typical tool sequence for one variant:**

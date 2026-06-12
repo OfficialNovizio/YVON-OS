@@ -1,0 +1,15 @@
+SKILL|obsidian|Read, search, create, and edit notes in the Obsidian vault.
+STEP|1|To list all markdown notes, use `pattern: "*.md"` under the vault path.
+STEP|2|To list a subfolder, search under that subfolder's absolute path.
+STEP|3|For filenames, use `search_files` with `target: "files"` and a filename `pattern`.
+STEP|4|For note contents, use `search_files` with `target: "content"`, the content regex as `pattern`, and `file_glob: "*.md"` when you want to restrict matches to markdown notes.
+STEP|5|Read the target note with `read_file`.
+STEP|6|Use `patch` for an anchored append when there is stable context, such as adding a section after an existing heading or appending before a known trailing block.
+STEP|7|Use `write_file` when rewriting the whole note is clearer than constructing a fragile patch.
+PIT|To list all markdown notes, use `pattern: "*.md"` under the vault path.
+PIT|To list a subfolder, search under that subfolder's absolute path.
+PIT|For filenames, use `search_files` with `target: "files"` and a filename `pattern`.
+PIT|For note contents, use `search_files` with `target: "content"`, the content regex as `pattern`, and `file_glob: "*.md"` when you want to restrict matches to markdown notes.
+PIT|Read the target note with `read_file`.
+PIT|Use `patch` for an anchored append when there is stable context, such as adding a section after an existing heading or appending before a known trailing block.
+PIT|Use `write_file` when rewriting the whole note is clearer than constructing a fragile patch.

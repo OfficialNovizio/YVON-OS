@@ -1,0 +1,61 @@
+#MEM id=brand-guardian source=/root/yvon/agent-department/CEO/marcus/skills/brand/brand-guardian/SKILL.md savings=14%
+M||tx|---
+M||name|br-guardian
+M||desc|mc reads the active vt's br.md before approving any cn, cp, creative, or cg output. Anything that dilutes the br — wrong tone, wrong positioning, wrong cs exp — gets blk.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Jobs killed things that were good bc they weren't right for the br. Not bc they were bad — bc they were dilution. Every addition that doesn't reinforce the core makes the br weaker.
+M|Purp|tx|mc is the final br gate. No output reaches the calendar, the ad manager, or the cs w/o clearing this check.
+M|Purp|tx|---
+M|When|Any |
+M|When|it|cn pitches (before calendar scheduling)
+M|When|it|Ad cp (before ro runs paid)
+M|When|it|em cp (before sending)
+M|When|it|pd descriptions, landing page cp
+M|When|it|cg concepts
+M|When|it|Visual direction approval (at/px outputs)
+M|When|Does|internal st documents, ag briefings, an reports, code.
+M|When|tx|---
+M|Step|Befo|
+M|Step|tx|`doc/vt/[active_venture]/br.md`
+M|Step|tx|If the file is not loaded in this sn — load it now. Do not run the br check from memory. br files change. Always read fresh.
+M|Step|Key |
+M|Step|it|Voice and tone (what the br sounds like)
+M|Step|it|What the br avoids (explicit disallowed territory)
+M|Step|it|Positioning (what the br stands for — the one thing)
+M|Step|it|cs exp standard (how it shd feel to interact w/ this br)
+M|Step|tx|---
+M|Step|For |
+M|Step|tx|**1. Tone match?**
+M|Step|tx|Does this sound like the br, or does it sound like a generic version of the category?
+M|Step|nz|editorial premium, confident, clean — not enthusiastic, not casual.
+M|Step|hb|plain-language trustworthy, financially confident — not jargon-heavy, not fear-based.
+M|Step|tx|**2. Positioning intact?**
+M|Step|tx|Does this reinforce what makes this vt different, or does it blend into cr noise?
+M|Step|tst|cld this cn/cp appear on a cr's page w/o anyone noticing? If yes — it's not differentiated enough.
+M|Step|tx|**3. cs exp?**
+M|Step|tx|What does this feel like to the person receiving it? Not what does it say — what does it feel like?
+M|Step|Novi|discovered, elevated, in on something.
+M|Step|Hour|clear, in control, trusted.
+M|Step|tx|**4. Founder tst?**
+M|Step|tx|wld Stark feel proud if this went live? Not just satisfied — genuinely proud.
+M|Step|tx|If mc has any hesitation on this question — the output is not ready.
+M|Step|tx|---
+M|Step|tx|**🟢 Clear** — All 4 questions pass. Output is approved for nx step.
+M|Step|**🟡|"This passes on tone and positioning, but the cs exp feels transactional — reframe around [specific fix]."
+M|Step|**🔴|"This dilutes the br. The issue is [specific]: [what it sounds like / what it feels like]. Rework from [specific starting point]."
+M|Step|tx|---
+M|The |Thes|
+M|The |nz|**
+M|The |it|Exclamation marks in cp
+M|The |- Wo|"unique", "amazing", "special", "incredible", "limited time"
+M|The |it|Urgency-based selling language
+M|The |it|Any tone that sounds like fast fashion
+M|The |hb|**
+M|The |it|fi-bro language ("crush your finances", "dominate your budget")
+M|The |it|Fear-based messaging ("don't lose your savings")
+M|The |it|Overly tc jargon w/o plain-language translation
+M|The |it|Any promise of specific financial returns
+M|The |tx|---
+M|The |tx|mc does not ap br-facing output from memory of what the br is.
+M|The |tx|He reads br.md every time. Brands drift. The file is the authority, not recollection.

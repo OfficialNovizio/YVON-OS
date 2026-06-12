@@ -1,0 +1,14 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/23--consulting-crm-revenue.md strip=4% toon=4% net=8%
+T|23 ·|0|The lead/deal pipeline for the consulting side of the business — building the "ag-as-a-service" offer the Advisory Council keeps recommending. Sidebar badge: 3.
+T|23 ·|1|
+T|Purp|0|Manage consulting rv: leads, conversations, and deals for the service where the owner builds/runs mission controls for clients. The Advisory Council's hl recommendation — productize "I run your ag" into a fixed monthly retainer — is the st this CRM operationalizes. Badge shows 3 items needing attention.
+T|Purp|1|
+T|What|0|A lead/deal pipeline (stages such as Lead → Conversation → Proposal/Quote → Won/Lost) for consulting clients.
+T|What|1|Leads like Maria (the "Cinematic Site inquiry, ~€5k" that appears as an em in the Decision Queue) wld live here as a deal; the Council suggests packaging the Maria engagement as the retainer template.
+T|What|2|Per-lead context pulled from the memory sy (relationship, history, last contact), similar to the Inbox's "What we know abt Maria" panel.
+T|What|3|Actions to advance deals, draft outreach (via ag), and cr tasks.
+T|What|4|
+T|Rela|0|Tightly linked to em Inbox (25) — client emails — and the Decision Queue (reply approvals).
+T|Rela|1|st shaped by Advisory Council (03); deliverables may run through Cinematic Sites (24) for client website builds.
+T|Rela|2|
+T|Rela|3|Confidence: Listed in the sidebar (rv) w/ a 3 badge and strongly implied by the transcript (consulting offer, Maria lead, retainer productization), but not shown as a dedicated screen. Pipeline structure above is inferred.

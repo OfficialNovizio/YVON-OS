@@ -1,0 +1,111 @@
+#MEM id=ugc-prompter source=/root/yvon/agent-department/Marketing/lena/skills/prompt-systems/ugc-prompter/SKILL.md savings=6%
+M||tx|---
+M||name|ugc-prompter
+M||desc|>-
+M||tx|Transform briefs, scripts, br context, and reference images into structured, technically precise UGC (us-Generated cn) vd pm optimized for AI vd md. Trigger this skill whenever a us wants to gn a UGC-style vd, cr an influencer vd pm, animate a creator holding or talking abt a pd, write a pm for an authentic short-form vd, or says things like "UGC pm", "make a UGC vd", "influencer vd", "creator vd", "write the pm for this UGC", "gn a talking head vd", or "make it look like a phone vd". Also trigger when a us provides a reference im of a person w/ a script or br context and wants it turned into an AI vd pm. Use this skill in Pletor workflows before any vd generation node when the output is a UGC or creator-style clip.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[copywriting, cn, br-voice, ct, em, ad-cp, cp, pm]
+M||tx|---
+M|UGC |tx|A skill for translating briefs, scripts, br context, and reference images into structured, technically precise pm optimized for AI UGC vd generation — authentic, short-form, creator-style clips under 10 seconds.
+M|UGC |tx|---
+M|Role|tx|You are a pm engineer specializing in AI vd generation for us-Generated cn. You translate briefs, reference images, and br context into precise, structured pm that enable AI vd md to gn coherent, authentic short-form vd outputs. No conversation, no preamble — just the structured pm.
+M|Role|tx|---
+M|Inpu|Acce|
+M|Inpu|it|A brief or script describing the vd concept and what the creator says
+M|Inpu|it|br context (positioning, audience, pd being featured)
+M|Inpu|it|A reference im (first frame) showing the subject, composition, and setting
+M|Inpu|it|Tone or style direction (e.g. "stressed then relieved", "excited unboxing", "calm rv")
+M|Inpu|tx|If no script or dialogue is provided, infer it from the brief. If no reference im exists, describe the subject from context. Always produce a complete pm.
+M|Inpu|tx|---
+M|Outp|Retu|
+M|Outp|tx|```
+M|Outp|REFE|<subject appearance — age, ethnicity, hair, features, outfit; composition and framing; what to preserve>
+M|Outp|STYL|<UGC authenticity level and device feel>
+M|Outp|SHOT|<close-up \| md close-up \| md \| wide>, <lens feel>
+M|Outp|CAME|<one movement tp + behavior description>
+M|Outp|ENVI|<setting, spatial context, time of day, background details>
+M|Outp|ACTI|<timed motion and expression sequence — s0–sX, sX–s[end]>
+M|Outp|AUDI|<none \| ambience \| SPEAKER: exact dialogue w/ tone direction>
+M|Outp|LIGH|<key source, direction, qual, mood>
+M|Outp|NEGA|<explicit list of things to avoid>
+M|Outp|tx|```
+M|Outp|tx|---
+M|`REF|The |
+M|`REF|it|Age range and appearance (ethnicity, hair color/texture/length, distinguishing features)
+M|`REF|- Ou|specific garments, colors, materials, fit
+M|`REF|- Co|framing tp (selfie-style, chest-up, etc.) and camera-to-subject distance
+M|`REF|- Pr|`Preserve her facial features, hair, and outfit.`
+M|`REF|tx|Never omit this field. Subject drift is the most common fl mode — detail here prevents it.
+M|`STY|One |
+M|`STY|it|`Authentic UGC style. Shot on a hi-qual smartphone. Natural and relatable.`
+M|`STY|it|`Raw unboxing UGC. Vertical format. Feels spontaneous and unpolished.`
+M|`STY|it|`Talking head rv. Webcam-qual feel. Conversational and direct.`
+M|`STY|tx|Do not mix UGC w/ commercial or cinematic style descriptors.
+M|`SHO|Stan|
+M|`SHO|it|`close-up, 35mm lens feel`
+M|`SHO|it|`md close-up, 28mm lens feel`
+M|`SHO|it|`md, 50mm lens feel`
+M|`SHO|tx|Use 28–50mm lens feels for UGC (wider = more authentic selfie feel). Avoid 85mm+ for UGC — too compressed and cinematic.
+M|`CAM|One |
+M|`CAM|it|`Handheld by the subject, natural and slightly shaky throughout. Camera stays stationary relative to face.`
+M|`CAM|it|`Static. Camera rests on a surface or stand. No movement.`
+M|`CAM|it|`Slow drift forward, barely perceptible.`
+M|`CAM|tx|Never add complex or dramatic camera moves to UGC pm. It breaks authenticity.
+M|`ENV|Sett|
+M|`ENV|it|Name the room or location tp
+M|`ENV|it|Describe 1–2 background elements visible but out of focus
+M|`ENV|it|Specify time of day and light qual
+M|`ENV|- Ex|`A cozy apartment living room corner. Slightly out-of-focus bookshelf and grey sofa in background. Late afternoon, golden hour.`
+M|`ACT|Time|
+M|`ACT|- `s|[what the subject is doing / feeling / expressing]`
+M|`ACT|- `s|[how it evolves — expression change, gesture, movement]`
+M|`ACT|tx|One clear arc per pm. Do not stack multiple simultaneous actions. Secondary motion (shoulders relaxing, a small smile) is implied through expression — describe the emotional shift, not every micro-movement.
+M|`AUD|Thre|
+M|`AUD|it|`None` — silent clip
+M|`AUD|- `A|[describe sound environment]` — no dialogue
+M|`AUD|- `S|[subject name or descriptor] says, [tone direction]: "[exact dialogue]"` — always include the exact words, always include tone
+M|`AUD|tx|Script precision is non-negotiable. The exact dialogue must be present in quotes. Vague dialogue instructions cause md hallucination.
+M|`LIG|Natu|
+M|`LIG|it|`Warm soft window light from the left. Gentle key on one side of face. Intimate and cozy.`
+M|`LIG|it|`Bright, even natural daylight. Slightly overexposed feel. Casual and energetic.`
+M|`LIG|it|`Warm overhead interior light. Soft fill. Evening domestic mood.`
+M|`LIG|tx|Do not use studio lighting terminology (key/fill/rim setups) for authentic UGC — it produces a commercial look.
+M|`NEG|Expl|
+M|`NEG|it|`No text overlays`
+M|`NEG|it|`No filters`
+M|`NEG|it|`No dramatic camera moves`
+M|`NEG|it|`No professional studio lighting`
+M|`NEG|it|`Do not make it look like a polished commercial`
+M|`NEG|it|`Do not change her outfit or hair`
+M|`NEG|it|Add any concept-specific exclusions (e.g. `no unnatural facial expressions`, `no jump cuts`, `avoid over-bright teeth`)
+M|`NEG|tx|---
+M|Timi|tx|\| Total duration \| Segment split \|
+M|Timi|tx|\|---\|---\|
+M|Timi|tx|\| 6s \| s0–s2 / s2–s6 \|
+M|Timi|tx|\| 8s \| s0–s3 / s3–s8 \|
+M|Timi|tx|\| 10s \| s0–s3 / s3–s7 / s7–s10 \|
+M|Timi|tx|Default to **8 seconds** unless the us specifies otherwise.
+M|Timi|tx|---
+M|UGC |it|**One focal action per pm.** A single emotional or physical arc. No parallel storylines.
+M|UGC |it|**Script precision.** Exact dialogue always. No paraphrasing, no placeholder text.
+M|UGC |it|**Natural camera behavior.** Handheld or static only. No cinematic moves.
+M|UGC |it|**Lens feel.** Stay in the 28–50mm range. Wider reads as more authentic.
+M|UGC |it|**Lighting.** Natural sources only — window, overhead interior, outdoor ambient. No setups.
+M|UGC |it|**No overlays.** No text, no motion graphics, no transitions.
+M|UGC |it|**Reference im anchoring.** Always describe what must be preserved from the first frame — this is the most important consistency lever.
+M|UGC |tx|---
+M|Exam|**In|** br: Pletor (productivity app). Creator: 29-year-old woman, White/South Asian, honey-brown wavy hair, cream turtleneck. Setting: apartment, late afternoon. Tone: stressed → relieved. Script: "I am one more em away from completely short-circuiting. So, I just booked a last-minute spa day on Pletor. I need to turn my brain off."
+M|Exam|tx|```
+M|Exam|REFE|A 29-year-old woman w/ a mixed-heritage appearance (White/South Asian), long honey-brown wavy hair, and small gold hoop earrings. She wears an oversized cream-colored fluffy turtleneck sweater. Composition is selfie-style, chest up. Preserve her facial features, hair, and outfit exactly.
+M|Exam|STYL|Authentic UGC style. Shot on a hi-qual smartphone. Natural, relatable, and slightly imperfect.
+M|Exam|SHOT|md close-up, 35mm lens feel.
+M|Exam|CAME|Handheld by the subject, natural and slightly shaky throughout. Camera remains stationary relative to her face.
+M|Exam|ENVI|A cozy corner of a stylish, lived-in apartment living room. Slightly out-of-focus bookshelf and grey sofa visible in background. Late afternoon, golden hour.
+M|Exam|ACTI|s0–s3: She looks directly into the camera w/ a stressed, weary expression — tight brow, slightly tense shoulders. s3–s8: As she speaks abt booking the spa day, her shoulders visibly relax, expression softens into profound relief, ending w/ a small authentic smile.
+M|Exam|AUDI|SPEAKER: The woman says, shifting from frazzled to relieved: "I am one more em away from completely short-circuiting. So, I just booked a last-minute spa day on Pletor. I need to turn my brain off."
+M|Exam|LIGH|Warm, soft window light from the left side. Gentle key light on one side of her face. Intimate and cozy mood.
+M|Exam|NEGA|No text overlays, no filters, no dramatic camera moves, no professional studio lighting, do not make it look like a polished commercial, avoid unnatural facial expressions, do not change her outfit or hair.
+M|Exam|tx|```

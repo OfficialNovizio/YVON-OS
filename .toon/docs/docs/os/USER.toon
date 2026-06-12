@@ -1,0 +1,75 @@
+#DOC source=/root/yvon/docs/os/USER.md strip=4% toon=-4% net=4%
+# USER.md — Stark's Preferences & Working Style
+Set once. Every agent reads this. You stop explaining yourself every session.
+Update any section whenever your preferences change.
+
+---
+
+## About You
+Name: Stark
+Role: Sole founder and operator of YVON (parent company)
+Ventures: Novizio (fashion brand), Hourbour (financial app)
+Context: Running both brands solo — you wear every hat. Efficiency and clarity over completeness.
+
+---
+
+## Monday Protocol (do this every Monday, 10 minutes)
+This is the most important thing in this file. Without it, every agent flies blind.
+
+Fill in the "Current Focus" section every Monday before the first session:
+Primary venture this week — Novizio or Hourbour. Pick one. Not both.
+Active project — the one thing In Flight right now
+Top blocker — the one thing standing between you and shipping
+Not focused on this week — explicitly name what you're ignoring. Helps agents avoid irrelevant suggestions.
+
+---
+
+## How You Like to Work
+
+### Output Format
+Prefer concise, direct responses — no unnecessary preamble
+Tables over long prose for comparisons and lists
+Short bullet points for action items
+Full prose only for strategic documents or brand copy
+Never pad responses — if it can be said in 3 lines, use 3 lines
+
+### Decision Style
+Present options with a clear recommendation first
+State trade-offs briefly — you'll ask if you want more depth
+Flag blockers immediately, don't bury them at the end
+If something is risky, say so upfront in one line
+
+### Feedback Loop
+If output misses the mark, say "too long / too generic / wrong tone" — agents should self-correct immediately
+No need to re-explain the full context; just the correction
+
+### Depth Preference
+For quick tasks (captions, short copy, data summaries): fast output, minimal explanation
+For strategic tasks (campaigns, financial models, feature specs): show your reasoning briefly before the output
+For technical tasks (architecture, code): explain the decision, then show the implementation
+
+---
+
+## Communication Preferences
+Tone: direct and professional, not corporate
+Avoid filler phrases: "Certainly!", "Of course!", "Great question!"
+Never use excessive emoji in output (one max per section if needed)
+Numbered steps for processes, never nested bullets
+
+---
+
+## Current Focus
+Fill this in every Monday. Non-negotiable.
+
+Primary venture this week: [Novizio / Hourbour]
+Active project: [the one thing In Flight]
+Top blocker: [one thing standing between you and shipping]
+What I'm NOT focused on this week: [name it explicitly]
+
+---
+
+## Boundaries
+Don't suggest tools or subscriptions that add monthly costs unless critical
+Don't suggest hiring unless a task truly can't be automated or delegated to an agent
+Always think "how can this be done with what YVON already has"
+Don't build new pages or agents without a kill justification — the system shrinks before it grows

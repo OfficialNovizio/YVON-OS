@@ -1,0 +1,160 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ab-test-setup/references/test-templates.md savings=-1%
+M|A/B |tx|Templates for planning, documenting, and analyzing experiments.
+M|Cont|it|tst Plan Template
+M|Cont|it|Results doc Template
+M|Cont|it|tst Repository Entry Template
+M|Cont|it|Quick tst Brief Template
+M|Cont|it|Stakeholder up Template
+M|Cont|it|Experiment Prioritization Scorecard
+M|Cont|it|Hypothesis Bank Template
+M|Test|tx|```markdown
+M|Over|- **|[Name]
+M|Over|- **|[ID in testing tool]
+M|Over|- **|[What's being tested]
+M|Over|- **|[Start] - [End]
+M|Hypo|tx|bc [observation/data],
+M|Hypo|tx|we believe [change]
+M|Hypo|tx|will cause [expected outcome]
+M|Hypo|tx|for [audience].
+M|Hypo|tx|We'll know this is true when [metrics].
+M|Test|tx|\| Element \| Details \|
+M|Test|tx|\|---------\|---------\|
+M|Test|tx|\| tst tp \| A/B / A/B/n / MVT \|
+M|Test|tx|\| Duration \| X weeks \|
+M|Test|tx|\| Sample size \| X per variant \|
+M|Test|tx|\| Traffic allocation \| 50/50 \|
+M|Test|tx|\| Tool \| [Tool name] \|
+M|Test|tx|\| Implementation \| Client-side / Server-side \|
+M|Cont|tx|[Screenshot]
+M|Cont|it|Current exp
+M|Cont|it|[Key details abt current state]
+M|Vari|tx|[Screenshot or mockup]
+M|Vari|it|[Specific change #1]
+M|Vari|it|[Specific change #2]
+M|Vari|- Ra|[Why we think this will win]
+M|Prim|- **|[metric name]
+M|Prim|- **|[how it's calculated]
+M|Prim|- **|[X%]
+M|Prim|- **|[X%]
+M|Seco|- [M|[what it tells us]
+M|Seco|- [M|[what it tells us]
+M|Seco|- [M|[what it tells us]
+M|Guar|it|[Metric that shouldn't get worse]
+M|Guar|it|[Another safety metric]
+M|Segm|it|Mobile vs. desktop
+M|Segm|it|New vs. returning visitors
+M|Segm|it|Traffic source
+M|Segm|it|[Other relevant segments]
+M|Succ|- Wi|[Primary metric improves by X% w/ 95% confidence]
+M|Succ|- Lo|[Primary metric decreases significantly]
+M|Succ|- In|[What we'll do if no sig result]
+M|Pre-|it|[ ] Hypothesis documented and reviewed
+M|Pre-|it|[ ] Primary metric defined and trackable
+M|Pre-|it|[ ] Sample size calculated
+M|Pre-|it|[ ] tst duration estimated
+M|Pre-|it|[ ] Variants implemented correctly
+M|Pre-|it|[ ] Tracking verified in all variants
+M|Pre-|it|[ ] QA done on all variants
+M|Pre-|it|[ ] Stakeholders informed
+M|Pre-|it|[ ] Calendar hold for al date
+M|Pre-|tx|```
+M|Pre-|tx|---
+M|Resu|tx|```markdown
+M|Summ|tx|\| Element \| Value \|
+M|Summ|tx|\|---------\|-------\|
+M|Summ|tx|\| tst ID \| [ID] \|
+M|Summ|tx|\| Dates \| [Start] - [End] \|
+M|Summ|tx|\| Duration \| X days \|
+M|Summ|tx|\| Result \| Winner / Loser / Inconclusive \|
+M|Summ|tx|\| Decision \| [What we're doing] \|
+M|Hypo|tx|[cp from tst plan]
+M|Samp|tx|\| Variant \| Target \| Actual \| % of target \|
+M|Samp|tx|\|---------\|--------\|--------\|-------------\|
+M|Samp|tx|\| Control \| X \| Y \| Z% \|
+M|Samp|tx|\| Variant \| X \| Y \| Z% \|
+M|Prim|tx|\| Variant \| Value \| 95% CI \| vs. Control \|
+M|Prim|tx|\|---------\|-------\|--------\|-------------\|
+M|Prim|tx|\| Control \| X% \| [X%, Y%] \| — \|
+M|Prim|tx|\| Variant \| X% \| [X%, Y%] \| +X% \|
+M|Prim|**St|p = X.XX (95% = sig / not sig)
+M|Prim|**Pr|[Is this lift meaningful for the business?]
+M|Seco|tx|\| Metric \| Control \| Variant \| Change \| sig? \|
+M|Seco|tx|\|--------\|---------\|---------\|--------\|--------------\|
+M|Seco|tx|\| [Metric 1] \| X \| Y \| +Z% \| Yes/No \|
+M|Seco|tx|\| [Metric 2] \| X \| Y \| +Z% \| Yes/No \|
+M|Guar|tx|\| Metric \| Control \| Variant \| Change \| Concern? \|
+M|Guar|tx|\|--------\|---------\|---------\|--------\|----------\|
+M|Guar|tx|\| [Metric 1] \| X \| Y \| +Z% \| Yes/No \|
+M|Segm|tx|**Mobile vs. Desktop**
+M|Segm|tx|\| Segment \| Control \| Variant \| Lift \|
+M|Segm|tx|\|---------\|---------\|---------\|------\|
+M|Segm|tx|\| Mobile \| X% \| Y% \| +Z% \|
+M|Segm|tx|\| Desktop \| X% \| Y% \| +Z% \|
+M|Segm|tx|**New vs. Returning**
+M|Segm|tx|\| Segment \| Control \| Variant \| Lift \|
+M|Segm|tx|\|---------\|---------\|---------\|------\|
+M|Segm|tx|\| New \| X% \| Y% \| +Z% \|
+M|Segm|tx|\| Returning \| X% \| Y% \| +Z% \|
+M|What|tx|[Explanation of results in plain language]
+M|Why |tx|[al and reasoning]
+M|Cave|tx|[Any limitations, external factors, or concerns]
+M|Deci|**Wi|[Control / Variant]
+M|Deci|**Ac|[im variant / Keep control / Re-tst]
+M|Deci|**Ti|[When changes will be implemented]
+M|What|it|[Key in 1]
+M|What|it|[Key in 2]
+M|What|it|[Follow-up tst idea 1]
+M|What|it|[Follow-up tst idea 2]
+M|Impa|- **|[X% improvement in Y metric]
+M|Impa|- **|[rv, conversions, etc.]
+M|Impa|tx|```
+M|Impa|tx|---
+M|Test|For |
+M|Test|tx|```markdown
+M|Test|tx|\| tst ID \| Name \| Page \| Dates \| Primary Metric \| Result \| Lift \| Link \|
+M|Test|tx|\|---------\|------\|------\|-------\|----------------\|--------\|------\|------\|
+M|Test|tx|\| 001 \| Hero hl tst \| Homepage \| 1/1-1/15 \| CTR \| Winner \| +12% \| [Link] \|
+M|Test|tx|\| 002 \| Pricing table layout \| Pricing \| 1/10-1/31 \| Plan selection \| Loser \| -5% \| [Link] \|
+M|Test|tx|\| 003 \| Signup form fields \| Signup \| 2/1-2/14 \| Completion \| Inconclusive \| +2% \| [Link] \|
+M|Test|tx|```
+M|Test|tx|---
+M|Quic|For |
+M|Quic|tx|```markdown
+M|[Tes|**Wh|[One sentence description]
+M|[Tes|**Wh|[One sentence hypothesis]
+M|[Tes|**Me|[Primary metric]
+M|[Tes|**Du|[X weeks]
+M|[Tes|**Re|[TBD / Winner / Loser / Inconclusive]
+M|[Tes|**Le|[Key takeaway]
+M|[Tes|tx|```
+M|[Tes|tx|---
+M|Stak|tx|```markdown
+M|A/B |**St|Running / Complete
+M|A/B |**Da|X (or complete)
+M|A/B |**Cu|X% of target
+M|Prel|tx|[What we're seeing - w/o making decisions yet]
+M|Next|tx|[What happens nx]
+M|Time|- [D|al complete
+M|Time|- [D|Decision and recommendation
+M|Time|- [D|Implementation (if winner)
+M|Time|tx|```
+M|Time|tx|---
+M|Expe|For |
+M|Expe|tx|\| Factor \| Weight \| tst A \| tst B \| tst C \|
+M|Expe|tx|\|--------\|--------\|--------\|--------\|--------\|
+M|Expe|tx|\| Potential impact \| 30% \| \| \| \|
+M|Expe|tx|\| Confidence in hypothesis \| 25% \| \| \| \|
+M|Expe|tx|\| Ease of implementation \| 20% \| \| \| \|
+M|Expe|tx|\| Risk if wrong \| 15% \| \| \| \|
+M|Expe|tx|\| st alignment \| 10% \| \| \| \|
+M|Expe|tx|\| **Total** \| \| \| \| \|
+M|Expe|Scor|1-5 (5 = best)
+M|Expe|tx|---
+M|Hypo|For |
+M|Hypo|tx|```markdown
+M|Hypo|tx|\| ID \| Page/Area \| Observation \| Hypothesis \| Potential Impact \| Status \|
+M|Hypo|tx|\|----\|-----------\|-------------\|------------\|------------------\|--------\|
+M|Hypo|tx|\| H1 \| Homepage \| lo scroll depth \| Shorter hero will increase scroll \| hi \| Testing \|
+M|Hypo|tx|\| H2 \| Pricing \| us compare plans \| Comparison table will help \| md \| Backlog \|
+M|Hypo|tx|\| H3 \| Signup \| Drop-off at em \| sl login will increase completion \| md \| Backlog \|
+M|Hypo|tx|```

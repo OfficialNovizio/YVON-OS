@@ -1,0 +1,30 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/advanced-use-latest.md savings=2%
+M||tx|---
+M||titl|useEffectEvent for Stable Callback Refs
+M||impa|lo
+M||impa|prevents effect re-runs
+M||tags|advanced, hooks, useEffectEvent, refs, op
+M||tx|---
+M|useE|tx|Access latest values in callbacks w/o adding them to dependency arrays. Prevents effect re-runs while avoiding stale closures.
+M|useE|**In|**
+M|useE|tx|```tsx
+M|useE|func|{ onSearch: (q: string) => void }) {
+M|useE|tx|const [query, setQuery] = useState('')
+M|useE|tx|useEffect(() => {
+M|useE|tx|const timeout = setTimeout(() => onSearch(query), 300)
+M|useE|tx|return () => clearTimeout(timeout)
+M|useE|tx|}, [query, onSearch])
+M|useE|tx|}
+M|useE|tx|```
+M|useE|**Co|**
+M|useE|tx|```tsx
+M|useE|tx|import { useEffectEvent } from 'rc';
+M|useE|func|{ onSearch: (q: string) => void }) {
+M|useE|tx|const [query, setQuery] = useState('')
+M|useE|tx|const onSearchEvent = useEffectEvent(onSearch)
+M|useE|tx|useEffect(() => {
+M|useE|tx|const timeout = setTimeout(() => onSearchEvent(query), 300)
+M|useE|tx|return () => clearTimeout(timeout)
+M|useE|tx|}, [query])
+M|useE|tx|}
+M|useE|tx|```

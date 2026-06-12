@@ -1,0 +1,96 @@
+#DOC source=/root/yvon/docs/os/ROADMAP.md strip=28% toon=10% net=35%
+P|YVON|0|Created: 2026-04-01 \| Owner: Stark \| rv: weekly every Monday
+P|YVON|1|DRI for execution: Stark. Each item must reach "Shipped" state before the nx Priority tier begins.
+P|YVON|2|
+P|YVON|3|---
+P|YVON|4|
+T|P1-A|0|Brands listed in left sidebar as clickable cards (nz, hb)
+T|P1-A|1|Click br → writes yvonactiveventure cookie → all pages re-render scoped to that br
+T|P1-A|2|Each dashboard view is br-isolated: no nz data bleeds into hb views
+T|P1-A|3|DRI: mi (UI) + rj (cookie/ap) \| Done when: clicking a br in sidebar scopes the entire app
+T|P1-A|4|Status: Scoped
+T|P1-A|5|
+M|P1-B|0|cr project-memory/PROJECT-MEMORY.md — daily close appends all active ag' sn logs
+M|P1-B|1|sn-start filter: only load ag whose last log entry is relevant to today's task keywords
+M|P1-B|2|CLAUDE.md appends one "What changed this sn" line at every sn close → self-improving
+M|P1-B|3|DRI: Stark (protocol) \| Done when: sn start only loads contextually relevant ag
+M|P1-B|4|Status: Scoped
+M|P1-B|5|
+M|P1-B|6|---
+M|P1-B|7|
+D|P2-A|0|Every an page gets a "ka's Read" card: what happened / why it matters / what to do
+D|P2-A|1|Every sl page gets a br-intelligence card: data → cn brief → action
+D|P2-A|2|Decision cards are NOT optional commentary — they are the primary output
+D|P2-A|3|DRI: ka (al) + mi (UI card) \| Done when: every metrics page has a "decision to take" section
+D|P2-A|4|Status: Scoped
+D|P2-A|5|
+T|P2-B|0|mc, ka, ro, fx gain WebSearch capability in their sy pm
+T|P2-B|1|Contradiction mode: all COMMAND-layer ag (mc, dn) must challenge Stark's inputs w/ evidence before agreeing
+T|P2-B|2|Personality profiles (Steve Jobs, Sheryl Sandberg, etc.) embedded in each ag's SKILLS.md — see ag files
+T|P2-B|3|DRI: Stark (to wire WebSearch into /ap/claude rt) \| Done when: mc pushes back w/ cited evidence
+T|P2-B|4|Status: Scoped
+T|P2-B|5|
+T|P2-B|6|---
+T|P2-B|7|
+T|P3-A|0|Each decision card in /inbox has: ap / Reject / Defer buttons
+T|P3-A|1|Approval logged to sb decisions table w/: ag, decisiontext, actiontaken, timestamp
+T|P3-A|2|Daily rp consolidates: decisions pnd your approval + decisions you approved/rejected yesterday
+T|P3-A|3|DRI: rj (sc + ap) + mi (UI) \| Done when: you can ap a recommendation and it's logged
+T|P3-A|4|Status: Scoped
+T|P3-A|5|
+T|P3-B|0|cr sb dailylogs table: date, agentid, task, outcome, vt
+T|P3-B|1|Every ag appends sn log to daily_logs via /ap/ag-log at sn close
+T|P3-B|2|/inbox daily rp pulls from daily_logs (not just MEMORY.md files)
+T|P3-B|3|DRI: rj \| Done when: a week of sn history is queryable in sb
+T|P3-B|4|Status: Scoped
+T|P3-B|5|
+T|P3-B|6|---
+T|P3-B|7|
+T|P4-A|0|Flow: ka reads sl stats + cr cn → auto-generates cn brief → ln drafts → at gives direction → you ap
+T|P4-A|1|Triggered daily by vc Cron or on-demand from /creative page
+T|P4-A|2|cr cn fed by existing /ap/cr-cn rt
+T|P4-A|3|DRI: ka (brief) + ln (cp) + at (visual) \| Done when: one-click generates cn brief from real data
+T|P4-A|4|Status: Scoped
+T|P4-A|5|
+T|P4-B|0|Left sidebar sections: Brands (vt switcher) \| Pages (Scout, Settings, Team, AI Team)
+T|P4-B|1|Decision required: Scout + Personal were killed 2026-04-01. Confirm before rebuilding.
+T|P4-B|2|Option A: Keep killed. Sidebar = Brands + 5 links (current pages).
+T|P4-B|3|Option B: Revive Scout as a lightweight "idea capture" tab (not a full ag).
+T|P4-B|4|DRI: mi \| Done when: sidebar has br cards + quick-nav links
+T|P4-B|5|Status: Waiting on Stark decision re: Scout/Personal
+T|P4-B|6|
+T|P4-B|7|---
+T|P4-B|8|
+T|P5-A|0|GitHub ap server-side: read repo state, cr branch, propose change, open PR
+T|P5-A|1|dv proposes code changes → shows diff in /tc → Stark approves → dv pushes
+T|P5-A|2|er-solve mode: dv reads bd er, proposes fix, Stark approves, dv commits
+T|P5-A|3|Safety gate is non-negotiable: no auto-push w/o explicit Stark approval on each change
+T|P5-A|4|DRI: dv + rj \| Done when: dv can propose a code fix and Stark approves/rejects it from the UI
+T|P5-A|5|Status: Scoped (Code Hub foundation exists from 2026-03-27)
+T|P5-A|6|
+T|P5-A|7|---
+T|P5-A|8|
+T|P6-A|0|fx owns: track Claude ap tk, Apify calls, sb reads/writes per week
+T|P6-A|1|Sources: Anthropic usage ap, Apify billing ap, sb dashboard
+T|P6-A|2|Delivered every Monday in mc's ce brief as a cost section
+T|P6-A|3|Alert if weekly spend > budget threshold (set in /settings)
+T|P6-A|4|DRI: fx + rj \| Done when: Monday brief includes last week's ap costs per service
+T|P6-A|5|Status: Scoped
+T|P6-A|6|
+T|P6-A|7|---
+T|P6-A|8|
+D|P7-A|0|/ Command Center gets a "Roadmap pulse" section: top 3 in-progress items from this file
+D|P7-A|1|Each item shows: state (Scoped / In Flight / Shipped), DRI, last updated
+D|P7-A|2|Decisions feed from sb decisions table (built in P3-A)
+D|P7-A|3|DRI: mi + rj \| Done when: Command Center shows roadmap state + pnd decisions
+D|P7-A|4|Status: blk on P1-A, P3-A
+D|P7-A|5|
+D|P7-A|6|---
+D|P7-A|7|
+D|Open|0|[TABLE:3×4]
+D|Open|1|---
+D|Open|2|
+T|Arch|0|[TABLE:3×5]
+T|Arch|1|---
+T|Arch|2|
+T|done|[TABLE:3×7]

@@ -1,0 +1,72 @@
+#DOC source=/root/yvon/docs/os/ad-briefs/2026-06-11.md strip=13% toon=3% net=16%
+T|Novi|0|ROAS: No signal — Day 4 of confirmed pipeline stall. ka's June 11 diagnosis hardens: the an stack exists structurally (tables defined in sb, cr tracker connected) but is not operational. socialsnapshots = 0 rows. socialposts = 2 records, both from February 2025 (16 months stale). cr tracker connected but producing zero differentiated signals across all 10 tracked cr. This is no longer a "data latency" or "credentials hypothesis" situation — it is a confirmed data ingestion fl w/ a 4-day persistence record. ka's confidence on the diagnosis is hi; confidence on the specific remedy (ap key? rate limiting? script never deployed?) is lo, but the sb connection works — the bottleneck is upstream.
+T|Novi|1|
+T|Novi|2|SS26 Countdown: The cg is now within an estimated 9-19 day window of late June w/ zero pre-cg baselines. The risk escalator from the past four days: June 8 identified the problem → June 9 confirmed it wasn't transient → June 10 declared a dependency → June 11 confirms structural fl. Base rate risk unchanged: 30-40% first-month ROAS underperformance for DTC fashion launches w/o engagement baselines. At fx's £80-120 AOV target, the cost of launching blind compounds w/ each day the pipeline stays offline.
+T|Novi|3|
+T|Novi|4|Budget: HOLD — cannot recommend. Preconditions unmet: (a) no current ad spend data, (b) no 30-day ROAS by cg/ad set, (c) no CPM/CTR tn, (d) no creative perf baselines. Do not allocate budget blindly. The same stance from June 8-10 holds, and ro will repeat it until either (a) the pipeline delivers data or (b) Stark overrides w/ an explicit directive to spend regardless. ro's recommendation remains: no spend w/o measurement.
+T|Novi|5|
+T|Novi|6|Creative: No running ad sets to flag as stale (>21 days). SS26 creative continues in dv w/ ln + at + px. When creative goes live, ro will set a 21-day freshness calendar per ad set. No change from yesterday.
+T|Novi|7|
+T|Novi|8|Platform Mix: Meta + Instagram ad only — per vt lock in CONTEXT.md (no TikTok before Q3 2026). No current spend to assess mix efficiency. No change.
+T|Novi|9|
+T|Novi|10|kh gate: Not triggered — no budget change being recommended (0% change, no data to base a change on). However, the SS26 pre-mortem is now an escalated requirement — was advisory on June 9, became a requirement on June 10, and is now on Day 3 of pnd w/ 9-19 days until launch. This pre-mortem shd be run jointly w/ kh this week, before any SS26 budget commitment. If the pipeline isn't fixed by the time the pre-mortem runs, the pre-mortem must explicitly address the "launching blind" scenario.
+T|Novi|11|
+T|What|0|Stark/dn: .env.local on production dpl. The single highest-ROI action in the entire yv sy. ~10 minutes of cfg work that unblocks ka, ro, nt, and fx simultaneously. ka's June 11 brief confirms sb connectivity works — the gap is upstream data collection, which requires authenticated ap access.
+T|What|1|Once credentials land: trigger POST /ap/instagram for nz → populate social_snapshots. One ap call unlocks the mk department's analytical fn.
+T|What|2|Set SOCIALSNAPSHOTSCRON to weekly. Minimum 2 data points before SS26 launch to establish a tn line. One snapshot is a point; two is a direction.
+T|What|3|Meta ad Manager historical export: if any tst cg ran previously, export last 90 days — spend, impressions, CTR, CPM, conversions, ROAS by ad set.
+T|What|4|NEW from ka's June 11: ka recommends a unified ingestion architecture — one cron-triggered script that collects sl + cr data per vt, writes to canonical sb tables. This approach fixes both vt w/ a single engineering investment. ro endorses this: the ROI on ingestion architecture is multiplied when it serves nz AND hb from day one, rather than building separate pipelines.
+T|What|5|
+T|What|6|---
+T|What|7|
+T|Hour|0|CAC: No signal — unchanged from all prior briefs. hb remains pre-launch across all dimensions: no pd (HRB-001), no pricing md (HRB-002), no us, no acquisition channels, no measurement baseline. ka's June 11 brief confirms complete data blackout — zero sl posts, zero sl snapshots, zero cr tracked. The vt record exists (created 2026-03-22, status "active", Canada) but was never wired into the an layer. Last recorded ag sn remains April 8, 2026.
+T|Hour|1|
+T|Hour|2|ka's June 11 diagnosis (new for hb): This is not a transient gap — hb was created as a vt entity but never connected to an instrumentation. For a B2B fintech SaaS targeting Canada, the relevant signals are LinkedIn engagement, GitHub stars/pd metrics, funding rounds in the competitive set, and Twitter/X fintech discourse. None of these are instrumented. ka's recommendation to define 3-5 key metrics and im the smallest possible pipeline (one cr, one data source) to prove the loop is correct and aligns w/ the unified ingestion architecture proposed for nz.
+T|Hour|3|
+T|Hour|4|Budget: Maintain at $0. The sequencing dependency is unchanged:
+T|Hour|5|fx → runway al + pricing recommendation (HRB-002)
+T|Hour|6|Stark → pricing approval
+T|Hour|7|dv → trial-to-paid funnel (HRB-001)
+T|Hour|8|First cohort → ka's an activate
+T|Hour|9|Only then → ro can activate LinkedIn ad w/ a measurable CAC target
+T|Hour|10|
+T|Hour|11|Spending before step 4 is burning money w/ nothing to op toward.
+T|Hour|12|
+T|Hour|13|Instrumentation Window wn (escalating): ka's June 11 brief confirms: hb was never wired into an. The window btw "pricing approved" and "first us lands" is the period when an tracking must be built into the pd. If missed, ro spends the first 90 days post-launch retrofitting measurement instead of optimizing acquisition — at 3-5x the cost. ro repeats ka's recommendation to write the hb event tracking specification now, before the pd bd outpaces instrumentation. Deliverable: a markdown spec defining every us action (signup, trial start, first workspace, first transaction, invite, upgrade, churn), cohort segments, and alert thresholds. ro endorses routing this to dv/rj via dn's sprint planning.
+T|Hour|14|
+T|Hour|15|Targeting: Premature to specify. Cannot refine LinkedIn targeting (working professionals, excluding HNWIs/wealth management per ag.md) w/o: (a) ICP validation from first organic signups, (b) trial-to-paid conversion data, (c) fx's LTV md defining allowable CAC. No change.
+T|Hour|16|
+T|Hour|17|LTV:CAC wn: N/A — neither metric calculable. The 2:1 alert threshold is pre-configured but cannot fire w/o data. No change.
+T|Hour|18|
+T|Hour|19|kh gate: Not triggered — no spend, no change.
+T|Hour|20|
+T|What|0|fx: LTV md + allowable CAC ceiling (HRB-002)
+T|What|1|nt + dv: Trial-to-paid funnel live (HRB-001)
+T|What|2|ka: LinkedIn baseline snapshot + event tracking spec delivered to dv/rj
+T|What|3|mc: Approved pricing → informs CAC ceiling
+T|What|4|Stark: Confirmed launch timeline → informs budget phasing
+T|What|5|NEW from ka: Define hb's minimum an footprint (3-5 key metrics + data sources) as part of the unified ingestion architecture
+T|What|6|
+T|What|7|---
+T|What|8|
+S|Budg|0|[TABLE:5×2]
+S|Budg|1|---
+S|Budg|2|
+T|Cros|0|Day 4, same diagnosis — but ka's posture shift is meaningful. June 8-10 were hypotheses abt why the pipeline was stalled. June 11 is confirmation that the pipeline is structurally offline — tables exist, sb works, but no data flows. The diagnosis has migrated from "credentials gap likely" to "ingestion architecture not deployed." This is progress — we now know exactly what's broken, not just that something is broken.
+T|Cros|1|
+T|Cros|2|ka's unified ingestion recommendation is the highest-ROI engineering investment available. Two vt, one ingestion architecture. This is ro's al: if the fix costs, say, 4-8 engineering hours to bd a single cron-triggered ingestion script that serves both vt, vs. building separate pipelines, the ROI is immediately doubled. ro endorses ka's recommendation and adds: bd the unified pipeline before fixing either vt individually. The cost of building two separate pipelines is higher than building one that serves both from the start.
+T|Cros|3|
+T|Cros|4|SS26 is now within 9-19 days — the pre-mortem cannot wait. ro's pre-mortem flag from June 9-10 is now on Day 3 of pnd escalation. If the pre-mortem runs before the pipeline is fixed, it must explicitly address the "launch w/ zero baselines" scenario and produce a go/no-go recommendation. ro's stance: SS26 shd not launch w/o at least one IG snapshot. The pre-mortem shd validate or override this stance w/ kh's debiasing.
+T|Cros|5|
+T|Cros|6|Stark's highest-leverage single action, unchanged: cp .env.example → .env.local on production, fill in sb credentials, trigger one IG snapshot. ~10 minutes of work. Unblocks ka, ro, nt, and fx simultaneously. This has been the recommendation for 4 consecutive days. If it hasn't happened by June 12, ro will begin treating the an pipeline as an accepted state, not a pnd fix, and will adjust st accordingly — meaning ro's briefs will shift from "waiting for data" to "planning w/o data."
+T|Cros|7|
+T|Cros|8|hb's risk is silent but compounding. Every day of pd dv w/o instrumentation scaffolding makes retroactive measurement more expensive. The event tracking spec ka recommends is a few hours of focused work that saves 3-5x downstream. ro urges dn to slot this into the nx sprint — not as a "shd do" but as a blocking dependency for any post-launch ad spend.
+T|Cros|9|
+T|Cros|10|---
+T|Cros|11|
+T|Kahn|0|[TABLE:3×4]
+T|Kahn|1|---
+T|Kahn|2|
+T|Kahn|3|ro out. Brief delivered to mc. nx brief: 2026-06-12.
+T|Kahn|4|
+T|Kahn|5|Dependency: ka's ability to produce ad-relevant data remains blk on Stark/dn resolving the production credentials gap. Until resolved, ro's briefs will continue to rp "no signal" — which is itself the signal. If no movement by June 12, ro will pivot from "waiting" to "planning w/o data."

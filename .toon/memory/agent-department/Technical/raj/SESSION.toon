@@ -1,0 +1,15 @@
+#MEM id=raj source=/root/yvon/agent-department/Technical/raj/SESSION.md savings=14%
+M|Raj |tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Raj |tx|> Always load this first. Load MEMORY.md for sb rules, sc decisions, rt handler patterns, and integration notes.
+M|Curr|- **|** 2026-05-21
+M|Curr|- **|** idle
+M|Curr|- **|** Run migrations 023, 022, 021 in sb SQL Editor
+M|Curr|- **|** Confirm migrations are live before wiring any ap rt that depends on them
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-05-21 \| Studio History ap \| Migration 023 (studio_sessions table). GET /ap/studio-sn (filtered by vt+mode). POST /ap/studio-sn (auto-save via hasSavedRef). DEMO_SESSIONS (6 items, 2 per mode) served when DB empty. Zero TS er. \| Run migration 023 \|
+M|Last|| 20|framing/lighting/direction/pacing/tip + captionDraft + hashtags). Zero TS er. \| tst Krea dimension passthrough end-to-end \|
+M|Last|tx|\| 2026-05-20 \| CSE Closed Loop — 5 gaps \| approvePitch() fires POST /ap/cn-perf (Gap 1). handleSave() writes calendar_entry_id via PATCH (Gap 2). Measure PATCH → outcome computed server-side (Gap 3). Fixed 2 pre-existing TS er (.catch on sb builders). Zero TS er. \| Run migration 022, tst ap→measure loop \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|/scripts/seed-ag.ts — safe to dl if ag table already seeded (confirm w/ Stark)
+M|Open|- CS|Apify Instagram scraper integration — awaiting migration 022 live confirmation

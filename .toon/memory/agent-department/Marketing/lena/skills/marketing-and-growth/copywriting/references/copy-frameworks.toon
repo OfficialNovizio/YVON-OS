@@ -1,0 +1,229 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copywriting/references/copy-frameworks.md savings=-12%
+M|Copy|tx|hl formulas, page section tp, and structural templates.
+M|Cont|it|hl Formulas (outcome-focused, problem-focused, audience-focused, differentiation-focused, proof-focused, additional formulas)
+M|Cont|it|Landing Page Section tp (core sections, supporting sections)
+M|Cont|it|Page Structure Templates (feature-heavy page, varied engaging page, compact landing page, enterprise/B2B landing page, pd launch page)
+M|Cont|it|Section Writing Tips (problem section, benefits section, how it works section, testimonial selection)
+M|Outc|tx|**{Achieve desirable outcome} w/o {pain point}**
+M|Outc|tx|> Understand how us are really experiencing your site w/o drowning in numbers
+M|Outc|tx|**{Achieve desirable outcome} by {how pd makes it possible}**
+M|Outc|tx|> gn more leads by seeing which companies visit your site
+M|Outc|tx|**Turn {input} into {outcome}**
+M|Outc|tx|> Turn your hard-earned sales into repeat cs
+M|Outc|tx|**[Achieve outcome] in [timeframe]**
+M|Outc|tx|> Get your tax refund in 10 days
+M|Outc|tx|---
+M|Prob|tx|**Never {unpleasant event} again**
+M|Prob|tx|> Never miss a sales opportunity again
+M|Prob|tx|**{Question highlighting the main pain point}**
+M|Prob|tx|> Hate returning stuff to Amazon?
+M|Prob|tx|**Stop [pain]. Start [pleasure].**
+M|Prob|tx|> Stop chasing invoices. Start getting paid on time.
+M|Prob|tx|---
+M|Audi|tx|**{Key feature/pd tp} for {target audience}**
+M|Audi|tx|> Advanced an for Shopify e-commerce
+M|Audi|tx|**{Key feature/pd tp} for {target audience} to {what it's used for}**
+M|Audi|tx|> An online whiteboard for teams to ideate and brainstorm together
+M|Audi|tx|**You don't have to {skills or resources} to {achieve desirable outcome}**
+M|Audi|tx|> w/ Ahrefs, you don't have to be an SEO pro to rank higher and get more traffic
+M|Audi|tx|---
+M|Diff|tx|**The {opposite of usual process} way to {achieve desirable outcome}**
+M|Diff|tx|> The easiest way to turn your passion into income
+M|Diff|tx|**The [category] that [key differentiator]**
+M|Diff|tx|> The CRM that updates itself
+M|Diff|tx|---
+M|Proo|tx|**[Number] [people] use [pd] to [outcome]**
+M|Proo|tx|> 50,000 marketers use Drip to send better emails
+M|Proo|tx|**{Key benefit of your pd}**
+M|Proo|tx|> Sound clear in online meetings
+M|Proo|tx|---
+M|Addi|tx|**The simple way to {outcome}**
+M|Addi|tx|> The simple way to track your time
+M|Addi|tx|**Finally, {category} that {benefit}**
+M|Addi|tx|> Finally, accounting software that doesn't suck
+M|Addi|tx|**{Outcome} w/o {common pain}**
+M|Addi|tx|> bd your website w/o writing code
+M|Addi|tx|**Get {benefit} from your {thing}**
+M|Addi|tx|> Get more rv from your existing traffic
+M|Addi|tx|**{Action verb} your {thing} like {admirable example}**
+M|Addi|tx|> mk your SaaS like a Fortune 500
+M|Addi|tx|**What if you cld {desirable outcome}?**
+M|Addi|tx|> What if you cld close deals 30% faster?
+M|Addi|tx|**Everything you need to {outcome}**
+M|Addi|tx|> Everything you need to launch your course
+M|Addi|tx|**The {adjective} {category} built for {audience}**
+M|Addi|tx|> The lightweight CRM built for startups
+M|Addi|tx|---
+M|Core|tx|**Hero (Above the Fold)**
+M|Core|it|hl + subheadline
+M|Core|it|Primary CTA
+M|Core|it|Supporting visual (pd screenshot, hero im)
+M|Core|- Op|sl proof bar
+M|Core|tx|**sl Proof Bar**
+M|Core|it|cs logos (recognizable > many)
+M|Core|it|Key metric ("10,000+ teams")
+M|Core|it|Star rating w/ rv count
+M|Core|it|Short testimonial snippet
+M|Core|tx|**Problem/Pain Section**
+M|Core|it|Articulate their problem better than they can
+M|Core|it|cr recognition ("that's exactly my situation")
+M|Core|it|Hint at cost of not solving it
+M|Core|tx|**Solution/Benefits Section**
+M|Core|it|Bridge from problem to your solution
+M|Core|it|3-5 key benefits (not 10)
+M|Core|- Ea|hl + explanation + proof if available
+M|Core|tx|**How It Works**
+M|Core|it|3-4 numbered steps
+M|Core|it|Reduces perceived complexity
+M|Core|- Ea|action + outcome
+M|Core|tx|**Final CTA Section**
+M|Core|it|Recap value proposition
+M|Core|it|Repeat primary CTA
+M|Core|it|Risk reversal (guarantee, free trial)
+M|Core|tx|---
+M|Supp|tx|**Testimonials**
+M|Supp|it|Full quotes w/ names, roles, companies
+M|Supp|it|Photos when possible
+M|Supp|it|Specific results over vague praise
+M|Supp|- Fo|quote cards, vd, tweet embeds
+M|Supp|tx|**Case Studies**
+M|Supp|it|Problem → Solution → Results
+M|Supp|it|Specific metrics and outcomes
+M|Supp|it|cs name and context
+M|Supp|it|Can be snippets w/ "Read more" links
+M|Supp|tx|**Use Cases**
+M|Supp|it|Different ways pd is used
+M|Supp|it|Helps visitors self-identify
+M|Supp|it|"For marketers who need X" format
+M|Supp|tx|**Personas / "Built For" Sections**
+M|Supp|it|Explicitly call out target audience
+M|Supp|it|"Perfect for [role]" blocks
+M|Supp|it|Addresses "Is this for me?" question
+M|Supp|tx|**FAQ Section**
+M|Supp|it|Address common objections
+M|Supp|it|Good for SEO
+M|Supp|it|Reduces support burden
+M|Supp|it|5-10 most common questions
+M|Supp|tx|**Comparison Section**
+M|Supp|it|vs. cr (name them or don't)
+M|Supp|it|vs. status quo (spreadsheets, manual processes)
+M|Supp|it|Tables or side-by-side format
+M|Supp|tx|**Integrations / Partners**
+M|Supp|it|Logos of tools you connect w/
+M|Supp|it|"Works w/ your stack" messaging
+M|Supp|it|Builds credibility
+M|Supp|tx|**Founder Story / Manifesto**
+M|Supp|it|Why you built this
+M|Supp|it|What you believe
+M|Supp|it|Emotional connection
+M|Supp|it|Differentiates from faceless cr
+M|Supp|tx|**Demo / pd Tour**
+M|Supp|it|Interactive demos
+M|Supp|it|vd walkthroughs
+M|Supp|it|GIF previews
+M|Supp|it|Shows pd in action
+M|Supp|tx|**Pricing Preview**
+M|Supp|it|Teaser even on non-pricing pages
+M|Supp|it|Starting price or "from $X/mo"
+M|Supp|it|Moves decision-makers forward
+M|Supp|tx|**Guarantee / Risk Reversal**
+M|Supp|it|Money-back guarantee
+M|Supp|it|Free trial terms
+M|Supp|it|"Cancel anytime"
+M|Supp|it|Reduces friction
+M|Supp|tx|**Stats Section**
+M|Supp|it|Key metrics that bd credibility
+M|Supp|it|"10,000+ cs"
+M|Supp|it|"4.9/5 rating"
+M|Supp|it|"$2M saved for cs"
+M|Supp|tx|---
+M|Feat|tx|```
+M|Feat|tx|1. Hero
+M|Feat|tx|2. Feature 1
+M|Feat|tx|3. Feature 2
+M|Feat|tx|4. Feature 3
+M|Feat|tx|5. Feature 4
+M|Feat|tx|6. CTA
+M|Feat|tx|```
+M|Feat|tx|This is a list, not a persuasive narrative.
+M|Feat|tx|---
+M|Vari|tx|```
+M|Vari|tx|1. Hero w/ clear value prop
+M|Vari|tx|2. sl proof bar (logos or stats)
+M|Vari|tx|3. Problem/pain section
+M|Vari|tx|4. How it works (3 steps)
+M|Vari|tx|5. Key benefits (2-3, not 10)
+M|Vari|tx|6. Testimonial
+M|Vari|tx|7. Use cases or personas
+M|Vari|tx|8. Comparison to alternatives
+M|Vari|tx|9. Case study snippet
+M|Vari|tx|10. FAQ
+M|Vari|tx|11. Final CTA w/ guarantee
+M|Vari|tx|```
+M|Vari|tx|This tells a story and addresses objections.
+M|Vari|tx|---
+M|Comp|tx|```
+M|Comp|tx|1. Hero (hl, subhead, CTA, im)
+M|Comp|tx|2. sl proof bar
+M|Comp|tx|3. 3 key benefits w/ icons
+M|Comp|tx|4. Testimonial
+M|Comp|tx|5. How it works (3 steps)
+M|Comp|tx|6. Final CTA w/ guarantee
+M|Comp|tx|```
+M|Comp|tx|Good for ad landing pages where brevity matters.
+M|Comp|tx|---
+M|Ente|tx|```
+M|Ente|tx|1. Hero (outcome-focused hl)
+M|Ente|tx|2. Logo bar (recognizable companies)
+M|Ente|tx|3. Problem section (business pain)
+M|Ente|tx|4. Solution overview
+M|Ente|tx|5. Use cases by role/department
+M|Ente|tx|6. sec/compliance section
+M|Ente|tx|7. Integration logos
+M|Ente|tx|8. Case study w/ metrics
+M|Ente|tx|9. ROI/value section
+M|Ente|tx|10. Contact/demo CTA
+M|Ente|tx|```
+M|Ente|tx|Addresses enterprise buyer concerns.
+M|Ente|tx|---
+M|Prod|tx|```
+M|Prod|tx|1. Hero w/ launch announcement
+M|Prod|tx|2. vd demo or walkthrough
+M|Prod|tx|3. Feature highlights (3-5)
+M|Prod|tx|4. Before/after comparison
+M|Prod|tx|5. Early testimonials
+M|Prod|tx|6. Launch pricing or early access offer
+M|Prod|tx|7. CTA w/ urgency
+M|Prod|tx|```
+M|Prod|tx|Good for ProductHunt, launches, or announcements.
+M|Prod|tx|---
+M|Prob|Star|
+M|Prob|it|"You know the feeling..."
+M|Prob|it|"If you're like most [role]..."
+M|Prob|it|"Every day, [audience] struggles w/..."
+M|Prob|it|"We've all been there..."
+M|Prob|Then|
+M|Prob|it|The specific frustration
+M|Prob|it|The time/money wasted
+M|Prob|it|The impact on their work/life
+M|Bene|For |
+M|Bene|- **|The outcome they get
+M|Bene|- **|How it works (1-2 sentences)
+M|Bene|- **|Number, testimonial, or example (optional)
+M|How |Each|
+M|How |- **|Creates sense of progress
+M|How |- **|"Connect," "Set up," "Get"
+M|How |- **|What they get from this step
+M|How |Exam|
+M|How |tx|1. Connect your tools (takes 2 minutes)
+M|How |tx|2. Set your preferences
+M|How |tx|3. Get automated reports every Monday
+M|Test|Best|
+M|Test|it|Specific results ("increased conversions by 32%")
+M|Test|it|Before/after context ("We used to spend hours...")
+M|Test|it|Role + company for credibility
+M|Test|it|Something quotable and specific
+M|Test|Avoi|
+M|Test|it|"Great pd!"
+M|Test|it|"Love it!"
+M|Test|it|"Easy to use!"

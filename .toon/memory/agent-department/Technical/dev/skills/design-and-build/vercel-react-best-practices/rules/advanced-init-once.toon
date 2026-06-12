@@ -1,0 +1,32 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/advanced-init-once.md savings=-3%
+M||tx|---
+M||titl|Initialize App Once, Not Per Mount
+M||impa|lo-md
+M||impa|avoids duplicate init in dv
+M||tags|initialization, useEffect, app-startup, side-effects
+M||tx|---
+M|Init|tx|Do not put app-wide initialization that must run once per app load inside `useEffect([])` of a cp. cp can remount and effects will re-run. Use a md-level guard or top-level init in the entry md instead.
+M|Init|**In|**
+M|Init|tx|```tsx
+M|Init|tx|fn Comp() {
+M|Init|tx|useEffect(() => {
+M|Init|tx|loadFromStorage()
+M|Init|tx|checkAuthToken()
+M|Init|tx|}, [])
+M|Init|tx|// ...
+M|Init|tx|}
+M|Init|tx|```
+M|Init|**Co|**
+M|Init|tx|```tsx
+M|Init|tx|let didInit = false
+M|Init|tx|fn Comp() {
+M|Init|tx|useEffect(() => {
+M|Init|tx|if (didInit) return
+M|Init|tx|didInit = true
+M|Init|tx|loadFromStorage()
+M|Init|tx|checkAuthToken()
+M|Init|tx|}, [])
+M|Init|tx|// ...
+M|Init|tx|}
+M|Init|tx|```
+M|Init|Refe|[Initializing the application](https://rc.dv/learn/you-might-not-need-an-effect#initializing-the-application)

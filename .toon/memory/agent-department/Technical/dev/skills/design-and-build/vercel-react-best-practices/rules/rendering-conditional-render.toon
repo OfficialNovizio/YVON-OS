@@ -1,0 +1,32 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-conditional-render.md savings=15%
+M||tx|---
+M||titl|Use Explicit Conditional Rendering
+M||impa|lo
+M||impa|prevents rendering 0 or NaN
+M||tags|rendering, conditional, jsx, falsy-values
+M||tx|---
+M|Use |Use |`) instead of `&&` for conditional rendering when the condition can be `0`, `NaN`, or other falsy values that render.
+M|Use |**In|**
+M|Use |tx|```tsx
+M|Use |func|{ count: number }) {
+M|Use |tx|return (
+M|Use |tx|<div>
+M|Use |tx|{count && <span className="badge">{count}</span>}
+M|Use |tx|</div>
+M|Use |tx|)
+M|Use |tx|}
+M|Use |// W|<div>0</div>
+M|Use |// W|<div><span class="badge">5</span></div>
+M|Use |tx|```
+M|Use |**Co|**
+M|Use |tx|```tsx
+M|Use |func|{ count: number }) {
+M|Use |tx|return (
+M|Use |tx|<div>
+M|Use |{cou|null}
+M|Use |tx|</div>
+M|Use |tx|)
+M|Use |tx|}
+M|Use |// W|<div></div>
+M|Use |// W|<div><span class="badge">5</span></div>
+M|Use |tx|```

@@ -1,0 +1,41 @@
+SKILL|youtube-content|"YouTube transcripts to summaries, threads, blogs."
+STEP|1|**Chapters**: Group by topic shifts, output timestamped chapter list
+STEP|2|**Summary**: Concise 5-10 sentence overview of the entire video
+STEP|3|**Chapter summaries**: Chapters with a short paragraph summary for each
+STEP|4|**Thread**: Twitter/X thread format — numbered posts, each under 280 chars
+STEP|5|**Blog post**: Full article with title, sections, and key takeaways
+STEP|6|**Quotes**: Notable quotes with timestamps
+STEP|7|:00 Introduction — host opens with the problem statement
+STEP|8|:45 Background — prior work and why existing solutions fall short
+STEP|9|:20 Core method — walkthrough of the proposed approach
+STEP|10|:10 Results — benchmark comparisons and key takeaways
+STEP|11|:55 Q&A — audience questions on scalability and next steps
+STEP|12|**Fetch** the transcript using the helper script with `--text-only --timestamps`.
+STEP|13|**Validate**: confirm the output is non-empty and in the expected language. If empty, retry without `--language` to get any available transcript. If still empty, tell the user the video likely has tra
+STEP|14|**Chunk if needed**: if the transcript exceeds ~50K characters, split into overlapping chunks (~40K with 2K overlap) and summarize each chunk before merging.
+STEP|15|**Transform** into the requested output format. If the user did not specify a format, default to a summary.
+STEP|16|**Verify**: re-read the transformed output to check for coherence, correct timestamps, and completeness before presenting.
+STEP|17|**Transcript disabled**: tell the user; suggest they check if subtitles are available on the video page.
+STEP|18|**Private/unavailable video**: relay the error and ask the user to verify the URL.
+STEP|19|**No matching language**: retry without `--language` to fetch any available transcript, then note the actual language to the user.
+STEP|20|**Dependency missing**: run `pip install youtube-transcript-api` and retry.
+PIT|**Chapters**: Group by topic shifts, output timestamped chapter list
+PIT|**Summary**: Concise 5-10 sentence overview of the entire video
+PIT|**Chapter summaries**: Chapters with a short paragraph summary for each
+PIT|**Thread**: Twitter/X thread format — numbered posts, each under 280 chars
+PIT|**Blog post**: Full article with title, sections, and key takeaways
+PIT|**Quotes**: Notable quotes with timestamps
+PIT|:00 Introduction — host opens with the problem statement
+PIT|:45 Background — prior work and why existing solutions fall short
+PIT|:20 Core method — walkthrough of the proposed approach
+PIT|:10 Results — benchmark comparisons and key takeaways
+PIT|:55 Q&A — audience questions on scalability and next steps
+PIT|**Fetch** the transcript using the helper script with `--text-only --timestamps`.
+PIT|**Validate**: confirm the output is non-empty and in the expected language. If empty, retry without `--language` to get any available transcript. If still empty, tell the user the video likely has tra
+PIT|**Chunk if needed**: if the transcript exceeds ~50K characters, split into overlapping chunks (~40K with 2K overlap) and summarize each chunk before merging.
+PIT|**Transform** into the requested output format. If the user did not specify a format, default to a summary.
+PIT|**Verify**: re-read the transformed output to check for coherence, correct timestamps, and completeness before presenting.
+PIT|**Transcript disabled**: tell the user; suggest they check if subtitles are available on the video page.
+PIT|**Private/unavailable video**: relay the error and ask the user to verify the URL.
+PIT|**No matching language**: retry without `--language` to fetch any available transcript, then note the actual language to the user.
+PIT|**Dependency missing**: run `pip install youtube-transcript-api` and retry.

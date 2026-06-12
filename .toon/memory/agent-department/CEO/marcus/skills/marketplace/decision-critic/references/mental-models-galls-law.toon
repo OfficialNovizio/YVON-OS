@@ -1,0 +1,38 @@
+#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/mental-models-galls-law.md savings=11%
+M||tx|---
+M||sour|wiki/concepts/Mental md/Galls Law.md
+M||crea|2026-04-11
+M||revi|2026-07-11
+M||tx|---
+M|Prin|tx|Complex systems that work evolved from simple systems that worked.
+M|Prin|tx|> "A complex sy that works is invariably found to have evolved from a simple sy that worked." -- John Gall
+M|Coro|tx|A complex sy designed from scratch never works and cannot be patched up to make it work. You have to start over w/ a working simple sy.
+M|Deci|tx|Use this md during **Challenge** (Steps 5-6) to stress-tst architectural proposals and sy designs.
+M|Veri|When|
+M|Veri|tx|1. Does the proposal start w/ a working simple version?
+M|Veri|tx|2. Is the complexity justified by real feedback, or imagined future needs?
+M|Veri|tx|3. Can the ds be decomposed into independently working subsystems?
+M|Veri|tx|4. Is there a "big bang" cutover, or incremental evolution?
+M|Red |tx|\| Signal \| Risk \|
+M|Red |tx|\|--------\|------\|
+M|Red |tx|\| "We'll bd it all at once" \| Big bang fl \|
+M|Red |tx|\| "We need this for future scale" \| YAGNI violation, premature complexity \|
+M|Red |tx|\| "The perfect architecture" \| Designed-from-scratch trap \|
+M|Red |tx|\| "Complete rewrite" \| Ignoring evolved knowledge in existing sy \|
+M|Red |tx|\| "We'll need this someday" \| Speculative features increase fl surface \|
+M|Cont|When|
+M|Cont|it|"What if we built only the simplest version that solves the immediate problem?"
+M|Cont|it|"What if we evolved the existing sy instead of replacing it?"
+M|Cont|it|"What if we shipped in 3 increments instead of 1?"
+M|Fail|it|sy never ships bc scope is too large
+M|Fail|it|Integration failures btw cp designed in isolation
+M|Fail|it|Real us needs diverge from upfront assumptions
+M|Fail|it|Team burns out on complexity before delivering value
+M|Prac|Befo|
+M|Prac|it|[ ] Simplest working version identified
+M|Prac|it|[ ] Evolution path from simple to complex defined
+M|Prac|it|[ ] Each increment delivers standalone value
+M|Prac|it|[ ] No speculative features included
+M|Rela|- Ch|understand existing systems before replacing
+M|Rela|- YA|do not bd for imagined future needs
+M|Rela|- St|incremental migration pattern

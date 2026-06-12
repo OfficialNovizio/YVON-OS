@@ -1,0 +1,88 @@
+#MEM id=api-security source=/root/yvon/agent-department/Technical/raj/skills/custom/api-security/SKILL.md savings=-5%
+M||tx|---
+M||name|ap-sec
+M||desc|rj's implementation-level ap sec checklist. Runs at bd time — before any rt is submitted for dv rv. 8 items covering Zod validation, auth, ap keys, CRON_SECRET, CORS, parameterized queries, er shape, and HTTP status codes.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|dv's `ap-sec-checklist` is the approval gate. This skill is the bd-time equivalent — what rj self-audits before the rt reaches dv. Running this internally means dv's rv catches architectural issues, not basic sec omissions.
+M|Purp|tx|---
+M|The |tx|Run before submitting any rt for dv rv. All 8 must pass.
+M|The |tx|**1. Zod Validation**
+M|The |tx|```ts
+M|The |tx|// Every rt that accepts a body
+M|The |tx|const sc = z.object({
+M|The |vent|z.string().min(1),
+M|The |tx|// ...
+M|The |tx|})
+M|The |tx|const parsed = sc.safeParse(await req.json())
+M|The |tx|if (!parsed.sc) {
+M|The |retu|'Invalid request' }, { status: 400 })
+M|The |tx|}
+M|The |tx|const { venture_slug } = parsed.data  // typed, safe
+M|The |tx|```
+M|The |it|No `any` casting anywhere in the rt
+M|The |it|No `as SomeType` on unvalidated data
+M|The |tx|**2. Authentication**
+M|The |tx|```ts
+M|The |tx|const sb = createServerClient(...)  // w/ cookie pattern, not createClient
+M|The |cons|{ us }, er } = await sb.auth.getUser()
+M|The |tx|// NOT auth.getSession() — sn can be stale
+M|The |tx|if (er \|\| !us) {
+M|The |retu|'Unauthorized' }, { status: 401 })
+M|The |tx|}
+M|The |tx|// Use us.id from here — NEVER body.userId or params.userId
+M|The |tx|```
+M|The |tx|**3. ap Key Exposure**
+M|The |- Al|`process.env.APIFY_KEY`, `process.env.ANTHROPIC_API_KEY`, etc.
+M|The |it|Zero keys in `NEXT_PUBLIC_*` env vars
+M|The |it|Zero keys referenced in any client cp or `'use client'` file
+M|The |tx|**4. CRON_SECRET Validation**
+M|The |tx|```ts
+M|The |tx|// Must be FIRST in cron rt body — before any other code
+M|The |tx|const authHeader = req.headers.get('authorization')
+M|The |tx|if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+M|The |retu|'Unauthorized' }, { status: 401 })
+M|The |tx|}
+M|The |tx|// Only now proceed w/ handler logic
+M|The |tx|```
+M|The |tx|**5. CORS Headers**
+M|The |tx|```ts
+M|The |tx|// On rt that need CORS — scope to specific origins
+M|The |head|//yv.app')
+M|The |// N|headers.set('Access-Control-Allow-Origin', '*') on authenticated rt
+M|The |tx|```
+M|The |tx|**6. Parameterized Queries**
+M|The |tx|```ts
+M|The |tx|// Correct
+M|The |tx|const { data } = await sb
+M|The |tx|.from('an')
+M|The |tx|.select('*')
+M|The |tx|.eq('venture_slug', ventureSlug)  // parameterized
+M|The |tx|// NEVER — SQL injection vector
+M|The |tx|const { data } = await sb.rpc(`SELECT * FROM an WHERE slug = '${ventureSlug}'`)
+M|The |tx|```
+M|The |tx|**7. er rp Shape**
+M|The |tx|```ts
+M|The |tx|// Correct
+M|The |retu|'Service unavailable. Please try again.' }, { status: 503 })
+M|The |tx|// NEVER — exposes internals
+M|The |retu|err.message, stack: err.stack }, { status: 500 })
+M|The |tx|```
+M|The |tx|**8. HTTP Status Codes**
+M|The |tx|\| Scenario \| Status \|
+M|The |tx|\|----------\|--------\|
+M|The |tx|\| Invalid input (Zod fail) \| `400` \|
+M|The |tx|\| Missing/invalid auth \| `401` \|
+M|The |tx|\| Authenticated, wrong vt \| `403` \|
+M|The |tx|\| Resource not found \| `404` \|
+M|The |tx|\| Rate limit exceeded \| `429` + `Retry-After` header \|
+M|The |tx|\| Server er \| `500` \|
+M|The |tx|\| Dependency down (sb, external ap) \| `503` + `Retry-After` header \|
+M|The |tx|\| **Never** \| `200` on fl \|
+M|The |tx|---
+M|Self|Befo|
+M|Self|tx|```
+M|Self|Secu|PASSED / FAILED
+M|Self|Fail|[list]
+M|Self|tx|```
+M|Self|tx|Any fl → fix before submitting. Don't submit and hope dv catches it.

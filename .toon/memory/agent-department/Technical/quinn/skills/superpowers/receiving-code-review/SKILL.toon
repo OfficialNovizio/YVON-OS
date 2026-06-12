@@ -1,0 +1,149 @@
+#MEM id=receiving-code-review source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/receiving-code-review/SKILL.md savings=4%
+M||tx|---
+M||name|receiving-code-rv
+M||desc|>-
+M||tx|Use when receiving code rv feedback, before implementing suggestions, esp if feedback seems unclear or technically questionable - requires tc rigor and verification, not performative agreement or blind implementation
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[qa, testing, debugging, qual, lint, code-rv, pulse, productivity]
+M||tx|---
+M|Over|tx|Code rv requires tc evaluation, not emotional perf.
+M|Over|**Co|** Verify before implementing. Ask before assuming. tc correctness over sl comfort.
+M|The |tx|```
+M|The |WHEN|
+M|The |1. R|Complete feedback w/o reacting
+M|The |2. U|Restate requirement in own words (or ask)
+M|The |3. V|Check against codebase reality
+M|The |4. E|Technically sound for THIS codebase?
+M|The |5. R|tc acknowledgment or reasoned pushback
+M|The |6. I|One item at a time, tst each
+M|The |tx|```
+M|Forb|**NE|**
+M|Forb|it|"You're absolutely right!" (explicit CLAUDE.md violation)
+M|Forb|it|"Great point!" / "Excellent feedback!" (performative)
+M|Forb|it|"Let me im that now" (before verification)
+M|Forb|**IN|**
+M|Forb|it|Restate the tc requirement
+M|Forb|it|Ask clarifying questions
+M|Forb|it|Push back w/ tc reasoning if wrong
+M|Forb|it|Just start working (actions > words)
+M|Hand|tx|```
+M|Hand|IF a|
+M|Hand|tx|STOP - do not im anything yet
+M|Hand|tx|ASK for clarification on unclear items
+M|Hand|WHY|Items may be related. Partial understanding = wrong implementation.
+M|Hand|tx|```
+M|Hand|**Ex|**
+M|Hand|tx|```
+M|Hand|your|"Fix 1-6"
+M|Hand|tx|You understand 1,2,3,6. Unclear on 4,5.
+M|Hand|❌ WR|im 1,2,3,6 now, ask abt 4,5 later
+M|Hand|✅ RI|"I understand items 1,2,3,6. Need clarification on 4 and 5 before proceeding."
+M|Hand|tx|```
+M|From|it|**Trusted** - im after understanding
+M|From|it|**Still ask** if scope unclear
+M|From|it|**No performative agreement**
+M|From|it|**Skip to action** or tc acknowledgment
+M|From|tx|```
+M|From|BEFO|
+M|From|1. C|Technically correct for THIS codebase?
+M|From|2. C|Breaks existing functionality?
+M|From|3. C|Reason for current implementation?
+M|From|4. C|Works on all platforms/versions?
+M|From|5. C|Does reviewer understand full context?
+M|From|IF s|
+M|From|tx|Push back w/ tc reasoning
+M|From|IF c|
+M|From|Say |"I can't verify this w/o [X]. shd I [investigate/ask/proceed]?"
+M|From|IF c|
+M|From|tx|Stop and discuss w/ your human partner first
+M|From|tx|```
+M|From|**yo|** "External feedback - be skeptical, but check carefully"
+M|YAGN|tx|```
+M|YAGN|IF r|
+M|YAGN|tx|grep codebase for actual usage
+M|YAGN|IF u|"This endpoint isn't called. Remove it (YAGNI)?"
+M|YAGN|IF u|Then im properly
+M|YAGN|tx|```
+M|YAGN|**yo|** "You and reviewer both rp to me. If we don't need this feature, don't add it."
+M|Impl|tx|```
+M|Impl|FOR |
+M|Impl|tx|1. Clarify anything unclear FIRST
+M|Impl|2. T|
+M|Impl|it|Blocking issues (breaks, sec)
+M|Impl|it|Simple fixes (typos, imports)
+M|Impl|it|Complex fixes (refactoring, logic)
+M|Impl|tx|3. tst each fix individually
+M|Impl|tx|4. Verify no regressions
+M|Impl|tx|```
+M|When|Push|
+M|When|it|Suggestion breaks existing functionality
+M|When|it|Reviewer lacks full context
+M|When|it|Violates YAGNI (unused feature)
+M|When|it|Technically incorrect for this stack
+M|When|it|Legacy/compatibility reasons exist
+M|When|it|Conflicts w/ your human partner's architectural decisions
+M|When|**Ho|**
+M|When|it|Use tc reasoning, not defensiveness
+M|When|it|Ask specific questions
+M|When|it|Reference working tests/code
+M|When|it|Involve your human partner if architectural
+M|When|**Si|** "Strange things are afoot at the Circle K"
+M|Ackn|When|
+M|Ackn|tx|```
+M|Ackn|tx|✅ "Fixed. [Brief description of what changed]"
+M|Ackn|tx|✅ "Good catch - [specific issue]. Fixed in [location]."
+M|Ackn|tx|✅ [Just fix it and show in the code]
+M|Ackn|tx|❌ "You're absolutely right!"
+M|Ackn|tx|❌ "Great point!"
+M|Ackn|tx|❌ "Thanks for catching that!"
+M|Ackn|tx|❌ "Thanks for [anything]"
+M|Ackn|tx|❌ ANY gratitude expression
+M|Ackn|tx|```
+M|Ackn|**Wh|** Actions speak. Just fix it. The code itself shows you heard the feedback.
+M|Ackn|**If|** dl IT. State the fix instead.
+M|Grac|If y|
+M|Grac|tx|```
+M|Grac|tx|✅ "You were right - I checked [X] and it does [Y]. Implementing now."
+M|Grac|tx|✅ "Verified this and you're correct. My initial understanding was wrong bc [reason]. Fixing."
+M|Grac|tx|❌ Long apology
+M|Grac|tx|❌ Defending why you pushed back
+M|Grac|tx|❌ Over-explaining
+M|Grac|tx|```
+M|Grac|tx|State the correction factually and move on.
+M|Comm|tx|\| Mistake \| Fix \|
+M|Comm|tx|\|---------\|-----\|
+M|Comm|tx|\| Performative agreement \| State requirement or just act \|
+M|Comm|tx|\| Blind implementation \| Verify against codebase first \|
+M|Comm|tx|\| Batch w/o testing \| One at a time, tst each \|
+M|Comm|tx|\| Assuming reviewer is right \| Check if breaks things \|
+M|Comm|tx|\| Avoiding pushback \| tc correctness > comfort \|
+M|Comm|tx|\| Partial implementation \| Clarify all items first \|
+M|Comm|tx|\| Can't verify, proceed anyway \| State limitation, ask for direction \|
+M|Real|**Pe|**
+M|Real|tx|```
+M|Real|Revi|"Remove legacy code"
+M|Real|tx|❌ "You're absolutely right! Let me remove that..."
+M|Real|tx|```
+M|Real|**Te|**
+M|Real|tx|```
+M|Real|Revi|"Remove legacy code"
+M|Real|tx|✅ "Checking... bd target is 10.15+, this ap needs 13+. Need legacy for backward compat. Current impl has wrong bundle ID - fix it or drop pre-13 support?"
+M|Real|tx|```
+M|Real|**YA|**
+M|Real|tx|```
+M|Real|Revi|"im proper metrics tracking w/ db, date filters, CSV export"
+M|Real|tx|✅ "Grepped codebase - nothing calls this endpoint. Remove it (YAGNI)? Or is there usage I'm missing?"
+M|Real|tx|```
+M|Real|**Un|**
+M|Real|tx|```
+M|Real|your|"Fix items 1-6"
+M|Real|tx|You understand 1,2,3,6. Unclear on 4,5.
+M|Real|tx|✅ "Understand 1,2,3,6. Need clarification on 4 and 5 before implementing."
+M|Real|tx|```
+M|GitH|tx|When replying to inline rv comments on GitHub, reply in the comment thread (`gh ap repos/{owner}/{repo}/pulls/{pr}/comments/{id}/replies`), not as a top-level PR comment.
+M|The |tx|**External feedback = suggestions to evaluate, not orders to follow.**
+M|The |tx|Verify. Question. Then im.
+M|The |tx|No performative agreement. tc rigor always.

@@ -1,0 +1,19 @@
+#MEM id=subagent-driven-development source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md savings=10%
+M|Code|tx|Use this template when dispatching a code qual reviewer subagent.
+M|Code|**Pu|** Verify implementation is well-built (clean, tested, maintainable)
+M|Code|tx|**Only dispatch after spec compliance rv passes.**
+M|Code|tx|```
+M|Code|Task|code-reviewer):
+M|Code|tx|Use template at requesting-code-rv/code-reviewer.md
+M|Code|WHAT|[from implementer's rp]
+M|Code|PLAN|Task N from [plan-file]
+M|Code|BASE|[commit before task]
+M|Code|HEAD|[current commit]
+M|Code|DESC|[task summary]
+M|Code|tx|```
+M|Code|**In|**
+M|Code|it|Does each file have one clear responsibility w/ a well-defined if?
+M|Code|it|Are units decomposed so they can be understood and tested independently?
+M|Code|it|Is the implementation following the file structure from the plan?
+M|Code|it|Did this implementation cr new files that are already large, or significantly grow existing files? (Don't flag pre-existing file sizes — focus on what this change contributed.)
+M|Code|**Co|** Strengths, Issues (ct/Important/Minor), Assessment

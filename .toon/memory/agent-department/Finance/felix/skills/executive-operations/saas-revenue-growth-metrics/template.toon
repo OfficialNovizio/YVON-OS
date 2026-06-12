@@ -1,0 +1,130 @@
+#MEM id=saas-revenue-growth-metrics source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-revenue-growth-metrics/template.md savings=8%
+M|SaaS|tx|Use this template to calculate your rv and retention metrics. Fill in your numbers and calculate each metric.
+M|SaaS|tx|---
+M|rv|tx|```
+M|rv|Peri|[Month/Quarter/Year]
+M|rv|Tota|$__________
+M|rv|tx|rv = $__________
+M|rv|tx|```
+M|ARPU|tx|```
+M|ARPU|Tota|$__________
+M|ARPU|Tota|__________
+M|ARPU|tx|ARPU = Total rv / Total us = $__________
+M|ARPU|tx|```
+M|ARPA|tx|```
+M|ARPA|MRR|$__________
+M|ARPA|Acti|__________
+M|ARPA|tx|ARPA = MRR / Active Accounts = $__________
+M|ARPA|tx|```
+M|ARPA|tx|```
+M|ARPA|ARPA|$__________
+M|ARPA|ARPU|$__________
+M|ARPA|tx|Average Seats per Account = ARPA / ARPU = __________
+M|ARPA|tx|```
+M|ACV |tx|```
+M|ACV |Annu|$__________
+M|ACV |tx|(Exclude one-time fees like setup, professional services)
+M|ACV |tx|ACV = $__________
+M|ACV |tx|```
+M|MRR/|tx|```
+M|MRR/|Star|$__________
+M|MRR/|MRR |
+M|MRR/|+ Ne|$__________
+M|MRR/|+ Ex|$__________
+M|MRR/|- Ch|$__________
+M|MRR/|- Co|$__________
+M|MRR/|Endi|$__________
+M|MRR/|tx|ARR = MRR × 12 = $__________
+M|MRR/|tx|```
+M|Gros|tx|```
+M|Gros|Gros|$__________
+M|Gros|- Di|$__________
+M|Gros|- Re|$__________
+M|Gros|- Cr|$__________
+M|Gros|tx|Net rv = $__________
+M|Gros|tx|Discount Rate = Discounts / Gross rv = __________%
+M|Gros|tx|Refund Rate = Refunds / Gross rv = __________%
+M|Gros|tx|```
+M|Gros|tx|---
+M|Chur|tx|```
+M|Chur|Logo|
+M|Chur|Star|__________
+M|Chur|Cust|__________
+M|Chur|tx|Logo Churn Rate = cs Lost / Starting cs = __________%
+M|Chur|Reve|
+M|Chur|Star|$__________
+M|Chur|MRR |$__________
+M|Chur|tx|rv Churn Rate = MRR Lost / Starting MRR = __________%
+M|Chur|tx|```
+M|Chur|**Co|**
+M|Chur|tx|```
+M|Chur|Mont|__________%
+M|Chur|tx|Annual Churn Rate = 1 - (1 - Monthly Churn)^12 = __________%
+M|Chur|tx|```
+M|NRR |tx|```
+M|NRR |Star|$__________
+M|NRR |+ Ex|$__________
+M|NRR |- Ch|$__________
+M|NRR |- Co|$__________
+M|NRR |Endi|$__________
+M|NRR |tx|NRR = Ending ARR / Starting ARR × 100 = __________%
+M|NRR |tx|```
+M|Expa|tx|```
+M|Expa|Upse|$__________
+M|Expa|Cros|$__________
+M|Expa|Usag|$__________
+M|Expa|Tota|$__________
+M|Expa|tx|Expansion as % of MRR = Expansion / Total MRR = __________%
+M|Expa|tx|```
+M|Quic|tx|```
+M|Quic|New |$__________
+M|Quic|Expa|$__________
+M|Quic|Chur|$__________
+M|Quic|Cont|$__________
+M|Quic|tx|Quick Ratio = (New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)
+M|Quic|tx|Quick Ratio = __________
+M|Quic|tx|```
+M|Quic|tx|---
+M|Reve|tx|```
+M|Reve|Prod|$__________
+M|Reve|Prod|$__________
+M|Reve|Prod|$__________
+M|Reve|Tota|$__________
+M|Reve|tx|pd A % = __________
+M|Reve|tx|pd B % = __________
+M|Reve|tx|pd C % = __________
+M|Reve|tx|```
+M|Coho|tx|```
+M|Coho|Coho|[Month/Quarter]
+M|Coho|Star|__________
+M|Coho|Mont|100%
+M|Coho|Mont|__________%
+M|Coho|Mont|__________%
+M|Coho|Mont|__________%
+M|Coho|Mont|__________%
+M|Coho|Mont|__________%
+M|Coho|tx|```
+M|Coho|tx|---
+M|Reve|it|[ ] Gross vs. net rv clearly labeled
+M|Reve|it|[ ] rv growth rate > cost growth rate
+M|Reve|it|[ ] ARPU/ARPA tracked by cohort (not just blended)
+M|Reve|- [ |Top cs <10%, Top 10 <40%
+M|Rete|it|[ ] Monthly churn <5% (ideally <2%)
+M|Rete|it|[ ] rv churn vs. logo churn compared
+M|Rete|it|[ ] NRR >100% (ideally >120%)
+M|Rete|it|[ ] Quick Ratio >2 (ideally >4)
+M|Coho|it|[ ] Recent cohorts perform same or better than older cohorts
+M|Coho|it|[ ] rv retention tracked, not just logo retention
+M|Coho|it|[ ] Expansion analyzed by cohort
+M|Coho|tx|---
+M|Red |Chec|
+M|Red |it|[ ] rv churn > logo churn (losing big cs)
+M|Red |it|[ ] ARPU growing but cs count shrinking (mix shift, not improvement)
+M|Red |it|[ ] Newer cohorts churn faster than older cohorts (PMF degradation)
+M|Red |it|[ ] NRR <100% (contracting, not expanding)
+M|Red |it|[ ] Quick Ratio <2 (leaky bucket)
+M|Red |it|[ ] Discounts >20% or refunds >10% (pricing/pd problems)
+M|Red |it|[ ] rv concentration >50% in top 10 cs (risk)
+M|Red |it|[ ] Expansion rv <10% of total MRR (monetization problem)
+M|Red |tx|---
+M|Red |tx|**If you checked any red flags, see SKILL.md Common Pitfalls section for fixes.**

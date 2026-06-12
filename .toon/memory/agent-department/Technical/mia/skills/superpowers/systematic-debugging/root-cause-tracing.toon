@@ -1,0 +1,116 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/root-cause-tracing.md savings=5%
+M|Over|tx|Bugs often manifest deep in the call stack (git init in wrong directory, file created in wrong location, db opened w/ wrong path). Your instinct is to fix where the er appears, but that's treating a symptom.
+M|Over|**Co|** Trace backward through the call chain until you find the original trigger, then fix at the source.
+M|When|tx|```dot
+M|When|tx|digraph when_to_use {
+M|When|tx|"Bug appears deep in stack?" [shape=diamond];
+M|When|tx|"Can trace backwards?" [shape=diamond];
+M|When|tx|"Fix at symptom point" [shape=box];
+M|When|tx|"Trace to original trigger" [shape=box];
+M|When|"BET|Also add defense-in-depth" [shape=box];
+M|When|tx|"Bug appears deep in stack?" -> "Can trace backwards?" [label="yes"];
+M|When|tx|"Can trace backwards?" -> "Trace to original trigger" [label="yes"];
+M|When|tx|"Can trace backwards?" -> "Fix at symptom point" [label="no - dead end"];
+M|When|"Tra|Also add defense-in-depth";
+M|When|tx|}
+M|When|tx|```
+M|When|**Us|**
+M|When|it|er happens deep in execution (not at entry point)
+M|When|it|Stack trace shows long call chain
+M|When|it|Unclear where invalid data originated
+M|When|it|Need to find which tst/code triggers the problem
+M|1. O|tx|```
+M|1. O|er|git init failed in /us/jesse/project/packages/core
+M|1. O|tx|```
+M|2. F|tx|**What code directly causes this?**
+M|2. F|tx|```ts
+M|2. F|awai|projectDir });
+M|2. F|tx|```
+M|3. A|tx|```ts
+M|3. A|tx|WorktreeManager.createSessionWorktree(projectDir, sessionId)
+M|3. A|tx|→ called by sn.initializeWorkspace()
+M|3. A|tx|→ called by sn.cr()
+M|3. A|tx|→ called by tst at Project.cr()
+M|3. A|tx|```
+M|4. K|tx|**What value was passed?**
+M|4. K|it|`projectDir = ''` (empty string!)
+M|4. K|it|Empty string as `cwd` resolves to `process.cwd()`
+M|4. K|it|That's the source code directory!
+M|5. F|tx|**Where did empty string come from?**
+M|5. F|tx|```ts
+M|5. F|cons|'' }
+M|5. F|tx|Project.cr('name', context.tempDir); // Accessed before beforeEach!
+M|5. F|tx|```
+M|Addi|When|
+M|Addi|tx|```ts
+M|Addi|tx|// Before the problematic operation
+M|Addi|asyn|string) {
+M|Addi|tx|const stack = new er().stack;
+M|Addi|cons|', {
+M|Addi|tx|directory,
+M|Addi|cwd|process.cwd(),
+M|Addi|node|process.env.NODE_ENV,
+M|Addi|tx|stack,
+M|Addi|tx|});
+M|Addi|awai|directory });
+M|Addi|tx|}
+M|Addi|tx|```
+M|Addi|ct|** Use `console.er()` in tests (not logger - may not show)
+M|Addi|**Ru|**
+M|Addi|tx|```bash
+M|Addi|tx|npm tst 2>&1 \| grep 'DEBUG git init'
+M|Addi|tx|```
+M|Addi|**An|**
+M|Addi|it|Look for tst file names
+M|Addi|it|Find the line number triggering the call
+M|Addi|it|Identify the pattern (same tst? same parameter?)
+M|Find|If s|
+M|Find|Use |
+M|Find|tx|```bash
+M|Find|tx|./find-polluter.sh '.git' 'src/**/*.tst.ts'
+M|Find|tx|```
+M|Find|tx|Runs tests one-by-one, stops at first polluter. See script for usage.
+M|Real|**Sy|** `.git` created in `packages/core/` (source code)
+M|Real|**Tr|**
+M|Real|tx|1. `git init` runs in `process.cwd()` ← empty cwd parameter
+M|Real|tx|2. WorktreeManager called w/ empty projectDir
+M|Real|tx|3. sn.cr() passed empty string
+M|Real|tx|4. tst accessed `context.tempDir` before beforeEach
+M|Real|5. s|'' }` initially
+M|Real|**Ro|** Top-level variable initialization accessing empty value
+M|Real|fix|** Made tempDir a getter that throws if accessed before beforeEach
+M|Real|**Al|**
+M|Real|- La|Project.cr() validates directory
+M|Real|- La|WorkspaceManager validates not empty
+M|Real|- La|NODE_ENV guard refuses git init outside tmpdir
+M|Real|- La|Stack trace logging before git init
+M|Key |tx|```dot
+M|Key |tx|digraph principle {
+M|Key |tx|"Found immediate cause" [shape=ellipse];
+M|Key |tx|"Can trace one level up?" [shape=diamond];
+M|Key |tx|"Trace backwards" [shape=box];
+M|Key |tx|"Is this the source?" [shape=diamond];
+M|Key |tx|"Fix at source" [shape=box];
+M|Key |tx|"Add validation at each layer" [shape=box];
+M|Key |tx|"Bug impossible" [shape=doublecircle];
+M|Key |tx|"NEVER fix just the symptom" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+M|Key |tx|"Found immediate cause" -> "Can trace one level up?";
+M|Key |tx|"Can trace one level up?" -> "Trace backwards" [label="yes"];
+M|Key |tx|"Can trace one level up?" -> "NEVER fix just the symptom" [label="no"];
+M|Key |tx|"Trace backwards" -> "Is this the source?";
+M|Key |tx|"Is this the source?" -> "Trace backwards" [label="no - keeps going"];
+M|Key |tx|"Is this the source?" -> "Fix at source" [label="yes"];
+M|Key |tx|"Fix at source" -> "Add validation at each layer";
+M|Key |tx|"Add validation at each layer" -> "Bug impossible";
+M|Key |tx|}
+M|Key |tx|```
+M|Key |tx|**NEVER fix just where the er appears.** Trace back to find the original trigger.
+M|Stac|**In|** Use `console.er()` not logger - logger may be suppressed
+M|Stac|**Be|** Log before the dangerous operation, not after it fails
+M|Stac|**In|** Directory, cwd, environment variables, timestamps
+M|Stac|**Ca|** `new er().stack` shows complete call chain
+M|Real|From|
+M|Real|it|Found root cause through 5-level trace
+M|Real|it|Fixed at source (getter validation)
+M|Real|it|Added 4 layers of defense
+M|Real|it|1847 tests passed, zero pollution

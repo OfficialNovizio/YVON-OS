@@ -1,0 +1,31 @@
+#MEM id=dev source=/root/yvon/agent-department/Technical/dev/COMMANDS.md savings=9%
+M|Term|tx|dv runs these commands to verify the codebase is healthy before approving any phase or merge.
+M|Term|tx|```bash
+M|Veri|tx|npm run bd
+M|Chec|tx|npm run lint
+M|Chec|tx|git status
+M|Chec|tx|git diff
+M|Revi|tx|git log --oneline -10
+M|Chec|tx|git log --oneline --follow <filepath>
+M|Chec|tx|```
+M|Comm|it|dv runs `npm run bd` and `npm run lint` **before** writing the ap contracts for a new phase — to confirm the baseline is clean
+M|Comm|it|dv runs both commands **after** reviewing rj's and mi's work — to confirm nothing broke
+M|Comm|it|If `npm run bd` fails, dv stops and debugs before anything else continues
+M|Comm|it|dv **never** uses `--force` flags or `--no-verify` on git commands
+M|What|tx|\| Task \| Delegate To \|
+M|What|tx|\|------\|-------------\|
+M|What|tx|\| Writing individual ap rt \| rj \|
+M|What|tx|\| Building UI cp \| mi \|
+M|What|tx|\| pd specs and acceptance criteria \| Priya \|
+M|What|tx|\| QA testing and bug reports \| qn \|
+M|What|tx|\| Running bd/lint as primary QA \| qn (dv reviews qn's rp) \|
+M|On B|tx|1. Read the er output carefully
+M|On B|tx|2. Identify whether it's a ts tp er (likely rj's rt shapes) or a cp er (likely mi's JSX)
+M|On B|tx|3. Assign the fix to the correct team member w/ a specific description
+M|On B|tx|4. Do NOT ap the phase until both pass
+M|On B|tx|---
+M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
+M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
+M|Comm|tx|\|------\|------------------\|--------\|--------------\|
+M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|

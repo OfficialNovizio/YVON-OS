@@ -1,0 +1,91 @@
+SKILL|llama-cpp|llama.cpp local GGUF inference + HF Hub model discovery.
+STEP|1|Run local models on CPU, Apple Silicon, CUDA, ROCm, or Intel GPUs
+STEP|2|Find the right GGUF for a specific Hugging Face repo
+STEP|3|Build a `llama-server` or `llama-cli` command from the Hub
+STEP|4|Search the Hub for models that already support llama.cpp
+STEP|5|Enumerate available `.gguf` files and sizes for a repo
+STEP|6|Decide between Q4/Q5/Q6/IQ variants for the user's RAM or VRAM
+STEP|7|Search for candidate repos on the Hub:
+STEP|8|Open the repo with the llama.cpp local-app view:
+STEP|9|Treat the local-app snippet as the source of truth when it is visible:
+STEP|10|Read the same `?local-app=llama.cpp` URL as page text or HTML and extract the section under `Hardware compatibility`:
+STEP|11|Query the tree API to confirm what actually exists:
+STEP|12|If the local-app snippet is not text-visible, reconstruct the command from the repo plus the chosen quant:
+STEP|13|Only suggest conversion from Transformers weights if the repo does not already expose GGUF files.
+STEP|14|Prefer the exact quant that HF marks as compatible for the user's hardware profile.
+STEP|15|For general chat, start with `Q4_K_M`.
+STEP|16|For code or technical work, prefer `Q5_K_M` or `Q6_K` if memory allows.
+STEP|17|For very tight RAM budgets, consider `Q3_K_M`, `IQ` variants, or `Q2` variants only if the user explicitly prioritizes fit over quality.
+STEP|18|For multimodal repos, mention `mmproj-*.gguf` separately. The projector is not the main model file.
+STEP|19|Do not normalize repo-native labels. If the page says `UD-Q4_K_M`, report `UD-Q4_K_M`.
+STEP|20|filename
+STEP|21|file size
+STEP|22|quant label
+STEP|23|whether it is a main model or an auxiliary projector
+STEP|24|README
+STEP|25|BF16 shard files
+STEP|26|imatrix blobs or calibration artifacts
+STEP|27|`https://huggingface.co/api/models/<repo>/tree/main?recursive=true`
+STEP|28|<filename> - <size>
+STEP|29|<filename> - <size>
+STEP|30|<local-app URL>
+STEP|31|<tree API URL>
+STEP|32|**[hub-discovery.md](references/hub-discovery.md)** - URL-only Hugging Face workflows, search patterns, GGUF extraction, and command reconstruction
+STEP|33|**[advanced-usage.md](references/advanced-usage.md)** — speculative decoding, batched inference, grammar-constrained generation, LoRA, multi-GPU, custom builds, benchmark scripts
+STEP|34|**[quantization.md](references/quantization.md)** — quant quality tradeoffs, when to use Q4/Q5/Q6/IQ, model size scaling, imatrix
+STEP|35|**[server.md](references/server.md)** — direct-from-Hub server launch, OpenAI API endpoints, Docker deployment, NGINX load balancing, monitoring
+STEP|36|**[optimization.md](references/optimization.md)** — CPU threading, BLAS, GPU offload heuristics, batch tuning, benchmarks
+STEP|37|**[troubleshooting.md](references/troubleshooting.md)** — install/convert/quantize/inference/server issues, Apple Silicon, debugging
+STEP|38|**GitHub**: https://github.com/ggml-org/llama.cpp
+STEP|39|**Hugging Face GGUF + llama.cpp docs**: https://huggingface.co/docs/hub/gguf-llamacpp
+STEP|40|**Hugging Face Local Apps docs**: https://huggingface.co/docs/hub/main/local-apps
+STEP|41|**Hugging Face Local Agents docs**: https://huggingface.co/docs/hub/agents-local
+STEP|42|**Example local-app page**: https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF?local-app=llama.cpp
+STEP|43|**Example tree API**: https://huggingface.co/api/models/unsloth/Qwen3.6-35B-A3B-GGUF/tree/main?recursive=true
+STEP|44|**Example llama.cpp search**: https://huggingface.co/models?num_parameters=min:0,max:24B&apps=llama.cpp&sort=trending
+STEP|45|**License**: MIT
+PIT|Run local models on CPU, Apple Silicon, CUDA, ROCm, or Intel GPUs
+PIT|Find the right GGUF for a specific Hugging Face repo
+PIT|Build a `llama-server` or `llama-cli` command from the Hub
+PIT|Search the Hub for models that already support llama.cpp
+PIT|Enumerate available `.gguf` files and sizes for a repo
+PIT|Decide between Q4/Q5/Q6/IQ variants for the user's RAM or VRAM
+PIT|Search for candidate repos on the Hub:
+PIT|Open the repo with the llama.cpp local-app view:
+PIT|Treat the local-app snippet as the source of truth when it is visible:
+PIT|Read the same `?local-app=llama.cpp` URL as page text or HTML and extract the section under `Hardware compatibility`:
+PIT|Query the tree API to confirm what actually exists:
+PIT|If the local-app snippet is not text-visible, reconstruct the command from the repo plus the chosen quant:
+PIT|Only suggest conversion from Transformers weights if the repo does not already expose GGUF files.
+PIT|Prefer the exact quant that HF marks as compatible for the user's hardware profile.
+PIT|For general chat, start with `Q4_K_M`.
+PIT|For code or technical work, prefer `Q5_K_M` or `Q6_K` if memory allows.
+PIT|For very tight RAM budgets, consider `Q3_K_M`, `IQ` variants, or `Q2` variants only if the user explicitly prioritizes fit over quality.
+PIT|For multimodal repos, mention `mmproj-*.gguf` separately. The projector is not the main model file.
+PIT|Do not normalize repo-native labels. If the page says `UD-Q4_K_M`, report `UD-Q4_K_M`.
+PIT|filename
+PIT|file size
+PIT|quant label
+PIT|whether it is a main model or an auxiliary projector
+PIT|README
+PIT|BF16 shard files
+PIT|imatrix blobs or calibration artifacts
+PIT|`https://huggingface.co/api/models/<repo>/tree/main?recursive=true`
+PIT|<filename> - <size>
+PIT|<filename> - <size>
+PIT|<local-app URL>
+PIT|<tree API URL>
+PIT|**[hub-discovery.md](references/hub-discovery.md)** - URL-only Hugging Face workflows, search patterns, GGUF extraction, and command reconstruction
+PIT|**[advanced-usage.md](references/advanced-usage.md)** — speculative decoding, batched inference, grammar-constrained generation, LoRA, multi-GPU, custom builds, benchmark scripts
+PIT|**[quantization.md](references/quantization.md)** — quant quality tradeoffs, when to use Q4/Q5/Q6/IQ, model size scaling, imatrix
+PIT|**[server.md](references/server.md)** — direct-from-Hub server launch, OpenAI API endpoints, Docker deployment, NGINX load balancing, monitoring
+PIT|**[optimization.md](references/optimization.md)** — CPU threading, BLAS, GPU offload heuristics, batch tuning, benchmarks
+PIT|**[troubleshooting.md](references/troubleshooting.md)** — install/convert/quantize/inference/server issues, Apple Silicon, debugging
+PIT|**GitHub**: https://github.com/ggml-org/llama.cpp
+PIT|**Hugging Face GGUF + llama.cpp docs**: https://huggingface.co/docs/hub/gguf-llamacpp
+PIT|**Hugging Face Local Apps docs**: https://huggingface.co/docs/hub/main/local-apps
+PIT|**Hugging Face Local Agents docs**: https://huggingface.co/docs/hub/agents-local
+PIT|**Example local-app page**: https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF?local-app=llama.cpp
+PIT|**Example tree API**: https://huggingface.co/api/models/unsloth/Qwen3.6-35B-A3B-GGUF/tree/main?recursive=true
+PIT|**Example llama.cpp search**: https://huggingface.co/models?num_parameters=min:0,max:24B&apps=llama.cpp&sort=trending
+PIT|**License**: MIT

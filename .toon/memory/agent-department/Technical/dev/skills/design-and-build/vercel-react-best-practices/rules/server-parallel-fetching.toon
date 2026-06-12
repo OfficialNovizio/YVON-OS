@@ -1,0 +1,69 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-parallel-fetching.md savings=-14%
+M||tx|---
+M||titl|Parallel Data Fetching w/ cp Composition
+M||impa|ct
+M||impa|eliminates server-side waterfalls
+M||tags|server, rsc, parallel-fetching, composition
+M||tx|---
+M|Para|tx|rc Server cp execute sequentially within a tree. Restructure w/ composition to parallelize data fetching.
+M|Para|**In|**
+M|Para|tx|```tsx
+M|Para|tx|export default async fn Page() {
+M|Para|tx|const header = await fetchHeader()
+M|Para|tx|return (
+M|Para|tx|<div>
+M|Para|tx|<div>{header}</div>
+M|Para|tx|<Sidebar />
+M|Para|tx|</div>
+M|Para|tx|)
+M|Para|tx|}
+M|Para|tx|async fn Sidebar() {
+M|Para|tx|const items = await fetchSidebarItems()
+M|Para|tx|return <nav>{items.map(renderItem)}</nav>
+M|Para|tx|}
+M|Para|tx|```
+M|Para|**Co|**
+M|Para|tx|```tsx
+M|Para|tx|async fn Header() {
+M|Para|tx|const data = await fetchHeader()
+M|Para|tx|return <div>{data}</div>
+M|Para|tx|}
+M|Para|tx|async fn Sidebar() {
+M|Para|tx|const items = await fetchSidebarItems()
+M|Para|tx|return <nav>{items.map(renderItem)}</nav>
+M|Para|tx|}
+M|Para|tx|export default fn Page() {
+M|Para|tx|return (
+M|Para|tx|<div>
+M|Para|tx|<Header />
+M|Para|tx|<Sidebar />
+M|Para|tx|</div>
+M|Para|tx|)
+M|Para|tx|}
+M|Para|tx|```
+M|Para|**Al|**
+M|Para|tx|```tsx
+M|Para|tx|async fn Header() {
+M|Para|tx|const data = await fetchHeader()
+M|Para|tx|return <div>{data}</div>
+M|Para|tx|}
+M|Para|tx|async fn Sidebar() {
+M|Para|tx|const items = await fetchSidebarItems()
+M|Para|tx|return <nav>{items.map(renderItem)}</nav>
+M|Para|tx|}
+M|Para|func|{ children: ReactNode }) {
+M|Para|tx|return (
+M|Para|tx|<div>
+M|Para|tx|<Header />
+M|Para|tx|{children}
+M|Para|tx|</div>
+M|Para|tx|)
+M|Para|tx|}
+M|Para|tx|export default fn Page() {
+M|Para|tx|return (
+M|Para|tx|<Layout>
+M|Para|tx|<Sidebar />
+M|Para|tx|</Layout>
+M|Para|tx|)
+M|Para|tx|}
+M|Para|tx|```

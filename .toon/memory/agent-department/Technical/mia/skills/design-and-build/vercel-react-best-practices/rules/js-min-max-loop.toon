@@ -1,0 +1,60 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-min-max-loop.md savings=13%
+M||tx|---
+M||titl|Use Loop for Min/Max Instead of Sort
+M||impa|lo
+M||impa|O(n) instead of O(n log n)
+M||tags|javascript, arrays, perf, sorting, algorithms
+M||tx|---
+M|Use |tx|Finding the smallest or largest element only requires a single pass through the array. Sorting is wasteful and slower.
+M|Use |**In|**
+M|Use |tx|```ts
+M|Use |tx|if Project {
+M|Use |id|string
+M|Use |name|string
+M|Use |upda|number
+M|Use |tx|}
+M|Use |func|Project[]) {
+M|Use |tx|const sorted = [...projects].sort((a, b) => b.updatedAt - a.updatedAt)
+M|Use |tx|return sorted[0]
+M|Use |tx|}
+M|Use |tx|```
+M|Use |tx|Sorts the entire array just to find the maximum value.
+M|Use |**In|**
+M|Use |tx|```ts
+M|Use |func|Project[]) {
+M|Use |tx|const sorted = [...projects].sort((a, b) => a.updatedAt - b.updatedAt)
+M|Use |retu|sorted[0], newest: sorted[sorted.length - 1] }
+M|Use |tx|}
+M|Use |tx|```
+M|Use |tx|Still sorts unnecessarily when only min/max are needed.
+M|Use |**Co|**
+M|Use |tx|```ts
+M|Use |func|Project[]) {
+M|Use |tx|if (projects.length === 0) return null
+M|Use |tx|let latest = projects[0]
+M|Use |tx|for (let i = 1; i < projects.length; i++) {
+M|Use |tx|if (projects[i].updatedAt > latest.updatedAt) {
+M|Use |tx|latest = projects[i]
+M|Use |tx|}
+M|Use |tx|}
+M|Use |tx|return latest
+M|Use |tx|}
+M|Use |func|Project[]) {
+M|Use |if (|null, newest: null }
+M|Use |tx|let oldest = projects[0]
+M|Use |tx|let newest = projects[0]
+M|Use |tx|for (let i = 1; i < projects.length; i++) {
+M|Use |tx|if (projects[i].updatedAt < oldest.updatedAt) oldest = projects[i]
+M|Use |tx|if (projects[i].updatedAt > newest.updatedAt) newest = projects[i]
+M|Use |tx|}
+M|Use |tx|return { oldest, newest }
+M|Use |tx|}
+M|Use |tx|```
+M|Use |tx|Single pass through the array, no copying, no sorting.
+M|Use |**Al|**
+M|Use |tx|```ts
+M|Use |tx|const numbers = [5, 2, 8, 1, 9]
+M|Use |tx|const min = Math.min(...numbers)
+M|Use |tx|const max = Math.max(...numbers)
+M|Use |tx|```
+M|Use |This|//jsfiddle.net/qw1jabsx/4/). Use the loop approach for reliability.

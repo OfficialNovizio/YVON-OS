@@ -1,0 +1,34 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/18--brain--wiki-knowledge.md strip=6% toon=2% net=8%
+T|18 ·|0|The memory sy, visualized as a 3D knowledge graph you can fly through, plus a searchable Library of the MD files the ag cr. Everything is vectorized in sb w/ semantic search for all ag.
+T|18 ·|1|
+T|Purp|0|The shared memory/wiki for the whole org. It both visualizes how knowledge is forming (a 3D graph of connected topics) and lets the owner navigate the underlying documents. The new memory sy is what makes the Advisory Council and ag far smarter than the old narrow-knowledge setup.
+T|Purp|1|
+T|Page|0|Title: Brain & Wiki, breadcrumb Vibe w/ AI / Brain & Wiki.
+T|Page|1|Global search ("Ask hy or jump anywhere…").
+T|Page|2|View toggle: Graph \| Library.
+T|Page|3|Visibility filter chips: All areas, Private, Team, Workspace, Cross-WS (cross-workspace) — filter the knowledge by who can see it.
+T|Page|4|Counters top-right: Topics (e.g. 248), Documents (e.g. 3,412), and a small alert count (e.g. 7).
+T|Page|5|
+T|Grap|0|A 3D force-directed graph of glowing nodes (topics) connected by edges, color-coded (purple/teal/yellow) — likely by visibility or workspace.
+T|Grap|1|Interactions: hover a node to see the topic; zoom in/out; click a node to open its detail (see below). The camera can orbit the cluster.
+T|Grap|2|Node size reflects how much knowledge is built around a topic; clusters show how knowledge areas are developing.
+T|Grap|3|
+T|Node|0|Clicking a node opens a detail panel, e.g. "Nina's voice profile — example":
+T|Node|1|A description of the topic ("a topic in the Workspace zone … connected to X related topics").
+T|Node|2|Visibility and zone tags (Workspace / Private / Team / Cross-WS).
+T|Node|3|Connected topics — linked nodes (e.g. Offer-fit zone, Lineateza library — example, By ds launch fame…).
+T|Node|4|Source MD files that make up the topic (e.g. voice-guidelines.md, an-2026-q1.md, persona-setup.md) — the actual Markdown documents being created.
+T|Node|5|Actions: Reveal in Library, Send by mail/share.
+T|Node|6|
+T|"Wha|0|A live panel summarizing the knowledge base and gaps/alerts — e.g. "No data on TikTok Shop fees," "Missing cr thumbnail teardown," "Valhalla venue contacts incomplete" — each w/ an Account / fix action. This turns missing knowledge into actionable tasks.
+T|"Wha|1|
+T|Libr|0|A document browser of all the MD files the memory sy has created.
+T|Libr|1|Filter by category and sort controls to quickly navigate.
+T|Libr|2|Each document row shows title, category, visibility, source, and last-updated; selecting one opens the document w/ its Answer / Findings / sources structure.
+T|Libr|3|Example doc opened: "is ag-as-a-service real demand?" showing an Answer, Findings (w/ inline source chips/links), and "What this means for us" synthesis — i.e. memory entries are structured research notes, not just raw text.
+T|Libr|4|
+T|Tech|0|Built on sb.
+T|Tech|1|Everything is vectorized; semantic search is enabled for all ag so any ag can retrieve relevant memory.
+T|Tech|2|Visibility scoping (Private / Team / Workspace / Cross-workspace) controls which ag can access which knowledge.
+T|Tech|3|
+T|Why |This is the backbone that gives every ag (and esp the Advisory Council) complete, shared context — the single biggest upgrade over the old sy's siloed, narrow knowledge.

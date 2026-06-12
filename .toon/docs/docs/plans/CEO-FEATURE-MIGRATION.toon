@@ -1,0 +1,32 @@
+#DOC source=/root/yvon/docs/plans/CEO-FEATURE-MIGRATION.md strip=78% toon=21% net=83%
+T|CEO |0|What stays, what moves, what dies.
+T|CEO |1|
+T|The |0|yv 2.0 had a 2-tab ce Command Dashboard:
+T|The |1|Briefing tab — st briefing, priorities, decision queue, intelligence feed
+T|The |2|Operations tab — sy strip (graph view, tk usage, workload, sn sync), project graph, ag kanban
+T|The |3|
+T|The |4|Legacy code also had:
+T|The |5|Overview — KPI gauges (ROAS/CAC/br Health), key numbers (removed)
+T|The |6|Situation — ag kanban, intelligence feed
+T|The |7|Act — Decision queue, priorities, decisions live
+T|The |8|Done — Activity log, source reports
+T|The |9|Context — st briefing, pulse, ce readout
+T|The |10|
+X|LIVE|[TABLE:4×4]
+D|DECI|[TABLE:4×3]
+P|STRA|[TABLE:4×3]
+K|TASK|[TABLE:4×3]
+T|SOFT|[TABLE:4×2]
+T|DEAD|[TABLE:4×9]
+T|What|0|The yv-OS /dashboard page becomes the 7-second scan before the ce dives into Decision Queue:
+T|What|1|
+T|What|2|[CODE::22LOC]
+T|What|3|Data sources (all real):
+T|What|4|DeepSeek balance: GET /ap/deepseek-balance (already built)
+T|What|5|ag live: count from ag registry
+T|What|6|Queue count: GET /ap/decision-queue?count=only
+T|What|7|sy health: sb ping + DeepSeek ap health
+T|What|8|tk spend: GET /ap/tk-usage?today=true
+T|What|9|Recent logs: latest from ag sn DB
+T|What|10|
+S|Summ|[TABLE:3×20]

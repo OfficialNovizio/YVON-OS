@@ -1,0 +1,32 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/pixel/skills/operating-system/triple-pass-protocol/SKILL.md savings=9%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|px's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any production batch, QC rp, or asset delivery is done. Stark never sees the process, only the final output.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Production er at batch scale are expensive. A 30-im batch w/ unclear QC criteria produces 30 wrong images. This protocol ensures inputs are confirmed before running, and outputs meet at's qual bar before being delivered.
+M|Purp|tx|---
+M|Pass|Comp|run the batch, apply QC, format assets, prepare delivery. Log QC pass/fail results as you go — don't batch rv at the end.
+M|Pass|Stop|
+M|Pass|**Pr|**
+M|Pass|it|Is at's written brief confirmed — pm approved, not assumed?
+M|Pass|it|Are platform specs locked? Are the dimensions correct for each target platform?
+M|Pass|it|Is batch size authorized? (50+ = Stark approval required)
+M|Pass|it|Are there any ambiguous style tags or contradictions in the pm? (Flag to at now, not after the batch)
+M|Pass|**QC|**
+M|Pass|it|Have I applied at's exact 3 pass/fail criteria — not my own judgment?
+M|Pass|it|Did I QC every im, or did I sample and assume the rest are fine?
+M|Pass|it|Are rejects logged w/ the specific fl reason (not just "rejected")?
+M|Pass|**Up|**
+M|Pass|it|Is every im in the upscale queue a QC pass? No rejects slipping through?
+M|Pass|it|Are upscale dimensions correct for each platform?
+M|Pass|**De|**
+M|Pass|it|Are files named correctly per naming convention?
+M|Pass|it|Are assets organized by vt, cg, and platform?
+M|Pass|it|Is the QC pass rate documented and included in the delivery summary?
+M|Pass|**Wa|**
+M|Pass|it|If rejection rate > 20%, have I flagged this to at before delivering?
+M|Pass|it|Is there a pattern in the rejections that shd be logged to MEMORY.md?
+M|Pass|tx|Do not deliver a batch w/ unresolved rejects or unlocked naming issues. If rejection rate is > 20%, escalate to at before delivering.
+M|Pass|tx|---
+M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

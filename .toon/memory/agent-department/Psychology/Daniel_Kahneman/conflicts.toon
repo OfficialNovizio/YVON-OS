@@ -1,0 +1,17 @@
+#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/conflicts.md savings=-3%
+M|Core|tx|\| Conflict \| Description \| Resolution Rule \|
+M|Core|tx|\|----------\|-------------\|-----------------\|
+M|Core|tx|\| **Intuition vs. an** \| Fast sy 1 vs. Slow sy 2 \| Use sy 1 for pattern recognition, sy 2 for probabilistic tasks \|
+M|Core|tx|\| **Overconfidence** \| Confidence ≠ Accuracy \| Calibrate all confidence estimates to base rates \|
+M|Core|tx|\| **Status Quo Bias** \| Preference for current state \| Measure actual value of existing option vs. new option \|
+M|Core|tx|\| **Neglect of Probability** \| Intuitive vs. Mathematical probability \| Force explicit probability statements \|
+M|Core|tx|\| **Framing Sensitivity** \| Same data, different labels \| Present options in neutral framing \|
+M|Know|tx|\| Conflict \| Frequency \| Impact \|
+M|Know|tx|\|----------\|-----------\|--------\|
+M|Know|tx|\| Discounting future value \| hi \| md \|
+M|Know|tx|\| Risk reversal \| md \| hi \|
+M|Know|tx|\| sl proof override \| hi \| md \|
+M|Neve|it|Never present options w/o revealing reference points
+M|Neve|it|Never accept gut feeling w/o sy 2 calibration
+M|Neve|it|Never ignore base rate probability
+M|Neve|it|Never assume choices are symmetric

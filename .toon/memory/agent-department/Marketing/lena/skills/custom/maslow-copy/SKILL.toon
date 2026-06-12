@@ -1,0 +1,43 @@
+#MEM id=maslow-copy source=/root/yvon/agent-department/Marketing/lena/skills/custom/maslow-copy/SKILL.md savings=-1%
+M||tx|---
+M||name|maslow-cp
+M||desc|Maps Maslow's 5 need levels to specific cp angles for nz and hb. Use to select the psychological register before writing any cg cp.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Every piece of cp speaks to a need level — consciously or not. Choosing the wrong level wastes the message on an audience that's operating at a different register. This skill makes the selection explicit before the first word is written.
+M|Purp|tx|---
+M|Need|tx|\| Level \| Need \| nz Angle \| hb Angle \|
+M|Need|tx|\|-------\|------\|---------------\|----------------\|
+M|Need|tx|\| **1 — Physiological** \| Basic survival \| Out of scope \| Out of scope \|
+M|Need|tx|\| **2 — Safety** \| sec, stability, certainty \| qual guarantee, lasting construction \| Certainty over hours and money. "Always know." \|
+M|Need|tx|\| **3 — Belonging** \| Community, identity, affiliation \| The editorial set. Worn by people who know. \| Join the professionals who track their time. \|
+M|Need|tx|\| **4 — Esteem** \| Status, recognition, self-respect \| Primary level. Quiet luxury as identity signal. \| Professional credibility. The sharp operator. \|
+M|Need|tx|\| **5 — Self-actualisation** \| Growth, expression, becoming \| Upper tier. Style as self-expression. Wear what you've become. \| Premium tier. Financial clarity as a state of mind. \|
+M|Need|tx|---
+M|Prim|tx|**nz → Esteem (primary), Self-actualisation (secondary)**
+M|Prim|it|The nz buyer is not buying clothes. They're signalling who they are.
+M|Prim|it|cp addresses identity and aspiration, never anxiety or price.
+M|Prim|it|Do NOT use Safety-level framing (scarcity, FOMO, urgency) — it conflicts w/ the self-assured tone.
+M|Prim|tx|**hb → Safety (primary), Esteem (secondary)**
+M|Prim|it|The hb us is a professional who wants certainty and control.
+M|Prim|it|cp addresses peace of mind, clarity, and professional credibility.
+M|Prim|- Sa|"Every hour tracked. Every client paid."
+M|Prim|- Es|"The tool sharp operators use."
+M|Prim|tx|---
+M|Safe|it|"Always know where your hours went."
+M|Safe|it|"Every trade, tracked."
+M|Safe|it|"Built to last. Not built to be replaced."
+M|Belo|it|"Join 10,000 freelancers who stopped guessing."
+M|Belo|it|"The pieces worn by the people who know."
+M|Este|it|"Dress like you mean it."
+M|Este|it|"The professional who tracks everything gains everything."
+M|Este|it|"Not for everyone. That's the point."
+M|Self|it|"Wear what you've become."
+M|Self|it|"Financial clarity isn't a feature. It's a state of mind."
+M|Self|it|"This isn't who you want to be. It's who you already are."
+M|Self|tx|---
+M|Usag|tx|1. Before writing any cg cp, identify the target need level.
+M|Usag|tx|2. Confirm the level is appropriate for the vt (see Primary Levels above).
+M|Usag|tx|3. Select cp angles from that level's register.
+M|Usag|tx|4. If mixing levels (e.g., Safety hl + Esteem body), ensure they don't conflict — Safety + Esteem can coexist; Safety + Self-actualisation creates register confusion.
+M|Usag|tx|5. Log the chosen level in the cp delivery brief echo (Communication DNA step 1).

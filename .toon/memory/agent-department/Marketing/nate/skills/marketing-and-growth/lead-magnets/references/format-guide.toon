@@ -1,0 +1,128 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/lead-magnets/references/format-guide.md savings=0%
+M|Lead|tx|Detailed creation guidance for each lead magnet format.
+M|Cont|it|Ebooks & Guides
+M|Cont|it|Checklists
+M|Cont|it|Cheat Sheets
+M|Cont|it|Templates & Spreadsheets
+M|Cont|it|Swipe Files
+M|Cont|it|Mini-Courses
+M|Cont|it|Quizzes & Assessments
+M|Cont|it|Webinars & Workshops
+M|Cont|tx|---
+M|Eboo|**Be|Building authority, deep education, awareness-stage leads
+M|Eboo|**St|
+M|Eboo|tx|1. Title page w/ professional ds
+M|Eboo|tx|2. Table of contents
+M|Eboo|tx|3. Introduction — frame the problem, set expectations
+M|Eboo|tx|4. 3-7 chapters — one key concept per chapter
+M|Eboo|tx|5. Summary — recap key takeaways
+M|Eboo|tx|6. CTA — nx step toward your pd
+M|Eboo|**Gu|
+M|Eboo|- Id|10-25 pages (shorter is fine if valuable)
+M|Eboo|- In|charts, diagrams, screenshots
+M|Eboo|it|Use callout boxes for key stats or quotes
+M|Eboo|it|End each chapter w/ a quick takeaway
+M|Eboo|it|Don't pad — density beats length
+M|Eboo|**To|Canva, Google doc → PDF, Notion export, Designrr, Beacon.by
+M|Eboo|tx|---
+M|Chec|**Be|Process-oriented tasks, quick wins, implementation help
+M|Chec|**St|
+M|Chec|- Ti|"[Number]-Point [Topic] Checklist"
+M|Chec|it|Numbered or checkbox items
+M|Chec|it|Group into logical sections if 10+ items
+M|Chec|it|Brief explanation per item (1-2 sentences)
+M|Chec|**Gu|
+M|Chec|it|Keep to 1-2 pages
+M|Chec|it|Use actionable language ("Verify X", "Set up Y", "Remove Z")
+M|Chec|it|Order by workflow sequence or priority
+M|Chec|it|Make it printable — clean layout, generous spacing
+M|Chec|it|Include a "done" checkbox for each item
+M|Chec|**Wh|Step-by-step processes, audit criteria, launch checklists, setup guides
+M|Chec|tx|---
+M|Chea|**Be|Reference material, shortcuts, quick-lookup information
+M|Chea|**St|
+M|Chea|it|One page (two pages max)
+M|Chea|it|Organized by category or workflow
+M|Chea|it|Dense but scannable
+M|Chea|it|Visual hierarchy w/ headers and grouping
+M|Chea|**Gu|
+M|Chea|it|op for quick reference, not reading
+M|Chea|it|Use tables, grids, or columns
+M|Chea|it|Include formulas, shortcuts, or code snippets
+M|Chea|it|ds for printing or saving as desktop reference
+M|Chea|it|Bold the most important items
+M|Chea|**Wh|Keyboard shortcuts, formula references, terminology glossaries, decision matrices
+M|Chea|tx|---
+M|Temp|**Be|Repeatable processes, planning, tracking
+M|Spre|it|Include a "How to Use" tab w/ instructions
+M|Spre|it|Pre-fill w/ example data
+M|Spre|it|Use data validation for dropdown fields
+M|Spre|it|Add conditional formatting for visual cues
+M|Spre|it|Lock formula cells, leave input cells editable
+M|Spre|it|Include a "Make a cp" link (Google Sheets)
+M|Noti|it|Provide a duplicate link
+M|Noti|it|Include a getting-started guide
+M|Noti|it|Pre-populate w/ example cn
+M|Noti|it|Use Notion's db features (views, filters, relations)
+M|Noti|it|Keep it simple — don't over-engineer
+M|Docu|it|Provide in multiple formats (Google Doc, Word, PDF)
+M|Docu|it|Include placeholder text w/ [BRACKETS] for customization
+M|Docu|it|Add inline instructions in a different color
+M|Docu|it|Make it immediately usable w/ minimal editing
+M|Docu|**Ke|Templates shd be usable within 5 minutes of downloading.
+M|Docu|tx|---
+M|Swip|**Be|Inspiration, examples, learning from others
+M|Swip|**St|
+M|Swip|it|Curated collection of 15-50 examples
+M|Swip|it|Organized by category, tp, or use case
+M|Swip|- Ea|
+M|Swip|it|The example itself (screenshot, text, link)
+M|Swip|it|Why it works (2-3 bullet annotations)
+M|Swip|it|How to adapt it (1-2 sentences)
+M|Swip|**Gu|
+M|Swip|it|qual over quantity — curate ruthlessly
+M|Swip|it|Add your al, don't just collect
+M|Swip|it|Organize for browsing (categories, tags)
+M|Swip|it|up periodically w/ fresh examples
+M|Swip|it|Credit original sources
+M|Swip|**Wh|em subject lines, landing pages, ad cp, CTAs, onboarding flows, pricing pages
+M|Swip|tx|---
+M|Emai|it|3-5 emails delivered over 5-7 days
+M|Emai|it|One lesson per em, one concept per lesson
+M|Emai|- Ea|teach → example → exercise
+M|Emai|it|Progressive difficulty (bd on previous lessons)
+M|Emai|- Fi|summary + CTA for pd or nx step
+M|Vide|it|3-5 videos, 5-15 minutes each
+M|Vide|it|Host on unlisted YouTube, Loom, or course platform
+M|Vide|it|Deliver links via em drip
+M|Vide|it|Include worksheets or exercises per lesson
+M|Vide|it|More personal — builds stronger connection
+M|Vide|**Ca|Every 1-2 days. Don't stretch too thin or compress too tight.
+M|Vide|**Ke|Each lesson shd deliver standalone value. If someone only watches lesson 2, they shd still learn something useful.
+M|Vide|tx|---
+M|Quiz|**Be|Engagement, segmentation, personalized results
+M|Quiz|**Qu|
+M|Quiz|- 5-|7)
+M|Quiz|it|Multiple choice only — no open-ended
+M|Quiz|it|Questions shd feel insightful, not obvious
+M|Quiz|it|Progress indicator ("Question 3 of 7")
+M|Quiz|**Re|
+M|Quiz|it|3-5 result categories
+M|Quiz|- Ea|name, description, personalized recommendations
+M|Quiz|it|Tailor follow-up emails by result tp
+M|Quiz|- Sh|Growth Stage Marketer!")
+M|Quiz|**Im|Gate results behind em capture. The quiz itself is ungated — the personalized results require an em.
+M|Quiz|**Fo|See **free-tool-st** skill for tc implementation guidance.
+M|Quiz|tx|---
+M|Live|it|30-45 minutes teaching + 15 minutes Q&A
+M|Live|- St|Hook → Teach (3 key points) → Demo/example → CTA
+M|Live|it|Promote 1-2 weeks in advance
+M|Live|it|Send 3 reminder emails (confirmation, day before, 1 hour before)
+M|Live|it|Record for replay (extends value)
+M|Ever|it|Pre-recorded, available on demand
+M|Ever|it|Same structure as live but tighter editing
+M|Ever|it|Always-on lead generation
+M|Ever|it|Gate w/ em registration
+M|Ever|it|Automated follow-up sequence
+M|Ever|**Fo|Send replay link + summary + CTA within 24 hours. Continue w/ nurture sequence.
+M|Ever|**Ke|Teach something genuinely useful. A webinar that's just a sales pitch will damage trust.

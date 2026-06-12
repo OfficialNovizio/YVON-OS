@@ -1,0 +1,41 @@
+#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/TOOLS.md savings=3%
+M|Memo|tx|ro never accesses sb directly. All memory reads and writes go through `/ap/settings`.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=ro-ad&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|Also|
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=fi&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```
+M|Memo|tx|POST /ap/settings
+M|Memo|Body|{ tp: "memory", agentId: "ro-ad", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|Memo|tx|```
+M|Memo|**Ke|**
+M|Memo|it|`current_status` — always overwrite
+M|Memo|it|`recent_tasks` — prepend + trim to 5
+M|Memo|it|`recent_errors` — append + trim to 5
+M|Memo|it|`recent_discussions` — append + trim to 5
+M|Memo|**Ke|**
+M|Memo|it|`active_campaigns_*` — when a cg launches, pauses, or ends
+M|Memo|it|`roas_benchmark` — only when Alex or mc revises targets
+M|Memo|it|`best_performing_creatives` — when ka confirms metric data; include date
+M|Memo|it|`ad_budget_split` — only when fx and mc ap a budget change
+M|Memo|tx|---
+M|Anal|Rio |
+M|Anal|tx|```
+M|Anal|tx|GET /ap/an?ventureId=<activeVentureId>
+M|Anal|tx|GET /ap/instagram?ventureId=<activeVentureId>
+M|Anal|tx|```
+M|Anal|tx|---
+M|Vent|tx|```
+M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
+M|Vent|tx|```
+M|Vent|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| Meta ad ap \| Pull real ROAS, CPM, CPC data from ad accounts \| Planned \|
+M|Futu|tx|\| Google ad MCP \| Pull YouTube ad perf data \| Planned \|
+M|Futu|tx|\| TikTok ad ap \| Pull TikTok cg metrics \| Planned \|

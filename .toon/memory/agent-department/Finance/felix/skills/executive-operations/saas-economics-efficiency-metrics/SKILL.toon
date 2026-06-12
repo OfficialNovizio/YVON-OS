@@ -1,0 +1,467 @@
+#MEM id=saas-economics-efficiency-metrics source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-economics-efficiency-metrics/SKILL.md savings=5%
+M||tx|---
+M||name|saas-economics-efficiency-metrics
+M||desc|>-
+M||tx|Evaluate SaaS unit economics and capital efficiency. Use when deciding whether the business can scale efficiently or needs correction.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[fi, pl, runway, cac, ltv, mrr, margin, roi]
+M||inte|Determine whether your SaaS business md is fundamentally viable and capital-efficient. Use this to calculate unit economics, assess profitability, manage cash runway, and decide when to scale vs. op. Essential for fundraising, board reporting, and making smart investment trade-offs.
+M||tp|cp
+M||best|
+M||scen|
+M||tx|---
+M|Purp|tx|Determine whether your SaaS business md is fundamentally viable and capital-efficient. Use this to calculate unit economics, assess profitability, manage cash runway, and decide when to scale vs. op. Essential for fundraising, board reporting, and making smart investment trade-offs.
+M|Purp|tx|This is not a fi reporting tool—it's a framework for PMs to understand whether the business can sustain growth, when to prioritize efficiency over growth, and which investments have positive returns.
+M|Unit|tx|Metrics that measure profitability at the cs level—the foundation of sustainable SaaS.
+M|Unit|tx|**Gross Margin** — Percentage of rv remaining after direct costs (COGS).
+M|Unit|- **|** A feature that generates $1M rv at 80% margin is worth far more than $1M at 30% margin. Margin determines which features to prioritize.
+M|Unit|- **|** `(rv - COGS) / rv × 100`
+M|Unit|- **|** Hosting, infrastructure, payment processing, cs onboarding costs
+M|Unit|- **|** SaaS 70-85% good; <60% concerning
+M|Unit|tx|**CAC (cs Acquisition Cost)** — Total cost to acquire one cs.
+M|Unit|- **|** Shapes entire go-to-mk st. Determines which channels are viable and how much you can invest in pd-led growth.
+M|Unit|- **|** `Total Sales & mk Spend / New cs Acquired`
+M|Unit|- **|** Varies by md—Enterprise $10K+ ok; SMB <$500 target
+M|Unit|- **|** mk spend, sales salaries, tools, commissions
+M|Unit|tx|**LTV (Lifetime Value)** — Total rv expected from one cs over their lifetime.
+M|Unit|- **|** Tells you what you can afford to spend on acquisition. Higher LTV enables premium channels and longer payback periods.
+M|Unit|- **|** `ARPU × Average cs Lifetime (months)`
+M|Unit|- **|** `ARPU × Gross Margin % / Churn Rate`
+M|Unit|- **|** Account for expansion, discount rates, cohort-specific retention
+M|Unit|- **|** Must be 3x+ CAC; varies by segment
+M|Unit|**LT|CAC Ratio** — Efficiency of cs acquisition spending.
+M|Unit|- **|** Is growth sustainable or are you buying rv at a loss? Determines when to scale vs. op.
+M|Unit|- **|** `LTV / CAC`
+M|Unit|- **|** 3:1 healthy; <1:1 unsustainable; >5:1 might be underinvesting
+M|Unit|- **|** This ratio alone doesn't tell the full story—also need payback period
+M|Unit|tx|**Payback Period** — Months to recover CAC from cs rv.
+M|Unit|- **|** Cash efficiency. Faster payback = reinvest sooner. Slow payback can kill growth even w/ good LTV:CAC.
+M|Unit|- **|** `CAC / (Monthly ARPU × Gross Margin %)`
+M|Unit|- **|** <12 months great; 12-18 ok; >24 months concerning
+M|Unit|- **|** Must have cash to sustain payback period
+M|Unit|tx|**Contribution Margin** — rv remaining after ALL variable costs (not just COGS).
+M|Unit|- **|** True unit profitability. Includes support, processing fees, variable OpEx.
+M|Unit|- **|** `(rv - All Variable Costs) / rv × 100`
+M|Unit|- **|** COGS + support + payment processing + variable cs sc
+M|Unit|- **|** 60-80% good for SaaS; <40% concerning
+M|Unit|tx|**Gross Margin Payback** — Payback period using actual profit, not rv.
+M|Unit|- **|** More accurate than simple payback. Shows true cash recovery time.
+M|Unit|- **|** `CAC / (Monthly ARPU × Gross Margin %)`
+M|Unit|- **|** Typically 1.5-2x longer than simple rv payback
+M|Unit|tx|**CAC Payback by Channel** — Compare payback across acquisition channels.
+M|Unit|- **|** Not all channels are created equal. op channel mix based on payback efficiency.
+M|Unit|- **|** Calculate CAC and payback separately for each channel
+M|Unit|- **|** Allocate budget to faster-payback channels when cash-constrained
+M|Unit|tx|---
+M|Capi|tx|Metrics that measure how efficiently you use cash to grow the business.
+M|Capi|tx|**Burn Rate** — Cash consumed per month.
+M|Capi|- **|** Determines what you can bd and when you need funding. hi burn requires aggressive rv growth.
+M|Capi|- **|** `Monthly Cash Spent (all expenses)`
+M|Capi|- **|** `Monthly Cash Spent - Monthly rv`
+M|Capi|- **|** Net burn <$200K manageable for early stage; >$500K needs clear path to rv
+M|Capi|tx|**Runway** — Months until cash runs out.
+M|Capi|- **|** Literal survival metric. Dictates timeline for milestones, fundraising, profitability.
+M|Capi|- **|** `Cash Balance / Monthly Net Burn`
+M|Capi|- **|** 12+ months good; 6-12 manageable; <6 months crisis mode
+M|Capi|- **|** Raise when you have 6-9 months runway, not 3 months
+M|Capi|tx|**OpEx (Operating Expenses)** — Costs to run the business (excluding COGS).
+M|Capi|- **|** Your team's salaries live here. Where "efficiency" cuts happen during downturns.
+M|Capi|- **|** Sales & mk (S&M), Research & dv (R&D), General & Administrative (G&A)
+M|Capi|- **|** shd grow slower than rv as you scale (operating leverage)
+M|Capi|tx|**Net Income (Profit Margin)** — Actual profit or loss after all expenses.
+M|Capi|- **|** True bottom line. Are you making money? Can you self-fund growth?
+M|Capi|- **|** `rv - All Expenses (COGS + OpEx)`
+M|Capi|- **|** Early SaaS often negative (growth mode); mature shd be 10-20%+ margin
+M|Capi|tx|**Working Capital Impact** — Cash timing differences btw rv recognition and cash collection.
+M|Capi|- **|** Annual contracts paid upfront boost cash. Monthly billing delays cash. Affects runway calculations.
+M|Capi|- **|** $1M annual contract paid upfront = $1M cash now, not $83K/month
+M|Capi|- **|** Understand cash vs. rv timing when planning runway
+M|Capi|tx|---
+M|Effi|tx|Composite metrics that measure growth vs. profitability trade-offs.
+M|Effi|tx|**Rule of 40** — Growth rate + profit margin shd exceed 40%.
+M|Effi|- **|** Framework for balancing growth vs. efficiency. Guides when to prioritize profitability over growth.
+M|Effi|- **|** `rv Growth Rate % + Profit Margin %`
+M|Effi|- **|** >40 healthy; 25-40 acceptable; <25 concerning
+M|Effi|- **|** 60% growth + (-20%) margin = 40 (healthy growth-mode SaaS)
+M|Effi|- **|** 20% growth + 25% margin = 45 (healthy mature SaaS)
+M|Effi|tx|**Magic Number** — Sales & mk efficiency.
+M|Effi|- **|** Is your GTM engine working? shd you scale spend or op first?
+M|Effi|- **|** `(Current Quarter rv - Previous Quarter rv) × 4 / Previous Quarter S&M Spend`
+M|Effi|- **|** >0.75 efficient; 0.5-0.75 ok; <0.5 fix before scaling
+M|Effi|- **|** "× 4" annualizes quarterly rv change
+M|Effi|tx|**Operating Leverage** — How rv growth compares to cost growth.
+M|Effi|- **|** Are you scaling efficiently? rv shd grow faster than costs.
+M|Effi|- **|** rv growth rate vs. OpEx growth rate over time
+M|Effi|- **|** rv growth 50%, OpEx growth 30% (positive leverage)
+M|Effi|- **|** rv growth 20%, OpEx growth 40% (negative leverage)
+M|Effi|tx|**Unit Economics** — General term for profitability of each "unit" (cs, seat, transaction).
+M|Effi|- **|** Is the business md fundamentally viable at the unit level?
+M|Effi|- **|** rv per unit - Cost per unit
+M|Effi|- **|** Positive contribution required; aim for >$0 after all variable costs
+M|Effi|tx|---
+M|Anti|- **|** hi LTV means nothing if payback takes 4 years and cs churn at 3 years.
+M|Anti|- **|** "Good" CAC varies wildly by business md (PLG vs. enterprise sales).
+M|Anti|- **|** LTV:CAC ratio w/o payback period can mislead (great ratio, terrible cash efficiency).
+M|Anti|- **|** PMs must own unit economics—every feature decision impacts margins and CAC.
+M|Anti|tx|---
+M|When|**Us|**
+M|When|- Ev|CAC, payback, magic number)
+M|When|it|Deciding feature investments (margin impact, contribution to LTV)
+M|When|it|Planning runway and fundraising (burn rate, runway, Rule of 40)
+M|When|it|Comparing cs segments or channels (unit economics by segment)
+M|When|- Bo|CAC)
+M|When|it|Choosing btw growth and profitability (Rule of 40 trade-offs)
+M|When|**Do|**
+M|When|it|Making decisions w/o rv context (pair w/ `saas-rv-growth-metrics`)
+M|When|it|Comparing across wildly different business md w/o normalization
+M|When|it|Early pd discovery (pre-rv focus on PMF, not unit economics)
+M|When|it|Short-term tactical decisions (use engagement metrics, not LTV)
+M|When|tx|---
+M|Step|tx|Use the templates in `template.md` to calculate your unit economics metrics.
+M|Gros|tx|```
+M|Gros|tx|Gross Margin = (rv - COGS) / rv × 100
+M|Gros|COGS|
+M|Gros|it|Hosting & infrastructure costs
+M|Gros|it|Payment processing fees
+M|Gros|it|cs onboarding costs
+M|Gros|it|Direct delivery costs
+M|Gros|tx|```
+M|Gros|**Ex|**
+M|Gros|- Re|$1,000,000
+M|Gros|- CO|$200,000 (hosting $120K, processing $50K, onboarding $30K)
+M|Gros|it|Gross Margin = ($1M - $200K) / $1M = 80%
+M|Gros|**Qu|**
+M|Gros|it|Is gross margin improving as you scale? (shd benefit from economies of scale)
+M|Gros|it|Which pd/features have highest margins? (Prioritize those)
+M|Gros|it|Are margins >70%? (SaaS shd be hi-margin)
+M|Gros|tx|---
+M|CAC |tx|```
+M|CAC |tx|CAC = Total Sales & mk Spend / New cs Acquired
+M|CAC |Incl|
+M|CAC |it|mk salaries & tools
+M|CAC |it|Sales salaries & commissions
+M|CAC |it|Advertising & paid channels
+M|CAC |it|SDR/BDR team costs
+M|CAC |tx|```
+M|CAC |**Ex|**
+M|CAC |- Sa|$500,000/month
+M|CAC |- Ne|100/month
+M|CAC |it|CAC = $500,000 / 100 = $5,000
+M|CAC |**Qu|**
+M|CAC |it|Is CAC consistent across channels? (Calculate by channel)
+M|CAC |it|Is CAC increasing or decreasing over time? (shd decrease w/ scale)
+M|CAC |it|Does CAC vary by cs segment? (SMB vs. Enterprise)
+M|CAC |tx|---
+M|LTV |tx|```
+M|LTV |tx|LTV (Simple) = ARPU × Average cs Lifetime (months)
+M|LTV |tx|LTV (Better) = ARPU × Gross Margin % / Monthly Churn Rate
+M|LTV |tx|LTV (Advanced) = Account for expansion, cohort-specific retention, discount rate
+M|LTV |tx|```
+M|LTV |**Ex|**
+M|LTV |- AR|$500/month
+M|LTV |- Av|36 months
+M|LTV |it|LTV = $500 × 36 = $18,000
+M|LTV |**Ex|**
+M|LTV |- AR|$500/month
+M|LTV |- Gr|80%
+M|LTV |- Mo|2%
+M|LTV |it|LTV = ($500 × 80%) / 2% = $400 / 0.02 = $20,000
+M|LTV |**Qu|**
+M|LTV |it|Is LTV growing over time? (From expansion, improved retention)
+M|LTV |it|Does LTV vary by cohort? (Are new cs more/less valuable?)
+M|LTV |it|Does LTV vary by segment? (Enterprise vs. SMB)
+M|LTV |tx|---
+M|LTV:|tx|```
+M|LTV:|LTV|CAC Ratio = LTV / CAC
+M|LTV:|tx|```
+M|LTV:|**Ex|**
+M|LTV:|- LT|$20,000
+M|LTV:|- CA|$5,000
+M|LTV:|- LT|CAC = $20,000 / $5,000 = 4:1
+M|LTV:|**Qu|**
+M|LTV:|- Is|1? (Minimum for sustainable growth)
+M|LTV:|- Is|1? (Might be underinvesting in growth)
+M|LTV:|it|Is ratio improving or degrading over time?
+M|LTV:|**In|**
+M|LTV:|- **|1** = Losing money on every cs (unsustainable)
+M|LTV:|- **|1** = Marginal economics (op before scaling)
+M|LTV:|- **|1** = Healthy (scale confidently)
+M|LTV:|- **|1** = Potentially underinvesting (cld grow faster)
+M|LTV:|tx|---
+M|Payb|tx|```
+M|Payb|tx|Payback Period (months) = CAC / (Monthly ARPU × Gross Margin %)
+M|Payb|tx|```
+M|Payb|**Ex|**
+M|Payb|- CA|$5,000
+M|Payb|- Mo|$500
+M|Payb|- Gr|80%
+M|Payb|it|Payback = $5,000 / ($500 × 80%) = $5,000 / $400 = 12.5 months
+M|Payb|**Qu|**
+M|Payb|it|Is payback <12 months? (Excellent)
+M|Payb|it|Is payback <18 months? (Acceptable)
+M|Payb|it|Do you have cash runway to sustain payback period?
+M|Payb|**Cr|** 4:1 LTV:CAC w/ 36-month payback is a cash trap. 3:1 LTV:CAC w/ 8-month payback is better for growth.
+M|Payb|tx|---
+M|Cont|tx|```
+M|Cont|tx|Contribution Margin = (rv - All Variable Costs) / rv × 100
+M|Cont|Vari|
+M|Cont|it|COGS
+M|Cont|it|Support costs (variable cp)
+M|Cont|it|Payment processing
+M|Cont|it|Variable cs sc costs
+M|Cont|tx|```
+M|Cont|**Ex|**
+M|Cont|- Re|$1,000,000
+M|Cont|- CO|$200,000
+M|Cont|- Va|$50,000
+M|Cont|- Pa|$30,000
+M|Cont|it|Contribution Margin = ($1M - $280K) / $1M = 72%
+M|Cont|**Qu|**
+M|Cont|it|Is contribution margin >60%? (Good for SaaS)
+M|Cont|it|Are certain pd/segments lower margin? (Consider sunsetting)
+M|Cont|it|Does margin improve w/ scale?
+M|Cont|tx|---
+M|Burn|tx|```
+M|Burn|tx|Gross Burn Rate = Total Monthly Cash Spent
+M|Burn|tx|Net Burn Rate = Total Monthly Cash Spent - Monthly rv
+M|Burn|tx|```
+M|Burn|**Ex|**
+M|Burn|- Mo|$800,000
+M|Burn|- Mo|$400,000
+M|Burn|- Gr|$800,000/month
+M|Burn|- Ne|$400,000/month
+M|Burn|**Qu|**
+M|Burn|it|Is net burn decreasing over time? (Path to profitability)
+M|Burn|it|Is burn rate sustainable given runway?
+M|Burn|it|What's the burn rate relative to rv? (Burn multiple)
+M|Burn|tx|---
+M|Runw|tx|```
+M|Runw|tx|Runway (months) = Cash Balance / Monthly Net Burn
+M|Runw|tx|```
+M|Runw|**Ex|**
+M|Runw|- Ca|$6,000,000
+M|Runw|- Ne|$400,000/month
+M|Runw|it|Runway = $6M / $400K = 15 months
+M|Runw|**Qu|**
+M|Runw|it|Do you have >12 months runway? (Healthy)
+M|Runw|it|Do you have <6 months runway? (Crisis—raise now or cut burn)
+M|Runw|it|Can you reach nx milestone before runway ends?
+M|Runw|**Ru|** Start fundraising at 6-9 months runway, not 3 months.
+M|Runw|tx|---
+M|Oper|tx|```
+M|Oper|tx|OpEx = Sales & mk + R&D + General & Administrative
+M|Oper|Trac|
+M|Oper|tx|S&M as % of rv
+M|Oper|tx|R&D as % of rv
+M|Oper|tx|G&A as % of rv
+M|Oper|tx|```
+M|Oper|**Ex|**
+M|Oper|- Re|$10M/year
+M|Oper|- S&|$5M (50% of rv)
+M|Oper|- R&|$3M (30% of rv)
+M|Oper|- G&|$1M (10% of rv)
+M|Oper|- To|$9M (90% of rv)
+M|Oper|**Qu|**
+M|Oper|it|Are OpEx categories growing slower than rv? (Operating leverage)
+M|Oper|it|Is S&M spend efficient? (Check magic number)
+M|Oper|it|Is G&A <15% of rv? (shd stay lo)
+M|Oper|tx|---
+M|Net |tx|```
+M|Net |tx|Net Income = rv - COGS - OpEx
+M|Net |tx|Profit Margin % = Net Income / rv × 100
+M|Net |tx|```
+M|Net |**Ex|**
+M|Net |- Re|$10M
+M|Net |- CO|$2M
+M|Net |- Op|$9M
+M|Net |it|Net Income = $10M - $2M - $9M = -$1M (loss)
+M|Net |it|Profit Margin = -10%
+M|Net |**Qu|**
+M|Net |it|Is profit margin improving over time? (Path to profitability)
+M|Net |it|At current growth rate, when will you break even?
+M|Net |- Ar|CAC is healthy)
+M|Net |tx|---
+M|Rule|tx|```
+M|Rule|tx|Rule of 40 = rv Growth Rate % + Profit Margin %
+M|Rule|tx|```
+M|Rule|**Ex|**
+M|Rule|- Re|80% YoY
+M|Rule|- Pr|-30%
+M|Rule|it|Rule of 40 = 80% + (-30%) = 50 ✅ Healthy
+M|Rule|**Ex|**
+M|Rule|- Re|25% YoY
+M|Rule|- Pr|20%
+M|Rule|it|Rule of 40 = 25% + 20% = 45 ✅ Healthy
+M|Rule|**Ex|**
+M|Rule|- Re|30% YoY
+M|Rule|- Pr|-35%
+M|Rule|it|Rule of 40 = 30% + (-35%) = -5 🚨 Unhealthy
+M|Rule|**Qu|**
+M|Rule|it|Is Rule of 40 >40? (Healthy balance)
+M|Rule|it|Is Rule of 40 >25? (Acceptable)
+M|Rule|it|Is Rule of 40 <25? (Burning cash w/o sufficient growth)
+M|Rule|**Tr|**
+M|Rule|- Ea|Maximize growth, accept losses (60% growth, -20% margin = 40)
+M|Rule|- Gr|Balance (40% growth, 5% margin = 45)
+M|Rule|- Ma|Prioritize profitability (20% growth, 25% margin = 45)
+M|Rule|tx|---
+M|Magi|tx|```
+M|Magi|tx|Magic Number = (Current Quarter rv - Previous Quarter rv) × 4 / Previous Quarter S&M Spend
+M|Magi|tx|```
+M|Magi|**Ex|**
+M|Magi|- Q2|$2.5M
+M|Magi|- Q1|$2.0M
+M|Magi|- Q1|$800K
+M|Magi|it|Magic Number = ($2.5M - $2.0M) × 4 / $800K = $2M / $800K = 2.5
+M|Magi|**Qu|**
+M|Magi|it|Is magic number >0.75? (Efficient—scale S&M spend)
+M|Magi|it|Is magic number 0.5-0.75? (Acceptable—op before scaling)
+M|Magi|it|Is magic number <0.5? (Inefficient—fix GTM before spending more)
+M|Magi|**In|**
+M|Magi|it|**>1.0** = For every $1 in S&M, you get $1+ in new ARR (excellent)
+M|Magi|it|**0.75-1.0** = Efficient, scale confidently
+M|Magi|it|**0.5-0.75** = Marginal, op before scaling
+M|Magi|it|**<0.5** = Inefficient, fix before investing more
+M|Magi|tx|---
+M|Oper|tx|Track over time to see if you're scaling efficiently.
+M|Oper|**Ex|**
+M|Oper|tx|\| Quarter \| rv \| YoY Growth \| OpEx \| YoY Growth \| Leverage \|
+M|Oper|tx|\|---------\|---------\|------------\|------\|------------\|----------\|
+M|Oper|tx|\| Q1 2024 \| $8M \| - \| $6M \| - \| - \|
+M|Oper|tx|\| Q2 2024 \| $10M \| 25% \| $7M \| 17% \| Positive ✅ \|
+M|Oper|tx|\| Q3 2024 \| $12M \| 20% \| $9M \| 29% \| Negative ⚠️ \|
+M|Oper|**Qu|**
+M|Oper|it|Is rv growing faster than OpEx? (Positive leverage)
+M|Oper|it|Are you scaling OpEx too fast relative to rv?
+M|Oper|it|Which OpEx category is growing fastest? (R&D, S&M, G&A)
+M|Oper|tx|---
+M|Step|**Un|**
+M|Step|| Se|CAC \| Payback \| Gross Margin \|
+M|Step|tx|\|---------\|-----\|-----\|---------\|---------\|--------------\|
+M|Step|| SM|1 \| 8 months \| 75% \|
+M|Step|| Mi|1 \| 12 months \| 80% \|
+M|Step|| En|1 \| 24 months \| 85% \|
+M|Step|**Qu|**
+M|Step|it|Which segment has best unit economics?
+M|Step|it|Which segment has fastest payback? (Prioritize when cash-constrained)
+M|Step|it|Which segment has highest LTV? (Invest in retention/expansion)
+M|Step|tx|---
+M|Exam|See |
+M|Exam|**Co|** CloudAnalytics (mid-mk an SaaS)
+M|Exam|**Un|**
+M|Exam|- CA|$8,000
+M|Exam|- LT|$40,000
+M|Exam|- LT|CAC: 5:1 ✅
+M|Exam|- Pa|10 months ✅
+M|Exam|- Gr|82% ✅
+M|Exam|**Ca|**
+M|Exam|- Mo|$300K
+M|Exam|- Ru|18 months ✅
+M|Exam|- Ru|55 (40% growth + 15% margin) ✅
+M|Exam|- Ma|0.9 ✅
+M|Exam|al|**
+M|Exam|- St|1 LTV:CAC, 10-month payback)
+M|Exam|it|Efficient GTM (0.9 magic number)
+M|Exam|it|Healthy balance (Rule of 40 = 55)
+M|Exam|it|Sufficient runway (18 months)
+M|Exam|**Ac|** Scale acquisition aggressively. Economics support growth.
+M|Exam|tx|---
+M|Exam|**Co|** EnterpriseCRM (enterprise sales motion)
+M|Exam|**Un|**
+M|Exam|- CA|$80,000
+M|Exam|- LT|$400,000
+M|Exam|- LT|CAC: 5:1 ✅ (looks great!)
+M|Exam|- Pa|36 months 🚨 (terrible!)
+M|Exam|- Gr|85%
+M|Exam|**Ca|**
+M|Exam|- Mo|$2M
+M|Exam|- Ru|9 months 🚨
+M|Exam|- Av|48 months
+M|Exam|- Av|$100K/year
+M|Exam|al|**
+M|Exam|- ⚠️|CAC ratio (5:1) masks cash problem
+M|Exam|it|🚨 36-month payback w/ 9-month runway = cash trap
+M|Exam|it|🚨 Takes 3 years to recover CAC, but only 9 months of cash
+M|Exam|it|⚠️ cs stay 4 years, so economics work IF you have cash
+M|Exam|**Pr|** You'll run out of cash before recovering acquisition costs.
+M|Exam|**Ac|**
+M|Exam|tx|1. Negotiate upfront annual payments (reduce payback to 12 months)
+M|Exam|tx|2. Raise capital to extend runway (need 36+ months to sustain growth)
+M|Exam|tx|3. Reduce CAC (shorten sales cycle, improve conversion)
+M|Exam|tx|4. Target smaller deals w/ faster payback (mid-mk vs. enterprise)
+M|Exam|tx|---
+M|Exam|**Co|** SocialScheduler (SMB sl media tool)
+M|Exam|**Qu|**
+M|Exam|tx|\| Quarter \| rv \| OpEx \| Net Income \| rv Growth \| OpEx Growth \|
+M|Exam|tx|\|---------\|---------\|------\|------------\|----------------\|-------------\|
+M|Exam|tx|\| Q1 \| $1.0M \| $800K \| -$800K \| - \| - \|
+M|Exam|tx|\| Q2 \| $1.3M \| $1.2M \| -$1.2M \| 30% \| 50% 🚨 \|
+M|Exam|tx|\| Q3 \| $1.6M \| $1.8M \| -$1.8M \| 23% \| 50% 🚨 \|
+M|Exam|al|**
+M|Exam|it|🚨 OpEx growing FASTER than rv (50% vs. 23-30%)
+M|Exam|it|🚨 Losses accelerating ($800K → $1.8M in 2 quarters)
+M|Exam|it|🚨 Negative operating leverage (shd be positive)
+M|Exam|it|⚠️ Scaling S&M and R&D w/o corresponding rv growth
+M|Exam|**Pr|** Burning cash faster while rv growth is slowing.
+M|Exam|**Ac|**
+M|Exam|tx|1. Freeze headcount until rv catches up
+M|Exam|tx|2. Cut inefficient S&M spend (magic number likely <0.5)
+M|Exam|tx|3. Focus on improving unit economics before scaling
+M|Exam|tx|4. Aim for OpEx growth <rv growth
+M|Exam|tx|---
+M|Pitf|**Sy|** "Our LTV:CAC is 6:1, amazing!"
+M|Pitf|**Co|** 6:1 ratio w/ 48-month payback is a cash trap. You'll run out of money before recovering CAC.
+M|Pitf|fix|** Always pair LTV:CAC w/ payback period. 3:1 w/ 10-month payback beats 6:1 w/ 36-month payback.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "LTV = $100/month × 36 months = $3,600"
+M|Pitf|**Co|** You're using rv, not profit. Actual LTV after 30% COGS = $2,520, not $3,600.
+M|Pitf|fix|** Always include gross margin in LTV calculations. `LTV = ARPU × Margin % / Churn Rate`.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We need to grow faster—let's double S&M spend!" (Magic Number = 0.3)
+M|Pitf|**Co|** You're pouring gas on a broken engine. Doubling spend will just accelerate cash burn w/o proportional rv growth.
+M|Pitf|fix|** Only scale S&M when magic number >0.75. If <0.5, fix GTM efficiency first.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "LTV = ARPU × Lifetime" (ignoring expansion, discount rates, cohort variance)
+M|Pitf|**Co|** Overstating LTV for decision-making. Reality: expansion boosts LTV; discounting reduces it; cohorts vary.
+M|Pitf|fix|** Use sophisticated LTV md for big decisions. Simple LTV ok for directional guidance only.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "$10K rv today = $10K rv in 5 years"
+M|Pitf|**Co|** Overstating LTV for long-payback businesses. $10K in 5 years is worth ~$7.8K today (at 5% discount rate).
+M|Pitf|fix|** Discount future cash flows for LTV periods >24 months. Use NPV (net present value).
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Channel A has $5K CAC, Channel B has $8K CAC—Channel A is better!"
+M|Pitf|**Co|** If Channel A has 24-month payback and Channel B has 8-month payback, Channel B is actually better (faster cash recovery).
+M|Pitf|fix|** Compare CAC + payback together, not CAC in isolation.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Rule of 40 = 50, we're crushing it!" (60% growth, -10% margin, burning $5M/month)
+M|Pitf|**Co|** Rule of 40 doesn't account for absolute burn. You might have great balance but only 3 months runway.
+M|Pitf|fix|** Pair Rule of 40 w/ burn rate and runway. Balance matters, but survival matters more.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Blended CAC is $2K, blended LTV is $10K, we're good!"
+M|Pitf|**Co|** SMB segment might have $500 CAC / $2K LTV (great), while Enterprise has $20K CAC / $15K LTV (terrible). Blended metrics hide the problem.
+M|Pitf|fix|** Calculate unit economics by segment. op each independently.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Gross margin is 80%, our margins are great!"
+M|Pitf|**Co|** After variable support costs (10%) and payment processing (3%), contribution margin might be 67%—not 80%.
+M|Pitf|fix|** Track both gross margin (COGS only) AND contribution margin (all variable costs). Use contribution margin for unit economics.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We have 12 months runway based on burn rate" (but all contracts are paid monthly)
+M|Pitf|**Co|** Annual contracts paid upfront boost cash temporarily. Monthly contracts delay cash collection. Runway is longer/shorter than burn rate suggests.
+M|Pitf|fix|** Account for working capital when calculating runway. Cash-based runway ≠ rv-based runway.
+M|Pitf|tx|---
+M|Rela|it|`saas-rv-growth-metrics` — rv, retention, and growth metrics that feed into LTV
+M|Rela|it|`fi-metrics-quickref` — Fast lookup for all metrics
+M|Rela|it|`feature-investment-advisor` — Uses margin and contribution calculations for feature ROI
+M|Rela|it|`acquisition-channel-advisor` — Uses CAC, LTV, payback for channel evaluation
+M|Rela|it|`business-health-diagnostic` — Uses efficiency metrics for health checks
+M|Exte|- **|** "SaaS Metrics" blog — Definitive guide to CAC, LTV, payback
+M|Exte|- **|** "SaaS Metrics 2.0" — Rule of 40, magic number benchmarks
+M|Exte|- **|** *The SaaS CFO* — Advanced unit economics modeling
+M|Exte|- **|** SaaS benchmarking research
+M|Exte|- **|** *vt Deals* — Understanding investor perspective on unit economics
+M|Prov|it|Adapted from `research/fi/fi for pd Managers.md`
+M|Prov|it|Consolidated from `research/fi/Finance_QuickRef.md`
+M|Prov|it|Common mistakes from `research/fi/Finance_Metrics_Additions_Reference.md`

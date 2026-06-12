@@ -1,0 +1,50 @@
+#DOC source=/root/yvon/docs/yvon-dashboard/BRAND.md strip=63% toon=-1% net=63%
+# YVON Dashboard — Product Identity
+LONG-TERM. What YVON is as a product — for when agents create content about YVON itself.
+Visual system → DESIGN.md · Architecture locks → CONTEXT.md
+
+---
+
+## What YVON Is
+
+An AI operating system for solo founders. YVON orchestrates 13 agents across 4 departments — replacing the fragmented stack of SaaS tools, freelancers, and mental overhead that slow a solo operator down.
+
+Mission: Give one person the leverage of a full team — without the cost, coordination overhead, or communication debt of hiring.
+
+What makes it different: Most AI tools are chat. YVON has roles, memory, workflows, and accountability. Agents know what they own, remember what they've done, and improve from every session.
+
+---
+
+## The User — Stark (Primary)
+
+[TABLE:2×5]
+---
+
+## What YVON Is NOT
+
+[TABLE:2×5]
+---
+
+## Tone (when writing about or for YVON)
+
+[TABLE:2×5]
+Use: orchestrate · route · delegate · enforce · synthesize · distill · persist · ship
+Never: revolutionary · cutting-edge · seamless · leverage (as buzzword) · empower · unlock
+
+---
+
+## YVON as Infrastructure
+
+When agents discuss YVON — in internal docs, briefs, or agent-to-agent handoffs — treat it as infrastructure, not a product. The framing is:
+
+"YVON routes this to Raj" — not "YVON magically handles your backend"
+"Marcus synthesises the War Room" — not "Marcus uses AI to generate insights"
+"Quinn gates the merge" — not "Quinn checks that things are okay"
+
+Agency and precision over magic and abstraction.
+
+---
+
+## Per-Agent Notes
+
+[TABLE:2×10]

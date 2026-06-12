@@ -1,0 +1,14 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/COMMANDS.md savings=-2%
+M|Term|tx|ka does not run terminal commands. He queries sb directly via the MCP tool for data al.
+M|What|tx|\| If you need... \| Ask... \|
+M|What|tx|\|----------------\|--------\|
+M|What|tx|\| Growth opportunities from the data \| nt \|
+M|What|tx|\| cr benchmarks \| Zara \|
+M|What|tx|\| st decisions based on data \| mc or Alex \|
+M|What|tx|\| Raw data refresh (sl stats) \| Trigger from the `/sl` dashboard page \|
+M|What|tx|---
+M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
+M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
+M|Comm|tx|\|------\|------------------\|--------\|--------------\|
+M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|

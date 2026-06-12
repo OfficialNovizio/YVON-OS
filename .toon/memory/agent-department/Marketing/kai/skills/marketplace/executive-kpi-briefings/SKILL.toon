@@ -1,0 +1,20 @@
+#MEM id=executive-kpi-briefings source=/root/yvon/agent-department/Marketing/kai/skills/marketplace/executive-kpi-briefings/SKILL.md savings=0%
+M||tx|---
+M||name|executive-kpi-briefings
+M||desc|Template pack for summarizing BI in for ELT/board stakeholders.
+M||tx|---
+M|When|it|Preparing weekly/monthly ELT updates w/ BI in.
+M|When|it|Translating dashboards into succinct decision memos.
+M|When|it|Coordinating follow-up actions after KPI reviews.
+M|Fram|tx|1. **hl & Signal** – lead w/ KPI delta, direction, and confidence.
+M|Fram|tx|2. **Driver al** – highlight top drivers, segments, or anomalies.
+M|Fram|tx|3. **Implications** – spell out impact on goals, cs, or investments.
+M|Fram|tx|4. **Actions & Owners** – list nx steps, DRIs, due dates, and guardrails.
+M|Fram|tx|5. **Appendix** – link to dashboard tabs, methodology, and deeper data.
+M|Temp|it|1-page KPI memo (hl, context, actions).
+M|Temp|it|Slide template for ELT/board readouts.
+M|Temp|it|Follow-up tracker w/ ownership + status fields.
+M|Tips|it|Keep narratives under 200 words unless deeper context is requested.
+M|Tips|it|Pair w/ `bd-exec-dashboard` and `plan-bi-roadmap` for consistent storytelling.
+M|Tips|it|Capture questions/decisions in a log to feed future prioritization.
+M|Tips|tx|---

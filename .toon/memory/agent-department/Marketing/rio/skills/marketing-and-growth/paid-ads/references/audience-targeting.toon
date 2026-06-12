@@ -1,0 +1,166 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/paid-ads/references/audience-targeting.md savings=-2%
+M|Audi|tx|Detailed targeting strategies for each major ad platform.
+M|Cont|it|Google ad Audiences (Search cg Targeting, Display/YouTube Targeting)
+M|Cont|it|Meta Audiences (Core Audiences, Custom Audiences, Lookalike Audiences)
+M|Cont|it|LinkedIn Audiences (Job-Based Targeting, Company-Based Targeting, hi-Performing Combinations)
+M|Cont|it|Twitter/X Audiences
+M|Cont|it|TikTok Audiences
+M|Cont|it|Audience Size Guidelines
+M|Cont|it|Exclusion st
+M|Sear|**Ke|**
+M|Sear|- Ex|[keyword] — most precise, lower volume
+M|Sear|- Ph|"keyword" — moderate precision and volume
+M|Sear|- Br|keyword — highest volume, use w/ smart bidding
+M|Sear|**Au|**
+M|Sear|it|Add audiences in "observation" mode first
+M|Sear|it|al perf by audience
+M|Sear|it|Switch to "targeting" mode for hi performers
+M|Sear|**RL|**
+M|Sear|it|Bid higher on past visitors searching your terms
+M|Sear|it|Show different ad to returning searchers
+M|Sear|it|Exclude converters from prospecting cg
+M|Disp|**Cu|**
+M|Disp|it|Based on recent search behavior
+M|Disp|it|cr from your converting keywords
+M|Disp|it|hi intent, good for prospecting
+M|Disp|**In|**
+M|Disp|it|People actively researching solutions
+M|Disp|it|Pre-built by Google
+M|Disp|it|Layer w/ demographics for precision
+M|Disp|**Af|**
+M|Disp|it|Based on interests and habits
+M|Disp|it|Better for awareness
+M|Disp|it|Broad but can exclude irrelevant
+M|Disp|**Cu|**
+M|Disp|it|Upload em lists
+M|Disp|it|Retarget existing cs
+M|Disp|it|cr lookalikes from best cs
+M|Disp|**Si|**
+M|Disp|it|Based on your cs match lists
+M|Disp|it|Expand reach while maintaining relevance
+M|Disp|it|Best when source list is hi-qual cs
+M|Disp|tx|---
+M|Core|**In|**
+M|Core|it|Layer interests w/ AND logic for precision
+M|Core|it|Use Audience in to research interests
+M|Core|it|Start broad, let algorithm op
+M|Core|it|Exclude existing cs always
+M|Core|**De|**
+M|Core|it|Age and gender (if pd-specific)
+M|Core|it|Location (down to zip/postal code)
+M|Core|it|Language
+M|Core|it|Education and work (limited data now)
+M|Core|**Be|**
+M|Core|it|Purchase behavior
+M|Core|it|Device usage
+M|Core|it|Travel patterns
+M|Core|it|Life events
+M|Cust|**We|**
+M|Cust|it|All visitors (last 180 days max)
+M|Cust|it|Specific page visitors
+M|Cust|it|Time on site thresholds
+M|Cust|it|Frequency (visited X times)
+M|Cust|**Cu|**
+M|Cust|it|Upload emails/phone numbers
+M|Cust|it|Match rate typically 30-70%
+M|Cust|it|Refresh regularly for accuracy
+M|Cust|**En|**
+M|Cust|it|vd viewers (25%, 50%, 75%, 95%)
+M|Cust|it|Page/profile engagers
+M|Cust|it|Form openers
+M|Cust|it|Instagram engagers
+M|Cust|**Ap|**
+M|Cust|it|App installers
+M|Cust|it|In-app events
+M|Cust|it|Purchase events
+M|Look|**So|**
+M|Look|it|Use hi-LTV cs, not all cs
+M|Look|it|Purchasers > leads > all visitors
+M|Look|it|Minimum 100 source us, ideally 1,000+
+M|Look|**Si|**
+M|Look|it|1% — most similar, smallest reach
+M|Look|it|1-3% — good balance for most
+M|Look|it|3-5% — broader, good for scale
+M|Look|it|5-10% — very broad, awareness only
+M|Look|**La|**
+M|Look|it|Lookalike + interest = more precision early
+M|Look|it|tst lookalike-only as you scale
+M|Look|it|Exclude the source audience
+M|Look|tx|---
+M|Job-|**Jo|**
+M|Job-|it|Be specific (CMO vs. "mk")
+M|Job-|it|LinkedIn normalizes titles, but verify
+M|Job-|it|Stack related titles
+M|Job-|it|Exclude irrelevant titles
+M|Job-|**Jo|**
+M|Job-|it|Broader than titles
+M|Job-|it|Combine w/ seniority level
+M|Job-|it|Good for awareness cg
+M|Job-|**Se|**
+M|Job-|it|Entry, Senior, Manager, Director, VP, CXO, Partner
+M|Job-|it|Layer w/ fn for precision
+M|Job-|**Sk|**
+M|Job-|it|Self-reported, less reliable
+M|Job-|it|Good for tc roles
+M|Job-|it|Use as expansion layer
+M|Comp|**Co|**
+M|Comp|it|1-10, 11-50, 51-200, 201-500, 501-1000, 1001-5000, 5000+
+M|Comp|it|Key filter for B2B
+M|Comp|**In|**
+M|Comp|it|Based on company classification
+M|Comp|it|Can be broad, layer w/ other criteria
+M|Comp|**Co|**
+M|Comp|it|Upload target account list
+M|Comp|it|Minimum 300 companies recommended
+M|Comp|it|Match rate varies
+M|Comp|**Co|**
+M|Comp|it|Hiring rapidly = budget available
+M|Comp|it|Good signal for timing
+M|High|tx|\| Use Case \| Targeting Combination \|
+M|High|tx|\|----------\|----------------------\|
+M|High|tx|\| Enterprise sales \| Company size 1000+ + VP/CXO + Industry \|
+M|High|tx|\| SMB sales \| Company size 11-200 + Manager/Director + fn \|
+M|High|tx|\| Developer tools \| Skills + Job fn + Company tp \|
+M|High|tx|\| ABM cg \| Company list + Decision-maker titles \|
+M|High|tx|\| Broad awareness \| Industry + Seniority + Geography \|
+M|High|tx|---
+M|Targ|it|Follower lookalikes (accounts similar to followers of X)
+M|Targ|it|Interest categories
+M|Targ|it|Keywords (in tweets)
+M|Targ|it|Conversation topics
+M|Targ|it|Events
+M|Targ|it|Tailored audiences (your lists)
+M|Best|it|Follower lookalikes of relevant accounts work well
+M|Best|it|Keyword targeting catches active conversations
+M|Best|it|Lower CPMs than LinkedIn/Meta
+M|Best|it|Less precise, better for awareness
+M|Best|tx|---
+M|Targ|it|Demographics (age, gender, location)
+M|Targ|it|Interests (TikTok's categories)
+M|Targ|it|Behaviors (vd interactions)
+M|Targ|it|Device (iOS/Android, connection tp)
+M|Targ|it|Custom audiences (px, cs file)
+M|Targ|it|Lookalike audiences
+M|Best|it|Younger skew (18-34 primarily)
+M|Best|it|Interest targeting is broad
+M|Best|it|Creative matters more than targeting
+M|Best|it|Let algorithm op w/ broad targeting
+M|Best|tx|---
+M|Audi|tx|\| Platform \| Minimum Recommended \| Ideal Range \|
+M|Audi|tx|\|----------\|-------------------\|-------------\|
+M|Audi|tx|\| Google Search \| 1,000+ searches/mo \| 5,000-50,000 \|
+M|Audi|tx|\| Google Display \| 100,000+ \| 500K-5M \|
+M|Audi|tx|\| Meta \| 100,000+ \| 500K-10M \|
+M|Audi|tx|\| LinkedIn \| 50,000+ \| 100K-500K \|
+M|Audi|tx|\| Twitter/X \| 50,000+ \| 100K-1M \|
+M|Audi|tx|\| TikTok \| 100,000+ \| 1M+ \|
+M|Audi|tx|Too narrow = expensive, slow learning
+M|Audi|tx|Too broad = wasted spend, poor relevance
+M|Audi|tx|---
+M|Excl|Alwa|
+M|Excl|it|Existing cs (unless upsell)
+M|Excl|it|Recent converters (7-14 days)
+M|Excl|it|Bounced visitors (<10 sec)
+M|Excl|it|Employees (by company or em list)
+M|Excl|it|Irrelevant page visitors (careers, support)
+M|Excl|it|cr (if identifiable)

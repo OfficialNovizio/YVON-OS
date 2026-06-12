@@ -1,0 +1,20 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/_template.md savings=5%
+M||tx|---
+M||titl|Rule Title Here
+M||impa|md
+M||impa|Optional description of impact (e.g., "20-50% improvement")
+M||tags|tag1, tag2
+M||tx|---
+M|Rule|**Im|md (optional impact description)**
+M|Rule|tx|Brief explanation of the rule and why it matters. This shd be clear and concise, explaining the perf implications.
+M|Rule|**In|**
+M|Rule|tx|```ts
+M|Rule|tx|// Bad code example here
+M|Rule|tx|const bad = example()
+M|Rule|tx|```
+M|Rule|**Co|**
+M|Rule|tx|```ts
+M|Rule|tx|// Good code example here
+M|Rule|tx|const good = example()
+M|Rule|tx|```
+M|Rule|Refe|[Link to doc or resource](https://example.com)

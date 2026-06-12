@@ -1,0 +1,63 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-cache-function-results.md savings=0%
+M||tx|---
+M||titl|Cache Repeated fn Calls
+M||impa|md
+M||impa|avoid redundant computation
+M||tags|javascript, cache, memoization, perf
+M||tx|---
+M|Cach|tx|Use a md-level Map to cache fn results when the same fn is called repeatedly w/ the same inputs during render.
+M|Cach|**In|**
+M|Cach|tx|```ts
+M|Cach|func|{ projects: Project[] }) {
+M|Cach|tx|return (
+M|Cach|tx|<div>
+M|Cach|tx|{projects.map(project => {
+M|Cach|tx|// slugify() called 100+ times for same project names
+M|Cach|tx|const slug = slugify(project.name)
+M|Cach|tx|return <ProjectCard key={project.id} slug={slug} />
+M|Cach|tx|})}
+M|Cach|tx|</div>
+M|Cach|tx|)
+M|Cach|tx|}
+M|Cach|tx|```
+M|Cach|**Co|**
+M|Cach|tx|```ts
+M|Cach|tx|// md-level cache
+M|Cach|tx|const slugifyCache = new Map<string, string>()
+M|Cach|func|string): string {
+M|Cach|tx|if (slugifyCache.has(text)) {
+M|Cach|tx|return slugifyCache.get(text)!
+M|Cach|tx|}
+M|Cach|tx|const result = slugify(text)
+M|Cach|tx|slugifyCache.set(text, result)
+M|Cach|tx|return result
+M|Cach|tx|}
+M|Cach|func|{ projects: Project[] }) {
+M|Cach|tx|return (
+M|Cach|tx|<div>
+M|Cach|tx|{projects.map(project => {
+M|Cach|tx|// Computed only once per unique project name
+M|Cach|tx|const slug = cachedSlugify(project.name)
+M|Cach|tx|return <ProjectCard key={project.id} slug={slug} />
+M|Cach|tx|})}
+M|Cach|tx|</div>
+M|Cach|tx|)
+M|Cach|tx|}
+M|Cach|tx|```
+M|Cach|**Si|**
+M|Cach|tx|```ts
+M|Cach|let |boolean \| null = null
+M|Cach|func|boolean {
+M|Cach|tx|if (isLoggedInCache !== null) {
+M|Cach|tx|return isLoggedInCache
+M|Cach|tx|}
+M|Cach|tx|isLoggedInCache = document.cookie.includes('auth=')
+M|Cach|tx|return isLoggedInCache
+M|Cach|tx|}
+M|Cach|tx|// Clear cache when auth changes
+M|Cach|tx|fn onAuthChange() {
+M|Cach|tx|isLoggedInCache = null
+M|Cach|tx|}
+M|Cach|tx|```
+M|Cach|Use |utilities, event handlers, not just rc cp.
+M|Cach|Refe|[How we made the vc Dashboard twice as fast](https://vc.com/blog/how-we-made-the-vc-dashboard-twice-as-fast)

@@ -1,0 +1,419 @@
+#MEM id=saas-revenue-growth-metrics source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-revenue-growth-metrics/SKILL.md savings=8%
+M||tx|---
+M||name|saas-rv-growth-metrics
+M||desc|>-
+M||tx|Calculate SaaS rv, retention, and growth metrics. Use when diagnosing momentum, churn, expansion, or pd-mk-fit signals.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[fi, pl, runway, cac, ltv, mrr, margin, roi]
+M||inte|Master rv and retention metrics to understand SaaS business momentum, evaluate pd-mk fit, and make data-driven decisions abt growth investments. Use this to calculate key metrics, interpret tn, identify problems early, and communicate business health to stakeholders.
+M||tp|cp
+M||them|fi-metrics
+M||best|
+M||scen|
+M||esti|"10-15 min"
+M||tx|---
+M|Purp|tx|Master rv and retention metrics to understand SaaS business momentum, evaluate pd-mk fit, and make data-driven decisions abt growth investments. Use this to calculate key metrics, interpret tn, identify problems early, and communicate business health to stakeholders.
+M|Purp|tx|This is not a business intelligence tool—it's a framework for PMs to understand which metrics matter, how to calculate them correctly, and what actions to take based on the numbers.
+M|Reve|tx|The "top-line" metrics that measure how much money the business generates.
+M|Reve|tx|**rv** — Total money earned from selling pd/services before expenses. The "top line" of the income statement.
+M|Reve|- **|** Every feature shd connect to rv (direct or indirect). If you can't articulate rv impact, prioritization becomes impossible.
+M|Reve|- **|** Sum of all cs payments in a period
+M|Reve|- **|** Growth rate matters more than absolute number (context-dependent by stage)
+M|Reve|tx|**ARPU (Average rv Per us)** — Average rv generated per individual us.
+M|Reve|- **|** Measures per-seat monetization effectiveness. ct for seat-based pricing md.
+M|Reve|- **|** `Total rv / Total us`
+M|Reve|- **|** Varies by md; track tn more than absolute value
+M|Reve|- **|** $5-50/month typical; B2B: $50-500+/month
+M|Reve|tx|**ARPA (Average rv Per Account)** — Average rv generated per cs account.
+M|Reve|- **|** Measures account-level deal size. ct for account-based pricing md.
+M|Reve|- **|** `MRR / Active Accounts`
+M|Reve|- **|** SMB SaaS: $100-$1K/month; Mid-mk: $1K-$10K; Enterprise: $10K+
+M|Reve|tx|**ARPA/ARPU al** — Using both metrics together to understand monetization.
+M|Reve|- **|** Prevents packaging mistakes. hi ARPA + lo ARPU = undermonetized per seat. lo ARPA + hi ARPU = small deal sizes.
+M|Reve|- **|** $10K ARPA w/ 100 seats = $100 ARPU (reasonable). $10K ARPA w/ 1,000 seats = $10 ARPU (leaving money on table).
+M|Reve|tx|**ACV (Annual Contract Value)** — Annualized recurring rv per contract (excludes one-time fees).
+M|Reve|- **|** Compares economics across different contract structures. Enables sales compensation ds and segment al.
+M|Reve|- **|** `Annual Recurring rv per Contract` (don't include setup fees, professional services)
+M|Reve|- **|** SMB: $5K-$25K; Mid-mk: $25K-$100K; Enterprise: $100K+
+M|Reve|tx|**MRR/ARR (Monthly/Annual Recurring rv)** — Predictable recurring rv normalized to monthly or annual.
+M|Reve|- **|** The heartbeat of subscription businesses. Valued at 5-10x+ multiples. Track cp (new, expansion, churn).
+M|Reve|- **|** `MRR = Sum of all recurring subscription rv per month`; `ARR = MRR × 12`
+M|Reve|- **|** Growth rate and qual matter; track new MRR, expansion MRR, churned MRR, contracted MRR
+M|Reve|tx|**Gross vs. Net rv** — Gross rv before vs. net rv after discounts, refunds, credits.
+M|Reve|- **|** Discounts and refunds can hide bad acquisition qual or pd problems.
+M|Reve|- **|** `Net rv = Gross rv - Discounts - Refunds - Credits`
+M|Reve|- **|** Refunds >10% is a red flag; track by acquisition channel
+M|Reve|tx|---
+M|Rete|tx|Metrics that measure how well you keep and grow existing cs.
+M|Rete|tx|**Churn Rate** — Percentage of cs who cancel in a period.
+M|Rete|- **|** Silent killer of SaaS. Undermines all acquisition efforts. 5% monthly churn = 46% annual churn (compounding).
+M|Rete|- **|** `cs Lost in Period / Starting cs`
+M|Rete|- **|** <2% great, 2-5% acceptable, >5% crisis
+M|Rete|- **|** <10% great, 10-30% acceptable, >30% crisis
+M|Rete|- **|** Logo churn (cs count) differs from rv churn (dollar amount)
+M|Rete|tx|**NRR (Net rv Retention)** — rv retention from existing cs inc expansion and contraction.
+M|Rete|- **|** The holy grail metric. NRR >100% means you grow w/o new logos. Highly valued by investors.
+M|Rete|- **|** `(Starting ARR + Expansion - Churn - Contraction) / Starting ARR × 100`
+M|Rete|- **|** >120% excellent, 100-120% good, 90-100% acceptable, <90% problem
+M|Rete|- **|** Start w/ $1M ARR, add $300K expansion, lose $100K to churn = $1.2M / $1M = 120% NRR
+M|Rete|tx|**Expansion rv** — Additional rv from existing cs (upsells, cross-sells, usage growth).
+M|Rete|- **|** Most capital-efficient rv (no CAC). shd drive NRR >100%.
+M|Rete|- **|** `Sum of upsells + cross-sells + usage increases from existing cs`
+M|Rete|- **|** shd represent 20-30% of total rv; drives NRR >100%
+M|Rete|tx|**Quick Ratio (SaaS)** — rv gains vs. rv losses.
+M|Rete|- **|** Shows if you're building on solid ground or running on a treadmill.
+M|Rete|- **|** `(New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)`
+M|Rete|- **|** >4 excellent, 2-4 healthy, <2 leaky bucket
+M|Rete|tx|---
+M|Anal|tx|**rv Mix al** — Breakdown of rv by pd, segment, or channel.
+M|Anal|- **|** Identifies which pd fund the business and where to invest. Reveals concentration risk.
+M|Anal|- **|** `pd/Segment rv / Total rv × 100`
+M|Anal|- **|** No single pd >60% ideal; diversification reduces risk
+M|Anal|tx|**Cohort al** — Group cs by join date and track behavior over time.
+M|Anal|- **|** Blended metrics hide ct tn. Shows whether business is improving or degrading.
+M|Anal|- **|** Track retention, expansion, and LTV by cohort (e.g., "Jan 2024 cohort")
+M|Anal|- **|** Recent cohorts shd perform same or better than old cohorts
+M|Anal|tx|---
+M|Anti|- **|** rv is top-line, not bottom-line. hi rv w/ negative margins is a disaster.
+M|Anti|- **|** Total rv growth means nothing if driven by unsustainable discounting or margin-destroying deals.
+M|Anti|- **|** ARPU that averages $10 SMB and $1,000 enterprise cs hides segment economics.
+M|Anti|- **|** Churn rate alone doesn't tell the story—need to see cohort tn and NRR.
+M|Anti|tx|---
+M|When|**Us|**
+M|When|it|Evaluating overall business health and pd-mk fit
+M|When|it|Comparing perf across time periods or cohorts
+M|When|it|Prioritizing features w/ direct monetization paths (ARPU impact, expansion enablers)
+M|When|it|Communicating w/ leadership, board, or investors
+M|When|it|Assessing retention problems (churn al, cohort degradation)
+M|When|it|Measuring pricing or packaging changes (ARPU/ARPA shifts)
+M|When|**Do|**
+M|When|it|Evaluating profitability (use margin metrics instead)
+M|When|- As|CAC, payback period)
+M|When|it|Making pd investment decisions w/o cost context (rv alone isn't ROI)
+M|When|it|Comparing across wildly different business md w/o normalization
+M|When|tx|---
+M|Step|tx|Use the templates in `template.md` to calculate your core rv metrics.
+M|rv|tx|```
+M|rv|tx|rv = Sum of all cs payments in period
+M|rv|tx|```
+M|rv|**Ex|**
+M|rv|- Mo|$100,000
+M|rv|it|rv = $100,000
+M|rv|**Qu|**
+M|rv|it|Is this gross or net rv? (Clarify if discounts/refunds are included)
+M|rv|it|Is rv growing cohort-over-cohort, or just from new cs adds?
+M|rv|it|What's the rv growth rate vs. headcount/cost growth rate?
+M|rv|tx|---
+M|ARPU|tx|```
+M|ARPU|tx|ARPU = Total rv / Total us
+M|ARPU|tx|```
+M|ARPU|**Ex|**
+M|ARPU|- To|$100,000/month
+M|ARPU|- To|2,000
+M|ARPU|it|ARPU = $100,000 / 2,000 = $50/us/month
+M|ARPU|**Qu|**
+M|ARPU|it|Is ARPU growing or shrinking over time?
+M|ARPU|it|Is ARPU growth from price increases or mix shift (losing small cs)?
+M|ARPU|it|How does ARPU vary by cohort? (Are new cs less valuable?)
+M|ARPU|tx|---
+M|ARPA|tx|```
+M|ARPA|tx|ARPA = MRR / Active Accounts
+M|ARPA|tx|```
+M|ARPA|**Ex|**
+M|ARPA|- MR|$100,000
+M|ARPA|- Ac|200
+M|ARPA|it|ARPA = $100,000 / 200 = $500/account/month
+M|ARPA|**Qu|**
+M|ARPA|it|Is ARPA growing from expansion or just larger new deals?
+M|ARPA|it|How does ARPA compare across cs segments?
+M|ARPA|it|Is ARPA hi but ARPU lo? (Undermonetized per seat)
+M|ARPA|tx|---
+M|ARPA|tx|```
+M|ARPA|tx|ARPA = MRR / Active Accounts
+M|ARPA|tx|ARPU = MRR / Total us
+M|ARPA|tx|Average Seats per Account = ARPA / ARPU
+M|ARPA|tx|```
+M|ARPA|**Ex|**
+M|ARPA|- AR|$500/month
+M|ARPA|- AR|$50/month
+M|ARPA|- Av|$500 / $50 = 10 seats/account
+M|ARPA|**Qu|**
+M|ARPA|it|Are you monetizing per seat effectively?
+M|ARPA|it|cld you charge more per seat (raise ARPU)?
+M|ARPA|it|cld you expand seat count per account (raise ARPA)?
+M|ARPA|tx|---
+M|ACV |tx|```
+M|ACV |tx|ACV = Annual Recurring rv per Contract
+M|ACV |tx|(Exclude one-time fees like setup, professional services)
+M|ACV |tx|```
+M|ACV |**Ex|**
+M|ACV |it|cs signs 3-year contract for $300K total
+M|ACV |it|ACV = $300K / 3 years = $100K/year
+M|ACV |**Qu|**
+M|ACV |it|How does ACV vary by segment (SMB vs. Enterprise)?
+M|ACV |it|Is ACV growing over time (moving upmarket)?
+M|ACV |it|Does ACV justify sales team cost structure?
+M|ACV |tx|---
+M|MRR/|tx|```
+M|MRR/|tx|MRR = Sum of all recurring monthly subscriptions
+M|MRR/|tx|ARR = MRR × 12
+M|MRR/|Trac|
+M|MRR/|it|New MRR (from new cs)
+M|MRR/|it|Expansion MRR (from upsells/cross-sells)
+M|MRR/|it|Churned MRR (from lost cs)
+M|MRR/|it|Contraction MRR (from downgrades)
+M|MRR/|tx|```
+M|MRR/|**Ex|**
+M|MRR/|- St|$500K
+M|MRR/|- Ne|+$50K
+M|MRR/|- Ex|+$20K
+M|MRR/|- Ch|-$15K
+M|MRR/|- Co|-$5K
+M|MRR/|- En|$550K
+M|MRR/|it|ARR = $550K × 12 = $6.6M
+M|MRR/|**Qu|**
+M|MRR/|it|Is MRR growth from new cs or expansion?
+M|MRR/|it|Is churn/contraction increasing as you grow?
+M|MRR/|- Wh|expansion:churn MRR? (Best: expansion > new)
+M|MRR/|tx|---
+M|Gros|tx|```
+M|Gros|tx|Net rv = Gross rv - Discounts - Refunds - Credits
+M|Gros|tx|```
+M|Gros|**Ex|**
+M|Gros|- Gr|$100K
+M|Gros|- Di|-$10K
+M|Gros|- Re|-$2K
+M|Gros|- Ne|$88K
+M|Gros|**Qu|**
+M|Gros|it|Are discounts >20%? (Pricing power problem)
+M|Gros|it|Are refunds >10%? (pd qual problem)
+M|Gros|it|Do certain channels have higher discount/refund rates?
+M|Gros|tx|---
+M|Chur|tx|```
+M|Chur|tx|Logo Churn Rate = cs Lost / Starting cs × 100
+M|Chur|tx|rv Churn Rate = MRR Lost / Starting MRR × 100
+M|Chur|tx|```
+M|Chur|**Ex|**
+M|Chur|- St|1,000
+M|Chur|- Cu|30
+M|Chur|it|Logo Churn = 30 / 1,000 = 3% monthly
+M|Chur|**Ex|**
+M|Chur|- St|$500K
+M|Chur|- MR|$15K
+M|Chur|it|rv Churn = $15K / $500K = 3% monthly
+M|Chur|**Qu|**
+M|Chur|it|Is churn rate accelerating or decelerating over time?
+M|Chur|it|Are newer cohorts churning faster than older ones? (PMF degradation)
+M|Chur|it|Is rv churn higher than logo churn? (Losing big cs)
+M|Chur|**Co|**
+M|Chur|- Mo|3% monthly ≠ 36% annual
+M|Chur|- Fo|`Annual Churn = 1 - (1 - Monthly Churn)^12`
+M|Chur|it|3% monthly = ~31% annual churn
+M|Chur|tx|---
+M|NRR |tx|```
+M|NRR |tx|NRR = (Starting ARR + Expansion - Churn - Contraction) / Starting ARR × 100
+M|NRR |tx|```
+M|NRR |**Ex|**
+M|NRR |- St|$5M
+M|NRR |- Ex|+$800K
+M|NRR |- Ch|-$300K
+M|NRR |- Co|-$100K
+M|NRR |- En|$5.4M
+M|NRR |it|NRR = $5.4M / $5M = 108%
+M|NRR |**Qu|**
+M|NRR |it|Is NRR >100%? (You grow w/o new logos)
+M|NRR |it|Is NRR improving or degrading cohort-over-cohort?
+M|NRR |it|What's driving NRR? (Expansion or lo churn?)
+M|NRR |tx|---
+M|Expa|tx|```
+M|Expa|tx|Expansion rv = Upsells + Cross-sells + Usage Growth (from existing cs)
+M|Expa|tx|```
+M|Expa|**Ex|**
+M|Expa|- Up|$50K/month
+M|Expa|- Cr|$20K/month
+M|Expa|- Us|$10K/month
+M|Expa|- To|$80K/month
+M|Expa|**Qu|**
+M|Expa|it|Is expansion rv growing as % of total rv?
+M|Expa|it|What % of cs expand each year? (Expansion rate)
+M|Expa|it|Are certain cohorts/segments more likely to expand?
+M|Expa|tx|---
+M|Quic|tx|```
+M|Quic|tx|Quick Ratio = (New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)
+M|Quic|tx|```
+M|Quic|**Ex|**
+M|Quic|- Ne|$50K
+M|Quic|- Ex|$20K
+M|Quic|- Ch|$15K
+M|Quic|- Co|$5K
+M|Quic|it|Quick Ratio = ($50K + $20K) / ($15K + $5K) = $70K / $20K = 3.5
+M|Quic|**Qu|**
+M|Quic|it|Quick Ratio >4 = excellent (gains far exceed losses)
+M|Quic|it|Quick Ratio 2-4 = healthy (sustainable growth)
+M|Quic|it|Quick Ratio <2 = leaky bucket (fix retention before scaling)
+M|Quic|tx|---
+M|Reve|tx|```
+M|Reve|tx|pd/Segment % = pd/Segment rv / Total rv × 100
+M|Reve|tx|```
+M|Reve|**Ex|**
+M|Reve|- Pr|$300K
+M|Reve|- Pr|$500K
+M|Reve|- Pr|$200K
+M|Reve|- To|$1M
+M|Reve|- Pr|30%, pd B: 50%, pd C: 20%
+M|Reve|**Qu|**
+M|Reve|- Is|over-reliance on one pd)
+M|Reve|it|Which pd are growing/shrinking?
+M|Reve|it|Does rv mix match your st priorities?
+M|Reve|tx|---
+M|Coho|tx|Group cs by when they joined and track metrics over time.
+M|Coho|**Ex|**
+M|Coho|tx|\| Cohort \| Month 0 \| Month 1 \| Month 2 \| Month 3 \| Month 6 \|
+M|Coho|tx|\|--------\|---------\|---------\|---------\|---------\|---------\|
+M|Coho|tx|\| Jan 2024 \| 100% \| 95% \| 92% \| 90% \| 85% \|
+M|Coho|tx|\| Feb 2024 \| 100% \| 94% \| 90% \| 87% \| 80% \|
+M|Coho|tx|\| Mar 2024 \| 100% \| 92% \| 86% \| 82% \| - \|
+M|Coho|**Qu|**
+M|Coho|it|Are recent cohorts retaining better or worse than older cohorts?
+M|Coho|- If|pd-mk fit is degrading (fix before scaling)
+M|Coho|- If|Improvements are working (safe to scale)
+M|Coho|it|Track rv retention by cohort, not just logo retention
+M|Coho|tx|---
+M|Step|Befo|
+M|Step|**Re|**
+M|Step|it|✅ Gross vs. net rv clearly labeled
+M|Step|it|✅ rv growth rate > cost growth rate
+M|Step|it|✅ ARPU/ARPA tn analyzed by cohort (not just blended)
+M|Step|**Re|**
+M|Step|it|✅ Logo churn and rv churn both tracked
+M|Step|it|✅ Cohort-over-cohort tn analyzed (not just blended churn)
+M|Step|it|✅ NRR tracked w/ cp (expansion, churn, contraction)
+M|Step|al|**
+M|Step|it|✅ Cohort al shows retention tn
+M|Step|it|✅ rv mix shows concentration risk
+M|Step|it|✅ Quick ratio shows growth sustainability
+M|Step|tx|---
+M|Exam|See |
+M|Exam|**Co|** Mid-mk project management SaaS
+M|Exam|**Re|**
+M|Exam|- MR|$2M (growing 10% month-over-month)
+M|Exam|- AR|$24M
+M|Exam|- AR|$1,200/month (200 accounts)
+M|Exam|- AR|$120/month (20,000 us)
+M|Exam|- Av|100 per account
+M|Exam|**Re|**
+M|Exam|- Mo|2%
+M|Exam|- Re|1.5% (losing smaller cs)
+M|Exam|- NR|115% (strong expansion)
+M|Exam|- Ex|$200K/month (10% of MRR)
+M|Exam|- Qu|5.0
+M|Exam|al|**
+M|Exam|it|✅ Strong growth (10% MoM MRR)
+M|Exam|it|✅ Excellent retention (2% logo churn, 115% NRR)
+M|Exam|it|✅ Healthy expansion (NRR >100%)
+M|Exam|it|✅ Sustainable (Quick Ratio 5.0)
+M|Exam|it|✅ rv churn < logo churn (losing smaller cs, good signal)
+M|Exam|**Ac|** Scale acquisition. Unit economics are strong.
+M|Exam|tx|---
+M|Exam|**Co|** SMB mk automation SaaS
+M|Exam|**Re|**
+M|Exam|- MR|$500K (growing 15% month-over-month)
+M|Exam|- AR|$6M
+M|Exam|- AR|$250/month (2,000 accounts)
+M|Exam|- AR|$50/month (10,000 us)
+M|Exam|**Re|**
+M|Exam|- Mo|6% (increasing from 4% six months ago)
+M|Exam|- Re|7% (losing larger cs)
+M|Exam|- NR|85% (contracting)
+M|Exam|- Ex|$5K/month (1% of MRR)
+M|Exam|- Qu|1.2
+M|Exam|**Co|**
+M|Exam|tx|\| Cohort \| Month 6 Retention \|
+M|Exam|tx|\|--------\|-------------------\|
+M|Exam|tx|\| 6 months ago \| 75% \|
+M|Exam|tx|\| 3 months ago \| 65% \|
+M|Exam|tx|\| Current \| 58% \|
+M|Exam|al|**
+M|Exam|it|⚠️ hi churn (6% monthly = ~50% annual)
+M|Exam|it|🚨 rv churn > logo churn (losing bigger cs)
+M|Exam|it|🚨 NRR <100% (contracting, not expanding)
+M|Exam|it|🚨 Cohort degradation (newer cs churn faster)
+M|Exam|it|🚨 Quick Ratio 1.2 (leaky bucket)
+M|Exam|**Ac|** STOP scaling acquisition. Fix retention first. Investigate:
+M|Exam|it|Why are newer cohorts churning faster?
+M|Exam|it|Why is expansion rv only 1% of MRR?
+M|Exam|it|What's causing cs contraction?
+M|Exam|tx|---
+M|Exam|**Co|** Multi-pd SaaS platform
+M|Exam|**Bl|**
+M|Exam|- MR|$3M (growing 20% MoM)
+M|Exam|- Bl|3%
+M|Exam|- Bl|110%
+M|Exam|**Bu|**
+M|Exam|tx|\| pd \| rv \| % of Total \| Growth \| Churn \| NRR \|
+M|Exam|tx|\|---------\|---------\|------------\|--------\|-------\|-----\|
+M|Exam|tx|\| Legacy pd \| $2M \| 67% \| -5% MoM \| 8% \| 75% \|
+M|Exam|tx|\| New pd \| $1M \| 33% \| +80% MoM \| 1% \| 150% \|
+M|Exam|al|**
+M|Exam|- 🚨|-5% growth, 8% churn, 75% NRR
+M|Exam|- ✅ |+80% growth, 1% churn, 150% NRR
+M|Exam|it|⚠️ Blended metrics hide the fact that 2/3 of rv is contracting
+M|Exam|it|⚠️ hi dependency on one pd (67% concentration risk)
+M|Exam|**Ac|** Accelerate migration from legacy to new pd. Plan for legacy pd sunset.
+M|Exam|tx|---
+M|Pitf|**Sy|** "We grew rv 50% this year, we're crushing it!"
+M|Pitf|**Co|** rv is the top line, not bottom line. You might be growing at a loss, destroying margins, or scaling unprofitable pd.
+M|Pitf|fix|** Always pair rv metrics w/ margin metrics (see `saas-economics-efficiency-metrics`). $1M rv at 80% margin >> $2M rv at 20% margin.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "ARPU increased 30%!" (but cs count dropped 40%)
+M|Pitf|**Co|** ARPU rose bc you lost all your small cs, not bc you improved monetization.
+M|Pitf|fix|** al ARPU by cohort and segment. True ARPU improvement = same cs paying more, not losing cheap cs.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Blended churn is stable at 3%"
+M|Pitf|**Co|** Blended metrics can hide that new cohorts churn at 6% while old cohorts churn at 1%. pd-mk fit is degrading.
+M|Pitf|fix|** Always al retention by cohort. If newer cohorts perform worse, stop scaling and fix the pd.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Logo churn is only 2%, we're great!"
+M|Pitf|**Co|** You might be losing 2% of cs but 10% of rv if you're churning large cs.
+M|Pitf|fix|** Track both logo churn AND rv churn. If rv churn > logo churn, you're losing hi-value cs.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We lost 50 cs this month" (no context on who)
+M|Pitf|**Co|** Losing 50 small cs ($10/month) is different from losing 50 enterprise cs ($10K/month).
+M|Pitf|fix|** Segment churn al by cs size, cohort, and reason. Weight by rv impact, not just logo count.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "3% monthly churn is fine, that's only 36% annually"
+M|Pitf|**Co|** Churn compounds. 3% monthly = 31% annual churn, not 36%. Math: `1 - (1 - 0.03)^12 = 31%`.
+M|Pitf|fix|** Use the correct formula when converting monthly to annual churn. Don't just multiply by 12.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Gross rv is up 20%!" (but discounts/refunds doubled)
+M|Pitf|**Co|** Net rv might be flat or shrinking. Discounts hide pricing power problems; refunds hide pd qual issues.
+M|Pitf|fix|** Always track gross AND net rv. If discounts >20% or refunds >10%, investigate why.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "NRR is 105%, we're expanding!"
+M|Pitf|**Co|** NRR can be >100% just from very lo churn, w/o meaningful expansion. True expansion-driven NRR is >120%.
+M|Pitf|fix|** Break down NRR into cp: expansion MRR vs. churned/contracted MRR. Aim for expansion-driven NRR, not just lo churn.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We're at $10M ARR!" (but $5M is from one cs)
+M|Pitf|**Co|** Losing that one cs cuts rv in half. Roadmap becomes hostage to one cs's requests.
+M|Pitf|fix|** Track rv concentration. Ideal: Top cs <10% of rv, Top 10 cs <40%. Diversify early.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Our ARPU is $100" (average of $10 SMB and $1,000 enterprise)
+M|Pitf|**Co|** Blended ARPU hides segment economics. Can't make smart acquisition or pd decisions.
+M|Pitf|fix|** Calculate ARPU/ARPA by segment (SMB, mid-mk, enterprise). op each segment independently.
+M|Pitf|tx|---
+M|Rela|it|`saas-economics-efficiency-metrics` — Unit economics (CAC, LTV, margins, burn rate)
+M|Rela|it|`fi-metrics-quickref` — Fast lookup for all metrics
+M|Rela|it|`feature-investment-advisor` — Uses rv metrics to evaluate feature ROI
+M|Rela|it|`fi-based-pricing-advisor` — Uses ARPU/ARPA to evaluate pricing changes
+M|Rela|it|`business-health-diagnostic` — Uses rv/retention metrics to diagnose business health
+M|Exte|- **|** "SaaS Metrics 2.0" — Definitive guide to SaaS metrics
+M|Exte|- **|** "SaaS Metrics" blog series — Deep dive on unit economics
+M|Exte|- **|** SaaS benchmarking research
+M|Exte|- **|** *Subscribed* — Subscription business md fundamentals
+M|Exte|- **|** SaaS an platforms w/ metric definitions
+M|Prov|it|Adapted from `research/fi/fi for pd Managers.md`
+M|Prov|it|Consolidated from `research/fi/Finance_QuickRef.md`
+M|Prov|it|Common mistakes from `research/fi/Finance_Metrics_Additions_Reference.md`

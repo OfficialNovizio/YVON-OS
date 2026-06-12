@@ -1,0 +1,95 @@
+#MEM id=cicd-deploy source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/cicd-deploy/SKILL.md savings=16%
+M||tx|---
+M||name|cicd-dp
+M||desc|dv's vc dpl management skill for yv. Covers preview vs. production dp workflow, environment variable management, dp hooks, maxDuration config, rollback procedures, and vc-specific nx.js 15 constraints.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv deploys to vc. Deployments are not trivial — wrong environment variables in production, incorrect `maxDuration` config on scraper rt, or a broken bd that deploys silently can take down the dashboard for both vt. This skill defines the dp discipline dv applies to every yv dpl.
+M|Purp|tx|---
+M|When|it|Before any production push
+M|When|it|When adding or modifying environment variables
+M|When|it|When adding a new ap rt (check `maxDuration` requirement)
+M|When|it|When a dp fails or a rt times out in production
+M|When|it|Before any vc.json cfg change
+M|When|tx|---
+M|Verc|YVON|
+M|Verc|tx|```json
+M|Verc|tx|{
+M|Verc|"fun|{
+M|Verc|"app|{ "maxDuration": 30 },
+M|Verc|"app|{ "maxDuration": 30 },
+M|Verc|"app|{ "maxDuration": 30 }
+M|Verc|tx|}
+M|Verc|tx|}
+M|Verc|tx|```
+M|Verc|**ma|**
+M|Verc|- De|10 seconds (Hobby/Pro plan serverless fn limit)
+M|Verc|- Sc|must be 30 seconds
+M|Verc|- AI|30 seconds
+M|Verc|- St|10 seconds default is fine
+M|Verc|**Wh|**
+M|Verc|→ Ad|30` to that specific rt in `vc.json`
+M|Verc|→ Ne|30` globally — only on rt that need it (cost impact)
+M|Verc|tx|---
+M|Prev|tx|```
+M|Prev|tx|1. Push to any branch → vc auto-creates preview dp
+M|Prev|2. P|https://[hash]-[project].vc.app
+M|Prev|tx|3. Preview uses PREVIEW environment variable group in vc dashboard
+M|Prev|tx|4. tst ct paths on preview before merging to main
+M|Prev|tx|5. Never share preview URLs externally — they can expose staging data
+M|Prev|tx|```
+M|Prod|tx|```
+M|Prod|tx|1. All changes on main branch → auto-dp triggers
+M|Prod|2. P|
+M|Prod|tx|□ npx tsc --noEmit → MUST pass
+M|Prod|tx|□ npm run lint     → zero er (warnings acceptable)
+M|Prod|tx|□ npm run bd    → MUST succeed locally first
+M|Prod|tx|3. Monitor dpl in vc dashboard — watch for fn er
+M|Prod|4. P|check /ap/briefing and /ap/ag-sn-memory rt are responding
+M|Prod|tx|```
+M|Prod|tx|---
+M|Envi|YVON|
+M|Envi|tx|\| Context \| Use \| Key rule \|
+M|Envi|tx|\|---------\|-----\|---------\|
+M|Envi|tx|\| **dv** \| Local `.env.local` \| Never commit this file \|
+M|Envi|tx|\| **Preview** \| PR/branch previews \| Separate ap key set where possible \|
+M|Envi|tx|\| **Production** \| `main` branch \| Real keys — never expose or log \|
+M|Envi|**Ad|**
+M|Envi|tx|1. Add to `.env.local` for local dv
+M|Envi|tx|2. Add to vc dashboard → Project Settings → Environment Variables → for all 3 contexts
+M|Envi|tx|3. Add to `doc/reference/ENV.md` w/ description and which context it applies to
+M|Envi|4. I|confirm it's server-only (never in client cp)
+M|Envi|5. I|prefix w/ `NOVIZIO_` or `HOURBOUR_`
+M|Envi|**Ch|**
+M|Envi|tx|```bash
+M|ANTH|tx|```
+M|ANTH|tx|---
+M|Roll|If a|
+M|Roll|tx|```
+M|Roll|tx|1. vc dashboard → Deployments → select last working dp → "Redeploy"
+M|Roll|tx|→ This is the fastest rollback — vc keeps all previous builds
+M|Roll|2. I|up in vc dashboard → redeploy
+M|Roll|3. I|roll back migration (see rj's migration-management skill)
+M|Roll|4. L|doc/os/sn.md + flag to qn for post-mortem
+M|Roll|tx|```
+M|Roll|tx|**Never force-push to main to undo a breaking change.** Redeploy the previous vc bd while fixing forward.
+M|Roll|tx|---
+M|Comm|tx|\| Issue \| Cause \| Fix \|
+M|Comm|tx|\|-------\|-------\|-----\|
+M|Comm|| Fu|30` to vc.json \|
+M|Comm|| Bu|missing tp \| ts strict mode \| Run `npx tsc --noEmit` locally first \|
+M|Comm|tx|\| Edge fn size limit \| Too many imports in edge rt \| Move to serverless rt \|
+M|Comm|tx|\| Env var undefined in production \| Not added to vc dashboard \| Add to all 3 contexts in vc \|
+M|Comm|tx|\| `cookies()` er in static page \| Using cookies in non-dynamic rt \| Add `export const dynamic = 'force-dynamic'` \|
+M|Comm|tx|\| SUPABASE_SERVICE_ROLE_KEY client leak \| Used in client cp \| Move to server cp or ap rt \|
+M|Comm|tx|---
+M|Depl|tx|```
+M|Depl|tx|□ npx tsc --noEmit passes
+M|Depl|tx|□ npm run lint passes
+M|Depl|tx|□ npm run bd succeeds locally
+M|Depl|tx|□ New env vars added to vc dashboard (all 3 contexts)
+M|Depl|tx|□ New env vars added to doc/reference/ENV.md
+M|Depl|□ An|30
+M|Depl|tx|□ No SUPABASE_SERVICE_ROLE_KEY or ap keys in client cp
+M|Depl|tx|□ Preview dp tested on at least one ct path
+M|Depl|tx|```

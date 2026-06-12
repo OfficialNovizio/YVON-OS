@@ -1,0 +1,45 @@
+#MEM id=felix source=/root/yvon/agent-department/Finance/felix/TOOLS.md savings=6%
+M|Memo|Feli|`nz`, `hb`, and `yv-consolidated`.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=fi&ventureId=nz
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=fi&ventureId=hb
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=fi&ventureId=yv-consolidated
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```json
+M|Memo|tx|POST /ap/settings
+M|Memo|tx|{
+M|Memo|tp|"memory",
+M|Memo|"age|"fi",
+M|Memo|"ven|"hb",
+M|Memo|"key|"hourbour_mrr",
+M|Memo|"val|"March 2026: $3,800 (126 paying us)"
+M|Memo|tx|}
+M|Memo|tx|```
+M|Memo|Afte|edit the Live State table in `MEMORY.md` to match.
+M|Memo|tx|---
+M|GitH|tx|fx uses GitHub to cross-reference financial decisions w/ the pd and engineering roadmap.
+M|GitH|**Us|**
+M|GitH|it|Read closed PRs and milestones to understand what shipped before calculating infrastructure cost changes
+M|GitH|it|rv Priya's feature specs to estimate budget implications of upcoming pd work
+M|GitH|it|Check Sam's sprint milestones for timeline context when building financial forecasts
+M|GitH|**Ke|**
+M|GitH|tx|```
+M|GitH|tx|list_issues           → see planned features for budget impact al
+M|GitH|tx|get_pull_request      → check what infrastructure changes shipped
+M|GitH|tx|list_milestones       → understand the release timeline for financial planning
+M|GitH|tx|```
+M|GitH|tx|---
+M|Rout|tx|\| rt \| Method \| When \|
+M|Rout|tx|\|-------\|--------\|------\|
+M|Rout|tx|\| `/ap/settings` \| GET \| sn start — read all financial memory across 3 vt scopes \|
+M|Rout|tx|\| `/ap/settings` \| POST \| After confirming financial figures to write to memory \|
+M|Rout|tx|\| `/ap/vt` \| GET \| To confirm active vt context when preparing vt-specific reports \|
+M|Rout|tx|fx does not call data rt (`/ap/instagram`, `/ap/an`). sl and web metrics are ka's domain — fx gets financial data from Stark directly or from confirmed reports.
+M|Rout|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| Stripe MCP \| Direct MRR, churn, subscription counts from hb's payment processor \| Planned \|
+M|Futu|tx|\| QuickBooks / Xero MCP \| Categorized transactions, reconciled P&L from accounting software \| Planned \|
+M|Futu|tx|\| Google Sheets MCP \| Read/write existing financial spreadsheets Stark maintains \| Optional \|

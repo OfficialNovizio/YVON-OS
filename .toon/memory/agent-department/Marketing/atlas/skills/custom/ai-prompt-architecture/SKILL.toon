@@ -1,0 +1,60 @@
+#MEM id=ai-prompt-architecture source=/root/yvon/agent-department/Marketing/atlas/skills/custom/ai-prompt-architecture/SKILL.md savings=13%
+M||tx|---
+M||name|ai-pm-architecture
+M||desc|>-
+M||tx|AI im pm Architecture for px. md-specific parameter op, consistency across batches, seed management, rejection pattern al.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, yv]
+M||tx|---
+M|AI P|tx|tc framework for generating consistent, hi-qual im batches across AI md.
+M|Prom|Buil|
+M|Prom|tx|[Subject], [Setting], [Lighting]. [Style descriptor], [Composition]. [Mood adjectives]
+M|Comp|- Su|Who/what is the focus. "A woman in a cream linen blazer"
+M|Comp|- Se|Environment, background. "standing against a textured plaster wall"
+M|Comp|- Li|Light qual and direction. "soft north-facing morning light"
+M|Comp|- St|Genre, visual tradition. "editorial fashion photography"
+M|Comp|- Co|Framing, camera angle. "md shot, rule of thirds"
+M|Comp|- Mo|Emotional tone. "effortless, quiet confidence"
+M|Midj|- `-|1, 16:9, 9:16)
+M|Midj|it|`--style raw` for less AI interpretation
+M|Midj|it|`--s 100-250` for less stylization (tighter to pm)
+M|Midj|it|`--v 6` for latest md version
+M|DALL|it|Include style keywords directly in the pm
+M|DALL|it|Specify "photorealistic" for photo-like output
+M|DALL|it|Use "no text, no watermark" in negative guidance
+M|Krea|it|Use clear subject descriptions
+M|Krea|it|Add camera/lens terms for photographic qual
+M|Krea|it|Specify lighting conditions for mood control
+M|Seed|it|Same seed produces similar composition
+M|Seed|- Di|tests md variation range
+M|Seed|it|Lock seed for variations of a single concept (change one cp, keep seed)
+M|Seed|- Do|record seed, output qual, usable yes/no
+M|Seed|**Se|**
+M|Seed|tx|```
+M|Seed|Batc|{id} \| md: {name} \| pm: {n}
+M|Seed|tx|Seed -> qual -> Verdict
+M|Seed|tx|1234567 -> Sharp, natural -> PASS
+M|Seed|tx|2345678 -> Slight artifact on hand -> FAIL
+M|Seed|tx|3456789 -> Background too busy -> FAIL
+M|Seed|tx|```
+M|Cons|1. *|Include the same style phrase in every pm ("editorial minimalism, natural lighting, clean backgrounds")
+M|Cons|2. *|Specify exact colors ("warm cream tones, sage green accent, charcoal shadows")
+M|Cons|3. *|When possible, use im prompting w/ a br-coherent reference
+M|Cons|4. *|Lock the avoid list across all pm for a vt
+M|Reje|Trac|
+M|Reje|it|If specific hand poses fail repeatedly (>30% rejection rate), avoid hands in pm; crop or reframe
+M|Reje|it|If complex backgrounds fail (>25%), simplify background description
+M|Reje|it|If multiple subjects fail (>40%), gn single subject, composite later
+M|Reje|it|If specific text in im fails (>60%), add text in post-production, not generation
+M|Reje|tx|up the Style Spec based on rejection data. If a pattern exceeds 25% rejection rate, it shd be added to the Avoid list.
+M|Novi|- St|editorial, fashion photography, natural light, textured
+M|Novi|- Co|warm neutrals, muted tones, br palette accents
+M|Novi|- Mo|confident, effortless, editorial
+M|Novi|- Li|soft, natural, directional
+M|Hour|- St|clean, modern, tech-forward, professional
+M|Hour|- Co|white space, br palette, light backgrounds
+M|Hour|- Mo|trustworthy, confident, approachable
+M|Hour|- Li|bright, clean, evenly lit

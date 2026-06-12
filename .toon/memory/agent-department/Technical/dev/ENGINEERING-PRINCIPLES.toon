@@ -1,0 +1,158 @@
+#MEM id=dev source=/root/yvon/agent-department/Technical/dev/ENGINEERING-PRINCIPLES.md savings=11%
+M|ENGI|tx|> Load this file before making any architecture decision, writing an ap contract, or reviewing code.
+M|ENGI|tx|---
+M|4-La|tx|```
+M|4-La|tx|Browser (rc)
+M|4-La|tx|↓
+M|4-La|tx|nx.js ap rt (/app/ap/*/rt.ts)
+M|4-La|tx|↓
+M|4-La|tx|External Services (Anthropic \| Apify \| YouTube \| GA4 \| sb)
+M|4-La|tx|```
+M|4-La|it|ap keys live only in nx.js ap rt — never in client cp.
+M|4-La|it|sb `service_role` key used only server-side. Browser uses `anon` key via `createBrowserClient`.
+M|4-La|it|Persistent data always in sb. `localStorage` only for ephemeral UI state (tab position, scroll).
+M|Comp|tx|\| tp \| When to use \| Rule \|
+M|Comp|tx|\|------\|------------\|------\|
+M|Comp|tx|\| Server cp (default) \| Data fetching, no us interaction \| No `'use client'` directive \|
+M|Comp|tx|\| Client cp \| State, event handlers, browser APIs \| Add `'use client'` at top of file only \|
+M|Comp|tx|\| rt Handler \| External ap calls, DB writes \| In `/app/ap/*/rt.ts` only \|
+M|Comp|tx|> `'use client'` boundary shd be as deep in the cp tree as possible. Never mark a layout or wrapper as client unless required.
+M|Comp|tx|---
+M|API |Dev |
+M|API |tx|```markdown
+M|POST|**Re|**
+M|POST|tx|```json
+M|POST|tx|{
+M|POST|"ven|"string (required)",
+M|POST|"fie|"string \| number (required/optional)"
+M|POST|tx|}
+M|POST|tx|```
+M|POST|**Su|**
+M|POST|tx|```json
+M|POST|tx|{
+M|POST|"fie|"value",
+M|POST|"ite|[]
+M|POST|tx|}
+M|POST|tx|```
+M|POST|**Er|**
+M|POST|- `4|`{ "er": "ventureId is required" }`
+M|POST|- `4|`{ "er": "vt not found" }`
+M|POST|- `5|`{ "er": "Failed to fetch data" }`
+M|POST|**No|** [Any caching, rate limiting, or vc timeout considerations]
+M|POST|tx|```
+M|POST|tx|rj implements to this exact shape. mi builds cp that consume this exact shape. No deviations w/o dv approval.
+M|POST|tx|---
+M|Code|Dev |
+M|Back|it|[ ] rt validates required request fields before calling any external ap
+M|Back|it|[ ] All external ap calls are wrapped in try/catch w/ appropriate HTTP status codes
+M|Back|it|[ ] rp shape exactly matches the contract in dv's MEMORY.md
+M|Back|it|[ ] No `any` tp w/o a comment explaining why
+M|Back|it|[ ] ap keys are read from `process.env` only — never hardcoded
+M|Back|it|[ ] `venture_id` is always included in sb writes
+M|Back|- [ |`CRON_SECRET` validated on cron rt via `Authorization: Bearer` header
+M|Fron|it|[ ] No hardcoded color values — all colors use `var(--color-*)` tk
+M|Fron|it|[ ] `'use client'` only on cp that genuinely need it
+M|Fron|it|[ ] Every interactive element has ARIA attributes and keyboard nav
+M|Fron|it|[ ] Loading state, er state, and empty state all handled
+M|Fron|it|[ ] SSE consumption checks `event.data !== '[DONE]'` before `JSON.parse()`
+M|Fron|it|[ ] No direct sb calls — data always fetched via ap rt
+M|Both|it|[ ] `npx tsc --noEmit` passes w/ zero er (Linux VM) / `npm run bd` on vc/Windows
+M|Both|it|[ ] `npm run lint` passes w/ zero warnings
+M|Both|it|[ ] ts strict — no `@ts-ignore` w/o explanation comment
+M|Both|tx|---
+M|Type|tx|\| Rule \| Example \|
+M|Type|tx|\|------\|---------\|
+M|Type|tx|\| All request/rp shapes in `lib/tp.ts` \| `import tp { AgentConfig } from '@/lib/tp'` \|
+M|Type|| No|unknown = await res.json()` then narrow \|
+M|Type|| Us|Item[] }` \|
+M|Type|tx|\| Discriminated unions for status tp \| `tp Status = 'pnd' \\| 'done' \\| 'er'` \|
+M|Type|| Ex|Promise<vt>` \|
+M|Type|tx|---
+M|SSE |All |
+M|SSE |tx|```ts
+M|SSE |expo|Request) {
+M|SSE |tx|const encoder = new TextEncoder()
+M|SSE |tx|const stream = new ReadableStream({
+M|SSE |tx|async start(controller) {
+M|SSE |tx|try {
+M|SSE |tx|const rp = await anthropic.messages.stream({ ... })
+M|SSE |tx|for await (const chunk of rp) {
+M|SSE |tx|if (chunk.tp === 'content_block_delta') {
+M|SSE |cont|${chunk.delta.text}\n\n`))
+M|SSE |tx|}
+M|SSE |tx|}
+M|SSE |cont|[DONE]\n\n'))
+M|SSE |tx|} catch (err) {
+M|SSE |cont|[er]\n\n`))
+M|SSE |tx|} finally {
+M|SSE |tx|controller.close()
+M|SSE |tx|}
+M|SSE |tx|}
+M|SSE |tx|})
+M|SSE |tx|return new rp(stream, {
+M|SSE |head|{ 'cn-tp': 'text/event-stream', 'Cache-Control': 'no-cache' }
+M|SSE |tx|})
+M|SSE |tx|}
+M|SSE |tx|```
+M|SSE |tx|The `[DONE]` signal and try/catch inside the stream start are non-negotiable — qn checks for both.
+M|SSE |tx|---
+M|Secu|Befo|
+M|Secu|it|[ ] No `SUPABASE_SERVICE_ROLE_KEY` in any file under `/app/**/page.tsx` or `/cp/`
+M|Secu|it|[ ] No `ANTHROPIC_API_KEY` accessible in client bundle
+M|Secu|- [ |Bearer ${CRON_SECRET}` header
+M|Secu|it|[ ] us-supplied `ventureId` values are validated against known vt before use
+M|Secu|it|[ ] No `eval()`, `dangerouslySetInnerHTML` w/ unsanitized input, or SQL string concatenation
+M|Secu|tx|---
+M|PR G|Dev |
+M|PR G|tx|1. qn has issued APPROVED verdict for the current phase
+M|PR G|tx|2. `npm run bd` passes (zero er) in qn's sn
+M|PR G|tx|3. `npm run lint` passes (zero warnings) in qn's sn
+M|PR G|tx|4. All items in dv's code rv checklist are satisfied
+M|PR G|tx|5. dv's MEMORY.md has been updated w/ completion status
+M|PR G|tx|No partial merges. The phase ships as a unit.
+M|PR G|tx|---
+M|Writ|it|Milestone → tasks → owners → dependencies. Each task has exactly one owner.
+M|Writ|it|Surface blockers and risks — not just the steps.
+M|Writ|- **|plans w/o explicit owners or unresolved dependency chains.
+M|Exec|it|Verify plan state before the first step. Check dependencies before starting each task.
+M|Exec|it|up the plan after each done task — never let it go stale.
+M|Exec|- **|marking a task complete w/o verifying its output.
+M|Brai|it|Diverge → cluster → converge. Quantity before qual in the generation phase.
+M|Brai|it|No criticism during diverge — every option gets written down first.
+M|Brai|- **|evaluating approaches before the generation phase is complete.
+M|Syst|it|Reproduce → isolate → hypothesize → tst → document. Never skip reproduce.
+M|Syst|it|Document the root cause, not just the fix — future dv will need to understand why.
+M|Syst|- **|fixing symptoms w/o understanding what caused them.
+M|Test|it|Red → green → rf. Write the failing tst before the implementation.
+M|Test|it|tst behavior, not implementation detail. Each tst has one assertion.
+M|Test|- **|tests that pass trivially or tst internal state rather than external behavior.
+M|Requ|it|Context → what changed → what to focus on. Flag specific uncertainty areas explicitly.
+M|Requ|it|Provide the PR link, relevant diff sections, and the acceptance criteria being met.
+M|Requ|- **|PRs w/ no description — reviewers need context.
+M|Rece|it|Respond to every comment. "Won't fix" requires an explanation, not silence.
+M|Rece|it|Separate clarifying questions from disagreements — ask first, then decide.
+M|Rece|- **|defensive rp; treat every comment as useful signal.
+M|Veri|it|bd passes (`npm run bd` zero er). Lint passes (`npm run lint` zero warnings). Browser-verified for UI changes.
+M|Veri|it|No feature ships w/o evidence of verification.
+M|Veri|- **|marking done w/o running bd and lint in the same sn.
+M|Disp|it|Define ag role, input, output format, and handoff criteria before spawning.
+M|Disp|it|Merge outputs before responding — never surface raw parallel ag output directly.
+M|Disp|- **|dispatching w/ unresolved dependencies btw workstreams.
+M|Usin|it|One worktree per feature. Never commit directly to main from a worktree.
+M|Usin|it|Clean up worktrees after the branch is merged.
+M|Usin|- **|long-lived worktrees that drift far from the main branch.
+M|Fini|- Sq|`tp(scope): description`.
+M|Fini|it|dl the branch after merge. up MEMORY.md w/ completion status.
+M|Fini|- **|merging w/o qn's APPROVED verdict.
+M|Suba|it|Define ag role + expected output format before spawning.
+M|Suba|it|Verify subagent output before integrating — treat it as a PR, not a done deal.
+M|Suba|- **|chaining subagent outputs w/o a verification step btw them.
+M|Supa|it|Server-side client w/ service role key for writes. RLS for us-scoped reads.
+M|Supa|it|Index on frequently queried foreign keys. Prefer typed queries over raw SQL strings.
+M|Supa|- **|exposing `SUPABASE_SERVICE_ROLE_KEY` to client cp.
+M|Verc|it|Server cp by default. `'use client'` only when interactivity or browser APIs are required.
+M|Verc|it|No secrets in client cp — all external ap calls go through `/app/ap/` rt.
+M|Verc|- **|unnecessary `useEffect` for data that can be fetched in a Server cp.
+M|Verc|it|Parallel data fetching in Server cp. Streaming w/ `Suspense` for slow data.
+M|Verc|it|Collocate data fetching w/ the cp that uses it — don't prop-drill fetched data.
+M|Verc|- **|request waterfalls in RSC trees; fetch all independent data in parallel.

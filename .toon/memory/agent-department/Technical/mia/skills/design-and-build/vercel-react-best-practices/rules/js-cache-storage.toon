@@ -1,0 +1,54 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-cache-storage.md savings=1%
+M||tx|---
+M||titl|Cache Storage ap Calls
+M||impa|lo-md
+M||impa|reduces expensive I/O
+M||tags|javascript, localStorage, storage, caching, perf
+M||tx|---
+M|Cach|tx|`localStorage`, `sessionStorage`, and `document.cookie` are synchronous and expensive. Cache reads in memory.
+M|Cach|**In|**
+M|Cach|tx|```ts
+M|Cach|tx|fn getTheme() {
+M|Cach|tx|return localStorage.getItem('theme') ?? 'light'
+M|Cach|tx|}
+M|Cach|tx|// Called 10 times = 10 storage reads
+M|Cach|tx|```
+M|Cach|**Co|**
+M|Cach|tx|```ts
+M|Cach|tx|const storageCache = new Map<string, string \| null>()
+M|Cach|func|string) {
+M|Cach|tx|if (!storageCache.has(key)) {
+M|Cach|tx|storageCache.set(key, localStorage.getItem(key))
+M|Cach|tx|}
+M|Cach|tx|return storageCache.get(key)
+M|Cach|tx|}
+M|Cach|func|string, value: string) {
+M|Cach|tx|localStorage.setItem(key, value)
+M|Cach|tx|storageCache.set(key, value)  // keep cache in sync
+M|Cach|tx|}
+M|Cach|tx|```
+M|Cach|Use |utilities, event handlers, not just rc cp.
+M|Cach|**Co|**
+M|Cach|tx|```ts
+M|Cach|let |Record<string, string> \| null = null
+M|Cach|func|string) {
+M|Cach|tx|if (!cookieCache) {
+M|Cach|tx|cookieCache = Object.fromEntries(
+M|Cach|tx|document.cookie.split('; ').map(c => c.split('='))
+M|Cach|tx|)
+M|Cach|tx|}
+M|Cach|tx|return cookieCache[name]
+M|Cach|tx|}
+M|Cach|tx|```
+M|Cach|**Im|**
+M|Cach|If s|
+M|Cach|tx|```ts
+M|Cach|tx|window.addEventListener('storage', (e) => {
+M|Cach|tx|if (e.key) storageCache.dl(e.key)
+M|Cach|tx|})
+M|Cach|tx|document.addEventListener('visibilitychange', () => {
+M|Cach|tx|if (document.visibilityState === 'visible') {
+M|Cach|tx|storageCache.clear()
+M|Cach|tx|}
+M|Cach|tx|})
+M|Cach|tx|```

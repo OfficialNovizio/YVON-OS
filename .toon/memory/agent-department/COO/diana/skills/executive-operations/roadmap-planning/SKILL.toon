@@ -1,0 +1,339 @@
+#MEM id=roadmap-planning source=/root/yvon/agent-department/COO/diana/skills/executive-operations/roadmap-planning/SKILL.md savings=7%
+M||tx|---
+M||name|roadmap-planning
+M||desc|>-
+M||tx|Plan a st roadmap across prioritization, epic definition, stakeholder alignment, and sequencing. Use when turning st into a release plan that teams can execute.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[co, operations, workflow, planning, sprint, milestones, process, st]
+M||inte|Guide pd managers through st roadmap planning by orchestrating prioritization, epic definition, stakeholder alignment, and release sequencing skills into a structured process. Use this to move from disconnected feature requests to a cohesive, outcome-driven roadmap that aligns stakeholders, sequences work logically, and communicates st intent—avoiding "feature factory" roadmaps that lack st narrative or cs-centric framing.
+M||tp|workflow
+M||them|st-positioning
+M||best|
+M||scen|
+M||esti|"45-90 min"
+M||tx|---
+M|Purp|tx|Guide pd managers through st roadmap planning by orchestrating prioritization, epic definition, stakeholder alignment, and release sequencing skills into a structured process. Use this to move from disconnected feature requests to a cohesive, outcome-driven roadmap that aligns stakeholders, sequences work logically, and communicates st intent—avoiding "feature factory" roadmaps that lack st narrative or cs-centric framing.
+M|Purp|tx|This is not a Gantt chart—it's a st communication tool that shows what you're building, why it matters, and how it ladders up to business outcomes.
+M|What|Road|
+M|What|tx|1. **Gathering inputs** — cs problems, business goals, tc constraints
+M|What|tx|2. **Defining initiatives** — Epics w/ clear hypotheses and sc metrics
+M|What|tx|3. **Prioritizing** — Rank initiatives by impact, effort, st fit
+M|What|tx|4. **Sequencing** — Organize into releases/quarters w/ logical dependencies
+M|What|tx|5. **Communicating** — Present roadmap to stakeholders w/ st narrative
+M|Type|**No|**
+M|Type|- **|** Current quarter (committed)
+M|Type|- **|** Following quarter (hi confidence)
+M|Type|- **|** Future exploration (lo confidence)
+M|Type|- **|** Agile teams, uncertainty, continuous discovery
+M|Type|**Th|**
+M|Type|it|Organize by st themes (e.g., "Retention," "Enterprise Expansion," "Mobile exp")
+M|Type|- **|** Communicating to execs, showing st intent
+M|Type|**Ti|**
+M|Type|- Q1|Epics A, B; Q2: Epics C, D; Q3: Epics E, F
+M|Type|- **|** Resource planning, stakeholder communication
+M|Type|**Fe|**
+M|Type|it|Lists features w/o context (e.g., "Dark mode," "SSO," "Advanced reporting")
+M|Type|- **|** No st narrative, no cs problems framed
+M|Why |- **|** Ties initiatives to business/cs outcomes
+M|Why |- **|** Transparent process reduces political friction
+M|Why |- **|** Shows not just "what" but "why"
+M|Why |- **|** Adapts as you learn from discovery/delivery
+M|Anti|- **|** Roadmaps are st plans, not contracts
+M|Anti|- **|** Roadmaps frame problems, not just solutions
+M|Anti|- **|** Roadmaps evolve quarterly based on learning
+M|When|it|Annual or quarterly planning cycles
+M|When|it|After pd st sn (translate st to roadmap)
+M|When|it|Onboarding new stakeholders (align on direction)
+M|When|it|Reframing existing roadmap (shift from feature-driven to outcome-driven)
+M|When|it|For tactical sprint planning (use backlog instead)
+M|When|it|When st is unclear (run pd-st-sn first)
+M|When|it|When stakeholders expect date commitments (address expectations first)
+M|When|tx|---
+M|Faci|tx|When running this workflow as a guided conversation, use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the interaction protocol.
+M|Faci|It d|
+M|Faci|it|sn heads-up + entry mode (Guided, Context dump, Best guess)
+M|Faci|it|one-question turns w/ plain-language pm
+M|Faci|it|progress labels (for example, Context Qx/8 and Scoring Qx/5)
+M|Faci|it|interruption handling and pause/resume behavior
+M|Faci|it|numbered recommendations at decision points
+M|Faci|it|quick-select numbered rp options for regular questions (include `Other (specify)` when useful)
+M|Faci|tx|This file defines the workflow sequence and domain-specific outputs. If there is a conflict, follow this file's workflow logic.
+M|Appl|tx|Use `template.md` for the full fill-in structure.
+M|Appl|tx|This workflow orchestrates **5 phases** over **1-2 weeks**, using multiple cp and interactive skills.
+M|Appl|tx|---
+M|Phas|**Go|** Collect business goals, cs problems, tc constraints, stakeholder requests.
+M|Acti|tx|**1. rv Business Goals (OKRs, st Initiatives)**
+M|Acti|- **|** Company OKRs, exec st memos, board decks
+M|Acti|- **|**
+M|Acti|it|What are the company's top 3 priorities this year?
+M|Acti|it|What metrics must we move? (rv, retention, acquisition, efficiency)
+M|Acti|it|Are there st bets? (new markets, partnerships, pd lines)
+M|Acti|- **|** 3-5 business outcomes to op for
+M|Acti|tx|**2. rv cs Problems (Discovery in)**
+M|Acti|- **|** Discovery interviews, support tickets, NPS feedback, churn surveys
+M|Acti|- **|** in from `skills/discovery-process/SKILL.md` (if recently done)
+M|Acti|- **|**
+M|Acti|it|What are the top 3-5 cs pain points?
+M|Acti|it|Which problems affect the most cs?
+M|Acti|it|Which problems have highest intensity?
+M|Acti|- **|** 3-5 validated cs problems
+M|Acti|tx|**3. rv tc Constraints & Opportunities**
+M|Acti|- **|** Engineering leadership, tech debt assessments
+M|Acti|- **|**
+M|Acti|it|Are there tc blockers? (scaling, perf, sec)
+M|Acti|it|Are there enabling investments? (platform upgrades, ap rewrites)
+M|Acti|it|What's the tc roadmap? (migrations, deprecations)
+M|Acti|- **|** List of tc investments required
+M|Acti|tx|**4. rv Stakeholder Requests**
+M|Acti|- **|** Sales, mk, cs sc, execs
+M|Acti|- **|**
+M|Acti|it|What are sales asking for? (enterprise features, integrations)
+M|Acti|it|What's mk requesting? (growth initiatives, positioning)
+M|Acti|it|What's cs sc flagging? (churn risks, expansion blockers)
+M|Acti|- **|** List of stakeholder requests (not yet committed)
+M|Outp|- **|** 3-5 OKRs or st goals
+M|Outp|- **|** 3-5 validated pain points
+M|Outp|- **|** Platform/tech debt items
+M|Outp|- **|** Feature requests from internal teams
+M|Outp|tx|---
+M|Phas|**Go|** Turn inputs into epics w/ hypotheses, sc metrics, and effort estimates.
+M|Acti|tx|**1. Define Epic Hypotheses**
+M|Acti|- **|** `skills/epic-hypothesis/SKILL.md` (cp)
+M|Acti|- **|** Write hypothesis statement
+M|Acti|- **|** "We believe that [building X] for [persona] will achieve [outcome] bc [assumption]."
+M|Acti|- **|** PM
+M|Acti|- **|** 60 minutes per epic
+M|Acti|- **|** 10-15 epic hypotheses
+M|Acti|**Ex|**
+M|Acti|tx|```
+M|Acti|Epic|Guided Onboarding
+M|Acti|Hypo|We believe that adding a step-by-step onboarding checklist for non-tc us will increase activation rate from 40% to 60% bc us currently drop off due to lack of guidance.
+M|Acti|Succ|Activation rate (% completing first action within 24 hours)
+M|Acti|Targ|40% → 60%
+M|Acti|Epic|Enterprise SSO
+M|Acti|Hypo|We believe that adding SSO for enterprise accounts will increase enterprise deals closed from 2/quarter to 5/quarter bc enterprise buyers require SSO for sec compliance.
+M|Acti|Succ|Enterprise deals closed per quarter
+M|Acti|Targ|2 → 5
+M|Acti|Epic|Mobile-Optimized Workflows
+M|Acti|Hypo|We believe that optimizing core workflows for mobile will increase mobile DAU from 5% to 20% bc mobile-first us currently can't complete workflows on the go.
+M|Acti|Succ|Mobile DAU as % of total DAU
+M|Acti|Targ|5% → 20%
+M|Acti|tx|```
+M|Acti|tx|**2. Estimate Effort (T-Shirt Sizing)**
+M|Acti|- **|** PM + engineering lead
+M|Acti|- **|** 90 minutes
+M|Acti|- **|**
+M|Acti|- **|** 1-2 weeks (1-2 engineers)
+M|Acti|- **|** 3-4 weeks (2-3 engineers)
+M|Acti|- **|** 2-3 months (3-5 engineers)
+M|Acti|- **|** 3+ months (5+ engineers)
+M|Acti|- **|** Effort estimate per epic
+M|Acti|tx|**3. Map to Business Outcomes**
+M|Acti|- **|** Tag w/ primary business outcome
+M|Acti|- **|**
+M|Acti|it|Epic 1 (Guided Onboarding) → Retention
+M|Acti|it|Epic 2 (Enterprise SSO) → Acquisition (enterprise)
+M|Acti|it|Epic 3 (Mobile Workflows) → Engagement
+M|Outp|- **|** Each w/ hypothesis, sc metric, effort estimate
+M|Outp|- **|** Which epics drive which OKRs
+M|Outp|tx|---
+M|Phas|**Go|** Rank epics by impact, effort, and st fit.
+M|Acti|tx|**1. Choose Prioritization Framework**
+M|Acti|- **|** `skills/prioritization-advisor/SKILL.md` (interactive)
+M|Acti|- **|** PM
+M|Acti|- **|** 30 minutes
+M|Acti|- **|** Recommended framework (RICE, ICE, Value/Effort, etc.)
+M|Acti|tx|**2. Score Epics**
+M|Acti|- **|** PM, engineering lead, pd leadership
+M|Acti|- **|** 120 minutes
+M|Acti|- **|** Apply framework to all epics
+M|Acti|- **|**
+M|Acti|tx|\| Epic \| Reach \| Impact \| Confidence \| Effort \| RICE Score \|
+M|Acti|tx|\|------\|-------\|--------\|------------\|--------\|------------\|
+M|Acti|tx|\| Guided Onboarding \| 10,000 us \| 3 (massive) \| 80% \| 1 month \| 24,000 \|
+M|Acti|tx|\| Enterprise SSO \| 500 us \| 3 (massive) \| 90% \| 2 months \| 675 \|
+M|Acti|tx|\| Mobile Workflows \| 5,000 us \| 2 (hi) \| 60% \| 3 months \| 2,000 \|
+M|Acti|tx|\| Advanced Reporting \| 2,000 us \| 2 (hi) \| 50% \| 2 months \| 1,000 \|
+M|Acti|tx|**3. Adjust for st Fit**
+M|Acti|- **|** Do they align w/ business goals?
+M|Acti|- **|** Promote epics that align w/ st bets (even if score is lower)
+M|Acti|- **|** Enterprise SSO scores lower, but it's ct for enterprise expansion st → boost priority
+M|Outp|- **|** Epics sorted by priority (RICE score + st adjustments)
+M|Outp|- **|** Highest-priority initiatives for roadmap
+M|Outp|tx|---
+M|Phas|**Go|** Organize epics into quarters/releases w/ logical dependencies.
+M|Acti|tx|**1. Map Dependencies**
+M|Acti|- **|**
+M|Acti|it|Does Epic B depend on Epic A? (e.g., "Advanced Reporting" requires "Data Pipeline Upgrade")
+M|Acti|it|Are there tc blockers? (e.g., "Mobile App" requires "ap Redesign")
+M|Acti|- **|** Dependency graph (Epic A → Epic B → Epic C)
+M|Acti|tx|**2. Sequence by Quarter (or Release)**
+M|Acti|- **|** Top 3-5 epics, no dependencies
+M|Acti|- **|** nx 3-5 epics, may depend on Q1 completion
+M|Acti|- **|** Remaining epics, lower confidence
+M|Acti|**Ex|**
+M|Acti|tx|```
+M|Acti|Q1 2|
+M|Acti|tx|├─ Guided Onboarding (Retention)
+M|Acti|tx|├─ Enterprise SSO (Acquisition)
+M|Acti|tx|└─ Mobile-Optimized Workflows (Engagement)
+M|Acti|Q2 2|
+M|Acti|tx|├─ Advanced Reporting (depends on Data Pipeline, Q1)
+M|Acti|tx|├─ Slack Integration (Engagement)
+M|Acti|tx|└─ Pricing Page Redesign (Acquisition)
+M|Acti|Q3 2|
+M|Acti|tx|├─ Mobile App (depends on ap Redesign)
+M|Acti|tx|├─ AI-Powered Recommendations
+M|Acti|tx|└─ Multi-Language Support
+M|Acti|Q4 2|
+M|Acti|tx|├─ Marketplace/Plugin Ecosystem
+M|Acti|tx|└─ Enterprise Onboarding Concierge
+M|Acti|tx|```
+M|Acti|**Al|Now/nx/Later Roadmap**
+M|Acti|tx|```
+M|Acti|NOW |
+M|Acti|it|Guided Onboarding
+M|Acti|it|Enterprise SSO
+M|Acti|it|Mobile-Optimized Workflows
+M|Acti|NEXT|
+M|Acti|it|Advanced Reporting
+M|Acti|it|Slack Integration
+M|Acti|it|Pricing Page Redesign
+M|Acti|LATE|
+M|Acti|it|Mobile App
+M|Acti|it|AI Recommendations
+M|Acti|it|Multi-Language Support
+M|Acti|tx|```
+M|Acti|tx|**3. Validate w/ Engineering**
+M|Acti|- **|** PM + engineering lead
+M|Acti|- **|**
+M|Acti|it|Is sequencing realistic? (capacity, dependencies)
+M|Acti|it|Are there hidden tc blockers?
+M|Acti|it|Do we need to adjust scope?
+M|Acti|- **|** Validated roadmap sequence
+M|Outp|- **|** Epics organized by Q1, Q2, Q3
+M|Outp|- **|** What depends on what
+M|Outp|- **|** Engineering agrees sequence is feasible
+M|Outp|tx|---
+M|Phas|**Go|** Present roadmap to stakeholders, gather feedback, bd alignment.
+M|Acti|tx|**1. cr Roadmap Presentation**
+M|Acti|- **|** 30-45 min presentation
+M|Acti|- **|**
+M|Acti|- **|** st context (business goals, cs problems)
+M|Acti|- **|** Roadmap overview (Q1, Q2, Q3)
+M|Acti|- **|** Deep dive per quarter (epics, hypotheses, sc metrics)
+M|Acti|- **|** What's NOT on roadmap (and why)
+M|Acti|- **|** Dependencies and risks
+M|Acti|- **|** PM, ds
+M|Acti|- **|** 2-3 hours to prepare
+M|Acti|tx|**2. Present to Stakeholders**
+M|Acti|- **|** Execs, pd leadership, engineering, sales, mk, CS
+M|Acti|- **|** 45 min presentation + 15 min Q&A
+M|Acti|- **|**
+M|Acti|- St|"Here's why we're prioritizing X over Y"
+M|Acti|- Ou|"Each epic drives [business outcome]"
+M|Acti|- Fl|"This roadmap is a plan, not a commitment; we'll adjust as we learn"
+M|Acti|tx|**3. Gather Feedback**
+M|Acti|- **|**
+M|Acti|it|Do these priorities align w/ business goals?
+M|Acti|it|Are we missing ct cs problems?
+M|Acti|it|Are dependencies clear?
+M|Acti|it|What concerns do you have?
+M|Acti|- **|** List of feedback, concerns, questions
+M|Acti|tx|**4. Refine Roadmap**
+M|Acti|- **|** Adjust priorities, add missing epics, clarify dependencies
+M|Acti|- **|** 1-2 days
+M|Acti|- **|** Final roadmap v1.0
+M|Acti|tx|**5. Publish Roadmap**
+M|Acti|- **|** Share w/ team (Confluence, Notion, Productboard, etc.)
+M|Acti|- **|** Public roadmap for cs (use Now/nx/Later format)
+M|Acti|- **|** Visual roadmap + narrative doc
+M|Outp|- **|** 30-45 min deck
+M|Outp|- **|** Feedback incorporated, concerns addressed
+M|Outp|- **|** Accessible to team (internal) or cs (external)
+M|Outp|tx|---
+M|Comp|tx|```
+M|Comp|Week|
+M|Comp|├─ D|Gather Inputs
+M|Comp|tx|│  ├─ rv business goals (OKRs)
+M|Comp|tx|│  ├─ rv cs problems (discovery in)
+M|Comp|tx|│  ├─ rv tc constraints
+M|Comp|tx|│  └─ rv stakeholder requests
+M|Comp|tx|│
+M|Comp|├─ D|Define Initiatives (Epics)
+M|Comp|tx|│  ├─ skills/epic-hypothesis/SKILL.md (60 min per epic)
+M|Comp|tx|│  ├─ Estimate effort (90 min)
+M|Comp|tx|│  └─ Map to business outcomes
+M|Comp|tx|│
+M|Comp|├─ D|Prioritize Initiatives
+M|Comp|tx|│  ├─ skills/prioritization-advisor/SKILL.md (30 min)
+M|Comp|tx|│  ├─ Score epics (120 min)
+M|Comp|tx|│  └─ Adjust for st fit
+M|Comp|tx|│
+M|Comp|└─ D|Sequence Roadmap
+M|Comp|tx|├─ Map dependencies
+M|Comp|tx|├─ Sequence by quarter (Q1, Q2, Q3)
+M|Comp|tx|└─ Validate w/ engineering
+M|Comp|Week|
+M|Comp|tx|└─ Communicate Roadmap
+M|Comp|tx|├─ cr presentation (2-3 hours)
+M|Comp|tx|├─ Present to stakeholders (60 min)
+M|Comp|tx|├─ Gather feedback
+M|Comp|tx|├─ Refine roadmap (1-2 days)
+M|Comp|tx|└─ Publish roadmap
+M|Comp|tx|```
+M|Comp|**To|**
+M|Comp|- **|** 1 week (existing epics, quick alignment)
+M|Comp|- **|** 1.5-2 weeks (define epics, stakeholder rv)
+M|Comp|tx|---
+M|Exam|tx|See `examples/sample.md` for full roadmap examples.
+M|Exam|Mini|
+M|Exam|tx|```markdown
+M|Exam|Now|Guided onboarding (activation +20%)
+M|Exam|nx|Enterprise SSO (deal velocity)
+M|Exam|Late|Mobile workflows (DAU lift)
+M|Exam|tx|```
+M|Pitf|**Sy|** Roadmap lists features ("Dark mode," "SSO," "Advanced filters") w/ no context
+M|Pitf|**Co|** No st clarity, stakeholders don't understand "why"
+M|Pitf|fix|** Frame epics as hypotheses w/ sc metrics (not just feature names)
+M|Pitf|tx|---
+M|Pitf|**Sy|** Execs dictate roadmap, no data-driven prioritization
+M|Pitf|**Co|** bd wrong things, ignore cs problems
+M|Pitf|fix|** Use prioritization framework (RICE, ICE) to transparently score epics
+M|Pitf|tx|---
+M|Pitf|**Sy|** Roadmap treated as contract, no flexibility to adjust
+M|Pitf|**Co|** Can't pivot when you learn new information
+M|Pitf|fix|** Communicate roadmap as "st plan, subject to change based on learning"
+M|Pitf|tx|---
+M|Pitf|**Sy|** Sequence epics w/o checking tc dependencies
+M|Pitf|**Co|** Q2 epic blk bc Q1 dependency didn't finish
+M|Pitf|fix|** Map dependencies explicitly in Phase 4, validate w/ engineering
+M|Pitf|tx|---
+M|Pitf|**Sy|** PM creates roadmap alone, presents finished plan
+M|Pitf|**Co|** No buy-in, stakeholders feel excluded
+M|Pitf|fix|** Gather inputs (Phase 1) from all stakeholders, present draft (Phase 5) for feedback
+M|Pitf|tx|---
+M|Rela|**Ph|**
+M|Rela|it|`skills/epic-hypothesis/SKILL.md` (cp)
+M|Rela|**Ph|**
+M|Rela|it|`skills/prioritization-advisor/SKILL.md` (interactive)
+M|Rela|**Ph|**
+M|Rela|it|(Dependencies mapped manually, no specific skill)
+M|Rela|**Ph|**
+M|Rela|it|(Presentation created manually, no specific skill)
+M|Rela|**Op|**
+M|Rela|it|`skills/pd-st-sn/SKILL.md` (workflow) — Run before roadmap planning to establish st
+M|Rela|it|`skills/discovery-process/SKILL.md` (workflow) — Provides cs problem inputs for Phase 1
+M|Rela|it|`skills/us-story-mapping-workshop/SKILL.md` (interactive) — For complex epics requiring release planning
+M|Exte|it|Bruce McCarthy, *pd Roadmaps Relaunched* (2017) — Outcome-driven roadmaps
+M|Exte|it|C. Todd Lombardo, *pd Roadmaps Relaunched* (2017) — Now/nx/Later framework
+M|Exte|it|Intercom, "RICE Prioritization" (2016) — Prioritization framework
+M|Dean|it|[If Dean has roadmap planning resources, link here]
+M|Dean|tx|---
+M|Dean|**Sk|** Workflow
+M|Dean|**Su|** `roadmap-planning.md`
+M|Dean|**Su|** `/skills/workflows/`
+M|Dean|**De|** Orchestrates `skills/epic-hypothesis/SKILL.md`, `skills/prioritization-advisor/SKILL.md`, plus manual activities

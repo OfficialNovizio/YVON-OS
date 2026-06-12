@@ -1,0 +1,102 @@
+#MEM id=verification-before-completion source=/root/yvon/agent-department/Technical/mia/skills/superpowers/verification-before-completion/SKILL.md savings=-1%
+M||tx|---
+M||name|verification-before-completion
+M||desc|>-
+M||tx|Use when abt to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any sc claims; evidence before assertions always
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, productivity]
+M||tx|---
+M|Over|tx|Claiming work is complete w/o verification is dishonesty, not efficiency.
+M|Over|**Co|** Evidence before claims, always.
+M|Over|tx|**Violating the letter of this rule is violating the spirit of this rule.**
+M|The |tx|```
+M|The |tx|NO COMPLETION CLAIMS w/o FRESH VERIFICATION EVIDENCE
+M|The |tx|```
+M|The |tx|If you haven't run the verification command in this message, you cannot claim it passes.
+M|The |tx|```
+M|The |BEFO|
+M|The |1. I|What command proves this claim?
+M|The |2. R|Execute the FULL command (fresh, complete)
+M|The |3. R|Full output, check exit code, count failures
+M|The |4. V|Does output confirm the claim?
+M|The |- If|State actual status w/ evidence
+M|The |- If|State claim w/ evidence
+M|The |5. O|Make the claim
+M|The |tx|Skip any step = lying, not verifying
+M|The |tx|```
+M|Comm|tx|\| Claim \| Requires \| Not Sufficient \|
+M|Comm|tx|\|-------\|----------\|----------------\|
+M|Comm|| Te|0 failures \| Previous run, "shd pass" \|
+M|Comm|| Li|0 er \| Partial check, extrapolation \|
+M|Comm|| Bu|exit 0 \| Linter passing, logs look good \|
+M|Comm|| Bu|passes \| Code changed, assumed fixed \|
+M|Comm|tx|\| Regression tst works \| Red-green cycle verified \| tst passes once \|
+M|Comm|tx|\| ag done \| VCS diff shows changes \| ag reports "sc" \|
+M|Comm|tx|\| Requirements met \| Line-by-line checklist \| Tests passing \|
+M|Red |it|Using "shd", "probably", "seems to"
+M|Red |it|Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+M|Red |it|abt to commit/push/PR w/o verification
+M|Red |it|Trusting ag sc reports
+M|Red |it|Relying on partial verification
+M|Red |it|Thinking "just this once"
+M|Red |it|Tired and wanting work over
+M|Red |it|**ANY wording implying sc w/o having run verification**
+M|Rati|tx|\| Excuse \| Reality \|
+M|Rati|tx|\|--------\|---------\|
+M|Rati|tx|\| "shd work now" \| RUN the verification \|
+M|Rati|tx|\| "I'm confident" \| Confidence ≠ evidence \|
+M|Rati|tx|\| "Just this once" \| No exceptions \|
+M|Rati|tx|\| "Linter passed" \| Linter ≠ compiler \|
+M|Rati|tx|\| "ag said sc" \| Verify independently \|
+M|Rati|tx|\| "I'm tired" \| Exhaustion ≠ excuse \|
+M|Rati|tx|\| "Partial check is enough" \| Partial proves nothing \|
+M|Rati|tx|\| "Different words so rule doesn't apply" \| Spirit over letter \|
+M|Key |**Te|**
+M|Key |tx|```
+M|Key |✅ [R|34/34 pass] "All tests pass"
+M|Key |tx|❌ "shd pass now" / "Looks correct"
+M|Key |tx|```
+M|Key |**Re|**
+M|Key |tx|```
+M|Key |tx|✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
+M|Key |tx|❌ "I've written a regression tst" (w/o red-green verification)
+M|Key |tx|```
+M|Key |bd|**
+M|Key |tx|```
+M|Key |✅ [R|exit 0] "bd passes"
+M|Key |tx|❌ "Linter passed" (linter doesn't check compilation)
+M|Key |tx|```
+M|Key |**Re|**
+M|Key |tx|```
+M|Key |tx|✅ Re-read plan → cr checklist → Verify each → rp gaps or completion
+M|Key |tx|❌ "Tests pass, phase complete"
+M|Key |tx|```
+M|Key |**Ag|**
+M|Key |tx|```
+M|Key |tx|✅ ag reports sc → Check VCS diff → Verify changes → rp actual state
+M|Key |tx|❌ Trust ag rp
+M|Key |tx|```
+M|Why |From|
+M|Why |it|your human partner said "I don't believe you" - trust broken
+M|Why |it|Undefined functions shipped - wld crash
+M|Why |it|Missing requirements shipped - incomplete features
+M|Why |it|Time wasted on false completion → redirect → rework
+M|Why |- Vi|"Honesty is a core value. If you lie, you'll be replaced."
+M|When|**AL|**
+M|When|it|ANY variation of sc/completion claims
+M|When|it|ANY expression of satisfaction
+M|When|it|ANY positive statement abt work state
+M|When|it|Committing, PR creation, task completion
+M|When|it|Moving to nx task
+M|When|it|Delegating to ag
+M|When|**Ru|**
+M|When|it|Exact phrases
+M|When|it|Paraphrases and synonyms
+M|When|it|Implications of sc
+M|When|it|ANY communication suggesting completion/correctness
+M|The |tx|**No shortcuts for verification.**
+M|The |tx|Run the command. Read the output. THEN claim the result.
+M|The |tx|This is non-negotiable.

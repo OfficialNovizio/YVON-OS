@@ -1,0 +1,80 @@
+#MEM id=calibration-tracker source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/custom/calibration-tracker/SKILL.md savings=11%
+M||tx|---
+M||name|calibration-tracker
+M||desc|Brier score tracking for kh's prediction accuracy over time. Logs predictions vs actuals, detects drift by domain, recalibrates confidence thresholds. Referenced in principles.md — this is the implementation.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Confidence ≠ accuracy. This applies to kh as much as to any other ag. A 🔴 verdict issued w/ hi confidence that mc later overrides is a calibration er — not just a disagreement. This skill makes kh's prediction accuracy measurable and improvable over time.
+M|Purp|tx|---
+M|What|Kahn|
+M|What|tx|\| Prediction tp \| Example \| Verifiable when \|
+M|What|tx|\|----------------\|---------\|----------------\|
+M|What|tx|\| Bias impact \| "This anchoring effect will reduce conversion rate if uncorrected" \| After cg results come in \|
+M|What|tx|\| Verdict calibration \| "🔴 block — this loss aversion CTA will damage br trust" \| After Stark reviews and decides \|
+M|What|tx|Both tp are logged. Both are scored.
+M|What|tx|---
+M|Brie|tx|The Brier score measures prediction accuracy for probabilistic forecasts.
+M|Brie|**Fo|** `Brier = (fc probability − actual outcome)²`
+M|Brie|- Pe|0.00
+M|Brie|- Pr|0.25
+M|Brie|- Co|> 0.25
+M|Brie|**Ho|**
+M|Brie|- Wh|"I estimate 70% chance this anchoring effect reduces conversion if uncorrected."
+M|Brie|- Wh|fc probability (0.70), actual outcome (1 = happened, 0 = did not happen), Brier score.
+M|Brie|it|Track by domain (cp, financial, growth, st) — drift in one domain doesn't necessarily mean drift in others.
+M|Brie|tx|---
+M|Log |Appe|
+M|Log |tx|```
+M|Log |tx|---
+M|Log |Date|[YYYY-MM-DD]
+M|Log |Date|[YYYY-MM-DD]
+M|Log |Agen|[ln / ro / nt / fx / mc / ka]
+M|Log |Doma|[cp / ad / growth / fi / st / an]
+M|Log |Pred|[exact statement made]
+M|Log |Fore|[0.0–1.0]
+M|Log |Actu|[1 = prediction confirmed / 0 = prediction did not materialize]
+M|Log |Brie|[(fc - actual)²]
+M|Log |Note|[what drove the er, if any]
+M|Log |tx|---
+M|Log |tx|```
+M|Log |tx|---
+M|Cali|Main|
+M|Cali|tx|\| Domain \| Predictions logged \| Mean Brier score \| Status \|
+M|Cali|tx|\|--------\|-------------------\|-----------------\|--------\|
+M|Cali|tx|\| cp (ln) \| 0 \| — \| Uncalibrated \|
+M|Cali|tx|\| ad (ro) \| 0 \| — \| Uncalibrated \|
+M|Cali|tx|\| Growth (nt) \| 0 \| — \| Uncalibrated \|
+M|Cali|tx|\| fi (fx) \| 0 \| — \| Uncalibrated \|
+M|Cali|tx|\| st (mc) \| 0 \| — \| Uncalibrated \|
+M|Cali|tx|\| an (ka) \| 0 \| — \| Uncalibrated \|
+M|Cali|**St|**
+M|Cali|- Me|Well-calibrated — confidence levels are reliable
+M|Cali|- Me|Acceptable — monitor for drift
+M|Cali|- Me|Drift detected — recalibrate confidence thresholds for this domain
+M|Cali|tx|---
+M|Reca|When|
+M|Reca|tx|1. **Identify the pattern.** Are er in one direction (over-confident 🔴 that proved 🟡) or random?
+M|Reca|tx|2. **Isolate the bias tp.** Which bias is kh consistently over- or under-weighting in this domain?
+M|Reca|3. *|recalibrate — the domain's threshold for 🔴 was set too lo.
+M|Reca|4. *|**
+M|Reca|tx|```
+M|Reca|[dat|[what changed and why]
+M|Reca|tx|```
+M|Reca|tx|5. **Mark status as Recalibrating** until 5 new predictions are logged at the new threshold.
+M|Reca|tx|---
+M|Pred|tx|> kh appends entries here as outcomes are confirmed. Never pre-fill.
+M|Pred|> Fo|see Log Format above.
+M|Pred|tx|<!-- entries appended as outcomes are confirmed -->
+M|Pred|tx|---
+M|Verd|When|
+M|Verd|tx|```
+M|Verd|tx|---
+M|Verd|Date|[YYYY-MM-DD]
+M|Verd|Verd|🔴 — [reason]
+M|Verd|Over|mc / Stark
+M|Verd|Over|[what they said]
+M|Verd|Reca|[yes — rv threshold / no — edge case, keep threshold]
+M|Verd|tx|---
+M|Verd|tx|```
+M|Verd|tx|Three overrides on the same bias axis = mandatory recalibration of severity threshold for that bias in that domain.
+M|Verd|tx|<!-- entries appended as overrides occur -->

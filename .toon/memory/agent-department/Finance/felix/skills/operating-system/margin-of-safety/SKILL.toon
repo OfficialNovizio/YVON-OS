@@ -1,0 +1,43 @@
+#MEM id=margin-of-safety source=/root/yvon/agent-department/Finance/felix/skills/operating-system/margin-of-safety/SKILL.md savings=11%
+M||tx|---
+M||name|margin-of-safety
+M||desc|Buffett's margin of safety applied to every yv financial recommendation. Every md must survive the bear case. Pessimistic scenario is mandatory, not optional.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Buffett never invests when the only way to win is if everything goes right. fx never recommends a spend when the only path to sc is the optimistic scenario. The margin of safety is the gap btw what you need to be true and what is actually known.
+M|Purp|tx|---
+M|When|Befo|
+M|When|it|Spend approval (new budget, cg, hire, tool)
+M|When|it|Runway projections
+M|When|- LT|CAC decisions
+M|When|it|Pricing changes
+M|When|it|Any scenario md presented to mc or Stark
+M|When|tx|---
+M|Step|tx|What single assumption, if wrong, most changes the outcome? Name it explicitly before modeling anything.
+M|Step|Exam|
+M|Step|it|"This md assumes 3% monthly churn. If churn is 6%, runway drops by 4 months."
+M|Step|it|"This assumes ROAS of 3x. At 1.5x, the cg burns cash instead of generating it."
+M|Step|The |what happens if the key variable moves against us by the realistic worst-case amount?
+M|Step|Sour|
+M|Step|tx|1. yv historical perf at its worst
+M|Step|tx|2. Industry lower quartile benchmarks (not median)
+M|Step|tx|3. cr-level outcomes during downturns
+M|Step|tx|Does the recommendation still make sense in the bear case?
+M|Step|tx|**YES → ship w/ bear case explicitly disclosed**
+M|Step|**NO|**
+M|Step|- A|Restructure the recommendation so it survives bear case (smaller initial bet, staged rollout, defined exit trigger)
+M|Step|- B|Flag to mc w/ explicit risk disclosure: "This recommendation requires the base case to hold. Here is the downside exposure."
+M|Step|tx|At what point does the scenario become structurally dangerous?
+M|Step|it|Runway drops below 3 months
+M|Step|- LT|CAC falls below 2:1
+M|Step|it|Monthly churn exceeds X% for Y consecutive months
+M|Step|tx|The cliff is not a prediction — it's a tripwire. Name it so mc knows when to act, not just that risk exists.
+M|Step|tx|---
+M|Outp|Ever|
+M|Outp|tx|```
+M|Outp|Bear|[what cld go wrong and by how much]
+M|Outp|Bear|[metric at risk, delta from base]
+M|Outp|Clif|[when this becomes structurally dangerous]
+M|Outp|Reco|YES / NO
+M|Outp|If N|[restructured approach OR explicit risk disclosure for mc]
+M|Outp|tx|```

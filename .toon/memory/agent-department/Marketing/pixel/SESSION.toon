@@ -1,0 +1,15 @@
+#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/SESSION.md savings=23%
+M|Pixe|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Pixe|tx|> Always load this first. Load MEMORY.md for proven pm structures, production log, and standing rules.
+M|Curr|- **|** 2026-05-20
+M|Curr|- **|** idle
+M|Curr|- **|** at shoot list approval before nx production batch
+M|Curr|- **|** Confirm at has approved pm + active vt confirmed before any batch starts
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|| 20|ASPECT_TO_PX passthrough to Krea width/height. Shot list sc integration (framing/lighting/tip fields → Krea pm). \| tst Krea dimensions w/ shoot mode output \|
+M|Last|| 20|garment assignment sc (top/bottom/outerwear/footwear/accessory/heroItem). Hero star badge logic. Regenerate flow. \| Run migration 021, tst Outfit Builder \|
+M|Last|| 20|im pm (static) + motion pm (vd/animated) per scene. Platform fit chips output. \| tst storyline generation flow \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|Awaiting nz SS26 cg brief → at → px production batch
+M|Open|it|Confirm Krea.ai ap key is set and dimension passthrough is live

@@ -1,0 +1,36 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-hoist-jsx.md savings=-7%
+M||tx|---
+M||titl|Hoist Static JSX Elements
+M||impa|lo
+M||impa|avoids re-creation
+M||tags|rendering, jsx, static, op
+M||tx|---
+M|Hois|tx|Extract static JSX outside cp to avoid re-creation.
+M|Hois|**In|**
+M|Hois|tx|```tsx
+M|Hois|tx|fn LoadingSkeleton() {
+M|Hois|tx|return <div className="animate-pulse h-20 bg-gray-200" />
+M|Hois|tx|}
+M|Hois|tx|fn Container() {
+M|Hois|tx|return (
+M|Hois|tx|<div>
+M|Hois|tx|{loading && <LoadingSkeleton />}
+M|Hois|tx|</div>
+M|Hois|tx|)
+M|Hois|tx|}
+M|Hois|tx|```
+M|Hois|**Co|**
+M|Hois|tx|```tsx
+M|Hois|tx|const loadingSkeleton = (
+M|Hois|tx|<div className="animate-pulse h-20 bg-gray-200" />
+M|Hois|tx|)
+M|Hois|tx|fn Container() {
+M|Hois|tx|return (
+M|Hois|tx|<div>
+M|Hois|tx|{loading && loadingSkeleton}
+M|Hois|tx|</div>
+M|Hois|tx|)
+M|Hois|tx|}
+M|Hois|tx|```
+M|Hois|tx|This is esp helpful for large and static SVG nodes, which can be expensive to recreate on every render.
+M|Hois|**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, the compiler automatically hoists static JSX elements and optimizes cp re-renders, making manual hoisting unnecessary.

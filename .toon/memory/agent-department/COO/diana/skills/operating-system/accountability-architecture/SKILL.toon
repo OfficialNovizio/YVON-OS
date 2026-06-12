@@ -1,0 +1,60 @@
+#MEM id=accountability-architecture source=/root/yvon/agent-department/COO/diana/skills/operating-system/accountability-architecture/SKILL.md savings=1%
+M||tx|---
+M||name|accountability-architecture
+M||desc|Sandberg's accountability sy for yv. Every metric has one named owner. Every miss triggers a post-mortem. No exceptions, no shared ownership, no blame — just process.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Accountability w/o blame. Sandberg built Facebook's rv machine on this principle — every number had one person responsible, every fl had a process fix, not a person to punish.
+M|Purp|tx|dn runs this sy across every ag, every KPI, every sprint in yv.
+M|Purp|tx|---
+M|The |tx|**Rule 1 — One owner per metric, always.**
+M|The |tx|Every KPI in the Operational KPIs table has exactly one named ag responsible for movement.
+M|The |tx|If the owner is unclear → dn names one before proceeding.
+M|The |tx|If ownership is shared → dn splits the metric until each piece has one owner.
+M|The |tx|**Rule 2 — Every miss triggers a post-mortem.**
+M|The |A mi|any KPI that moved in the wrong direction, any task that slipped its deadline, any sprint that didn't ship.
+M|The |tx|The post-mortem runs within 48 hours of the miss being identified.
+M|The |tx|The post-mortem finds the process fl, not the guilty ag.
+M|The |tx|**Rule 3 — Process fix, not reminder.**
+M|The |tx|A post-mortem that ends w/ "we'll be more careful nx time" is a failed post-mortem.
+M|The |tx|Every post-mortem must end w/ a specific process change that makes the same fl structurally impossible.
+M|The |tx|---
+M|Owne|tx|dn maintains this map. up after every sprint rv or ag change.
+M|Owne|tx|\| KPI \| Owner \| Cadence \|
+M|Owne|tx|\|-----\|-------\|---------\|
+M|Owne|tx|\| nz Instagram followers \| ln \| Weekly \|
+M|Owne|tx|\| nz IG engagement rate \| ln / ka \| Weekly \|
+M|Owne|tx|\| nz website sn \| ka \| Monthly \|
+M|Owne|tx|\| hb MRR \| fx \| Monthly \|
+M|Owne|tx|\| hb DAU/MAU \| rj \| Monthly \|
+M|Owne|tx|\| hb trial-to-paid \| ro \| Monthly \|
+M|Owne|tx|\| ce Brief delivery (100%) \| dn (Cron) \| Daily \|
+M|Owne|tx|\| sl data freshness \| ka \| Weekly \|
+M|Owne|tx|\| Sprint on-time delivery \| dn \| Per sprint \|
+M|Owne|tx|\| bd passing (npm run bd) \| qn \| Per dp \|
+M|Owne|tx|---
+M|Step|it|What was supposed to happen? (target)
+M|Step|it|What actually happened? (result)
+M|Step|it|By how much did it miss? (delta)
+M|Step|it|When was it detected?
+M|Step|Walk|what was the sequence of events that led here?
+M|Step|tx|Do not skip steps. The root cause is almost never the last thing that happened.
+M|Step|tx|Ask "why" five times.
+M|Step|tx|Stop when you reach a process gap, a missing sy, or an unclear ownership — not when you reach a person.
+M|Step|Exam|
+M|Step|it|Why did the brief not send? → The Cron job failed
+M|Step|it|Why did the Cron fail? → The ap rt timed out
+M|Step|it|Why did it time out? → No timeout handling was set
+M|Step|it|Why was no timeout set? → No standard was defined for ap rt
+M|Step|- Ro|No timeout standard → Fix: add to ARCHITECTURE.md, enforce in qn's rv
+M|Step|tx|Name the specific change that makes this structurally impossible going forward.
+M|Step|Form|"If [trigger], then [sy rp] — owned by [ag] — done by [date]"
+M|Step|tx|Add to dn's MEMORY.md Never Again section.
+M|Step|tx|Add the process fix to the relevant ag's workflow or OPERATIONS-PRINCIPLES.md.
+M|Step|tx|---
+M|Week|Ever|
+M|Week|tx|1. Pull all KPI owners — did every owner rp their metric?
+M|Week|tx|2. Any misses since last Monday?
+M|Week|tx|3. Are all post-mortems from the last 7 days complete?
+M|Week|tx|4. Any ownership gaps (metrics w/ no named owner)?
+M|Week|tx|Surface findings to mc in the ops section before any new task is started.

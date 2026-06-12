@@ -1,0 +1,33 @@
+#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/quality-boy-scout-rule.md savings=11%
+M||tx|---
+M||sour|wiki/concepts/Mental md/Boy Scout Rule.md
+M||crea|2026-04-11
+M||revi|2026-07-11
+M||tail|decision-critic
+M||tx|---
+M|Boy |tx|> "Always leave the codebase cleaner than you found it."
+M|Boy |Attr|Robert C. Martin (Uncle Bob)
+M|Core|tx|Make small improvements continuously. Do not wait for dedicated refactoring sprints. Incremental improvement prevents rot. Compounding effect over time.
+M|Deci|When|
+M|Deci|tx|\| Claim tp \| Critique Question \|
+M|Deci|tx|\|------------\|-------------------\|
+M|Deci|tx|\| "While fixing this, I shd also..." \| Is the additional work within the touched area? \|
+M|Deci|tx|\| "This needs refactoring first" \| Can the fix proceed w/o the rf? \|
+M|Deci|tx|\| "I'll clean this up while I'm here" \| Will cleanup delay delivery? \|
+M|Boun|When|
+M|Boun|tx|\| VERIFIED \| FAILED \| UNCERTAIN \|
+M|Boun|tx|\|----------\|--------\|-----------\|
+M|Boun|tx|\| Change is in touched code area \| Change unrelated to current work \| Scope unclear from context \|
+M|Boun|tx|\| Small, safe improvement \| Large refactoring bundled w/ fix \| Risk assessment missing \|
+M|Boun|tx|\| Balanced w/ delivery \| Perfectionism blocking progress \| Trade-offs not articulated \|
+M|Warn|Duri|
+M|Warn|it|"While I'm here" expanding to major work
+M|Warn|it|Scope creep in PRs
+M|Warn|it|Delivery blk by improvement claims
+M|Warn|it|No clear connection btw improvement and original goal
+M|Synt|When|
+M|Synt|- **|Improvement clearly scoped to touched area, safe, and not blocking delivery
+M|Synt|- **|Scope unclear or trade-offs not addressed; needs boundary clarification
+M|Synt|- **|Large refactoring masquerading as small improvement; requires separate planning
+M|Rela|- **|Understand before changing
+M|Rela|- **|Incremental migration for larger changes

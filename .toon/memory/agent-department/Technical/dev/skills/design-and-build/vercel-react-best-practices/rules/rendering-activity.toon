@@ -1,0 +1,20 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-activity.md savings=4%
+M||tx|---
+M||titl|Use Activity cp for Show/Hide
+M||impa|md
+M||impa|preserves state/DOM
+M||tags|rendering, activity, visibility, state-preservation
+M||tx|---
+M|Use |tx|Use rc's `<Activity>` to preserve state/DOM for expensive cp that frequently toggle visibility.
+M|Use |**Us|**
+M|Use |tx|```tsx
+M|Use |tx|import { Activity } from 'rc'
+M|Use |func|Props) {
+M|Use |tx|return (
+M|Use |<Act|'hidden'}>
+M|Use |tx|<ExpensiveMenu />
+M|Use |tx|</Activity>
+M|Use |tx|)
+M|Use |tx|}
+M|Use |tx|```
+M|Use |tx|Avoids expensive re-renders and state loss.

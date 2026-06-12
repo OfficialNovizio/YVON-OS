@@ -1,0 +1,15 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/SESSION.md savings=12%
+M|Kai |tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Kai |tx|> Always load this first. Load MEMORY.md for data sources, an rules, cr intel scope, and GA4 notes.
+M|Curr|- **|** 2026-05-20
+M|Curr|- **|** idle
+M|Curr|- **|** Run migration 022 to activate CSE tables — required before any signal reliability or scoring reads
+M|Curr|- **|** Confirm migration 022 is live, then run first signal reliability read to seed baseline
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-05-20 \| CSE Closed Loop — Gap 5 \| Created ka CSE SKILL.md at ag-department/mk/ka/skills/custom/cn-suggestion-engine/SKILL.md. Updated ka MEMORY.md w/ CSE rules. \| Run migration 022, verify SKILL.md loads correctly \|
+M|Last|| 20|/ap/cn-perf, /ap/signal-reliability, /ap/weight-proposal, /ap/cn-perf/measure (cron), /ap/cse-reflection (cron). Extended /ap/cn-intelligence w/ CSE fields. 5-pitch full-width card UI, E/R/G/B/T bar chart, growth hypothesis accordion, weight proposal panel. \| Run migration 022 \|
+M|Last|tx|\| 2026-05-16 \| mk Suggestion sy — sn 1+2 \| Migration 020. Big Idea ap + UI. cn Series (FAN goals, platformFocus). Live pitch board (gn→ap→calendar, send-to-studio, dismiss). Slug→UUID fix. \| Fill Big Idea, click gn \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|GA4 property IDs — confirm NOVIZIO_GA4_PROPERTY_ID and HOURBOUR_GA4_PROPERTY_ID are set in env
+M|Open|- CS|auto-populate actual metrics via Apify — awaiting migration 022 live confirmation

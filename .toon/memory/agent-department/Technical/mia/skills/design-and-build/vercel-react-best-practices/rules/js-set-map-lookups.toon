@@ -1,0 +1,18 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-set-map-lookups.md savings=1%
+M||tx|---
+M||titl|Use Set/Map for O(1) Lookups
+M||impa|lo-md
+M||impa|O(n) to O(1)
+M||tags|javascript, set, map, data-structures, perf
+M||tx|---
+M|Use |tx|Convert arrays to Set/Map for repeated membership checks.
+M|Use |**In|**
+M|Use |tx|```ts
+M|Use |tx|const allowedIds = ['a', 'b', 'c', ...]
+M|Use |tx|items.filter(item => allowedIds.includes(item.id))
+M|Use |tx|```
+M|Use |**Co|**
+M|Use |tx|```ts
+M|Use |tx|const allowedIds = new Set(['a', 'b', 'c', ...])
+M|Use |tx|items.filter(item => allowedIds.has(item.id))
+M|Use |tx|```

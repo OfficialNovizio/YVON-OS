@@ -1,0 +1,15 @@
+#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/SESSION.md savings=6%
+M|Nate|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Nate|tx|> Always load this first. Load MEMORY.md for growth framework, funnel al, and channel benchmarks.
+M|Curr|- **|** 2026-05-19
+M|Curr|- **|** idle
+M|Curr|- **|** CSE migration 022 live — required before signal reliability data accumulates
+M|Curr|- **|** Check signal_reliability table for early patterns after first 5 posts measured
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-05-19 \| cn Suggestion Engine — growth hypothesis framework \| IF [action] THEN [metric] bc [mechanism] hypothesis structure. Signal reliability md (overperformed/met/underperformed tracking per signal_type). Weight proposal sy (pnd/approved/rejected w/ 14-day cooldown on rejections). \| Run migration 022 to activate \|
+M|Last|tx|\| 2026-05-16 \| mk Suggestion sy — sn 1+2 \| A/B experiment framework for pitch approval. Big Idea structure (FAN goals, platformFocus). Live pitch board (gn→ap→calendar, send-to-studio, dismiss). \| Fill Big Idea, click gn \|
+M|Last|tx|\| 2026-03-23 \| md downgraded from Sonnet to Haiku \| Changed in ag.ts + briefing/rt.ts — cost reduction, qual maintained \| Stable \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|Define highest-leverage experiment for nz once GA4 property ID is confirmed
+M|Open|it|hb growth funnel — not yet mapped, needed before any channel experiment

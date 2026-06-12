@@ -1,0 +1,86 @@
+#MEM id=funnel-map source=/root/yvon/agent-department/Marketing/nate/skills/custom/funnel-map/SKILL.md savings=19%
+M||tx|---
+M||name|funnel-map
+M||desc|yv-specific funnel stages for nz and hb w/ drop-off benchmarks and experiment tp per stage. Load before designing any growth experiment to confirm which stage to target.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Designing a great experiment at the wrong funnel stage wastes 14 days. If hb's activation rate is 25% (well below the 40% benchmark), running a trial-to-paid conversion experiment is premature — us aren't reaching the value moment first. This skill maps the funnel stages, benchmarks, and the correct experiment tp for each stage.
+M|Purp|tx|---
+M|Novi|tx|```
+M|Novi|tx|[sl Discovery] → [Site Visit] → [pd Page] → [Add to Cart] → [Purchase] → [Repeat]
+M|Novi|tx|```
+M|Stag|- **|** Instagram, TikTok, organic search, influencer
+M|Stag|- **|** sl CTR (link in bio + story swipe-up click rate)
+M|Stag|- **|** 1–3% CTR from sl post to site
+M|Stag|- **|** hi impressions, lo site traffic
+M|Stag|- **|** Hook testing (ln), creative format (at/px), landing page match
+M|Stag|- **|** ro (paid) / ln (organic) / ka (tracking)
+M|Stag|- **|** Pages per sn, bounce rate
+M|Stag|- **|** < 60% bounce, > 2 pages/sn
+M|Stag|- **|** hi bounce on homepage or category pages
+M|Stag|- **|** Homepage layout (mi), navigation structure (dv), featured pd selection (mc)
+M|Stag|- **|** mi / dv
+M|Stag|- **|** Add-to-cart rate
+M|Stag|- **|** 3–8% of pd page views
+M|Stag|- **|** hi pd page views, lo ATC rate
+M|Stag|- **|** pd imagery (at), size guide, sl proof placement (ln), price anchoring, reviews display
+M|Stag|- **|** mi (layout) / ln (cp) / at (visual)
+M|Stag|- **|** Cart abandonment rate
+M|Stag|- **|** 65–75% abandon (above 75% = investigate)
+M|Stag|- **|** hi ATC, lo purchase completion
+M|Stag|- **|** Checkout friction reduction (dv), free shipping threshold, payment method options, urgency cp (kh gate required before any scarcity/urgency)
+M|Stag|- **|** dv (checkout) / ln (cp) / ro (retargeting)
+M|Stag|- **|** Repeat purchase rate within 90 days
+M|Stag|- **|** > 20% repeat within 90 days for fashion
+M|Stag|- **|** lo LTV, hi new cs dependency
+M|Stag|- **|** Post-purchase em sequence (ln), loyalty signals, personalised recommendations
+M|Stag|- **|** ln
+M|Stag|tx|---
+M|Hour|tx|```
+M|Hour|tx|[Acquisition] → [Trial Signup] → [Activation] → [Engagement] → [Paid Conversion] → [Retention]
+M|Hour|tx|```
+M|Stag|- **|** LinkedIn, YouTube, SEO, cn mk
+M|Stag|- **|** Landing page → trial signup rate
+M|Stag|- **|** 1–3% of landing page visitors
+M|Stag|- **|** hi traffic, lo signups
+M|Stag|- **|** Landing page hl (ln), CTA button, sl proof placement, pricing page ds (mi)
+M|Stag|- **|** ro (paid) / ln (cp) / mi (ds)
+M|Stag|- **|** Activation rate within 7 days
+M|Stag|- **|** 40–60% of signups reach activation
+M|Stag|- **|** First timer logged AND first invoice or rp generated
+M|Stag|- **|** hi signups, lo Day-7 DAU
+M|Stag|- **|** Onboarding flow (dv), first-run exp, Day 1–3 em drip (ln), in-app pm
+M|Stag|- **|** dv (flow) / ln (em) / rj (backend triggers)
+M|Stag|- **|** Week-2 retention rate (active in trial week 2)
+M|Stag|- **|** > 50% of activated us return in week 2
+M|Stag|- **|** Activated but not returning after Day 7
+M|Stag|- **|** Weekly summary em (ln), habit-forming feature nudges, push notification timing
+M|Stag|- **|** ln
+M|Stag|- **|** Trial-to-paid conversion rate
+M|Stag|- **|** 15–25% of activated trials convert
+M|Stag|- **|** Trial ending w/ lo upgrade rate
+M|Stag|- **|** Upgrade pm timing (dv), pricing page clarity (mi), trial extension offer, loss aversion CTA (kh gate required)
+M|Stag|- **|** dv (pm) / ln (cp) / ro (retargeting)
+M|Stag|- **|** Monthly churn rate
+M|Stag|- **|** < 3% monthly churn for healthy SaaS
+M|Stag|- **|** Churning in months 2–3
+M|Stag|- **|** sc milestone emails (ln), feature education sequence, proactive check-in, annual plan offer
+M|Stag|- **|** ln / dn (process)
+M|Stag|tx|---
+M|Diag|Befo|
+M|Diag|tx|1. **Where is ka's data showing the largest relative drop-off?** (not absolute volume — relative conversion rate vs benchmark)
+M|Diag|tx|2. **Is the stage above it healthy?** Fixing Stage 4 (cart → purchase) is premature if Stage 3 (PDP → ATC) is already broken.
+M|Diag|tx|3. **Is this stage within nt's experiment scope?** Stages requiring major dv work (> 1 week) need dn's sprint queue first.
+M|Diag|**Ru|** Always fix the earliest broken stage first. Traffic leaking at Stage 2 cannot be recovered by a Stage 4 experiment.
+M|Diag|tx|---
+M|Funn|tx|```
+M|Funn|vt|[nz / hb]
+M|Funn|Date|[YYYY-MM-DD]
+M|Funn|Data|ka — [date of last rp]
+M|Funn|Stag|[metric] vs [benchmark] — [status: healthy / at-risk / broken]
+M|Funn|Stag|[metric] vs [benchmark] — [status]
+M|Funn|Stag|[metric] vs [benchmark] — [status]
+M|Funn|Stag|[metric] vs [benchmark] — [status]
+M|Funn|Stag|[metric] vs [benchmark] — [status]
+M|Funn|→ Pr|[stage + reason]
+M|Funn|tx|```

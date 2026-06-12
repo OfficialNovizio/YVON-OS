@@ -1,0 +1,47 @@
+SKILL|teams-meeting-pipeline|"Operate the Teams meeting summary pipeline via Hermes CLI — summarize meetings, inspect pipeline status, replay jobs, manage Microsoft Graph subscriptions."
+STEP|1|summarize a Teams meeting / extract action items / pull meeting notes
+STEP|2|check pipeline status, inspect a stored meeting job, or see recent meetings
+STEP|3|replay / re-run a stored job that failed or needs a fresh summary
+STEP|4|validate Microsoft Graph setup after changing env or config
+STEP|5|troubleshoot "meeting summary never arrived" or "no new meetings are ingesting"
+STEP|6|manage Graph webhook subscriptions (create, renew, delete, inspect)
+STEP|7|set up automated subscription renewal (see pitfall below)
+STEP|8|English: "summarize the Teams meeting", "pipeline status", "replay job X"
+STEP|9|Turkish: "Teams meeting özetle", "action item çıkar", "toplantı notu", "pipeline durumu", "replay job"
+STEP|10|User asks "why didn't I get a summary for today's meeting?" → start with `list --status failed`, then `show <job-id>` on the relevant row. If the job doesn't exist at all, check `subscriptions` — the 
+STEP|11|User asks "is setup working?" → `validate`, then `token-health`, then `subscriptions`. If all three pass, request a test meeting and check `list` for a fresh row.
+STEP|12|User asks "re-run summary for meeting X" → `list` to find the job ID, `run <job-id>` to replay. If it fails again, `show <job-id>` to inspect the error and `fetch --meeting-id` to dry-run the artifact
+STEP|13|User asks "add meeting X to the pipeline" → usually you don't — the pipeline is subscription-driven, not per-meeting. If they want a specific past meeting summarized, use `fetch` to pull transcript + 
+STEP|14|Run `hermes teams-pipeline subscriptions` — if it's empty or all entries show `expirationDateTime` in the past, that's the cause.
+STEP|15|Recreate with `subscribe` as shown above.
+STEP|16|**Set up automated renewal immediately** via `hermes cron add`, a systemd timer, or plain crontab. The operator runbook at `/docs/guides/operate-teams-meeting-pipeline#automating-subscription-renewal-
+STEP|17|**Transcript not available yet.** Teams takes some time after a meeting ends to generate the transcript artifact. `fetch --meeting-id` on a just-ended meeting may return empty. Wait 2-5 minutes and re
+STEP|18|**Delivery mode mismatch.** If summaries are produced (`list` shows success) but nothing lands in Teams, check `platforms.teams.extra.delivery_mode` and the matching target config (`incoming_webhook_u
+STEP|19|**Graph app permissions.** A token acquires cleanly (`token-health` passes) but Graph API calls return 401/403 when permissions were added but admin consent wasn't re-granted. Have the user revisit th
+STEP|20|Azure app registration walkthrough: `/docs/guides/microsoft-graph-app-registration`
+STEP|21|Full pipeline setup: `/docs/user-guide/messaging/teams-meetings`
+STEP|22|Operator runbook (renewal automation, troubleshooting, go-live checklist): `/docs/guides/operate-teams-meeting-pipeline`
+STEP|23|Webhook listener setup: `/docs/user-guide/messaging/msgraph-webhook`
+PIT|summarize a Teams meeting / extract action items / pull meeting notes
+PIT|check pipeline status, inspect a stored meeting job, or see recent meetings
+PIT|replay / re-run a stored job that failed or needs a fresh summary
+PIT|validate Microsoft Graph setup after changing env or config
+PIT|troubleshoot "meeting summary never arrived" or "no new meetings are ingesting"
+PIT|manage Graph webhook subscriptions (create, renew, delete, inspect)
+PIT|set up automated subscription renewal (see pitfall below)
+PIT|English: "summarize the Teams meeting", "pipeline status", "replay job X"
+PIT|Turkish: "Teams meeting özetle", "action item çıkar", "toplantı notu", "pipeline durumu", "replay job"
+PIT|User asks "why didn't I get a summary for today's meeting?" → start with `list --status failed`, then `show <job-id>` on the relevant row. If the job doesn't exist at all, check `subscriptions` — the 
+PIT|User asks "is setup working?" → `validate`, then `token-health`, then `subscriptions`. If all three pass, request a test meeting and check `list` for a fresh row.
+PIT|User asks "re-run summary for meeting X" → `list` to find the job ID, `run <job-id>` to replay. If it fails again, `show <job-id>` to inspect the error and `fetch --meeting-id` to dry-run the artifact
+PIT|User asks "add meeting X to the pipeline" → usually you don't — the pipeline is subscription-driven, not per-meeting. If they want a specific past meeting summarized, use `fetch` to pull transcript + 
+PIT|Run `hermes teams-pipeline subscriptions` — if it's empty or all entries show `expirationDateTime` in the past, that's the cause.
+PIT|Recreate with `subscribe` as shown above.
+PIT|**Set up automated renewal immediately** via `hermes cron add`, a systemd timer, or plain crontab. The operator runbook at `/docs/guides/operate-teams-meeting-pipeline#automating-subscription-renewal-
+PIT|**Transcript not available yet.** Teams takes some time after a meeting ends to generate the transcript artifact. `fetch --meeting-id` on a just-ended meeting may return empty. Wait 2-5 minutes and re
+PIT|**Delivery mode mismatch.** If summaries are produced (`list` shows success) but nothing lands in Teams, check `platforms.teams.extra.delivery_mode` and the matching target config (`incoming_webhook_u
+PIT|**Graph app permissions.** A token acquires cleanly (`token-health` passes) but Graph API calls return 401/403 when permissions were added but admin consent wasn't re-granted. Have the user revisit th
+PIT|Azure app registration walkthrough: `/docs/guides/microsoft-graph-app-registration`
+PIT|Full pipeline setup: `/docs/user-guide/messaging/teams-meetings`
+PIT|Operator runbook (renewal automation, troubleshooting, go-live checklist): `/docs/guides/operate-teams-meeting-pipeline`
+PIT|Webhook listener setup: `/docs/user-guide/messaging/msgraph-webhook`

@@ -1,0 +1,198 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/assumptions.md savings=3%
+M|Leap|tx|Every startup is built on a stack of unproven assumptions. Most founders treat these assumptions as facts. The Lean Startup treats them as hypotheses that must be tested systematically. Leap-of-faith assumptions are the assumptions that must be true for the business to succeed but have the least evidence supporting them. Identifying, prioritizing, and testing these assumptions is the foundation of validated learning.
+M|Valu|The |
+M|Valu|tx|Tests whether the pd delivers value to cs once they start using it.
+M|Valu|**Co|** Do cs find this pd valuable enough to keep using it (and eventually pay for it)?
+M|Valu|tx|\| Dimension \| What to Validate \| Example Signals \|
+M|Valu|tx|\|-----------\|-----------------\|-----------------\|
+M|Valu|tx|\| Problem existence \| The problem is real and painful enough to motivate action \| cs describe the problem unprompted in interviews \|
+M|Valu|tx|\| Solution fit \| Your specific solution addresses the problem effectively \| us complete core tasks successfully; retention is strong \|
+M|Valu|tx|\| Willingness to pay \| cs value the solution enough to exchange money for it \| Pre-orders, paid pilots, conversion from free to paid \|
+M|Valu|tx|\| Frequency \| cs need the solution repeatedly, not just once \| Return usage within expected timeframe \|
+M|Grow|tx|Tests how new cs discover and adopt the pd.
+M|Grow|**Co|** How will this pd spread from early adopters to a broader mk?
+M|Grow|tx|\| Dimension \| What to Validate \| Example Signals \|
+M|Grow|tx|\|-----------\|-----------------\|-----------------\|
+M|Grow|tx|\| Discoverability \| Target cs can find the pd \| Organic search traffic, word-of-mouth referrals \|
+M|Grow|tx|\| Acquisition cost \| You can acquire cs at a sustainable cost \| CAC below projected LTV \|
+M|Grow|tx|\| Virality \| Existing us bring in new us \| Viral coefficient, referral rates, sl sharing \|
+M|Grow|tx|\| mk size \| Enough potential cs exist \| TAM al validated by early traction patterns \|
+M|Grow|**Cr|** Validate the value hypothesis before the growth hypothesis. Growing something people do not value is the most expensive way to fail.
+M|Step|Brai|
+M|Step|**Cu|**
+M|Step|it|Our target cs is [specific persona]
+M|Step|it|They exp [specific problem]
+M|Step|it|They currently solve it by [current alternative]
+M|Step|it|They are dissatisfied w/ the current solution bc [reason]
+M|Step|**Pr|**
+M|Step|it|The problem is frequent enough to justify a solution
+M|Step|it|The problem is painful enough that people will pay to solve it
+M|Step|it|The problem is not adequately solved by existing alternatives
+M|Step|**So|**
+M|Step|it|Our solution effectively addresses the problem
+M|Step|it|cs can use our solution w/o extensive training
+M|Step|it|The solution is significantly better than alternatives
+M|Step|**Bu|**
+M|Step|it|cs will pay [price] for this solution
+M|Step|it|We can acquire cs for less than [amount]
+M|Step|it|cs lifetime value exceeds acquisition cost
+M|Step|it|Our mk is large enough to bd a viable business
+M|Step|**Te|**
+M|Step|it|We can bd this technology w/ our team
+M|Step|it|The technology can scale to serve our target mk
+M|Step|it|perf will meet cs expectations
+M|Step|Plot|
+M|Step|tx|```
+M|Step|tx|hi IMPACT
+M|Step|tx|\|
+M|Step|tx|tst FIRST     \|     MONITOR
+M|Step|tx|(hi Impact,     \|  (hi Impact,
+M|Step|tx|hi Uncertainty) \|   lo Uncertainty)
+M|Step|tx|\|
+M|Step|tx|hi UNCERTAINTY -----+------ lo UNCERTAINTY
+M|Step|tx|\|
+M|Step|tx|EXPLORE        \|      IGNORE
+M|Step|tx|(lo Impact,      \|   (lo Impact,
+M|Step|tx|hi Uncertainty) \|   lo Uncertainty)
+M|Step|tx|\|
+M|Step|tx|lo IMPACT
+M|Step|tx|```
+M|Step|**Te|** These are your leap-of-faith assumptions. If wrong, the business fails. And you have little evidence they are true. tst these immediately.
+M|Step|**Mo|** Important but you have reasonable evidence. Keep an eye on them but do not spend experiment cycles here yet.
+M|Step|**Ex|** Uncertain but not ct. Explore casually through cs conversations.
+M|Step|**Ig|** lo impact and well-understood. Move on.
+M|Assu|For |
+M|Assu|tx|\| Assumption \| Impact (1-5) \| Uncertainty (1-5) \| Priority Score \| tst Order \|
+M|Assu|tx|\|-----------\|-------------\|-------------------\|---------------\|------------\|
+M|Assu|tx|\| cs will pay $29/month \| 5 \| 5 \| 25 \| 1 \|
+M|Assu|tx|\| Problem is frequent (weekly+) \| 5 \| 4 \| 20 \| 2 \|
+M|Assu|tx|\| Can acquire via cn mk \| 4 \| 4 \| 16 \| 3 \|
+M|Assu|tx|\| Team can bd ML md \| 4 \| 3 \| 12 \| 4 \|
+M|Assu|tx|\| us will share w/ colleagues \| 3 \| 4 \| 12 \| 5 \|
+M|Assu|tx|\| mk size is $1B+ \| 3 \| 2 \| 6 \| 6 \|
+M|Assu|**Im|** How ct is this assumption to the business succeeding?
+M|Assu|**Un|** How little evidence do you have?
+M|Assu|**Pr|** Impact multiplied by Uncertainty. Higher score = tst sooner.
+M|Cust|tx|\| Method \| Duration \| Cost \| Signal Strength \|
+M|Cust|tx|\|--------\|----------\|------\|-----------------\|
+M|Cust|tx|\| cs discovery interviews (20+) \| 2-3 weeks \| lo \| md \|
+M|Cust|tx|\| Landing page w/ targeted ad \| 1-2 weeks \| lo-md \| md-hi \|
+M|Cust|tx|\| Community/forum observation \| 1 week \| Free \| md \|
+M|Cust|tx|\| cr cs al \| 1 week \| Free \| lo-md \|
+M|Cust|tx|\| Survey to target demographic \| 1-2 weeks \| lo \| lo (stated vs revealed preference) \|
+M|Prob|tx|\| Method \| Duration \| Cost \| Signal Strength \|
+M|Prob|tx|\|--------\|----------\|------\|-----------------\|
+M|Prob|tx|\| Problem interviews (focus on current behavior) \| 2-3 weeks \| lo \| hi \|
+M|Prob|tx|\| Current spending on alternatives \| 1 week \| Free \| hi \|
+M|Prob|tx|\| Time spent on workarounds \| 1-2 weeks \| lo \| hi \|
+M|Prob|tx|\| Support ticket al (cr or own) \| 1 week \| Free \| md \|
+M|Prob|tx|\| Job-to-be-done interviews \| 2-3 weeks \| lo \| hi \|
+M|Solu|tx|\| Method \| Duration \| Cost \| Signal Strength \|
+M|Solu|tx|\|--------\|----------\|------\|-----------------\|
+M|Solu|tx|\| Concierge MVP (5-10 cs) \| 2-4 weeks \| lo-md \| Very hi \|
+M|Solu|tx|\| Wizard of Oz MVP \| 2-4 weeks \| md \| hi \|
+M|Solu|tx|\| Clickable prototype usability tst \| 1-2 weeks \| lo \| md \|
+M|Solu|tx|\| A/B tst (existing pd) \| 1-3 weeks \| lo \| hi \|
+M|Solu|tx|\| cr pd teardown \| 1 week \| lo \| lo-md \|
+M|Busi|tx|\| Method \| Duration \| Cost \| Signal Strength \|
+M|Busi|tx|\|--------\|----------\|------\|-----------------\|
+M|Busi|tx|\| Pre-sell / pre-order \| 2-4 weeks \| md \| Very hi \|
+M|Busi|tx|\| Pricing page tst (before pd) \| 1-2 weeks \| lo \| hi \|
+M|Busi|tx|\| Willingness-to-pay interviews \| 1-2 weeks \| lo \| md \|
+M|Busi|tx|\| Competitive pricing al \| 1 week \| Free \| lo-md \|
+M|Busi|tx|\| Paid pilot w/ letter of intent \| 2-6 weeks \| md \| Very hi \|
+M|Grow|tx|\| Method \| Duration \| Cost \| Signal Strength \|
+M|Grow|tx|\|--------\|----------\|------\|-----------------\|
+M|Grow|tx|\| Paid acquisition tst ($500-2000) \| 1-2 weeks \| md \| hi \|
+M|Grow|tx|\| Referral program MVP \| 2-4 weeks \| lo \| hi \|
+M|Grow|tx|\| cn mk experiment \| 4-8 weeks \| lo \| md \|
+M|Grow|tx|\| Partnership outreach (10+ partners) \| 2-4 weeks \| lo \| md \|
+M|Grow|tx|\| Viral loop prototype \| 2-3 weeks \| md \| hi \|
+M|Assu|tx|```
+M|Assu|tx|ASSUMPTION MAP
+M|Assu|tx|==============
+M|Assu|pd|____________________
+M|Assu|Date|____________________
+M|Assu|Team|____________________
+M|Assu|tx|LEAP-OF-FAITH ASSUMPTIONS (tst First)
+M|Assu|tx|---------------------------------------
+M|Assu|1. A|____________________
+M|Assu|Cate|[ ] cs  [ ] Problem  [ ] Solution  [ ] Business md  [ ] Growth
+M|Assu|Impa|___/5    Uncertainty: ___/5    Priority: ___
+M|Assu|Test|____________________
+M|Assu|Succ|____________________
+M|Assu|Time|____________________
+M|Assu|2. A|____________________
+M|Assu|Cate|[ ] cs  [ ] Problem  [ ] Solution  [ ] Business md  [ ] Growth
+M|Assu|Impa|___/5    Uncertainty: ___/5    Priority: ___
+M|Assu|Test|____________________
+M|Assu|Succ|____________________
+M|Assu|Time|____________________
+M|Assu|3. A|____________________
+M|Assu|Cate|[ ] cs  [ ] Problem  [ ] Solution  [ ] Business md  [ ] Growth
+M|Assu|Impa|___/5    Uncertainty: ___/5    Priority: ___
+M|Assu|Test|____________________
+M|Assu|Succ|____________________
+M|Assu|Time|____________________
+M|Assu|tx|IMPORTANT BUT LESS UNCERTAIN (Monitor)
+M|Assu|tx|--------------------------------------
+M|Assu|tx|4. ____________________
+M|Assu|tx|5. ____________________
+M|Assu|tx|EXPLORE LATER
+M|Assu|tx|-------------
+M|Assu|tx|6. ____________________
+M|Assu|tx|7. ____________________
+M|Assu|tx|```
+M|SaaS|tx|\| Assumption \| Typical Risk Level \| Testing Approach \|
+M|SaaS|tx|\|-----------\|-------------------\|------------------\|
+M|SaaS|tx|\| us will adopt a new tool (switching cost) \| hi \| Free trial conversion rate \|
+M|SaaS|tx|\| Monthly subscription is preferred over annual \| md \| Pricing page A/B tst \|
+M|SaaS|tx|\| Self-serve onboarding is sufficient \| hi \| Onboarding completion funnel \|
+M|SaaS|tx|\| Integration w/ existing tools is required \| md \| cs interviews abt workflow \|
+M|SaaS|tx|\| Freemium will drive paid conversions \| hi \| Cohort al of free-to-paid \|
+M|SaaS|tx|\| SMBs will pay w/o a sales call \| md \| Self-serve purchase funnel tst \|
+M|Mark|tx|\| Assumption \| Typical Risk Level \| Testing Approach \|
+M|Mark|tx|\|-----------\|-------------------\|------------------\|
+M|Mark|tx|\| Supply side will join the platform \| Very hi \| Manual recruitment of 20-50 suppliers \|
+M|Mark|tx|\| Demand exists at the listed price \| hi \| Smoke tst landing page \|
+M|Mark|tx|\| Both sides show up at the same time \| Very hi \| Single-geography concierge tst \|
+M|Mark|tx|\| Trust can be established btw strangers \| hi \| rv/rating sy MVP \|
+M|Mark|tx|\| Take rate is acceptable to both sides \| md \| Pricing experiments w/ early us \|
+M|Mark|tx|\| Network effects will kick in at scale \| hi \| Measure engagement vs density \|
+M|B2B |tx|\| Assumption \| Typical Risk Level \| Testing Approach \|
+M|B2B |tx|\|-----------\|-------------------\|------------------\|
+M|B2B |tx|\| Budget holder will champion internally \| Very hi \| Pilot w/ 3-5 companies \|
+M|B2B |tx|\| IT will ap the integration \| hi \| tc rv w/ 5 IT leaders \|
+M|B2B |tx|\| ROI justifies the price point \| hi \| Case study from pilot \|
+M|B2B |tx|\| Procurement timeline is acceptable \| md \| Sales cycle measurement \|
+M|B2B |tx|\| End us will adopt w/o mandate \| hi \| us adoption in pilot companies \|
+M|B2B |tx|\| Data sec requirements can be met \| md \| sec audit and certification plan \|
+M|Cons|tx|\| Assumption \| Typical Risk Level \| Testing Approach \|
+M|Cons|tx|\|-----------\|-------------------\|------------------\|
+M|Cons|tx|\| us will download yet another app \| Very hi \| App store listing tst or landing page \|
+M|Cons|tx|\| Daily active usage will occur \| Very hi \| Day-1, Day-7, Day-30 retention cohorts \|
+M|Cons|tx|\| Notifications will not be disabled \| hi \| Notification opt-in rate tracking \|
+M|Cons|tx|\| us will cr cn/data \| hi \| First-sn completion rate \|
+M|Cons|tx|\| Monetization will not kill engagement \| hi \| A/B tst monetization features \|
+M|Cons|tx|\| Organic sharing will occur \| md \| Share button usage, invite rate \|
+M|The |Each|
+M|The |tx|1. **State the assumption clearly.** "We assume that ____."
+M|The |tx|2. **Identify the riskiest element.** What part of this assumption, if wrong, wld be most damaging?
+M|The |tx|3. **Formulate a falsifiable hypothesis.** "If we ____, then ____ will happen within ____."
+M|The |tx|4. **Choose the fastest tst method.** What is the minimum effort that generates a meaningful signal?
+M|The |tx|5. **Set pass/fail criteria in advance.** "sc = ____. fl = ____."
+M|The |tx|6. **Run the experiment.**
+M|The |tx|7. **Record the result and decide.** Persevere, pivot, or dig deeper.
+M|Exam|**As|** Remote teams need asynchronous vd messaging.
+M|Exam|**Ri|** Do remote teams actually feel pain around asynchronous communication, or are Slack and em sufficient?
+M|Exam|**Hy|** If we post a landing page describing async vd messaging in 5 remote-work communities, at least 3% of visitors will sign up for the waitlist within 2 weeks.
+M|Exam|**Te|** Landing page w/ Mailchimp signup. $200 in targeted ad as supplement to organic posts.
+M|Exam|**Pa|** Above 3% signup rate w/ 500+ visitors = proceed. Below 3% = interview signups to understand why, then reassess.
+M|Exam|**Re|** 4.2% signup rate. 21 signups. 8 responded to follow-up em. 5 described specific pain points w/ existing tools.
+M|Exam|**De|** Assumption partially validated. Proceed to concierge MVP w/ the 8 respondents to validate solution fit.
+M|Sequ|Test|
+M|Sequ|tx|1. **cs and problem assumptions first.** If the problem does not exist or the cs does not care, nothing else matters.
+M|Sequ|tx|2. **Solution assumptions second.** Does your approach actually solve the problem?
+M|Sequ|tx|3. **Business md assumptions third.** Can you make money?
+M|Sequ|tx|4. **Growth assumptions last.** Can you scale?
+M|Sequ|This|building and scaling a solution to a problem nobody has.

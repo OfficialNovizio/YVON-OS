@@ -1,0 +1,24 @@
+#MEM id=agents source=/root/yvon/agent-department/Technical/quinn/skills/agents/02-openrouter.md savings=2%
+M||tx|---
+M||prio|hi
+M||appl|all-ag
+M||load|always
+M||md|qwen3.5-4b
+M||conf|[]
+M||tx|---
+M|Mode|tx|\| Task tp \| md \| Reason \|
+M|Mode|tx|\|-----------\|-------\|--------\|
+M|Mode|tx|\| Architecture decisions \| claude-sonnet-4-6 \| Needs deep reasoning \|
+M|Mode|tx|\| Coding tasks \| claude-sonnet-4-6 \| Accuracy over speed \|
+M|Mode|tx|\| UI generation \| claude-haiku-4-5 \| Fast, cheap, sufficient \|
+M|Mode|tx|\| br cn writing \| claude-haiku-4-5 \| Fast, cheap \|
+M|Mode|tx|\| Memory reads/writes \| claude-haiku-4-5 \| Simple retrieval \|
+M|Mode|tx|\| Code rv \| claude-sonnet-4-6 \| Needs full comprehension \|
+M|Rout|it|Never manually select a md mid-task — skill frontmatter declares it
+M|Rout|- Qu|` frontmatter and rt accordingly
+M|Rout|it|If no skill is active, default to `claude-sonnet-4-6`
+M|Rout|it|Never use Opus for routine tasks — only for explicit architecture reviews
+M|Conf|tx|`projects/yv/.claude/settings.local.json`
+M|Cost|it|Prefer Haiku for all non-reasoning tasks
+M|Cost|it|Batch cn generation tasks to minimize round-trips
+M|Cost|it|Never stream rp for background/automated tasks

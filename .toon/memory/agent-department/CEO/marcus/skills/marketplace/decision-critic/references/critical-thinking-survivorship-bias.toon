@@ -1,0 +1,38 @@
+#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/critical-thinking-survivorship-bias.md savings=14%
+M||tx|---
+M||sour|wiki/concepts/ct Thinking/Survivorship Bias.md
+M||crea|2026-04-11
+M||revi|2026-07-11
+M||tx|---
+M|Prin|tx|Survivorship bias occurs when we draw conclusions from winners while ignoring the losers who used the same st. The visible survivors distort our understanding of what actually works.
+M|Clas|Duri|armor the areas w/ no damage, bc planes hit there never returned.
+M|Deci|tx|Use this md during **Decomposition** (Steps 1-2) and **Challenge** (Steps 5-6) to surface hidden data gaps.
+M|Veri|When|
+M|Veri|tx|1. What failures used the same approach but are not visible?
+M|Veri|tx|2. Are we studying survivors or the full population?
+M|Veri|tx|3. What data are we missing bc failures were discarded?
+M|Veri|tx|4. Is the sample self-selected (only successes reported)?
+M|Red |tx|\| Signal \| Risk \|
+M|Red |tx|\|--------\|------\|
+M|Red |tx|\| "Company X did this and succeeded" \| Ignoring companies that did the same and failed \|
+M|Red |tx|\| "Our successful projects all used pattern Y" \| Failed projects using Y were forgotten \|
+M|Red |tx|\| "This approach always works" \| Selection bias in evidence \|
+M|Red |tx|\| "Top performers do Z" \| Studying survivors, not the full cohort \|
+M|Red |tx|\| "We've never had a problem w/ this" \| Problems were silently discarded or unreported \|
+M|Cont|Gene|
+M|Cont|it|"How many teams tried this approach and failed? Where is that data?"
+M|Cont|it|"Are we looking at the planes that came back, or the ones that didn't?"
+M|Cont|it|"Is our evidence base self-selected?"
+M|Fail|it|Adopting a st bc visible successes used it, ignoring invisible failures
+M|Fail|it|Reinforcing existing patterns bc only their successes are measured
+M|Fail|it|Dismissing alternatives bc no visible successes exist (they were never tried)
+M|Fail|it|Over-investing in approaches w/ hi visibility but unknown fl rates
+M|Prac|Befo|
+M|Prac|it|[ ] fl cases examined, not just successes
+M|Prac|it|[ ] Sample includes non-survivors (full population)
+M|Prac|it|[ ] Selection mechanism for evidence is understood
+M|Prac|it|[ ] Base rate of sc/fl is known or estimated
+M|Prac|it|[ ] Alternative explanations for observed pattern considered
+M|Rela|- Co|seeking evidence that supports existing beliefs
+M|Rela|- Ba|ignoring overall probability when evaluating specific cases
+M|Rela|- Sy|examining the full sy, not just visible outputs

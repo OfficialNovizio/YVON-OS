@@ -1,0 +1,256 @@
+#MEM id=prioritization-advisor source=/root/yvon/agent-department/COO/diana/skills/executive-operations/prioritization-advisor/SKILL.md savings=6%
+M||tx|---
+M||name|prioritization-advisor
+M||desc|>-
+M||tx|Choose a prioritization framework based on stage, team context, and stakeholder needs. Use when deciding btw RICE, ICE, value/effort, or another scoring approach.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[co, operations, workflow, planning, sprint, milestones, process, st]
+M||inte|Guide pd managers in choosing the right prioritization framework by asking adaptive questions abt pd stage, team context, decision-making needs, and stakeholder dynamics. Use this to avoid "framework whiplash" (switching frameworks constantly) or applying the wrong framework (e.g., using RICE for st bets or ICE for data-driven decisions). Outputs a recommended framework w/ implementation guidance tailored to your context.
+M||tp|interactive
+M||best|
+M||scen|
+M||tx|---
+M|Purp|tx|Guide pd managers in choosing the right prioritization framework by asking adaptive questions abt pd stage, team context, decision-making needs, and stakeholder dynamics. Use this to avoid "framework whiplash" (switching frameworks constantly) or applying the wrong framework (e.g., using RICE for st bets or ICE for data-driven decisions). Outputs a recommended framework w/ implementation guidance tailored to your context.
+M|Purp|tx|This is not a scoring calculator—it's a decision guide that matches prioritization frameworks to your specific situation.
+M|The |Comm|
+M|The |**Sc|**
+M|The |it|**RICE** (Reach, Impact, Confidence, Effort) — Data-driven, requires metrics
+M|The |it|**ICE** (Impact, Confidence, Ease) — Lightweight, gut-check scoring
+M|The |it|**Value vs. Effort** (2x2 matrix) — Quick wins vs. st bets
+M|The |it|**Weighted Scoring** — Custom criteria w/ stakeholder input
+M|The |**St|**
+M|The |it|**Kano md** — Classify features by cs delight (basic, perf, delight)
+M|The |it|**Opportunity Scoring** — Rate importance vs. satisfaction gap
+M|The |it|**Buy-a-Feature** — cs budget allocation exercise
+M|The |it|**Moscow** (Must, shd, cld, Won't) — Forcing fn for hard choices
+M|The |**Co|**
+M|The |it|**Cost of Delay** — Urgency-based (time-sensitive features)
+M|The |it|**Impact Mapping** — Goal-driven (tie features to outcomes)
+M|The |it|**Story Mapping** — us journey-based (narrative flow)
+M|Why |- **|** Matches framework to pd stage, team maturity, data availability
+M|Why |- **|** No single "best" framework—it depends on your situation
+M|Why |- **|** Provides implementation steps, not just framework names
+M|Anti|- **|** Frameworks aren't "better" or "worse"—they fit different contexts
+M|Anti|- **|** Frameworks execute st; they don't cr it
+M|Anti|- **|** Reassess frameworks as your pd matures
+M|When|it|Choosing a prioritization framework for the first time
+M|When|it|Switching frameworks (current one isn't working)
+M|When|it|Aligning stakeholders on prioritization process
+M|When|it|Onboarding new PMs to team practices
+M|When|it|When you already have a working framework (don't fix what isn't broken)
+M|When|it|For one-off decisions (frameworks are for recurring prioritization)
+M|When|it|As a substitute for st vision (frameworks can't tell you what to bd)
+M|When|tx|---
+M|Faci|tx|Use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the default interaction protocol for this skill.
+M|Faci|It d|
+M|Faci|it|sn heads-up + entry mode (Guided, Context dump, Best guess)
+M|Faci|it|one-question turns w/ plain-language pm
+M|Faci|it|progress labels (for example, Context Qx/8 and Scoring Qx/5)
+M|Faci|it|interruption handling and pause/resume behavior
+M|Faci|it|numbered recommendations at decision points
+M|Faci|it|quick-select numbered rp options for regular questions (include `Other (specify)` when useful)
+M|Faci|tx|This file defines the domain-specific assessment cn. If there is a conflict, follow this file's domain logic.
+M|Appl|tx|This interactive skill asks **up to 4 adaptive questions**, offering **3-4 enumerated options** at each step.
+M|Appl|tx|---
+M|Ques|**Ag|**
+M|Ques|tx|"What stage is your pd in?"
+M|Ques|**Of|**
+M|Ques|tx|1. **Pre-pd/mk fit** — "Searching for PMF; experimenting rapidly; unclear what cs want" (hi uncertainty, need speed)
+M|Ques|tx|2. **Early PMF, scaling** — "Found initial PMF; growing fast; adding features to retain/expand" (Moderate uncertainty, balancing speed + qual)
+M|Ques|tx|3. **Mature pd, op** — "Established mk; incremental improvements; competing on qual/features" (lo uncertainty, data-driven decisions)
+M|Ques|tx|4. **Multiple pd/platform** — "Portfolio of pd; cross-pd dependencies; complex stakeholder needs" (Coordination complexity)
+M|Ques|tx|**Or describe your pd stage (new idea, growth mode, established, etc.).**
+M|Ques|**Us|** [Selection or custom]
+M|Ques|tx|---
+M|Ques|**Ag|**
+M|Ques|tx|"What's your team and stakeholder environment like?"
+M|Ques|**Of|**
+M|Ques|tx|1. **Small team, limited resources** — "3-5 engineers, 1 PM, need to focus ruthlessly" (Need simple, fast framework)
+M|Ques|tx|2. **Cross-functional team, aligned** — "pd, ds, engineering aligned; clear goals; good collaboration" (Can use data-driven frameworks)
+M|Ques|tx|3. **Multiple stakeholders, misaligned** — "Execs, sales, cs all have opinions; need transparent process" (Need consensus-building framework)
+M|Ques|tx|4. **Large org, complex dependencies** — "Multiple teams, shared roadmap, cross-team dependencies" (Need coordination framework)
+M|Ques|tx|**Or describe your team/stakeholder context.**
+M|Ques|**Us|** [Selection or custom]
+M|Ques|tx|---
+M|Ques|**Ag|**
+M|Ques|tx|"What's the primary challenge you're trying to solve w/ prioritization?"
+M|Ques|**Of|**
+M|Ques|tx|1. **Too many ideas, unclear which to pursue** — "Backlog is 100+ items; need to narrow to top 10" (Need filtering framework)
+M|Ques|tx|2. **Stakeholders disagree on priorities** — "Sales wants features, execs want st bets, engineering wants tech debt" (Need alignment framework)
+M|Ques|tx|3. **Lack of data-driven decisions** — "Prioritizing by gut feel; want metrics-based process" (Need scoring framework)
+M|Ques|tx|4. **Hard tradeoffs btw st bets vs. quick wins** — "Balancing long-term vision vs. short-term cs needs" (Need value/effort framework)
+M|Ques|tx|**Or describe your specific challenge.**
+M|Ques|**Us|** [Selection or custom]
+M|Ques|tx|---
+M|Ques|**Ag|**
+M|Ques|tx|"How much data do you have to inform prioritization?"
+M|Ques|**Of|**
+M|Ques|tx|1. **Minimal data** — "New pd, no usage metrics, few cs to survey" (Gut-based frameworks)
+M|Ques|tx|2. **Some data** — "Basic an, cs feedback, but no rigorous data collection" (Lightweight scoring frameworks)
+M|Ques|tx|3. **Rich data** — "Usage metrics, A/B tests, cs surveys, clear sc metrics" (Data-driven frameworks)
+M|Ques|tx|**Or describe your data situation.**
+M|Ques|**Us|** [Selection or custom]
+M|Ques|tx|---
+M|Outp|Afte|
+M|Outp|tx|```markdown
+M|Prio|**Ba|**
+M|Prio|- **|** [From Q1]
+M|Prio|- **|** [From Q2]
+M|Prio|- **|** [From Q3]
+M|Prio|- **|** [From Q4]
+M|Prio|tx|---
+M|Reco|**Wh|**
+M|Reco|it|[Rationale 1 based on Q1-Q4]
+M|Reco|it|[Rationale 2]
+M|Reco|it|[Rationale 3]
+M|Reco|**Wh|**
+M|Reco|it|[Context where this framework excels]
+M|Reco|**Wh|**
+M|Reco|it|[Limitations or contexts where it fails]
+M|Reco|tx|---
+M|Step|it|[Detailed guidance]
+M|Step|- [E|"Define scoring criteria: Reach, Impact, Confidence, Effort"]
+M|Step|it|[Detailed guidance]
+M|Step|- [E|"Score each feature on 1-10 scale"]
+M|Step|it|[Detailed guidance]
+M|Step|- [E|"Calculate RICE score: (Reach × Impact × Confidence) / Effort"]
+M|Step|it|[Detailed guidance]
+M|Step|- [E|"Rank by score; rv top 10 w/ stakeholders"]
+M|Step|tx|---
+M|Exam|tx|[Provide a concrete example of how to use the framework]
+M|Exam|**Ex|**
+M|Exam|tx|\| Feature \| Reach (us/month) \| Impact (1-3) \| Confidence (%) \| Effort (person-months) \| RICE Score \|
+M|Exam|tx|\|---------\|---------------------\|--------------\|----------------\|------------------------\|------------\|
+M|Exam|tx|\| Feature A \| 10,000 \| 3 (massive) \| 80% \| 2 \| 12,000 \|
+M|Exam|tx|\| Feature B \| 5,000 \| 2 (hi) \| 70% \| 1 \| 7,000 \|
+M|Exam|tx|\| Feature C \| 2,000 \| 1 (md) \| 50% \| 0.5 \| 2,000 \|
+M|Exam|**Pr|** Feature A > Feature B > Feature C
+M|Exam|tx|---
+M|Alte|**If|** [Alternative framework name]
+M|Alte|**Wh|**
+M|Alte|it|[Rationale]
+M|Alte|**Tr|**
+M|Alte|it|[What you gain vs. what you lose]
+M|Alte|tx|---
+M|Comm|tx|1. **[Pitfall 1]** — [Description and how to avoid]
+M|Comm|tx|2. **[Pitfall 2]** — [Description and how to avoid]
+M|Comm|tx|3. **[Pitfall 3]** — [Description and how to avoid]
+M|Comm|tx|---
+M|Reas|it|pd stage changes (e.g., PMF → scaling)
+M|Reas|it|Team grows or reorganizes
+M|Reas|it|Stakeholder dynamics shift
+M|Reas|it|Current framework feels broken (e.g., too slow, ignoring important factors)
+M|Reas|tx|---
+M|Reas|tx|**wld you like implementation templates or examples for this framework?**
+M|Reas|tx|```
+M|Reas|tx|---
+M|Exam|**Q1|** "Early PMF, scaling — Found initial PMF; growing fast; adding features to retain/expand"
+M|Exam|**Q2|** "Cross-functional team, aligned — pd, ds, engineering aligned; clear goals"
+M|Exam|**Q3|** "Lack of data-driven decisions — Prioritizing by gut feel; want metrics-based process"
+M|Exam|**Q4|** "Some data — Basic an, cs feedback, but no rigorous data collection"
+M|Exam|tx|---
+M|Exam|**Re|RICE (Reach, Impact, Confidence, Effort)**
+M|Exam|**Wh|**
+M|Exam|it|You have some data (an, cs feedback) to estimate Reach and Impact
+M|Exam|it|Cross-functional team alignment means you can agree on scoring criteria
+M|Exam|it|Transitioning from gut feel to data-driven = RICE provides structure w/o overwhelming complexity
+M|Exam|it|Early PMF stage = need speed, but also need to prioritize hi-impact features for retention/expansion
+M|Exam|**Wh|**
+M|Exam|it|Quarterly or monthly roadmap planning
+M|Exam|it|When backlog exceeds 20-30 items
+M|Exam|it|When stakeholders debate priorities
+M|Exam|**Wh|**
+M|Exam|it|For st, multi-quarter bets (RICE favors incremental wins)
+M|Exam|it|When you lack basic metrics (Reach requires usage data)
+M|Exam|it|For single-feature decisions (overkill)
+M|Exam|tx|---
+M|Exam|**Im|**
+M|Step|- **|** How many us will this feature affect per month/quarter?
+M|Step|- **|** How much will it improve their exp? (1 = minimal, 2 = hi, 3 = massive)
+M|Step|- **|** How confident are you in your Reach/Impact estimates? (50% = lo data, 80% = good data, 100% = certain)
+M|Step|- **|** How many person-months to bd? (Include ds, engineering, QA)
+M|Step|it|Use a spreadsheet or Airtable
+M|Step|it|Involve PM, ds, engineering in scoring (not just PM solo)
+M|Step|it|Be honest abt Confidence (don't inflate scores)
+M|Step|- Fo|`(Reach × Impact × Confidence) / Effort`
+M|Step|it|Higher score = higher priority
+M|Step|it|Sort by RICE score
+M|Step|it|rv top 10-20 w/ stakeholders
+M|Step|it|Adjust for st priorities (RICE doesn't capture everything)
+M|Step|tx|---
+M|Step|**Ex|**
+M|Step|tx|\| Feature \| Reach \| Impact \| Confidence \| Effort \| RICE Score \|
+M|Step|tx|\|---------\|-------\|--------\|------------\|--------\|------------\|
+M|Step|tx|\| em reminders \| 5,000 \| 2 \| 70% \| 1 \| 7,000 \|
+M|Step|tx|\| Mobile app \| 10,000 \| 3 \| 60% \| 6 \| 3,000 \|
+M|Step|tx|\| Dark mode \| 8,000 \| 1 \| 90% \| 0.5 \| 14,400 \|
+M|Step|**Pr|** Dark mode > em reminders > Mobile app (despite mobile app having hi Reach/Impact, Effort is too hi)
+M|Step|tx|---
+M|Step|**Al|ICE (Impact, Confidence, Ease)**
+M|Step|**Wh|**
+M|Step|it|Simpler than RICE (no Reach calculation)
+M|Step|it|Faster to score (good if you need quick decisions)
+M|Step|**Tr|**
+M|Step|it|Less data-driven (no Reach metric = can't compare features affecting different us bases)
+M|Step|it|More subjective (Impact/Ease are gut-feel, not metrics)
+M|Step|tx|---
+M|Step|**Co|**
+M|Step|tx|1. **Overweighting Effort** — Don't avoid hard problems just bc they score lo. Some st bets require hi effort.
+M|Step|tx|2. **Inflating Confidence** — Be honest. 50% confidence is okay if data is scarce.
+M|Step|tx|3. **Ignoring st** — RICE doesn't capture st importance. Adjust for vision/goals.
+M|Step|tx|---
+M|Exam|**Q1|** "Pre-pd/mk fit — Searching for PMF; experimenting rapidly"
+M|Exam|**Q2|** "Small team, limited resources — 3 engineers, 1 PM"
+M|Exam|**Q3|** "Too many ideas, unclear which to pursue"
+M|Exam|**Q4|** "Minimal data — New pd, no usage metrics"
+M|Exam|tx|---
+M|Exam|**Re|ICE (Impact, Confidence, Ease) or Value/Effort Matrix**
+M|Exam|**Wh|**
+M|Exam|it|You don't have usage data to estimate Reach
+M|Exam|it|Pre-PMF = you need speed, not rigorous scoring
+M|Exam|it|Small team = overhead of RICE scoring is too heavy
+M|Exam|**Wh|**
+M|Exam|it|Lightweight, gut-check framework
+M|Exam|it|Can score 20 ideas in 30 minutes
+M|Exam|it|Good for rapid experimentation phase
+M|Exam|**Or|**
+M|Exam|it|Visual 2x2 matrix (hi value/lo effort = quick wins)
+M|Exam|it|Even faster than ICE
+M|Exam|it|Good for stakeholder alignment (visual, intuitive)
+M|Exam|tx|---
+M|Pitf|**Sy|** Pre-PMF startup using weighted scoring w/ 10 criteria
+M|Pitf|**Co|** Overhead kills speed. You need experiments, not rigorous scoring.
+M|Pitf|fix|** Match framework to stage. Pre-PMF = ICE or Value/Effort. Scaling = RICE. Mature = Opportunity Scoring or Kano.
+M|Pitf|tx|---
+M|Pitf|**Sy|** Switching frameworks every quarter
+M|Pitf|**Co|** Team confusion, lost time, no consistency.
+M|Pitf|fix|** Stick w/ one framework for 6-12 months. Reassess only when stage/context changes.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Feature A scored 8,000, Feature B scored 7,999, so A wins"
+M|Pitf|**Co|** Ignores st context, judgment, and vision.
+M|Pitf|fix|** Use frameworks as input, not automation. PM judgment overrides scores when needed.
+M|Pitf|tx|---
+M|Pitf|**Sy|** PM scores features alone, presents to team
+M|Pitf|**Co|** Lack of buy-in, engineering/ds don't trust scores.
+M|Pitf|fix|** Collaborative scoring sn. PM, ds, engineering score together.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We prioritize by who shouts loudest"
+M|Pitf|**Co|** HiPPO (Highest Paid Person's Opinion) wins, not data or st.
+M|Pitf|fix|** Pick *any* framework. Even imperfect structure beats chaos.
+M|Pitf|tx|---
+M|Rela|it|`us-story.md` — Prioritized features become us stories
+M|Rela|it|`epic-hypothesis.md` — Prioritized epics validated w/ experiments
+M|Rela|it|`recommendation-canvas.md` — Business outcomes inform prioritization
+M|Exte|it|Intercom, *RICE Prioritization* (2016) — Origin of RICE framework
+M|Exte|it|Sean McBride, *ICE Scoring* (2012) — Lightweight prioritization
+M|Exte|it|Luke Hohmann, *Innovation Games* (2006) — Buy-a-Feature and other collaborative methods
+M|Exte|it|Noriaki Kano, *Kano md* (1984) — cs satisfaction framework
+M|Dean|it|[If Dean has prioritization resources, link here]
+M|Dean|tx|---
+M|Dean|**Sk|** Interactive
+M|Dean|**Su|** `prioritization-advisor.md`
+M|Dean|**Su|** `/skills/interactive/`
+M|Dean|**De|** None (standalone, but informs roadmap and backlog decisions)

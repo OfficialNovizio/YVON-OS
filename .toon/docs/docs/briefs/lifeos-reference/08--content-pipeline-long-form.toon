@@ -1,0 +1,27 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/08--content-pipeline-long-form.md strip=5% toon=2% net=7%
+T|08 ·|0|The "whole cn machine" for long-form (YouTube): a Kanban from raw idea → published, where ag handle ideation, talking points, thumbnails, descriptions and chapters, and the owner films/edits.
+T|08 ·|1|
+T|Purp|0|Run long-form cn end to end. ag help find ideas, draft talking points (not full scripts), ds thumbnails, and prep descriptions/titles; the owner does filming and editing. It enforces a cadence so videos ship on schedule.
+T|Purp|1|
+T|Page|0|Title: cn Pipeline, breadcrumb Vibe w/ AI / cn Pipeline.
+T|Page|1|Sub-line: "Long-form · idea → published" plus a cadence indicator (e.g. "1 vd / week · cadence: X · 6 ideas in clear-up"), an On cadence status pill, and ideas-in-queue counter.
+T|Page|2|View toggles: st view, Calendar, and New idea button.
+T|Page|3|
+T|Kanb|0|Left → right:
+T|Kanb|1|
+T|Kanb|2|IDEAS — raw vd ideas, each a card (e.g. "I gave 5 AI ag one indecisive idea for a week," "Building a $X SaaS company w/ just Claude Code"). Tagged by source/score.
+T|Kanb|3|SCRIPTING — talking-points stage (explicitly only talking points, not a full script). Cards like "AI ag that ship code while you sleep," "I rebuilt my whole company on a team of AI ag." Items show a "script angle / talking points" note.
+T|Kanb|4|THUMBNAILS — thumbnail ds/iteration. Cards like "From idea to shipped in one pm," "My ag stack, fully explained." Each card carries thumbnail concepts and a "needs candidate / pick one" note.
+T|Kanb|5|FILMING — ready to film; the owner records. Card e.g. "Why I fired my dashboards for a cockpit."
+T|Kanb|6|EDITING — owner edits. Card e.g. "How I let software edit my code," "The memory sy that runs my ag."
+T|Kanb|7|READY — finished, ready to upload (handing off to YouTube Studio packaging).
+T|Kanb|8|PUBLISHED — live videos (e.g. "Building my Mission Control, part 1").
+T|Kanb|9|
+T|Kanb|10|Each card shows the workspace tag, contributing ag (e.g. Leonardo for thumbnails, William for cp), and the nx required action.
+T|Kanb|11|
+T|How |0|ag: find YouTube ideas, gn talking points, ds thumbnail concepts, and (post-production) draft descriptions/titles/chapters.
+T|How |1|Owner: filming and editing are done manually.
+T|How |2|The pipeline hands off to YouTube Studio (10-youtube-studio.md) for packaging the final upload, and to YouTube an (11-youtube-an.md) for perf.
+T|How |3|
+T|Cade|0|Cadence enforcement: the header tracks whether the channel is "on cadence" (e.g. 1 vd/week) and how many ideas are queued to keep the funnel full.
+T|Cade|1|st view and Calendar offer alternative lenses on the same cn (a planning/st layout and a date-based layout, linking to the Production Calendar).

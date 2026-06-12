@@ -1,0 +1,182 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/growth-engines.md savings=4%
+M|Engi|tx|Every startup that grows sustainably does so through one of three engines of growth. Each engine is a feedback loop where past cs drive the acquisition of future cs. Understanding which engine powers your startup determines what metrics to track, what experiments to run, and how to allocate resources. Most successful startups are powered primarily by one engine, though they may benefit from secondary effects of the others.
+M|The |tx|The sticky engine grows by retaining existing cs. New cs come from a growing base of satisfied us who do not leave. Growth happens when the rate of new cs acquisition exceeds the churn rate.
+M|How |tx|```
+M|How |tx|New cs join → They find value → They stay → Base grows
+M|How |tx|↓
+M|How |tx|Churn rate stays lo
+M|How |tx|↓
+M|How |tx|Net growth = new - churned
+M|How |tx|```
+M|Key |tx|\| Metric \| Formula \| Target \|
+M|Key |tx|\|--------\|---------\|--------\|
+M|Key |tx|\| Churn rate \| cs lost / Total cs per period \| Below 5% monthly (B2C), below 2% monthly (B2B SaaS) \|
+M|Key |tx|\| Net cs growth \| New cs minus churned cs \| Positive and increasing \|
+M|Key |tx|\| cs lifetime \| 1 / Churn rate \| 12+ months for subscription businesses \|
+M|Key |tx|\| Retention curve shape \| % retained at day 1, 7, 30, 90 \| Flattens (does not approach zero) \|
+M|Key |tx|\| DAU/MAU ratio \| Daily active / Monthly active us \| 20%+ indicates habit formation \|
+M|Chur|**On|**
+M|Chur|it|Reduce time to first value (the "aha moment")
+M|Chur|it|Guided setup flows that ensure proper cfg
+M|Chur|it|Welcome em sequences that reinforce value
+M|Chur|it|In-app checklists that drive activation milestones
+M|Chur|**En|**
+M|Chur|it|Feature adoption cg for underused capabilities
+M|Chur|it|Usage-based notifications ("You saved 3 hours this week")
+M|Chur|it|Progressive feature unlock tied to usage milestones
+M|Chur|it|Community building around the pd
+M|Chur|**Ch|**
+M|Chur|it|Identify behavioral patterns that precede churn (reduced login frequency, fewer core actions)
+M|Chur|it|Trigger automated outreach when risk signals appear
+M|Chur|it|Offer concierge support to at-risk hi-value cs
+M|Chur|it|Exit surveys to understand and address churn reasons
+M|Chur|**Sw|**
+M|Chur|it|Data accumulation that becomes more valuable over time
+M|Chur|it|Integrations w/ other tools in the cs's stack
+M|Chur|it|Customization and cfg that represents us investment
+M|Chur|it|Network effects within teams or organizations
+M|Real|tx|\| Company \| Sticky Engine Mechanism \| Result \|
+M|Real|tx|\|---------\|------------------------\|--------\|
+M|Real|tx|\| Salesforce \| CRM data accumulates; switching is extremely costly \| 92%+ gross retention rate \|
+M|Real|tx|\| Notion \| Workspaces, templates, and team knowledge bd over time \| hi retention; expansion within organizations \|
+M|Real|tx|\| Slack \| Message history, integrations, and team adoption cr deep lock-in \| 90%+ net rv retention \|
+M|Real|tx|\| Spotify \| Personalized playlists and listening history increase switching cost \| Dominant mk share through retention \|
+M|The |tx|The viral engine grows by having each cs bring in additional cs as a natural side effect of using the pd. Growth is driven by person-to-person transmission, not mk spend.
+M|How |tx|```
+M|How |tx|us signs up → Uses the pd → pd use involves/exposes others
+M|How |tx|↓
+M|How |tx|Others see value → Some sign up
+M|How |tx|↓
+M|How |tx|Cycle repeats
+M|How |tx|```
+M|The |tx|The viral coefficient measures how many new cs each existing cs brings in.
+M|The |**Fo|** K = (invitations per us) x (conversion rate of invitations)
+M|The |tx|\| K Value \| Meaning \| Growth Pattern \|
+M|The |tx|\|---------\|---------\|----------------\|
+M|The |tx|\| K < 0.5 \| Weak virality \| Growth requires sig paid acquisition \|
+M|The |tx|\| K = 0.5-0.9 \| Moderate virality \| Amplifies other growth efforts \|
+M|The |tx|\| K = 1.0 \| Breakeven virality \| Each us replaces themselves; growth is self-sustaining \|
+M|The |tx|\| K > 1.0 \| True virality \| Exponential growth; each cycle adds more us \|
+M|The |**Ex|**
+M|The |it|Average us invites 5 people
+M|The |it|20% of invitees sign up
+M|The |it|K = 5 x 0.20 = 1.0
+M|The |tx|This means each us produces one new us, creating self-sustaining growth.
+M|Vira|**Ty|**
+M|Vira|tx|\| Loop tp \| Mechanism \| Example \|
+M|Vira|tx|\|-----------\|-----------\|---------\|
+M|Vira|tx|\| Inherent virality \| pd requires multiple us to fn \| Zoom (you need others to join your call) \|
+M|Vira|tx|\| Collaboration virality \| pd is better w/ others \| Google doc (shared editing) \|
+M|Vira|tx|\| Word-of-mouth virality \| pd is remarkable enough to discuss \| ChatGPT (novel exp worth sharing) \|
+M|Vira|tx|\| Incentivized virality \| us get rewards for bringing others \| Dropbox (free storage for referrals) \|
+M|Vira|tx|\| Embedded virality \| pd output is visible to non-us \| Mailchimp ("Sent w/ Mailchimp" badge) \|
+M|Vira|tx|\| sl proof virality \| Usage is publicly visible \| Linkedin profile badges, GitHub activity \|
+M|Vira|**Vi|**
+M|Vira|it|[ ] Identify the natural sharing moment (when does a us most want to share?)
+M|Vira|it|[ ] Make sharing frictionless (pre-composed messages, one-click invites)
+M|Vira|it|[ ] Ensure the landing exp for invitees is optimized for their context
+M|Vira|- [ |share trigger, share action, recipient view, recipient signup
+M|Vira|it|[ ] Reduce the viral cycle time (time from us signup to their invitees signing up)
+M|Vira|tx|Viral cycle time matters as much as the viral coefficient. A K of 1.5 w/ a 2-day cycle grows much faster than a K of 2.0 w/ a 30-day cycle.
+M|Vira|**Re|**
+M|Vira|it|Trigger sharing moments earlier in the us journey
+M|Vira|it|Use real-time channels (SMS, messaging apps) over em
+M|Vira|it|cr urgency in invitations (time-limited offers, real-time collaboration)
+M|Vira|it|Minimize onboarding friction for invited us
+M|Real|tx|\| Company \| Viral Mechanism \| K Factor (estimated) \|
+M|Real|tx|\|---------\|----------------\|---------------------\|
+M|Real|tx|\| Hotmail \| "Get your free em" signature in every em \| 1.0+ in early growth \|
+M|Real|tx|\| Dropbox \| Free storage for referrals; shared folders \| 0.7-1.0 \|
+M|Real|tx|\| WhatsApp \| Messaging requires both parties on the platform \| 1.0+ in growth markets \|
+M|Real|tx|\| Figma \| Shared ds files viewable by anyone w/ link \| 0.6-0.8 \|
+M|The |tx|The paid engine grows by investing money to acquire cs profitably. Each cs generates enough rv to fund the acquisition of more than one additional cs.
+M|How |tx|```
+M|How |tx|Spend money to acquire cs → cs pays over time (LTV)
+M|How |tx|↓
+M|How |tx|LTV exceeds CAC → Reinvest profit
+M|How |tx|↓
+M|How |tx|Acquire more cs
+M|How |tx|```
+M|Key |tx|\| Metric \| Formula \| Healthy Target \|
+M|Key |tx|\|--------\|---------\|---------------\|
+M|Key |tx|\| cs Acquisition Cost (CAC) \| Total acquisition spend / New cs \| Varies by industry \|
+M|Key |tx|\| Lifetime Value (LTV) \| ARPU x cs lifetime \| 3x+ CAC \|
+M|Key || LT|1 to 5:1 \|
+M|Key |tx|\| Payback Period \| CAC / Monthly rv per cs \| Under 12 months \|
+M|Key |tx|\| Marginal CAC \| Incremental spend for one more cs \| Lower than average CAC \|
+M|LTV/|**In|**
+M|LTV/|it|Reduce churn (longer cs lifetime)
+M|LTV/|it|Increase ARPU through upsells, cross-sells, or pricing changes
+M|LTV/|it|Expand usage within cs organizations (seat expansion)
+M|LTV/|it|Add premium tiers w/ higher price points
+M|LTV/|it|Increase purchase frequency for transactional md
+M|LTV/|**Re|**
+M|LTV/|it|Improve landing page conversion rates
+M|LTV/|it|op ad targeting and creative
+M|LTV/|it|Develop organic acquisition channels (cn, SEO, community)
+M|LTV/|it|Improve sales efficiency (better qualification, shorter sales cycles)
+M|LTV/|it|Leverage existing cs for referrals (adding viral elements)
+M|Chan|tx|\| Channel \| Typical CAC Range \| Best For \| Watch Out For \|
+M|Chan|tx|\|---------\|-------------------\|----------\|---------------\|
+M|Chan|tx|\| Google ad (search) \| $20-200 \| hi-intent buyers \| Rising CPCs as you scale \|
+M|Chan|tx|\| Facebook/Instagram ad \| $10-100 \| B2C, visual pd \| Ad fatigue, audience saturation \|
+M|Chan|tx|\| LinkedIn ad \| $50-500 \| B2B, professional tools \| hi CPCs, requires precise targeting \|
+M|Chan|tx|\| cn mk/SEO \| $10-50 (long-term) \| Education-heavy pd \| Takes 6-12 months to mature \|
+M|Chan|tx|\| Sales team (outbound) \| $200-2000+ \| Enterprise B2B \| Fixed cost base regardless of results \|
+M|Chan|tx|\| Partnerships \| Variable \| pd that complement others \| Dependency on partner priorities \|
+M|Real|tx|\| Company \| Paid Engine Mechanism \| LTV/CAC \|
+M|Real|tx|\|---------\|----------------------\|---------\|
+M|Real|| Do|1+ \|
+M|Real|| Hu|1+ \|
+M|Real|| Ca|1+ \|
+M|Real|| At|1+ \|
+M|Matc|tx|\| pd Characteristic \| Best Engine \| Why \|
+M|Matc|tx|\|----------------------\|-------------\|-----\|
+M|Matc|tx|\| pd involves collaboration btw us \| Viral \| Natural sharing built into usage \|
+M|Matc|tx|\| pd has hi switching costs and repeat use \| Sticky \| Retention is the natural advantage \|
+M|Matc|tx|\| pd has clear, quantifiable ROI \| Paid \| Easy to justify acquisition spend \|
+M|Matc|tx|\| pd is novel and share-worthy \| Viral \| Word of mouth drives awareness \|
+M|Matc|tx|\| pd has hi LTV and long sales cycle \| Paid \| Justify hi CAC w/ hi LTV \|
+M|Matc|tx|\| pd creates data/cn that compounds \| Sticky \| Accumulated value prevents churn \|
+M|Matc|tx|\| pd output is visible to non-us \| Viral \| Built-in exposure mechanism \|
+M|Matc|tx|\| pd is in a crowded mk w/ lo differentiation \| Paid \| Outspend cr efficiently \|
+M|Deci|it|[ ] What is the natural behavior of your cs after using the pd? (Share it, keep using it, or recommend it when asked?)
+M|Deci|it|[ ] Does your pd inherently involve other people?
+M|Deci|it|[ ] What is your cs's lifetime value potential?
+M|Deci|it|[ ] Can you measure and attribute acquisition sources?
+M|Deci|it|[ ] What is the competitive landscape? (Viral markets tend toward winner-take-all)
+M|Stic|tx|\| Metric \| Frequency \| Target \|
+M|Stic|tx|\|--------\|-----------\|--------\|
+M|Stic|tx|\| Monthly churn rate \| Monthly \| Decreasing month over month \|
+M|Stic|tx|\| Cohort retention curves \| Weekly \| Newer cohorts retain better \|
+M|Stic|tx|\| Feature adoption rates \| Weekly \| Core features used by 60%+ of actives \|
+M|Stic|tx|\| cs health score \| Weekly \| 80%+ of cs in "healthy" range \|
+M|Stic|tx|\| Net cs growth \| Monthly \| Positive and accelerating \|
+M|Vira|tx|\| Metric \| Frequency \| Target \|
+M|Vira|tx|\|--------\|-----------\|--------\|
+M|Vira|tx|\| Viral coefficient (K) \| Weekly \| Approaching or exceeding 1.0 \|
+M|Vira|tx|\| Viral cycle time \| Weekly \| Decreasing \|
+M|Vira|tx|\| Share/invite rate \| Daily \| Stable or increasing \|
+M|Vira|tx|\| Invited us conversion \| Weekly \| Increasing \|
+M|Vira|tx|\| Organic traffic percentage \| Monthly \| Increasing \|
+M|Paid|tx|\| Metric \| Frequency \| Target \|
+M|Paid|tx|\|--------\|-----------\|--------\|
+M|Paid|tx|\| CAC by channel \| Weekly \| Stable or decreasing \|
+M|Paid|| LT|1 or better \|
+M|Paid|tx|\| Payback period \| Monthly \| Under 12 months \|
+M|Paid|tx|\| ROAS by cg \| Weekly \| Positive and improving \|
+M|Paid|tx|\| Marginal CAC \| Monthly \| Below average CAC \|
+M|Tran|tx|Startups sometimes need to transition from one engine to another as they mature.
+M|Comm|tx|\| From \| To \| Trigger \| Example \|
+M|Comm|tx|\|------\|-----\|---------\|---------\|
+M|Comm|tx|\| Viral \| Paid \| Viral coefficient plateaus; need predictable growth \| Instagram (viral) adding paid ad capability for businesses \|
+M|Comm|tx|\| Paid \| Sticky \| CAC rising; retention more efficient than acquisition \| SaaS companies shifting budget from ad to cs sc \|
+M|Comm|tx|\| Sticky \| Viral \| Strong retention base ready to amplify through sharing \| Slack moving from sticky (enterprise adoption) to viral (team invites) \|
+M|Comm|tx|\| Paid \| Viral \| Unit economics prove pd works; now seeking organic scale \| Dropbox reducing ad spend after referral program scaled \|
+M|Tran|it|[ ] Current engine is well-understood and optimized (you are not fleeing a broken engine)
+M|Tran|it|[ ] The new engine has initial evidence of working (not just theory)
+M|Tran|it|[ ] Metrics and dashboards are set up for the new engine
+M|Tran|it|[ ] Team capabilities align w/ the new engine (virality needs pd skills; paid needs mk skills)
+M|Tran|it|[ ] Budget and timeline are allocated for the transition period
+M|Tran|it|[ ] Fallback plan exists if the new engine does not deliver within the expected timeframe
+M|Tran|tx|The engine of growth is not a mk st; it is a pd st. The most effective growth comes from building the engine into the pd itself, not bolting it on after launch.

@@ -1,0 +1,58 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/client-localstorage-schema.md savings=5%
+M||tx|---
+M||titl|Version and Minimize localStorage Data
+M||impa|md
+M||impa|prevents sc conflicts, reduces storage size
+M||tags|client, localStorage, storage, versioning, data-minimization
+M||tx|---
+M|Vers|tx|Add version prefix to keys and store only needed fields. Prevents sc conflicts and accidental storage of sensitive data.
+M|Vers|**In|**
+M|Vers|tx|```ts
+M|Vers|tx|// No version, stores everything, no er handling
+M|Vers|tx|localStorage.setItem('userConfig', JSON.stringify(fullUserObject))
+M|Vers|tx|const data = localStorage.getItem('userConfig')
+M|Vers|tx|```
+M|Vers|**Co|**
+M|Vers|tx|```ts
+M|Vers|tx|const VERSION = 'v2'
+M|Vers|func|{ theme: string; language: string }) {
+M|Vers|tx|try {
+M|Vers|loca|${VERSION}`, JSON.stringify(config))
+M|Vers|tx|} catch {
+M|Vers|tx|// Throws in incognito/private browsing, quota exceeded, or disabled
+M|Vers|tx|}
+M|Vers|tx|}
+M|Vers|tx|fn loadConfig() {
+M|Vers|tx|try {
+M|Vers|cons|${VERSION}`)
+M|Vers|retu|null
+M|Vers|tx|} catch {
+M|Vers|tx|return null
+M|Vers|tx|}
+M|Vers|tx|}
+M|Vers|tx|// Migration from v1 to v2
+M|Vers|tx|fn mg() {
+M|Vers|tx|try {
+M|Vers|cons|v1')
+M|Vers|tx|if (v1) {
+M|Vers|tx|const old = JSON.parse(v1)
+M|Vers|save|old.darkMode ? 'dark' : 'light', language: old.lang })
+M|Vers|loca|v1')
+M|Vers|tx|}
+M|Vers|tx|} catch {}
+M|Vers|tx|}
+M|Vers|tx|```
+M|Vers|**St|**
+M|Vers|tx|```ts
+M|Vers|tx|// us object has 20+ fields, only store what UI needs
+M|Vers|func|FullUser) {
+M|Vers|tx|try {
+M|Vers|loca|v1', JSON.stringify({
+M|Vers|them|us.preferences.theme,
+M|Vers|noti|us.preferences.notifications
+M|Vers|tx|}))
+M|Vers|tx|} catch {}
+M|Vers|tx|}
+M|Vers|tx|```
+M|Vers|**Al|** `getItem()` and `setItem()` throw in incognito/private browsing (Safari, Firefox), when quota exceeded, or when disabled.
+M|Vers|**Be|** sc evolution via versioning, reduced storage size, prevents storing tk/PII/internal flags.

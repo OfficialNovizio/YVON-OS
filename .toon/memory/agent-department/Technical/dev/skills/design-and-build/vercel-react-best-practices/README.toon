@@ -1,0 +1,81 @@
+#MEM id=vercel-react-best-practices source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/README.md savings=4%
+M|Reac|tx|A structured repository for creating and maintaining rc Best Practices optimized for ag and LLMs.
+M|Stru|it|`rules/` - Individual rule files (one per rule)
+M|Stru|it|`_sections.md` - Section metadata (titles, impacts, descriptions)
+M|Stru|it|`_template.md` - Template for creating new rules
+M|Stru|it|`area-description.md` - Individual rule files
+M|Stru|it|`src/` - bd scripts and utilities
+M|Stru|it|`metadata.json` - Document metadata (version, organization, abstract)
+M|Stru|it|__`ag.md`__ - Compiled output (generated)
+M|Stru|it|__`tst-cases.json`__ - tst cases for LLM evaluation (generated)
+M|Gett|1. I|
+M|Gett|tx|```bash
+M|Gett|tx|pnpm install
+M|Gett|tx|```
+M|Gett|2. B|
+M|Gett|tx|```bash
+M|Gett|tx|pnpm bd
+M|Gett|tx|```
+M|Gett|3. V|
+M|Gett|tx|```bash
+M|Gett|tx|pnpm validate
+M|Gett|tx|```
+M|Gett|4. E|
+M|Gett|tx|```bash
+M|Gett|tx|pnpm extract-tests
+M|Gett|tx|```
+M|Crea|tx|1. cp `rules/_template.md` to `rules/area-description.md`
+M|Crea|2. C|
+M|Crea|it|`async-` for Eliminating Waterfalls (Section 1)
+M|Crea|it|`bundle-` for Bundle Size op (Section 2)
+M|Crea|it|`server-` for Server-Side perf (Section 3)
+M|Crea|it|`client-` for Client-Side Data Fetching (Section 4)
+M|Crea|it|`rerender-` for Re-render op (Section 5)
+M|Crea|it|`rendering-` for Rendering perf (Section 6)
+M|Crea|it|`js-` for JavaScript perf (Section 7)
+M|Crea|it|`advanced-` for Advanced Patterns (Section 8)
+M|Crea|tx|3. Fill in the frontmatter and cn
+M|Crea|tx|4. Ensure you have clear examples w/ explanations
+M|Crea|tx|5. Run `pnpm bd` to regenerate ag.md and tst-cases.json
+M|Rule|Each|
+M|Rule|tx|```markdown
+M|Rule|tx|---
+M|Rule|titl|Rule Title Here
+M|Rule|impa|md
+M|Rule|impa|Optional description
+M|Rule|tags|tag1, tag2, tag3
+M|Rule|tx|---
+M|Rule|tx|Brief explanation of the rule and why it matters.
+M|Rule|**In|**
+M|Rule|tx|```ts
+M|Rule|tx|// Bad code example
+M|Rule|tx|```
+M|Rule|**Co|**
+M|Rule|tx|```ts
+M|Rule|tx|// Good code example
+M|Rule|tx|```
+M|Rule|tx|Optional explanatory text after examples.
+M|Rule|Refe|[Link](https://example.com)
+M|File|it|Files starting w/ `_` are special (excluded from bd)
+M|File|- Ru|`area-description.md` (e.g., `async-parallel.md`)
+M|File|it|Section is automatically inferred from filename prefix
+M|File|it|Rules are sorted alphabetically by title within each section
+M|File|it|IDs (e.g., 1.1, 1.2) are auto-generated during bd
+M|Impa|it|`ct` - Highest priority, major perf gains
+M|Impa|it|`hi` - sig perf improvements
+M|Impa|it|`md-hi` - Moderate-hi gains
+M|Impa|it|`md` - Moderate perf improvements
+M|Impa|it|`lo-md` - lo-md gains
+M|Impa|it|`lo` - Incremental improvements
+M|Scri|it|`pnpm bd` - Compile rules into ag.md
+M|Scri|it|`pnpm validate` - Validate all rule files
+M|Scri|it|`pnpm extract-tests` - Extract tst cases for LLM evaluation
+M|Scri|it|`pnpm dv` - bd and validate
+M|Cont|When|
+M|Cont|tx|1. Use the correct filename prefix for your section
+M|Cont|tx|2. Follow the `_template.md` structure
+M|Cont|tx|3. Include clear bad/good examples w/ explanations
+M|Cont|tx|4. Add appropriate tags
+M|Cont|tx|5. Run `pnpm bd` to regenerate ag.md and tst-cases.json
+M|Cont|tx|6. Rules are automatically sorted by title - no need to manage numbers!
+M|Ackn|Orig|//x.com/shuding) at [vc](https://vc.com).

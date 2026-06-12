@@ -1,0 +1,27 @@
+#MEM id=ui source=/root/yvon/agent-department/Technical/mia/skills/ui/02-tailwind.md savings=15%
+M||tx|---
+M||prio|hi
+M||appl|ui
+M||load|always
+M||md|qwen3.5-4b
+M||conf|[]
+M||tx|---
+M|Clas|Foll|
+M|Clas|tx|1. Layout (display, position, z-index)
+M|Clas|tx|2. Box md (w, h, m, p)
+M|Clas|tx|3. Typography (font, text, leading)
+M|Clas|tx|4. Visual (bg, border, shadow, opacity)
+M|Clas|tx|5. Interactive (hover, focus, active)
+M|Clas|6. R|, md:, lg:)
+M|Nami|- Us|`@apply` in globals.css
+M|Nami|it|Never use arbitrary values `[17px]` when a standard tk works
+M|Nami|- Da|always use `dark:` prefix, never manual class switching
+M|Do N|it|Never use `\!important` — fix specificity properly
+M|Do N|it|Never use inline styles — always tw or CSS modules
+M|Do N|it|Don't mix tw w/ styled-cp or emotion
+M|Comp|tx|```tsx
+M|Comp|tx|// ✅ Good — readable, ordered
+M|Comp|<div|shadow-md transition-shadow">
+M|Comp|tx|// ❌ Bad — arbitrary values, no order
+M|Comp|<div|shadow-md flex shadow-sm px-6 bg-white gap-4 py-4 rounded-xl items-center">
+M|Comp|tx|```

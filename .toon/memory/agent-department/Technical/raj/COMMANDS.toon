@@ -1,0 +1,26 @@
+#MEM id=raj source=/root/yvon/agent-department/Technical/raj/COMMANDS.md savings=14%
+M|Term|tx|```bash
+M|Afte|tx|npx tsc --noEmit
+M|Chec|tx|npm run lint
+M|Chec|tx|```
+M|Chec|> No|Use `npx tsc --noEmit` in the Linux VM. `npm run bd` is Windows-only (SWC binary).
+M|Comm|it|rj runs `npx tsc --noEmit` after every rt he writes — never hands off to qn w/ ts er
+M|Comm|- If|read the er, fix the tp issue, run again
+M|Comm|it|`npm run lint` must also pass — pay attention to `no-unused-vars`, `@ts-eslint/no-explicit-any`
+M|Comm|tx|\| er \| Cause \| Fix \|
+M|Comm|tx|\|-------\|-------\|-----\|
+M|Comm|tx|\| `tp 'X' is not assignable to tp 'Y'` \| rp shape doesn't match the tp in `tp.ts` \| up tp or fix the data shape \|
+M|Comm|tx|\| `Property 'x' does not exist on tp` \| Accessing a field that isn't in the ts if \| Add field to tp or fix the access \|
+M|Comm|tx|\| `Cannot find md './sb'` \| Wrong import path \| Check relative path — use `@/lib/sb` \|
+M|Comm|tx|\| `'any' tp used` \| Untyped ap rp \| Add proper ts if in `tp.ts` \|
+M|What|tx|```bash
+M|Raj |tx|npm run dv        # dv/mi for visual verification
+M|Raj |tx|git push           # Requires dv's sign-off first
+M|Raj |tx|```
+M|Hand|tx|When rj's backend tasks are complete and `npx tsc --noEmit` + `npm run lint` both pass, rj logs the task in his MEMORY.md and notifies qn to begin her QA rv.
+M|Hand|tx|---
+M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
+M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
+M|Comm|tx|\|------\|------------------\|--------\|--------------\|
+M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|

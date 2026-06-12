@@ -1,0 +1,25 @@
+#MEM id=ui source=/root/yvon/agent-department/Technical/mia/skills/ui/01-design.md savings=10%
+M||tx|---
+M||prio|hi
+M||appl|ui
+M||load|always
+M||md|qwen3.5-4b
+M||conf|[]
+M||tx|---
+M|Core|it|Mobile-first always — ds for 375px then scale up
+M|Core|it|Every cp must work at 320px minimum
+M|Core|- Co|1 for all text (WCAG AA)
+M|Core|it|Interactive elements min 44×44px touch target
+M|Visu|it|One primary action per screen — no competing CTAs
+M|Visu|it|Use whitespace as a ds element, not a gap-filler
+M|Visu|it|Limit to 2 font sizes per cp
+M|Visu|it|Use color to support meaning, never as the only signal
+M|Layo|it|8px grid sy — all spacing multiples of 8
+M|Layo|- Ma|1280px; comfortable reading width: 680px
+M|Layo|it|Never center-align body text longer than 3 lines
+M|Stat|- Ev|default, hover, active, focus, disabled states
+M|Stat|it|Loading states required for any async operation > 300ms
+M|Stat|it|Empty states must be designed — never show a blank page
+M|Acce|it|All images require meaningful alt text
+M|Acce|- Fo|none` w/o a replacement
+M|Acce|it|Keyboard navigation must work for all interactive elements

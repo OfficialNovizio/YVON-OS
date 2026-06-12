@@ -1,0 +1,271 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/references/gtm-implementation.md savings=-1%
+M|Goog|tx|Detailed guide for implementing tracking via Google Tag Manager.
+M|Cont|it|Container Structure (tags, triggers, variables)
+M|Cont|it|Naming Conventions
+M|Cont|it|Data Layer Patterns
+M|Cont|it|Common Tag Configurations (GA4 cfg tag, GA4 event tag, Facebook px)
+M|Cont|it|Preview and Debug
+M|Cont|it|Workspaces and Versioning
+M|Cont|it|Consent Management
+M|Cont|it|Advanced Patterns (tag sequencing, exception handling, custom JavaScript variables)
+M|Tags|tx|Tags are code snippets that execute when triggered.
+M|Tags|**Co|**
+M|Tags|it|GA4 cfg (base setup)
+M|Tags|it|GA4 Event (custom events)
+M|Tags|it|Google ad Conversion
+M|Tags|it|Facebook px
+M|Tags|it|LinkedIn in Tag
+M|Tags|it|Custom HTML (for other pixels)
+M|Trig|tx|Triggers define when tags fire.
+M|Trig|**Bu|**
+M|Trig|- Pa|All Pages, DOM Ready, Window Loaded
+M|Trig|- Cl|All Elements, Just Links
+M|Trig|it|Form Submission
+M|Trig|it|Scroll Depth
+M|Trig|it|Timer
+M|Trig|it|Element Visibility
+M|Trig|**Cu|**
+M|Trig|it|Custom Event (from dataLayer)
+M|Trig|it|Trigger Groups (multiple conditions)
+M|Vari|tx|Variables capture dynamic values.
+M|Vari|**Bu|**
+M|Vari|it|Click Text, Click URL, Click ID, Click Classes
+M|Vari|it|Page Path, Page URL, Page Hostname
+M|Vari|it|Referrer
+M|Vari|it|Form Element, Form ID
+M|Vari|**Us|**
+M|Vari|it|Data Layer variables
+M|Vari|it|JavaScript variables
+M|Vari|it|Lookup tables
+M|Vari|it|RegEx tables
+M|Vari|it|Constants
+M|Vari|tx|---
+M|Reco|tx|```
+M|Reco|tx|[tp] - [Description] - [Detail]
+M|Reco|Tags|
+M|Reco|tx|GA4 - Event - Signup done
+M|Reco|tx|GA4 - Config - Base cfg
+M|Reco|tx|FB - px - Page View
+M|Reco|tx|HTML - LiveChat Widget
+M|Reco|Trig|
+M|Reco|tx|Click - CTA Button
+M|Reco|tx|Submit - Contact Form
+M|Reco|tx|View - Pricing Page
+M|Reco|tx|Custom - signup_completed
+M|Reco|Vari|
+M|Reco|tx|DL - user_id
+M|Reco|tx|JS - Current Timestamp
+M|Reco|tx|LT - cg Source Map
+M|Reco|tx|```
+M|Reco|tx|---
+M|Basi|tx|```javascript
+M|Basi|tx|// Initialize (in <head> before GTM)
+M|Basi|tx|window.dataLayer = window.dataLayer \|\| [];
+M|Basi|tx|// Push event
+M|Basi|tx|dataLayer.push({
+M|Basi|'eve|'event_name',
+M|Basi|'pro|'value1',
+M|Basi|'pro|'value2'
+M|Basi|tx|});
+M|Basi|tx|```
+M|Page|tx|```javascript
+M|Page|tx|// Set on page load (before GTM container)
+M|Page|tx|window.dataLayer = window.dataLayer \|\| [];
+M|Page|tx|dataLayer.push({
+M|Page|'pag|'pd',
+M|Page|'con|'pd',
+M|Page|us|{
+M|Page|'log|true,
+M|Page|'use|'12345',
+M|Page|'use|'premium'
+M|Page|tx|}
+M|Page|tx|});
+M|Page|tx|```
+M|Form|tx|```javascript
+M|Form|tx|document.querySelector('#contact-form').addEventListener('submit', fn() {
+M|Form|tx|dataLayer.push({
+M|Form|'eve|'form_submitted',
+M|Form|'for|'contact',
+M|Form|'for|'footer'
+M|Form|tx|});
+M|Form|tx|});
+M|Form|tx|```
+M|Butt|tx|```javascript
+M|Butt|tx|document.querySelector('.cta-button').addEventListener('click', fn() {
+M|Butt|tx|dataLayer.push({
+M|Butt|'eve|'cta_clicked',
+M|Butt|'cta|this.innerText,
+M|Butt|'cta|'hero'
+M|Butt|tx|});
+M|Butt|tx|});
+M|Butt|tx|```
+M|E-co|tx|```javascript
+M|E-co|tx|// pd view
+M|E-co|data|null }); // Clear previous
+M|E-co|tx|dataLayer.push({
+M|E-co|'eve|'view_item',
+M|E-co|'eco|{
+M|E-co|'ite|[{
+M|E-co|'ite|'SKU123',
+M|E-co|'ite|'pd Name',
+M|E-co|'pri|99.99,
+M|E-co|'ite|'Category',
+M|E-co|'qua|1
+M|E-co|tx|}]
+M|E-co|tx|}
+M|E-co|tx|});
+M|E-co|tx|// Add to cart
+M|E-co|data|null });
+M|E-co|tx|dataLayer.push({
+M|E-co|'eve|'add_to_cart',
+M|E-co|'eco|{
+M|E-co|'ite|[{
+M|E-co|'ite|'SKU123',
+M|E-co|'ite|'pd Name',
+M|E-co|'pri|99.99,
+M|E-co|'qua|1
+M|E-co|tx|}]
+M|E-co|tx|}
+M|E-co|tx|});
+M|E-co|tx|// Purchase
+M|E-co|data|null });
+M|E-co|tx|dataLayer.push({
+M|E-co|'eve|'purchase',
+M|E-co|'eco|{
+M|E-co|'tra|'T12345',
+M|E-co|'val|99.99,
+M|E-co|'cur|'USD',
+M|E-co|'tax|5.00,
+M|E-co|'shi|10.00,
+M|E-co|'ite|[{
+M|E-co|'ite|'SKU123',
+M|E-co|'ite|'pd Name',
+M|E-co|'pri|99.99,
+M|E-co|'qua|1
+M|E-co|tx|}]
+M|E-co|tx|}
+M|E-co|tx|});
+M|E-co|tx|```
+M|E-co|tx|---
+M|GA4 |**Ta|** Google an: GA4 cfg
+M|GA4 |**Se|**
+M|GA4 |- Me|G-XXXXXXXX
+M|GA4 |- Se|Checked (for pageviews)
+M|GA4 |- Us|Add any us-level dimensions
+M|GA4 |**Tr|** All Pages
+M|GA4 |**Ta|** Google an: GA4 Event
+M|GA4 |**Se|**
+M|GA4 |- Co|Select your config tag
+M|GA4 |- Ev|{{DL - event_name}} or hardcode
+M|GA4 |- Ev|Add parameters from dataLayer
+M|GA4 |**Tr|** Custom Event w/ event name match
+M|Face|**Ta|** Custom HTML
+M|Face|tx|```html
+M|Face|tx|<script>
+M|Face|tx|!fn(f,b,e,v,n,t,s)
+M|Face|tx|{if(f.fbq)return;n=f.fbq=fn(){n.callMethod?
+M|Face|n.ca|n.queue.push(arguments)};
+M|Face|tx|if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+M|Face|tx|n.queue=[];t=b.createElement(e);t.async=!0;
+M|Face|tx|t.src=v;s=b.getElementsByTagName(e)[0];
+M|Face|tx|s.parentNode.insertBefore(t,s)}(window, document,'script',
+M|Face|'htt|//connect.facebook.net/en_US/fbevents.js');
+M|Face|tx|fbq('init', 'YOUR_PIXEL_ID');
+M|Face|tx|fbq('track', 'PageView');
+M|Face|tx|</script>
+M|Face|tx|```
+M|Face|**Tr|** All Pages
+M|Face|**Ta|** Custom HTML
+M|Face|tx|```html
+M|Face|tx|<script>
+M|Face|tx|fbq('track', 'Lead', {
+M|Face|cont|'{{DL - form_name}}'
+M|Face|tx|});
+M|Face|tx|</script>
+M|Face|tx|```
+M|Face|**Tr|** Custom Event - form_submitted
+M|Face|tx|---
+M|Prev|tx|1. Click "Preview" in GTM
+M|Prev|tx|2. Enter site URL
+M|Prev|tx|3. GTM debug panel opens at bottom
+M|Prev|**Wh|**
+M|Prev|it|Tags fired on this event
+M|Prev|it|Tags not fired (and why)
+M|Prev|it|Variables and their values
+M|Prev|it|Data layer contents
+M|Debu|**Ta|**
+M|Debu|it|Check trigger conditions
+M|Debu|it|Verify data layer push
+M|Debu|it|Check tag sequencing
+M|Debu|**Wr|**
+M|Debu|it|Check data layer structure
+M|Debu|it|Verify variable path (nested objects)
+M|Debu|it|Check timing (data may not exist yet)
+M|Debu|**Mu|**
+M|Debu|it|Check trigger uniqueness
+M|Debu|it|Look for duplicate tags
+M|Debu|it|Check tag firing options
+M|Debu|tx|---
+M|Work|Use |
+M|Work|it|Default workspace for production
+M|Work|it|Separate workspaces for large changes
+M|Work|it|Merge when ready
+M|Vers|**Be|**
+M|Vers|it|Name every version descriptively
+M|Vers|it|Add notes explaining changes
+M|Vers|it|rv changes before publish
+M|Vers|it|Keep production version noted
+M|Vers|**Ve|**
+M|Vers|tx|```
+M|Vers|v15|Added purchase conversion tracking
+M|Vers|- Ne|GA4 - Event - Purchase
+M|Vers|- Ne|Custom Event - purchase
+M|Vers|- Ne|DL - transaction_id, DL - value
+M|Vers|- Te|Chrome, Safari, Mobile
+M|Vers|tx|```
+M|Vers|tx|---
+M|Cons|tx|```javascript
+M|Cons|tx|// Default state (before consent)
+M|Cons|tx|gtag('consent', 'default', {
+M|Cons|'ana|'denied',
+M|Cons|'ad_|'denied'
+M|Cons|tx|});
+M|Cons|tx|// up on consent
+M|Cons|tx|fn grantConsent() {
+M|Cons|tx|gtag('consent', 'up', {
+M|Cons|'ana|'granted',
+M|Cons|'ad_|'granted'
+M|Cons|tx|});
+M|Cons|tx|}
+M|Cons|tx|```
+M|GTM |tx|1. Enable Consent Overview in Admin
+M|GTM |tx|2. Configure consent for each tag
+M|GTM |tx|3. Tags respect consent state automatically
+M|GTM |tx|---
+M|Tag |**Se|**
+M|Tag |tx|Tag cfg > Advanced Settings > Tag Sequencing
+M|Tag |**Us|**
+M|Tag |it|Config tag before event tags
+M|Tag |it|px initialization before tracking
+M|Tag |it|Cleanup after conversion
+M|Exce|**Tr|
+M|Exce|it|Exclude certain pages
+M|Exce|it|Exclude internal traffic
+M|Exce|it|Exclude during testing
+M|Cust|tx|```javascript
+M|Cust|tx|// Get URL parameter
+M|Cust|tx|fn() {
+M|Cust|tx|var params = new URLSearchParams(window.location.search);
+M|Cust|tx|return params.get('cg') \|\| '(not set)';
+M|Cust|tx|}
+M|Cust|tx|// Get cookie value
+M|Cust|tx|fn() {
+M|Cust|tx|var match = document.cookie.match('(^\|;) ?user_id=([^;]*)(;\|$)');
+M|Cust|retu|null;
+M|Cust|tx|}
+M|Cust|tx|// Get data from page
+M|Cust|tx|fn() {
+M|Cust|tx|var el = document.querySelector('.pd-price');
+M|Cust|retu|0;
+M|Cust|tx|}
+M|Cust|tx|```

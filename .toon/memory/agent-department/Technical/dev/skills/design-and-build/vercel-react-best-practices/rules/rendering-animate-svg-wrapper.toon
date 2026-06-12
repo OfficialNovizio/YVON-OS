@@ -1,0 +1,40 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-animate-svg-wrapper.md savings=-2%
+M||tx|---
+M||titl|Animate SVG Wrapper Instead of SVG Element
+M||impa|lo
+M||impa|enables hardware acceleration
+M||tags|rendering, svg, css, animation, perf
+M||tx|---
+M|Anim|tx|Many browsers don't have hardware acceleration for CSS3 animations on SVG elements. Wrap SVG in a `<div>` and animate the wrapper instead.
+M|Anim|**In|**
+M|Anim|tx|```tsx
+M|Anim|tx|fn LoadingSpinner() {
+M|Anim|tx|return (
+M|Anim|tx|<svg
+M|Anim|tx|className="animate-spin"
+M|Anim|tx|width="24"
+M|Anim|tx|height="24"
+M|Anim|tx|viewBox="0 0 24 24"
+M|Anim|tx|>
+M|Anim|tx|<circle cx="12" cy="12" r="10" stroke="currentColor" />
+M|Anim|tx|</svg>
+M|Anim|tx|)
+M|Anim|tx|}
+M|Anim|tx|```
+M|Anim|**Co|**
+M|Anim|tx|```tsx
+M|Anim|tx|fn LoadingSpinner() {
+M|Anim|tx|return (
+M|Anim|tx|<div className="animate-spin">
+M|Anim|tx|<svg
+M|Anim|tx|width="24"
+M|Anim|tx|height="24"
+M|Anim|tx|viewBox="0 0 24 24"
+M|Anim|tx|>
+M|Anim|tx|<circle cx="12" cy="12" r="10" stroke="currentColor" />
+M|Anim|tx|</svg>
+M|Anim|tx|</div>
+M|Anim|tx|)
+M|Anim|tx|}
+M|Anim|tx|```
+M|Anim|tx|This applies to all CSS transforms and transitions (`transform`, `opacity`, `translate`, `scale`, `rotate`). The wrapper div allows browsers to use GPU acceleration for smoother animations.

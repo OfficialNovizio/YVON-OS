@@ -1,0 +1,33 @@
+#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/TOOLS.md savings=4%
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=at-art-director&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```
+M|Memo|tx|POST /ap/settings
+M|Memo|Body|{ tp: "memory", agentId: "at-art-director", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|Memo|tx|```
+M|Memo|**Ke|**
+M|Memo|it|`current_status` — always overwrite
+M|Memo|it|`recent_tasks` — prepend + trim to 5
+M|Memo|it|`active_visual_system` — current cg visual direction (overwrite when new cg starts)
+M|Memo|it|`approved_prompt_templates` — reusable pm structures that worked well
+M|Memo|tx|---
+M|Vent|tx|```
+M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
+M|Vent|tx|```
+M|Vent|tx|---
+M|Refe|Use |
+M|Refe|tx|```
+M|Refe|tx|POST /ap/scrape
+M|Refe|Body|{ url: "<reference_url>", tp: "web" }
+M|Refe|tx|```
+M|Refe|Usef|Pinterest boards, editorial magazine archives, cr cg al.
+M|Refe|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| Midjourney MCP \| Direct pm submission + im retrieval \| Planned \|
+M|Futu|tx|\| DALL-E ap \| Alternative generation pipeline \| Planned \|
+M|Futu|tx|\| Stable Diffusion MCP \| Local md training + generation \| Planned \|
+M|Futu|tx|\| Pinterest MCP \| Mood board research + reference collection \| Planned \|

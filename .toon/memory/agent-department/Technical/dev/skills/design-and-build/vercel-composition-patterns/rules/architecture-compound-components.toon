@@ -1,0 +1,98 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/architecture-compound-components.md savings=-7%
+M||tx|---
+M||titl|Use Compound cp
+M||impa|hi
+M||impa|enables flexible composition w/o prop drilling
+M||tags|composition, compound-cp, architecture
+M||tx|---
+M|Use |tx|Structure complex cp as compound cp w/ a shared context. Each
+M|Use |tx|subcomponent accesses shared state via context, not props. Consumers compose the
+M|Use |tx|pieces they need.
+M|Use |**In|**
+M|Use |tx|```tsx
+M|Use |tx|fn Composer({
+M|Use |tx|renderHeader,
+M|Use |tx|renderFooter,
+M|Use |tx|renderActions,
+M|Use |tx|showAttachments,
+M|Use |tx|showFormatting,
+M|Use |tx|showEmojis,
+M|Use |}|Props) {
+M|Use |tx|return (
+M|Use |tx|<form>
+M|Use |tx|{renderHeader?.()}
+M|Use |tx|<Input />
+M|Use |tx|{showAttachments && <Attachments />}
+M|Use |tx|{renderFooter ? (
+M|Use |tx|renderFooter()
+M|Use |)|(
+M|Use |tx|<Footer>
+M|Use |tx|{showFormatting && <Formatting />}
+M|Use |tx|{showEmojis && <Emojis />}
+M|Use |tx|{renderActions?.()}
+M|Use |tx|</Footer>
+M|Use |tx|)}
+M|Use |tx|</form>
+M|Use |tx|)
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Co|**
+M|Use |tx|```tsx
+M|Use |tx|const ComposerContext = createContext<ComposerContextValue \| null>(null)
+M|Use |func|ProviderProps) {
+M|Use |tx|return (
+M|Use |tx|<ComposerContext value={{ state, actions, meta }}>
+M|Use |tx|{children}
+M|Use |tx|</ComposerContext>
+M|Use |tx|)
+M|Use |tx|}
+M|Use |func|{ children: rc.ReactNode }) {
+M|Use |tx|return <form>{children}</form>
+M|Use |tx|}
+M|Use |tx|fn ComposerInput() {
+M|Use |tx|const {
+M|Use |tx|state,
+M|Use |acti|{ up },
+M|Use |meta|{ inputRef },
+M|Use |tx|} = use(ComposerContext)
+M|Use |tx|return (
+M|Use |tx|<TextInput
+M|Use |tx|ref={inputRef}
+M|Use |tx|value={state.input}
+M|Use |onCh|text }))}
+M|Use |tx|/>
+M|Use |tx|)
+M|Use |tx|}
+M|Use |tx|fn ComposerSubmit() {
+M|Use |tx|const {
+M|Use |acti|{ submit },
+M|Use |tx|} = use(ComposerContext)
+M|Use |tx|return <Button onPress={submit}>Send</Button>
+M|Use |tx|}
+M|Use |tx|// Export as compound cp
+M|Use |tx|const Composer = {
+M|Use |pr|ComposerProvider,
+M|Use |Fram|ComposerFrame,
+M|Use |Inpu|ComposerInput,
+M|Use |Subm|ComposerSubmit,
+M|Use |Head|ComposerHeader,
+M|Use |Foot|ComposerFooter,
+M|Use |Atta|ComposerAttachments,
+M|Use |Form|ComposerFormatting,
+M|Use |Emoj|ComposerEmojis,
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Us|**
+M|Use |tx|```tsx
+M|Use |tx|<Composer.pr state={state} actions={actions} meta={meta}>
+M|Use |tx|<Composer.Frame>
+M|Use |tx|<Composer.Header />
+M|Use |tx|<Composer.Input />
+M|Use |tx|<Composer.Footer>
+M|Use |tx|<Composer.Formatting />
+M|Use |tx|<Composer.Submit />
+M|Use |tx|</Composer.Footer>
+M|Use |tx|</Composer.Frame>
+M|Use |tx|</Composer.pr>
+M|Use |tx|```
+M|Use |tx|Consumers explicitly compose exactly what they need. No hidden conditionals. And the state, actions and meta are dependency-injected by a parent pr, allowing multiple usages of the same cp structure.

@@ -1,0 +1,167 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/innovation-accounting.md savings=3%
+M|Inno|Trad|is this startup making progress, or is it just burning cash?
+M|Stag|tx|Before you can improve, you need to know where you stand. Use an MVP to establish real data on where the company is right now.
+M|Stag|**Wh|**
+M|Stag|it|Current conversion rates at each stage of the funnel
+M|Stag|it|Current retention rates (daily, weekly, monthly)
+M|Stag|it|Current rv per cs (even if near zero)
+M|Stag|it|Current acquisition cost and channels
+M|Stag|it|cs engagement metrics (frequency, depth of use)
+M|Stag|**Ho|**
+M|Stag|tx|1. Launch the MVP to a small group of target cs
+M|Stag|tx|2. Measure actual behavior (not projected or estimated)
+M|Stag|tx|3. Record every metric honestly, even when numbers are discouraging
+M|Stag|tx|4. Document the baseline in a single dashboard visible to the entire team
+M|Stag|**Ba|**
+M|Stag|tx|\| Metric \| Baseline Value \| Date Measured \| Target Value \| Timeline \|
+M|Stag|tx|\|--------\|---------------\|---------------\|-------------\|----------\|
+M|Stag|tx|\| Signup conversion rate \| ___% \| ___ \| ___% \| ___ \|
+M|Stag|tx|\| Activation rate \| ___% \| ___ \| ___% \| ___ \|
+M|Stag|tx|\| Week-1 retention \| ___% \| ___ \| ___% \| ___ \|
+M|Stag|tx|\| Month-1 retention \| ___% \| ___ \| ___% \| ___ \|
+M|Stag|tx|\| rv per us \| $___ \| ___ \| $___ \| ___ \|
+M|Stag|tx|\| Referral rate \| ___% \| ___ \| ___% \| ___ \|
+M|Stag|**Co|** Teams skip the baseline and start "improving" w/o knowing what they are improving from. w/o a baseline, you cannot distinguish signal from noise.
+M|Stag|tx|w/ a baseline established, the startup works to improve the numbers from the baseline toward the ideal. Each experiment attempts to move one or more key metrics.
+M|Stag|**Th|**
+M|Stag|tx|1. Identify the metric most constraining growth
+M|Stag|tx|2. Form a hypothesis abt what will improve it
+M|Stag|tx|3. Run an experiment (pd change, mk tst, pricing change)
+M|Stag|tx|4. Measure the impact on the target metric
+M|Stag|tx|5. If improved, lock in the change and move to the nx constraint
+M|Stag|tx|6. If not improved, try a different approach
+M|Stag|**Tu|**
+M|Stag|tx|\| Experiment \| Target Metric \| Baseline \| Result \| Change \| Decision \|
+M|Stag|tx|\|-----------\|--------------\|----------\|--------\|--------\|----------\|
+M|Stag|tx|\| Simplified onboarding flow \| Activation rate \| 23% \| 31% \| +8% \| Keep \|
+M|Stag|tx|\| Added sl proof to landing page \| Signup conversion \| 3.2% \| 3.5% \| +0.3% \| Inconclusive, need more data \|
+M|Stag|tx|\| em drip cg (day 1,3,7) \| Week-1 retention \| 18% \| 26% \| +8% \| Keep \|
+M|Stag|tx|\| Increased price from $9 to $19 \| rv per us \| $9 \| $17.10 \| +$8.10 \| Keep (10% churn acceptable) \|
+M|Stag|tx|\| Referral reward ($5 credit) \| Referral rate \| 2% \| 3.1% \| +1.1% \| Keep \|
+M|Stag|**Ke|** Each experiment shd target a specific metric. If an experiment does not move the target metric, it was not a fl of execution but a fl of the hypothesis. That is valuable learning.
+M|Stag|tx|After multiple tuning attempts, the startup reaches a decision point. Are the metrics moving toward the target, or are they flat despite sig effort?
+M|Stag|**Pi|**
+M|Stag|it|Key metrics are flat or declining despite multiple experiments
+M|Stag|it|The rate of improvement is too slow to reach targets before runway ends
+M|Stag|it|cs feedback consistently points to a different problem or solution
+M|Stag|it|Each experiment produces smaller and smaller improvements
+M|Stag|it|The team is running out of ideas for improving current metrics
+M|Stag|**Pe|**
+M|Stag|it|Key metrics show consistent upward tn
+M|Stag|it|Each experiment teaches something actionable
+M|Stag|it|cs feedback aligns w/ the pd direction
+M|Stag|it|The rate of improvement suggests targets are reachable
+M|Stag|it|The team has a clear backlog of experiments to run
+M|Stag|**De|**
+M|Stag|tx|```
+M|Stag|tx|Are metrics improving?
+M|Stag|tx|├── YES, rapidly → Persevere. Increase investment.
+M|Stag|├── |is the rate sufficient to hit targets before runway ends?
+M|Stag|tx|│   ├── YES → Persevere. Stay the course.
+M|Stag|tx|│   └── NO → Consider pivot. The engine may have a ceiling.
+M|Stag|tx|├── NO, flat → Pivot. The current approach has stalled.
+M|Stag|tx|└── NO, declining → Pivot immediately. Something fundamental is wrong.
+M|Stag|tx|```
+M|Inno|tx|\| Dimension \| Traditional Metrics \| Innovation Metrics \|
+M|Inno|tx|\|-----------\|--------------------\|--------------------\|
+M|Inno|tx|\| Time horizon \| Quarterly/annual \| Weekly/bi-weekly \|
+M|Inno|tx|\| Primary focus \| rv and profit \| Learning velocity \|
+M|Inno|tx|\| sc indicator \| Growth in rv \| Growth in validated learning \|
+M|Inno|tx|\| fl indicator \| Missing rv targets \| Not running experiments \|
+M|Inno|tx|\| Reporting audience \| Board/shareholders \| Team/sponsors \|
+M|Inno|tx|\| Data source \| Financial statements \| pd an, experiments \|
+M|Inno|tx|\| Decision trigger \| Budget cycle \| Experiment results \|
+M|Coho|tx|Cohort al is the most important tool in innovation accounting. It separates the signal of pd improvement from the noise of overall growth.
+M|What|A co|all us who signed up in a given week or month.
+M|Why |tx|Aggregate metrics lie. If you are growing, total numbers go up even if the pd is getting worse. Cohort al isolates the behavior of each group to reveal true pd perf.
+M|Why |**Ex|**
+M|Why |tx|\| Month \| Total us \| Total Active us \| Active Rate \|
+M|Why |tx|\|-------\|------------\|-------------------\|-------------\|
+M|Why |tx|\| January \| 100 \| 40 \| 40% \|
+M|Why |tx|\| February \| 250 \| 80 \| 32% \|
+M|Why |tx|\| March \| 500 \| 130 \| 26% \|
+M|Why |tx|Active rate is declining, but total active us are increasing. w/o cohort al, the team might celebrate growth while the pd is actually deteriorating.
+M|Why |**Sa|**
+M|Why |tx|\| Cohort \| Month 1 \| Month 2 \| Month 3 \|
+M|Why |tx|\|--------\|---------\|---------\|---------\|
+M|Why |tx|\| January (100 us) \| 40% \| 25% \| 15% \|
+M|Why |tx|\| February (150 us) \| 35% \| 20% \| - \|
+M|Why |tx|\| March (250 us) \| 30% \| - \| - \|
+M|Why |Now |retention is dropping, and each new cohort performs worse than the last. This is a pd qual problem, not a growth sc.
+M|Runn|**St|** Define the cohort event (usually signup date or first purchase date).
+M|Runn|**St|** Define the metric to track (retention, rv, engagement).
+M|Runn|**St|** cr the cohort table:
+M|Runn|tx|\| Cohort \| Week 0 \| Week 1 \| Week 2 \| Week 3 \| Week 4 \|
+M|Runn|tx|\|--------\|--------\|--------\|--------\|--------\|--------\|
+M|Runn|tx|\| Week of Jan 1 \| 100% \| 45% \| 30% \| 22% \| 18% \|
+M|Runn|tx|\| Week of Jan 8 \| 100% \| 48% \| 33% \| 25% \| 20% \|
+M|Runn|tx|\| Week of Jan 15 \| 100% \| 52% \| 38% \| 28% \| - \|
+M|Runn|tx|\| Week of Jan 22 \| 100% \| 55% \| 40% \| - \| - \|
+M|Runn|**St|** Compare cohorts. Are newer cohorts performing better? If yes, pd improvements are working. If no, they are not.
+M|Earl|tx|Focus on learning velocity and engagement qual.
+M|Earl|tx|\| Section \| Metrics \|
+M|Earl|tx|\|---------\|---------\|
+M|Earl|tx|\| Experiments \| Loops done this month, hypotheses tested, pivots considered \|
+M|Earl|tx|\| Engagement \| DAU/MAU ratio, sn frequency, core action completion rate \|
+M|Earl|tx|\| Retention \| Week-1, Week-4, Week-8 retention by cohort \|
+M|Earl|tx|\| Qualitative \| NPS or Sean Ellis score, top cs feedback themes \|
+M|Earl|tx|\| Runway \| Months of runway remaining, burn rate, nx funding milestone \|
+M|Grow|tx|Focus on engine efficiency and unit economics.
+M|Grow|tx|\| Section \| Metrics \|
+M|Grow|tx|\|---------\|---------\|
+M|Grow|tx|\| Acquisition \| CAC by channel, signup conversion rate, traffic sources \|
+M|Grow|tx|\| Activation \| Onboarding completion rate, time to first value \|
+M|Grow|tx|\| rv \| MRR, ARPU, expansion rv, churn rate \|
+M|Grow|tx|\| Retention \| Monthly retention by cohort, net rv retention \|
+M|Grow|tx|\| Unit economics \| LTV, LTV/CAC ratio, payback period \|
+M|Boar|Trad|
+M|Inno|tx|**1. Hypotheses Tested This Period**
+M|Inno|it|List each hypothesis, the experiment run, and the result
+M|Inno|it|Clearly state what was learned
+M|Inno|tx|**2. Key Metric Progress**
+M|Inno|it|Show the innovation dashboard w/ cohort tn
+M|Inno|it|Highlight which metrics improved and which did not
+M|Inno|tx|**3. Decision Points**
+M|Inno|it|State any pivot or persevere decisions made
+M|Inno|it|Explain the reasoning
+M|Inno|tx|**4. nx Period Plan**
+M|Inno|it|List the hypotheses to tst nx
+M|Inno|it|State the resources needed
+M|Inno|tx|**5. Runway and Funding**
+M|Inno|it|Current burn rate and runway
+M|Inno|it|Metered funding milestones (see below)
+M|Mete|tx|Instead of funding startups (or corporate innovation projects) w/ large lump sums, metered funding provides capital in stages tied to validated learning milestones.
+M|How |tx|\| Stage \| Funding Amount \| Milestone Required \|
+M|How |tx|\|-------\|---------------\|-------------------\|
+M|How |tx|\| Exploration \| $50K-100K \| Complete 5 cs discovery interviews. Identify top 3 assumptions. \|
+M|How |tx|\| Validation \| $100K-250K \| Run 3 experiments. Establish baseline metrics. Evidence of problem-solution fit. \|
+M|How |tx|\| Efficiency \| $250K-500K \| Demonstrate improving cohort metrics. Evidence of a working growth engine. \|
+M|How |tx|\| Scale \| $500K+ \| Unit economics are positive. Growth engine is repeatable. Clear path to profitability. \|
+M|Bene|- **|** Money is only deployed after learning milestones are hit
+M|Bene|- **|** Teams must demonstrate progress, not just activity
+M|Bene|- **|** Teams that cannot hit milestones are stopped early
+M|Bene|- **|** Both investors and teams focus on learning, not vanity
+M|Mete|Corp|
+M|Mete|tx|1. **Stage gate reviews** based on validated learning, not feature completion
+M|Mete|tx|2. **Innovation boards** that evaluate experiment results, not business plans
+M|Mete|tx|3. **Graduated budgets** that increase as evidence increases
+M|Mete|4. *|what results wld cause the project to stop
+M|Corp|Corp|
+M|Corp|tx|\| Challenge \| Startup Context \| Corporate Context \| Adaptation \|
+M|Corp|tx|\|-----------\|----------------\|-------------------\|------------\|
+M|Corp|tx|\| sc metrics \| rv, us \| st alignment + metrics \| Add st fit scoring \|
+M|Corp|tx|\| Timeline pressure \| Runway-driven \| Annual budget cycles \| Align experiments to quarters \|
+M|Corp|tx|\| Risk tolerance \| hi (existential) \| lo (reputation) \| Ring-fence innovation budgets \|
+M|Corp|tx|\| Resource allocation \| Dedicated team \| Shared resources \| Protect dedicated innovation time \|
+M|Corp|tx|\| Decision authority \| Founder decides \| Committee decides \| Designate single decision maker \|
+M|Corp|tx|\| fl handling \| Pivot quickly \| Political consequences \| cr safe-to-fail culture \|
+M|Corp|tx|\| Dimension \| Metric \| Target \|
+M|Corp|tx|\|-----------\|--------\|--------\|
+M|Corp|tx|\| Speed \| Average experiment cycle time \| Under 4 weeks \|
+M|Corp|tx|\| Volume \| Experiments run per quarter \| 8+ per team \|
+M|Corp|tx|\| Learning \| Documented in per quarter \| 20+ \|
+M|Corp|tx|\| Impact \| Experiments leading to pd changes \| 30%+ \|
+M|Corp|tx|\| Efficiency \| Cost per validated learning \| Decreasing quarter over quarter \|
+M|Corp|tx|\| Pipeline \| Ideas in exploration stage \| 10+ at any time \|
+M|Corp|tx|\| Conversion \| Ideas reaching scale stage \| 5-10% of pipeline \|
+M|Corp|tx|Innovation accounting replaces hope w/ evidence. It does not guarantee sc, but it ensures that fl happens quickly, cheaply, and w/ maximum learning.

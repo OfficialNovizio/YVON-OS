@@ -1,0 +1,25 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/04--agents.md strip=6% toon=0% net=6%
+T|04 ·|0|An infrastructure overview: which ag run on which machine, what they have access to, and the health of the fleet.
+T|04 ·|1|
+T|Purp|0|A single place to keep an overview of the ag fleet across the owner's physical machines — what's running where, access, and connectivity — w/ a direct line (SSH/screen share) to fix machines when needed.
+T|Purp|1|
+T|Page|0|Title: ag, breadcrumb Vibe w/ AI / ag.
+T|Page|1|A "Find an ag or machine…" search and a link to the Org Chart.
+T|Page|2|Top bar: sy healthy, ag live counter.
+T|Page|3|
+S|Top |0|A row of KPI cards across the top:
+S|Top |1|Machines online — e.g. 3 (Mac minis online).
+S|Top |2|ag running — e.g. 23.
+S|Top |3|Used RAM — e.g. 48 GB (w/ a fraction of total).
+S|Top |4|Routing / gateway — e.g. Hermes (the routing/gateway ag).
+S|Top |5|
+T|Mach|0|ag are grouped under the physical machine they run on. Each machine block shows the machine name, role, status (online/cooling/idle), and the ag avatars on it:
+T|Mach|1|
+T|Mach|2|Mac Mini 2 — Hermes · Personal Layer · serves all workspaces. Hosts the routing/gateway and the personal team: Nexus (CTO), Steve (QA), Knox (sec), Wolf (fi), hy (Chief of Staff). Status chips like "routing / online."
+T|Mach|3|Mac Mini 1 — OpenClaw · Workspace tier · produces the work. Hosts the workspace/master ag that do the production work ("active load").
+T|Mach|4|Mac Mini 3 — Workshop & Services · Skill workshop · makes the team better. The skill-training/improvement machine.
+T|Mach|5|Mac Studio M5 — (reserved) · future capacity ("Mac Studios coming"), shown idle/queued.
+T|Mach|6|
+T|Mach|7|Each machine row is expandable to see its ag and exposes a direct connection via SSH/terminal and a screen-share option so the owner can log in and fix anything if the gateway goes down.
+T|Mach|8|
+T|What|0|This is a monitoring/overview page — keep an eye on which machine hosts which ag, RAM/health, and connectivity. It is the tc counterpart to the Org Chart (which shows the organizational structure rather than the hardware layout). See 27-hardware-and-runtime.md for the runtime details.

@@ -1,0 +1,476 @@
+#MEM id=weekly-review source=/root/yvon/agent-department/COO/diana/skills/marketplace/weekly-review/SKILL.md savings=6%
+M||tx|---
+M||name|weekly-rv
+M||desc|rv week's progress, meetings, learnings
+M||disa|false
+M||tx|---
+M|Quic|tx|1. Run `/weekly-rv` on Friday afternoon (best time) or Monday morning
+M|Quic|2. I|weekly plans, daily plans, PRDs, meeting notes, decisions, and launches from the past 7 days
+M|Quic|tx|3. I will gn a focused rv comparing plan vs. actual, surfacing key wins, blockers, and learnings
+M|Quic|tx|4. Output goes to `thoughts/shared/pm/reports/YYYY-WXX-weekly-rv.md`
+M|Quic|tx|5. After the rv, I will suggest running `/weekly-plan` to plan nx week
+M|Quic|tx|**Default output is focused (~150 lines max).** Say "full rv" if you want the expanded version w/ stakeholder pulse, task-level execution metrics, and pattern al.
+M|Purp|tx|End-of-week synthesis reviewing what you accomplished, what you learned, and what needs attention. Feeds into nx week's planning and builds institutional memory.
+M|Usag|it|`/weekly-rv` - rv current/past week
+M|Usag|it|`/weekly-rv last-week` - rv previous week (if you forgot)
+M|Usag|tx|---
+M|Cont|**Ch|**
+M|Cont|tx|1. `thoughts/shared/pm/reports/` - This week's plan (what you intended)
+M|Cont|tx|2. `thoughts/shared/pm/reports/` - Daily plans from this week (what actually happened)
+M|Cont|tx|3. `thoughts/shared/pm/prds/` - PRDs modified this week
+M|Cont|tx|4. `thoughts/shared/pd/meeting-notes/` - Meeting notes from past 7 days
+M|Cont|tx|5. `thoughts/shared/pm/launches/` - Launches that happened this week
+M|Cont|tx|6. `thoughts/shared/pd/decisions/` - Decisions made this week
+M|Cont|tx|7. `thoughts/shared/pm/analyses/` - Research conducted
+M|Cont|tx|8. `thoughts/shared/pm/frameworks/` - Quarter goals (to track progress)
+M|Cont|**MC|**
+M|Cont|it|**Linear MCP** - Tasks done this week
+M|Cont|it|**an MCP** - Metrics for features launched recently
+M|Cont|it|**GitHub MCP** - Code activity (if relevant to your role)
+M|Cont|it|**Slack MCP** - Key conversations and decisions
+M|Cont|**Fa|** File-based al of PM OS workspace + manual input for completions.
+M|Cont|tx|---
+M|Step|1. *|**
+M|Step|- De|Current week (if Friday or later)
+M|Step|- If|Ask "rv last week or current week?"
+M|Step|- If|Use that week
+M|Step|2. *|**
+M|Step|it|Look for `thoughts/shared/pm/reports/YYYY-WXX-weekly-rv.md`
+M|Step|- If|Ask "up existing rv or cr new version?"
+M|Step|tx|---
+M|Step|**A.|**
+M|Step|Read|
+M|Step|Extr|
+M|Step|it|Top 3 priorities for the week
+M|Step|it|Key tasks under each priority
+M|Step|it|sc criteria
+M|Step|it|Expected meeting load
+M|Step|If n|
+M|Step|- No|"Week wasn't planned. Reviewing what happened only."
+M|Step|- Su|"nx week, run `/weekly-plan` on Monday for better focus."
+M|Step|tx|---
+M|Step|**B.|**
+M|Step|Scan|
+M|Step|Meth|
+M|Step|tx|```bash
+M|File|tx|find thoughts/shared/pm/prds/ -name "*.md" -mtime -7
+M|File|tx|```
+M|File|For |
+M|File|it|Read frontmatter or first section for current stage
+M|File|it|Compare to last week's stage (if weekly rv from last week exists)
+M|File|- De|Advanced, Stalled, or New
+M|File|Meth|
+M|File|tx|```bash
+M|PRDs|git |\| grep -E "prds/.*\.md$" \| sort -u
+M|PRDs|tx|```
+M|PRDs|**Ca|**
+M|PRDs|- **|** Moved to nx stage (Team Kickoff → Planning rv)
+M|PRDs|- **|** Work happened but didn't advance stage
+M|PRDs|- **|** No activity this week
+M|PRDs|- **|** Started this week
+M|PRDs|tx|---
+M|PRDs|**C.|**
+M|PRDs|Chec|
+M|PRDs|it|Launches done this week
+M|PRDs|it|Launch checklists finished
+M|PRDs|it|Post-launch monitoring started
+M|PRDs|For |
+M|PRDs|If A|
+M|PRDs|tx|```
+M|PRDs|tx|Query metrics since launch date
+M|PRDs|tx|Compare to sc criteria from PRD
+M|PRDs|tx|```
+M|PRDs|Cate|
+M|PRDs|it|✅ On track (meeting targets)
+M|PRDs|it|⚠️ Needs attention (below targets)
+M|PRDs|it|❌ Underperforming (significantly below)
+M|PRDs|it|🚀 Exceeding (beating targets)
+M|PRDs|tx|---
+M|PRDs|**D.|**
+M|PRDs|Scan|
+M|PRDs|For |
+M|PRDs|it|Extract date, attendees, topic
+M|PRDs|- Lo|Decisions made, action items created, blockers identified
+M|PRDs|Chec|
+M|PRDs|it|Decision doc created this week
+M|PRDs|it|Link to related meetings
+M|PRDs|**Bu|**
+M|PRDs|it|Who did you meet w/ most? (frequency)
+M|PRDs|it|Who did you miss syncing w/? (gaps)
+M|PRDs|it|What topics dominated discussions? (themes)
+M|PRDs|tx|---
+M|PRDs|**E.|**
+M|PRDs|If L|
+M|PRDs|tx|```
+M|PRDs|Quer|Tasks done in past 7 days
+M|PRDs|Grou|Priority, PRD/Initiative
+M|PRDs|Calc|Planned vs actual completion rate
+M|PRDs|tx|```
+M|PRDs|If M|
+M|PRDs|it|Scan daily plans for checked-off tasks
+M|PRDs|it|Scan meeting notes for done action items
+M|PRDs|**Ca|**
+M|PRDs|tx|```
+M|PRDs|Init|[PRD Name]
+M|PRDs|it|✅ Task 1 (from Priority 1)
+M|PRDs|it|✅ Task 2 (from Priority 1)
+M|PRDs|it|[ ] Task 3 (carried over - why?)
+M|PRDs|tx|```
+M|PRDs|**Ca|**
+M|PRDs|it|Tasks done vs planned
+M|PRDs|it|% completion rate
+M|PRDs|it|Carry-over rate
+M|PRDs|tx|---
+M|PRDs|**F.|**
+M|PRDs|Chec|
+M|PRDs|it|New interview notes this week
+M|PRDs|it|Competitive al updates
+M|PRDs|Chec|
+M|PRDs|it|Synthesis reports created
+M|PRDs|it|Themes identified
+M|PRDs|Extr|
+M|PRDs|it|Key findings
+M|PRDs|it|Recurring themes (mentioned in multiple sources)
+M|PRDs|it|Recommendations for roadmap
+M|PRDs|tx|---
+M|PRDs|**G.|**
+M|PRDs|tx|This is where weekly rv gets powerful - surfacing patterns.
+M|PRDs|**Fr|**
+M|PRDs|it|What consistently took longer than expected?
+M|PRDs|it|What got deprioritized every day? (maybe not important)
+M|PRDs|it|What meeting prep was valuable vs not?
+M|PRDs|**Fr|**
+M|PRDs|it|What decisions went well? (process to repeat)
+M|PRDs|it|What decisions went poorly? (what to change)
+M|PRDs|it|What blockers kept recurring? (systemic issue)
+M|PRDs|**Fr|**
+M|PRDs|it|What communication worked well?
+M|PRDs|it|What caused confusion or misalignment?
+M|PRDs|it|Who needs more/less frequent updates?
+M|PRDs|tx|---
+M|Step|**PR|**
+M|Step|For |
+M|Step|it|Last week's stage → This week's stage
+M|Step|- Mo|✅ Advanced / → Active / ⚠️ Stalled
+M|Step|**Wh|**
+M|Step|- Ad|What unblocked it? (repeat this)
+M|Step|- St|What's blocking? (action needed)
+M|Step|tx|---
+M|Step|**St|**
+M|Step|tx|Read `thoughts/shared/pm/frameworks/` for quarter goals.
+M|Step|For |
+M|Step|it|Which priorities/tasks contributed to it this week?
+M|Step|- Pr|X% → Y% (did we move the needle?)
+M|Step|- Ve|Are we on track for quarter target?
+M|Step|**Pi|**
+M|Step|If s|
+M|Step|- Pi|X% of time this week
+M|Step|- Pi|Y% of time
+M|Step|- Pi|Z% of time
+M|Step|Comp|Are we balanced?
+M|Step|tx|---
+M|Step|**Pa|**
+M|Step|Look|
+M|Step|- **|** Same dependency/person blk multiple things
+M|Step|- **|** Consistently took 2x longer than planned
+M|Step|- **|** Planned 30 hours w/ 25 hours of meetings
+M|Step|- **|** Which meetings led to outcomes vs were FYI only?
+M|Step|- **|** When did deep work happen? (protect these blocks)
+M|Step|tx|---
+M|Step|Crea|`thoughts/shared/pm/reports/YYYY-WXX-weekly-rv.md`
+M|Step|**Ou|**
+M|Step|**De|
+M|Step|tx|1. TL;DR (5-6 bullet summary)
+M|Step|tx|2. Priority Completion (plan vs actual for top 3 priorities)
+M|Step|tx|3. Key Decisions Made (list w/ one-line rationale each)
+M|Step|tx|4. Metrics Movement (table of metrics that changed)
+M|Step|tx|5. Top 3 Learnings (what worked, what did not, what to change)
+M|Step|tx|6. nx Week Preview (draft priorities + items to unblock)
+M|Step|**Fu|
+M|Step|it|Stakeholder pulse (engagement gaps, new relationships)
+M|Step|it|Task-level execution metrics (completion rate, carry-over rate, scope creep indicator)
+M|Step|it|PRD pipeline table w/ stage movement
+M|Step|it|Meeting value assessment (hi/md/lo for each meeting)
+M|Step|it|Pattern al (recurring blockers, underestimated task tp, best working times)
+M|Step|it|us research and competitive intelligence updates
+M|Step|**Te|**
+M|Step|tx|```markdown
+M|Step|tx|---
+M|Step|week|YYYY-WXX
+M|Step|week|YYYY-MM-DD
+M|Step|week|YYYY-MM-DD
+M|Step|quar|Q[X] YYYY
+M|Step|tx|---
+M|TL;D|- **|** [X active], [Y advanced], [Z stalled]
+M|TL;D|- **|** [N features shipped]
+M|TL;D|- **|** [M total], [P key decisions]
+M|TL;D|- **|** [X%] of planned tasks done
+M|TL;D|- **|** [Biggest accomplishment]
+M|TL;D|- **|** [Biggest blocker/lesson]
+M|TL;D|tx|---
+M|Stra|**Qu|** [Primary goal for Q]
+M|Stra|**Pr|** [What moved forward]
+M|Stra|tx|\| Goal     \| Start of Week \| End of Week \| This Week \| Status      \|
+M|Stra|tx|\| -------- \| ------------- \| ----------- \| --------- \| ----------- \|
+M|Stra|tx|\| [Goal 1] \| X%            \| Y%          \| +Z%       \| ✅ On track \|
+M|Stra|tx|\| [Goal 2] \| A%            \| B%          \| +C%       \| ⚠️ Behind   \|
+M|Stra|**Ve|**
+M|Stra|it|[x] weeks left in quarter
+M|Stra|it|[Y%] progress needed per week to hit goal
+M|Stra|it|[Z%] actual progress this week
+M|Stra|- **|** [On track / Need to accelerate / Ahead]
+M|Stra|tx|---
+M|Top |tx|[Compare planned vs actual]
+M|Prio|**Pl|** [What we intended to achieve]
+M|Prio|**Ac|** [What we achieved]
+M|Prio|**Ta|**
+M|Prio|it|✅ [Task 1] - Done
+M|Prio|it|✅ [Task 2] - Done
+M|Prio|it|[ ] [Task 3] - Carried over bc [reason]
+M|Prio|**St|** ✅ Complete / 🟡 Partial / ❌ Not started
+M|Prio|**Ke|**
+M|Prio|it|[What this unlocked or enabled]
+M|Prio|**Le|**
+M|Prio|it|[What went well or what to change]
+M|Prio|tx|---
+M|Prio|tx|[Same structure]
+M|Prio|tx|---
+M|Prio|tx|[Same structure]
+M|Prio|tx|---
+M|PRD |tx|\| PRD    \| Stage (Start of Week) \| Stage (End of Week) \| Movement    \| nx Action       \|
+M|PRD |tx|\| ------ \| --------------------- \| ------------------- \| ----------- \| ----------------- \|
+M|PRD |tx|\| [Name] \| Team Kickoff          \| Planning rv     \| ✅ Advanced \| Get eng estimates \|
+M|PRD |tx|\| [Name] \| Solution rv       \| Solution rv     \| ⚠️ Stalled  \| Need legal rv \|
+M|PRD |tx|\| [Name] \| -                     \| Team Kickoff        \| 🆕 New      \| Scope and plan    \|
+M|PRD |al|**
+M|PRD |- **|** [PRD X] moved forward bc [stakeholder signed off / ds done / etc.]
+M|PRD |- **|** [PRD Y] blk on [dependency / decision / resource]
+M|PRD |- **|** [What to prioritize nx week to unblock]
+M|PRD |tx|---
+M|Ship|tx|[If anything launched]
+M|Ship|tx|**[Feature Name]** (Launched [Day])
+M|Ship|**Su|**
+M|Ship|- [M|Target [X], Actual [Y] ([+/-Z%])
+M|Ship|- [M|Target [A], Actual [B] ([+/-C%])
+M|Ship|**Ea|** ✅ On track / ⚠️ Needs attention / ❌ Below target / 🚀 Exceeding
+M|Ship|in|**
+M|Ship|it|[us feedback received]
+M|Ship|it|[Unexpected behavior observed]
+M|Ship|it|[nx iteration needed]
+M|Ship|tx|---
+M|Post|tx|[Features launched in past 4 weeks still being monitored]
+M|Post|tx|\| Feature \| Launch Date \| Key Metric \| Target \| Actual \| tn \| Status   \|
+M|Post|tx|\| ------- \| ----------- \| ---------- \| ------ \| ------ \| ----- \| -------- \|
+M|Post|tx|\| [Name]  \| [Date]      \| [Metric]   \| [X]    \| [Y]    \| [↗↘→] \| [✅⚠️❌] \|
+M|Post|tx|---
+M|Key |tx|1. **[Decision]** ([Date] - [Meeting])
+M|Key |- **|** [Why this came up]
+M|Key |- **|** [What was decided]
+M|Key |- **|** [Why we chose this]
+M|Key |- **|** [Who's executing]
+M|Key |- **|** [What this affects]
+M|Key |- **|** [Link if exists]
+M|Key |tx|2. **[Decision 2]**
+M|Key |tx|[Same structure]
+M|Key |tx|---
+M|Meet|tx|\| Day \| Meeting \| Attendees \| Outcome              \| Value     \|
+M|Meet|tx|\| --- \| ------- \| --------- \| -------------------- \| --------- \|
+M|Meet|tx|\| Mon \| [Topic] \| [Names]   \| [Decision/Alignment] \| 🟢 hi   \|
+M|Meet|tx|\| Tue \| [Topic] \| [Names]   \| [Info sharing]       \| 🟡 md \|
+M|Meet|tx|\| Wed \| [Topic] \| [Names]   \| [can]          \| ⚫ None   \|
+M|Meet|**Me|** [X] hours / 40 = [Y%]
+M|Meet|**De|** [Z] hours (vs [A] hours planned)
+M|Meet|**Va|**
+M|Meet|- 🟢|Led to decision or unblocked work
+M|Meet|- 🟡|Useful context but no immediate action
+M|Meet|- 🔴|cld have been async or skipped
+M|Meet|**Re|** [Which meetings to keep/change/cancel]
+M|Meet|tx|---
+M|Stak|**Hi|**
+M|Stak|- **|Multiple syncs, key decision, strong collaboration]
+M|Stak|- Im|[What this enabled]
+M|Stak|- Co|[Keep this cadence / Increase collaboration]
+M|Stak|**Ne|**
+M|Stak|- **|Haven't synced in 2+ weeks, blocking issue, misalignment suspected]
+M|Stak|- Im|[What's at risk]
+M|Stak|- Ac|[Specific nx step - schedule 1:1, send up, etc.]
+M|Stak|**Ne|**
+M|Stak|it|**[Name]** - [Met for first time, context]
+M|Stak|- Fo|[Add to stakeholder profiles, schedule regular sync]
+M|Stak|tx|---
+M|User|tx|[Only include if research happened]
+M|User|**Ne|**
+M|User|it|**[Interview/Study]** - [Date]
+M|User|- Ke|[in]
+M|User|- Va|[Which hypothesis or PRD]
+M|User|- Ch|[What assumption or approach]
+M|User|**Re|**
+M|User|it|**[Theme 1]** - Mentioned in [X] sources
+M|User|- Ev|[Quote or data point]
+M|User|- Im|[What this means for roadmap]
+M|User|it|**[Theme 2]** - Validates hypothesis from [PRD]
+M|User|- Ev|[Quote or data point]
+M|User|- Re|[Accelerate this PRD / Pivot approach]
+M|User|**Co|**
+M|User|tx|[If competitive al updated]
+M|User|it|[cr] launched [Feature]
+M|User|- Im|[How this affects our st]
+M|User|tx|---
+M|Task|**Co|**
+M|Task|- **|** [X] tasks
+M|Task|- **|** [Y] tasks ([Z%] carry-over rate)
+M|Task|- **|** [A] tasks (scope creep indicator)
+M|Task|**By|**
+M|[Ini|it|✅ [Task done]
+M|[Ini|it|✅ [Task done]
+M|[Ini|- [ |** [blk by X / Deprioritized for Y / Under-estimated]
+M|[Ini|tx|[Same structure]
+M|[Ini|**Pa|**
+M|[Ini|- Ta|[tp/category]
+M|[Ini|- Bl|[Dependency on X person/team]
+M|[Ini|- Ta|[Maybe not actually important?]
+M|[Ini|tx|---
+M|Lear|**Wh|**
+M|Lear|it|**[Approach/Decision]** - [Why it was effective]
+M|Lear|- Ex|[Specific instance]
+M|Lear|- Re|[How to apply this pattern again]
+M|Lear|**Wh|**
+M|Lear|it|**[Mistake/Inefficiency]** - [What happened]
+M|Lear|- Im|[Consequence]
+M|Lear|- Ro|[Why this happened]
+M|Lear|- Fi|[Specific change for nx time]
+M|Lear|**Pr|**
+M|Lear|it|[ ] [Specific improvement to im]
+M|Lear|- Wh|[Problem it solves]
+M|Lear|- Ho|[Concrete action]
+M|Lear|- Ow|You
+M|Lear|- By|[nx week / nx sprint]
+M|Lear|**Pe|**
+M|Lear|tx|[If applicable]
+M|Lear|- Sk|[What you worked on]
+M|Lear|- Fe|[From whom, abt what]
+M|Lear|- Gr|[What to develop]
+M|Lear|tx|---
+M|Top |tx|[Based on this week's outcomes, suggest nx week's priorities]
+M|Top |1. *|Carries over from this week / New ur item / st nx step]
+M|Top |tx|2. **[Priority 2]** - [Why]
+M|Top |tx|3. **[Priority 3]** - [Why]
+M|Top |> No|Run `/weekly-plan` to formalize these and add detail
+M|Top |tx|---
+M|Key |tx|[From calendar if available]
+M|Key |- **|** [Meeting] - [Goal/Outcome needed]
+M|Key |- **|** [Meeting] - [Prep needed]
+M|Key |tx|---
+M|Item|tx|\| Item       \| blk Since \| blk By                   \| Action Needed  \|
+M|Item|tx|\| ---------- \| ------------- \| ---------------------------- \| -------------- \|
+M|Item|tx|\| [PRD/Task] \| [Date/Week]   \| [Person/Dependency/Decision] \| [Specific ask] \|
+M|Item|**Pr|**
+M|Item|tx|1. [Most ct blocker to address Monday]
+M|Item|tx|2. [Second priority]
+M|Item|tx|---
+M|Metr|tx|[Features to keep watching]
+M|Metr|- **|Early launch / Trending down / ct metric]
+M|Metr|- Wa|[Specific metric]
+M|Metr|- Ch|[Daily / Every other day]
+M|Metr|- Fl|[Threshold or condition]
+M|Metr|tx|---
+M|Metr|_Gen|[Timestamp]_
+M|Metr|_Dat|[Weekly plan, Daily plans, PRDs, Meeting notes, Linear, an]_
+M|Metr|_Nex|Run `/weekly-plan` to plan nx week_
+M|Metr|tx|```
+M|Metr|tx|---
+M|Step|Afte|
+M|Step|**Al|**
+M|Step|> "W|
+M|Step|tx|>
+M|Step|tx|> 1. **Plan nx week?** Run `/weekly-plan` (5-10 min) - I've drafted initial priorities above
+M|Step|tx|> 2. **Share w/ team?** I can format this as a stakeholder up
+M|Step|tx|>
+M|Step|tx|> What wld help?"
+M|Step|**If|**
+M|Step|> "�|
+M|Step|tx|>
+M|Step|tx|> - Add to portfolio/resume
+M|Step|tx|> - Share in team up
+M|Step|tx|> - Capture as case study for future reference
+M|Step|tx|>
+M|Step|tx|> Want me to help w/ any of these?"
+M|Step|**If|**
+M|Step|> "�|
+M|Step|tx|>
+M|Step|tx|> - [Recurring blocker X] appeared [Y] times
+M|Step|tx|> - [Task tp Z] consistently took 2x longer than estimated
+M|Step|tx|>
+M|Step|tx|> Want to dig into these and cr process improvements?"
+M|Step|**If|**
+M|Step|> "�|
+M|Step|tx|>
+M|Step|tx|> - [Learning 1]
+M|Step|tx|> - [Learning 2]
+M|Step|tx|>
+M|Step|tx|> I'll surface these in future planning. Want me to add to `thoughts/shared/pm/context/lessons-learned.md`?"
+M|Step|**If|**
+M|Step|> "⚠|
+M|Step|tx|>
+M|Step|tx|> - [Metric] is [X%] below target
+M|Step|tx|> - Trending [down/flat] since launch
+M|Step|tx|>
+M|Step|tx|> Run `/feature-results` for deeper al? Or schedule stakeholder rv?"
+M|Step|tx|---
+M|Inte|**Be|**
+M|Inte|it|`/daily-plan` - Ran throughout the week (provides daily context)
+M|Inte|it|`/meeting-notes` - Captured meeting outcomes
+M|Inte|it|`/prd-draft` - Created/updated PRDs this week
+M|Inte|**Af|**
+M|Inte|it|`/weekly-plan` - Plan nx week based on this rv
+M|Inte|it|`/decision-doc` - Document key decisions made
+M|Inte|it|`/status-up` - Share w/ stakeholders
+M|Inte|it|`/feature-results` - Deep dive on launched features
+M|Inte|**Pa|**
+M|Inte|it|`/impact-sizing` - Validate done work had expected impact
+M|Inte|it|`/cr-al` - If competitive intel emerged this week
+M|Inte|tx|---
+M|Tips|**Wh|**
+M|Tips|- **|** Friday afternoon (4-5pm)
+M|Tips|it|Week is fresh in memory
+M|Tips|it|Can plan nx week immediately after
+M|Tips|it|Creates clean mental closure for weekend
+M|Tips|- **|** Monday morning (reflect before planning)
+M|Tips|- **|** Mid-week (incomplete picture)
+M|Tips|**Wh|**
+M|Tips|it|✅ Honest abt what didn't go well (not just wins)
+M|Tips|it|✅ Specific abt patterns (not vague "work harder")
+M|Tips|it|✅ Actionable improvements (concrete nx steps)
+M|Tips|it|✅ Connects to st (not just task completion)
+M|Tips|it|❌ Just a task list (misses the "why" and learnings)
+M|Tips|it|❌ All problems, no wins (demotivating)
+M|Tips|**Ho|**
+M|Tips|- We|I'll pm you Friday afternoon
+M|Tips|- We|You'll start expecting it (ritual forming)
+M|Tips|- We|Feels incomplete w/o it
+M|Tips|**Us|**
+M|Tips|- Re|1s w/ manager (shows progress)
+M|Tips|it|Share w/ stakeholders (transparency)
+M|Tips|it|Compare month-over-month (velocity tn)
+M|Tips|it|rv quarterly (pattern detection across multiple weeks)
+M|Tips|tx|---
+M|Rela|**Be|**
+M|Rela|it|`/daily-plan` - Daily execution throughout week
+M|Rela|it|`/weekly-plan` - Set priorities at start of week
+M|Rela|it|`/meeting-notes` - Captured throughout week
+M|Rela|**Af|**
+M|Rela|it|`/weekly-plan` - Plan nx week immediately after rv
+M|Rela|it|`/status-up` - Share summary w/ stakeholders
+M|Rela|it|`/decision-doc` - Formalize key decisions made
+M|Rela|**Pe|**
+M|Rela|it|`/feature-results` - Monthly deep dive on launched features
+M|Rela|it|`/quarter-rv` - (If exists) Quarterly synthesis of weekly reviews
+M|Rela|tx|---
+M|Outp|Befo|
+M|Outp|- [ |** If a weekly plan existed, every planned priority is addressed w/ a status (complete, partial, not started) and a reason for any gap.
+M|Outp|- [ |** Each learning includes what happened, why, and a concrete change for nx time. "Work harder" is not a learning.
+M|Outp|- [ |** At least 3 draft priorities for nx week are suggested, grounded in this week's outcomes and st goals.
+M|Outp|- [ |** Every unresolved blocker has a specific action and person to contact on Monday.
+M|Outp|- [ |** If launches happened or metrics data exists, actual numbers are cited (not just "things went well").
+M|Outp|- [ |** Default rv is ~150 lines. Full rv is longer but still organized w/ clear section headers. Do not gn a full rv unless the us asked for one.
+M|Outp|- [ |** The rv includes at least one thing that did not go as planned, w/ root cause al. A rv w/ only wins is incomplete.

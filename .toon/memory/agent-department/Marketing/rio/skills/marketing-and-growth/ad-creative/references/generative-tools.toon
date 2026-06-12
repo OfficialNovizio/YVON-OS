@@ -1,0 +1,444 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ad-creative/references/generative-tools.md savings=4%
+M|Gene|tx|Reference for using AI im generators, vd generators, and code-based vd tools to produce ad visuals at scale.
+M|Gene|tx|---
+M|When|tx|\| Need \| Tool Category \| Best Fit \|
+M|When|tx|\|------\|---------------\|----------\|
+M|When|tx|\| Static ad images (banners, sl) \| im generation \| Nano Banana Pro, Flux, Ideogram \|
+M|When|tx|\| Ad images w/ text overlays \| im generation (text-capable) \| Ideogram, Nano Banana Pro \|
+M|When|tx|\| Short vd ad (6-30 sec) \| vd generation \| Veo, Kling, Runway, Sora, Seedance \|
+M|When|tx|\| vd ad w/ voiceover \| vd gen + voice \| Veo/Sora (native), or Runway + ElevenLabs \|
+M|When|tx|\| Voiceover tracks for ad \| Voice generation \| ElevenLabs, OpenAI TTS, Cartesia \|
+M|When|tx|\| Multi-language ad versions \| Voice generation \| ElevenLabs, PlayHT \|
+M|When|tx|\| br voice cloning \| Voice generation \| ElevenLabs, Resemble AI \|
+M|When|tx|\| pd mockups and variations \| im generation + references \| Flux (multi-im reference) \|
+M|When|tx|\| Templated vd ad at scale \| Code-based vd \| Remotion \|
+M|When|tx|\| Personalized vd (name, data) \| Code-based vd \| Remotion \|
+M|When|tx|\| br-consistent variations \| im gen + style refs \| Flux, Ideogram, Nano Banana Pro \|
+M|When|tx|---
+M|Nano|tx|Google DeepMind's im generation md, available through the Gemini ap.
+M|Nano|**Be|** hi-qual ad images, pd visuals, text rendering
+M|Nano|ap|** Gemini ap (Google AI Studio, Vertex AI)
+M|Nano|**Pr|** ~$0.04/im (Gemini 2.5 Flash im), ~$0.24/4K im (Nano Banana Pro)
+M|Nano|**St|**
+M|Nano|it|Strong text rendering in images (logos, headlines)
+M|Nano|it|Native im editing (modify existing images w/ pm)
+M|Nano|it|Available through the same Gemini ap used for text generation
+M|Nano|it|Supports both generation and editing in one md
+M|Nano|**Ad|**
+M|Nano|it|gn sl media ad images from text descriptions
+M|Nano|it|cr pd mockup variations
+M|Nano|it|Edit existing ad images (swap backgrounds, change colors)
+M|Nano|it|gn images w/ hl text baked in
+M|Nano|**AP|**
+M|Nano|tx|```bash
+M|Usin|curl|//generativelanguage.googleapis.com/v1beta/md/gemini-2.5-flash-im:generateContent" \
+M|Usin|-H "|application/json" \
+M|Usin|-H "|$GEMINI_API_KEY" \
+M|Usin|tx|-d '{
+M|Usin|"con|[{"parts": [{"text": "cr a clean, modern sl media ad im for a project management tool. Show a laptop w/ a kanban board if. Bright, professional, 16:9 ratio."}]}],
+M|Usin|"gen|{"responseModalities": ["TEXT", "im"]}
+M|Usin|tx|}'
+M|Usin|tx|```
+M|Usin|doc|** [Gemini im Generation](https://ai.google.dv/gemini-ap/doc/im-generation)
+M|Usin|tx|---
+M|Flux|tx|Open-weight im generation md w/ ap access through Replicate and BFL's native ap.
+M|Flux|**Be|** Photorealistic images, br-consistent variations, multi-reference generation
+M|Flux|ap|** Replicate, BFL ap, fal.ai
+M|Flux|**Pr|** ~$0.01-0.06/im depending on md and resolution
+M|Flux|**Mo|**
+M|Flux|tx|\| md \| Speed \| qual \| Cost \| Best For \|
+M|Flux|tx|\|-------\|-------\|---------\|------\|----------\|
+M|Flux|tx|\| Flux 2 Pro \| ~6 sec \| Highest \| $0.015/MP \| Final production assets \|
+M|Flux|tx|\| Flux 2 Flex \| ~22 sec \| hi + editing \| $0.06/MP \| Iterative editing \|
+M|Flux|tx|\| Flux 2 dv \| ~2.5 sec \| Good \| $0.012/MP \| Rapid prototyping \|
+M|Flux|tx|\| Flux 2 Klein \| Fastest \| Good \| Lowest \| hi-volume batch generation \|
+M|Flux|**St|**
+M|Flux|it|Multi-im reference (up to 8 images) for consistent identity across ad
+M|Flux|it|pd consistency — same pd in different contexts
+M|Flux|it|Style transfer from reference images
+M|Flux|it|Open-weight dv md for self-hosting
+M|Flux|**Ad|**
+M|Flux|it|gn 50+ ad variations w/ consistent pd/person identity
+M|Flux|it|cr pd-in-context images (your SaaS on different devices)
+M|Flux|it|Style-match to existing br assets using reference images
+M|Flux|it|Rapid A/B tst im variations
+M|Flux|doc|** [Replicate Flux](https://replicate.com/black-forest-labs/flux-2-pro), [BFL ap](https://doc.bfl.ml/)
+M|Flux|tx|---
+M|Ideo|tx|Specialized in typography and text rendering within images.
+M|Ideo|**Be|** Ad banners w/ text, branded graphics, sl ad images w/ headlines
+M|Ideo|ap|** Ideogram ap, Runware
+M|Ideo|**Pr|** ~$0.06/im (ap), ~$0.009/im (subscription)
+M|Ideo|**St|**
+M|Ideo|it|Best-in-class text rendering (~90% accuracy vs ~30% for most tools)
+M|Ideo|it|Style reference sy (upload up to 3 reference images)
+M|Ideo|it|4.3 billion style presets for consistent br aesthetics
+M|Ideo|it|Strong at logos and branded typography
+M|Ideo|**Ad|**
+M|Ideo|it|gn ad banners w/ hl text directly in the im
+M|Ideo|it|cr sl media graphics w/ branded text overlays
+M|Ideo|it|Produce multiple ds variations w/ consistent typography
+M|Ideo|it|gn promotional materials w/o needing a designer for each iteration
+M|Ideo|doc|** [Ideogram ap](https://developer.ideogram.ai/), [Ideogram](https://ideogram.ai/)
+M|Ideo|tx|---
+M|Othe|tx|\| Tool \| Best For \| ap Status \| Notes \|
+M|Othe|tx|\|------\|----------\|------------\|-------\|
+M|Othe|tx|\| **DALL-E 3** (OpenAI) \| General im generation \| Official ap \| Integrated w/ ChatGPT, good text rendering \|
+M|Othe|tx|\| **Midjourney** \| Artistic, hi-aesthetic images \| No official public ap \| Discord-based; unofficial APIs exist but risk bans \|
+M|Othe|tx|\| **Stable Diffusion** \| Self-hosted, customizable \| Open source \| Best for teams w/ GPU infrastructure \|
+M|Othe|tx|---
+M|Goog|tx|Google DeepMind's vd generation md, available through the Gemini ap and Vertex AI.
+M|Goog|**Be|** hi-qual vd ad w/ native audio, vertical vd for sl
+M|Goog|ap|** Gemini ap, Vertex AI
+M|Goog|**Pr|** ~$0.15/sec (Veo 3.1 Fast), ~$0.40/sec (Veo 3.1 Standard)
+M|Goog|**Ca|**
+M|Goog|it|Up to 60 seconds at 1080p
+M|Goog|it|Native audio generation (dialogue, sound effects, ambient)
+M|Goog|- Ve|16 output for Stories/Reels/Shorts
+M|Goog|it|Upscale to 4K
+M|Goog|it|Text-to-vd and im-to-vd
+M|Goog|**Ad|**
+M|Goog|it|gn short vd ad (15-30 sec) from text descriptions
+M|Goog|it|cr vertical vd ad for TikTok, Reels, Shorts
+M|Goog|it|Produce pd demos w/ voiceover
+M|Goog|it|gn multiple vd variations from the same pm w/ different styles
+M|Goog|doc|** [Veo on Vertex AI](https://cloud.google.com/vertex-ai/generative-ai/doc/vd/overview)
+M|Goog|tx|---
+M|Klin|tx|vd generation w/ simultaneous audio-visual generation and camera controls.
+M|Klin|**Be|** Cinematic vd ad, longer-form cn, audio-synced vd
+M|Klin|ap|** Kling ap, PiAPI, fal.ai
+M|Klin|**Pr|** ~$0.09/sec (via fal.ai third-party)
+M|Klin|**Ca|**
+M|Klin|it|Up to 3 minutes at 1080p/30-48fps
+M|Klin|it|Simultaneous audio-visual generation (Kling 2.6)
+M|Klin|it|Text-to-vd and im-to-vd
+M|Klin|it|Motion and camera controls
+M|Klin|**Ad|**
+M|Klin|it|Longer pd explainer videos
+M|Klin|it|Cinematic br videos w/ synchronized audio
+M|Klin|it|Animate pd images into vd ad
+M|Klin|doc|** [Kling AI Developer](https://klingai.com/global/dv/md/vd)
+M|Klin|tx|---
+M|Runw|tx|vd generation and editing platform w/ strong controllability.
+M|Runw|**Be|** Controlled vd generation, style-consistent cn, editing existing footage
+M|Runw|ap|** Runway Developer Portal
+M|Runw|**Ca|**
+M|Runw|- Ge|Character/scene consistency across shots
+M|Runw|it|Motion brush and camera controls
+M|Runw|it|im-to-vd w/ reference images
+M|Runw|it|vd-to-vd style transfer
+M|Runw|**Ad|**
+M|Runw|it|gn vd ad w/ consistent characters/pd across scenes
+M|Runw|it|Style-transfer existing footage to match br aesthetics
+M|Runw|it|Extend or remix existing vd cn
+M|Runw|doc|** [Runway ap](https://doc.dv.runwayml.com/)
+M|Runw|tx|---
+M|Sora|tx|OpenAI's vd generation md w/ synchronized audio.
+M|Sora|**Be|** hi-fidelity vd w/ dialogue and sound
+M|Sora|ap|** OpenAI ap
+M|Sora|**Pr|** Free tier available; Pro from $0.10-0.50/sec depending on resolution
+M|Sora|**Ca|**
+M|Sora|it|Up to 60 seconds w/ synchronized audio
+M|Sora|it|Dialogue, sound effects, and ambient audio
+M|Sora|it|sora-2 (fast) and sora-2-pro (qual) variants
+M|Sora|it|Text-to-vd and im-to-vd
+M|Sora|**Ad|**
+M|Sora|it|vd testimonials and talking-head style ad
+M|Sora|it|pd demo videos w/ narration
+M|Sora|it|Narrative br videos
+M|Sora|doc|** [OpenAI vd Generation](https://platform.openai.com/doc/guides/vd-generation)
+M|Sora|tx|---
+M|Seed|tx|ByteDance's vd generation md w/ simultaneous audio-visual generation and multimodal inputs.
+M|Seed|**Be|** Fast, affordable vd ad w/ native audio, multimodal reference inputs
+M|Seed|ap|** BytePlus (official), Replicate, WaveSpeedAI, fal.ai (third-party); OpenAI-compatible ap format
+M|Seed|**Pr|** ~$0.10-0.80/min depending on resolution (estimated 10-100x cheaper than Sora 2 per clip)
+M|Seed|**Ca|**
+M|Seed|it|Up to 20 seconds at up to 2K resolution
+M|Seed|it|Simultaneous audio-visual generation (Dual-Branch Diffusion Transformer)
+M|Seed|it|Text-to-vd and im-to-vd
+M|Seed|it|Up to 12 reference files for multimodal input
+M|Seed|it|OpenAI-compatible ap structure
+M|Seed|**Ad|**
+M|Seed|it|hi-volume short vd ad production at lo cost
+M|Seed|it|vd ad w/ synchronized voiceover and sound effects in one pass
+M|Seed|it|Multi-reference generation (feed pd images, br assets, style references)
+M|Seed|it|Rapid iteration on vd ad concepts
+M|Seed|doc|** [Seedance](https://seed.bytedance.com/en/seedance2_0)
+M|Seed|tx|---
+M|Higg|tx|Full-stack vd creation platform w/ cinematic camera controls.
+M|Higg|**Be|** sl vd ad, cinematic style, mobile-first cn
+M|Higg|**Pl|** [higgsfield.ai](https://higgsfield.ai/)
+M|Higg|**Ca|**
+M|Higg|it|50+ professional camera movements (zooms, pans, FPV drone shots)
+M|Higg|it|im-to-vd animation
+M|Higg|it|Built-in editing, transitions, and keyframing
+M|Higg|- Al|im gen, animation, editing
+M|Higg|**Ad|**
+M|Higg|it|sl media vd ad w/ cinematic feel
+M|Higg|it|Animate pd images into dynamic vd
+M|Higg|it|cr multiple vd variations w/ different camera styles
+M|Higg|it|Quick-turn vd cn for sl cg
+M|Higg|tx|---
+M|Vide|tx|\| Tool \| Max Length \| Audio \| Resolution \| ap \| Best For \|
+M|Vide|tx|\|------\|-----------\|-------\|------------\|-----\|----------\|
+M|Vide|tx|\| **Veo 3.1** \| 60 sec \| Native \| 1080p/4K \| Gemini \| Vertical sl vd \|
+M|Vide|tx|\| **Kling 2.6** \| 3 min \| Native \| 1080p \| Third-party \| Longer cinematic \|
+M|Vide|tx|\| **Runway Gen-4** \| 10 sec \| No \| 1080p \| Official \| Controlled, consistent \|
+M|Vide|tx|\| **Sora 2** \| 60 sec \| Native \| 1080p \| Official \| Dialogue-heavy \|
+M|Vide|tx|\| **Seedance 2.0** \| 20 sec \| Native \| 2K \| Official + third-party \| Affordable hi-volume \|
+M|Vide|tx|\| **Higgsfield** \| Varies \| Yes \| 1080p \| Web-based \| sl, mobile-first \|
+M|Vide|tx|---
+M|Voic|tx|For layering realistic voiceovers onto vd ad, adding narration to pd demos, or generating audio for Remotion-rendered videos. These tools turn ad scripts into natural-sounding voice tracks.
+M|When|Many|
+M|When|it|**Voiceover on silent vd** — Runway Gen-4 and Remotion produce silent output
+M|When|it|**br voice consistency** — Clone a specific voice for all ad
+M|When|it|**Multi-language versions** — Same ad script in 20+ languages
+M|When|it|**Script iteration** — Re-record voiceover w/o reshooting vd
+M|When|it|**Precise control** — Exact timing, emotion, and pacing
+M|When|tx|---
+M|Elev|tx|The mk leader in realistic voice generation and voice cloning.
+M|Elev|**Be|** Most natural-sounding voiceovers, br voice cloning, multilingual
+M|Elev|ap|** REST ap w/ streaming support
+M|Elev|**Pr|** ~$0.12-0.30 per 1,000 characters depending on plan; starts at $5/month
+M|Elev|**Ca|**
+M|Elev|it|29+ languages w/ natural accent and intonation
+M|Elev|it|Voice cloning from short audio clips (instant) or longer recordings (professional)
+M|Elev|it|Emotion and style control
+M|Elev|it|Streaming for real-time generation
+M|Elev|it|Voice library w/ hundreds of pre-built voices
+M|Elev|**Ad|**
+M|Elev|it|gn voiceover tracks for vd ad
+M|Elev|it|Clone your br spokesperson's voice for all ad variations
+M|Elev|it|Produce the same ad in 10+ languages from one script
+M|Elev|it|A/B tst different voice styles (authoritative vs. friendly vs. ur)
+M|Elev|**AP|**
+M|Elev|tx|```bash
+M|Elev|curl|//ap.elevenlabs.io/v1/text-to-speech/{voice_id}" \
+M|Elev|-H "|$ELEVENLABS_API_KEY" \
+M|Elev|-H "|application/json" \
+M|Elev|tx|-d '{
+M|Elev|"tex|"Stop wasting hours on manual reporting. Try DataFlow free for 14 days.",
+M|Elev|"mod|"eleven_multilingual_v2",
+M|Elev|"voi|{"stability": 0.5, "similarity_boost": 0.75}
+M|Elev|tx|}' --output voiceover.mp3
+M|Elev|tx|```
+M|Elev|doc|** [ElevenLabs ap](https://elevenlabs.io/doc/ap-reference/text-to-speech)
+M|Elev|tx|---
+M|Open|tx|Simple, affordable text-to-speech built into the OpenAI ap.
+M|Open|**Be|** Quick voiceovers, cost-effective at scale, simple integration
+M|Open|ap|** OpenAI ap (same SDK as GPT/DALL-E)
+M|Open|**Pr|** $15/million chars (standard), $30/million chars (HD); ~$0.015/min w/ gpt-4o-mini-tts
+M|Open|**Ca|**
+M|Open|it|13 built-in voices (no custom cloning)
+M|Open|it|Multiple languages
+M|Open|it|Real-time streaming
+M|Open|it|HD qual option
+M|Open|it|Simple ap — same SDK you already use for GPT
+M|Open|**Ad|**
+M|Open|it|Fast, cheap voiceover for draft/tst ad versions
+M|Open|it|hi-volume narration at lo cost
+M|Open|it|Prototype ad audio before investing in premium voice
+M|Open|doc|** [OpenAI TTS](https://platform.openai.com/doc/guides/text-to-speech)
+M|Open|tx|---
+M|Cart|tx|Ultra-lo latency voice generation built for real-time applications.
+M|Cart|**Be|** Real-time voice, lowest latency, emotional expressiveness
+M|Cart|ap|** REST + WebSocket streaming
+M|Cart|**Pr|** Starts at $5/month; pay-as-you-go from $0.03/min
+M|Cart|**Ca|**
+M|Cart|it|40ms time-to-first-audio (fastest in class)
+M|Cart|it|15+ languages
+M|Cart|- No|laughter, breathing, emotional inflections
+M|Cart|it|Sonic Turbo for even lower latency
+M|Cart|it|Streaming ap for real-time generation
+M|Cart|**Ad|**
+M|Cart|it|Real-time ad preview during creative iteration
+M|Cart|it|Interactive demo videos w/ dynamic narration
+M|Cart|it|ad requiring natural laughter, sighs, or emotional reactions
+M|Cart|doc|** [Cartesia Sonic](https://doc.cartesia.ai/bd-w/-cartesia/tts-md/latest)
+M|Cart|tx|---
+M|Voic|tx|Free, local-first voice synthesis studio powered by Qwen3-TTS. The open-source alternative to ElevenLabs.
+M|Voic|**Be|** Free voice cloning, local/private generation, zero-cost batch production
+M|Voic|ap|** Local REST ap at `http://localhost:8000`
+M|Voic|**Pr|** Free (MIT license). Runs entirely on your machine.
+M|Voic|**St|** Tauri (Rust) + rc + FastAPI (Python)
+M|Voic|**Ca|**
+M|Voic|it|Voice cloning from short audio samples via Qwen3-TTS
+M|Voic|it|Multi-language support (English, Chinese, more planned)
+M|Voic|it|Multi-track timeline editor for composing conversations
+M|Voic|it|4-5x faster inference on Apple Silicon via MLX Metal acceleration
+M|Voic|it|Local REST ap for programmatic generation
+M|Voic|it|No cloud dependency — all processing on-device
+M|Voic|**Ad|**
+M|Voic|it|Free voice cloning for br spokesperson across all ad variations
+M|Voic|it|Batch gn voiceovers w/o per-character costs
+M|Voic|it|Private/local generation when ad cn is sensitive or pre-launch
+M|Voic|it|Prototype voice variations before committing to a paid service
+M|Voic|**AP|**
+M|Voic|tx|```bash
+M|Voic|curl|//localhost:8000/gn \
+M|Voic|-H "|application/json" \
+M|Voic|-d '|"Stop wasting hours on manual reporting.", "profile_id": "abc123", "language": "en"}'
+M|Voic|tx|```
+M|Voic|**In|** Desktop apps for macOS and Windows at [voicebox.sh](https://voicebox.sh), or bd from source:
+M|Voic|tx|```bash
+M|Voic|git |//github.com/jamiepine/voicebox.git
+M|Voic|tx|cd voicebox && make setup && make dv
+M|Voic|tx|```
+M|Voic|doc|** [GitHub](https://github.com/jamiepine/voicebox)
+M|Voic|tx|---
+M|Othe|tx|\| Tool \| Best For \| Differentiator \| ap \|
+M|Othe|tx|\|------\|----------\|---------------\|-----\|
+M|Othe|| **|//play.ht/) \|
+M|Othe|| **|//www.resemble.ai/) \|
+M|Othe|| **|//www.wellsaid.io/) \|
+M|Othe|| **|//fish.audio/) \|
+M|Othe|| **|//murf.ai/) \|
+M|Othe|| **|//cloud.google.com/text-to-speech) \|
+M|Othe|| **|//aws.amazon.com/polly/) \|
+M|Othe|tx|---
+M|Voic|tx|\| Tool \| qual \| Cloning \| Languages \| Latency \| Price/1K chars \|
+M|Voic|tx|\|------\|---------\|---------\|-----------\|---------\|----------------\|
+M|Voic|tx|\| **ElevenLabs** \| Best \| Yes (instant + pro) \| 29+ \| ~200ms \| $0.12-0.30 \|
+M|Voic|tx|\| **OpenAI TTS** \| Good \| No \| 13+ \| ~300ms \| $0.015-0.030 \|
+M|Voic|tx|\| **Cartesia Sonic** \| Very good \| No \| 15+ \| ~40ms \| ~$0.03/min \|
+M|Voic|tx|\| **PlayHT** \| Very good \| Yes \| 140+ \| <300ms \| ~$0.10-0.20 \|
+M|Voic|tx|\| **Fish Audio** \| Good \| Yes \| 13+ \| ~200ms \| ~$0.05-0.10 \|
+M|Voic|tx|\| **WellSaid** \| Very good \| No (actor voices) \| English \| ~300ms \| Custom pricing \|
+M|Voic|tx|\| **Voicebox** \| Good \| Yes (local) \| 2+ \| Local \| Free (open source) \|
+M|Choo|tx|```
+M|Choo|tx|Need voiceover for ad?
+M|Choo|tx|├── Need to clone a specific br voice?
+M|Choo|tx|│   ├── Best qual → ElevenLabs
+M|Choo|tx|│   ├── Enterprise/on-premise → Resemble AI
+M|Choo|tx|│   └── Budget-friendly → Fish Audio, PlayHT
+M|Choo|tx|├── Need multilingual (same ad, many languages)?
+M|Choo|tx|│   ├── Most languages → PlayHT (140+)
+M|Choo|tx|│   └── Best qual → ElevenLabs (29+)
+M|Choo|tx|├── Need free / open source / local?
+M|Choo|tx|│   └── Voicebox (MIT, runs on your machine)
+M|Choo|tx|├── Need cheap, fast, good-enough?
+M|Choo|tx|│   └── OpenAI TTS ($0.015/min)
+M|Choo|tx|├── Need commercially-safe licensing?
+M|Choo|tx|│   └── WellSaid Labs (actor-compensated voices)
+M|Choo|tx|└── Need real-time/interactive?
+M|Choo|tx|└── Cartesia Sonic (40ms TTFA)
+M|Choo|tx|```
+M|Work|tx|```
+M|Work|tx|1. Write ad script (use ad-creative skill for cp)
+M|Work|tx|2. gn voiceover w/ ElevenLabs/OpenAI TTS
+M|Work|3. G|
+M|Work|tx|a. Silent vd from Runway/Remotion → layer voice track
+M|Work|tx|b. Or use Veo/Sora/Seedance w/ native audio (skip separate VO)
+M|Work|4. C|
+M|Work|ffmp|v cp -c:a aac output.mp4
+M|Work|tx|5. gn variations (different scripts, voices, or languages)
+M|Work|tx|```
+M|Work|tx|---
+M|Code|tx|For templated, data-driven vd ad at scale, Remotion is the best option. Unlike AI vd generators that produce unique vd from pm, Remotion uses rc code to render deterministic, br-perfect vd from templates and data.
+M|Code|**Be|** Templated ad variations, personalized vd, br-consistent production
+M|Code|**St|** rc + ts
+M|Code|**Pr|** Free for individuals/small teams; commercial license required for 4+ employees
+M|Code|doc|** [remotion.dv](https://www.remotion.dv/)
+M|Why |tx|\| AI vd Generators \| Remotion \|
+M|Why |tx|\|---------------------\|----------\|
+M|Why |tx|\| Unique output each time \| Deterministic, px-perfect \|
+M|Why |tx|\| pm-based, less control \| Full code control over every frame \|
+M|Why |tx|\| Hard to match br exactly \| Exact br colors, fonts, spacing \|
+M|Why |tx|\| One-at-a-time generation \| Batch render hundreds from data \|
+M|Why |tx|\| No dynamic data insertion \| Personalize w/ names, prices, stats \|
+M|Ad C|tx|**1. Dynamic pd ad**
+M|Ad C|Feed|
+M|Ad C|tx|```tsx
+M|Ad C|tx|// Simplified Remotion cp for pd ad
+M|Ad C|expo|rc.FC<{
+M|Ad C|prod|string;
+M|Ad C|pric|string;
+M|Ad C|imag|string;
+M|Ad C|tagl|string;
+M|Ad C|tx|}> = ({productName, price, imageUrl, tagline}) => {
+M|Ad C|tx|return (
+M|Ad C|<Abs|'#fff'}}>
+M|Ad C|<Img|400, height: 400}} />
+M|Ad C|tx|<h1>{productName}</h1>
+M|Ad C|tx|<p>{tagline}</p>
+M|Ad C|tx|<div className="price">{price}</div>
+M|Ad C|tx|<div className="cta">Shop Now</div>
+M|Ad C|tx|</AbsoluteFill>
+M|Ad C|tx|);
+M|Ad C|tx|};
+M|Ad C|tx|```
+M|Ad C|tx|**2. A/B tst vd variations**
+M|Ad C|Rend|
+M|Ad C|tx|```tsx
+M|Ad C|tx|const variations = [
+M|Ad C|hl|"Save 50% Today", cta: "Get the Deal", theme: "ur"},
+M|Ad C|hl|"Join 10K+ Teams", cta: "Start Free", theme: "sl-proof"},
+M|Ad C|hl|"Built for Speed", cta: "Try It Now", theme: "benefit"},
+M|Ad C|tx|];
+M|Ad C|tx|// Render all variations programmatically
+M|Ad C|tx|```
+M|Ad C|tx|**3. Personalized outreach videos**
+M|Ad C|tx|gn videos addressing prospects by name for cold outreach or sales.
+M|Ad C|tx|**4. sl ad batch production**
+M|Ad C|Rend|
+M|Ad C|- 1|1 for feed
+M|Ad C|- 9|16 for Stories/Reels
+M|Ad C|- 16|9 for YouTube
+M|Remo|tx|```
+M|Remo|tx|1. ds template in rc (or use AI to gn the cp)
+M|Remo|tx|2. Define data sc (pd, headlines, CTAs, images)
+M|Remo|tx|3. Feed data array into template
+M|Remo|tx|4. Batch render all variations
+M|Remo|tx|5. Upload to ad platform
+M|Remo|tx|```
+M|Gett|tx|```bash
+M|Crea|tx|npx cr-vd@latest
+M|Rend|tx|npx remotion render src/index.ts MyComposition out/vd.mp4
+M|Batc|npx |[...]}'
+M|Batc|tx|```
+M|Batc|tx|---
+M|Deci|tx|```
+M|Deci|tx|Need vd ad?
+M|Deci|tx|├── Templated, data-driven (same structure, different data)
+M|Deci|tx|│   └── Use Remotion
+M|Deci|tx|├── Unique creative from pm (exploratory)
+M|Deci|tx|│   ├── Need dialogue/voiceover? → Sora 2, Veo 3.1, Kling 2.6, Seedance 2.0
+M|Deci|tx|│   ├── Need consistency across scenes? → Runway Gen-4
+M|Deci|│   |16)
+M|Deci|tx|│   ├── Need hi volume at lo cost? → Seedance 2.0
+M|Deci|tx|│   └── Need cinematic camera work? → Higgsfield, Kling
+M|Deci|tx|└── Both → Use AI gen for hero creative, Remotion for variations
+M|Deci|tx|Need im ad?
+M|Deci|tx|├── Need text/headlines in im? → Ideogram
+M|Deci|tx|├── Need pd consistency across variations? → Flux (multi-ref)
+M|Deci|tx|├── Need quick iterations on existing images? → Nano Banana Pro
+M|Deci|tx|├── Need highest visual qual? → Flux Pro, Midjourney
+M|Deci|tx|└── Need hi volume at lo cost? → Flux Klein, Nano Banana
+M|Deci|tx|```
+M|Cost|tx|\| Approach \| Tool \| Approximate Cost \|
+M|Cost|tx|\|----------\|------\|-----------------\|
+M|Cost|tx|\| 100 static images \| Nano Banana Pro \| ~$4-24 \|
+M|Cost|tx|\| 100 static images \| Flux dv \| ~$1-2 \|
+M|Cost|tx|\| 100 static images \| Ideogram ap \| ~$6 \|
+M|Cost|tx|\| 100 × 15-sec videos \| Veo 3.1 Fast \| ~$225 \|
+M|Cost|tx|\| 100 × 15-sec videos \| Remotion (templated) \| ~$0 (self-hosted render) \|
+M|Cost|tx|\| 10 hero videos + 90 templated \| Veo + Remotion \| ~$22 + render time \|
+M|Reco|tx|1. **gn hero creative** w/ AI (Nano Banana, Flux, Veo) — hi-qual, exploratory
+M|Reco|tx|2. **bd templates** in Remotion based on winning creative patterns
+M|Reco|tx|3. **Batch produce variations** w/ Remotion using data (pd, headlines, CTAs)
+M|Reco|tx|4. **Iterate** — use AI tools for new angles, Remotion for scale
+M|Reco|tx|This hybrid approach gives you the creative exploration of AI generators and the consistency and scale of code-based rendering.
+M|Reco|tx|---
+M|Plat|When|
+M|Plat|tx|\| Platform \| Placement \| Aspect Ratio \| Recommended Size \|
+M|Plat|tx|\|----------\|-----------\|-------------\|-----------------\|
+M|Plat|| Me|1 \| 1080x1080 \|
+M|Plat|| Me|16 \| 1080x1920 \|
+M|Plat|| Me|1 \| 1080x1080 \|
+M|Plat|| Go|1 \| 1200x628 \|
+M|Plat|| Go|1 \| 1200x1200 \|
+M|Plat|| Li|1 \| 1200x627 \|
+M|Plat|| Li|1 \| 1200x1200 \|
+M|Plat|| Ti|16 \| 1080x1920 \|
+M|Plat|| Tw|9 \| 1200x675 \|
+M|Plat|| Tw|1 \| 800x418 \|
+M|Plat|tx|Include these dimensions in your generation pm to avoid needing to crop or resize.

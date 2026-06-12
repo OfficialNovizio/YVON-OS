@@ -1,0 +1,19 @@
+#DOC source=/root/yvon/docs/ventures/yvon-dashboard/CONTEXT.md strip=77% toon=9% net=79%
+X|YVON|0|LONG-TERM. Architecture locks and permanent decisions for the yv OS platform.
+X|YVON|1|Rolling state → sn.md · Operational rules → FEEDBACK.md
+X|YVON|2|Cross-vt architecture locks also live here — these apply to ALL vt built on yv.
+X|YVON|3|
+X|YVON|4|---
+X|YVON|5|
+T|What|0|The internal BI platform that hosts nz and hb. Stark's operating sy.
+T|What|1|Mission: replace external SaaS subscriptions w/ self-hosted intelligence.
+T|What|2|
+T|What|3|---
+T|What|4|
+T|Arch|0|[TABLE:4×10]
+T|Arch|1|---
+T|Arch|2|
+T|Mode|0|[TABLE:4×5]
+T|Mode|1|---
+T|Mode|2|
+D|Open|[TABLE:3×4]

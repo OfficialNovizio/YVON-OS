@@ -1,0 +1,31 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-content-visibility.md savings=0%
+M||tx|---
+M||titl|CSS cn-visibility for Long Lists
+M||impa|hi
+M||impa|faster initial render
+M||tags|rendering, css, cn-visibility, long-lists
+M||tx|---
+M|CSS |Appl|auto` to defer off-screen rendering.
+M|CSS |**CS|**
+M|CSS |tx|```css
+M|CSS |tx|.message-item {
+M|CSS |cont|auto;
+M|CSS |cont|0 80px;
+M|CSS |tx|}
+M|CSS |tx|```
+M|CSS |**Ex|**
+M|CSS |tx|```tsx
+M|CSS |func|{ messages: Message[] }) {
+M|CSS |tx|return (
+M|CSS |tx|<div className="overflow-y-auto h-screen">
+M|CSS |tx|{messages.map(msg => (
+M|CSS |tx|<div key={msg.id} className="message-item">
+M|CSS |tx|<Avatar us={msg.author} />
+M|CSS |tx|<div>{msg.cn}</div>
+M|CSS |tx|</div>
+M|CSS |tx|))}
+M|CSS |tx|</div>
+M|CSS |tx|)
+M|CSS |tx|}
+M|CSS |tx|```
+M|CSS |tx|For 1000 messages, browser skips layout/paint for ~990 off-screen items (10× faster initial render).

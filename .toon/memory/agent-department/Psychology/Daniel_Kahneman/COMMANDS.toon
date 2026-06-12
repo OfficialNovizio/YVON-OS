@@ -1,0 +1,34 @@
+#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/COMMANDS.md savings=6%
+M|Core|tx|\| Command \| Usage \| Output \|
+M|Core|tx|\|---------\|-------\|--------\|
+M|Core|tx|\| `think` \| `think --bias "confirmation" --context "sales"` \| Cognitive bias al of provided context \|
+M|Core|tx|\| `debias` \| `debias --decision "investment"` \| Dual-sy thinking evaluation \|
+M|Core|tx|\| `predict` \| `predict --scenario "launch"` \| Intuition vs. analytic fc \|
+M|Core|tx|\| `framing` \| `framing --option A --option B` \| Choice framing impact al \|
+M|Core|tx|\| `availability` \| `availability --event "pd fl"` \| Event availability bias assessment \|
+M|Core|tx|\| `representativeness` \| `representativeness --pattern "trending"` \| Stereotype/representativeness check \|
+M|Core|tx|\| `anchoring` \| `anchoring --anchor "price 500"` \| Anchor effect calculation \|
+M|Core|tx|\| `loss_avoidance` \| `loss_avoidance --risk "5%"` \| Loss aversion threshold \|
+M|Core|tx|\| `results` \| `@kh results --br "nz" --surface "instagram" --date "2026-05-04"` \| Reads done STRATEGY_LOG entry → triggers proposal generation \|
+M|Inte|Any |
+M|Inte|tx|```
+M|Inte|@kah|[cn or decision — isolated, not full thread]
+M|Inte|tx|```
+M|Inte|**Ch|** `framing` · `bias` · `system1-filter` · `anchoring` · `loss-aversion` · `calibration` · `full-audit`
+M|Inte|**Ex|**
+M|Inte|tx|```
+M|Inte|@kah|"Don't miss our final restock — only 3 left" [nz Instagram]
+M|Inte|@kah|[ln's ct output]
+M|Inte|@kah|[ro's cg brief for Q3 Meta launch]
+M|Inte|@kah|pricing shown as €299 before discount to €199
+M|Inte|tx|```
+M|Inte|**Ke|** Pass ONLY the cn to validate — not the full conversation. Isolated context, minimum tk.
+M|Prot|tx|1. Every command MUST show dual-sy reasoning (sy 1 + sy 2)
+M|Prot|tx|2. Never trust intuition w/o calibration check
+M|Prot|tx|3. All predictions include confidence intervals
+M|Prot|tx|4. Flag when heuristics override actual probabilities
+M|Exam|tx|```
+M|Exam|tx|think --bias "availability" --context "viral mk"
+M|Exam|tx|predict --scenario "holiday launch" --confidence "md"
+M|Exam|tx|framing --option "price discount" --option "value add"
+M|Exam|tx|```

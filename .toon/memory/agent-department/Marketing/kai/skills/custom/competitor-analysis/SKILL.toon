@@ -1,0 +1,66 @@
+#MEM id=competitor-analysis source=/root/yvon/agent-department/Marketing/kai/skills/custom/competitor-analysis/SKILL.md savings=13%
+M||tx|---
+M||name|cr-al
+M||desc|ka's structured framework for turning yv cr scrape data into actionable competitive intelligence. Covers data ingestion from /ap/cr-*, scoring, gap al, and opportunity identification per vt.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv scrapes cr cn and intelligence via multiple rt (`/ap/cr-cn`, `/ap/cr-intelligence`, `/ap/auto-cr`, `/ap/cr-exploit`, `/ap/cr-pipeline`). This skill defines how ka transforms that raw data into a competitive read Stark can act on.
+M|Purp|tx|Data w/o structure is noise. This skill makes it signal.
+M|Purp|tx|---
+M|When|it|When Stark asks "what are cr doing?"
+M|When|it|When a new cr scrape completes in `/ap/cr-pipeline`
+M|When|it|When mc requests competitive context for a st decision
+M|When|it|During cn brief generation (Phase 1 of br Intelligence Pipeline)
+M|When|tx|---
+M|Step|Befo|
+M|Step|tx|```
+M|Step|tx|□ GET /ap/cr-intelligence?vt=[slug] → retrieve latest scores
+M|Step|tx|□ GET /ap/cr-cn?vt=[slug]      → retrieve latest cn samples
+M|Step|tx|□ Check scrape timestamp — if > 7 days old, flag as stale before analyzing
+M|Step|□ Co|nz cr ≠ hb cr
+M|Step|tx|```
+M|Step|tx|**Never mix vt cr data.** nz = fashion DTC. hb = fintech SaaS. Different competitive sets, different metrics.
+M|Step|tx|---
+M|Step|tx|Rate each cr on 5 axes. Score 1–5 each.
+M|Step|tx|\| Axis \| nz signals \| hb signals \|
+M|Step|tx|\|------\|----------------\|-----------------\|
+M|Step|tx|\| **cn velocity** \| Posts/week on Instagram, TikTok \| Blog posts, pd updates/week \|
+M|Step|tx|\| **Engagement qual** \| Saves rate, comments depth vs. likes \| rv sentiment, support rp time \|
+M|Step|tx|\| **Visual differentiation** \| Distinct aesthetic vs. generic feed \| UI clarity, dashboard screenshots \|
+M|Step|tx|\| **Messaging clarity** \| Value proposition in first 3 words of bio \| Pricing page, onboarding cp \|
+M|Step|tx|\| **Growth signals** \| Follower delta WoW, EMV spikes \| App store rank movement, G2 reviews delta \|
+M|Step|**Co|** sum of 5 axes ÷ 25 = competitive threat index (0–1.0). Above 0.6 = active threat.
+M|Step|tx|---
+M|Step|For |
+M|Step|tx|```
+M|Step|tx|1. What are they doing that yv's vt are NOT doing?
+M|Step|tx|→ List max 3 observable gaps (cn, pd, positioning, channel)
+M|Step|tx|2. What are they doing WORSE than yv's vt?
+M|Step|tx|→ List max 2 exploitable weaknesses (do not list strengths we share)
+M|Step|tx|3. Is this gap closable in < 2 weeks (tactical) or > 2 weeks (st)?
+M|Step|→ Ta|rt to ln/ro for fast rp
+M|Step|st|rt to mc for roadmap inclusion
+M|Step|tx|```
+M|Step|tx|---
+M|Step|Outp|
+M|Step|tx|```
+M|Step|cr|[name]
+M|Step|vt|[nz \| hb]
+M|Step|THRE|[score] — [hi/MED/lo]
+M|Step|TOP |[one gap — what they do that we don't]
+M|Step|EXPL|[one weakness — where we can win]
+M|Step|WIND|[tactical (≤2 weeks) \| st (>2 weeks)]
+M|Step|ACTI|[specific recommendation: cp angle / ad hook / feature / cg]
+M|Step|ROUT|[ln \| ro \| nt \| mc]
+M|Step|tx|```
+M|Step|tx|---
+M|Step|Befo|
+M|Step|it|If threat index ≥ 0.8 on any cr → escalate to mc immediately
+M|Step|it|If st gap identified → mc rt to appropriate ag (not ka)
+M|Step|it|If tactical gap → ka rt directly to ln or ro w/ the brief
+M|Step|tx|ka delivers data and al. mc decides what to do w/ it.
+M|Step|tx|---
+M|Anti|it|Never rp cr metrics w/o citing the scrape timestamp
+M|Anti|it|Never generalize across vt ("both vt face X cr") — they compete in different markets
+M|Anti|it|Never recommend a rp w/o routing it to the correct execution ag
+M|Anti|it|Never treat sl follower count as a primary threat signal — engagement rate is the real metric

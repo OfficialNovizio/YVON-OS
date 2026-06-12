@@ -1,0 +1,111 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/referral-program/references/affiliate-programs.md savings=-1%
+M|Affi|tx|Detailed guidance for building and managing affiliate programs.
+M|Cont|it|Commission Structures
+M|Cont|it|Cookie Duration
+M|Cont|it|Affiliate Recruitment
+M|Cont|it|Affiliate Enablement
+M|Cont|it|Tools & Platforms (Referral Program Tools, Affiliate Program Tools, Choosing a Tool)
+M|Cont|it|Fraud Prevention (Common Referral Fraud, Prevention Measures)
+M|Comm|**Pe|**
+M|Comm|- St|10-30% of first sale or first year
+M|Comm|- Wo|E-commerce, SaaS w/ clear pricing
+M|Comm|- Ex|"Earn 25% of every sale you refer"
+M|Comm|**Fl|**
+M|Comm|- St|$5-500 depending on value
+M|Comm|- Wo|Lead gen, trials, freemium
+M|Comm|- Ex|"$50 for every qualified demo"
+M|Comm|**Re|**
+M|Comm|- St|10-25% of recurring rv
+M|Comm|- Wo|Subscription pd
+M|Comm|- Ex|"20% of subscription for 12 months"
+M|Comm|**Ti|**
+M|Comm|- Wo|Motivating hi performers
+M|Comm|- Ex|"20% for 1-10 sales, 25% for 11-25, 30% for 26+"
+M|Comm|tx|---
+M|Cook|tx|How long after click does affiliate get credit?
+M|Cook|tx|\| Duration \| Use Case \|
+M|Cook|tx|\|----------\|----------\|
+M|Cook|tx|\| 24 hours \| hi-volume, lo-consideration purchases \|
+M|Cook|tx|\| 7-14 days \| Standard e-commerce \|
+M|Cook|tx|\| 30 days \| Standard SaaS/B2B \|
+M|Cook|tx|\| 60-90 days \| Long sales cycles, enterprise \|
+M|Cook|tx|\| Lifetime \| Premium affiliate relationships \|
+M|Cook|tx|---
+M|Wher|it|Existing cs who cr cn
+M|Wher|it|Industry bloggers and reviewers
+M|Wher|it|YouTubers in your niche
+M|Wher|it|nl writers
+M|Wher|it|Complementary tool companies
+M|Wher|it|Consultants and agencies
+M|Outr|tx|```
+M|Outr|Subj|Partnership opportunity — [Your pd]
+M|Outr|tx|Hi [Name],
+M|Outr|tx|I've been following your cn on [topic] — particularly [specific piece] — and think there cld be a great fit for a partnership.
+M|Outr|tx|[Your pd] helps [audience] [achieve outcome], and I think your audience wld find it valuable.
+M|Outr|We o|early access, co-mk, etc.].
+M|Outr|tx|wld you be open to learning more?
+M|Outr|tx|[Your name]
+M|Outr|tx|```
+M|Outr|tx|---
+M|Affi|Prov|
+M|Affi|it|[ ] Unique tracking links/codes
+M|Affi|it|[ ] pd overview and key benefits
+M|Affi|it|[ ] Target audience description
+M|Affi|it|[ ] Comparison to cr
+M|Affi|it|[ ] Creative assets (logos, banners, images)
+M|Affi|it|[ ] Sample cp and talking points
+M|Affi|it|[ ] Case studies and testimonials
+M|Affi|it|[ ] Demo access or free account
+M|Affi|it|[ ] FAQ and objection handling
+M|Affi|it|[ ] Payment terms and schedule
+M|Affi|tx|---
+M|Refe|**Fu|**
+M|Refe|it|ReferralCandy — E-commerce focused
+M|Refe|it|Ambassador — Enterprise referral programs
+M|Refe|it|Friendbuy — E-commerce and subscription
+M|Refe|it|GrowSurf — SaaS and tech companies
+M|Refe|it|Mention Me — AI-powered referral mk
+M|Refe|it|Viral Loops — Template-based cg
+M|Refe|**Bu|**
+M|Refe|it|Stripe (basic referral tracking)
+M|Refe|it|HubSpot (CRM-integrated)
+M|Refe|it|Segment (tracking and an)
+M|Affi|**Af|**
+M|Affi|it|ShareASale — Large merchant network
+M|Affi|it|Impact — Enterprise partnerships
+M|Affi|it|PartnerStack — SaaS focused
+M|Affi|it|Tapfiliate — Simple SaaS affiliate tracking
+M|Affi|it|FirstPromoter — SaaS affiliate management
+M|Affi|**Pa|**
+M|Affi|it|Introw — Full PRM w/ deal registration, commissions, tiers, QBRs, and partner engagement tracking ([integration guide](../../../tools/integrations/introw.md))
+M|Affi|**Se|**
+M|Affi|it|Rewardful — Stripe-integrated affiliates
+M|Affi|it|Refersion — E-commerce affiliates
+M|Choo|Cons|
+M|Choo|it|Integration w/ your payment sy
+M|Choo|it|Fraud detection capabilities
+M|Choo|it|Payout management
+M|Choo|it|Reporting and an
+M|Choo|it|Customization options
+M|Choo|it|Price vs. program scale
+M|Choo|tx|---
+M|Comm|it|Self-referrals (creating fake accounts)
+M|Comm|it|Referral rings (groups referring each other)
+M|Comm|it|Coupon sites posting referral codes
+M|Comm|it|Fake em addresses
+M|Comm|it|VPN/device spoofing
+M|Prev|tc|**
+M|Prev|it|em verification required
+M|Prev|it|Device fingerprinting
+M|Prev|it|IP address monitoring
+M|Prev|it|Delayed reward payout (after activation)
+M|Prev|it|Minimum activity threshold
+M|Prev|**Po|**
+M|Prev|it|Clear terms of service
+M|Prev|it|Maximum referrals per period
+M|Prev|it|Reward clawback for refunds/chargebacks
+M|Prev|it|Manual rv for suspicious patterns
+M|Prev|**St|**
+M|Prev|it|Require referred us to take meaningful action
+M|Prev|it|Cap lifetime rewards
+M|Prev|it|Pay rewards in pd credit (less attractive to fraudsters)

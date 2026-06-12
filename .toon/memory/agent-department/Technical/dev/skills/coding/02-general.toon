@@ -1,0 +1,27 @@
+#MEM id=coding source=/root/yvon/agent-department/Technical/dev/skills/coding/02-general.md savings=3%
+M||tx|---
+M||prio|hi
+M||appl|dv
+M||load|always
+M||md|qwen3.5-4b
+M||conf|[]
+M||tx|---
+M|Lang|it|ts strict mode where applicable
+M|Lang|it|No `any` tp unless absolutely necessary — add a comment explaining why
+M|Lang|it|Prefer explicit return tp on all functions
+M|Lang|it|Use `const` by default; `let` only when reassignment is required
+M|Func|it|Keep functions small and single-purpose
+M|Func|it|Max 30 lines per fn; extract if longer
+M|Func|it|Name functions after what they return, not what they do internally
+M|Func|it|No side effects in pure functions
+M|Erro|it|Never swallow er silently
+M|Erro|it|Always log er context, not just the er message
+M|Erro|it|Use typed er where possible
+M|Comm|it|Comment the why, not the what
+M|Comm|it|If code needs a comment to be understood, consider simplifying it first
+M|Comm|it|Never leave TODO comments w/o a ticket reference
+M|File|it|One concern per file
+M|File|it|Keep files under 200 lines; split if larger
+M|File|it|Co-locate tests w/ implementation files
+M|Git|it|All br changes go to `dv` branch — never commit directly to `main`
+M|Git|- Co|`tp(scope): short description` (feat, fix, chore, doc)

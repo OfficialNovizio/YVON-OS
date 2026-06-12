@@ -1,0 +1,13 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/COMMANDS.md savings=-2%
+M|Term|tx|ln does not run terminal commands. She writes and edits cp.
+M|What|tx|\| If you need... \| Ask... \|
+M|What|tx|\|----------------\|--------\|
+M|What|tx|\| Platform posting st \| Sofia \|
+M|What|tx|\| Ad perf data \| ro \|
+M|What|tx|\| cg brief \| Alex \|
+M|What|tx|---
+M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
+M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
+M|Comm|tx|\|------\|------------------\|--------\|--------------\|
+M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|

@@ -1,0 +1,264 @@
+#MEM id=test-driven-development source=/root/yvon/agent-department/Technical/raj/skills/superpowers/test-driven-development/SKILL.md savings=-7%
+M||tx|---
+M||name|tst-driven-dv
+M||desc|Use when implementing any feature or bugfix, before writing implementation code
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, productivity]
+M||tx|---
+M|Over|tx|Write the tst first. Watch it fail. Write minimal code to pass.
+M|Over|**Co|** If you didn't watch the tst fail, you don't know if it tests the right thing.
+M|Over|tx|**Violating the letter of the rules is violating the spirit of the rules.**
+M|When|**Al|**
+M|When|it|New features
+M|When|it|Bug fixes
+M|When|it|Refactoring
+M|When|it|Behavior changes
+M|When|**Ex|**
+M|When|it|Throwaway prototypes
+M|When|it|Generated code
+M|When|it|cfg files
+M|When|tx|Thinking "skip TDD just this once"? Stop. That's rationalization.
+M|The |tx|```
+M|The |tx|NO PRODUCTION CODE w/o A FAILING tst FIRST
+M|The |tx|```
+M|The |tx|Write code before the tst? dl it. Start over.
+M|The |**No|**
+M|The |it|Don't keep it as "reference"
+M|The |it|Don't "adapt" it while writing tests
+M|The |it|Don't look at it
+M|The |it|dl means dl
+M|The |tx|im fresh from tests. Period.
+M|Red-|tx|```dot
+M|Red-|tx|digraph tdd_cycle {
+M|Red-|tx|rankdir=LR;
+M|Red-|tx|red [label="RED\nWrite failing tst", shape=box, style=filled, fillcolor="#ffcccc"];
+M|Red-|tx|verify_red [label="Verify fails\ncorrectly", shape=diamond];
+M|Red-|tx|green [label="GREEN\nMinimal code", shape=box, style=filled, fillcolor="#ccffcc"];
+M|Red-|tx|verify_green [label="Verify passes\nAll green", shape=diamond];
+M|Red-|tx|rf [label="rf\nClean up", shape=box, style=filled, fillcolor="#ccccff"];
+M|Red-|tx|nx [label="nx", shape=ellipse];
+M|Red-|tx|red -> verify_red;
+M|Red-|tx|verify_red -> green [label="yes"];
+M|Red-|tx|verify_red -> red [label="wrong\nfailure"];
+M|Red-|tx|green -> verify_green;
+M|Red-|tx|verify_green -> rf [label="yes"];
+M|Red-|tx|verify_green -> green [label="no"];
+M|Red-|tx|rf -> verify_green [label="stay\ngreen"];
+M|Red-|tx|verify_green -> nx;
+M|Red-|tx|nx -> red;
+M|Red-|tx|}
+M|Red-|tx|```
+M|RED |tx|Write one minimal tst showing what shd happen.
+M|RED |tx|<Good>
+M|RED |tx|```ts
+M|RED |tx|tst('retries failed operations 3 times', async () => {
+M|RED |tx|let attempts = 0;
+M|RED |tx|const operation = () => {
+M|RED |tx|attempts++;
+M|RED |tx|if (attempts < 3) throw new er('fail');
+M|RED |tx|return 'sc';
+M|RED |tx|};
+M|RED |tx|const result = await retryOperation(operation);
+M|RED |tx|expect(result).toBe('sc');
+M|RED |tx|expect(attempts).toBe(3);
+M|RED |tx|});
+M|RED |tx|```
+M|RED |tx|Clear name, tests real behavior, one thing
+M|RED |tx|</Good>
+M|RED |tx|<Bad>
+M|RED |tx|```ts
+M|RED |tx|tst('retry works', async () => {
+M|RED |tx|const mock = jest.fn()
+M|RED |tx|.mockRejectedValueOnce(new er())
+M|RED |tx|.mockRejectedValueOnce(new er())
+M|RED |tx|.mockResolvedValueOnce('sc');
+M|RED |tx|await retryOperation(mock);
+M|RED |tx|expect(mock).toHaveBeenCalledTimes(3);
+M|RED |tx|});
+M|RED |tx|```
+M|RED |tx|Vague name, tests mock not code
+M|RED |tx|</Bad>
+M|RED |**Re|**
+M|RED |it|One behavior
+M|RED |it|Clear name
+M|RED |it|Real code (no mocks unless unavoidable)
+M|Veri|tx|**MANDATORY. Never skip.**
+M|Veri|tx|```bash
+M|Veri|tx|npm tst path/to/tst.tst.ts
+M|Veri|tx|```
+M|Veri|Conf|
+M|Veri|it|tst fails (not er)
+M|Veri|it|fl message is expected
+M|Veri|it|Fails bc feature missing (not typos)
+M|Veri|tx|**tst passes?** You're testing existing behavior. Fix tst.
+M|Veri|tx|**tst er?** Fix er, re-run until it fails correctly.
+M|GREE|tx|Write simplest code to pass the tst.
+M|GREE|tx|<Good>
+M|GREE|tx|```ts
+M|GREE|asyn|() => Promise<T>): Promise<T> {
+M|GREE|tx|for (let i = 0; i < 3; i++) {
+M|GREE|tx|try {
+M|GREE|tx|return await fn();
+M|GREE|tx|} catch (e) {
+M|GREE|tx|if (i === 2) throw e;
+M|GREE|tx|}
+M|GREE|tx|}
+M|GREE|tx|throw new er('unreachable');
+M|GREE|tx|}
+M|GREE|tx|```
+M|GREE|tx|Just enough to pass
+M|GREE|tx|</Good>
+M|GREE|tx|<Bad>
+M|GREE|tx|```ts
+M|GREE|tx|async fn retryOperation<T>(
+M|GREE|fn|() => Promise<T>,
+M|GREE|opti|{
+M|GREE|maxR|number;
+M|GREE|back|'linear' \| 'exponential';
+M|GREE|onRe|(attempt: number) => void;
+M|GREE|tx|}
+M|GREE|)|Promise<T> {
+M|GREE|tx|// YAGNI
+M|GREE|tx|}
+M|GREE|tx|```
+M|GREE|tx|Over-engineered
+M|GREE|tx|</Bad>
+M|GREE|tx|Don't add features, rf other code, or "improve" beyond the tst.
+M|Veri|tx|**MANDATORY.**
+M|Veri|tx|```bash
+M|Veri|tx|npm tst path/to/tst.tst.ts
+M|Veri|tx|```
+M|Veri|Conf|
+M|Veri|it|tst passes
+M|Veri|it|Other tests still pass
+M|Veri|it|Output pristine (no er, warnings)
+M|Veri|tx|**tst fails?** Fix code, not tst.
+M|Veri|tx|**Other tests fail?** Fix now.
+M|REFA|Afte|
+M|REFA|it|Remove duplication
+M|REFA|it|Improve names
+M|REFA|it|Extract helpers
+M|REFA|tx|Keep tests green. Don't add behavior.
+M|Repe|tx|nx failing tst for nx feature.
+M|Good|tx|\| qual \| Good \| Bad \|
+M|Good|tx|\|---------\|------\|-----\|
+M|Good|tx|\| **Minimal** \| One thing. "and" in name? Split it. \| `tst('validates em and domain and whitespace')` \|
+M|Good|tx|\| **Clear** \| Name describes behavior \| `tst('test1')` \|
+M|Good|tx|\| **Shows intent** \| Demonstrates desired ap \| Obscures what code shd do \|
+M|Why |tx|**"I'll write tests after to verify it works"**
+M|Why |Test|
+M|Why |it|Might tst wrong thing
+M|Why |it|Might tst implementation, not behavior
+M|Why |it|Might miss edge cases you forgot
+M|Why |it|You never saw it catch the bug
+M|Why |tx|tst-first forces you to see the tst fail, proving it actually tests something.
+M|Why |tx|**"I already manually tested all the edge cases"**
+M|Why |Manu|
+M|Why |it|No record of what you tested
+M|Why |it|Can't re-run when code changes
+M|Why |it|Easy to forget cases under pressure
+M|Why |it|"It worked when I tried it" ≠ comprehensive
+M|Why |tx|Automated tests are systematic. They run the same way every time.
+M|Why |tx|**"Deleting X hours of work is wasteful"**
+M|Why |Sunk|
+M|Why |it|dl and rewrite w/ TDD (X more hours, hi confidence)
+M|Why |it|Keep it and add tests after (30 min, lo confidence, likely bugs)
+M|Why |tx|The "waste" is keeping code you can't trust. Working code w/o real tests is tc debt.
+M|Why |tx|**"TDD is dogmatic, being pragmatic means adapting"**
+M|Why |TDD |
+M|Why |it|Finds bugs before commit (faster than debugging after)
+M|Why |it|Prevents regressions (tests catch breaks immediately)
+M|Why |it|Documents behavior (tests show how to use code)
+M|Why |it|Enables refactoring (change freely, tests catch breaks)
+M|Why |tx|"Pragmatic" shortcuts = debugging in production = slower.
+M|Why |tx|**"Tests after achieve the same goals - it's spirit not ritual"**
+M|Why |tx|No. Tests-after answer "What does this do?" Tests-first answer "What shd this do?"
+M|Why |tx|Tests-after are biased by your implementation. You tst what you built, not what's required. You verify remembered edge cases, not discovered ones.
+M|Why |tx|Tests-first force edge case discovery before implementing. Tests-after verify you remembered everything (you didn't).
+M|Why |tx|30 minutes of tests after ≠ TDD. You get coverage, lose proof tests work.
+M|Comm|tx|\| Excuse \| Reality \|
+M|Comm|tx|\|--------\|---------\|
+M|Comm|tx|\| "Too simple to tst" \| Simple code breaks. tst takes 30 seconds. \|
+M|Comm|tx|\| "I'll tst after" \| Tests passing immediately prove nothing. \|
+M|Comm|tx|\| "Tests after achieve same goals" \| Tests-after = "what does this do?" Tests-first = "what shd this do?" \|
+M|Comm|tx|\| "Already manually tested" \| Ad-hoc ≠ systematic. No record, can't re-run. \|
+M|Comm|tx|\| "Deleting X hours is wasteful" \| Sunk cost fallacy. Keeping unverified code is tc debt. \|
+M|Comm|tx|\| "Keep as reference, write tests first" \| You'll adapt it. That's testing after. dl means dl. \|
+M|Comm|tx|\| "Need to explore first" \| Fine. Throw away exploration, start w/ TDD. \|
+M|Comm|tx|\| "tst hard = ds unclear" \| Listen to tst. Hard to tst = hard to use. \|
+M|Comm|tx|\| "TDD will slow me down" \| TDD faster than debugging. Pragmatic = tst-first. \|
+M|Comm|tx|\| "Manual tst faster" \| Manual doesn't prove edge cases. You'll re-tst every change. \|
+M|Comm|tx|\| "Existing code has no tests" \| You're improving it. Add tests for existing code. \|
+M|Red |it|Code before tst
+M|Red |it|tst after implementation
+M|Red |it|tst passes immediately
+M|Red |it|Can't explain why tst failed
+M|Red |it|Tests added "later"
+M|Red |it|Rationalizing "just this once"
+M|Red |it|"I already manually tested it"
+M|Red |it|"Tests after achieve the same purpose"
+M|Red |it|"It's abt spirit not ritual"
+M|Red |it|"Keep as reference" or "adapt existing code"
+M|Red |it|"Already spent X hours, deleting is wasteful"
+M|Red |it|"TDD is dogmatic, I'm being pragmatic"
+M|Red |it|"This is different bc..."
+M|Red |**Al|dl code. Start over w/ TDD.**
+M|Exam|**Bu|** Empty em accepted
+M|Exam|tx|**RED**
+M|Exam|tx|```ts
+M|Exam|tx|tst('rejects empty em', async () => {
+M|Exam|cons|'' });
+M|Exam|tx|expect(result.er).toBe('em required');
+M|Exam|tx|});
+M|Exam|tx|```
+M|Exam|tx|**Verify RED**
+M|Exam|tx|```bash
+M|Exam|tx|$ npm tst
+M|Exam|FAIL|expected 'em required', got undefined
+M|Exam|tx|```
+M|Exam|tx|**GREEN**
+M|Exam|tx|```ts
+M|Exam|func|FormData) {
+M|Exam|tx|if (!data.em?.trim()) {
+M|Exam|retu|'em required' };
+M|Exam|tx|}
+M|Exam|tx|// ...
+M|Exam|tx|}
+M|Exam|tx|```
+M|Exam|tx|**Verify GREEN**
+M|Exam|tx|```bash
+M|Exam|tx|$ npm tst
+M|Exam|tx|PASS
+M|Exam|tx|```
+M|Exam|tx|**rf**
+M|Exam|tx|Extract validation for multiple fields if needed.
+M|Veri|Befo|
+M|Veri|it|[ ] Every new fn/method has a tst
+M|Veri|it|[ ] Watched each tst fail before implementing
+M|Veri|it|[ ] Each tst failed for expected reason (feature missing, not typo)
+M|Veri|it|[ ] Wrote minimal code to pass each tst
+M|Veri|it|[ ] All tests pass
+M|Veri|it|[ ] Output pristine (no er, warnings)
+M|Veri|it|[ ] Tests use real code (mocks only if unavoidable)
+M|Veri|it|[ ] Edge cases and er covered
+M|Veri|tx|Can't check all boxes? You skipped TDD. Start over.
+M|When|tx|\| Problem \| Solution \|
+M|When|tx|\|---------\|----------\|
+M|When|tx|\| Don't know how to tst \| Write wished-for ap. Write assertion first. Ask your human partner. \|
+M|When|tx|\| tst too complicated \| ds too complicated. Simplify if. \|
+M|When|tx|\| Must mock everything \| Code too coupled. Use dependency injection. \|
+M|When|tx|\| tst setup huge \| Extract helpers. Still complex? Simplify ds. \|
+M|Debu|tx|Bug found? Write failing tst reproducing it. Follow TDD cycle. tst proves fix and prevents regression.
+M|Debu|tx|Never fix bugs w/o a tst.
+M|Test|When|
+M|Test|it|Testing mock behavior instead of real behavior
+M|Test|it|Adding tst-only methods to production classes
+M|Test|it|Mocking w/o understanding dependencies
+M|Fina|tx|```
+M|Fina|tx|Production code → tst exists and failed first
+M|Fina|tx|Otherwise → not TDD
+M|Fina|tx|```
+M|Fina|tx|No exceptions w/o your human partner's permission.

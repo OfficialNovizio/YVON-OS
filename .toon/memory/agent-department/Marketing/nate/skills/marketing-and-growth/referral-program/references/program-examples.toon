@@ -1,0 +1,94 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/referral-program/references/program-examples.md savings=-2%
+M|Refe|tx|Real-world examples of successful referral programs.
+M|Cont|it|Dropbox (Classic)
+M|Cont|it|Uber/Lyft
+M|Cont|it|Morning Brew
+M|Cont|it|Notion
+M|Cont|it|Incentive tp Comparison
+M|Cont|it|Incentive Sizing Framework
+M|Cont|it|Viral Coefficient & Metrics (Key Metrics, Calculating Referral Program ROI)
+M|Drop|**Pr|** Give 500MB storage, get 500MB storage
+M|Drop|**Wh|**
+M|Drop|it|Reward directly tied to pd value
+M|Drop|it|lo friction (just an em)
+M|Drop|it|Both parties benefit equally
+M|Drop|it|Gamified w/ progress tracking
+M|Drop|tx|---
+M|Uber|**Pr|** Give $10 ride credit, get $10 when they ride
+M|Uber|**Wh|**
+M|Uber|it|Immediate, clear value
+M|Uber|it|Double-sided incentive
+M|Uber|it|Easy to share (code/link)
+M|Uber|it|Triggered at natural moments
+M|Uber|tx|---
+M|Morn|**Pr|** Tiered rewards for subscriber referrals
+M|Morn|- 3 |nl stickers
+M|Morn|- 5 |T-shirt
+M|Morn|- 10|Mug
+M|Morn|- 25|Hoodie
+M|Morn|**Wh|**
+M|Morn|it|Gamification drives ongoing engagement
+M|Morn|it|Physical rewards are shareable (more referrals)
+M|Morn|it|lo cost relative to subscriber value
+M|Morn|it|Built status/identity
+M|Morn|tx|---
+M|Noti|**Pr|** $10 credit per referral (education)
+M|Noti|**Wh|**
+M|Noti|it|Targeted hi-sharing audience (students)
+M|Noti|it|pd naturally spreads in teams
+M|Noti|it|Credit keeps us engaged
+M|Noti|tx|---
+M|Ince|tx|\| tp \| Pros \| Cons \| Best For \|
+M|Ince|tx|\|------\|------\|------\|----------\|
+M|Ince|tx|\| Cash/credit \| Universally valued \| Feels transactional \| Marketplaces, fintech \|
+M|Ince|tx|\| pd credit \| Drives usage \| Only valuable if they'll use it \| SaaS, subscriptions \|
+M|Ince|tx|\| Free months \| Clear value \| May attract freebie-seekers \| Subscription pd \|
+M|Ince|tx|\| Feature unlock \| lo cost to you \| Only works for gated features \| Freemium pd \|
+M|Ince|tx|\| Swag/gifts \| Memorable, shareable \| Logistics complexity \| br-focused companies \|
+M|Ince|tx|\| Charity donation \| Feel-good \| Lower personal motivation \| Mission-driven brands \|
+M|Ince|tx|---
+M|Ince|**Ca|**
+M|Ince|tx|```
+M|Ince|tx|Max Referral Reward = (cs LTV × Gross Margin) - Target CAC
+M|Ince|tx|```
+M|Ince|**Ex|**
+M|Ince|- LT|$1,200
+M|Ince|- Gr|70%
+M|Ince|- Ta|$200
+M|Ince|- Ma|($1,200 × 0.70) - $200 = $640
+M|Ince|**Ty|**
+M|Ince|- B2|$10-50 or 10-25% of first purchase
+M|Ince|- B2|$50-500 or 1-3 months free
+M|Ince|- En|Higher, often custom
+M|Ince|tx|---
+M|Key |**Vi|**
+M|Key |tx|```
+M|Key |tx|K = Invitations × Conversion Rate
+M|Key |tx|K > 1 = Viral growth (each us brings more than 1 new us)
+M|Key |tx|K < 1 = Amplified growth (referrals supplement other acquisition)
+M|Key |tx|```
+M|Key |**Ex|**
+M|Key |it|Average cs sends 3 invitations
+M|Key |it|15% of invitations convert
+M|Key |it|K = 3 × 0.15 = 0.45
+M|Key |**Re|**
+M|Key |tx|```
+M|Key |tx|Referral Rate = (cs who refer) / (Total cs)
+M|Key |tx|```
+M|Key |Benc|
+M|Key |- Go|10-25% of cs refer
+M|Key |- Gr|25-50%
+M|Key |- Ex|50%+
+M|Key |**Re|**
+M|Key |Benc|
+M|Key |- Av|1-2 referrals per referrer
+M|Key |- Go|2-5
+M|Key |- Ex|5+
+M|Calc|tx|```
+M|Calc|tx|Referral Program ROI = (rv from referred cs - Program costs) / Program costs
+M|Calc|tx|Program costs = Rewards paid + Tool costs + Management time
+M|Calc|tx|```
+M|Calc|**Tr|**
+M|Calc|it|Cost per referred cs (CAC via referral)
+M|Calc|it|LTV of referred cs (often higher than average)
+M|Calc|it|Payback period for referral rewards

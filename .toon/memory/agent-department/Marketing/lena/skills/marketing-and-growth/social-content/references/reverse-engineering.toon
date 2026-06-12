@@ -1,0 +1,136 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/social-content/references/reverse-engineering.md savings=1%
+M|Reve|tx|Instead of guessing what works, systematically al top-performing cn in your niche and extract proven patterns.
+M|Cont|it|The 6-Step Framework (Niche ID, Scrape, al, Playbook, Layer Voice, Convert)
+M|Cont|it|The Formula
+M|Cont|it|Reverse Engineering Checklist
+M|1. N|Iden|
+M|1. N|**Se|**
+M|1. N|it|Posting consistently (3+ times/week)
+M|1. N|it|hi engagement rate relative to follower count
+M|1. N|it|Audience overlap w/ your target mk
+M|1. N|it|Mix of established and rising creators
+M|1. N|**Wh|**
+M|1. N|- Li|Search by industry keywords, check "People also viewed"
+M|1. N|- Tw|Check who your target audience follows and engages w/
+M|1. N|it|Use tools like SparkToro, Followerwonk, or manual research
+M|1. N|it|Look at who gets featured in industry newsletters
+M|2. S|Gath|
+M|2. S|**To|**
+M|2. S|it|**Apify** — LinkedIn scraper, Twitter scraper actors
+M|2. S|it|**Phantom Buster** — Multi-platform automation
+M|2. S|it|**Export tools** — Platform-specific export features
+M|2. S|it|**Manual collection** — For smaller datasets, cp/paste into spreadsheet
+M|2. S|**Da|**
+M|2. S|it|Post text/cn
+M|2. S|it|Engagement metrics (likes, comments, shares, saves)
+M|2. S|it|Post format (text-only, carousel, vd, im)
+M|2. S|it|Posting time/day
+M|2. S|it|Hook/first line
+M|2. S|it|CTA used
+M|2. S|it|Topic/theme
+M|3. A|Sort|
+M|3. A|**Qu|**
+M|3. A|it|Rank posts by engagement rate
+M|3. A|it|Identify top 10% performers
+M|3. A|it|Look for format patterns (do carousels outperform?)
+M|3. A|it|Check timing patterns (best days/times)
+M|3. A|it|Compare topic perf
+M|3. A|**Qu|**
+M|3. A|it|What hooks do top posts use?
+M|3. A|it|How long are hi-performing posts?
+M|3. A|it|What emotional triggers appear?
+M|3. A|it|What formats repeat?
+M|3. A|it|What topics consistently perform?
+M|3. A|**Qu|**
+M|3. A|it|What's the average length of top posts?
+M|3. A|it|Which hook tp appear most in top 10%?
+M|3. A|it|What CTAs drive most comments?
+M|3. A|it|What topics get saved/shared most?
+M|4. P|Docu|
+M|4. P|**Ho|**
+M|4. P|tx|```
+M|4. P|Patt|"I [unexpected action] and [surprising result]"
+M|4. P|Exam|"I stopped posting daily and my engagement doubled"
+M|4. P|Why |Curiosity gap + contrarian
+M|4. P|Patt|"[Specific number] [things] that [outcome]:"
+M|4. P|Exam|"7 pricing mistakes that cost me $50K:"
+M|4. P|Why |Specificity + loss aversion
+M|4. P|Patt|"[Controversial take]"
+M|4. P|Exam|"Cold outreach is dead."
+M|4. P|Why |Pattern interrupt + invites debate
+M|4. P|tx|```
+M|4. P|**Fo|**
+M|4. P|- Ca|Hook slide → Problem → Solution steps → CTA
+M|4. P|- Th|Hook → Promise → Deliver → Recap → CTA
+M|4. P|- St|Hook → Setup → Conflict → Resolution → Lesson
+M|4. P|**CT|**
+M|4. P|- Qu|"What wld you add?"
+M|4. P|- Ag|"Agree or disagree?"
+M|4. P|- Sh|"Tag someone who needs this"
+M|4. P|- Sa|"Save this for later"
+M|5. L|Take|
+M|5. L|tx|**"Smart friend who figured something out"**
+M|5. L|it|Write like you're texting advice to a friend
+M|5. L|it|Share discoveries, not lectures
+M|5. L|it|Use "I found that..." not "You shd..."
+M|5. L|it|Be helpful, not preachy
+M|5. L|tx|**Specific > Vague**
+M|5. L|tx|```
+M|5. L|tx|❌ "I made good rv"
+M|5. L|tx|✅ "I made $47,329"
+M|5. L|tx|❌ "It took a while"
+M|5. L|tx|✅ "It took 47 days"
+M|5. L|tx|❌ "A lot of people"
+M|5. L|tx|✅ "2,847 people"
+M|5. L|tx|```
+M|5. L|tx|**Short. Breathe. Land.**
+M|5. L|it|One idea per sentence
+M|5. L|it|Use line breaks liberally
+M|5. L|it|Let important points stand alone
+M|5. L|- Cr|short, short, longer explanation
+M|5. L|tx|```
+M|5. L|tx|❌ "I spent three years building my business the wrong way before I finally realized that the key to sc was focusing on fewer things and doing them exceptionally well."
+M|5. L|tx|✅ "I built wrong for 3 years.
+M|5. L|tx|Then I figured it out.
+M|5. L|tx|Focus on less.
+M|5. L|tx|Do it exceptionally well.
+M|5. L|tx|Everything changed."
+M|5. L|tx|```
+M|5. L|tx|**Write from emotion**
+M|5. L|it|Start w/ how you felt, not what you did
+M|5. L|- Us|frustrated, excited, terrified, obsessed
+M|5. L|it|Show vulnerability when authentic
+M|5. L|it|Connect the feeling to the lesson
+M|5. L|tx|```
+M|5. L|tx|❌ "Here's what I learned abt pricing"
+M|5. L|tx|✅ "I was terrified to raise my prices.
+M|5. L|tx|My hands were shaking when I sent the em.
+M|5. L|tx|Here's what happened..."
+M|5. L|tx|```
+M|6. C|Brid|
+M|6. C|**So|**
+M|6. C|it|nl signups in bio/comments
+M|6. C|it|Free resource offers in follow-up comments
+M|6. C|it|DM triggers ("Comment X and I'll send you...")
+M|6. C|it|Profile visits → optimized profile w/ clear CTA
+M|6. C|**Di|**
+M|6. C|it|Link in comments (not post body on LinkedIn)
+M|6. C|it|Contextual pd mentions within valuable cn
+M|6. C|it|Case study posts that naturally showcase your work
+M|6. C|it|"If you want help w/ this, DM me" (sparingly)
+M|6. C|tx|---
+M|The |tx|```
+M|The |tx|1. Find what's already working (don't guess)
+M|The |tx|2. Extract the patterns (hooks, formats, CTAs)
+M|The |tx|3. Layer your authentic voice on top
+M|The |tx|4. tst and iterate based on your own data
+M|The |tx|```
+M|Reve|it|[ ] Identified 10-20 top creators in niche
+M|Reve|it|[ ] Collected 500+ posts for al
+M|Reve|it|[ ] Ranked by engagement rate
+M|Reve|it|[ ] Documented top 10 hook patterns
+M|Reve|it|[ ] Documented top 5 format patterns
+M|Reve|it|[ ] Documented top 5 CTA patterns
+M|Reve|it|[ ] Created voice guidelines (specificity, brevity, emotion)
+M|Reve|it|[ ] Built template library from patterns
+M|Reve|it|[ ] Set up tracking for your own cn perf

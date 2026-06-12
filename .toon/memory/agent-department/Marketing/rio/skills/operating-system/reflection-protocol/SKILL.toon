@@ -1,0 +1,34 @@
+#MEM id=reflection-protocol source=/root/yvon/agent-department/Marketing/rio/skills/operating-system/reflection-protocol/SKILL.md savings=20%
+M||tx|---
+M||name|reflection-protocol
+M||desc|Post-delivery learning capture. Runs after every done task. Classifies what was learned as universal or vt-specific, writes to the correct MEMORY file. Enforces Layer 4 population across all ag.
+M||vers|1.0.0
+M||tx|---
+M|Purp|Trip|catch → deliver → learn → improve.
+M|Purp|tx|w/o this skill, Never Again sections stay empty and ag restart from zero every sn.
+M|Purp|tx|---
+M|When|tx|After every done task that involved a recommendation, md, rp, plan, or creative output. Not after simple lookups, status updates, or routing decisions.
+M|When|tx|---
+M|Step|One |what was delivered? What was the recommendation or output?
+M|Step|Was |
+M|Step|it|Weaker than it shd have been?
+M|Step|it|An assumption that wasn't validated before being used?
+M|Step|it|A number that was estimated rather than sourced?
+M|Step|it|Something Stark pushed back on or modified?
+M|Step|it|Something the triple-pass critique found but couldn't fully fix?
+M|Step|tx|If nothing — log "No gap found" explicitly. That's a valid entry. But be honest.
+M|Step|Ask |**"Is this mistake or pattern specific to this vt's business md — or abt how I approach tasks in general?"**
+M|Step|tx|\| Learning tp \| Where to write \|
+M|Step|tx|\|--------------\|----------------\|
+M|Step|tx|\| Specific to this vt's data, md, or context \| `MEMORY-[active-vt].md` → Never Again \|
+M|Step|tx|\| abt how I structure outputs, reason, or communicate \| `MEMORY.md` → Never Again (universal) \|
+M|Step|| Tr|specific detail to vt file, abstracted principle to MEMORY.md \|
+M|Step|Form|`[date] [vt-tag or universal] — wrong assumption / gap — impact — rule going forward`
+M|Step|Exam|
+M|Step|tx|```
+M|Step|[202|always md hb churn by cohort, never flat average.
+M|Step|[202|worst metric in sentence one, regardless of overall positive tn.
+M|Step|tx|```
+M|Step|Befo|confirm vt files contain only vt-specific patterns. If a universal pattern landed in a vt file, move it to MEMORY.md. This keeps vt memory clean and relevant.
+M|Step|tx|---
+M|Outp|tx|Reflection is silent. Stark does not see the reflection log. Only the Never Again entries that result from it are visible — in MEMORY.md or the vt memory files. Never narrate the reflection process.

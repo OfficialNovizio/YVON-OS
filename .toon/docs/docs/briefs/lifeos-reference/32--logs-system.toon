@@ -1,0 +1,13 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/32--logs-system.md strip=3% toon=3% net=5%
+M|32 ·|0|An activity/audit log page. Appears as logs.md in the creator's own Briefings folder (screenshot 181510).
+M|32 ·|1|
+T|Purp|0|A sy-wide record of what the ag did and when — the audit trail behind the Task Board's Live Activity tracker and the various approval gates. Where Live Activity shows current work, Logs is the historical record for rv, debugging, and accountability.
+T|Purp|1|
+T|What|0|A chronological feed of ag actions across all workspaces: tasks executed, posts published, emails drafted/sent, PRs opened, sec stops (e.g. Knox halting a credential leak), key rotations, deploys.
+T|What|1|Filtering by ag, workspace, action tp, and time — useful when something needs tracing (e.g. a failed post in the Scheduler's fl triage, or confirming what Nexus deployed).
+T|What|2|Ties into the safety md: every gated/auto action leaves a log entry.
+T|What|3|
+T|Rela|0|Historical counterpart to the Task Board Live Activity tracker (02).
+T|Rela|1|Supports debugging surfaced elsewhere: Scheduler fl triage (15), Software Pipeline (22), Decision Queue sec stops (01).
+T|Rela|2|
+T|Rela|3|Confidence: Inferred. Named in the creator's Briefings folder; no dedicated UI screenshot. Contents extrapolated from the activity-tracking and audit needs visible across the app.

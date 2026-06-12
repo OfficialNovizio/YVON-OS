@@ -1,0 +1,480 @@
+#MEM id=finance-based-pricing-advisor source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/finance-based-pricing-advisor/SKILL.md savings=11%
+M||tx|---
+M||name|fi-based-pricing-advisor
+M||desc|>-
+M||tx|Evaluate pricing changes using ARPU, conversion, churn risk, NRR, and payback. Use when deciding whether a pricing move shd ship.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[fi, pl, runway, cac, ltv, mrr, margin, roi]
+M||inte|Evaluate the **financial impact** of pricing changes (price increases, new tiers, add-ons, discounts) using ARPU/ARPA al, conversion impact, churn risk, NRR effects, and CAC payback implications. Use this to make data-driven go/no-go decisions on proposed pricing changes w/ supporting math and risk assessment.
+M||tp|interactive
+M||best|
+M||scen|
+M||tx|---
+M|Purp|tx|Evaluate the **financial impact** of pricing changes (price increases, new tiers, add-ons, discounts) using ARPU/ARPA al, conversion impact, churn risk, NRR effects, and CAC payback implications. Use this to make data-driven go/no-go decisions on proposed pricing changes w/ supporting math and risk assessment.
+M|Purp|**Wh|** Financial impact evaluation for pricing decisions you're already considering.
+M|Purp|**Wh|** Comprehensive pricing st ds, value-based pricing frameworks, willingness-to-pay research, competitive positioning, psychological pricing, packaging architecture, or monetization md selection. For those topics, see the future `pricing-st-suite` skills.
+M|Purp|tx|This skill assumes you have a specific pricing change in mind and need to evaluate its financial viability.
+M|The |A sy|
+M|The |tx|1. **rv Impact** — How does this change ARPU/ARPA?
+M|The |it|Direct rv lift from price increase
+M|The |it|rv loss from reduced conversion or increased churn
+M|The |it|Net rv impact
+M|The |tx|2. **Conversion Impact** — How does this affect trial-to-paid or sales conversion?
+M|The |it|Higher prices may reduce conversion rate
+M|The |it|Better packaging may improve conversion
+M|The |it|tst assumptions
+M|The |tx|3. **Churn Risk** — Will existing cs leave due to price change?
+M|The |it|Grandfathering st (protect existing cs)
+M|The |it|Churn risk by segment (SMB vs. enterprise)
+M|The |it|Churn elasticity (how sensitive are cs to price?)
+M|The |tx|4. **Expansion Impact** — Does this cr or block expansion opportunities?
+M|The |it|New premium tier = upsell path
+M|The |it|Usage-based pricing = expansion as cs grow
+M|The |it|Add-ons = cross-sell opportunities
+M|The |tx|5. **CAC Payback Impact** — Does pricing change affect unit economics?
+M|The |it|Higher ARPU = faster payback
+M|The |it|Lower conversion = higher effective CAC
+M|The |- Ne|CAC ratio
+M|Pric|**Di|**
+M|Pric|it|Price increase (raise prices for all cs or new cs only)
+M|Pric|it|New premium tier (cr upsell path)
+M|Pric|it|Paid add-on (monetize previously free feature)
+M|Pric|it|Usage-based pricing (charge for consumption)
+M|Pric|**Di|**
+M|Pric|it|Annual prepay discount (improve cash flow)
+M|Pric|it|Volume discounts (larger deals)
+M|Pric|it|Promotional pricing (temporary price reduction)
+M|Pric|**Pa|**
+M|Pric|it|Feature bundling (combine features into tiers)
+M|Pric|it|Unbundling (separate features into add-ons)
+M|Pric|it|Pricing metric change (seats → usage, or vice versa)
+M|Anti|- **|** This evaluates a proposed change, not "what shd we charge?"
+M|Anti|- **|** This analyzes impact, not "what will cs pay?"
+M|Anti|- **|** This is financial al, not mk positioning
+M|Anti|- **|** This evaluates one change, not redesigning all tiers
+M|When|**Us|**
+M|When|it|You have a specific pricing change to evaluate (e.g., "shd we raise prices 20%?")
+M|When|it|You need to quantify rv, churn, and conversion trade-offs
+M|When|it|You're deciding btw pricing change options (tst A vs. B)
+M|When|it|You need to present pricing change impact to leadership or board
+M|When|**Do|**
+M|When|it|You're designing pricing st from scratch (use value-based pricing frameworks)
+M|When|it|You haven't validated willingness-to-pay (do cs research first)
+M|When|it|You don't have baseline metrics (ARPU, churn, conversion rates)
+M|When|it|Change is too small to matter (<5% price change, <10% of cs affected)
+M|When|tx|---
+M|Faci|tx|Use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the default interaction protocol for this skill.
+M|Faci|It d|
+M|Faci|it|sn heads-up + entry mode (Guided, Context dump, Best guess)
+M|Faci|it|one-question turns w/ plain-language pm
+M|Faci|it|progress labels (for example, Context Qx/8 and Scoring Qx/5)
+M|Faci|it|interruption handling and pause/resume behavior
+M|Faci|it|numbered recommendations at decision points
+M|Faci|it|quick-select numbered rp options for regular questions (include `Other (specify)` when useful)
+M|Faci|tx|This file defines the domain-specific assessment cn. If there is a conflict, follow this file's domain logic.
+M|Appl|tx|This interactive skill asks **up to 4 adaptive questions**, offering **3-5 enumerated options** at decision points.
+M|Appl|tx|---
+M|Step|**Ag|**
+M|Step|"Let|
+M|Step|**Cu|**
+M|Step|it|Current ARPU or ARPA
+M|Step|it|Current pricing tiers (if applicable)
+M|Step|it|Current monthly churn rate
+M|Step|it|Current trial-to-paid conversion rate (if relevant)
+M|Step|**Pr|**
+M|Step|it|What change are you considering? (price increase, new tier, add-on, etc.)
+M|Step|it|New pricing (if known)
+M|Step|it|Affected cs segment (all, new only, specific tier)
+M|Step|**Bu|**
+M|Step|it|Total cs (or MRR/ARR)
+M|Step|it|CAC (to assess payback impact)
+M|Step|it|NRR (to assess expansion context)
+M|Step|tx|You can provide estimates if you don't have exact numbers."
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|tx|"What tp of pricing change are you considering?
+M|Step|tx|1. **Price increase** — Raise prices for new cs, existing cs, or both
+M|Step|tx|2. **New premium tier** — Add higher-priced tier w/ additional features
+M|Step|tx|3. **Paid add-on** — Monetize a new or existing feature separately
+M|Step|tx|4. **Usage-based pricing** — Charge for consumption (seats, ap calls, storage, etc.)
+M|Step|tx|5. **Discount st** — Annual prepay discount, volume pricing, or promotional pricing
+M|Step|tx|6. **Packaging change** — Rebundle features, change pricing metric, or tier restructure
+M|Step|tx|Choose a number, or describe your specific pricing change."
+M|Step|**Ba|**
+M|Step|tx|---
+M|If O|**Ag|**
+M|If O|"**P|**
+M|If O|- Cu|$___
+M|If O|- Ne|$___
+M|If O|- In|___%
+M|If O|tx|**Who is affected?**
+M|If O|tx|1. New cs only (grandfather existing)
+M|If O|tx|2. All cs (existing + new)
+M|If O|tx|3. Specific segment (e.g., SMB only, new plan only)
+M|If O|tx|**When wld this take effect?**
+M|If O|it|Immediately
+M|If O|it|nx billing cycle
+M|If O|it|Gradual rollout (tst first)"
+M|If O|tx|---
+M|If O|**Ag|**
+M|If O|"**P|**
+M|If O|- Cu|$___
+M|If O|- Ne|$___
+M|If O|- Ke|[list]
+M|If O|**Ex|**
+M|If O|it|What % of current cs might upgrade? ___%
+M|If O|it|What % of new cs might choose premium? ___%
+M|If O|**Ca|**
+M|If O|it|Will premium tier cannibalize current top tier?"
+M|If O|tx|---
+M|If O|**Ag|**
+M|If O|"**A|**
+M|If O|- Ad|___
+M|If O|- Pr|$___ /month or /us
+M|If O|it|Currently free or new feature?
+M|If O|**Ex|**
+M|If O|it|What % of cs wld pay for this? ___%
+M|If O|it|Is this feature currently used (if free)?
+M|If O|it|Will making it paid hurt retention?"
+M|If O|tx|---
+M|If O|**Ag|**
+M|If O|"**U|**
+M|If O|- Us|(seats, ap calls, storage, transactions, etc.)
+M|If O|- Pr|$___ per [unit]
+M|If O|it|Free tier or minimum? (e.g., first 1,000 ap calls free)
+M|If O|**Ex|**
+M|If O|- Av|___ units/month
+M|If O|- Ex|$current → $new
+M|If O|**Ex|**
+M|If O|it|As cs grow usage, will ARPU increase?"
+M|If O|tx|---
+M|If O|**Ag|**
+M|If O|"**D|**
+M|If O|- Di|(annual prepay, volume, promotional)
+M|If O|- Di|___% off
+M|If O|- Du|(ongoing, limited time)
+M|If O|**Tr|**
+M|If O|it|Lower price vs. improved cash flow (annual prepay)
+M|If O|it|Lower price vs. larger deal size (volume)
+M|If O|it|Lower price vs. urgency (promotional)"
+M|If O|tx|---
+M|If O|**Ag|**
+M|If O|"**P|**
+M|If O|it|What are you changing? (bundling, unbundling, pricing metric)
+M|If O|- Cu|[describe]
+M|If O|- Ne|[describe]
+M|If O|**Ex|**
+M|If O|- AR|$current → $new
+M|If O|- Co|___% → ___%
+M|If O|- Ch|(lo, md, hi)"
+M|If O|tx|---
+M|Step|**Ag|**
+M|Step|"Now|
+M|Step|**Re|**
+M|Step|- Cu|$___
+M|Step|- Ex|$___
+M|Step|- AR|___%
+M|Step|**Co|**
+M|Step|- Cu|___%
+M|Step|- Ex|___%
+M|Step|- Co|[increase / decrease / no change]
+M|Step|**Ch|**
+M|Step|- Cu|___%
+M|Step|- Ex|___%
+M|Step|- Ch|[lo / md / hi]
+M|Step|**Ex|**
+M|Step|it|Does this cr expansion opportunities? (new tier to upgrade to, usage growth)
+M|Step|- Ex|___% → ___%
+M|Step|tx|You can provide estimates. We'll md scenarios (conservative, base, optimistic)."
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|"To |
+M|Step|**Cu|**
+M|Step|- MR|$___
+M|Step|- Nu|___
+M|Step|- AR|$___
+M|Step|- Mo|___%
+M|Step|- NR|___%
+M|Step|- CA|$___
+M|Step|- LT|$___
+M|Step|**Gr|**
+M|Step|- Cu|___% MoM or YoY
+M|Step|- Ta|___%
+M|Step|**Co|**
+M|Step|it|Are you priced below, at, or above mk?
+M|Step|- Co|(lo, md, hi)"
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|it|rv impact (ARPU lift × cs base)
+M|Step|it|Conversion impact (new cs affected)
+M|Step|it|Churn impact (existing cs affected)
+M|Step|it|Net rv impact
+M|Step|it|CAC payback impact
+M|Step|it|Risk assessment
+M|Step|**Ag|**
+M|Step|tx|---
+M|Reco|**Wh|**
+M|Reco|it|Net rv impact clearly positive (>10% ARPU lift, <5% churn risk)
+M|Reco|it|Minimal conversion impact
+M|Reco|it|Strong value justification
+M|Reco|**Re|**
+M|Reco|tx|"**im this pricing change** — Strong financial case
+M|Reco|**Re|**
+M|Reco|- Cu|$___
+M|Reco|- AR|___% ($current → $new)
+M|Reco|- Ex|+$___/month (+___%)
+M|Reco|**Ch|lo**
+M|Reco|- Ex|___% → ___% (+___% points)
+M|Reco|- Ch|-$___/month
+M|Reco|- **|+$___/month** ✅
+M|Reco|**Co|**
+M|Reco|- Cu|___%
+M|Reco|- Ex|___% (___% change)
+M|Reco|- Im|[minimal / manageable]
+M|Reco|**CA|**
+M|Reco|- Cu|___ months
+M|Reco|- Ne|___ months (faster due to higher ARPU)
+M|Reco|**Wh|**
+M|Reco|tx|[Specific reasoning based on numbers]
+M|Reco|**Ho|**
+M|Reco|tx|1. **Grandfather existing cs** (if raising prices)
+M|Reco|it|Protect current base from churn
+M|Reco|it|New pricing for new cs only
+M|Reco|tx|2. **Communicate value**
+M|Reco|it|Emphasize features, outcomes, ROI
+M|Reco|it|Justify price w/ value delivered
+M|Reco|tx|3. **Monitor metrics (first 30-60 days)**
+M|Reco|it|Conversion rate (shd stay within ___%)
+M|Reco|it|Churn rate (shd stay <___%)
+M|Reco|it|cs feedback
+M|Reco|**Ex|**
+M|Reco|- Mo|+$___ MRR from new cs
+M|Reco|- Mo|+$___ MRR (cumulative)
+M|Reco|- Mo|+$___ MRR
+M|Reco|- Ye|+$___ ARR
+M|Reco|**Su|**
+M|Reco|it|Conversion rate stays >___%
+M|Reco|it|Churn rate stays <___%
+M|Reco|it|NRR improves to >___%"
+M|Reco|tx|---
+M|Reco|**Wh|**
+M|Reco|it|Uncertain impact (wide range btw conservative and optimistic)
+M|Reco|it|Moderate churn or conversion risk
+M|Reco|it|Large cs base (can tst w/ subset)
+M|Reco|**Re|**
+M|Reco|tx|"**tst w/ a segment before broad rollout** — Impact is uncertain
+M|Reco|**Wh|**
+M|Reco|- AR|___% (wide confidence interval)
+M|Reco|- Ch|md (___% → ___%)
+M|Reco|- Co|Uncertain (___% → ___% estimated)
+M|Reco|**Te|**
+M|Reco|**Co|**
+M|Reco|- Cu|$___
+M|Reco|- Si|___% of new cs (or ___ cs)
+M|Reco|**Co|**
+M|Reco|- Ne|$___
+M|Reco|- Si|___% of new cs (or ___ cs)
+M|Reco|**Du|** 60-90 days (need statistical significance)
+M|Reco|**Me|**
+M|Reco|it|Conversion rate (A vs. B)
+M|Reco|it|ARPU (A vs. B)
+M|Reco|it|30-day retention (A vs. B)
+M|Reco|it|90-day churn (A vs. B)
+M|Reco|it|NRR (A vs. B)
+M|Reco|**De|**
+M|Reco|**Ro|**
+M|Reco|it|Conversion rate (B) >___% of control (A)
+M|Reco|it|Churn rate (B) <___% higher than control
+M|Reco|it|Net rv (B) >___% higher than control
+M|Reco|**Do|**
+M|Reco|it|Conversion drops >___%
+M|Reco|it|Churn increases >___%
+M|Reco|it|Net rv impact negative
+M|Reco|**Ex|**
+M|Reco|- We|Launch tst
+M|Reco|- We|Enough data for statistical significance
+M|Reco|- Mo|Decision to roll out or kill
+M|Reco|**Ri|** md. tst mitigates risk before broad rollout."
+M|Reco|tx|---
+M|Reco|**Wh|**
+M|Reco|it|Original proposal has sig risk
+M|Reco|it|Better alternative exists
+M|Reco|it|Need to adjust pricing change to improve outcomes
+M|Reco|**Re|**
+M|Reco|tx|"**Modify your approach** — Original proposal has risks
+M|Reco|**Or|**
+M|Reco|it|[Price increase / New tier / Add-on / etc.]
+M|Reco|- Ex|___%
+M|Reco|- Ch|hi (___% → ___%)
+M|Reco|- Ne|Uncertain or negative
+M|Reco|**Pr|**
+M|Reco|[Spe|e.g., "20% price increase will likely cause 10% churn, wiping out rv gains"]
+M|Reco|**Al|**
+M|Reco|**Op|Smaller price increase**
+M|Reco|it|Instead of ___% increase, try ___%
+M|Reco|it|Lower churn risk (___% vs. ___%)
+M|Reco|- St|+$___/month
+M|Reco|**Op|Grandfather existing, raise for new only**
+M|Reco|it|Protect current base (zero churn risk)
+M|Reco|it|Higher prices for new cs only
+M|Reco|it|Gradual ARPU improvement over time
+M|Reco|**Op|Value-based pricing (charge more for hi-value segments)**
+M|Reco|it|Keep SMB pricing flat
+M|Reco|it|Raise enterprise pricing ___%
+M|Reco|it|Lower churn risk (enterprise is stickier)
+M|Reco|**Re|**
+M|Reco|tx|[Specific option w/ reasoning]
+M|Reco|**Wh|**
+M|Reco|it|Lower churn risk
+M|Reco|it|Comparable rv upside
+M|Reco|it|Easier to communicate
+M|Reco|**Ho|**
+M|Reco|tx|[Specific steps for alternative approach]"
+M|Reco|tx|---
+M|Reco|**Wh|**
+M|Reco|it|Net rv impact negative or marginal
+M|Reco|it|hi churn risk w/o offsetting gains
+M|Reco|it|Competitive or st reasons to hold pricing
+M|Reco|**Re|**
+M|Reco|tx|"**Don't change pricing** — Risks outweigh benefits
+M|Reco|**Wh|**
+M|Reco|- Ex|+$___/month (___%)
+M|Reco|- Ex|-$___/month (___%)
+M|Reco|- **|-$___/month** 🚨 or marginal
+M|Reco|**Pr|**
+M|Reco|[Spe|e.g., "Churn-driven rv loss exceeds price increase gains"]
+M|Reco|**Wh|**
+M|Reco|**Fo|**
+M|Reco|it|Churn rate must stay below ___% (currently ___%)
+M|Reco|it|OR conversion rate must stay above ___% (currently ___%)
+M|Reco|it|OR you need to reduce CAC to offset lower conversion
+M|Reco|**Al|**
+M|Reco|**In|**
+M|Reco|tx|1. **Improve retention** — Reduce churn from ___% to ___% (same rv impact as price increase, lower risk)
+M|Reco|tx|2. **Expand within base** — Increase NRR from ___% to ___% via upsells
+M|Reco|tx|3. **Reduce CAC** — More efficient acquisition (better than pricing)
+M|Reco|**Wh|**
+M|Reco|it|After improving retention (churn <___%)
+M|Reco|it|After validating willingness-to-pay (WTP research)
+M|Reco|it|After competitive landscape changes
+M|Reco|**De|** Hold pricing for now, focus on [retention / expansion / acquisition efficiency]."
+M|Reco|tx|---
+M|Step|**Ag|**
+M|Step|tx|"Want to see what-if scenarios?
+M|Step|tx|1. **Optimistic case** — Higher ARPU lift, lower churn
+M|Step|tx|2. **Pessimistic case** — Lower ARPU lift, higher churn
+M|Step|tx|3. **Breakeven al** — What churn rate makes this neutral?
+M|Step|tx|Or ask any follow-up questions."
+M|Step|**Ag|**
+M|Step|it|Scenario modeling (optimistic/pessimistic/breakeven)
+M|Step|it|Sensitivity tables (if churn is X%, rv impact is Y)
+M|Step|it|Comparison to alternative pricing strategies
+M|Step|tx|---
+M|Exam|See |
+M|Exam|**Sc|** 20% price increase for new cs only
+M|Exam|**Cu|**
+M|Exam|- AR|$100/month
+M|Exam|- Cu|1,000
+M|Exam|- MR|$100K
+M|Exam|- Ch|3%/month
+M|Exam|- Ne|50
+M|Exam|**Pr|**
+M|Exam|- Ne|$120/month (+20%)
+M|Exam|- Ex|Grandfathered at $100
+M|Exam|**Im|**
+M|Exam|- Ne|$120 (+20%)
+M|Exam|- Ch|lo (existing protected)
+M|Exam|- Co|Minimal (<5% drop estimated)
+M|Exam|**Re|** im. Net rv impact +$12K/year w/ lo risk.
+M|Exam|tx|---
+M|Exam|**Sc|** 30% price increase for all cs
+M|Exam|**Cu|**
+M|Exam|- AR|$50/month
+M|Exam|- Cu|5,000
+M|Exam|- MR|$250K
+M|Exam|- Ch|5%/month (already hi)
+M|Exam|**Pr|**
+M|Exam|- Al|$65/month (+30%)
+M|Exam|**Im|**
+M|Exam|- AR|+30% = +$75K MRR
+M|Exam|- Ch|hi (5% → 8% estimated)
+M|Exam|- Ch|3% × 5,000 × $65 = -$9.75K MRR/month
+M|Exam|**Ne|** +$75K - $9.75K = +$65K MRR (but accelerating churn problem)
+M|Exam|**Re|** Don't change. Fix retention first (reduce 5% churn), then raise prices.
+M|Exam|tx|---
+M|Exam|**Sc|** Add $500/month premium tier
+M|Exam|**Cu|**
+M|Exam|- To|$200/month (500 cs)
+M|Exam|- AR|$200
+M|Exam|**Pr|**
+M|Exam|- Ne|$500/month w/ advanced features
+M|Exam|- Ex|10% of current top tier (50 cs)
+M|Exam|**Im|**
+M|Exam|- Up|50 × ($500 - $200) = +$15K MRR
+M|Exam|- Ca|lo (features justify premium)
+M|Exam|- NR|Increases from 105% to 110%
+M|Exam|**Re|** im. Creates expansion path, minimal cannibalization risk.
+M|Exam|tx|---
+M|Pitf|**Sy|** "We'll raise prices 30% and make $X more!" (no churn modeling)
+M|Pitf|**Co|** Churn wipes out rv gains. Net impact negative.
+M|Pitf|fix|** md churn scenarios (conservative, base, optimistic). Factor churn-driven rv loss into net impact.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We're raising prices for everyone effective immediately"
+M|Pitf|**Co|** Massive churn spike from existing cs who feel betrayed.
+M|Pitf|fix|** Grandfather existing cs. Raise prices for new cs only.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We tested on 10 cs and it worked!"
+M|Pitf|**Co|** 10 cs isn't statistically sig. Results are noise.
+M|Pitf|fix|** tst w/ large enough sample (100+ cs per cohort) for 60-90 days.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We're raising prices bc we need more rv"
+M|Pitf|**Co|** cs see price increase w/o corresponding value increase. Churn.
+M|Pitf|fix|** Tie price increases to value improvements (new features, better support, outcomes delivered).
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Higher ARPU is always better!"
+M|Pitf|**Co|** If conversion drops 30%, effective CAC increases dramatically. Payback period explodes.
+M|Pitf|fix|** Calculate CAC payback impact. Higher ARPU w/ lower conversion might make payback worse, not better.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "30% discount for annual prepay!" (improves cash but destroys LTV)
+M|Pitf|**Co|** cs lock in lo prices for a year. rv per cs decreases.
+M|Pitf|fix|** Limit annual discounts to 10-15%. Balance cash flow improvement w/ LTV protection.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "cr raised prices, so shd we"
+M|Pitf|**Co|** Your cs, value prop, and cost structure are different. What works for them may not work for you.
+M|Pitf|fix|** Use cr as data points, not decisions. Make pricing decisions based on your unit economics.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Let's A/B tst 47 different price points!"
+M|Pitf|**Co|** al paralysis. Spending months on 5% pricing optimizations while missing 50% growth opportunities elsewhere.
+M|Pitf|fix|** Big pricing changes (tiers, packaging, add-ons) matter more than micro-optimizations. Start there.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We're maximizing ARPU at acquisition"
+M|Pitf|**Co|** hi upfront pricing prevents landing cs. Miss expansion opportunities.
+M|Pitf|fix|** Consider "land and expand" st. Lower entry price, higher expansion rv via upsells.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We're raising prices nx month" (no cs communication)
+M|Pitf|**Co|** Surprised cs churn. Poor reviews. Reputation damage.
+M|Pitf|fix|** Communicate pricing changes 30-60 days in advance. Emphasize value, not just price.
+M|Pitf|tx|---
+M|Rela|it|`saas-rv-growth-metrics` — ARPU, ARPA, churn, NRR metrics used in pricing al
+M|Rela|it|`saas-economics-efficiency-metrics` — CAC payback impact of pricing changes
+M|Rela|it|`fi-metrics-quickref` — Quick lookup for pricing-related formulas
+M|Rela|it|`feature-investment-advisor` — Evaluates whether to bd features that enable pricing changes
+M|Rela|it|`business-health-diagnostic` — Broader business context for pricing decisions
+M|Exte|Thes|
+M|Exte|it|**Value-Based Pricing** — Price based on value delivered, not cost
+M|Exte|it|**Van Westendorp Price Sensitivity** — WTP research methodology
+M|Exte|it|**Conjoint al** — Feature-to-price trade-off research
+M|Exte|it|**Good-Better-Best Packaging** — Tier architecture ds
+M|Exte|it|**Price Anchoring & Decoy Pricing** — Psychological pricing tactics
+M|Exte|- **|** Pricing research and benchmarks
+M|Futu|For |
+M|Futu|it|`value-based-pricing-framework` — How to price based on value
+M|Futu|it|`willingness-to-pay-research` — WTP research methods
+M|Futu|it|`packaging-architecture-advisor` — Tier and bundle ds
+M|Futu|it|`pricing-ps-guide` — Anchoring, decoys, framing
+M|Futu|it|`monetization-md-advisor` — Seat-based vs. usage vs. outcome pricing
+M|Prov|it|Adapted from `research/fi/Finance_For_PMs.Putting_It_Together_Synthesis.md` (Decision Framework #3)
+M|Prov|it|Pricing scenarios from `research/fi/fi for pd Managers.md`

@@ -1,0 +1,22 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-cache-property-access.md savings=-3%
+M||tx|---
+M||titl|Cache Property Access in Loops
+M||impa|lo-md
+M||impa|reduces lookups
+M||tags|javascript, loops, op, caching
+M||tx|---
+M|Cach|tx|Cache object property lookups in hot paths.
+M|Cach|**In|**
+M|Cach|tx|```ts
+M|Cach|tx|for (let i = 0; i < arr.length; i++) {
+M|Cach|tx|process(obj.config.settings.value)
+M|Cach|tx|}
+M|Cach|tx|```
+M|Cach|**Co|**
+M|Cach|tx|```ts
+M|Cach|tx|const value = obj.config.settings.value
+M|Cach|tx|const len = arr.length
+M|Cach|tx|for (let i = 0; i < len; i++) {
+M|Cach|tx|process(value)
+M|Cach|tx|}
+M|Cach|tx|```

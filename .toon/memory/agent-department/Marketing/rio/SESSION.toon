@@ -1,0 +1,20 @@
+#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/SESSION.md savings=21%
+M|Rio |tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Rio |tx|> Always load this first. Load MEMORY.md for channel st, proven angles, and standing rules.
+M|Curr|- **|** 2026-06-11
+M|Curr|- **|** Daily ad brief delivered
+M|Curr|- **|** `.env.local` sb credentials on production — blocks entire mk an pipeline (Day 4)
+M|Curr|- **|** Diagnosis hardened from "credentials hypothesis" to "confirmed ingestion architecture gap." ka recommends unified ingestion pipeline for both vt.
+M|Curr|- **|** ro pivot on June 12 if no movement — shift from "waiting for data" to "planning w/o data."
+M|Curr|- **|** ~9-19 days to late June launch. Pre-mortem required this week w/ kh.
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|| 20|9-19 days. Pre-mortem escalated. ro warns: pivot on June 12 if no movement. \| Same routine June 12. If still no data, shift to "planning w/o data" mode. \|
+M|Last|| 20|no signal (day 3 of pipeline stall). SS26 blind launch risk escalated to pre-mortem requirement. hb instrumentation window wn flagged. \| Repeat June 11 unless ka's pipeline unblocks \|
+M|Last|| 20|no signal (day 2 of pipeline stall). Recommended HOLD on all spend. Flagged SS26 blind launch risk. \| — \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|- **|** sb `.env.local` credentials on production — 10-min fix that unblocks ka, ro, nt, fx for nz
+M|Open|- **|** SS26 pre-mortem w/ kh — was advisory, now required before any budget commitment
+M|Open|it|nz UGC Reels tst — needs Stark green light on budget before scaling
+M|Open|it|hb LinkedIn retargeting budget increase — pnd fx margin check
+M|Open|it|hb event tracking spec — ka recommends writing before pd bd outpaces instrumentation

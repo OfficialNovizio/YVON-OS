@@ -1,0 +1,26 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-memo-with-default-value.md savings=16%
+M||tx|---
+M||titl|Extract Default Non-primitive Parameter Value from Memoized cp to Constant
+M||impa|md
+M||impa|restores memoization by using a constant for default value
+M||tags|rerender, memo, op
+M||tx|---
+M|Extr|tx|When memoized cp has a default value for some non-primitive optional parameter, such as an array, fn, or object, calling the cp w/o that parameter results in broken memoization. This is bc new value instances are created on every rerender, and they do not pass strict equality comparison in `memo()`.
+M|Extr|tx|To address this issue, extract the default value into a constant.
+M|Extr|**In|**
+M|Extr|tx|```tsx
+M|Extr|cons|{ onClick?: () => void }) {
+M|Extr|tx|// ...
+M|Extr|tx|})
+M|Extr|tx|// Used w/o optional onClick
+M|Extr|tx|<UserAvatar />
+M|Extr|tx|```
+M|Extr|**Co|**
+M|Extr|tx|```tsx
+M|Extr|tx|const NOOP = () => {};
+M|Extr|cons|{ onClick?: () => void }) {
+M|Extr|tx|// ...
+M|Extr|tx|})
+M|Extr|tx|// Used w/o optional onClick
+M|Extr|tx|<UserAvatar />
+M|Extr|tx|```

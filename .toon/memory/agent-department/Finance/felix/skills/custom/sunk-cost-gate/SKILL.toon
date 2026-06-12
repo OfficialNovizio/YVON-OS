@@ -1,0 +1,45 @@
+#MEM id=sunk-cost-gate source=/root/yvon/agent-department/Finance/felix/skills/custom/sunk-cost-gate/SKILL.md savings=8%
+M||tx|---
+M||name|sunk-cost-gate
+M||desc|fx's mandatory gate before any "continue investing in X" recommendation. Forces separation of past spend from future expected value. Catches the sunk cost fallacy — fx's identified cognitive fl mode per kh's decision-audit profile.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Sunk cost is fx's highest-risk bias. "We've already spent X on this channel" is not a reason to keep spending. Past spend is irretrievable — it has zero bearing on whether future spend will gn positive returns. But the feeling of waste is powerful and invisible, and it corrupts financial recommendations w/o fx noticing.
+M|Purp|tx|This gate runs before any recommendation to continue, increase, or defend spending on an existing channel, tool, cg, or initiative.
+M|Purp|tx|---
+M|When|Load|
+M|When|it|"We shd continue investing in..."
+M|When|it|"We've already spent X, so..."
+M|When|it|"Stopping now wld waste..."
+M|When|it|"Given our investment to date..."
+M|When|it|"We're too far in to stop..."
+M|When|it|Any recommendation to maintain current spend level when results are underperforming
+M|When|tx|---
+M|The |tx|Answer all 4 before issuing the recommendation. If any answer is "no" or "unclear" — revise.
+M|The |**Qu|Zero-based tst**
+M|The |tx|> "If we had spent nothing on this to date — wld we start spending on it now, given what we know?"
+M|The |tx|If YES → the recommendation can reference current perf data, not sunk costs.
+M|The |If N|"On a zero-base al, we wld not initiate this spend. The case for continuing rests on [specific forward-looking reason], not on past investment."
+M|The |**Qu|Alternative dpl**
+M|The |tx|> "What wld $X deployed elsewhere return, compared to continuing here?"
+M|The |tx|fx must name at least one alternative use of the funds and estimate its return range. A recommendation to continue spending is only valid when it beats the best available alternative — not just when it avoids a loss.
+M|The |**Qu|Stopping cost vs. continuing cost**
+M|The |tx|> "What is the actual cost of stopping now — not emotionally, but financially?"
+M|The |Sunk|contract penalties, transition costs, team disruption. These are legitimate. Emotional loss-of-investment feelings are not.
+M|The |**Qu|Downside scenario survival**
+M|The |tx|> "If perf stays flat for the nx 90 days — does this recommendation still hold?"
+M|The |tx|If the recommendation only makes sense in the base or upside scenario → flag this explicitly. A recommendation that fails the downside scenario is not a recommendation — it is a hope.
+M|The |tx|---
+M|Outp|Afte|
+M|Outp|tx|```
+M|Outp|Sunk|PASSED / FLAGGED
+M|Outp|Zero|[wld we start this today? yes/no + reason]
+M|Outp|Best|[what else cld this budget do, and at what estimated return]
+M|Outp|Stop|[actual financial cost of stopping, not emotional]
+M|Outp|Down|[does this hold if flat perf for 90 days? yes/no]
+M|Outp|Reco|[proceed / revise / stop — w/ rationale based on forward-looking value only]
+M|Outp|tx|```
+M|Outp|tx|If FLAGGED → fx does not issue the continuation recommendation as written. He restructures it around forward-looking expected value, names the stopping cost explicitly, and presents the alternative dpl comparison.
+M|Outp|tx|---
+M|Esca|tx|If fx runs this gate and is still uncertain whether sunk cost reasoning is driving the recommendation — rt to kh before delivering to mc. kh's `decision-audit` for fx specifically flags overconfidence in projections and sunk cost as the two highest-risk patterns.
+M|Esca|tx|Three continuation recommendations on the same underperforming channel in 90 days → mandatory kh audit of the pattern.

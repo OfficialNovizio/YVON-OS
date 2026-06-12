@@ -1,0 +1,169 @@
+SKILL|songwriting-and-ai-music|"Songwriting craft and Suno AI music prompts."
+STEP|1|Intro — set the mood, pull the listener in
+STEP|2|Verse — the story, the details, the world-building
+STEP|3|Pre-Chorus — optional tension ramp before the payoff
+STEP|4|Chorus — the emotional core, the part people remember
+STEP|5|Bridge — a detour, a shift in perspective or key
+STEP|6|Outro — the farewell, can echo or subvert the rest
+STEP|7|Perfect: lean/mean
+STEP|8|Family: crate/braid
+STEP|9|Assonance: had/glass (same vowels, different endings)
+STEP|10|Consonance: scene/when (different vowels, similar endings)
+STEP|11|Near/slant: enough to suggest connection without locking it down
+STEP|12|Matching syllable counts between parallel lines helps singability
+STEP|13|The STRESSED syllables matter more than total count
+STEP|14|Say it out loud. If you stumble, the meter needs work.
+STEP|15|Intentionally breaking meter can create emphasis or surprise
+STEP|16|Whisper before a scream hits harder than just screaming
+STEP|17|Sparse before dense. Slow before fast. Low before high.
+STEP|18|The drop only works because of the buildup
+STEP|19|Silence is an instrument
+STEP|20|"I was sad" = flat
+STEP|21|"Your hoodie's still on the hook by the door" = alive
+STEP|22|But sometimes "I give my life" said plainly IS the power
+STEP|23|The line people remember, hum, repeat
+STEP|24|Usually the title or core phrase
+STEP|25|Works best when melody + lyric + emotion all align
+STEP|26|Place it where it lands hardest (often first/last line of chorus)
+STEP|27|Stable feelings (resolution, peace) pair with settled melodies,
+STEP|28|Unstable feelings (longing, doubt) pair with wandering melodies,
+STEP|29|Verse melody typically sits lower, chorus goes higher
+STEP|30|But flip this if it serves the song
+STEP|31|Cliches on autopilot ("heart of gold" without earning it)
+STEP|32|Forcing word order to hit a rhyme ("Yoda-speak")
+STEP|33|Same energy in every section (flat dynamics)
+STEP|34|Treating your first draft as sacred — revision is creation
+STEP|35|Count syllables per line
+STEP|36|Mark the rhyme scheme (ABAB, AABB, etc.)
+STEP|37|Identify which syllables are STRESSED
+STEP|38|Note where held/sustained notes fall
+STEP|39|Match stressed syllables to the same beats as the original
+STEP|40|Total syllable count can flex by 1-2 unstressed syllables
+STEP|41|On long held notes, try to match the VOWEL SOUND of the original
+STEP|42|Monosyllabic swaps in key spots keep rhythm intact
+STEP|43|Sing your new words over the original — if you stumble, revise
+STEP|44|Pick a concept strong enough to sustain the whole song
+STEP|45|Start from the title/hook and build outward
+STEP|46|Generate lots of raw material (puns, phrases, images) FIRST,
+STEP|47|If you need a specific line somewhere, reverse-engineer the
+STEP|48|V4.5+ supports up to 1,000 chars in Style field — use them
+STEP|49|NO artist names or trademarks. Describe the sound instead.
+STEP|50|Specify BPM and key when you have a preference
+STEP|51|Use Exclude Styles field for what you DON'T want
+STEP|52|Unexpected genre combos can be gold: "bossa nova trap",
+STEP|53|Build a vocal PERSONA, not just a gender:
+STEP|54|Always use Custom Mode for serious work (separate Style + Lyrics)
+STEP|55|Lyrics field limit: ~3,000 chars (~40-60 lines)
+STEP|56|Always add structural tags — without them Suno defaults to
+STEP|57|Spell words as they SOUND: "through" -> "thru"
+STEP|58|Proper nouns are highest failure rate — test early
+STEP|59|"Nous" -> "Noose" (forces correct pronunciation)
+STEP|60|Hyphenate to guide syllables: "Re-search", "bio-engineering"
+STEP|61|ALL CAPS = louder, more intense
+STEP|62|Vowel extension: "lo-o-o-ove" = sustained/melisma
+STEP|63|Ellipses: "I... need... you" = dramatic pauses
+STEP|64|Hyphenated stretch: "ne-e-ed" = emotional stretch
+STEP|65|Spell out numbers: "24/7" -> "twenty four seven"
+STEP|66|Space acronyms: "AI" -> "A I" or "A-I"
+STEP|67|Test proper nouns/unusual words in a short 30-second clip first
+STEP|68|Once generated, pronunciation is baked in — fix in lyrics BEFORE
+STEP|69|Write the concept/hook first — what's the emotional core?
+STEP|70|If adapting, map the original structure (syllables, rhyme, stress)
+STEP|71|Generate raw material — brainstorm freely before structuring
+STEP|72|Draft lyrics into the structure
+STEP|73|Read/sing aloud — catch stumbles, fix meter
+STEP|74|Build the Suno style description — paint the dynamic journey
+STEP|75|Add metatags to lyrics for performance direction
+STEP|76|Generate 3-5 variations minimum — treat them like recording takes
+STEP|77|Pick the best, use Extend/Continue to build on promising sections
+STEP|78|If something great happens by accident, keep it
+STEP|79|Describing the dynamic ARC in the style field matters way more
+STEP|80|Keeping some original lines intact in a parody adds recognizability
+STEP|81|The bridge slot in a song is where you can transform imagery.
+STEP|82|Monosyllabic word swaps in hooks/tags are the cleanest way to
+STEP|83|A strong vocal persona description in the style field makes a
+STEP|84|Don't be precious about rules. If a line breaks meter but hits
+PIT|Intro — set the mood, pull the listener in
+PIT|Verse — the story, the details, the world-building
+PIT|Pre-Chorus — optional tension ramp before the payoff
+PIT|Chorus — the emotional core, the part people remember
+PIT|Bridge — a detour, a shift in perspective or key
+PIT|Outro — the farewell, can echo or subvert the rest
+PIT|Perfect: lean/mean
+PIT|Family: crate/braid
+PIT|Assonance: had/glass (same vowels, different endings)
+PIT|Consonance: scene/when (different vowels, similar endings)
+PIT|Near/slant: enough to suggest connection without locking it down
+PIT|Matching syllable counts between parallel lines helps singability
+PIT|The STRESSED syllables matter more than total count
+PIT|Say it out loud. If you stumble, the meter needs work.
+PIT|Intentionally breaking meter can create emphasis or surprise
+PIT|Whisper before a scream hits harder than just screaming
+PIT|Sparse before dense. Slow before fast. Low before high.
+PIT|The drop only works because of the buildup
+PIT|Silence is an instrument
+PIT|"I was sad" = flat
+PIT|"Your hoodie's still on the hook by the door" = alive
+PIT|But sometimes "I give my life" said plainly IS the power
+PIT|The line people remember, hum, repeat
+PIT|Usually the title or core phrase
+PIT|Works best when melody + lyric + emotion all align
+PIT|Place it where it lands hardest (often first/last line of chorus)
+PIT|Stable feelings (resolution, peace) pair with settled melodies,
+PIT|Unstable feelings (longing, doubt) pair with wandering melodies,
+PIT|Verse melody typically sits lower, chorus goes higher
+PIT|But flip this if it serves the song
+PIT|Cliches on autopilot ("heart of gold" without earning it)
+PIT|Forcing word order to hit a rhyme ("Yoda-speak")
+PIT|Same energy in every section (flat dynamics)
+PIT|Treating your first draft as sacred — revision is creation
+PIT|Count syllables per line
+PIT|Mark the rhyme scheme (ABAB, AABB, etc.)
+PIT|Identify which syllables are STRESSED
+PIT|Note where held/sustained notes fall
+PIT|Match stressed syllables to the same beats as the original
+PIT|Total syllable count can flex by 1-2 unstressed syllables
+PIT|On long held notes, try to match the VOWEL SOUND of the original
+PIT|Monosyllabic swaps in key spots keep rhythm intact
+PIT|Sing your new words over the original — if you stumble, revise
+PIT|Pick a concept strong enough to sustain the whole song
+PIT|Start from the title/hook and build outward
+PIT|Generate lots of raw material (puns, phrases, images) FIRST,
+PIT|If you need a specific line somewhere, reverse-engineer the
+PIT|V4.5+ supports up to 1,000 chars in Style field — use them
+PIT|NO artist names or trademarks. Describe the sound instead.
+PIT|Specify BPM and key when you have a preference
+PIT|Use Exclude Styles field for what you DON'T want
+PIT|Unexpected genre combos can be gold: "bossa nova trap",
+PIT|Build a vocal PERSONA, not just a gender:
+PIT|Always use Custom Mode for serious work (separate Style + Lyrics)
+PIT|Lyrics field limit: ~3,000 chars (~40-60 lines)
+PIT|Always add structural tags — without them Suno defaults to
+PIT|Spell words as they SOUND: "through" -> "thru"
+PIT|Proper nouns are highest failure rate — test early
+PIT|"Nous" -> "Noose" (forces correct pronunciation)
+PIT|Hyphenate to guide syllables: "Re-search", "bio-engineering"
+PIT|ALL CAPS = louder, more intense
+PIT|Vowel extension: "lo-o-o-ove" = sustained/melisma
+PIT|Ellipses: "I... need... you" = dramatic pauses
+PIT|Hyphenated stretch: "ne-e-ed" = emotional stretch
+PIT|Spell out numbers: "24/7" -> "twenty four seven"
+PIT|Space acronyms: "AI" -> "A I" or "A-I"
+PIT|Test proper nouns/unusual words in a short 30-second clip first
+PIT|Once generated, pronunciation is baked in — fix in lyrics BEFORE
+PIT|Write the concept/hook first — what's the emotional core?
+PIT|If adapting, map the original structure (syllables, rhyme, stress)
+PIT|Generate raw material — brainstorm freely before structuring
+PIT|Draft lyrics into the structure
+PIT|Read/sing aloud — catch stumbles, fix meter
+PIT|Build the Suno style description — paint the dynamic journey
+PIT|Add metatags to lyrics for performance direction
+PIT|Generate 3-5 variations minimum — treat them like recording takes
+PIT|Pick the best, use Extend/Continue to build on promising sections
+PIT|If something great happens by accident, keep it
+PIT|Describing the dynamic ARC in the style field matters way more
+PIT|Keeping some original lines intact in a parody adds recognizability
+PIT|The bridge slot in a song is where you can transform imagery.
+PIT|Monosyllabic word swaps in hooks/tags are the cleanest way to
+PIT|A strong vocal persona description in the style field makes a
+PIT|Don't be precious about rules. If a line breaks meter but hits

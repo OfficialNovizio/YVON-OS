@@ -1,0 +1,90 @@
+#MEM id=supabase-rls source=/root/yvon/agent-department/Technical/raj/skills/custom/supabase-rls/SKILL.md savings=5%
+M||tx|---
+M||name|sb-rls
+M||desc|Row Level sec behavioral guide for rj. Every table that stores vt or us data must have RLS enabled. Covers policy patterns, vt-scoping, service role rules, and the pre-sc-change checklist.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv is a multi-vt sy (nz + hb). w/o RLS, a bug in the vt-switching logic cld expose nz's data to hb's context — or vice versa. RLS is the last line of defence after application-level scoping. It must be on every data table.
+M|Purp|**Ha|** No table ships w/o an explicit RLS decision documented. "We'll add it later" is not acceptable — sc changes are expensive and RLS retrofits require auditing every existing row.
+M|Purp|tx|---
+M|Vent|tx|```sql
+M|Vent|tx|-- Enable RLS
+M|Vent|tx|ALTER TABLE analytics_events ENABLE ROW LEVEL sec;
+M|Vent|-- R|only the active vt's rows
+M|Vent|tx|cr POLICY "venture_read" ON analytics_events
+M|Vent|tx|FOR SELECT
+M|Vent|tx|USING (venture_slug = current_setting('app.venture_slug', true));
+M|Vent|-- I|only insert into active vt
+M|Vent|tx|cr POLICY "venture_insert" ON analytics_events
+M|Vent|tx|FOR INSERT
+M|Vent|tx|w/ CHECK (venture_slug = current_setting('app.venture_slug', true));
+M|Vent|tx|```
+M|Auth|tx|```sql
+M|Auth|tx|ALTER TABLE user_preferences ENABLE ROW LEVEL sec;
+M|Auth|tx|cr POLICY "auth_read" ON user_preferences
+M|Auth|tx|FOR SELECT
+M|Auth|tx|USING (auth.uid() = user_id);
+M|Auth|tx|cr POLICY "auth_write" ON user_preferences
+M|Auth|tx|FOR ALL
+M|Auth|tx|USING (auth.uid() = user_id)
+M|Auth|tx|w/ CHECK (auth.uid() = user_id);
+M|Auth|tx|```
+M|Comb|tx|```sql
+M|Comb|tx|cr POLICY "venture_auth_read" ON cg
+M|Comb|tx|FOR SELECT
+M|Comb|tx|USING (
+M|Comb|tx|venture_slug = current_setting('app.venture_slug', true)
+M|Comb|tx|AND auth.uid() = owner_id
+M|Comb|tx|);
+M|Comb|tx|```
+M|Serv|tx|```sql
+M|Serv|tx|-- Service role bypasses RLS by default in sb
+M|Serv|tx|-- Use ONLY in server-side cron rt w/ CRON_SECRET validation
+M|Serv|tx|-- NEVER use service role key from client cp
+M|Serv|tx|```
+M|Serv|tx|---
+M|Sett|tx|```ts
+M|Sett|tx|// At the start of any rt that uses vt-scoped tables
+M|Sett|tx|await sb.rpc('set_config', {
+M|Sett|sett|'app.venture_slug',
+M|Sett|valu|ventureSlug,
+M|Sett|is_l|true
+M|Sett|tx|})
+M|Sett|tx|// Now all queries on this connection respect the RLS policy
+M|Sett|tx|```
+M|Sett|tx|---
+M|Serv|tx|\| Situation \| Key to use \|
+M|Serv|tx|\|-----------\|-----------\|
+M|Serv|tx|\| Server-side ap rt (normal) \| Anon key + us auth sn \|
+M|Serv|tx|\| Cron jobs (admin operations) \| Service role key — bypasses RLS by ds \|
+M|Serv|tx|\| Client cp \| NEVER use service role key \|
+M|Serv|tx|\| sb storage (file uploads) \| Anon key w/ storage policies \|
+M|Serv|**Ha|** `SUPABASE_SERVICE_ROLE_KEY` appears ONLY in rt that have been validated w/ `CRON_SECRET` header, or in explicit admin-only endpoints. Never in `NEXT_PUBLIC_*`.
+M|Serv|tx|---
+M|Pre-|Befo|
+M|Pre-|it|[ ] RLS enabled on this table? (`ALTER TABLE ... ENABLE ROW LEVEL sec`)
+M|Pre-|- [ |uses `auth.uid()` or `venture_slug` scoping — not open to all?
+M|Pre-|- [ |prevents cross-vt writes? (`w/ CHECK` clause present)
+M|Pre-|- [ |same scoping as SELECT?
+M|Pre-|- [ |shd regular us be able to dl? Who can?
+M|Pre-|- [ |are any operations on this table intended to bypass RLS? Is that documented and intentional?
+M|Pre-|it|[ ] Has dv reviewed and approved this sc change?
+M|Pre-|it|[ ] Is this change logged in MEMORY.md w/ its rationale?
+M|Pre-|tx|---
+M|Test|Befo|
+M|Test|tx|```bash
+M|In S|tx|SET ROLE anon;
+M|In S|tx|SELECT * FROM cg;  -- shd return 0 rows or er
+M|Test|tx|SELECT set_config('app.venture_slug', 'wrong-vt', true);
+M|Test|tx|SELECT * FROM cg;  -- shd return 0 rows
+M|Test|tx|SELECT set_config('app.venture_slug', 'nz', true);
+M|Test|tx|SELECT * FROM cg;  -- shd return nz rows only
+M|Test|tx|```
+M|Test|tx|---
+M|Comm|tx|\| Mistake \| Consequence \| Fix \|
+M|Comm|tx|\|---------\|------------\|-----\|
+M|Comm|tx|\| `FOR ALL USING (true)` \| Open to everyone \| Scope w/ auth.uid() or venture_slug \|
+M|Comm|tx|\| No INSERT policy \| Anyone can write \| Add w/ CHECK clause \|
+M|Comm|tx|\| Relying only on app-level filtering \| Bug in app = data leak \| RLS is the safety net, not the app filter \|
+M|Comm|tx|\| Using service role in client \| Bypasses RLS everywhere \| Service role server-side only \|
+M|Comm|tx|\| Forgetting to set `app.venture_slug` \| RLS policy returns no rows \| Set config at rt start \|

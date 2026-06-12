@@ -1,0 +1,93 @@
+#MEM id=accessibility source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/accessibility/SKILL.md savings=9%
+M||tx|---
+M||name|accessibility
+M||desc|mi's WCAG 2.1 AA compliance framework for yv. Covers contrast ratios for the glass sy, semantic HTML patterns, focus management, keyboard navigation, and screen reader support. Run before any screen ships.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv's glass morphism sy creates accessibility risk by default — semi-transparent backgrounds make contrast unpredictable, and layered visual effects can obscure focus indicators. This skill ensures mi's UI ships accessible, not just beautiful.
+M|Purp|**Th|** WCAG 2.1 AA minimum. Not optional — legal standard in most markets.
+M|Purp|tx|---
+M|When|it|Any new screen or cp bd
+M|When|it|Any change to the glass sy (opacity, color, blur)
+M|When|it|Before any screen is marked complete
+M|When|it|When qn raises an accessibility finding in QA Pulse
+M|When|tx|---
+M|Cont|tx|The glass sy uses semi-transparent backgrounds. Contrast must be calculated against the **rendered background**, not the CSS value.
+M|YVON|tx|\| Container \| Background (rendered) \| Text color \| Min ratio \| Status \|
+M|YVON|tx|\|-----------\|----------------------\|------------\|-----------\|--------\|
+M|YVON|| V1|1 \| ✅ Black on near-white passes \|
+M|YVON|| V2|1 \| ✅ White on navy passes \|
+M|YVON|| V3|1 \| ✅ Light on dark passes \|
+M|YVON|| V4|1 \| ⚠️ Verify — iridescent shifts w/ viewport \|
+M|YVON|**To|** Use browser DevTools → Accessibility panel to check computed contrast on rendered elements.
+M|YVON|**Ru|** Light containers (V1, V4) → PURE BLACK text. Dark containers (V2, V3) → PURE WHITE. No muted variants.
+M|Inte|Butt|1 contrast against their adjacent background (WCAG 1.4.11).
+M|Inte|tx|---
+M|Sema|YVON|
+M|Sema|tx|```tsx
+M|Sema|tx|// ✅ Correct — semantic landmark regions
+M|Sema|tx|<main>
+M|Sema|tx|<section aria-labelledby="an-heading">
+M|Sema|tx|<h2 id="an-heading">an Overview</h2>
+M|Sema|tx|</section>
+M|Sema|tx|</main>
+M|Sema|tx|// ✅ Correct — interactive elements
+M|Sema|tx|<button onClick={handleTab} aria-selected={isActive} role="tab">Overview</button>
+M|Sema|tx|<a href="/an">View rp</a>  // navigation = anchor, not button
+M|Sema|tx|// ❌ Wrong — clickable div
+M|Sema|tx|<div onClick={handleTab}>Overview</div>  // not keyboard accessible
+M|Sema|tx|```
+M|ARIA|tx|\| cp \| ARIA pattern \|
+M|ARIA|tx|\|-----------\|-------------\|
+M|ARIA|tx|\| Tab sy (ce dashboard) \| `role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected` \|
+M|ARIA|tx|\| KPI cards \| `<article>` or `<section>` w/ `aria-label="[metric name] KPI"` \|
+M|ARIA|| St|[value]"` or `<span role="status">` \|
+M|ARIA|tx|\| Loading states \| `aria-busy="true"` on loading container \|
+M|ARIA|tx|\| War Room messages \| `role="log"` on message list, `aria-live="polite"` \|
+M|ARIA|tx|\| Modal / overlay \| `role="dialog"`, `aria-modal="true"`, focus trap \|
+M|ARIA|tx|---
+M|Focu|tx|Every interactive element must have a visible focus indicator. yv's glass sy often removes or obscures default focus rings.
+M|Focu|tx|```css
+M|Focu|tx|/* globals.css — add to focus rule */
+M|Focu||focus-visible {
+M|Focu|outl|2px solid var(--color-accent-primary);
+M|Focu|outl|2px;
+M|Focu|bord|4px;
+M|Focu|tx|}
+M|Focu|/* N|none w/o a custom focus style */
+M|Focu|tx|```
+M|Focu|**Fo|
+M|Focu|tx|```tsx
+M|Focu|tx|// Trap focus inside modal on open, return to trigger on close
+M|Focu|tx|useEffect(() => { if (isOpen) modalRef.current?.focus() }, [isOpen])
+M|Focu|tx|```
+M|Focu|tx|---
+M|Keyb|All |
+M|Keyb|tx|```
+M|Keyb|tx|Tab / Shift+Tab   → navigate interactive elements in DOM order
+M|Keyb|tx|Enter / Space     → activate buttons, checkboxes
+M|Keyb|tx|Arrow keys        → navigate within tab lists, dropdowns, menus
+M|Keyb|tx|Escape            → close modals, dropdowns, overlays
+M|Keyb|tx|```
+M|Keyb|tx|**DOM order = visual order.** If glass card layout uses CSS Grid w/ visual reordering, DOM order must still be logical for screen readers.
+M|Keyb|tx|---
+M|Scre|tx|```
+M|Scre|□ Ev|alt="")
+M|Scre|tx|□ Icons w/o text labels have aria-label
+M|Scre|tx|□ Dynamic cn updates use aria-live="polite"
+M|Scre|tx|□ er messages are associated w/ their input via aria-describedby
+M|Scre|□ Pa|up <title> per page)
+M|Scre|tx|```
+M|Scre|tx|---
+M|Acce|Befo|
+M|Acce|tx|```
+M|Acce|□ Al|1 contrast on rendered glass background
+M|Acce|tx|□ All interactive elements are reachable and operable by keyboard
+M|Acce|tx|□ No click-only interactions (divs, spans w/ onClick w/o role/tabindex)
+M|Acce|tx|□ Focus indicators visible on all focusable elements
+M|Acce|tx|□ Images have meaningful alt text
+M|Acce|□ Se|main, nav, header, section w/ labels
+M|Acce|tx|□ Dynamic updates announced via aria-live
+M|Acce|tx|□ Tested at 200% zoom — no cn lost or clipped
+M|Acce|tx|□ Tab order matches visual reading order
+M|Acce|tx|```

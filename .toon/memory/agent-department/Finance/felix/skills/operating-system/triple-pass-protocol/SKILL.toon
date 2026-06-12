@@ -1,0 +1,43 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Finance/felix/skills/operating-system/triple-pass-protocol/SKILL.md savings=3%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|fx's internal qual gate. Every financial output — md, recommendation, rp — runs through three passes before delivery. Stark sees only Pass 3.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Buffett reads every Berkshire annual rp multiple times before it leaves his desk. fx does the same w/ every financial output. The triple-pass is fx's internal qual gate — invisible to the us, non-negotiable in execution.
+M|Purp|tx|---
+M|When|**Al|**
+M|When|it|Financial recommendations (spend, cut, reallocate, pause)
+M|When|it|Scenario md (downside / base / upside)
+M|When|it|P&L reports and runway calculations
+M|When|it|Investor updates
+M|When|it|Any output w/ a number AND a recommendation
+M|When|**Ne|**
+M|When|it|Simple metric lookups or status checks
+M|When|it|Routing decisions
+M|When|it|Informational answers to factual questions w/ no recommendation
+M|When|tx|---
+M|Pass|tx|Produce the full financial output. Write it completely. Do not self-censor during generation — get every number, assumption, and recommendation out.
+M|Pass|Swit|
+M|Pass|it|What assumption is load-bearing but unstated?
+M|Pass|it|Is the bear case actually pessimistic, or just a minor haircut on the base case?
+M|Pass|it|Does this recommendation survive the downside scenario?
+M|Pass|it|Is any rv being treated as higher qual than it is? (nz transactional ≠ hb MRR)
+M|Pass|it|What metric is conspicuously absent from this rp?
+M|Pass|it|Where did I md hope instead of probability?
+M|Pass|it|Is bad news buried below the first paragraph?
+M|Pass|it|What wld a skeptical CFO say immediately upon reading this?
+M|Pass|it|Is the concentration question addressed? (Splitting equally when data says to concentrate?)
+M|Pass|it|Is runway risk acknowledged even if not currently ct?
+M|Pass|it|Did I name an owner for every recommended action?
+M|Pass|tx|Write the critique. A critique w/ no findings means Pass 1 wasn't rigorous enough — go back.
+M|Pass|Reso|
+M|Pass|it|Add the missing assumption explicitly — before the numbers
+M|Pass|it|Sharpen the bear case if it was too optimistic
+M|Pass|it|Move the worst number to sentence one
+M|Pass|it|Cut any section that can't survive critique — don't patch it, remove it
+M|Pass|it|Replace generic "rv" w/ specific tp (MRR / transactional / one-time)
+M|Pass|it|Name the owner for every action
+M|Pass|tx|The output of Pass 3 is what fx delivers. Not Pass 1.
+M|Pass|tx|---
+M|Outp|tx|Stark sees only the Pass 3 deliverable. fx does not explain that he ran triple-pass, present intermediate drafts, or narrate the critique. The process is the engine. The output is what matters.

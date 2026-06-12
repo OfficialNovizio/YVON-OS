@@ -1,0 +1,95 @@
+#MEM id=content-pipeline-coordination source=/root/yvon/agent-department/COO/diana/skills/custom/content-pipeline-coordination/SKILL.md savings=13%
+M||tx|---
+M||name|cn-pipeline-coordination
+M||desc|dn's orchestration skill for the ln → at → px cn production pipeline. Defines stage gates, handoff checklists, blocking criteria, approval gates, and calendar scheduling. Ensures cn moves through the pipeline w/o getting stuck or skipping validation.
+M||vers|1.0.0
+M||tx|---
+M|Purp|The |ka generates the brief → ln writes cp → at gives creative direction → px runs production. w/o a coordinator, these handoffs either get skipped (output qual degrades) or get stuck (nothing ships). dn owns the pipeline clock and gates.
+M|Purp|tx|---
+M|When|it|When ka rt a cn brief to ln
+M|When|it|When ln rt approved cp to at
+M|When|it|When at rt a visual brief to px
+M|When|it|When a cn piece is overdue at any stage
+M|When|it|Weekly cn calendar rv
+M|When|tx|---
+M|The |tx|```
+M|The |Stag|BRIEF      ka generates cn brief from an/cr data
+M|The |↓ Ga|brief must include vt, platform, target metric, creative direction
+M|The |Stag|cp       ln writes ct, em, or long-form cp from brief
+M|The |↓ Ga|kh framing check for any ad cp or urgency language
+M|The |Stag|DIRECTION  at provides visual style brief + AI pm architecture
+M|The |↓ Ga|at pm-qa check before handing to px
+M|The |Stag|PRODUCTION px generates, QCs, and delivers final assets
+M|The |↓ Ga|px QC criteria + Stark approval before publish
+M|The |tx|```
+M|The |tx|**No stage starts until the previous stage's gate is cleared.**
+M|The |tx|---
+M|Gate|Befo|
+M|Gate|tx|```
+M|Gate|□ Ve|[nz \| hb]
+M|Gate|□ Pl|[Instagram \| TikTok \| em \| LinkedIn]
+M|Gate|□ Co|[awareness \| conversion \| retention]
+M|Gate|□ Ke|[e.g., engagement rate, CTR, trial starts]
+M|Gate|□ Co|[what are cr doing that this shd respond to?]
+M|Gate|□ Br|[any cg-specific rules from vt FEEDBACK.md]
+M|Gate|tx|```
+M|Gate|Befo|
+M|Gate|tx|```
+M|Gate|tx|□ cp is complete and reviewed by ln (triple-pass run)
+M|Gate|tx|□ kh framing check complete for any ad cp (🟢 or 🟡 only — 🔴 blocks)
+M|Gate|□ Co|hl, body, CTA
+M|Gate|□ Pl|[static \| carousel \| Reel/vd \| story]
+M|Gate|tx|□ Any specific visual constraints from the cp (mentions of season, color, mood)
+M|Gate|tx|```
+M|Gate|Befo|
+M|Gate|tx|```
+M|Gate|tx|□ at visual brief complete
+M|Gate|tx|□ pm-qa check run by at (skills/custom/pm-qa)
+M|Gate|tx|□ AI md selected for this batch (skills/workflow/md-selection)
+M|Gate|□ Nu|[single \| 3-5 variants \| batch > 20]
+M|Gate|□ Ou|[dimensions, file tp, naming convention]
+M|Gate|tx|□ Pre-mortem run if batch > 20 images
+M|Gate|tx|```
+M|Gate|Befo|
+M|Gate|tx|```
+M|Gate|□ Pi|rejection rate < 20%
+M|Gate|tx|□ Stark (or mc) has approved final assets
+M|Gate|tx|□ cp and visual are still aligned (no cp drift during production)
+M|Gate|tx|□ Scheduled in cn calendar w/ correct vt context
+M|Gate|tx|```
+M|Gate|tx|---
+M|Hand|Each|
+M|Hand|tx|```
+M|Hand|tx|cn HANDOFF — [Stage name] → [nx ag]
+M|Hand|vt|[nz \| hb]
+M|Hand|Plat|[platform]
+M|Hand|Piec|[cp \| visual brief \| production batch]
+M|Hand|Stat|GATE CLEARED ✅
+M|Hand|What|[short description]
+M|Hand|What|[clear ask]
+M|Hand|Dead|[date]
+M|Hand|Bloc|[any known risk to the nx stage?]
+M|Hand|tx|```
+M|Hand|tx|---
+M|Cale|Dian|
+M|Cale|tx|```
+M|Cale|tx|□ Every piece in the pipeline has a Stage 0 date (brief) and a publish date
+M|Cale|tx|□ Stage 1 (cp) must be complete ≥ 5 days before publish date
+M|Cale|tx|□ Stage 2 (direction) must be complete ≥ 3 days before publish date
+M|Cale|tx|□ Stage 3 (production) must be complete ≥ 1 day before publish date (QC buffer)
+M|Cale|□ St|≥ 1 day before publish date
+M|Cale|tx|```
+M|Cale|If a|dn flags to mc — never silently slip the publish date w/o mc knowing.
+M|Cale|tx|---
+M|Pipe|Dian|
+M|Pipe|tx|\| Metric \| Green \| Amber \| Red \|
+M|Pipe|tx|\|--------\|-------\|-------\|-----\|
+M|Pipe|tx|\| Pieces in Stage 1 (cp) \| ≤ 3 \| 4–5 \| ≥ 6 (backlog) \|
+M|Pipe|| Av|2 \| 3 \| > 3 \|
+M|Pipe|tx|\| Gate fl rate \| < 10% \| 10–20% \| > 20% \|
+M|Pipe|tx|\| Pieces missed publish date \| 0 \| 1 \| ≥ 2/week \|
+M|Pipe|tx|---
+M|Anti|it|Never let px start production w/o at's direction brief — random pm in production waste compute
+M|Anti|it|Never skip the kh framing check on ad cp — this gate exists bc it was violated repeatedly
+M|Anti|it|Never schedule a publish date w/o confirming Stage 3 completion is possible in the window
+M|Anti|it|Never rt a cn piece directly from ka to px — cp always comes before production

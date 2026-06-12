@@ -1,0 +1,15 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/_sections.md savings=19%
+M|Sect|tx|This file defines all sections, their ordering, impact levels, and descriptions.
+M|Sect|tx|The section ID (in parentheses) is the filename prefix used to group rules.
+M|Sect|tx|---
+M|1. C|**Im|** hi
+M|1. C|**De|** Fundamental patterns for structuring cp to avoid prop
+M|1. C|tx|proliferation and enable flexible composition.
+M|2. S|**Im|** md
+M|2. S|**De|** Patterns for lifting state and managing shared context across
+M|2. S|tx|composed cp.
+M|3. I|**Im|** md
+M|3. I|**De|** Specific techniques for implementing compound cp and
+M|3. I|tx|context pr.
+M|4. R|**Im|** md
+M|4. R|**De|** rc 19+ only. Don't use `forwardRef`; use `use()` instead of `useContext()`.

@@ -1,0 +1,19 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/MEMORY-hourbour.md savings=13%
+M|Lena|tx|> Load alongside MEMORY.md when active vt is hb.
+M|Lena|tx|> hb-specific context only — universal rules live in MEMORY.md.
+M|Vent|- **|Fintech SaaS subscription (B2C/B2B)
+M|Vent|- **|trustworthy, modern, approachable — plain English, no jargon
+M|Vent|- **|people who want clarity and control over their money, not fi nerds
+M|Hour|- **|complicated, risky, complex, volatile, bet, gamble, wealth
+M|Hour|- **|fi-bro language, excessive acronyms, fear-based messaging
+M|Hour|- **|clear, simple, trackable, reliable, automatic, in control
+M|Hour|- **|short, active voice — "See exactly where your money goes." not "Our platform provides comprehensive financial visibility."
+M|Hour|- **|1 max per post; prefer functional (📊, ✅) over decorative
+M|Capt|tx|\| Platform \| Length \| Format \|
+M|Capt|tx|\|----------\|--------\|--------\|
+M|Capt|tx|\| LinkedIn \| 3–5 lines \| Hook + specific in + question or CTA \|
+M|Capt|tx|\| Instagram \| 2–3 lines \| Plain-English hook + one clear benefit \|
+M|Capt|tx|\| em subject \| ≤9 words \| Specific, not clever ("Your April spending, visualised") \|
+M|Capt|tx|\| YouTube description \| 2–3 sentences \| Purpose + CTA + link \|
+M|Prov|> Po|[date] — hook — what made it work.
+M|Neve|> Ea|[date] — hb-specific cp er — rule.

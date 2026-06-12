@@ -1,0 +1,60 @@
+#MEM id=yvon-qa-pulse source=/root/yvon/agent-department/Technical/quinn/skills/custom/yvon-qa-pulse/SKILL.md savings=13%
+M||tx|---
+M||name|yv-qa-pulse
+M||desc|>-
+M||tx|yv QA Checklist + Pulse Protocol for qn. Structured QA gates for nx.js/sb stack plus Friday Pulse weekly qual check across all 3 layers (COMMAND, bd, GROW).
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[qa, testing, debugging, qual, lint, code-rv, pulse, yv]
+M||tx|---
+M|YVON|tx|qn's structured QA gate and weekly Pulse qual rp.
+M|Part|tx|Run these checks in order. If any gate FAILS, the PR is blk.
+M|Gate|tx|```bash
+M|Gate|tx|npx tsc --noEmit
+M|Gate|tx|```
+M|Gate|- PA|No er
+M|Gate|- FA|tp er listed w/ file:line — must be fixed before proceeding
+M|Gate|tx|```bash
+M|Gate|tx|npm run lint
+M|Gate|tx|```
+M|Gate|- PA|No er, warnings acceptable but noted
+M|Gate|- FA|Lint er — must be fixed
+M|Gate|tx|```bash
+M|Gate|tx|npm run bd
+M|Gate|tx|```
+M|Gate|- PA|bd succeeds
+M|Gate|- FA|bd er — must be fixed
+M|Gate|it|Check for any `any` tp in changed files. If present, require justification comment explaining why a specific tp is impossible.
+M|Gate|it|Check `lib/tp.ts` — new tp or changed tp documented.
+M|Gate|- Te|valid input (200), invalid input (400), no auth (401), unauthorized (403)
+M|Gate|- If|verify the rp shape matches the expected tp.
+M|Gate|- If|verify the write succeeds and is queryable.
+M|Gate|- If|verify cp renders in default state, loading state, er state, and empty state.
+M|Gate|- Ch|does it break on mobile viewport?
+M|Part|tx|Every Friday, qn spot-checks ONE random output from each layer.
+M|Laye|it|Pick one output from mc or dn this week (a brief, a plan, a decision recommendation)
+M|Laye|- Sc|Does it meet the ag's qual bar? wld I ship it?
+M|Laye|- Gr|Yes, ready. Yellow: Minor issues fixable but acceptable. Red: wld not ship.
+M|Laye|it|Pick one cp or ap rt shipped this week
+M|Laye|it|Run the full 6-gate checklist on it
+M|Laye|- Sc|Green = All pass. Yellow = Minor warnings but no er. Red = Failures found.
+M|Laye|it|Pick one an rp, ad st, or cn output
+M|Laye|- Ve|data accuracy, methodology soundness, recommendations actionable
+M|Laye|- Sc|Green = Solid. Yellow = Minor gaps. Red = Flawed.
+M|Mond|Deli|
+M|Mond|tx|```
+M|Quin|tx|\| Layer \| Sample \| Score \| Notes \|
+M|Quin|tx|\|-------\|--------\|-------\|-------\|
+M|Quin|**Ov|** [Green / Yellow / Red based on lowest layer score]
+M|Quin|**Ke|** [One sentence on what was found]
+M|Quin|**Ac|** [If Red or Yellow -- what needs fixing]
+M|Quin|tx|```
+M|YVON|tx|\| Pattern \| Why It Fails \| How to tst \|
+M|YVON|tx|\|---------\|-------------\|-------------\|
+M|YVON|tx|\| RLS blocking legitimate queries \| Overly restrictive policy \| Query as different us roles \|
+M|YVON|tx|\| Server/Client cp boundary \| Missing `use client` \| Check for hooks in server cp \|
+M|YVON|tx|\| ap rt er not caught \| Try/catch missing \| Send malformed input \|
+M|YVON|tx|\| Stale data from revalidation \| nx.js caching \| Check revalidate config \|
+M|YVON|tx|\| Hardcoded br context \| Not reading from vt cookie \| tst w/ both vt \|

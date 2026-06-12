@@ -1,0 +1,69 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/raj/skills/superpowers/systematic-debugging/CREATION-LOG.md savings=10%
+M|Crea|tx|Reference example of extracting, structuring, and bulletproofing a ct skill.
+M|Sour|Extr|
+M|Sour|it|4-phase systematic process (Investigation → Pattern al → Hypothesis → Implementation)
+M|Sour|- Co|ALWAYS find root cause, NEVER fix symptoms
+M|Sour|it|Rules designed to resist time pressure and rationalization
+M|Extr|**Wh|**
+M|Extr|it|Complete 4-phase framework w/ all rules
+M|Extr|it|Anti-shortcuts ("NEVER fix symptom", "STOP and re-al")
+M|Extr|it|Pressure-resistant language ("even if faster", "even if I seem in a hurry")
+M|Extr|it|Concrete steps for each phase
+M|Extr|**Wh|**
+M|Extr|it|Project-specific context
+M|Extr|it|Repetitive variations of same rule
+M|Extr|it|Narrative explanations (condensed to principles)
+M|Stru|tx|1. **Rich when_to_use** - Included symptoms and anti-patterns
+M|Stru|2. *|technique** - Concrete process w/ steps
+M|Stru|tx|3. **Keywords** - "root cause", "symptom", "workaround", "debugging", "investigation"
+M|Stru|tx|4. **Flowchart** - Decision point for "fix failed" → re-al vs add more fixes
+M|Stru|tx|5. **Phase-by-phase breakdown** - Scannable checklist format
+M|Stru|tx|6. **Anti-patterns section** - What NOT to do (ct for this skill)
+M|Bull|Fram|
+M|Lang|it|"ALWAYS" / "NEVER" (not "shd" / "try to")
+M|Lang|it|"even if faster" / "even if I seem in a hurry"
+M|Lang|it|"STOP and re-al" (explicit pause)
+M|Lang|it|"Don't skip past" (catches the actual behavior)
+M|Stru|it|**Phase 1 required** - Can't skip to implementation
+M|Stru|it|**Single hypothesis rule** - Forces thinking, prevents shotgun fixes
+M|Stru|it|**Explicit fl mode** - "IF your first fix doesn't work" w/ mandatory action
+M|Stru|it|**Anti-patterns section** - Shows exactly what shortcuts look like
+M|Redu|it|Root cause mandate in overview + when_to_use + Phase 1 + implementation rules
+M|Redu|it|"NEVER fix symptom" appears 4 times in different contexts
+M|Redu|it|Each phase has explicit "don't skip" guidance
+M|Test|Crea|
+M|Test|it|Simple bug, no time pressure
+M|Test|- **|** Perfect compliance, complete investigation
+M|Test|it|us "in a hurry", symptom fix looks easy
+M|Test|- **|** Resisted shortcut, followed full process, found real root cause
+M|Test|it|Multi-layer fl, unclear if can find root cause
+M|Test|- **|** Systematic investigation, traced through all layers, found source
+M|Test|it|Hypothesis doesn't work, temptation to add more fixes
+M|Test|- **|** Stopped, re-analyzed, formed new hypothesis (no shotgun)
+M|Test|tx|**All tests passed.** No rationalizations found.
+M|Init|it|Complete 4-phase framework
+M|Init|it|Anti-patterns section
+M|Init|it|Flowchart for "fix failed" decision
+M|Enha|it|Added link to skills/testing/tst-driven-dv
+M|Enha|it|Note explaining TDD's "simplest code" ≠ debugging's "root cause"
+M|Enha|it|Prevents confusion btw methodologies
+M|Fina|Bull|
+M|Fina|it|✅ Clearly mandates root cause investigation
+M|Fina|it|✅ Resists time pressure rationalization
+M|Fina|it|✅ Provides concrete steps for each phase
+M|Fina|it|✅ Shows anti-patterns explicitly
+M|Fina|it|✅ Tested under multiple pressure scenarios
+M|Fina|it|✅ Clarifies relationship to TDD
+M|Fina|it|✅ Ready for use
+M|Key |**Mo|** Anti-patterns section showing exact shortcuts that feel justified in the moment. When Claude thinks "I'll just add this one quick fix", seeing that exact pattern listed as wrong creates cognitive friction.
+M|Usag|When|
+M|Usag|1. L|skills/debugging/systematic-debugging
+M|Usag|tx|2. Read overview (10 sec) - reminded of mandate
+M|Usag|tx|3. Follow Phase 1 checklist - forced investigation
+M|Usag|tx|4. If tempted to skip - see anti-pattern, stop
+M|Usag|tx|5. Complete all phases - root cause found
+M|Usag|**Ti|** 5-10 minutes
+M|Usag|**Ti|** Hours of symptom-whack-a-mole
+M|Usag|tx|---
+M|Usag|*Cre|2025-10-03*
+M|Usag|*Pur|Reference example for skill extraction and bulletproofing*

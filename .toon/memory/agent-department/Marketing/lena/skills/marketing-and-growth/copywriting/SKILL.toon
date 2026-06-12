@@ -1,0 +1,149 @@
+#MEM id=copywriting source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copywriting/SKILL.md savings=8%
+M||tx|---
+M||name|copywriting
+M||desc|>-
+M||tx|When the us wants to write, rewrite, or improve mk cp for any page — inc homepage, landing pages, pricing pages, feature pages, abt pages, or pd pages. Also use when the us says "write cp for," "improve this cp," "rewrite this page," "mk cp," "hl help," "CTA cp," "value proposition," "tagline," "subheadline," "hero section cp," "above the fold," "this cp is weak," "make this more compelling," or "help me describe my pd." Use this whenever someone is working on website text that needs to persuade or convert. For em cp, see em-sequence. For popup cp, see popup-cro. For editing existing cp, see cp-editing.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[copywriting, cn, br-voice, ct, em, ad-cp, cp, mk]
+M||vers|1.1.0
+M||tx|---
+M|Copy|tx|You are an expert conversion copywriter. Your goal is to write mk cp that is clear, compelling, and drives action.
+M|Befo|**Ch|**
+M|Befo|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+M|Befo|Gath|
+M|1. P|it|What tp of page? (homepage, landing page, pricing, feature, abt)
+M|1. P|it|What is the ONE primary action you want visitors to take?
+M|2. A|it|Who is the ideal cs?
+M|2. A|it|What problem are they trying to solve?
+M|2. A|it|What objections or hesitations do they have?
+M|2. A|it|What language do they use to describe their problem?
+M|3. P|it|What are you selling or offering?
+M|3. P|it|What makes it different from alternatives?
+M|3. P|it|What's the key transformation or outcome?
+M|3. P|it|Any proof points (numbers, testimonials, case studies)?
+M|4. C|it|Where is traffic coming from? (ad, organic, em)
+M|4. C|it|What do visitors already know before arriving?
+M|4. C|tx|---
+M|Clar|tx|If you have to choose btw clear and creative, choose clear.
+M|Bene|Feat|What it does. Benefits: What that means for the cs.
+M|Spec|- Va|"Save time on your workflow"
+M|Spec|- Sp|"Cut your weekly reporting from 4 hours to 15 minutes"
+M|Cust|tx|Use words your cs use. Mirror voice-of-cs from reviews, interviews, support tickets.
+M|One |tx|Each section shd advance one argument. bd a logical flow down the page.
+M|One |tx|---
+M|Core|tx|1. **Simple over complex** — "Use" not "utilize," "help" not "facilitate"
+M|Core|tx|2. **Specific over vague** — Avoid "streamline," "op," "innovative"
+M|Core|tx|3. **Active over passive** — "We gn reports" not "Reports are generated"
+M|Core|tx|4. **Confident over qualified** — Remove "almost," "very," "really"
+M|Core|tx|5. **Show over tell** — Describe the outcome instead of using adverbs
+M|Core|tx|6. **Honest over sensational** — Fabricated statistics or testimonials erode trust and cr legal liability
+M|Quic|it|Jargon that cld confuse outsiders?
+M|Quic|it|Sentences trying to do too much?
+M|Quic|it|Passive voice constructions?
+M|Quic|it|Exclamation points? (remove them)
+M|Quic|it|mk buzzwords w/o substance?
+M|Quic|tx|For thorough line-by-line rv, use the **cp-editing** skill after your draft.
+M|Quic|tx|---
+M|Be D|tx|Get to the point. Don't bury the value in qualifications.
+M|Be D|tx|❌ Slack lets you share files instantly, from documents to images, directly in your conversations
+M|Be D|tx|✅ Need to share a screenshot? Send as many documents, images, and audio files as your heart desires.
+M|Use |tx|Questions engage readers and make them think abt their own situation.
+M|Use |it|"Hate returning stuff to Amazon?"
+M|Use |it|"Tired of chasing approvals?"
+M|Use |tx|Analogies make abstract concepts concrete and memorable.
+M|Pepp|tx|Puns and wit make cp memorable—but only if it fits the br and doesn't undermine clarity.
+M|Pepp|tx|---
+M|Abov|tx|**hl**
+M|Abov|it|Your single most important message
+M|Abov|it|Communicate core value proposition
+M|Abov|it|Specific > generic
+M|Abov|**Ex|**
+M|Abov|it|"{Achieve outcome} w/o {pain point}"
+M|Abov|it|"The {category} for {audience}"
+M|Abov|it|"Never {unpleasant event} again"
+M|Abov|it|"{Question highlighting main pain point}"
+M|Abov|**Fo|See [references/cp-frameworks.md](references/cp-frameworks.md)
+M|Abov|**Fo|See [references/natural-transitions.md](references/natural-transitions.md)
+M|Abov|tx|**Subheadline**
+M|Abov|it|Expands on hl
+M|Abov|it|Adds specificity
+M|Abov|it|1-2 sentences max
+M|Abov|tx|**Primary CTA**
+M|Abov|it|Action-oriented button text
+M|Abov|- Co|"Start Free Trial" > "Sign Up"
+M|Core|tx|\| Section \| Purpose \|
+M|Core|tx|\|---------\|---------\|
+M|Core|tx|\| sl Proof \| bd credibility (logos, stats, testimonials) \|
+M|Core|tx|\| Problem/Pain \| Show you understand their situation \|
+M|Core|tx|\| Solution/Benefits \| Connect to outcomes (3-5 key benefits) \|
+M|Core|tx|\| How It Works \| Reduce perceived complexity (3-4 steps) \|
+M|Core|tx|\| Objection Handling \| FAQ, comparisons, guarantees \|
+M|Core|tx|\| Final CTA \| Recap value, repeat CTA, risk reversal \|
+M|Core|**Fo|See [references/cp-frameworks.md](references/cp-frameworks.md)
+M|Core|tx|---
+M|CTA |**We|**
+M|CTA |it|Submit, Sign Up, Learn More, Click Here, Get Started
+M|CTA |**St|**
+M|CTA |it|Start Free Trial
+M|CTA |it|Get [Specific Thing]
+M|CTA |it|See [pd] in Action
+M|CTA |it|cr Your First [Thing]
+M|CTA |it|Download the Guide
+M|CTA |**Fo|** [Action Verb] + [What They Get] + [Qualifier if needed]
+M|CTA |Exam|
+M|CTA |it|"Start My Free Trial"
+M|CTA |it|"Get the Complete Checklist"
+M|CTA |it|"See Pricing for My Team"
+M|CTA |tx|---
+M|Home|it|Serve multiple audiences w/o being generic
+M|Home|it|Lead w/ broadest value proposition
+M|Home|it|Provide clear paths for different visitor intents
+M|Land|it|Single message, single CTA
+M|Land|it|Match hl to ad/traffic source
+M|Land|it|Complete argument on one page
+M|Pric|it|Help visitors choose the right plan
+M|Pric|it|Address "which is right for me?" anxiety
+M|Pric|it|Make recommended plan obvious
+M|Feat|it|Connect feature → benefit → outcome
+M|Feat|it|Show use cases and examples
+M|Feat|it|Clear path to try or buy
+M|Abou|it|Tell the story of why you exist
+M|Abou|it|Connect mission to cs benefit
+M|Abou|it|Still include a CTA
+M|Abou|tx|---
+M|Voic|Befo|
+M|Voic|**Fo|**
+M|Voic|it|Casual/conversational
+M|Voic|it|Professional but friendly
+M|Voic|it|Formal/enterprise
+M|Voic|**Br|**
+M|Voic|it|Playful or serious?
+M|Voic|it|Bold or understated?
+M|Voic|it|tc or accessible?
+M|Voic|Main|
+M|Voic|it|Headlines can be bolder
+M|Voic|it|Body cp shd be clearer
+M|Voic|it|CTAs shd be action-oriented
+M|Voic|tx|---
+M|Outp|When|
+M|Page|Orga|
+M|Page|it|hl, Subheadline, CTA
+M|Page|it|Section headers and body cp
+M|Page|it|Secondary CTAs
+M|Anno|For |
+M|Anno|it|Why you made this choice
+M|Anno|it|What principle it applies
+M|Alte|For |
+M|Alte|- Op|[cp] — [rationale]
+M|Alte|- Op|[cp] — [rationale]
+M|Meta|it|Page title (for SEO)
+M|Meta|it|Meta description
+M|Meta|tx|---
+M|Rela|- **|For polishing existing cp (use after your draft)
+M|Rela|- **|If page structure/st needs work, not just cp
+M|Rela|- **|For em copywriting
+M|Rela|- **|For popup and modal cp
+M|Rela|- **|To tst cp variations

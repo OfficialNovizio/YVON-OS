@@ -1,0 +1,15 @@
+#MEM id=mia source=/root/yvon/agent-department/Technical/mia/SESSION.md savings=4%
+M|Mia |tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Mia |tx|> Always load this first. Load MEMORY.md for ds sy rules, cp rules, UX principles, and ds laws.
+M|Curr|- **|** 2026-05-21
+M|Curr|- **|** idle
+M|Curr|- **|** Run migration 023 to verify Studio History UI (demo cards visible per mode tab)
+M|Curr|- **|** Load ds.md for active vt before any UI task
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-05-21 \| Studio History UI — Load & Remix \| Inline history section below gn button on Brief step (step 0). Horizontal scroll row, 252px cards, platform+contentType+aspect+date+mood+preview. Load/Remix actions. Filtered by mode. DEMO_SESSIONS fallback. Zero TS er. \| Run migration 023, verify demo cards appear per mode tab \|
+M|Last|tx|\| 2026-05-20 \| Creative Studio Overhaul \| Platform tiles (IG/TT/LI/YT/X), cn tp chips per platform, aspect ratio badge auto-derives, shoot mode 3-step flow (Brief→Mood→Shot List), script step editable auto-resize textarea, brief persisted via localStorage. Zero TS er. \| tst platform tiles + shoot mode in browser \|
+M|Last|tx|\| 2026-05-20 \| CSE Closed Loop UI \| Stage banner ("Measure X posts" pill), Measure Now modal w/ 6 metric inputs → PATCH → outcome computed. Creative Studio reads ?pitch= param, shows outcome banner (overperformed/met/underperformed). Zero TS er. \| Run migration 022, tst ap→measure→outcome banner \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|Creative Studio UX — pnd Stark tst of full Krea.ai flow end-to-end
+M|Open|it|Verify no mobile constraint issues w/ platform tile grid on small screens

@@ -1,0 +1,191 @@
+#MEM id=lead-magnets source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/lead-magnets/SKILL.md savings=6%
+M||tx|---
+M||name|lead-magnets
+M||desc|>-
+M||tx|When the us wants to cr, plan, or op a lead magnet for em capture or lead generation. Also use when the us mentions "lead magnet," "gated cn," "cn upgrade," "downloadable," "ebook," "cheat sheet," "checklist," "template download," "opt-in," "freebie," "PDF download," "resource library," "cn offer," "em capture cn," "Notion template," "spreadsheet template," or "what shd I give away for emails." Use this for planning what to cr and how to distribute it. For interactive tools as lead magnets, see free-tool-st. For writing the actual cn, see copywriting. For the em sequence after capture, see em-sequence.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[growth, funnel, experiment, ab-tst, channel, acquisition, mk, br]
+M||vers|1.0.0
+M||tx|---
+M|Lead|tx|You are an expert in lead magnet st. Your goal is to help plan lead magnets that capture emails, gn qualified leads, and naturally lead to pd adoption.
+M|Befo|**Ch|**
+M|Befo|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+M|Befo|Gath|
+M|1. B|it|What does the company do?
+M|1. B|it|Who is the ideal cs?
+M|1. B|it|What problems does your pd solve?
+M|2. C|it|How do you currently capture leads?
+M|2. C|it|What lead magnets or offers do you have?
+M|2. C|it|What's your current conversion rate on em capture?
+M|3. C|it|What existing cn cld be repurposed? (blog posts, guides, data)
+M|3. C|it|What expertise can you pk?
+M|3. C|it|What templates or tools do you use internally?
+M|4. G|- Pr|em list growth, lead qual, pd education?
+M|4. G|- Ta|awareness, consideration, or decision?
+M|4. G|it|Timeline and resource constraints?
+M|4. G|tx|---
+M|1. S|it|Address one clear pain point, not a broad topic
+M|1. S|it|"How to write cold emails that get replies" > "mk guide"
+M|2. M|it|Awareness leads need education
+M|2. M|it|Consideration leads need comparison and evaluation
+M|2. M|it|Decision leads need implementation help
+M|3. H|it|shd look like it's worth paying for
+M|3. H|it|Consumable in under 30 minutes (ideally under 10)
+M|3. H|it|Immediate, actionable takeaway
+M|4. N|it|Solves a problem your pd also solves
+M|4. N|it|Creates awareness of a gap your pd fills
+M|4. N|it|Demonstrates your expertise in the space
+M|5. E|it|One clear format (don't mix ebook + vd + spreadsheet)
+M|5. E|it|Works on mobile
+M|5. E|it|No special software required
+M|5. E|tx|---
+M|Lead|tx|\| tp \| Best For \| Effort \| Time to cr \|
+M|Lead|tx|\|------\|----------\|--------\|----------------\|
+M|Lead|tx|\| Checklist \| Quick wins, process steps \| lo \| 1-2 hours \|
+M|Lead|tx|\| Cheat sheet \| Reference material, shortcuts \| lo \| 2-4 hours \|
+M|Lead|tx|\| Template (doc/spreadsheet/Notion) \| Repeatable processes, workflows \| lo-Med \| 2-8 hours \|
+M|Lead|tx|\| Swipe file \| Inspiration, examples \| md \| 4-8 hours \|
+M|Lead|tx|\| Ebook/guide \| Deep education, authority \| hi \| 1-3 weeks \|
+M|Lead|tx|\| Mini-course (em) \| Education + nurture \| md \| 1-2 weeks \|
+M|Lead|tx|\| Mini-course (vd) \| Education + personality \| hi \| 2-4 weeks \|
+M|Lead|tx|\| Quiz/assessment \| Segmentation, engagement \| md \| 1-2 weeks \|
+M|Lead|tx|\| Webinar \| Authority, live engagement \| md \| 1 week prep \|
+M|Lead|tx|\| Resource library \| Ongoing value, return visits \| hi \| Ongoing \|
+M|Lead|tx|\| Free trial/community access \| pd exp \| Varies \| Varies \|
+M|Lead|**Fo|See [references/format-guide.md](references/format-guide.md)
+M|Lead|tx|---
+M|Awar|Goal|Educate on the problem. Attract people who don't know you yet.
+M|Awar|tx|\| Format \| Example \|
+M|Awar|tx|\|--------\|---------\|
+M|Awar|tx|\| Checklist \| "10-Point Website Audit Checklist" \|
+M|Awar|tx|\| Cheat sheet \| "SEO Cheat Sheet for Beginners" \|
+M|Awar|tx|\| Ebook/guide \| "The Complete Guide to em mk" \|
+M|Awar|tx|\| Quiz \| "What tp of Marketer Are You?" \|
+M|Cons|Goal|Help evaluate solutions. bd trust and demonstrate expertise.
+M|Cons|tx|\| Format \| Example \|
+M|Cons|tx|\|--------\|---------\|
+M|Cons|tx|\| Comparison template \| "CRM Comparison Spreadsheet" \|
+M|Cons|tx|\| Assessment \| "mk Maturity Assessment" \|
+M|Cons|tx|\| Case study collection \| "5 Companies That 3x'd Their Pipeline" \|
+M|Cons|tx|\| Webinar \| "How to Choose the Right an Tool" \|
+M|Deci|Goal|Help im. Remove friction to purchase.
+M|Deci|tx|\| Format \| Example \|
+M|Deci|tx|\|--------\|---------\|
+M|Deci|tx|\| Template \| "Ready-to-Use Sales em Templates" \|
+M|Deci|tx|\| Free trial \| "14-Day Free Trial" \|
+M|Deci|| Im|Switch in 30 Minutes" \|
+M|Deci|tx|\| ROI calculator \| "Calculate Your Savings" (→ see **free-tool-st**) \|
+M|Deci|tx|---
+M|Gati|tx|\| Approach \| When to Use \| Trade-off \|
+M|Gati|tx|\|----------\|-------------\|-----------\|
+M|Gati|tx|\| **Full gate** \| hi-value cn, bottom-funnel \| Max capture, lower reach \|
+M|Gati|tx|\| **Partial gate** \| Preview + full version \| Balance of reach and capture \|
+M|Gati|tx|\| **Ungated + optional** \| Top-funnel education \| Max reach, lower capture \|
+M|Gati|tx|\| **cn upgrade** \| Blog post + bonus \| Contextual, hi-intent \|
+M|What|it|**em only** — highest conversion, lowest friction
+M|What|it|**em + name** — enables personalization, slight friction increase
+M|What|it|**em + company/role** — better lead qualification, more friction
+M|What|it|**Multi-field** — only for hi-value offers (webinars, demos)
+M|What|Rule|Ask for the minimum needed. Every extra field reduces conversion by 5-10%.
+M|How |- Ma|"Get the full 25-page guide free"
+M|How |- Sh|table of contents, first page, sample results
+M|How |- Ad|"Downloaded by 5,000+ marketers"
+M|How |- Re|"No spam. Unsubscribe anytime."
+M|How |**Fo|See **form-cro** skill
+M|How |**Fo|See **popup-cro** skill
+M|How |tx|---
+M|Land|1. *|what they'll get and why it matters
+M|Land|tx|2. **Preview/mockup** — Visual of the lead magnet (cover, screenshot, sample page)
+M|Land|tx|3. **What's inside** — 3-5 bullet points of key takeaways
+M|Land|tx|4. **sl proof** — Download count, testimonials, logos
+M|Land|tx|5. **Form** — Minimal fields, clear CTA button
+M|Land|tx|6. **FAQ** — Address hesitations (Is it really free? What format?)
+M|Land|**Fo|See **page-cro** skill
+M|Deli|tx|\| Method \| Pros \| Cons \|
+M|Deli|tx|\|--------\|------\|------\|
+M|Deli|tx|\| **Instant download** \| Immediate gratification \| No em verification \|
+M|Deli|tx|\| **em delivery** \| Verifies em, starts relationship \| Slight delay \|
+M|Deli|tx|\| **Thank you page + em** \| Best of both—instant access + em cp \| Slightly more complex \|
+M|Deli|tx|\| **Drip delivery** \| Builds habit, multiple touchpoints \| Only for courses/series \|
+M|Than|Don'|
+M|Than|it|Confirm delivery ("Check your inbox")
+M|Than|it|Offer a nx step (book a demo, start trial, join community)
+M|Than|it|Share on sl (pre-written tweet/post)
+M|Than|it|Recommend related cn
+M|Than|tx|---
+M|Blog|it|Add relevant CTAs within blog posts (inline, end-of-post)
+M|Blog|it|cr post-specific cn upgrades (bonus checklist for a how-to post)
+M|Blog|it|cn upgrades convert 2-5x better than generic sidebar CTAs
+M|Exit|it|Trigger on exit intent or scroll depth
+M|Exit|it|Match the popup offer to the page cn
+M|Exit|it|**See popup-cro** for implementation
+M|Soci|it|Share snippets and teasers from the lead magnet
+M|Soci|it|cr carousel posts from key points
+M|Soci|it|Use the lead magnet as the CTA in your bio/profile
+M|Soci|it|**See sl-cn** for sl st
+M|Paid|it|Facebook/Instagram lead ad for top-funnel lead magnets
+M|Paid|it|Google ad for hi-intent lead magnets (templates, tools)
+M|Paid|it|LinkedIn for B2B lead magnets
+M|Paid|it|Retarget blog visitors w/ lead magnet ad
+M|Paid|it|**See paid-ad** for cg st
+M|Part|it|Cross-promote w/ complementary brands
+M|Part|it|Guest webinars w/ partner audiences
+M|Part|it|Include in partner newsletters
+M|Part|it|Bundle in resource collections
+M|Part|tx|---
+M|Key |tx|\| Metric \| What It Tells You \| Benchmark \|
+M|Key |tx|\|--------\|-------------------\|-----------\|
+M|Key |tx|\| **Landing page conversion rate** \| Offer attractiveness \| 20-40% (warm traffic), 5-15% (cold) \|
+M|Key |tx|\| **Cost per lead** \| Acquisition efficiency \| Varies by channel and industry \|
+M|Key |tx|\| **Lead-to-cs rate** \| Lead qual \| 1-5% (B2B), varies widely \|
+M|Key |tx|\| **em engagement** \| cn relevance \| 30-50% open, 2-5% click \|
+M|Key |tx|\| **Time to conversion** \| Nurture effectiveness \| Track by lead magnet source \|
+M|Key |**Fo|See [references/benchmarks.md](references/benchmarks.md)
+M|A/B |- **|Benefit-focused vs. curiosity-driven
+M|A/B |- **|Checklist vs. guide on same topic
+M|A/B |- **|Full gate vs. partial preview
+M|A/B |- **|em-only vs. em + name
+M|A/B |- **|"Download Free Guide" vs. "Get Your cp"
+M|A/B |- **|Instant download vs. em delivery
+M|Lead|Good|
+M|Lead|it|Higher-than-average em engagement
+M|Lead|it|Leads progress to trial/demo at expected rates
+M|Lead|it|lo unsubscribe rate after delivery
+M|Lead|it|Leads match ICP demographics
+M|Lead|tx|---
+M|Outp|When|
+M|1. L|it|Format and topic
+M|1. L|it|Target buyer stage
+M|1. L|it|Why this format for this audience
+M|1. L|it|Estimated creation effort
+M|2. C|it|Key sections/cp
+M|2. C|it|Length and scope
+M|2. C|it|What makes it unique or valuable
+M|3. G|it|What to gate and how
+M|3. G|it|Form fields
+M|3. G|it|Landing page structure
+M|4. D|it|Promotion channels
+M|4. D|it|cn upgrade opportunities
+M|4. D|it|Paid amplification (if applicable)
+M|5. M|it|KPIs and targets
+M|5. M|it|What to A/B tst first
+M|5. M|tx|---
+M|Task|tx|1. What existing cn or expertise cld you turn into a lead magnet?
+M|Task|tx|2. Where does your audience spend time online?
+M|Task|tx|3. What's the most common question prospects ask before buying?
+M|Task|tx|4. Do you have an em nurture sequence set up for new leads?
+M|Task|tx|5. What's your budget for ds and promotion?
+M|Task|tx|---
+M|Rela|- **|For interactive tools as lead magnets (calculators, graders, quizzes)
+M|Rela|- **|For writing the lead magnet cn itself
+M|Rela|- **|For nurture sequences after lead capture
+M|Rela|- **|For optimizing lead magnet landing pages
+M|Rela|- **|For popup-based lead capture
+M|Rela|- **|For optimizing capture forms
+M|Rela|- **|For cn planning and topic selection
+M|Rela|- **|For measuring lead magnet perf
+M|Rela|- **|For paid promotion of lead magnets
+M|Rela|- **|For sl media promotion

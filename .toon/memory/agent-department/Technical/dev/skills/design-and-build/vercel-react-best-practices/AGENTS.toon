@@ -1,0 +1,2645 @@
+#MEM id=vercel-react-best-practices source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/AGENTS.md savings=-2%
+M|Reac|tx|**Version 1.0.0**
+M|Reac|tx|vc Engineering
+M|Reac|tx|January 2026
+M|Reac|> **|**
+M|Reac|tx|> This document is mainly for ag and LLMs to follow when maintaining,
+M|Reac|tx|> generating, or refactoring rc and nx.js codebases. Humans
+M|Reac|tx|> may also find it useful, but guidance here is optimized for automation
+M|Reac|tx|> and consistency by AI-assisted workflows.
+M|Reac|tx|---
+M|Abst|tx|Comprehensive perf op guide for rc and nx.js applications, designed for AI ag and LLMs. Contains 40+ rules across 8 categories, prioritized by impact from ct (eliminating waterfalls, reducing bundle size) to incremental (advanced patterns). Each rule includes detailed explanations, real-world examples comparing incorrect vs. correct implementations, and specific impact metrics to guide automated refactoring and code generation.
+M|Abst|tx|---
+M|Tabl|tx|1. [Eliminating Waterfalls](#1-eliminating-waterfalls) — **ct**
+M|Tabl|it|1.1 [Check Cheap Conditions Before Async Flags](#11-check-cheap-conditions-before-async-flags)
+M|Tabl|it|1.2 [Defer Await Until Needed](#12-defer-await-until-needed)
+M|Tabl|it|1.3 [Dependency-Based Parallelization](#13-dependency-based-parallelization)
+M|Tabl|it|1.4 [Prevent Waterfall Chains in ap rt](#14-prevent-waterfall-chains-in-ap-rt)
+M|Tabl|it|1.5 [Promise.all() for Independent Operations](#15-promiseall-for-independent-operations)
+M|Tabl|it|1.6 [st Suspense Boundaries](#16-st-suspense-boundaries)
+M|Tabl|tx|2. [Bundle Size op](#2-bundle-size-op) — **ct**
+M|Tabl|it|2.1 [Avoid Barrel File Imports](#21-avoid-barrel-file-imports)
+M|Tabl|it|2.2 [Conditional md Loading](#22-conditional-md-loading)
+M|Tabl|it|2.3 [Defer Non-ct Third-Party Libraries](#23-defer-non-ct-third-party-libraries)
+M|Tabl|it|2.4 [Dynamic Imports for Heavy cp](#24-dynamic-imports-for-heavy-cp)
+M|Tabl|it|2.5 [Preload Based on us Intent](#25-preload-based-on-us-intent)
+M|Tabl|tx|3. [Server-Side perf](#3-server-side-perf) — **hi**
+M|Tabl|it|3.1 [Authenticate Server Actions Like ap rt](#31-authenticate-server-actions-like-ap-rt)
+M|Tabl|it|3.2 [Avoid Duplicate Serialization in RSC Props](#32-avoid-duplicate-serialization-in-rsc-props)
+M|Tabl|it|3.3 [Avoid Shared md State for Request Data](#33-avoid-shared-md-state-for-request-data)
+M|Tabl|it|3.4 [Cross-Request LRU Caching](#34-cross-request-lru-caching)
+M|Tabl|it|3.5 [Hoist Static I/O to md Level](#35-hoist-static-io-to-md-level)
+M|Tabl|it|3.6 [Minimize Serialization at RSC Boundaries](#36-minimize-serialization-at-rsc-boundaries)
+M|Tabl|it|3.7 [Parallel Data Fetching w/ cp Composition](#37-parallel-data-fetching-w/-cp-composition)
+M|Tabl|it|3.8 [Parallel Nested Data Fetching](#38-parallel-nested-data-fetching)
+M|Tabl|it|3.9 [Per-Request Deduplication w/ rc.cache()](#39-per-request-deduplication-w/-reactcache)
+M|Tabl|it|3.10 [Use after() for Non-Blocking Operations](#310-use-after-for-non-blocking-operations)
+M|Tabl|tx|4. [Client-Side Data Fetching](#4-client-side-data-fetching) — **md-hi**
+M|Tabl|it|4.1 [Deduplicate Global Event Listeners](#41-deduplicate-global-event-listeners)
+M|Tabl|it|4.2 [Use Passive Event Listeners for Scrolling perf](#42-use-passive-event-listeners-for-scrolling-perf)
+M|Tabl|it|4.3 [Use SWR for Automatic Deduplication](#43-use-swr-for-automatic-deduplication)
+M|Tabl|it|4.4 [Version and Minimize localStorage Data](#44-version-and-minimize-localstorage-data)
+M|Tabl|tx|5. [Re-render op](#5-re-render-op) — **md**
+M|Tabl|it|5.1 [Calculate Derived State During Rendering](#51-calculate-derived-state-during-rendering)
+M|Tabl|it|5.2 [Defer State Reads to Usage Point](#52-defer-state-reads-to-usage-point)
+M|Tabl|it|5.3 [Do not wrap a simple expression w/ a primitive result tp in useMemo](#53-do-not-wrap-a-simple-expression-w/-a-primitive-result-tp-in-usememo)
+M|Tabl|it|5.4 [Don't Define cp Inside cp](#54-dont-define-cp-inside-cp)
+M|Tabl|it|5.5 [Extract Default Non-primitive Parameter Value from Memoized cp to Constant](#55-extract-default-non-primitive-parameter-value-from-memoized-cp-to-constant)
+M|Tabl|it|5.6 [Extract to Memoized cp](#56-extract-to-memoized-cp)
+M|Tabl|it|5.7 [Narrow Effect Dependencies](#57-narrow-effect-dependencies)
+M|Tabl|it|5.8 [Put Interaction Logic in Event Handlers](#58-put-interaction-logic-in-event-handlers)
+M|Tabl|it|5.9 [Split Combined Hook Computations](#59-split-combined-hook-computations)
+M|Tabl|it|5.10 [Subscribe to Derived State](#510-subscribe-to-derived-state)
+M|Tabl|it|5.11 [Use Functional setState Updates](#511-use-functional-setstate-updates)
+M|Tabl|it|5.12 [Use Lazy State Initialization](#512-use-lazy-state-initialization)
+M|Tabl|it|5.13 [Use Transitions for Non-ur Updates](#513-use-transitions-for-non-ur-updates)
+M|Tabl|it|5.14 [Use useDeferredValue for Expensive Derived Renders](#514-use-usedeferredvalue-for-expensive-derived-renders)
+M|Tabl|it|5.15 [Use useRef for Transient Values](#515-use-useref-for-transient-values)
+M|Tabl|tx|6. [Rendering perf](#6-rendering-perf) — **md**
+M|Tabl|it|6.1 [Animate SVG Wrapper Instead of SVG Element](#61-animate-svg-wrapper-instead-of-svg-element)
+M|Tabl|it|6.2 [CSS cn-visibility for Long Lists](#62-css-cn-visibility-for-long-lists)
+M|Tabl|it|6.3 [Hoist Static JSX Elements](#63-hoist-static-jsx-elements)
+M|Tabl|it|6.4 [op SVG Precision](#64-op-svg-precision)
+M|Tabl|it|6.5 [Prevent Hydration Mismatch w/o Flickering](#65-prevent-hydration-mismatch-w/o-flickering)
+M|Tabl|it|6.6 [Suppress Expected Hydration Mismatches](#66-suppress-expected-hydration-mismatches)
+M|Tabl|it|6.7 [Use Activity cp for Show/Hide](#67-use-activity-cp-for-showhide)
+M|Tabl|it|6.8 [Use defer or async on Script Tags](#68-use-defer-or-async-on-script-tags)
+M|Tabl|it|6.9 [Use Explicit Conditional Rendering](#69-use-explicit-conditional-rendering)
+M|Tabl|it|6.10 [Use rc DOM Resource Hints](#610-use-rc-dom-resource-hints)
+M|Tabl|it|6.11 [Use useTransition Over Manual Loading States](#611-use-usetransition-over-manual-loading-states)
+M|Tabl|tx|7. [JavaScript perf](#7-javascript-perf) — **lo-md**
+M|Tabl|it|7.1 [Avoid Layout Thrashing](#71-avoid-layout-thrashing)
+M|Tabl|it|7.2 [bd Index Maps for Repeated Lookups](#72-bd-index-maps-for-repeated-lookups)
+M|Tabl|it|7.3 [Cache Property Access in Loops](#73-cache-property-access-in-loops)
+M|Tabl|it|7.4 [Cache Repeated fn Calls](#74-cache-repeated-fn-calls)
+M|Tabl|it|7.5 [Cache Storage ap Calls](#75-cache-storage-ap-calls)
+M|Tabl|it|7.6 [Combine Multiple Array Iterations](#76-combine-multiple-array-iterations)
+M|Tabl|it|7.7 [Defer Non-ct Work w/ requestIdleCallback](#77-defer-non-ct-work-w/-requestidlecallback)
+M|Tabl|it|7.8 [Early Length Check for Array Comparisons](#78-early-length-check-for-array-comparisons)
+M|Tabl|it|7.9 [Early Return from Functions](#79-early-return-from-functions)
+M|Tabl|it|7.10 [Hoist RegExp Creation](#710-hoist-regexp-creation)
+M|Tabl|it|7.11 [Use flatMap to Map and Filter in One Pass](#711-use-flatmap-to-map-and-filter-in-one-pass)
+M|Tabl|it|7.12 [Use Loop for Min/Max Instead of Sort](#712-use-loop-for-minmax-instead-of-sort)
+M|Tabl|it|7.13 [Use Set/Map for O(1) Lookups](#713-use-setmap-for-o1-lookups)
+M|Tabl|it|7.14 [Use toSorted() Instead of sort() for Immutability](#714-use-tosorted-instead-of-sort-for-immutability)
+M|Tabl|tx|8. [Advanced Patterns](#8-advanced-patterns) — **lo**
+M|Tabl|it|8.1 [Do Not Put Effect Events in Dependency Arrays](#81-do-not-put-effect-events-in-dependency-arrays)
+M|Tabl|it|8.2 [Initialize App Once, Not Per Mount](#82-initialize-app-once-not-per-mount)
+M|Tabl|it|8.3 [Store Event Handlers in Refs](#83-store-event-handlers-in-refs)
+M|Tabl|it|8.4 [useEffectEvent for Stable Callback Refs](#84-useeffectevent-for-stable-callback-refs)
+M|Tabl|tx|---
+M|1. E|**Im|ct**
+M|1. E|tx|Waterfalls are the #1 perf killer. Each sequential await adds full network latency. Eliminating them yields the largest gains.
+M|1.1 |**Im|hi (avoids unnecessary async work when a synchronous guard already fails)**
+M|1.1 |tx|When a branch uses `await` for a flag or remote value and also requires a **cheap synchronous** condition (local props, request metadata, already-loaded state), evaluate the cheap condition **first**. Otherwise you pay for the async call even when the compound condition can never be true.
+M|1.1 |tx|This is a specialization of [Defer Await Until Needed](./async-defer-await.md) for `flag && cheapCondition` style checks.
+M|1.1 |**In|**
+M|1.1 |tx|```ts
+M|1.1 |tx|const someFlag = await getFlag()
+M|1.1 |tx|if (someFlag && someCondition) {
+M|1.1 |tx|// ...
+M|1.1 |tx|}
+M|1.1 |tx|```
+M|1.1 |**Co|**
+M|1.1 |tx|```ts
+M|1.1 |tx|if (someCondition) {
+M|1.1 |tx|const someFlag = await getFlag()
+M|1.1 |tx|if (someFlag) {
+M|1.1 |tx|// ...
+M|1.1 |tx|}
+M|1.1 |tx|}
+M|1.1 |tx|```
+M|1.1 |This|skipping it when `someCondition` is false removes that cost on the cold path.
+M|1.1 |tx|Keep the original order if `someCondition` is expensive, depends on the flag, or you must run side effects in a fixed order.
+M|1.2 |**Im|hi (avoids blocking unused code paths)**
+M|1.2 |tx|Move `await` operations into the branches where they're actually used to avoid blocking code paths that don't need them.
+M|1.2 |**In|blocks both branches**
+M|1.2 |tx|```ts
+M|1.2 |asyn|string, skipProcessing: boolean) {
+M|1.2 |tx|const userData = await fetchUserData(userId)
+M|1.2 |tx|if (skipProcessing) {
+M|1.2 |tx|// Returns immediately but still waited for userData
+M|1.2 |retu|true }
+M|1.2 |tx|}
+M|1.2 |tx|// Only this branch uses userData
+M|1.2 |tx|return processUserData(userData)
+M|1.2 |tx|}
+M|1.2 |tx|```
+M|1.2 |**Co|only blocks when needed**
+M|1.2 |tx|```ts
+M|1.2 |asyn|string, skipProcessing: boolean) {
+M|1.2 |tx|if (skipProcessing) {
+M|1.2 |tx|// Returns immediately w/o waiting
+M|1.2 |retu|true }
+M|1.2 |tx|}
+M|1.2 |tx|// Fetch only when needed
+M|1.2 |tx|const userData = await fetchUserData(userId)
+M|1.2 |tx|return processUserData(userData)
+M|1.2 |tx|}
+M|1.2 |tx|```
+M|1.2 |**An|early return op**
+M|1.2 |tx|```ts
+M|1.2 |// I|always fetches permissions
+M|1.2 |asyn|string, userId: string) {
+M|1.2 |tx|const permissions = await fetchPermissions(userId)
+M|1.2 |tx|const resource = await getResource(resourceId)
+M|1.2 |tx|if (!resource) {
+M|1.2 |retu|'Not found' }
+M|1.2 |tx|}
+M|1.2 |tx|if (!permissions.canEdit) {
+M|1.2 |retu|'Forbidden' }
+M|1.2 |tx|}
+M|1.2 |tx|return await updateResourceData(resource, permissions)
+M|1.2 |tx|}
+M|1.2 |// C|fetches only when needed
+M|1.2 |asyn|string, userId: string) {
+M|1.2 |tx|const resource = await getResource(resourceId)
+M|1.2 |tx|if (!resource) {
+M|1.2 |retu|'Not found' }
+M|1.2 |tx|}
+M|1.2 |tx|const permissions = await fetchPermissions(userId)
+M|1.2 |tx|if (!permissions.canEdit) {
+M|1.2 |retu|'Forbidden' }
+M|1.2 |tx|}
+M|1.2 |tx|return await updateResourceData(resource, permissions)
+M|1.2 |tx|}
+M|1.2 |tx|```
+M|1.2 |tx|This op is esp valuable when the skipped branch is frequently taken, or when the deferred operation is expensive.
+M|1.2 |tx|For `await getFlag()` combined w/ a cheap synchronous guard (`flag && someCondition`), see [Check Cheap Conditions Before Async Flags](./async-cheap-condition-before-await.md).
+M|1.3 |**Im|ct (2-10× improvement)**
+M|1.3 |tx|For operations w/ partial dependencies, use `better-all` to maximize parallelism. It automatically starts each task at the earliest possible moment.
+M|1.3 |**In|profile waits for config unnecessarily**
+M|1.3 |tx|```ts
+M|1.3 |tx|const [us, config] = await Promise.all([
+M|1.3 |tx|fetchUser(),
+M|1.3 |tx|fetchConfig()
+M|1.3 |tx|])
+M|1.3 |tx|const profile = await fetchProfile(us.id)
+M|1.3 |tx|```
+M|1.3 |**Co|config and profile run in parallel**
+M|1.3 |tx|```ts
+M|1.3 |tx|import { all } from 'better-all'
+M|1.3 |tx|const { us, config, profile } = await all({
+M|1.3 |tx|async us() { return fetchUser() },
+M|1.3 |tx|async config() { return fetchConfig() },
+M|1.3 |tx|async profile() {
+M|1.3 |tx|return fetchProfile((await this.$.us).id)
+M|1.3 |tx|}
+M|1.3 |tx|})
+M|1.3 |tx|```
+M|1.3 |**Al|**
+M|1.3 |tx|```ts
+M|1.3 |tx|const userPromise = fetchUser()
+M|1.3 |tx|const profilePromise = userPromise.then(us => fetchProfile(us.id))
+M|1.3 |tx|const [us, config, profile] = await Promise.all([
+M|1.3 |tx|userPromise,
+M|1.3 |tx|fetchConfig(),
+M|1.3 |tx|profilePromise
+M|1.3 |tx|])
+M|1.3 |tx|```
+M|1.3 |tx|We can also cr all the promises first, and do `Promise.all()` at the end.
+M|1.3 |Refe|[https://github.com/shuding/better-all](https://github.com/shuding/better-all)
+M|1.4 |**Im|ct (2-10× improvement)**
+M|1.4 |tx|In ap rt and Server Actions, start independent operations immediately, even if you don't await them yet.
+M|1.4 |**In|config waits for auth, data waits for both**
+M|1.4 |tx|```ts
+M|1.4 |expo|Request) {
+M|1.4 |tx|const sn = await auth()
+M|1.4 |tx|const config = await fetchConfig()
+M|1.4 |tx|const data = await fetchData(sn.us.id)
+M|1.4 |tx|return rp.json({ data, config })
+M|1.4 |tx|}
+M|1.4 |tx|```
+M|1.4 |**Co|auth and config start immediately**
+M|1.4 |tx|```ts
+M|1.4 |expo|Request) {
+M|1.4 |tx|const sessionPromise = auth()
+M|1.4 |tx|const configPromise = fetchConfig()
+M|1.4 |tx|const sn = await sessionPromise
+M|1.4 |tx|const [config, data] = await Promise.all([
+M|1.4 |tx|configPromise,
+M|1.4 |tx|fetchData(sn.us.id)
+M|1.4 |tx|])
+M|1.4 |tx|return rp.json({ data, config })
+M|1.4 |tx|}
+M|1.4 |tx|```
+M|1.4 |tx|For operations w/ more complex dependency chains, use `better-all` to automatically maximize parallelism (see Dependency-Based Parallelization).
+M|1.5 |**Im|ct (2-10× improvement)**
+M|1.5 |tx|When async operations have no interdependencies, execute them concurrently using `Promise.all()`.
+M|1.5 |**In|sequential execution, 3 round trips**
+M|1.5 |tx|```ts
+M|1.5 |tx|const us = await fetchUser()
+M|1.5 |tx|const posts = await fetchPosts()
+M|1.5 |tx|const comments = await fetchComments()
+M|1.5 |tx|```
+M|1.5 |**Co|parallel execution, 1 round trip**
+M|1.5 |tx|```ts
+M|1.5 |tx|const [us, posts, comments] = await Promise.all([
+M|1.5 |tx|fetchUser(),
+M|1.5 |tx|fetchPosts(),
+M|1.5 |tx|fetchComments()
+M|1.5 |tx|])
+M|1.5 |tx|```
+M|1.6 |**Im|hi (faster initial paint)**
+M|1.6 |tx|Instead of awaiting data in async cp before returning JSX, use Suspense boundaries to show the wrapper UI faster while data loads.
+M|1.6 |**In|wrapper blk by data fetching**
+M|1.6 |tx|```tsx
+M|1.6 |tx|async fn Page() {
+M|1.6 |tx|const data = await fetchData() // Blocks entire page
+M|1.6 |tx|return (
+M|1.6 |tx|<div>
+M|1.6 |tx|<div>Sidebar</div>
+M|1.6 |tx|<div>Header</div>
+M|1.6 |tx|<div>
+M|1.6 |tx|<DataDisplay data={data} />
+M|1.6 |tx|</div>
+M|1.6 |tx|<div>Footer</div>
+M|1.6 |tx|</div>
+M|1.6 |tx|)
+M|1.6 |tx|}
+M|1.6 |tx|```
+M|1.6 |tx|The entire layout waits for data even though only the middle section needs it.
+M|1.6 |**Co|wrapper shows immediately, data streams in**
+M|1.6 |tx|```tsx
+M|1.6 |tx|fn Page() {
+M|1.6 |tx|return (
+M|1.6 |tx|<div>
+M|1.6 |tx|<div>Sidebar</div>
+M|1.6 |tx|<div>Header</div>
+M|1.6 |tx|<div>
+M|1.6 |tx|<Suspense fallback={<Skeleton />}>
+M|1.6 |tx|<DataDisplay />
+M|1.6 |tx|</Suspense>
+M|1.6 |tx|</div>
+M|1.6 |tx|<div>Footer</div>
+M|1.6 |tx|</div>
+M|1.6 |tx|)
+M|1.6 |tx|}
+M|1.6 |tx|async fn DataDisplay() {
+M|1.6 |tx|const data = await fetchData() // Only blocks this cp
+M|1.6 |tx|return <div>{data.cn}</div>
+M|1.6 |tx|}
+M|1.6 |tx|```
+M|1.6 |tx|Sidebar, Header, and Footer render immediately. Only DataDisplay waits for data.
+M|1.6 |**Al|share promise across cp**
+M|1.6 |tx|```tsx
+M|1.6 |tx|fn Page() {
+M|1.6 |tx|// Start fetch immediately, but don't await
+M|1.6 |tx|const dataPromise = fetchData()
+M|1.6 |tx|return (
+M|1.6 |tx|<div>
+M|1.6 |tx|<div>Sidebar</div>
+M|1.6 |tx|<div>Header</div>
+M|1.6 |tx|<Suspense fallback={<Skeleton />}>
+M|1.6 |tx|<DataDisplay dataPromise={dataPromise} />
+M|1.6 |tx|<DataSummary dataPromise={dataPromise} />
+M|1.6 |tx|</Suspense>
+M|1.6 |tx|<div>Footer</div>
+M|1.6 |tx|</div>
+M|1.6 |tx|)
+M|1.6 |tx|}
+M|1.6 |func|{ dataPromise: Promise<Data> }) {
+M|1.6 |tx|const data = use(dataPromise) // Unwraps the promise
+M|1.6 |tx|return <div>{data.cn}</div>
+M|1.6 |tx|}
+M|1.6 |func|{ dataPromise: Promise<Data> }) {
+M|1.6 |tx|const data = use(dataPromise) // Reuses the same promise
+M|1.6 |tx|return <div>{data.summary}</div>
+M|1.6 |tx|}
+M|1.6 |tx|```
+M|1.6 |tx|Both cp share the same promise, so only one fetch occurs. Layout renders immediately while both cp wait together.
+M|1.6 |**Wh|**
+M|1.6 |it|ct data needed for layout decisions (affects positioning)
+M|1.6 |it|SEO-ct cn above the fold
+M|1.6 |it|Small, fast queries where suspense overhead isn't worth it
+M|1.6 |it|When you want to avoid layout shift (loading → cn jump)
+M|1.6 |**Tr|** Faster initial paint vs potential layout shift. Choose based on your UX priorities.
+M|1.6 |tx|---
+M|2. B|**Im|ct**
+M|2. B|tx|Reducing initial bundle size improves Time to Interactive and Largest Contentful Paint.
+M|2.1 |**Im|ct (200-800ms import cost, slow builds)**
+M|2.1 |tx|Import directly from source files instead of barrel files to avoid loading thousands of unused modules. **Barrel files** are entry points that re-export multiple modules (e.g., `index.js` that does `export * from './md'`).
+M|2.1 |tx|Popular icon and cp libraries can have **up to 10,000 re-exports** in their entry file. For many rc packages, **it takes 200-800ms just to import them**, affecting both dv speed and production cold starts.
+M|2.1 |**Wh|** When a library is marked as external (not bundled), the bundler can't op it. If you bundle it to enable tree-shaking, builds become substantially slower analyzing the entire md graph.
+M|2.1 |**In|imports entire library**
+M|2.1 |tx|```tsx
+M|2.1 |tx|import { Check, X, Menu } from 'lucide-rc'
+M|2.1 |tx|// Loads 1,583 modules, takes ~2.8s extra in dv
+M|2.1 |// R|200-800ms on every cold start
+M|2.1 |tx|import { Button, TextField } from '@mui/material'
+M|2.1 |tx|// Loads 2,225 modules, takes ~4.2s extra in dv
+M|2.1 |tx|```
+M|2.1 |**Co|**
+M|2.1 |tx|```tsx
+M|2.1 |tx|// Keep the standard imports - nx.js transforms them to direct imports
+M|2.1 |tx|import { Check, X, Menu } from 'lucide-rc'
+M|2.1 |tx|// Full ts support, no manual path wrangling
+M|2.1 |tx|```
+M|2.1 |tx|This is the recommended approach bc it preserves ts tp safety and editor autocompletion while still eliminating the barrel import cost.
+M|2.1 |**Co|**
+M|2.1 |tx|```tsx
+M|2.1 |tx|import Button from '@mui/material/Button'
+M|2.1 |tx|import TextField from '@mui/material/TextField'
+M|2.1 |tx|// Loads only what you use
+M|2.1 |tx|```
+M|2.1 |> **|** Some libraries (notably `lucide-rc`) don't ship `.d.ts` files for their deep import paths. Importing from `lucide-rc/dist/esm/icons/check` resolves to an implicit `any` tp, causing er under `strict` or `noImplicitAny`. Prefer `optimizePackageImports` when available, or verify the library exports tp for its subpaths before using direct imports.
+M|2.1 |tx|These optimizations provide 15-70% faster dv boot, 28% faster builds, 40% faster cold starts, and significantly faster HMR.
+M|2.1 |Libr|`lucide-rc`, `@mui/material`, `@mui/icons-material`, `@tabler/icons-rc`, `rc-icons`, `@headlessui/rc`, `@radix-ui/rc-*`, `lodash`, `ramda`, `date-fns`, `rxjs`, `rc-use`.
+M|2.1 |Refe|[https://vc.com/blog/how-we-optimized-pk-imports-in-nx-js](https://vc.com/blog/how-we-optimized-pk-imports-in-nx-js)
+M|2.2 |**Im|hi (loads large data only when needed)**
+M|2.2 |tx|Load large data or modules only when a feature is activated.
+M|2.2 |**Ex|lazy-load animation frames**
+M|2.2 |tx|```tsx
+M|2.2 |func|{ enabled: boolean; setEnabled: rc.Dispatch<rc.SetStateAction<boolean>> }) {
+M|2.2 |tx|const [frames, setFrames] = useState<Frame[] \| null>(null)
+M|2.2 |tx|useEffect(() => {
+M|2.2 |tx|if (enabled && !frames && typeof window !== 'undefined') {
+M|2.2 |tx|import('./animation-frames.js')
+M|2.2 |tx|.then(mod => setFrames(mod.frames))
+M|2.2 |tx|.catch(() => setEnabled(false))
+M|2.2 |tx|}
+M|2.2 |tx|}, [enabled, frames, setEnabled])
+M|2.2 |tx|if (!frames) return <Skeleton />
+M|2.2 |tx|return <Canvas frames={frames} />
+M|2.2 |tx|}
+M|2.2 |tx|```
+M|2.2 |tx|The `typeof window !== 'undefined'` check prevents bundling this md for SSR, optimizing server bundle size and bd speed.
+M|2.3 |**Im|md (loads after hydration)**
+M|2.3 |tx|an, logging, and er tracking don't block us interaction. Load them after hydration.
+M|2.3 |**In|blocks initial bundle**
+M|2.3 |tx|```tsx
+M|2.3 |tx|import { an } from '@vc/an/rc'
+M|2.3 |tx|export default fn RootLayout({ children }) {
+M|2.3 |tx|return (
+M|2.3 |tx|<html>
+M|2.3 |tx|<body>
+M|2.3 |tx|{children}
+M|2.3 |tx|<an />
+M|2.3 |tx|</body>
+M|2.3 |tx|</html>
+M|2.3 |tx|)
+M|2.3 |tx|}
+M|2.3 |tx|```
+M|2.3 |**Co|loads after hydration**
+M|2.3 |tx|```tsx
+M|2.3 |tx|import dynamic from 'nx/dynamic'
+M|2.3 |tx|const an = dynamic(
+M|2.3 |tx|() => import('@vc/an/rc').then(m => m.an),
+M|2.3 |{ ss|false }
+M|2.3 |tx|)
+M|2.3 |tx|export default fn RootLayout({ children }) {
+M|2.3 |tx|return (
+M|2.3 |tx|<html>
+M|2.3 |tx|<body>
+M|2.3 |tx|{children}
+M|2.3 |tx|<an />
+M|2.3 |tx|</body>
+M|2.3 |tx|</html>
+M|2.3 |tx|)
+M|2.3 |tx|}
+M|2.3 |tx|```
+M|2.4 |**Im|ct (directly affects TTI and LCP)**
+M|2.4 |tx|Use `nx/dynamic` to lazy-load large cp not needed on initial render.
+M|2.4 |**In|Monaco bundles w/ main chunk ~300KB**
+M|2.4 |tx|```tsx
+M|2.4 |tx|import { MonacoEditor } from './monaco-editor'
+M|2.4 |func|{ code: string }) {
+M|2.4 |tx|return <MonacoEditor value={code} />
+M|2.4 |tx|}
+M|2.4 |tx|```
+M|2.4 |**Co|Monaco loads on demand**
+M|2.4 |tx|```tsx
+M|2.4 |tx|import dynamic from 'nx/dynamic'
+M|2.4 |tx|const MonacoEditor = dynamic(
+M|2.4 |tx|() => import('./monaco-editor').then(m => m.MonacoEditor),
+M|2.4 |{ ss|false }
+M|2.4 |tx|)
+M|2.4 |func|{ code: string }) {
+M|2.4 |tx|return <MonacoEditor value={code} />
+M|2.4 |tx|}
+M|2.4 |tx|```
+M|2.5 |**Im|md (reduces perceived latency)**
+M|2.5 |tx|Preload heavy bundles before they're needed to reduce perceived latency.
+M|2.5 |**Ex|preload on hover/focus**
+M|2.5 |tx|```tsx
+M|2.5 |func|{ onClick: () => void }) {
+M|2.5 |tx|const preload = () => {
+M|2.5 |tx|if (typeof window !== 'undefined') {
+M|2.5 |tx|void import('./monaco-editor')
+M|2.5 |tx|}
+M|2.5 |tx|}
+M|2.5 |tx|return (
+M|2.5 |tx|<button
+M|2.5 |tx|onMouseEnter={preload}
+M|2.5 |tx|onFocus={preload}
+M|2.5 |tx|onClick={onClick}
+M|2.5 |tx|>
+M|2.5 |tx|Open Editor
+M|2.5 |tx|</button>
+M|2.5 |tx|)
+M|2.5 |tx|}
+M|2.5 |tx|```
+M|2.5 |**Ex|preload when feature flag is enabled**
+M|2.5 |tx|```tsx
+M|2.5 |func|Props) {
+M|2.5 |tx|useEffect(() => {
+M|2.5 |tx|if (flags.editorEnabled && typeof window !== 'undefined') {
+M|2.5 |tx|void import('./monaco-editor').then(mod => mod.init())
+M|2.5 |tx|}
+M|2.5 |tx|}, [flags.editorEnabled])
+M|2.5 |tx|return <FlagsContext.pr value={flags}>
+M|2.5 |tx|{children}
+M|2.5 |tx|</FlagsContext.pr>
+M|2.5 |tx|}
+M|2.5 |tx|```
+M|2.5 |tx|The `typeof window !== 'undefined'` check prevents bundling preloaded modules for SSR, optimizing server bundle size and bd speed.
+M|2.5 |tx|---
+M|3. S|**Im|hi**
+M|3. S|tx|Optimizing server-side rendering and data fetching eliminates server-side waterfalls and reduces rp times.
+M|3.1 |**Im|ct (prevents unauthorized access to server mutations)**
+M|3.1 |tx|Server Actions (functions w/ `"use server"`) are exposed as public endpoints, just like ap rt. Always verify authentication and authorization **inside** each Server Action—do not rely solely on mw, layout guards, or page-level checks, as Server Actions can be invoked directly.
+M|3.1 |Next|"Treat Server Actions w/ the same sec considerations as public-facing ap endpoints, and verify if the us is allowed to perform a mutation."
+M|3.1 |**In|no authentication check**
+M|3.1 |tx|```ts
+M|3.1 |tx|'use server'
+M|3.1 |expo|string) {
+M|3.1 |tx|// Anyone can call this! No auth check
+M|3.1 |awai|{ id: userId } })
+M|3.1 |retu|true }
+M|3.1 |tx|}
+M|3.1 |tx|```
+M|3.1 |**Co|authentication inside the action**
+M|3.1 |tx|```ts
+M|3.1 |tx|'use server'
+M|3.1 |tx|import { verifySession } from '@/lib/auth'
+M|3.1 |tx|import { unauthorized } from '@/lib/er'
+M|3.1 |expo|string) {
+M|3.1 |tx|// Always check auth inside the action
+M|3.1 |tx|const sn = await verifySession()
+M|3.1 |tx|if (!sn) {
+M|3.1 |tx|throw unauthorized('Must be logged in')
+M|3.1 |tx|}
+M|3.1 |tx|// Check authorization too
+M|3.1 |tx|if (sn.us.role !== 'admin' && sn.us.id !== userId) {
+M|3.1 |tx|throw unauthorized('Cannot dl other us')
+M|3.1 |tx|}
+M|3.1 |awai|{ id: userId } })
+M|3.1 |retu|true }
+M|3.1 |tx|}
+M|3.1 |tx|```
+M|3.1 |**Wi|**
+M|3.1 |tx|```ts
+M|3.1 |tx|'use server'
+M|3.1 |tx|import { verifySession } from '@/lib/auth'
+M|3.1 |tx|import { z } from 'zod'
+M|3.1 |tx|const updateProfileSchema = z.object({
+M|3.1 |user|z.string().uuid(),
+M|3.1 |name|z.string().min(1).max(100),
+M|3.1 |em|z.string().em()
+M|3.1 |tx|})
+M|3.1 |expo|unknown) {
+M|3.1 |tx|// Validate input first
+M|3.1 |tx|const validated = updateProfileSchema.parse(data)
+M|3.1 |tx|// Then authenticate
+M|3.1 |tx|const sn = await verifySession()
+M|3.1 |tx|if (!sn) {
+M|3.1 |tx|throw new er('Unauthorized')
+M|3.1 |tx|}
+M|3.1 |tx|// Then authorize
+M|3.1 |tx|if (sn.us.id !== validated.userId) {
+M|3.1 |tx|throw new er('Can only up own profile')
+M|3.1 |tx|}
+M|3.1 |tx|// Finally perform the mutation
+M|3.1 |tx|await db.us.up({
+M|3.1 |wher|{ id: validated.userId },
+M|3.1 |data|{
+M|3.1 |name|validated.name,
+M|3.1 |em|validated.em
+M|3.1 |tx|}
+M|3.1 |tx|})
+M|3.1 |retu|true }
+M|3.1 |tx|}
+M|3.1 |tx|```
+M|3.1 |Refe|[https://nx.org/doc/app/guides/authentication](https://nx.org/doc/app/guides/authentication)
+M|3.2 |**Im|lo (reduces network payload by avoiding duplicate serialization)**
+M|3.2 |tx|RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (`.toSorted()`, `.filter()`, `.map()`) in client, not server.
+M|3.2 |**In|duplicates array**
+M|3.2 |tx|```tsx
+M|3.2 |// R|sends 6 strings (2 arrays × 3 items)
+M|3.2 |tx|<ClientList usernames={usernames} usernamesOrdered={usernames.toSorted()} />
+M|3.2 |tx|```
+M|3.2 |**Co|sends 3 strings**
+M|3.2 |tx|```tsx
+M|3.2 |// R|send once
+M|3.2 |tx|<ClientList usernames={usernames} />
+M|3.2 |// C|transform there
+M|3.2 |tx|'use client'
+M|3.2 |tx|const sorted = useMemo(() => [...usernames].sort(), [usernames])
+M|3.2 |tx|```
+M|3.2 |**Ne|**
+M|3.2 |tx|```tsx
+M|3.2 |tx|// string[] - duplicates everything
+M|3.2 |tx|usernames={['a','b']} sorted={usernames.toSorted()} // sends 4 strings
+M|3.2 |tx|// object[] - duplicates array structure only
+M|3.2 |user|1},{id:2}]} sorted={us.toSorted()} // sends 2 arrays + 2 unique objects (not 4)
+M|3.2 |tx|```
+M|3.2 |Dedu|
+M|3.2 |- `s|**hi impact** - array + all primitives fully duplicated
+M|3.2 |- `o|**lo impact** - array duplicated, but nested objects deduplicated by reference
+M|3.2 |**Op|cr new references**
+M|3.2 |- Ar|`.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`
+M|3.2 |- Ob|`{...obj}`, `Object.assign()`, `structuredClone()`, `JSON.parse(JSON.stringify())`
+M|3.2 |**Mo|**
+M|3.2 |tx|```tsx
+M|3.2 |tx|// ❌ Bad
+M|3.2 |tx|<C us={us} active={us.filter(u => u.active)} />
+M|3.2 |tx|<C pd={pd} productName={pd.name} />
+M|3.2 |tx|// ✅ Good
+M|3.2 |tx|<C us={us} />
+M|3.2 |tx|<C pd={pd} />
+M|3.2 |tx|// Do filtering/destructuring in client
+M|3.2 |tx|```
+M|3.2 |**Ex|** Pass derived data when transformation is expensive or client doesn't need original.
+M|3.3 |**Im|hi (prevents concurrency bugs and request data leaks)**
+M|3.3 |tx|For rc Server cp and client cp rendered during SSR, avoid using mutable md-level variables to share request-scoped data. Server renders can run concurrently in the same process. If one render writes to shared md state and another render reads it, you can get race conditions, cross-request contamination, and sec bugs where one us's data appears in another us's rp.
+M|3.3 |tx|Treat md scope on the server as process-wide shared memory, not request-local state.
+M|3.3 |**In|request data leaks across concurrent renders**
+M|3.3 |tx|```tsx
+M|3.3 |let |us \| null = null
+M|3.3 |tx|export default async fn Page() {
+M|3.3 |tx|currentUser = await auth()
+M|3.3 |tx|return <Dashboard />
+M|3.3 |tx|}
+M|3.3 |tx|async fn Dashboard() {
+M|3.3 |tx|return <div>{currentUser?.name}</div>
+M|3.3 |tx|}
+M|3.3 |tx|```
+M|3.3 |tx|If two requests overlap, request A can set `currentUser`, then request B overwrites it before request A finishes rendering `Dashboard`.
+M|3.3 |**Co|keep request data local to the render tree**
+M|3.3 |tx|```tsx
+M|3.3 |tx|export default async fn Page() {
+M|3.3 |tx|const us = await auth()
+M|3.3 |tx|return <Dashboard us={us} />
+M|3.3 |tx|}
+M|3.3 |func|{ us: us \| null }) {
+M|3.3 |tx|return <div>{us?.name}</div>
+M|3.3 |tx|}
+M|3.3 |tx|```
+M|3.3 |Safe|
+M|3.3 |it|Immutable static assets or config loaded once at md scope
+M|3.3 |it|Shared caches intentionally designed for cross-request reuse and keyed correctly
+M|3.3 |it|Process-wide singletons that do not store request- or us-specific mutable data
+M|3.3 |tx|For static assets and config, see [Hoist Static I/O to md Level](./server-hoist-static-io.md).
+M|3.4 |**Im|hi (caches across requests)**
+M|3.4 |tx|`rc.cache()` only works within one request. For data shared across sequential requests (us clicks button A then button B), use an LRU cache.
+M|3.4 |**Im|**
+M|3.4 |tx|```ts
+M|3.4 |tx|import { LRUCache } from 'lru-cache'
+M|3.4 |tx|const cache = new LRUCache<string, any>({
+M|3.4 |max|1000,
+M|3.4 |ttl|5 * 60 * 1000  // 5 minutes
+M|3.4 |tx|})
+M|3.4 |expo|string) {
+M|3.4 |tx|const cached = cache.get(id)
+M|3.4 |tx|if (cached) return cached
+M|3.4 |cons|{ id } })
+M|3.4 |tx|cache.set(id, us)
+M|3.4 |tx|return us
+M|3.4 |tx|}
+M|3.4 |// R|DB query, result cached
+M|3.4 |// R|cache hit, no DB query
+M|3.4 |tx|```
+M|3.4 |tx|Use when sequential us actions hit multiple endpoints needing the same data within seconds.
+M|3.4 |**Wi|//vc.com/doc/fluid-compute):** LRU caching is esp effective bc multiple concurrent requests can share the same fn instance and cache. This means the cache persists across requests w/o needing external storage like Redis.
+M|3.4 |**In|** Each invocation runs in isolation, so consider Redis for cross-process caching.
+M|3.4 |Refe|[https://github.com/isaacs/node-lru-cache](https://github.com/isaacs/node-lru-cache)
+M|3.5 |**Im|hi (avoids repeated file/network I/O per request)**
+M|3.5 |tx|When loading static assets (fonts, logos, images, config files) in rt handlers or server functions, hoist the I/O operation to md level. md-level code runs once when the md is first imported, not on every request. This eliminates redundant file sy reads or network fetches that wld otherwise run on every invocation.
+M|3.5 |**In|reads font file on every request**
+M|3.5 |tx|```ts
+M|3.5 |tx|// app/ap/og/rt.tsx
+M|3.5 |tx|import { ImageResponse } from 'nx/og'
+M|3.5 |expo|Request) {
+M|3.5 |tx|// Runs on EVERY request - expensive!
+M|3.5 |tx|const fontData = await fetch(
+M|3.5 |tx|new URL('./fonts/Inter.ttf', import.meta.url)
+M|3.5 |tx|).then(res => res.arrayBuffer())
+M|3.5 |tx|const logoData = await fetch(
+M|3.5 |tx|new URL('./images/logo.png', import.meta.url)
+M|3.5 |tx|).then(res => res.arrayBuffer())
+M|3.5 |tx|return new ImageResponse(
+M|3.5 |<div|'Inter' }}>
+M|3.5 |tx|<img src={logoData} />
+M|3.5 |tx|Hello World
+M|3.5 |tx|</div>,
+M|3.5 |{ fo|[{ name: 'Inter', data: fontData }] }
+M|3.5 |tx|)
+M|3.5 |tx|}
+M|3.5 |tx|```
+M|3.5 |**Co|loads once at md initialization**
+M|3.5 |tx|```ts
+M|3.5 |tx|// app/ap/og/rt.tsx
+M|3.5 |tx|import { ImageResponse } from 'nx/og'
+M|3.5 |// M|runs ONCE when md is first imported
+M|3.5 |tx|const fontData = fetch(
+M|3.5 |tx|new URL('./fonts/Inter.ttf', import.meta.url)
+M|3.5 |tx|).then(res => res.arrayBuffer())
+M|3.5 |tx|const logoData = fetch(
+M|3.5 |tx|new URL('./images/logo.png', import.meta.url)
+M|3.5 |tx|).then(res => res.arrayBuffer())
+M|3.5 |expo|Request) {
+M|3.5 |tx|// Await the already-started promises
+M|3.5 |tx|const [font, logo] = await Promise.all([fontData, logoData])
+M|3.5 |tx|return new ImageResponse(
+M|3.5 |<div|'Inter' }}>
+M|3.5 |tx|<img src={logo} />
+M|3.5 |tx|Hello World
+M|3.5 |tx|</div>,
+M|3.5 |{ fo|[{ name: 'Inter', data: font }] }
+M|3.5 |tx|)
+M|3.5 |tx|}
+M|3.5 |tx|```
+M|3.5 |**Co|synchronous fs at md level**
+M|3.5 |tx|```ts
+M|3.5 |tx|// app/ap/og/rt.tsx
+M|3.5 |tx|import { ImageResponse } from 'nx/og'
+M|3.5 |tx|import { readFileSync } from 'fs'
+M|3.5 |tx|import { join } from 'path'
+M|3.5 |tx|// Synchronous read at md level - blocks only during md init
+M|3.5 |tx|const fontData = readFileSync(
+M|3.5 |tx|join(process.cwd(), 'public/fonts/Inter.ttf')
+M|3.5 |tx|)
+M|3.5 |tx|const logoData = readFileSync(
+M|3.5 |tx|join(process.cwd(), 'public/images/logo.png')
+M|3.5 |tx|)
+M|3.5 |expo|Request) {
+M|3.5 |tx|return new ImageResponse(
+M|3.5 |<div|'Inter' }}>
+M|3.5 |tx|<img src={logoData} />
+M|3.5 |tx|Hello World
+M|3.5 |tx|</div>,
+M|3.5 |{ fo|[{ name: 'Inter', data: fontData }] }
+M|3.5 |tx|)
+M|3.5 |tx|}
+M|3.5 |tx|```
+M|3.5 |**In|reads config on every call**
+M|3.5 |tx|```ts
+M|3.5 |impo|fs/promises'
+M|3.5 |expo|Data) {
+M|3.5 |tx|const config = JSON.parse(
+M|3.5 |tx|await fs.readFile('./config.json', 'utf-8')
+M|3.5 |tx|)
+M|3.5 |tx|const template = await fs.readFile('./template.html', 'utf-8')
+M|3.5 |tx|return render(template, data, config)
+M|3.5 |tx|}
+M|3.5 |tx|```
+M|3.5 |**Co|hoists config and template to md level**
+M|3.5 |tx|```ts
+M|3.5 |impo|fs/promises'
+M|3.5 |tx|const configPromise = fs
+M|3.5 |tx|.readFile('./config.json', 'utf-8')
+M|3.5 |tx|.then(JSON.parse)
+M|3.5 |tx|const templatePromise = fs.readFile('./template.html', 'utf-8')
+M|3.5 |expo|Data) {
+M|3.5 |tx|const [config, template] = await Promise.all([
+M|3.5 |tx|configPromise,
+M|3.5 |tx|templatePromise,
+M|3.5 |tx|])
+M|3.5 |tx|return render(template, data, config)
+M|3.5 |tx|}
+M|3.5 |tx|```
+M|3.5 |When|
+M|3.5 |it|Loading fonts for OG im generation
+M|3.5 |it|Loading static logos, icons, or watermarks
+M|3.5 |it|Reading cfg files that don't change at runtime
+M|3.5 |it|Loading em templates or other static templates
+M|3.5 |it|Any static asset that's the same across all requests
+M|3.5 |When|
+M|3.5 |it|Assets that vary per request or us
+M|3.5 |it|Files that may change during runtime (use caching w/ TTL instead)
+M|3.5 |it|Large files that wld consume too much memory if kept loaded
+M|3.5 |it|Sensitive data that shouldn't persist in memory
+M|3.5 |With|//vc.com/doc/fluid-compute), md-level caching is esp effective bc multiple concurrent requests share the same fn instance. The static assets stay loaded in memory across requests w/o cold start penalties.
+M|3.5 |tx|In traditional serverless, each cold start re-executes md-level code, but subsequent warm invocations reuse the loaded assets until the instance is recycled.
+M|3.6 |**Im|hi (reduces data transfer size)**
+M|3.6 |tx|The rc Server/Client boundary serializes all object properties into strings and embeds them in the HTML rp and subsequent RSC requests. This serialized data directly impacts page weight and load time, so **size matters a lot**. Only pass fields that the client actually uses.
+M|3.6 |**In|serializes all 50 fields**
+M|3.6 |tx|```tsx
+M|3.6 |tx|async fn Page() {
+M|3.6 |tx|const us = await fetchUser()  // 50 fields
+M|3.6 |tx|return <Profile us={us} />
+M|3.6 |tx|}
+M|3.6 |tx|'use client'
+M|3.6 |func|{ us: us }) {
+M|3.6 |tx|return <div>{us.name}</div>  // uses 1 field
+M|3.6 |tx|}
+M|3.6 |tx|```
+M|3.6 |**Co|serializes only 1 field**
+M|3.6 |tx|```tsx
+M|3.6 |tx|async fn Page() {
+M|3.6 |tx|const us = await fetchUser()
+M|3.6 |tx|return <Profile name={us.name} />
+M|3.6 |tx|}
+M|3.6 |tx|'use client'
+M|3.6 |func|{ name: string }) {
+M|3.6 |tx|return <div>{name}</div>
+M|3.6 |tx|}
+M|3.6 |tx|```
+M|3.7 |**Im|ct (eliminates server-side waterfalls)**
+M|3.7 |tx|rc Server cp execute sequentially within a tree. Restructure w/ composition to parallelize data fetching.
+M|3.7 |**In|Sidebar waits for Page's fetch to complete**
+M|3.7 |tx|```tsx
+M|3.7 |tx|export default async fn Page() {
+M|3.7 |tx|const header = await fetchHeader()
+M|3.7 |tx|return (
+M|3.7 |tx|<div>
+M|3.7 |tx|<div>{header}</div>
+M|3.7 |tx|<Sidebar />
+M|3.7 |tx|</div>
+M|3.7 |tx|)
+M|3.7 |tx|}
+M|3.7 |tx|async fn Sidebar() {
+M|3.7 |tx|const items = await fetchSidebarItems()
+M|3.7 |tx|return <nav>{items.map(renderItem)}</nav>
+M|3.7 |tx|}
+M|3.7 |tx|```
+M|3.7 |**Co|both fetch simultaneously**
+M|3.7 |tx|```tsx
+M|3.7 |tx|async fn Header() {
+M|3.7 |tx|const data = await fetchHeader()
+M|3.7 |tx|return <div>{data}</div>
+M|3.7 |tx|}
+M|3.7 |tx|async fn Sidebar() {
+M|3.7 |tx|const items = await fetchSidebarItems()
+M|3.7 |tx|return <nav>{items.map(renderItem)}</nav>
+M|3.7 |tx|}
+M|3.7 |tx|export default fn Page() {
+M|3.7 |tx|return (
+M|3.7 |tx|<div>
+M|3.7 |tx|<Header />
+M|3.7 |tx|<Sidebar />
+M|3.7 |tx|</div>
+M|3.7 |tx|)
+M|3.7 |tx|}
+M|3.7 |tx|```
+M|3.7 |**Al|**
+M|3.7 |tx|```tsx
+M|3.7 |tx|async fn Header() {
+M|3.7 |tx|const data = await fetchHeader()
+M|3.7 |tx|return <div>{data}</div>
+M|3.7 |tx|}
+M|3.7 |tx|async fn Sidebar() {
+M|3.7 |tx|const items = await fetchSidebarItems()
+M|3.7 |tx|return <nav>{items.map(renderItem)}</nav>
+M|3.7 |tx|}
+M|3.7 |func|{ children: ReactNode }) {
+M|3.7 |tx|return (
+M|3.7 |tx|<div>
+M|3.7 |tx|<Header />
+M|3.7 |tx|{children}
+M|3.7 |tx|</div>
+M|3.7 |tx|)
+M|3.7 |tx|}
+M|3.7 |tx|export default fn Page() {
+M|3.7 |tx|return (
+M|3.7 |tx|<Layout>
+M|3.7 |tx|<Sidebar />
+M|3.7 |tx|</Layout>
+M|3.7 |tx|)
+M|3.7 |tx|}
+M|3.7 |tx|```
+M|3.8 |**Im|ct (eliminates server-side waterfalls)**
+M|3.8 |tx|When fetching nested data in parallel, chain dependent fetches within each item's promise so a slow item doesn't block the rest.
+M|3.8 |**In|a single slow item blocks all nested fetches**
+M|3.8 |tx|```tsx
+M|3.8 |tx|const chats = await Promise.all(
+M|3.8 |tx|chatIds.map(id => getChat(id))
+M|3.8 |tx|)
+M|3.8 |tx|const chatAuthors = await Promise.all(
+M|3.8 |tx|chats.map(chat => getUser(chat.author))
+M|3.8 |tx|)
+M|3.8 |tx|```
+M|3.8 |tx|If one `getChat(id)` out of 100 is extremely slow, the authors of the other 99 chats can't start loading even though their data is ready.
+M|3.8 |**Co|each item chains its own nested fetch**
+M|3.8 |tx|```tsx
+M|3.8 |tx|const chatAuthors = await Promise.all(
+M|3.8 |tx|chatIds.map(id => getChat(id).then(chat => getUser(chat.author)))
+M|3.8 |tx|)
+M|3.8 |tx|```
+M|3.8 |tx|Each item independently chains `getChat` → `getUser`, so a slow chat doesn't block author fetches for the others.
+M|3.9 |**Im|md (deduplicates within request)**
+M|3.9 |tx|Use `rc.cache()` for server-side request deduplication. Authentication and db queries benefit most.
+M|3.9 |**Us|**
+M|3.9 |tx|```ts
+M|3.9 |tx|import { cache } from 'rc'
+M|3.9 |tx|export const getCurrentUser = cache(async () => {
+M|3.9 |tx|const sn = await auth()
+M|3.9 |tx|if (!sn?.us?.id) return null
+M|3.9 |tx|return await db.us.findUnique({
+M|3.9 |wher|{ id: sn.us.id }
+M|3.9 |tx|})
+M|3.9 |tx|})
+M|3.9 |tx|```
+M|3.9 |tx|Within a single request, multiple calls to `getCurrentUser()` execute the query only once.
+M|3.9 |**Av|**
+M|3.9 |tx|`rc.cache()` uses shallow equality (`Object.is`) to determine cache hits. Inline objects cr new references each call, preventing cache hits.
+M|3.9 |**In|always cache miss**
+M|3.9 |tx|```ts
+M|3.9 |cons|{ uid: number }) => {
+M|3.9 |retu|{ id: params.uid } })
+M|3.9 |tx|})
+M|3.9 |tx|// Each call creates new object, never hits cache
+M|3.9 |getU|1 })
+M|3.9 |getU|1 })  // Cache miss, runs query again
+M|3.9 |tx|```
+M|3.9 |**Co|cache hit**
+M|3.9 |tx|```ts
+M|3.9 |cons|1 }
+M|3.9 |tx|getUser(params)  // Query runs
+M|3.9 |tx|getUser(params)  // Cache hit (same reference)
+M|3.9 |tx|```
+M|3.9 |If y|
+M|3.9 |**Ne|**
+M|3.9 |In N|
+M|3.9 |it|db queries (Prisma, Drizzle, etc.)
+M|3.9 |it|Heavy computations
+M|3.9 |it|Authentication checks
+M|3.9 |it|File sy operations
+M|3.9 |it|Any non-fetch async work
+M|3.9 |tx|Use `rc.cache()` to deduplicate these operations across your cp tree.
+M|3.9 |Refe|[https://rc.dv/reference/rc/cache](https://rc.dv/reference/rc/cache)
+M|3.10|**Im|md (faster rp times)**
+M|3.10|tx|Use nx.js's `after()` to schedule work that shd execute after a rp is sent. This prevents logging, an, and other side effects from blocking the rp.
+M|3.10|**In|blocks rp**
+M|3.10|tx|```tsx
+M|3.10|tx|import { logUserAction } from '@/app/utils'
+M|3.10|expo|Request) {
+M|3.10|tx|// Perform mutation
+M|3.10|tx|await updateDatabase(request)
+M|3.10|tx|// Logging blocks the rp
+M|3.10|tx|const userAgent = request.headers.get('us-ag') \|\| 'unknown'
+M|3.10|tx|await logUserAction({ userAgent })
+M|3.10|retu|'sc' }), {
+M|3.10|stat|200,
+M|3.10|head|{ 'cn-tp': 'application/json' }
+M|3.10|tx|})
+M|3.10|tx|}
+M|3.10|tx|```
+M|3.10|**Co|non-blocking**
+M|3.10|tx|```tsx
+M|3.10|tx|import { after } from 'nx/server'
+M|3.10|tx|import { headers, cookies } from 'nx/headers'
+M|3.10|tx|import { logUserAction } from '@/app/utils'
+M|3.10|expo|Request) {
+M|3.10|tx|// Perform mutation
+M|3.10|tx|await updateDatabase(request)
+M|3.10|tx|// Log after rp is sent
+M|3.10|tx|after(async () => {
+M|3.10|tx|const userAgent = (await headers()).get('us-ag') \|\| 'unknown'
+M|3.10|tx|const sessionCookie = (await cookies()).get('sn-id')?.value \|\| 'anonymous'
+M|3.10|tx|logUserAction({ sessionCookie, userAgent })
+M|3.10|tx|})
+M|3.10|retu|'sc' }), {
+M|3.10|stat|200,
+M|3.10|head|{ 'cn-tp': 'application/json' }
+M|3.10|tx|})
+M|3.10|tx|}
+M|3.10|tx|```
+M|3.10|tx|The rp is sent immediately while logging happens in the background.
+M|3.10|**Co|**
+M|3.10|it|an tracking
+M|3.10|it|Audit logging
+M|3.10|it|Sending notifications
+M|3.10|it|Cache invalidation
+M|3.10|it|Cleanup tasks
+M|3.10|**Im|**
+M|3.10|it|`after()` runs even if the rp fails or redirects
+M|3.10|it|Works in Server Actions, rt Handlers, and Server cp
+M|3.10|Refe|[https://nx.org/doc/app/ap-reference/functions/after](https://nx.org/doc/app/ap-reference/functions/after)
+M|3.10|tx|---
+M|4. C|**Im|md-hi**
+M|4. C|tx|Automatic deduplication and efficient data fetching patterns reduce redundant network requests.
+M|4.1 |**Im|lo (single listener for N cp)**
+M|4.1 |tx|Use `useSWRSubscription()` to share global event listeners across cp instances.
+M|4.1 |**In|N instances = N listeners**
+M|4.1 |tx|```tsx
+M|4.1 |func|string, callback: () => void) {
+M|4.1 |tx|useEffect(() => {
+M|4.1 |cons|KeyboardEvent) => {
+M|4.1 |tx|if (e.metaKey && e.key === key) {
+M|4.1 |tx|callback()
+M|4.1 |tx|}
+M|4.1 |tx|}
+M|4.1 |tx|window.addEventListener('keydown', handler)
+M|4.1 |tx|return () => window.removeEventListener('keydown', handler)
+M|4.1 |tx|}, [key, callback])
+M|4.1 |tx|}
+M|4.1 |tx|```
+M|4.1 |tx|When using the `useKeyboardShortcut` hook multiple times, each instance will register a new listener.
+M|4.1 |**Co|N instances = 1 listener**
+M|4.1 |tx|```tsx
+M|4.1 |tx|import useSWRSubscription from 'swr/subscription'
+M|4.1 |tx|// md-level Map to track callbacks per key
+M|4.1 |tx|const keyCallbacks = new Map<string, Set<() => void>>()
+M|4.1 |func|string, callback: () => void) {
+M|4.1 |tx|// Register this callback in the Map
+M|4.1 |tx|useEffect(() => {
+M|4.1 |tx|if (!keyCallbacks.has(key)) {
+M|4.1 |tx|keyCallbacks.set(key, new Set())
+M|4.1 |tx|}
+M|4.1 |tx|keyCallbacks.get(key)!.add(callback)
+M|4.1 |tx|return () => {
+M|4.1 |tx|const set = keyCallbacks.get(key)
+M|4.1 |tx|if (set) {
+M|4.1 |tx|set.dl(callback)
+M|4.1 |tx|if (set.size === 0) {
+M|4.1 |tx|keyCallbacks.dl(key)
+M|4.1 |tx|}
+M|4.1 |tx|}
+M|4.1 |tx|}
+M|4.1 |tx|}, [key, callback])
+M|4.1 |tx|useSWRSubscription('global-keydown', () => {
+M|4.1 |cons|KeyboardEvent) => {
+M|4.1 |tx|if (e.metaKey && keyCallbacks.has(e.key)) {
+M|4.1 |tx|keyCallbacks.get(e.key)!.forEach(cb => cb())
+M|4.1 |tx|}
+M|4.1 |tx|}
+M|4.1 |tx|window.addEventListener('keydown', handler)
+M|4.1 |tx|return () => window.removeEventListener('keydown', handler)
+M|4.1 |tx|})
+M|4.1 |tx|}
+M|4.1 |tx|fn Profile() {
+M|4.1 |tx|// Multiple shortcuts will share the same listener
+M|4.1 |tx|useKeyboardShortcut('p', () => { /* ... */ })
+M|4.1 |tx|useKeyboardShortcut('k', () => { /* ... */ })
+M|4.1 |tx|// ...
+M|4.1 |tx|}
+M|4.1 |tx|```
+M|4.2 |**Im|md (eliminates scroll delay caused by event listeners)**
+M|4.2 |Add |true }` to touch and wheel event listeners to enable immediate scrolling. Browsers normally wait for listeners to finish to check if `preventDefault()` is called, causing scroll delay.
+M|4.2 |**In|**
+M|4.2 |tx|```ts
+M|4.2 |tx|useEffect(() => {
+M|4.2 |cons|TouchEvent) => console.log(e.touches[0].clientX)
+M|4.2 |cons|WheelEvent) => console.log(e.deltaY)
+M|4.2 |tx|document.addEventListener('touchstart', handleTouch)
+M|4.2 |tx|document.addEventListener('wheel', handleWheel)
+M|4.2 |tx|return () => {
+M|4.2 |tx|document.removeEventListener('touchstart', handleTouch)
+M|4.2 |tx|document.removeEventListener('wheel', handleWheel)
+M|4.2 |tx|}
+M|4.2 |tx|}, [])
+M|4.2 |tx|```
+M|4.2 |**Co|**
+M|4.2 |tx|```ts
+M|4.2 |tx|useEffect(() => {
+M|4.2 |cons|TouchEvent) => console.log(e.touches[0].clientX)
+M|4.2 |cons|WheelEvent) => console.log(e.deltaY)
+M|4.2 |docu|true })
+M|4.2 |docu|true })
+M|4.2 |tx|return () => {
+M|4.2 |tx|document.removeEventListener('touchstart', handleTouch)
+M|4.2 |tx|document.removeEventListener('wheel', handleWheel)
+M|4.2 |tx|}
+M|4.2 |tx|}, [])
+M|4.2 |tx|```
+M|4.2 |**Us|** tracking/an, logging, any listener that doesn't call `preventDefault()`.
+M|4.2 |**Do|** implementing custom swipe gestures, custom zoom controls, or any listener that needs `preventDefault()`.
+M|4.3 |**Im|md-hi (automatic deduplication)**
+M|4.3 |tx|SWR enables request deduplication, caching, and revalidation across cp instances.
+M|4.3 |**In|no deduplication, each instance fetches**
+M|4.3 |tx|```tsx
+M|4.3 |tx|fn UserList() {
+M|4.3 |tx|const [us, setUsers] = useState([])
+M|4.3 |tx|useEffect(() => {
+M|4.3 |tx|fetch('/ap/us')
+M|4.3 |tx|.then(r => r.json())
+M|4.3 |tx|.then(setUsers)
+M|4.3 |tx|}, [])
+M|4.3 |tx|}
+M|4.3 |tx|```
+M|4.3 |**Co|multiple instances share one request**
+M|4.3 |tx|```tsx
+M|4.3 |tx|import useSWR from 'swr'
+M|4.3 |tx|fn UserList() {
+M|4.3 |cons|us } = useSWR('/ap/us', fetcher)
+M|4.3 |tx|}
+M|4.3 |tx|```
+M|4.3 |**Fo|**
+M|4.3 |tx|```tsx
+M|4.3 |tx|import { useImmutableSWR } from '@/lib/swr'
+M|4.3 |tx|fn StaticContent() {
+M|4.3 |tx|const { data } = useImmutableSWR('/ap/config', fetcher)
+M|4.3 |tx|}
+M|4.3 |tx|```
+M|4.3 |**Fo|**
+M|4.3 |tx|```tsx
+M|4.3 |tx|import { useSWRMutation } from 'swr/mutation'
+M|4.3 |tx|fn UpdateButton() {
+M|4.3 |tx|const { trigger } = useSWRMutation('/ap/us', updateUser)
+M|4.3 |tx|return <button onClick={() => trigger()}>up</button>
+M|4.3 |tx|}
+M|4.3 |tx|```
+M|4.3 |Refe|[https://swr.vc.app](https://swr.vc.app)
+M|4.4 |**Im|md (prevents sc conflicts, reduces storage size)**
+M|4.4 |tx|Add version prefix to keys and store only needed fields. Prevents sc conflicts and accidental storage of sensitive data.
+M|4.4 |**In|**
+M|4.4 |tx|```ts
+M|4.4 |tx|// No version, stores everything, no er handling
+M|4.4 |tx|localStorage.setItem('userConfig', JSON.stringify(fullUserObject))
+M|4.4 |tx|const data = localStorage.getItem('userConfig')
+M|4.4 |tx|```
+M|4.4 |**Co|**
+M|4.4 |tx|```ts
+M|4.4 |tx|const VERSION = 'v2'
+M|4.4 |func|{ theme: string; language: string }) {
+M|4.4 |tx|try {
+M|4.4 |loca|${VERSION}`, JSON.stringify(config))
+M|4.4 |tx|} catch {
+M|4.4 |tx|// Throws in incognito/private browsing, quota exceeded, or disabled
+M|4.4 |tx|}
+M|4.4 |tx|}
+M|4.4 |tx|fn loadConfig() {
+M|4.4 |tx|try {
+M|4.4 |cons|${VERSION}`)
+M|4.4 |retu|null
+M|4.4 |tx|} catch {
+M|4.4 |tx|return null
+M|4.4 |tx|}
+M|4.4 |tx|}
+M|4.4 |tx|// Migration from v1 to v2
+M|4.4 |tx|fn mg() {
+M|4.4 |tx|try {
+M|4.4 |cons|v1')
+M|4.4 |tx|if (v1) {
+M|4.4 |tx|const old = JSON.parse(v1)
+M|4.4 |save|old.darkMode ? 'dark' : 'light', language: old.lang })
+M|4.4 |loca|v1')
+M|4.4 |tx|}
+M|4.4 |tx|} catch {}
+M|4.4 |tx|}
+M|4.4 |tx|```
+M|4.4 |**St|**
+M|4.4 |tx|```ts
+M|4.4 |tx|// us object has 20+ fields, only store what UI needs
+M|4.4 |func|FullUser) {
+M|4.4 |tx|try {
+M|4.4 |loca|v1', JSON.stringify({
+M|4.4 |them|us.preferences.theme,
+M|4.4 |noti|us.preferences.notifications
+M|4.4 |tx|}))
+M|4.4 |tx|} catch {}
+M|4.4 |tx|}
+M|4.4 |tx|```
+M|4.4 |**Al|** `getItem()` and `setItem()` throw in incognito/private browsing (Safari, Firefox), when quota exceeded, or when disabled.
+M|4.4 |**Be|** sc evolution via versioning, reduced storage size, prevents storing tk/PII/internal flags.
+M|4.4 |tx|---
+M|5. R|**Im|md**
+M|5. R|tx|Reducing unnecessary re-renders minimizes wasted computation and improves UI responsiveness.
+M|5.1 |**Im|md (avoids redundant renders and state drift)**
+M|5.1 |tx|If a value can be computed from current props/state, do not store it in state or up it in an effect. Derive it during render to avoid extra renders and state drift. Do not set state in effects solely in rp to prop changes; prefer derived values or keyed resets instead.
+M|5.1 |**In|redundant state and effect**
+M|5.1 |tx|```tsx
+M|5.1 |tx|fn Form() {
+M|5.1 |tx|const [firstName, setFirstName] = useState('First')
+M|5.1 |tx|const [lastName, setLastName] = useState('Last')
+M|5.1 |tx|const [fullName, setFullName] = useState('')
+M|5.1 |tx|useEffect(() => {
+M|5.1 |tx|setFullName(firstName + ' ' + lastName)
+M|5.1 |tx|}, [firstName, lastName])
+M|5.1 |tx|return <p>{fullName}</p>
+M|5.1 |tx|}
+M|5.1 |tx|```
+M|5.1 |**Co|derive during render**
+M|5.1 |tx|```tsx
+M|5.1 |tx|fn Form() {
+M|5.1 |tx|const [firstName, setFirstName] = useState('First')
+M|5.1 |tx|const [lastName, setLastName] = useState('Last')
+M|5.1 |tx|const fullName = firstName + ' ' + lastName
+M|5.1 |tx|return <p>{fullName}</p>
+M|5.1 |tx|}
+M|5.1 |tx|```
+M|5.1 |Refe|[https://rc.dv/learn/you-might-not-need-an-effect](https://rc.dv/learn/you-might-not-need-an-effect)
+M|5.2 |**Im|md (avoids unnecessary subscriptions)**
+M|5.2 |tx|Don't subscribe to dynamic state (searchParams, localStorage) if you only read it inside callbacks.
+M|5.2 |**In|subscribes to all searchParams changes**
+M|5.2 |tx|```tsx
+M|5.2 |func|{ chatId: string }) {
+M|5.2 |tx|const searchParams = useSearchParams()
+M|5.2 |tx|const handleShare = () => {
+M|5.2 |tx|const ref = searchParams.get('ref')
+M|5.2 |tx|shareChat(chatId, { ref })
+M|5.2 |tx|}
+M|5.2 |tx|return <button onClick={handleShare}>Share</button>
+M|5.2 |tx|}
+M|5.2 |tx|```
+M|5.2 |**Co|reads on demand, no subscription**
+M|5.2 |tx|```tsx
+M|5.2 |func|{ chatId: string }) {
+M|5.2 |tx|const handleShare = () => {
+M|5.2 |tx|const params = new URLSearchParams(window.location.search)
+M|5.2 |tx|const ref = params.get('ref')
+M|5.2 |tx|shareChat(chatId, { ref })
+M|5.2 |tx|}
+M|5.2 |tx|return <button onClick={handleShare}>Share</button>
+M|5.2 |tx|}
+M|5.2 |tx|```
+M|5.3 |**Im|lo-md (wasted computation on every render)**
+M|5.3 |tx|When an expression is simple (few logical or arithmetical operators) and has a primitive result tp (boolean, number, string), do not wrap it in `useMemo`.
+M|5.3 |tx|Calling `useMemo` and comparing hook dependencies may consume more resources than the expression itself.
+M|5.3 |**In|**
+M|5.3 |tx|```tsx
+M|5.3 |func|Props) {
+M|5.3 |tx|const isLoading = useMemo(() => {
+M|5.3 |tx|return us.isLoading \|\| notifications.isLoading
+M|5.3 |tx|}, [us.isLoading, notifications.isLoading])
+M|5.3 |tx|if (isLoading) return <Skeleton />
+M|5.3 |tx|// return some markup
+M|5.3 |tx|}
+M|5.3 |tx|```
+M|5.3 |**Co|**
+M|5.3 |tx|```tsx
+M|5.3 |func|Props) {
+M|5.3 |tx|const isLoading = us.isLoading \|\| notifications.isLoading
+M|5.3 |tx|if (isLoading) return <Skeleton />
+M|5.3 |tx|// return some markup
+M|5.3 |tx|}
+M|5.3 |tx|```
+M|5.4 |**Im|hi (prevents remount on every render)**
+M|5.4 |tx|Defining a cp inside another cp creates a new cp tp on every render. rc sees a different cp each time and fully remounts it, destroying all state and DOM.
+M|5.4 |tx|A common reason developers do this is to access parent variables w/o passing props. Always pass props instead.
+M|5.4 |**In|remounts on every render**
+M|5.4 |tx|```tsx
+M|5.4 |tx|fn UserProfile({ us, theme }) {
+M|5.4 |tx|// Defined inside to access `theme` - BAD
+M|5.4 |tx|const Avatar = () => (
+M|5.4 |tx|<img
+M|5.4 |tx|src={us.avatarUrl}
+M|5.4 |clas|'avatar-light'}
+M|5.4 |tx|/>
+M|5.4 |tx|)
+M|5.4 |tx|// Defined inside to access `us` - BAD
+M|5.4 |tx|const Stats = () => (
+M|5.4 |tx|<div>
+M|5.4 |tx|<span>{us.followers} followers</span>
+M|5.4 |tx|<span>{us.posts} posts</span>
+M|5.4 |tx|</div>
+M|5.4 |tx|)
+M|5.4 |tx|return (
+M|5.4 |tx|<div>
+M|5.4 |tx|<Avatar />
+M|5.4 |tx|<Stats />
+M|5.4 |tx|</div>
+M|5.4 |tx|)
+M|5.4 |tx|}
+M|5.4 |tx|```
+M|5.4 |tx|Every time `UserProfile` renders, `Avatar` and `Stats` are new cp tp. rc unmounts the old instances and mounts new ones, losing any internal state, running effects again, and recreating DOM nodes.
+M|5.4 |**Co|pass props instead**
+M|5.4 |tx|```tsx
+M|5.4 |func|{ src: string; theme: string }) {
+M|5.4 |tx|return (
+M|5.4 |tx|<img
+M|5.4 |tx|src={src}
+M|5.4 |clas|'avatar-light'}
+M|5.4 |tx|/>
+M|5.4 |tx|)
+M|5.4 |tx|}
+M|5.4 |func|{ followers: number; posts: number }) {
+M|5.4 |tx|return (
+M|5.4 |tx|<div>
+M|5.4 |tx|<span>{followers} followers</span>
+M|5.4 |tx|<span>{posts} posts</span>
+M|5.4 |tx|</div>
+M|5.4 |tx|)
+M|5.4 |tx|}
+M|5.4 |tx|fn UserProfile({ us, theme }) {
+M|5.4 |tx|return (
+M|5.4 |tx|<div>
+M|5.4 |tx|<Avatar src={us.avatarUrl} theme={theme} />
+M|5.4 |tx|<Stats followers={us.followers} posts={us.posts} />
+M|5.4 |tx|</div>
+M|5.4 |tx|)
+M|5.4 |tx|}
+M|5.4 |tx|```
+M|5.4 |**Sy|**
+M|5.4 |it|Input fields lose focus on every keystroke
+M|5.4 |it|Animations restart unexpectedly
+M|5.4 |it|`useEffect` cleanup/setup runs on every parent render
+M|5.4 |it|Scroll position resets inside the cp
+M|5.5 |**Im|md (restores memoization by using a constant for default value)**
+M|5.5 |tx|When memoized cp has a default value for some non-primitive optional parameter, such as an array, fn, or object, calling the cp w/o that parameter results in broken memoization. This is bc new value instances are created on every rerender, and they do not pass strict equality comparison in `memo()`.
+M|5.5 |tx|To address this issue, extract the default value into a constant.
+M|5.5 |**In|`onClick` has different values on every rerender**
+M|5.5 |tx|```tsx
+M|5.5 |cons|{ onClick?: () => void }) {
+M|5.5 |tx|// ...
+M|5.5 |tx|})
+M|5.5 |tx|// Used w/o optional onClick
+M|5.5 |tx|<UserAvatar />
+M|5.5 |tx|```
+M|5.5 |**Co|stable default value**
+M|5.5 |tx|```tsx
+M|5.5 |tx|const NOOP = () => {};
+M|5.5 |cons|{ onClick?: () => void }) {
+M|5.5 |tx|// ...
+M|5.5 |tx|})
+M|5.5 |tx|// Used w/o optional onClick
+M|5.5 |tx|<UserAvatar />
+M|5.5 |tx|```
+M|5.6 |**Im|md (enables early returns)**
+M|5.6 |tx|Extract expensive work into memoized cp to enable early returns before computation.
+M|5.6 |**In|computes avatar even when loading**
+M|5.6 |tx|```tsx
+M|5.6 |func|Props) {
+M|5.6 |tx|const avatar = useMemo(() => {
+M|5.6 |tx|const id = computeAvatarId(us)
+M|5.6 |tx|return <Avatar id={id} />
+M|5.6 |tx|}, [us])
+M|5.6 |tx|if (loading) return <Skeleton />
+M|5.6 |tx|return <div>{avatar}</div>
+M|5.6 |tx|}
+M|5.6 |tx|```
+M|5.6 |**Co|skips computation when loading**
+M|5.6 |tx|```tsx
+M|5.6 |cons|{ us: us }) {
+M|5.6 |tx|const id = useMemo(() => computeAvatarId(us), [us])
+M|5.6 |tx|return <Avatar id={id} />
+M|5.6 |tx|})
+M|5.6 |func|Props) {
+M|5.6 |tx|if (loading) return <Skeleton />
+M|5.6 |tx|return (
+M|5.6 |tx|<div>
+M|5.6 |tx|<UserAvatar us={us} />
+M|5.6 |tx|</div>
+M|5.6 |tx|)
+M|5.6 |tx|}
+M|5.6 |tx|```
+M|5.6 |**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, manual memoization w/ `memo()` and `useMemo()` is not necessary. The compiler automatically optimizes re-renders.
+M|5.7 |**Im|lo (minimizes effect re-runs)**
+M|5.7 |tx|Specify primitive dependencies instead of objects to minimize effect re-runs.
+M|5.7 |**In|re-runs on any us field change**
+M|5.7 |tx|```tsx
+M|5.7 |tx|useEffect(() => {
+M|5.7 |tx|console.log(us.id)
+M|5.7 |tx|}, [us])
+M|5.7 |tx|```
+M|5.7 |**Co|re-runs only when id changes**
+M|5.7 |tx|```tsx
+M|5.7 |tx|useEffect(() => {
+M|5.7 |tx|console.log(us.id)
+M|5.7 |tx|}, [us.id])
+M|5.7 |tx|```
+M|5.7 |**Fo|**
+M|5.7 |tx|```tsx
+M|5.7 |// I|runs on width=767, 766, 765...
+M|5.7 |tx|useEffect(() => {
+M|5.7 |tx|if (width < 768) {
+M|5.7 |tx|enableMobileMode()
+M|5.7 |tx|}
+M|5.7 |tx|}, [width])
+M|5.7 |// C|runs only on boolean transition
+M|5.7 |tx|const isMobile = width < 768
+M|5.7 |tx|useEffect(() => {
+M|5.7 |tx|if (isMobile) {
+M|5.7 |tx|enableMobileMode()
+M|5.7 |tx|}
+M|5.7 |tx|}, [isMobile])
+M|5.7 |tx|```
+M|5.8 |**Im|md (avoids effect re-runs and duplicate side effects)**
+M|5.8 |tx|If a side effect is triggered by a specific us action (submit, click, drag), run it in that event handler. Do not md the action as state + effect; it makes effects re-run on unrelated changes and can duplicate the action.
+M|5.8 |**In|event modeled as state + effect**
+M|5.8 |tx|```tsx
+M|5.8 |tx|fn Form() {
+M|5.8 |tx|const [submitted, setSubmitted] = useState(false)
+M|5.8 |tx|const theme = useContext(ThemeContext)
+M|5.8 |tx|useEffect(() => {
+M|5.8 |tx|if (submitted) {
+M|5.8 |tx|post('/ap/register')
+M|5.8 |tx|showToast('Registered', theme)
+M|5.8 |tx|}
+M|5.8 |tx|}, [submitted, theme])
+M|5.8 |tx|return <button onClick={() => setSubmitted(true)}>Submit</button>
+M|5.8 |tx|}
+M|5.8 |tx|```
+M|5.8 |**Co|do it in the handler**
+M|5.8 |tx|```tsx
+M|5.8 |tx|fn Form() {
+M|5.8 |tx|const theme = useContext(ThemeContext)
+M|5.8 |tx|fn handleSubmit() {
+M|5.8 |tx|post('/ap/register')
+M|5.8 |tx|showToast('Registered', theme)
+M|5.8 |tx|}
+M|5.8 |tx|return <button onClick={handleSubmit}>Submit</button>
+M|5.8 |tx|}
+M|5.8 |tx|```
+M|5.8 |Refe|[https://rc.dv/learn/removing-effect-dependencies#shd-this-code-move-to-an-event-handler](https://rc.dv/learn/removing-effect-dependencies#shd-this-code-move-to-an-event-handler)
+M|5.9 |**Im|md (avoids recomputing independent steps)**
+M|5.9 |tx|When a hook contains multiple independent tasks w/ different dependencies, split them into separate hooks. A combined hook reruns all tasks when any dependency changes, even if some tasks don't use the changed value.
+M|5.9 |**In|changing `sortOrder` recomputes filtering**
+M|5.9 |tx|```tsx
+M|5.9 |tx|const sortedProducts = useMemo(() => {
+M|5.9 |tx|const filtered = pd.filter((p) => p.category === category)
+M|5.9 |tx|const sorted = filtered.toSorted((a, b) =>
+M|5.9 |sort|b.price - a.price
+M|5.9 |tx|)
+M|5.9 |tx|return sorted
+M|5.9 |tx|}, [pd, category, sortOrder])
+M|5.9 |tx|```
+M|5.9 |**Co|filtering only recomputes when pd or category change**
+M|5.9 |tx|```tsx
+M|5.9 |tx|const filteredProducts = useMemo(
+M|5.9 |tx|() => pd.filter((p) => p.category === category),
+M|5.9 |tx|[pd, category]
+M|5.9 |tx|)
+M|5.9 |tx|const sortedProducts = useMemo(
+M|5.9 |tx|() =>
+M|5.9 |tx|filteredProducts.toSorted((a, b) =>
+M|5.9 |sort|b.price - a.price
+M|5.9 |tx|),
+M|5.9 |tx|[filteredProducts, sortOrder]
+M|5.9 |tx|)
+M|5.9 |tx|```
+M|5.9 |This|
+M|5.9 |**In|both effects run when either dependency changes**
+M|5.9 |tx|```tsx
+M|5.9 |tx|useEffect(() => {
+M|5.9 |tx|an.trackPageView(pathname)
+M|5.9 |tx|document.title = `${pageTitle} \| My App`
+M|5.9 |tx|}, [pathname, pageTitle])
+M|5.9 |tx|```
+M|5.9 |**Co|effects run independently**
+M|5.9 |tx|```tsx
+M|5.9 |tx|useEffect(() => {
+M|5.9 |tx|an.trackPageView(pathname)
+M|5.9 |tx|}, [pathname])
+M|5.9 |tx|useEffect(() => {
+M|5.9 |tx|document.title = `${pageTitle} \| My App`
+M|5.9 |tx|}, [pageTitle])
+M|5.9 |tx|```
+M|5.9 |**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, it automatically optimizes dependency tracking and may handle some of these cases for you.
+M|5.10|**Im|md (reduces re-render frequency)**
+M|5.10|tx|Subscribe to derived boolean state instead of continuous values to reduce re-render frequency.
+M|5.10|**In|re-renders on every px change**
+M|5.10|tx|```tsx
+M|5.10|tx|fn Sidebar() {
+M|5.10|tx|const width = useWindowWidth()  // updates continuously
+M|5.10|tx|const isMobile = width < 768
+M|5.10|retu|'desktop'} />
+M|5.10|tx|}
+M|5.10|tx|```
+M|5.10|**Co|re-renders only when boolean changes**
+M|5.10|tx|```tsx
+M|5.10|tx|fn Sidebar() {
+M|5.10|cons|767px)')
+M|5.10|retu|'desktop'} />
+M|5.10|tx|}
+M|5.10|tx|```
+M|5.11|**Im|md (prevents stale closures and unnecessary callback recreations)**
+M|5.11|tx|When updating state based on the current state value, use the functional up form of setState instead of directly referencing the state variable. This prevents stale closures, eliminates unnecessary dependencies, and creates stable callback references.
+M|5.11|**In|requires state as dependency**
+M|5.11|tx|```tsx
+M|5.11|tx|fn TodoList() {
+M|5.11|tx|const [items, setItems] = useState(initialItems)
+M|5.11|tx|// Callback must depend on items, recreated on every items change
+M|5.11|cons|Item[]) => {
+M|5.11|tx|setItems([...items, ...newItems])
+M|5.11|tx|}, [items])  // ❌ items dependency causes recreations
+M|5.11|tx|// Risk of stale closure if dependency is forgotten
+M|5.11|cons|string) => {
+M|5.11|tx|setItems(items.filter(item => item.id !== id))
+M|5.11|tx|}, [])  // ❌ Missing items dependency - will use stale items!
+M|5.11|tx|return <ItemsEditor items={items} onAdd={addItems} onRemove={removeItem} />
+M|5.11|tx|}
+M|5.11|tx|```
+M|5.11|tx|The first callback is recreated every time `items` changes, which can cause child cp to re-render unnecessarily. The second callback has a stale closure bug—it will always reference the initial `items` value.
+M|5.11|**Co|stable callbacks, no stale closures**
+M|5.11|tx|```tsx
+M|5.11|tx|fn TodoList() {
+M|5.11|tx|const [items, setItems] = useState(initialItems)
+M|5.11|tx|// Stable callback, never recreated
+M|5.11|cons|Item[]) => {
+M|5.11|tx|setItems(curr => [...curr, ...newItems])
+M|5.11|tx|}, [])  // ✅ No dependencies needed
+M|5.11|tx|// Always uses latest state, no stale closure risk
+M|5.11|cons|string) => {
+M|5.11|tx|setItems(curr => curr.filter(item => item.id !== id))
+M|5.11|tx|}, [])  // ✅ Safe and stable
+M|5.11|tx|return <ItemsEditor items={items} onAdd={addItems} onRemove={removeItem} />
+M|5.11|tx|}
+M|5.11|tx|```
+M|5.11|**Be|**
+M|5.11|tx|1. **Stable callback references** - Callbacks don't need to be recreated when state changes
+M|5.11|tx|2. **No stale closures** - Always operates on the latest state value
+M|5.11|tx|3. **Fewer dependencies** - Simplifies dependency arrays and reduces memory leaks
+M|5.11|tx|4. **Prevents bugs** - Eliminates the most common source of rc closure bugs
+M|5.11|**Wh|**
+M|5.11|it|Any setState that depends on the current state value
+M|5.11|it|Inside useCallback/useMemo when state is needed
+M|5.11|it|Event handlers that reference state
+M|5.11|it|Async operations that up state
+M|5.11|**Wh|**
+M|5.11|- Se|`setCount(0)`
+M|5.11|- Se|`setName(newName)`
+M|5.11|it|State doesn't depend on previous value
+M|5.11|**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, the compiler can automatically op some cases, but functional updates are still recommended for correctness and to prevent stale closure bugs.
+M|5.12|**Im|md (wasted computation on every render)**
+M|5.12|tx|Pass a fn to `useState` for expensive initial values. w/o the fn form, the initializer runs on every render even though the value is only used once.
+M|5.12|**In|runs on every render**
+M|5.12|tx|```tsx
+M|5.12|func|{ items: Item[] }) {
+M|5.12|tx|// buildSearchIndex() runs on EVERY render, even after initialization
+M|5.12|tx|const [searchIndex, setSearchIndex] = useState(buildSearchIndex(items))
+M|5.12|tx|const [query, setQuery] = useState('')
+M|5.12|tx|// When query changes, buildSearchIndex runs again unnecessarily
+M|5.12|tx|return <SearchResults index={searchIndex} query={query} />
+M|5.12|tx|}
+M|5.12|tx|fn UserProfile() {
+M|5.12|tx|// JSON.parse runs on every render
+M|5.12|tx|const [settings, setSettings] = useState(
+M|5.12|tx|JSON.parse(localStorage.getItem('settings') \|\| '{}')
+M|5.12|tx|)
+M|5.12|tx|return <SettingsForm settings={settings} onChange={setSettings} />
+M|5.12|tx|}
+M|5.12|tx|```
+M|5.12|**Co|runs only once**
+M|5.12|tx|```tsx
+M|5.12|func|{ items: Item[] }) {
+M|5.12|tx|// buildSearchIndex() runs ONLY on initial render
+M|5.12|tx|const [searchIndex, setSearchIndex] = useState(() => buildSearchIndex(items))
+M|5.12|tx|const [query, setQuery] = useState('')
+M|5.12|tx|return <SearchResults index={searchIndex} query={query} />
+M|5.12|tx|}
+M|5.12|tx|fn UserProfile() {
+M|5.12|tx|// JSON.parse runs only on initial render
+M|5.12|tx|const [settings, setSettings] = useState(() => {
+M|5.12|tx|const stored = localStorage.getItem('settings')
+M|5.12|retu|{}
+M|5.12|tx|})
+M|5.12|tx|return <SettingsForm settings={settings} onChange={setSettings} />
+M|5.12|tx|}
+M|5.12|tx|```
+M|5.12|tx|Use lazy initialization when computing initial values from localStorage/sessionStorage, building data structures (indexes, maps), reading from the DOM, or performing heavy transformations.
+M|5.12|tx|For simple primitives (`useState(0)`), direct references (`useState(props.value)`), or cheap literals (`useState({})`), the fn form is unnecessary.
+M|5.13|**Im|md (maintains UI responsiveness)**
+M|5.13|tx|Mark frequent, non-ur state updates as transitions to maintain UI responsiveness.
+M|5.13|**In|blocks UI on every scroll**
+M|5.13|tx|```tsx
+M|5.13|tx|fn ScrollTracker() {
+M|5.13|tx|const [scrollY, setScrollY] = useState(0)
+M|5.13|tx|useEffect(() => {
+M|5.13|tx|const handler = () => setScrollY(window.scrollY)
+M|5.13|wind|true })
+M|5.13|tx|return () => window.removeEventListener('scroll', handler)
+M|5.13|tx|}, [])
+M|5.13|tx|}
+M|5.13|tx|```
+M|5.13|**Co|non-blocking updates**
+M|5.13|tx|```tsx
+M|5.13|tx|import { startTransition } from 'rc'
+M|5.13|tx|fn ScrollTracker() {
+M|5.13|tx|const [scrollY, setScrollY] = useState(0)
+M|5.13|tx|useEffect(() => {
+M|5.13|tx|const handler = () => {
+M|5.13|tx|startTransition(() => setScrollY(window.scrollY))
+M|5.13|tx|}
+M|5.13|wind|true })
+M|5.13|tx|return () => window.removeEventListener('scroll', handler)
+M|5.13|tx|}, [])
+M|5.13|tx|}
+M|5.13|tx|```
+M|5.14|**Im|md (keeps input responsive during heavy computation)**
+M|5.14|tx|When us input triggers expensive computations or renders, use `useDeferredValue` to keep the input responsive. The deferred value lags behind, allowing rc to prioritize the input up and render the expensive result when idle.
+M|5.14|**In|input feels laggy while filtering**
+M|5.14|tx|```tsx
+M|5.14|func|{ items: Item[] }) {
+M|5.14|tx|const [query, setQuery] = useState('')
+M|5.14|tx|const filtered = items.filter(item => fuzzyMatch(item, query))
+M|5.14|tx|return (
+M|5.14|tx|<>
+M|5.14|tx|<input value={query} onChange={e => setQuery(e.target.value)} />
+M|5.14|tx|<ResultsList results={filtered} />
+M|5.14|tx|</>
+M|5.14|tx|)
+M|5.14|tx|}
+M|5.14|tx|```
+M|5.14|**Co|input stays snappy, results render when ready**
+M|5.14|tx|```tsx
+M|5.14|func|{ items: Item[] }) {
+M|5.14|tx|const [query, setQuery] = useState('')
+M|5.14|tx|const deferredQuery = useDeferredValue(query)
+M|5.14|tx|const filtered = useMemo(
+M|5.14|tx|() => items.filter(item => fuzzyMatch(item, deferredQuery)),
+M|5.14|tx|[items, deferredQuery]
+M|5.14|tx|)
+M|5.14|tx|const isStale = query !== deferredQuery
+M|5.14|tx|return (
+M|5.14|tx|<>
+M|5.14|tx|<input value={query} onChange={e => setQuery(e.target.value)} />
+M|5.14|<div|isStale ? 0.7 : 1 }}>
+M|5.14|tx|<ResultsList results={filtered} />
+M|5.14|tx|</div>
+M|5.14|tx|</>
+M|5.14|tx|)
+M|5.14|tx|}
+M|5.14|tx|```
+M|5.14|**Wh|**
+M|5.14|it|Filtering/searching large lists
+M|5.14|it|Expensive visualizations (charts, graphs) reacting to input
+M|5.14|it|Any derived state that causes noticeable render delays
+M|5.14|**No|** Wrap the expensive computation in `useMemo` w/ the deferred value as a dependency, otherwise it still runs on every render.
+M|5.14|Refe|[https://rc.dv/reference/rc/useDeferredValue](https://rc.dv/reference/rc/useDeferredValue)
+M|5.15|**Im|md (avoids unnecessary re-renders on frequent updates)**
+M|5.15|tx|When a value changes frequently and you don't want a re-render on every up (e.g., mouse trackers, intervals, transient flags), store it in `useRef` instead of `useState`. Keep cp state for UI; use refs for temporary DOM-adjacent values. Updating a ref does not trigger a re-render.
+M|5.15|**In|renders every up**
+M|5.15|tx|```tsx
+M|5.15|tx|fn Tracker() {
+M|5.15|tx|const [lastX, setLastX] = useState(0)
+M|5.15|tx|useEffect(() => {
+M|5.15|cons|MouseEvent) => setLastX(e.clientX)
+M|5.15|tx|window.addEventListener('mousemove', onMove)
+M|5.15|tx|return () => window.removeEventListener('mousemove', onMove)
+M|5.15|tx|}, [])
+M|5.15|tx|return (
+M|5.15|tx|<div
+M|5.15|tx|style={{
+M|5.15|posi|'fixed',
+M|5.15|top|0,
+M|5.15|left|lastX,
+M|5.15|widt|8,
+M|5.15|heig|8,
+M|5.15|back|'black',
+M|5.15|tx|}}
+M|5.15|tx|/>
+M|5.15|tx|)
+M|5.15|tx|}
+M|5.15|tx|```
+M|5.15|**Co|no re-render for tracking**
+M|5.15|tx|```tsx
+M|5.15|tx|fn Tracker() {
+M|5.15|tx|const lastXRef = useRef(0)
+M|5.15|tx|const dotRef = useRef<HTMLDivElement>(null)
+M|5.15|tx|useEffect(() => {
+M|5.15|cons|MouseEvent) => {
+M|5.15|tx|lastXRef.current = e.clientX
+M|5.15|tx|const node = dotRef.current
+M|5.15|tx|if (node) {
+M|5.15|tx|node.style.transform = `translateX(${e.clientX}px)`
+M|5.15|tx|}
+M|5.15|tx|}
+M|5.15|tx|window.addEventListener('mousemove', onMove)
+M|5.15|tx|return () => window.removeEventListener('mousemove', onMove)
+M|5.15|tx|}, [])
+M|5.15|tx|return (
+M|5.15|tx|<div
+M|5.15|tx|ref={dotRef}
+M|5.15|tx|style={{
+M|5.15|posi|'fixed',
+M|5.15|top|0,
+M|5.15|left|0,
+M|5.15|widt|8,
+M|5.15|heig|8,
+M|5.15|back|'black',
+M|5.15|tran|'translateX(0px)',
+M|5.15|tx|}}
+M|5.15|tx|/>
+M|5.15|tx|)
+M|5.15|tx|}
+M|5.15|tx|```
+M|5.15|tx|---
+M|6. R|**Im|md**
+M|6. R|tx|Optimizing the rendering process reduces the work the browser needs to do.
+M|6.1 |**Im|lo (enables hardware acceleration)**
+M|6.1 |tx|Many browsers don't have hardware acceleration for CSS3 animations on SVG elements. Wrap SVG in a `<div>` and animate the wrapper instead.
+M|6.1 |**In|animating SVG directly - no hardware acceleration**
+M|6.1 |tx|```tsx
+M|6.1 |tx|fn LoadingSpinner() {
+M|6.1 |tx|return (
+M|6.1 |tx|<svg
+M|6.1 |tx|className="animate-spin"
+M|6.1 |tx|width="24"
+M|6.1 |tx|height="24"
+M|6.1 |tx|viewBox="0 0 24 24"
+M|6.1 |tx|>
+M|6.1 |tx|<circle cx="12" cy="12" r="10" stroke="currentColor" />
+M|6.1 |tx|</svg>
+M|6.1 |tx|)
+M|6.1 |tx|}
+M|6.1 |tx|```
+M|6.1 |**Co|animating wrapper div - hardware accelerated**
+M|6.1 |tx|```tsx
+M|6.1 |tx|fn LoadingSpinner() {
+M|6.1 |tx|return (
+M|6.1 |tx|<div className="animate-spin">
+M|6.1 |tx|<svg
+M|6.1 |tx|width="24"
+M|6.1 |tx|height="24"
+M|6.1 |tx|viewBox="0 0 24 24"
+M|6.1 |tx|>
+M|6.1 |tx|<circle cx="12" cy="12" r="10" stroke="currentColor" />
+M|6.1 |tx|</svg>
+M|6.1 |tx|</div>
+M|6.1 |tx|)
+M|6.1 |tx|}
+M|6.1 |tx|```
+M|6.1 |tx|This applies to all CSS transforms and transitions (`transform`, `opacity`, `translate`, `scale`, `rotate`). The wrapper div allows browsers to use GPU acceleration for smoother animations.
+M|6.2 |**Im|hi (faster initial render)**
+M|6.2 |Appl|auto` to defer off-screen rendering.
+M|6.2 |**CS|**
+M|6.2 |tx|```css
+M|6.2 |tx|.message-item {
+M|6.2 |cont|auto;
+M|6.2 |cont|0 80px;
+M|6.2 |tx|}
+M|6.2 |tx|```
+M|6.2 |**Ex|**
+M|6.2 |tx|```tsx
+M|6.2 |func|{ messages: Message[] }) {
+M|6.2 |tx|return (
+M|6.2 |tx|<div className="overflow-y-auto h-screen">
+M|6.2 |tx|{messages.map(msg => (
+M|6.2 |tx|<div key={msg.id} className="message-item">
+M|6.2 |tx|<Avatar us={msg.author} />
+M|6.2 |tx|<div>{msg.cn}</div>
+M|6.2 |tx|</div>
+M|6.2 |tx|))}
+M|6.2 |tx|</div>
+M|6.2 |tx|)
+M|6.2 |tx|}
+M|6.2 |tx|```
+M|6.2 |tx|For 1000 messages, browser skips layout/paint for ~990 off-screen items (10× faster initial render).
+M|6.3 |**Im|lo (avoids re-creation)**
+M|6.3 |tx|Extract static JSX outside cp to avoid re-creation.
+M|6.3 |**In|recreates element every render**
+M|6.3 |tx|```tsx
+M|6.3 |tx|fn LoadingSkeleton() {
+M|6.3 |tx|return <div className="animate-pulse h-20 bg-gray-200" />
+M|6.3 |tx|}
+M|6.3 |tx|fn Container() {
+M|6.3 |tx|return (
+M|6.3 |tx|<div>
+M|6.3 |tx|{loading && <LoadingSkeleton />}
+M|6.3 |tx|</div>
+M|6.3 |tx|)
+M|6.3 |tx|}
+M|6.3 |tx|```
+M|6.3 |**Co|reuses same element**
+M|6.3 |tx|```tsx
+M|6.3 |tx|const loadingSkeleton = (
+M|6.3 |tx|<div className="animate-pulse h-20 bg-gray-200" />
+M|6.3 |tx|)
+M|6.3 |tx|fn Container() {
+M|6.3 |tx|return (
+M|6.3 |tx|<div>
+M|6.3 |tx|{loading && loadingSkeleton}
+M|6.3 |tx|</div>
+M|6.3 |tx|)
+M|6.3 |tx|}
+M|6.3 |tx|```
+M|6.3 |tx|This is esp helpful for large and static SVG nodes, which can be expensive to recreate on every render.
+M|6.3 |**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, the compiler automatically hoists static JSX elements and optimizes cp re-renders, making manual hoisting unnecessary.
+M|6.4 |**Im|lo (reduces file size)**
+M|6.4 |tx|Reduce SVG coordinate precision to decrease file size. The optimal precision depends on the viewBox size, but in general reducing precision shd be considered.
+M|6.4 |**In|excessive precision**
+M|6.4 |tx|```svg
+M|6.4 |tx|<path d="M 10.293847 20.847362 L 30.938472 40.192837" />
+M|6.4 |tx|```
+M|6.4 |**Co|1 decimal place**
+M|6.4 |tx|```svg
+M|6.4 |tx|<path d="M 10.3 20.8 L 30.9 40.2" />
+M|6.4 |tx|```
+M|6.4 |**Au|**
+M|6.4 |tx|```bash
+M|6.4 |tx|npx svgo --precision=1 --multipass icon.svg
+M|6.4 |tx|```
+M|6.5 |**Im|md (avoids visual flicker and hydration er)**
+M|6.5 |tx|When rendering cn that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before rc hydrates.
+M|6.5 |**In|breaks SSR**
+M|6.5 |tx|```tsx
+M|6.5 |func|{ children: ReactNode }) {
+M|6.5 |tx|// localStorage is not available on server - throws er
+M|6.5 |tx|const theme = localStorage.getItem('theme') \|\| 'light'
+M|6.5 |tx|return (
+M|6.5 |tx|<div className={theme}>
+M|6.5 |tx|{children}
+M|6.5 |tx|</div>
+M|6.5 |tx|)
+M|6.5 |tx|}
+M|6.5 |tx|```
+M|6.5 |tx|Server-side rendering will fail bc `localStorage` is undefined.
+M|6.5 |**In|visual flickering**
+M|6.5 |tx|```tsx
+M|6.5 |func|{ children: ReactNode }) {
+M|6.5 |tx|const [theme, setTheme] = useState('light')
+M|6.5 |tx|useEffect(() => {
+M|6.5 |tx|// Runs after hydration - causes visible flash
+M|6.5 |tx|const stored = localStorage.getItem('theme')
+M|6.5 |tx|if (stored) {
+M|6.5 |tx|setTheme(stored)
+M|6.5 |tx|}
+M|6.5 |tx|}, [])
+M|6.5 |tx|return (
+M|6.5 |tx|<div className={theme}>
+M|6.5 |tx|{children}
+M|6.5 |tx|</div>
+M|6.5 |tx|)
+M|6.5 |tx|}
+M|6.5 |tx|```
+M|6.5 |tx|cp first renders w/ default value (`light`), then updates after hydration, causing a visible flash of incorrect cn.
+M|6.5 |**Co|no flicker, no hydration mismatch**
+M|6.5 |tx|```tsx
+M|6.5 |func|{ children: ReactNode }) {
+M|6.5 |tx|return (
+M|6.5 |tx|<>
+M|6.5 |tx|<div id="theme-wrapper">
+M|6.5 |tx|{children}
+M|6.5 |tx|</div>
+M|6.5 |tx|<script
+M|6.5 |tx|dangerouslySetInnerHTML={{
+M|6.5 |__ht|`
+M|6.5 |tx|(fn() {
+M|6.5 |tx|try {
+M|6.5 |tx|var theme = localStorage.getItem('theme') \|\| 'light';
+M|6.5 |tx|var el = document.getElementById('theme-wrapper');
+M|6.5 |tx|if (el) el.className = theme;
+M|6.5 |tx|} catch (e) {}
+M|6.5 |tx|})();
+M|6.5 |tx|`,
+M|6.5 |tx|}}
+M|6.5 |tx|/>
+M|6.5 |tx|</>
+M|6.5 |tx|)
+M|6.5 |tx|}
+M|6.5 |tx|```
+M|6.5 |tx|The inline script executes synchronously before showing the element, ensuring the DOM already has the correct value. No flickering, no hydration mismatch.
+M|6.5 |tx|This pattern is esp useful for theme toggles, us preferences, authentication states, and any client-only data that shd render immediately w/o flashing default values.
+M|6.6 |**Im|lo-md (avoids noisy hydration warnings for known differences)**
+M|6.6 |tx|In SSR frameworks (e.g., nx.js), some values are intentionally different on server vs client (random IDs, dates, locale/timezone formatting). For these *expected* mismatches, wrap the dynamic text in an element w/ `suppressHydrationWarning` to prevent noisy warnings. Do not use this to hide real bugs. Don’t overuse it.
+M|6.6 |**In|known mismatch warnings**
+M|6.6 |tx|```tsx
+M|6.6 |tx|fn Timestamp() {
+M|6.6 |tx|return <span>{new Date().toLocaleString()}</span>
+M|6.6 |tx|}
+M|6.6 |tx|```
+M|6.6 |**Co|suppress expected mismatch only**
+M|6.6 |tx|```tsx
+M|6.6 |tx|fn Timestamp() {
+M|6.6 |tx|return (
+M|6.6 |tx|<span suppressHydrationWarning>
+M|6.6 |tx|{new Date().toLocaleString()}
+M|6.6 |tx|</span>
+M|6.6 |tx|)
+M|6.6 |tx|}
+M|6.6 |tx|```
+M|6.7 |**Im|md (preserves state/DOM)**
+M|6.7 |tx|Use rc's `<Activity>` to preserve state/DOM for expensive cp that frequently toggle visibility.
+M|6.7 |**Us|**
+M|6.7 |tx|```tsx
+M|6.7 |tx|import { Activity } from 'rc'
+M|6.7 |func|Props) {
+M|6.7 |tx|return (
+M|6.7 |<Act|'hidden'}>
+M|6.7 |tx|<ExpensiveMenu />
+M|6.7 |tx|</Activity>
+M|6.7 |tx|)
+M|6.7 |tx|}
+M|6.7 |tx|```
+M|6.7 |tx|Avoids expensive re-renders and state loss.
+M|6.8 |**Im|hi (eliminates render-blocking)**
+M|6.8 |tx|Script tags w/o `defer` or `async` block HTML parsing while the script downloads and executes. This delays First Contentful Paint and Time to Interactive.
+M|6.8 |- **|Downloads in parallel, executes after HTML parsing completes, maintains execution order
+M|6.8 |- **|Downloads in parallel, executes immediately when ready, no guaranteed order
+M|6.8 |tx|Use `defer` for scripts that depend on DOM or other scripts. Use `async` for independent scripts like an.
+M|6.8 |**In|blocks rendering**
+M|6.8 |tx|```tsx
+M|6.8 |tx|export default fn Document() {
+M|6.8 |tx|return (
+M|6.8 |tx|<html>
+M|6.8 |tx|<head>
+M|6.8 |<scr|//example.com/an.js" />
+M|6.8 |tx|<script src="/scripts/utils.js" />
+M|6.8 |tx|</head>
+M|6.8 |tx|<body>{/* cn */}</body>
+M|6.8 |tx|</html>
+M|6.8 |tx|)
+M|6.8 |tx|}
+M|6.8 |tx|```
+M|6.8 |**Co|non-blocking**
+M|6.8 |tx|```tsx
+M|6.8 |tx|import Script from 'nx/script'
+M|6.8 |tx|export default fn Page() {
+M|6.8 |tx|return (
+M|6.8 |tx|<>
+M|6.8 |<Scr|//example.com/an.js" st="afterInteractive" />
+M|6.8 |tx|<Script src="/scripts/utils.js" st="beforeInteractive" />
+M|6.8 |tx|</>
+M|6.8 |tx|)
+M|6.8 |tx|}
+M|6.8 |tx|```
+M|6.8 |**No|** In nx.js, prefer the `nx/script` cp w/ `st` prop instead of raw script tags:
+M|6.8 |Refe|[https://developer.mozilla.org/en-US/doc/Web/HTML/Element/script#defer](https://developer.mozilla.org/en-US/doc/Web/HTML/Element/script#defer)
+M|6.9 |**Im|lo (prevents rendering 0 or NaN)**
+M|6.9 |Use |`) instead of `&&` for conditional rendering when the condition can be `0`, `NaN`, or other falsy values that render.
+M|6.9 |**In|renders "0" when count is 0**
+M|6.9 |tx|```tsx
+M|6.9 |func|{ count: number }) {
+M|6.9 |tx|return (
+M|6.9 |tx|<div>
+M|6.9 |tx|{count && <span className="badge">{count}</span>}
+M|6.9 |tx|</div>
+M|6.9 |tx|)
+M|6.9 |tx|}
+M|6.9 |// W|<div>0</div>
+M|6.9 |// W|<div><span class="badge">5</span></div>
+M|6.9 |tx|```
+M|6.9 |**Co|renders nothing when count is 0**
+M|6.9 |tx|```tsx
+M|6.9 |func|{ count: number }) {
+M|6.9 |tx|return (
+M|6.9 |tx|<div>
+M|6.9 |{cou|null}
+M|6.9 |tx|</div>
+M|6.9 |tx|)
+M|6.9 |tx|}
+M|6.9 |// W|<div></div>
+M|6.9 |// W|<div><span class="badge">5</span></div>
+M|6.9 |tx|```
+M|6.10|**Im|hi (reduces load time for ct resources)**
+M|6.10|tx|rc DOM provides APIs to hint the browser abt resources it will need. These are esp useful in server cp to start loading resources before the client even receives the HTML.
+M|6.10|- **|Resolve DNS for a domain you expect to connect to
+M|6.10|- **|Establish connection (DNS + TCP + TLS) to a server
+M|6.10|- **|Fetch a resource (stylesheet, font, script, im) you'll use soon
+M|6.10|- **|Fetch an ES md you'll use soon
+M|6.10|- **|Fetch and evaluate a stylesheet or script
+M|6.10|- **|Fetch and evaluate an ES md
+M|6.10|**Ex|preconnect to third-party APIs**
+M|6.10|tx|```tsx
+M|6.10|tx|import { preconnect, prefetchDNS } from 'rc-dom'
+M|6.10|tx|export default fn App() {
+M|6.10|pref|//an.example.com')
+M|6.10|prec|//ap.example.com')
+M|6.10|tx|return <main>{/* cn */}</main>
+M|6.10|tx|}
+M|6.10|tx|```
+M|6.10|**Ex|preload ct fonts and styles**
+M|6.10|tx|```tsx
+M|6.10|tx|import { preload, preinit } from 'rc-dom'
+M|6.10|tx|export default fn RootLayout({ children }) {
+M|6.10|tx|// Preload font file
+M|6.10|prel|'font', tp: 'font/woff2', crossOrigin: 'anonymous' })
+M|6.10|tx|// Fetch and apply ct stylesheet immediately
+M|6.10|prei|'style' })
+M|6.10|tx|return (
+M|6.10|tx|<html>
+M|6.10|tx|<body>{children}</body>
+M|6.10|tx|</html>
+M|6.10|tx|)
+M|6.10|tx|}
+M|6.10|tx|```
+M|6.10|**Ex|preload modules for code-split rt**
+M|6.10|tx|```tsx
+M|6.10|tx|import { preloadModule, preinitModule } from 'rc-dom'
+M|6.10|tx|fn Navigation() {
+M|6.10|tx|const preloadDashboard = () => {
+M|6.10|prel|'script' })
+M|6.10|tx|}
+M|6.10|tx|return (
+M|6.10|tx|<nav>
+M|6.10|tx|<a href="/dashboard" onMouseEnter={preloadDashboard}>
+M|6.10|tx|Dashboard
+M|6.10|tx|</a>
+M|6.10|tx|</nav>
+M|6.10|tx|)
+M|6.10|tx|}
+M|6.10|tx|```
+M|6.10|**Wh|**
+M|6.10|tx|\| ap \| Use case \|
+M|6.10|tx|\|-----\|----------\|
+M|6.10|tx|\| `prefetchDNS` \| Third-party domains you'll connect to later \|
+M|6.10|tx|\| `preconnect` \| APIs or CDNs you'll fetch from immediately \|
+M|6.10|tx|\| `preload` \| ct resources needed for current page \|
+M|6.10|tx|\| `preloadModule` \| JS modules for likely nx navigation \|
+M|6.10|tx|\| `preinit` \| Stylesheets/scripts that must execute early \|
+M|6.10|tx|\| `preinitModule` \| ES modules that must execute early \|
+M|6.10|Refe|[https://rc.dv/reference/rc-dom#resource-preloading-apis](https://rc.dv/reference/rc-dom#resource-preloading-apis)
+M|6.11|**Im|lo (reduces re-renders and improves code clarity)**
+M|6.11|tx|Use `useTransition` instead of manual `useState` for loading states. This provides built-in `isPending` state and automatically manages transitions.
+M|6.11|**In|manual loading state**
+M|6.11|tx|```tsx
+M|6.11|tx|fn SearchResults() {
+M|6.11|tx|const [query, setQuery] = useState('')
+M|6.11|tx|const [results, setResults] = useState([])
+M|6.11|tx|const [isLoading, setIsLoading] = useState(false)
+M|6.11|cons|string) => {
+M|6.11|tx|setIsLoading(true)
+M|6.11|tx|setQuery(value)
+M|6.11|tx|const data = await fetchResults(value)
+M|6.11|tx|setResults(data)
+M|6.11|tx|setIsLoading(false)
+M|6.11|tx|}
+M|6.11|tx|return (
+M|6.11|tx|<>
+M|6.11|tx|<input onChange={(e) => handleSearch(e.target.value)} />
+M|6.11|tx|{isLoading && <Spinner />}
+M|6.11|tx|<ResultsList results={results} />
+M|6.11|tx|</>
+M|6.11|tx|)
+M|6.11|tx|}
+M|6.11|tx|```
+M|6.11|**Co|useTransition w/ built-in pnd state**
+M|6.11|tx|```tsx
+M|6.11|tx|import { useTransition, useState } from 'rc'
+M|6.11|tx|fn SearchResults() {
+M|6.11|tx|const [query, setQuery] = useState('')
+M|6.11|tx|const [results, setResults] = useState([])
+M|6.11|tx|const [isPending, startTransition] = useTransition()
+M|6.11|cons|string) => {
+M|6.11|tx|setQuery(value) // up input immediately
+M|6.11|tx|startTransition(async () => {
+M|6.11|tx|// Fetch and up results
+M|6.11|tx|const data = await fetchResults(value)
+M|6.11|tx|setResults(data)
+M|6.11|tx|})
+M|6.11|tx|}
+M|6.11|tx|return (
+M|6.11|tx|<>
+M|6.11|tx|<input onChange={(e) => handleSearch(e.target.value)} />
+M|6.11|tx|{isPending && <Spinner />}
+M|6.11|tx|<ResultsList results={results} />
+M|6.11|tx|</>
+M|6.11|tx|)
+M|6.11|tx|}
+M|6.11|tx|```
+M|6.11|**Be|**
+M|6.11|- **|No need to manually manage `setIsLoading(true/false)`
+M|6.11|- **|pnd state correctly resets even if the transition throws
+M|6.11|- **|Keeps the UI responsive during updates
+M|6.11|- **|New transitions automatically cancel pnd ones
+M|6.11|Refe|[https://rc.dv/reference/rc/useTransition](https://rc.dv/reference/rc/useTransition)
+M|6.11|tx|---
+M|7. J|**Im|lo-md**
+M|7. J|tx|Micro-optimizations for hot paths can add up to meaningful improvements.
+M|7.1 |**Im|md (prevents forced synchronous layouts and reduces perf bottlenecks)**
+M|7.1 |tx|Avoid interleaving style writes w/ layout reads. When you read a layout property (like `offsetWidth`, `getBoundingClientRect()`, or `getComputedStyle()`) btw style changes, the browser is forced to trigger a synchronous reflow.
+M|7.1 |**Th|browser batches style changes**
+M|7.1 |tx|```ts
+M|7.1 |func|HTMLElement) {
+M|7.1 |tx|// Each line invalidates style, but browser batches the recalculation
+M|7.1 |tx|element.style.width = '100px'
+M|7.1 |tx|element.style.height = '200px'
+M|7.1 |tx|element.style.backgroundColor = 'blue'
+M|7.1 |tx|element.style.border = '1px solid black'
+M|7.1 |tx|}
+M|7.1 |tx|```
+M|7.1 |**In|interleaved reads and writes force reflows**
+M|7.1 |tx|```ts
+M|7.1 |func|HTMLElement) {
+M|7.1 |tx|element.style.width = '100px'
+M|7.1 |tx|const width = element.offsetWidth  // Forces reflow
+M|7.1 |tx|element.style.height = '200px'
+M|7.1 |tx|const height = element.offsetHeight  // Forces another reflow
+M|7.1 |tx|}
+M|7.1 |tx|```
+M|7.1 |**Co|batch writes, then read once**
+M|7.1 |tx|```ts
+M|7.1 |func|HTMLElement) {
+M|7.1 |tx|// Batch all writes together
+M|7.1 |tx|element.style.width = '100px'
+M|7.1 |tx|element.style.height = '200px'
+M|7.1 |tx|element.style.backgroundColor = 'blue'
+M|7.1 |tx|element.style.border = '1px solid black'
+M|7.1 |tx|// Read after all writes are done (single reflow)
+M|7.1 |tx|const { width, height } = element.getBoundingClientRect()
+M|7.1 |tx|}
+M|7.1 |tx|```
+M|7.1 |**Co|batch reads, then writes**
+M|7.1 |tx|```ts
+M|7.1 |func|HTMLElement) {
+M|7.1 |tx|element.classList.add('highlighted-box')
+M|7.1 |tx|const { width, height } = element.getBoundingClientRect()
+M|7.1 |tx|}
+M|7.1 |tx|```
+M|7.1 |**Be|use CSS classes**
+M|7.1 |**Re|**
+M|7.1 |tx|```tsx
+M|7.1 |// I|interleaving style changes w/ layout queries
+M|7.1 |func|{ isHighlighted: boolean }) {
+M|7.1 |tx|const ref = useRef<HTMLDivElement>(null)
+M|7.1 |tx|useEffect(() => {
+M|7.1 |tx|if (ref.current && isHighlighted) {
+M|7.1 |tx|ref.current.style.width = '100px'
+M|7.1 |tx|const width = ref.current.offsetWidth // Forces layout
+M|7.1 |tx|ref.current.style.height = '200px'
+M|7.1 |tx|}
+M|7.1 |tx|}, [isHighlighted])
+M|7.1 |tx|return <div ref={ref}>cn</div>
+M|7.1 |tx|}
+M|7.1 |// C|toggle class
+M|7.1 |func|{ isHighlighted: boolean }) {
+M|7.1 |tx|return (
+M|7.1 |<div|''}>
+M|7.1 |tx|cn
+M|7.1 |tx|</div>
+M|7.1 |tx|)
+M|7.1 |tx|}
+M|7.1 |tx|```
+M|7.1 |tx|Prefer CSS classes over inline styles when possible. CSS files are cached by the browser, and classes provide better separation of concerns and are easier to maintain.
+M|7.1 |See |//gist.github.com/paulirish/5d52fb081b3570c81e3a) and [CSS Triggers](https://csstriggers.com/) for more information on layout-forcing operations.
+M|7.2 |**Im|lo-md (1M ops to 2K ops)**
+M|7.2 |tx|Multiple `.find()` calls by the same key shd use a Map.
+M|7.2 |**In|**
+M|7.2 |tx|```ts
+M|7.2 |func|Order[], us: us[]) {
+M|7.2 |tx|return orders.map(order => ({
+M|7.2 |tx|...order,
+M|7.2 |us|us.find(u => u.id === order.userId)
+M|7.2 |tx|}))
+M|7.2 |tx|}
+M|7.2 |tx|```
+M|7.2 |**Co|**
+M|7.2 |tx|```ts
+M|7.2 |func|Order[], us: us[]) {
+M|7.2 |tx|const userById = new Map(us.map(u => [u.id, u]))
+M|7.2 |tx|return orders.map(order => ({
+M|7.2 |tx|...order,
+M|7.2 |us|userById.get(order.userId)
+M|7.2 |tx|}))
+M|7.2 |tx|}
+M|7.2 |tx|```
+M|7.2 |tx|bd map once (O(n)), then all lookups are O(1).
+M|7.2 |For |1M ops → 2K ops.
+M|7.3 |**Im|lo-md (reduces lookups)**
+M|7.3 |tx|Cache object property lookups in hot paths.
+M|7.3 |**In|3 lookups × N iterations**
+M|7.3 |tx|```ts
+M|7.3 |tx|for (let i = 0; i < arr.length; i++) {
+M|7.3 |tx|process(obj.config.settings.value)
+M|7.3 |tx|}
+M|7.3 |tx|```
+M|7.3 |**Co|1 lookup total**
+M|7.3 |tx|```ts
+M|7.3 |tx|const value = obj.config.settings.value
+M|7.3 |tx|const len = arr.length
+M|7.3 |tx|for (let i = 0; i < len; i++) {
+M|7.3 |tx|process(value)
+M|7.3 |tx|}
+M|7.3 |tx|```
+M|7.4 |**Im|md (avoid redundant computation)**
+M|7.4 |tx|Use a md-level Map to cache fn results when the same fn is called repeatedly w/ the same inputs during render.
+M|7.4 |**In|redundant computation**
+M|7.4 |tx|```ts
+M|7.4 |func|{ projects: Project[] }) {
+M|7.4 |tx|return (
+M|7.4 |tx|<div>
+M|7.4 |tx|{projects.map(project => {
+M|7.4 |tx|// slugify() called 100+ times for same project names
+M|7.4 |tx|const slug = slugify(project.name)
+M|7.4 |tx|return <ProjectCard key={project.id} slug={slug} />
+M|7.4 |tx|})}
+M|7.4 |tx|</div>
+M|7.4 |tx|)
+M|7.4 |tx|}
+M|7.4 |tx|```
+M|7.4 |**Co|cached results**
+M|7.4 |tx|```ts
+M|7.4 |tx|// md-level cache
+M|7.4 |tx|const slugifyCache = new Map<string, string>()
+M|7.4 |func|string): string {
+M|7.4 |tx|if (slugifyCache.has(text)) {
+M|7.4 |tx|return slugifyCache.get(text)!
+M|7.4 |tx|}
+M|7.4 |tx|const result = slugify(text)
+M|7.4 |tx|slugifyCache.set(text, result)
+M|7.4 |tx|return result
+M|7.4 |tx|}
+M|7.4 |func|{ projects: Project[] }) {
+M|7.4 |tx|return (
+M|7.4 |tx|<div>
+M|7.4 |tx|{projects.map(project => {
+M|7.4 |tx|// Computed only once per unique project name
+M|7.4 |tx|const slug = cachedSlugify(project.name)
+M|7.4 |tx|return <ProjectCard key={project.id} slug={slug} />
+M|7.4 |tx|})}
+M|7.4 |tx|</div>
+M|7.4 |tx|)
+M|7.4 |tx|}
+M|7.4 |tx|```
+M|7.4 |**Si|**
+M|7.4 |tx|```ts
+M|7.4 |let |boolean \| null = null
+M|7.4 |func|boolean {
+M|7.4 |tx|if (isLoggedInCache !== null) {
+M|7.4 |tx|return isLoggedInCache
+M|7.4 |tx|}
+M|7.4 |tx|isLoggedInCache = document.cookie.includes('auth=')
+M|7.4 |tx|return isLoggedInCache
+M|7.4 |tx|}
+M|7.4 |tx|// Clear cache when auth changes
+M|7.4 |tx|fn onAuthChange() {
+M|7.4 |tx|isLoggedInCache = null
+M|7.4 |tx|}
+M|7.4 |tx|```
+M|7.4 |Use |utilities, event handlers, not just rc cp.
+M|7.4 |Refe|[https://vc.com/blog/how-we-made-the-vc-dashboard-twice-as-fast](https://vc.com/blog/how-we-made-the-vc-dashboard-twice-as-fast)
+M|7.5 |**Im|lo-md (reduces expensive I/O)**
+M|7.5 |tx|`localStorage`, `sessionStorage`, and `document.cookie` are synchronous and expensive. Cache reads in memory.
+M|7.5 |**In|reads storage on every call**
+M|7.5 |tx|```ts
+M|7.5 |tx|fn getTheme() {
+M|7.5 |tx|return localStorage.getItem('theme') ?? 'light'
+M|7.5 |tx|}
+M|7.5 |tx|// Called 10 times = 10 storage reads
+M|7.5 |tx|```
+M|7.5 |**Co|Map cache**
+M|7.5 |tx|```ts
+M|7.5 |tx|const storageCache = new Map<string, string \| null>()
+M|7.5 |func|string) {
+M|7.5 |tx|if (!storageCache.has(key)) {
+M|7.5 |tx|storageCache.set(key, localStorage.getItem(key))
+M|7.5 |tx|}
+M|7.5 |tx|return storageCache.get(key)
+M|7.5 |tx|}
+M|7.5 |func|string, value: string) {
+M|7.5 |tx|localStorage.setItem(key, value)
+M|7.5 |tx|storageCache.set(key, value)  // keep cache in sync
+M|7.5 |tx|}
+M|7.5 |tx|```
+M|7.5 |Use |utilities, event handlers, not just rc cp.
+M|7.5 |**Co|**
+M|7.5 |tx|```ts
+M|7.5 |let |Record<string, string> \| null = null
+M|7.5 |func|string) {
+M|7.5 |tx|if (!cookieCache) {
+M|7.5 |tx|cookieCache = Object.fromEntries(
+M|7.5 |tx|document.cookie.split('; ').map(c => c.split('='))
+M|7.5 |tx|)
+M|7.5 |tx|}
+M|7.5 |tx|return cookieCache[name]
+M|7.5 |tx|}
+M|7.5 |tx|```
+M|7.5 |**Im|invalidate on external changes**
+M|7.5 |tx|```ts
+M|7.5 |tx|window.addEventListener('storage', (e) => {
+M|7.5 |tx|if (e.key) storageCache.dl(e.key)
+M|7.5 |tx|})
+M|7.5 |tx|document.addEventListener('visibilitychange', () => {
+M|7.5 |tx|if (document.visibilityState === 'visible') {
+M|7.5 |tx|storageCache.clear()
+M|7.5 |tx|}
+M|7.5 |tx|})
+M|7.5 |tx|```
+M|7.5 |If s|
+M|7.6 |**Im|lo-md (reduces iterations)**
+M|7.6 |tx|Multiple `.filter()` or `.map()` calls iterate the array multiple times. Combine into one loop.
+M|7.6 |**In|3 iterations**
+M|7.6 |tx|```ts
+M|7.6 |tx|const admins = us.filter(u => u.isAdmin)
+M|7.6 |tx|const testers = us.filter(u => u.isTester)
+M|7.6 |tx|const inactive = us.filter(u => !u.isActive)
+M|7.6 |tx|```
+M|7.6 |**Co|1 iteration**
+M|7.6 |tx|```ts
+M|7.6 |cons|us[] = []
+M|7.6 |cons|us[] = []
+M|7.6 |cons|us[] = []
+M|7.6 |tx|for (const us of us) {
+M|7.6 |tx|if (us.isAdmin) admins.push(us)
+M|7.6 |tx|if (us.isTester) testers.push(us)
+M|7.6 |tx|if (!us.isActive) inactive.push(us)
+M|7.6 |tx|}
+M|7.6 |tx|```
+M|7.7 |**Im|md (keeps UI responsive during background tasks)**
+M|7.7 |tx|Use `requestIdleCallback()` to schedule non-ct work during browser idle periods. This keeps the main thread free for us interactions and animations, reducing jank and improving perceived perf.
+M|7.7 |**In|blocks main thread during us interaction**
+M|7.7 |tx|```ts
+M|7.7 |func|string) {
+M|7.7 |tx|const results = searchItems(query)
+M|7.7 |tx|setResults(results)
+M|7.7 |tx|// These block the main thread immediately
+M|7.7 |tx|an.track('search', { query })
+M|7.7 |tx|saveToRecentSearches(query)
+M|7.7 |tx|prefetchTopResults(results.slice(0, 3))
+M|7.7 |tx|}
+M|7.7 |tx|```
+M|7.7 |**Co|defers non-ct work to idle time**
+M|7.7 |tx|```ts
+M|7.7 |func|string) {
+M|7.7 |tx|const results = searchItems(query)
+M|7.7 |tx|setResults(results)
+M|7.7 |tx|// Defer non-ct work to idle periods
+M|7.7 |tx|requestIdleCallback(() => {
+M|7.7 |tx|an.track('search', { query })
+M|7.7 |tx|})
+M|7.7 |tx|requestIdleCallback(() => {
+M|7.7 |tx|saveToRecentSearches(query)
+M|7.7 |tx|})
+M|7.7 |tx|requestIdleCallback(() => {
+M|7.7 |tx|prefetchTopResults(results.slice(0, 3))
+M|7.7 |tx|})
+M|7.7 |tx|}
+M|7.7 |tx|```
+M|7.7 |**Wi|**
+M|7.7 |tx|```ts
+M|7.7 |tx|// Ensure an fires within 2 seconds even if browser stays busy
+M|7.7 |tx|requestIdleCallback(
+M|7.7 |() =|location.pathname }),
+M|7.7 |{ ti|2000 }
+M|7.7 |tx|)
+M|7.7 |tx|```
+M|7.7 |**Ch|**
+M|7.7 |tx|```ts
+M|7.7 |func|Item[]) {
+M|7.7 |tx|let index = 0
+M|7.7 |func|IdleDeadline) {
+M|7.7 |tx|// Process items while we have idle time (aim for <50ms chunks)
+M|7.7 |tx|while (index < items.length && deadline.timeRemaining() > 0) {
+M|7.7 |tx|processItem(items[index])
+M|7.7 |tx|index++
+M|7.7 |tx|}
+M|7.7 |tx|// Schedule nx chunk if more items remain
+M|7.7 |tx|if (index < items.length) {
+M|7.7 |tx|requestIdleCallback(processChunk)
+M|7.7 |tx|}
+M|7.7 |tx|}
+M|7.7 |tx|requestIdleCallback(processChunk)
+M|7.7 |tx|}
+M|7.7 |tx|```
+M|7.7 |**Wi|**
+M|7.7 |tx|```ts
+M|7.7 |cons|() => void) => setTimeout(cb, 1))
+M|7.7 |tx|scheduleIdleWork(() => {
+M|7.7 |tx|// Non-ct work
+M|7.7 |tx|})
+M|7.7 |tx|```
+M|7.7 |**Wh|**
+M|7.7 |it|an and telemetry
+M|7.7 |it|Saving state to localStorage/IndexedDB
+M|7.7 |it|Prefetching resources for likely nx actions
+M|7.7 |it|Processing non-ur data transformations
+M|7.7 |it|Lazy initialization of non-ct features
+M|7.7 |**Wh|**
+M|7.7 |it|us-initiated actions that need immediate feedback
+M|7.7 |it|Rendering updates the us is waiting for
+M|7.7 |it|Time-sensitive operations
+M|7.8 |**Im|md-hi (avoids expensive operations when lengths differ)**
+M|7.8 |tx|When comparing arrays w/ expensive operations (sorting, deep equality, serialization), check lengths first. If lengths differ, the arrays cannot be equal.
+M|7.8 |tx|In real-world applications, this op is esp valuable when the comparison runs in hot paths (event handlers, render loops).
+M|7.8 |**In|always runs expensive comparison**
+M|7.8 |tx|```ts
+M|7.8 |func|string[], original: string[]) {
+M|7.8 |tx|// Always sorts and joins, even when lengths differ
+M|7.8 |tx|return current.sort().join() !== original.sort().join()
+M|7.8 |tx|}
+M|7.8 |tx|```
+M|7.8 |tx|Two O(n log n) sorts run even when `current.length` is 5 and `original.length` is 100. There is also overhead of joining the arrays and comparing the strings.
+M|7.8 |**Co|**
+M|7.8 |tx|```ts
+M|7.8 |func|string[], original: string[]) {
+M|7.8 |tx|// Early return if lengths differ
+M|7.8 |tx|if (current.length !== original.length) {
+M|7.8 |tx|return true
+M|7.8 |tx|}
+M|7.8 |tx|// Only sort when lengths match
+M|7.8 |tx|const currentSorted = current.toSorted()
+M|7.8 |tx|const originalSorted = original.toSorted()
+M|7.8 |tx|for (let i = 0; i < currentSorted.length; i++) {
+M|7.8 |tx|if (currentSorted[i] !== originalSorted[i]) {
+M|7.8 |tx|return true
+M|7.8 |tx|}
+M|7.8 |tx|}
+M|7.8 |tx|return false
+M|7.8 |tx|}
+M|7.8 |tx|```
+M|7.8 |This|
+M|7.8 |it|It avoids the overhead of sorting and joining the arrays when lengths differ
+M|7.8 |it|It avoids consuming memory for the joined strings (esp important for large arrays)
+M|7.8 |it|It avoids mutating the original arrays
+M|7.8 |it|It returns early when a difference is found
+M|7.9 |**Im|lo-md (avoids unnecessary computation)**
+M|7.9 |tx|Return early when result is determined to skip unnecessary processing.
+M|7.9 |**In|processes all items even after finding answer**
+M|7.9 |tx|```ts
+M|7.9 |func|us[]) {
+M|7.9 |tx|let hasError = false
+M|7.9 |tx|let errorMessage = ''
+M|7.9 |tx|for (const us of us) {
+M|7.9 |tx|if (!us.em) {
+M|7.9 |tx|hasError = true
+M|7.9 |tx|errorMessage = 'em required'
+M|7.9 |tx|}
+M|7.9 |tx|if (!us.name) {
+M|7.9 |tx|hasError = true
+M|7.9 |tx|errorMessage = 'Name required'
+M|7.9 |tx|}
+M|7.9 |tx|// Continues checking all us even after er found
+M|7.9 |tx|}
+M|7.9 |retu|false, er: errorMessage } : { valid: true }
+M|7.9 |tx|}
+M|7.9 |tx|```
+M|7.9 |**Co|returns immediately on first er**
+M|7.9 |tx|```ts
+M|7.9 |func|us[]) {
+M|7.9 |tx|for (const us of us) {
+M|7.9 |tx|if (!us.em) {
+M|7.9 |retu|false, er: 'em required' }
+M|7.9 |tx|}
+M|7.9 |tx|if (!us.name) {
+M|7.9 |retu|false, er: 'Name required' }
+M|7.9 |tx|}
+M|7.9 |tx|}
+M|7.9 |retu|true }
+M|7.9 |tx|}
+M|7.9 |tx|```
+M|7.10|**Im|lo-md (avoids recreation)**
+M|7.10|tx|Don't cr RegExp inside render. Hoist to md scope or memoize w/ `useMemo()`.
+M|7.10|**In|new RegExp every render**
+M|7.10|tx|```tsx
+M|7.10|func|Props) {
+M|7.10|tx|const regex = new RegExp(`(${query})`, 'gi')
+M|7.10|tx|const parts = text.split(regex)
+M|7.10|tx|return <>{parts.map((part, i) => ...)}</>
+M|7.10|tx|}
+M|7.10|tx|```
+M|7.10|**Co|memoize or hoist**
+M|7.10|tx|```tsx
+M|7.10|tx|const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+M|7.10|func|Props) {
+M|7.10|tx|const regex = useMemo(
+M|7.10|tx|() => new RegExp(`(${escapeRegex(query)})`, 'gi'),
+M|7.10|tx|[query]
+M|7.10|tx|)
+M|7.10|tx|const parts = text.split(regex)
+M|7.10|tx|return <>{parts.map((part, i) => ...)}</>
+M|7.10|tx|}
+M|7.10|tx|```
+M|7.10|wn|global regex has mutable state**
+M|7.10|tx|```ts
+M|7.10|tx|const regex = /foo/g
+M|7.10|tx|regex.tst('foo')  // true, lastIndex = 3
+M|7.10|tx|regex.tst('foo')  // false, lastIndex = 0
+M|7.10|tx|```
+M|7.10|Glob|
+M|7.11|**Im|lo-md (eliminates intermediate array)**
+M|7.11|tx|Chaining `.map().filter(Boolean)` creates an intermediate array and iterates twice. Use `.flatMap()` to transform and filter in a single pass.
+M|7.11|**In|2 iterations, intermediate array**
+M|7.11|tx|```ts
+M|7.11|tx|const userNames = us
+M|7.11|.map|null)
+M|7.11|tx|.filter(Boolean)
+M|7.11|tx|```
+M|7.11|**Co|1 iteration, no intermediate array**
+M|7.11|tx|```ts
+M|7.11|tx|const userNames = us.flatMap(us =>
+M|7.11|user|[]
+M|7.11|tx|)
+M|7.11|tx|```
+M|7.11|**Mo|**
+M|7.11|tx|```ts
+M|7.11|tx|// Extract valid emails from rp
+M|7.11|tx|// Before
+M|7.11|tx|const emails = rp
+M|7.11|.map|null)
+M|7.11|tx|.filter(Boolean)
+M|7.11|tx|// After
+M|7.11|tx|const emails = rp.flatMap(r =>
+M|7.11|r.su|[]
+M|7.11|tx|)
+M|7.11|tx|// Parse and filter valid numbers
+M|7.11|tx|// Before
+M|7.11|tx|const numbers = strings
+M|7.11|tx|.map(s => parseInt(s, 10))
+M|7.11|tx|.filter(n => !isNaN(n))
+M|7.11|tx|// After
+M|7.11|tx|const numbers = strings.flatMap(s => {
+M|7.11|tx|const n = parseInt(s, 10)
+M|7.11|retu|[n]
+M|7.11|tx|})
+M|7.11|tx|```
+M|7.11|**Wh|**
+M|7.11|it|Transforming items while filtering some out
+M|7.11|it|Conditional mapping where some inputs produce no output
+M|7.11|it|Parsing/validating where invalid inputs shd be skipped
+M|7.12|**Im|lo (O(n) instead of O(n log n))**
+M|7.12|tx|Finding the smallest or largest element only requires a single pass through the array. Sorting is wasteful and slower.
+M|7.12|**In|**
+M|7.12|tx|```ts
+M|7.12|tx|if Project {
+M|7.12|id|string
+M|7.12|name|string
+M|7.12|upda|number
+M|7.12|tx|}
+M|7.12|func|Project[]) {
+M|7.12|tx|const sorted = [...projects].sort((a, b) => b.updatedAt - a.updatedAt)
+M|7.12|tx|return sorted[0]
+M|7.12|tx|}
+M|7.12|tx|```
+M|7.12|tx|Sorts the entire array just to find the maximum value.
+M|7.12|**In|**
+M|7.12|tx|```ts
+M|7.12|func|Project[]) {
+M|7.12|tx|const sorted = [...projects].sort((a, b) => a.updatedAt - b.updatedAt)
+M|7.12|retu|sorted[0], newest: sorted[sorted.length - 1] }
+M|7.12|tx|}
+M|7.12|tx|```
+M|7.12|tx|Still sorts unnecessarily when only min/max are needed.
+M|7.12|**Co|**
+M|7.12|tx|```ts
+M|7.12|func|Project[]) {
+M|7.12|tx|if (projects.length === 0) return null
+M|7.12|tx|let latest = projects[0]
+M|7.12|tx|for (let i = 1; i < projects.length; i++) {
+M|7.12|tx|if (projects[i].updatedAt > latest.updatedAt) {
+M|7.12|tx|latest = projects[i]
+M|7.12|tx|}
+M|7.12|tx|}
+M|7.12|tx|return latest
+M|7.12|tx|}
+M|7.12|func|Project[]) {
+M|7.12|if (|null, newest: null }
+M|7.12|tx|let oldest = projects[0]
+M|7.12|tx|let newest = projects[0]
+M|7.12|tx|for (let i = 1; i < projects.length; i++) {
+M|7.12|tx|if (projects[i].updatedAt < oldest.updatedAt) oldest = projects[i]
+M|7.12|tx|if (projects[i].updatedAt > newest.updatedAt) newest = projects[i]
+M|7.12|tx|}
+M|7.12|tx|return { oldest, newest }
+M|7.12|tx|}
+M|7.12|tx|```
+M|7.12|tx|Single pass through the array, no copying, no sorting.
+M|7.12|**Al|Math.min/Math.max for small arrays**
+M|7.12|tx|```ts
+M|7.12|tx|const numbers = [5, 2, 8, 1, 9]
+M|7.12|tx|const min = Math.min(...numbers)
+M|7.12|tx|const max = Math.max(...numbers)
+M|7.12|tx|```
+M|7.12|This|//jsfiddle.net/qw1jabsx/4/). Use the loop approach for reliability.
+M|7.13|**Im|lo-md (O(n) to O(1))**
+M|7.13|tx|Convert arrays to Set/Map for repeated membership checks.
+M|7.13|**In|**
+M|7.13|tx|```ts
+M|7.13|tx|const allowedIds = ['a', 'b', 'c', ...]
+M|7.13|tx|items.filter(item => allowedIds.includes(item.id))
+M|7.13|tx|```
+M|7.13|**Co|**
+M|7.13|tx|```ts
+M|7.13|tx|const allowedIds = new Set(['a', 'b', 'c', ...])
+M|7.13|tx|items.filter(item => allowedIds.has(item.id))
+M|7.13|tx|```
+M|7.14|**Im|md-hi (prevents mutation bugs in rc state)**
+M|7.14|tx|`.sort()` mutates the array in place, which can cause bugs w/ rc state and props. Use `.toSorted()` to cr a new sorted array w/o mutation.
+M|7.14|**In|mutates original array**
+M|7.14|tx|```ts
+M|7.14|func|{ us: us[] }) {
+M|7.14|tx|// Mutates the us prop array!
+M|7.14|tx|const sorted = useMemo(
+M|7.14|tx|() => us.sort((a, b) => a.name.localeCompare(b.name)),
+M|7.14|tx|[us]
+M|7.14|tx|)
+M|7.14|tx|return <div>{sorted.map(renderUser)}</div>
+M|7.14|tx|}
+M|7.14|tx|```
+M|7.14|**Co|creates new array**
+M|7.14|tx|```ts
+M|7.14|func|{ us: us[] }) {
+M|7.14|tx|// Creates new sorted array, original unchanged
+M|7.14|tx|const sorted = useMemo(
+M|7.14|tx|() => us.toSorted((a, b) => a.name.localeCompare(b.name)),
+M|7.14|tx|[us]
+M|7.14|tx|)
+M|7.14|tx|return <div>{sorted.map(renderUser)}</div>
+M|7.14|tx|}
+M|7.14|tx|```
+M|7.14|**Wh|**
+M|7.14|tx|1. Props/state mutations break rc's immutability md - rc expects props and state to be treated as read-only
+M|7.14|tx|2. Causes stale closure bugs - Mutating arrays inside closures (callbacks, effects) can lead to unexpected behavior
+M|7.14|**Br|fallback for older browsers**
+M|7.14|tx|```ts
+M|7.14|tx|// Fallback for older browsers
+M|7.14|tx|const sorted = [...items].sort((a, b) => a.value - b.value)
+M|7.14|tx|```
+M|7.14|`.to|
+M|7.14|**Ot|**
+M|7.14|it|`.toSorted()` - immutable sort
+M|7.14|it|`.toReversed()` - immutable reverse
+M|7.14|it|`.toSpliced()` - immutable splice
+M|7.14|it|`.w/()` - immutable element replacement
+M|7.14|tx|---
+M|8. A|**Im|lo**
+M|8. A|tx|Advanced patterns for specific cases that require careful implementation.
+M|8.1 |**Im|lo (avoids unnecessary effect re-runs and lint er)**
+M|8.1 |tx|Effect Event functions do not have a stable identity. Their identity intentionally changes on every render. Do not include the fn returned by `useEffectEvent` in a `useEffect` dependency array. Keep the actual reactive values as dependencies and call the Effect Event from inside the effect body or subscriptions created by that effect.
+M|8.1 |**In|Effect Event added as a dependency**
+M|8.1 |tx|```tsx
+M|8.1 |tx|import { useEffect, useEffectEvent } from 'rc'
+M|8.1 |func|{
+M|8.1 |room|string
+M|8.1 |onCo|() => void
+M|8.1 |tx|}) {
+M|8.1 |tx|const handleConnected = useEffectEvent(onConnected)
+M|8.1 |tx|useEffect(() => {
+M|8.1 |tx|const connection = createConnection(roomId)
+M|8.1 |tx|connection.on('connected', handleConnected)
+M|8.1 |tx|connection.connect()
+M|8.1 |tx|return () => connection.disconnect()
+M|8.1 |tx|}, [roomId, handleConnected])
+M|8.1 |tx|}
+M|8.1 |tx|```
+M|8.1 |tx|inc the Effect Event in dependencies makes the effect re-run every render and triggers the rc Hooks lint rule.
+M|8.1 |**Co|depend on reactive values, not the Effect Event**
+M|8.1 |tx|```tsx
+M|8.1 |tx|import { useEffect, useEffectEvent } from 'rc'
+M|8.1 |func|{
+M|8.1 |room|string
+M|8.1 |onCo|() => void
+M|8.1 |tx|}) {
+M|8.1 |tx|const handleConnected = useEffectEvent(onConnected)
+M|8.1 |tx|useEffect(() => {
+M|8.1 |tx|const connection = createConnection(roomId)
+M|8.1 |tx|connection.on('connected', handleConnected)
+M|8.1 |tx|connection.connect()
+M|8.1 |tx|return () => connection.disconnect()
+M|8.1 |tx|}, [roomId])
+M|8.1 |tx|}
+M|8.1 |tx|```
+M|8.1 |Refe|[https://rc.dv/reference/rc/useEffectEvent#effect-event-in-deps](https://rc.dv/reference/rc/useEffectEvent#effect-event-in-deps)
+M|8.2 |**Im|lo-md (avoids duplicate init in dv)**
+M|8.2 |tx|Do not put app-wide initialization that must run once per app load inside `useEffect([])` of a cp. cp can remount and effects will re-run. Use a md-level guard or top-level init in the entry md instead.
+M|8.2 |**In|runs twice in dv, re-runs on remount**
+M|8.2 |tx|```tsx
+M|8.2 |tx|fn Comp() {
+M|8.2 |tx|useEffect(() => {
+M|8.2 |tx|loadFromStorage()
+M|8.2 |tx|checkAuthToken()
+M|8.2 |tx|}, [])
+M|8.2 |tx|// ...
+M|8.2 |tx|}
+M|8.2 |tx|```
+M|8.2 |**Co|once per app load**
+M|8.2 |tx|```tsx
+M|8.2 |tx|let didInit = false
+M|8.2 |tx|fn Comp() {
+M|8.2 |tx|useEffect(() => {
+M|8.2 |tx|if (didInit) return
+M|8.2 |tx|didInit = true
+M|8.2 |tx|loadFromStorage()
+M|8.2 |tx|checkAuthToken()
+M|8.2 |tx|}, [])
+M|8.2 |tx|// ...
+M|8.2 |tx|}
+M|8.2 |tx|```
+M|8.2 |Refe|[https://rc.dv/learn/you-might-not-need-an-effect#initializing-the-application](https://rc.dv/learn/you-might-not-need-an-effect#initializing-the-application)
+M|8.3 |**Im|lo (stable subscriptions)**
+M|8.3 |tx|Store callbacks in refs when used in effects that shouldn't re-subscribe on callback changes.
+M|8.3 |**In|re-subscribes on every render**
+M|8.3 |tx|```tsx
+M|8.3 |func|string, handler: (e) => void) {
+M|8.3 |tx|useEffect(() => {
+M|8.3 |tx|window.addEventListener(event, handler)
+M|8.3 |tx|return () => window.removeEventListener(event, handler)
+M|8.3 |tx|}, [event, handler])
+M|8.3 |tx|}
+M|8.3 |tx|```
+M|8.3 |**Co|stable subscription**
+M|8.3 |tx|```tsx
+M|8.3 |tx|import { useEffectEvent } from 'rc'
+M|8.3 |func|string, handler: (e) => void) {
+M|8.3 |tx|const onEvent = useEffectEvent(handler)
+M|8.3 |tx|useEffect(() => {
+M|8.3 |tx|window.addEventListener(event, onEvent)
+M|8.3 |tx|return () => window.removeEventListener(event, onEvent)
+M|8.3 |tx|}, [event])
+M|8.3 |tx|}
+M|8.3 |tx|```
+M|8.3 |**Al|use `useEffectEvent` if you're on latest rc:**
+M|8.3 |`use|it creates a stable fn reference that always calls the latest version of the handler.
+M|8.4 |**Im|lo (prevents effect re-runs)**
+M|8.4 |tx|Access latest values in callbacks w/o adding them to dependency arrays. Prevents effect re-runs while avoiding stale closures.
+M|8.4 |**In|effect re-runs on every callback change**
+M|8.4 |tx|```tsx
+M|8.4 |func|{ onSearch: (q: string) => void }) {
+M|8.4 |tx|const [query, setQuery] = useState('')
+M|8.4 |tx|useEffect(() => {
+M|8.4 |tx|const timeout = setTimeout(() => onSearch(query), 300)
+M|8.4 |tx|return () => clearTimeout(timeout)
+M|8.4 |tx|}, [query, onSearch])
+M|8.4 |tx|}
+M|8.4 |tx|```
+M|8.4 |**Co|using rc's useEffectEvent**
+M|8.4 |tx|```tsx
+M|8.4 |tx|import { useEffectEvent } from 'rc';
+M|8.4 |func|{ onSearch: (q: string) => void }) {
+M|8.4 |tx|const [query, setQuery] = useState('')
+M|8.4 |tx|const onSearchEvent = useEffectEvent(onSearch)
+M|8.4 |tx|useEffect(() => {
+M|8.4 |tx|const timeout = setTimeout(() => onSearchEvent(query), 300)
+M|8.4 |tx|return () => clearTimeout(timeout)
+M|8.4 |tx|}, [query])
+M|8.4 |tx|}
+M|8.4 |tx|```
+M|8.4 |tx|---
+M|Refe|1. [|//rc.dv](https://rc.dv)
+M|Refe|2. [|//nx.org](https://nx.org)
+M|Refe|3. [|//swr.vc.app](https://swr.vc.app)
+M|Refe|4. [|//github.com/shuding/better-all](https://github.com/shuding/better-all)
+M|Refe|5. [|//github.com/isaacs/node-lru-cache](https://github.com/isaacs/node-lru-cache)
+M|Refe|6. [|//vc.com/blog/how-we-optimized-pk-imports-in-nx-js](https://vc.com/blog/how-we-optimized-pk-imports-in-nx-js)
+M|Refe|7. [|//vc.com/blog/how-we-made-the-vc-dashboard-twice-as-fast](https://vc.com/blog/how-we-made-the-vc-dashboard-twice-as-fast)

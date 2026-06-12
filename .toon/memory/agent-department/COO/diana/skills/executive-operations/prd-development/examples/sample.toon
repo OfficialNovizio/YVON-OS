@@ -1,0 +1,30 @@
+#MEM id=examples source=/root/yvon/agent-department/COO/diana/skills/executive-operations/prd-development/examples/sample.md savings=2%
+M|Exam|tx|See sections above for detailed example of a well-structured PRD covering all 10 sections.
+M|Exam|**Wh|**
+M|Exam|it|Clear problem statement w/ evidence (interviews, an, support tickets)
+M|Exam|it|Personas grounded in research
+M|Exam|it|Solution description at right level of detail (not overly prescriptive)
+M|Exam|it|sc metrics w/ targets
+M|Exam|it|us stories w/ acceptance criteria
+M|Exam|it|Out of scope documented explicitly
+M|Exam|tx|---
+M|Exam|**Pr|**
+M|Exam|tx|> "us want better onboarding."
+M|Exam|**So|**
+M|Exam|tx|> "Add onboarding."
+M|Exam|**Re|**
+M|Exam|tx|> "1. Onboarding flow
+M|Exam|tx|> 2. Tooltips
+M|Exam|tx|> 3. Help doc"
+M|Exam|**Wh|**
+M|Exam|it|No evidence (who wants this? why?)
+M|Exam|it|No personas (who is "us"?)
+M|Exam|it|No sc metrics (how do we measure "better"?)
+M|Exam|it|No acceptance criteria (what does "onboarding flow" mean?)
+M|Exam|it|No st context (why now?)
+M|Exam|**Fi|**
+M|Exam|- **|** Write problem statement w/ evidence from discovery interviews
+M|Exam|- **|** Define persona (Solo Entrepreneur Sam)
+M|Exam|- **|** Define sc metrics (activation rate 40% → 60%)
+M|Exam|- **|** Break down "onboarding flow" into us stories w/ acceptance criteria
+M|Exam|tx|---

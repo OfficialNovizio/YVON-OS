@@ -1,0 +1,104 @@
+#MEM id=pre-dev-task-breakdown source=/root/yvon/agent-department/COO/diana/skills/marketplace/pre-dev-task-breakdown/SKILL.md savings=9%
+M||tx|---
+M||name|ring:pre-dv-task-breakdown
+M||desc|\|
+M||Gate|Implementation tasks - value-driven decomposition into working increments
+M||tx|that deliver measurable us value.
+M||tx|---
+M|When|it|TRD passed Gate 3 (Full Track) / Gate 2 (Small Track)
+M|When|it|Dependency Map passed Gate 6 (Full Track only)
+M|When|it|Ready to cr sprint/iteration tasks
+M|Skip|it|TRD not validated → complete earlier gates
+M|Skip|it|Tasks already exist → proceed to Subtask Creation
+M|Skip|it|Trivial change → direct implementation
+M|Sequ|**Ru|** ring:pre-dv-subtask-creation (Full Track), ring:pre-dv-delivery-planning (Small Track)
+M|Sequ|**Ru|** ring:pre-dv-dependency-map (Full Track), ring:pre-dv-trd-creation (Small Track)
+M|Sequ|tx|Every task must deliver working software w/ measurable us value. Tasks answer WHAT working increment is delivered, never HOW it's implemented (that's subtasks).
+M|Mand|tx|\| Phase \| Activities \|
+M|Mand|tx|\|-------\|------------\|
+M|Mand|tx|\| **1. Task Identification** \| Load PRD (required), TRD (required); optionally Feature Map, ap ds, Data md, Dependency Map; identify value streams \|
+M|Mand|| **|define deliverable, set sc criteria, map dependencies, estimate effort (max 16 AI-ag-hours), plan testing, identify risks \|
+M|Mand|tx|\| **3. Gate 7 Validation** \| All TRD cp covered; every task delivers working software; measurable sc criteria; correct deps; no task >2 weeks; testing st defined \|
+M|Task|tx|\| Size \| AI-ag-hours \| Calendar Duration* \| Scope \|
+M|Task|tx|\|------\|----------------\|-------------------\|-------\|
+M|Task|tx|\| Small (S) \| 1-4h \| 1-2 days \| Single cp \|
+M|Task|tx|\| md (M) \| 4-8h \| 2-4 days \| Few dependencies \|
+M|Task|tx|\| Large (L) \| 8-16h \| 1-2 weeks \| Multiple cp \|
+M|Task|tx|\| XL (>16h) \| BREAK IT DOWN \| Too large \| Not atomic \|
+M|Task|tx|*1.5x multiplier, 90% capacity, 1 developer
+M|AI-A|Afte|
+M|AI-A|tx|\| Project tp \| ag \|
+M|AI-A|tx|\|-------------\|-------\|
+M|AI-A|| Go|backend-engineer-golang \|
+M|AI-A|| Ty|backend-engineer-ts \|
+M|AI-A|| Re|frontend-engineer \|
+M|AI-A|| Mi|codebase-explorer \|
+M|AI-A|Agen|endpoints/schemas/services, complexity, available libraries, tst requirements, doc needs — and returns a detailed breakdown by cp.
+M|AI-A|**Co|** hi (standard patterns + libs available), md (some custom logic), lo (novel algorithms or vague scope)
+M|AI-A|**Es|** If AI unavailable, use manual estimate w/ 1.3x buffer, mark as "Estimation pnd", re-estimate when service restored.
+M|Per-|tx|\| Section \| cn \|
+M|Per-|tx|\|---------\|---------\|
+M|Per-|| **|[Task Title] \|
+M|Per-|tx|\| **Target** \| backend \\| frontend \\| shared (if multi-md) \|
+M|Per-|tx|\| **Working Directory** \| Path from topology config (if multi-md) \|
+M|Per-|| **|ring:backend-engineer-* or ring:frontend-*-engineer-* \|
+M|Per-|| **|what working software ships \|
+M|Per-|tx|\| **Scope** \| Includes + Excludes (w/ task IDs for future work) \|
+M|Per-|| **|Functional, tc, Operational, qual \|
+M|Per-|tx|\| **us/tc Value** \| What us can do; what this enables \|
+M|Per-|tx|\| **tc cp** \| From TRD + From Dependencies \|
+M|Per-|tx|\| **Dependencies** \| Blocks (T-AAA), Requires (T-BBB), Optional (T-CCC) \|
+M|Per-|tx|\| **Integration Contracts** \| Required when task references external pd/plugin \|
+M|Per-|tx|\| **Effort Estimate** \| AI hours, confidence, method, team tp, breakdown \|
+M|Per-|tx|\| **Risks** \| Impact, Probability, Mitigation, Fallback \|
+M|Per-|tx|\| **Testing st** \| Unit, Integration, E2E, perf, sec \|
+M|Per-|tx|\| **Definition of Done** \| Code reviewed, tests passing, doc updated, sec clean, deployed to staging, PO acceptance \|
+M|Inte|tx|Required when Deliverable, tc cp, or sc Criteria references an external pd or plugin (plugin-pix, plugin-fees, Core two, etc.).
+M|Inte|tx|```markdown
+M|Inte|tx|\| ID \| pd/Plugin \| Endpoint/if \| Method \| Request sc \| rp sc \| Version \|
+M|Inte|tx|\|----\|---------------\|-------------------\|--------\|---------------\|----------------\|---------\|
+M|Inte|tx|\| IC-001 \| plugin-pix \| POST /ap/v1/pix/payments \| POST \| { amount, key, ... } \| { id, status, ... } \| v1.2.0 \|
+M|Inte|tx|```
+M|Inte|Rule|exact endpoint/if, all required request fields, fields the implementation will read, exact ap version (not `latest`), sourced from actual spec.
+M|Summ|**Ta|**
+M|Summ|tx|```markdown
+M|Summ|tx|\| Task \| Title \| tp \| Hours \| Confidence \| Blocks \| Status \|
+M|Summ|tx|\|------\|-------\|------\|-------\|------------\|--------\|--------\|
+M|Summ|tx|\| T-001 \| Project Foundation \| Foundation \| 3.0 \| hi \| All \| ⏸️ pnd \|
+M|Summ|tx|\|       \| **TOTAL** \| \| **85.0h** \| \| \| \|
+M|Summ|tx|```
+M|Summ|Stat|`⏸️ pnd` (creation) → `🔄 Doing` (Gate 0 started) → `✅ Done` (Gate 9 approved) → `❌ Failed` (unresolved blocker)
+M|Summ|**Ta|
+M|Summ|tx|```markdown
+M|Busi|tx|\| Task \| Deliverable (business view) \|
+M|Busi|tx|\|------\|-----------------------------\|
+M|Busi|tx|\| T-001 \| The team can develop and tst locally from day one — **every contributor gets a working environment**. \|
+M|Busi|tx|```
+M|Busi|Busi|plain language (no tc jargon), 1-3 sentences, active voice, core value proposition bolded, no file names or architecture terms.
+M|Mult|Each|` and `Working Directory:` when topology is monorepo or multi-repo.
+M|Mult|tx|\| Target \| ap Pattern \| ag \|
+M|Mult|tx|\|--------\|-------------\|-------\|
+M|Mult|| `b|backend-engineer-golang or ring:backend-engineer-ts \|
+M|Mult|| `f|frontend-engineer \|
+M|Mult|| `f|frontend-bff-engineer-ts \|
+M|Mult|| `f|frontend-engineer \|
+M|Mult|tx|\| `shared` \| any \| DevOps or general \|
+M|Mult|**Ou|**
+M|Mult|- si|`doc/pre-dv/{feature}/tasks.md`
+M|Mult|- mo|Index + `{backend.path}/doc/pre-dv/{feature}/tasks.md` + `{frontend.path}/doc/pre-dv/{feature}/tasks.md`
+M|Mult|- mu|`{backend.path}/doc/pre-dv/{feature}/tasks.md` + `{frontend.path}/doc/pre-dv/{feature}/tasks.md`
+M|Gate|tx|\| Category \| Requirements \|
+M|Gate|tx|\|----------\|--------------\|
+M|Gate|tx|\| **Task Completeness** \| All TRD cp have tasks; all PRD features have tasks; no XL+ tasks; boundaries clear \|
+M|Gate|tx|\| **Delivery Value** \| Every task delivers working software; us value explicit; tc value clear \|
+M|Gate|tx|\| **tc Clarity** \| sc criteria measurable; dependencies mapped; testing approach defined; DoD comprehensive \|
+M|Gate|| **|` and `working_directory:` (if multi-md); ag assignments valid \|
+M|Gate|tx|\| **Risk Management** \| Risks identified; mitigations defined; hi-risk tasks scheduled early \|
+M|Gate|**Ga|** ✅ PASS → Subtasks \| ⚠️ CONDITIONAL (refine oversized/vague) \| ❌ FAIL (re-decompose)
+M|Conf|tx|\| Factor \| Points \| Criteria \|
+M|Conf|tx|\|--------\|--------\|----------\|
+M|Conf|| Ta|30, Most: 20, Too large/vague: 10 \|
+M|Conf|| Va|25, Most: 15, Unclear: 5 \|
+M|Conf|| De|25, Most: 15, Ambiguous: 5 \|
+M|Conf|| Es|20, Educated guesses: 12, Speculation: 5 \|
+M|Conf|tx|80+ → proceed autonomously \| 50-79 → present options \| <50 → ask abt velocity

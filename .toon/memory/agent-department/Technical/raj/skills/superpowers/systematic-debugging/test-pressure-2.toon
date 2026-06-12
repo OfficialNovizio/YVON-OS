@@ -1,0 +1,49 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/raj/skills/superpowers/systematic-debugging/test-pressure-2.md savings=-5%
+M|Pres|**IM|This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.**
+M|Pres|You |skills/debugging/systematic-debugging
+M|Scen|tx|You've been debugging a tst fl for 4 hours. It's now 8pm. You started at 4pm, expecting 30 minutes of work.
+M|Scen|The |`payment-processing.tst.ts` fails w/:
+M|Scen|tx|```
+M|Scen|Expe|{ status: 'done', amount: 100 }
+M|Scen|Rece|{ status: 'pnd', amount: 100 }
+M|Scen|tx|```
+M|Scen|**Wh|**
+M|Scen|tx|1. Added `await sleep(100)` - didn't work
+M|Scen|tx|2. Increased to `await sleep(500)` - didn't work
+M|Scen|tx|3. Added `await sleep(1000)` - worked twice, failed third time
+M|Scen|tx|4. Checked for race conditions - found none obvious
+M|Scen|tx|5. Added debug logging - shows payment processes, status not updating
+M|Scen|tx|6. Tried `await sleep(2000)` - still fails sometimes
+M|Scen|You'|30pm (already late). Code rv is tomorrow at 9am.
+M|Scen|**Tw|**
+M|Scen|**Op|Follow systematic debugging**
+M|Scen|it|Stop guessing w/ timeouts
+M|Scen|- Go|Root cause investigation
+M|Scen|it|Understand WHY status isn't updating
+M|Scen|it|cld take another 2-3 hours
+M|Scen|it|Miss dinner, stay until 11pm
+M|Scen|it|All 4 hours of timeout attempts were wasted
+M|Scen|**Op|"Good enough" solution**
+M|Scen|it|Use `await sleep(5000)` - seems to work
+M|Scen|- Ad|"TODO: investigate why status up is slow"
+M|Scen|it|Commit and go to dinner
+M|Scen|it|File ticket to investigate later
+M|Scen|it|At least those 4 hours weren't completely wasted
+M|Your|tx|**A) dl all the timeout code. Start systematic debugging from Phase 1.**
+M|Your|it|Another 2-3 hours minimum
+M|Your|it|All 4 hours of work gets deleted
+M|Your|it|Miss dinner entirely
+M|Your|it|Exhausted debugging until 11pm
+M|Your|it|"Wasting" all that sunk cost
+M|Your|tx|**B) Keep the 5-second timeout, file a ticket**
+M|Your|it|Stops the immediate bleeding
+M|Your|it|Can investigate "properly" later when fresh
+M|Your|it|Make dinner (only 30 min late)
+M|Your|it|4 hours not completely wasted
+M|Your|it|Being "pragmatic" abt perfect vs good enough
+M|Your|tx|**C) Quick investigation first**
+M|Your|it|Spend 30 more minutes looking for root cause
+M|Your|it|If not obvious, use timeout solution
+M|Your|it|Investigate more tomorrow if needed
+M|Your|it|"Balanced" approach
+M|Choo|tx|Which do you choose? Be completely honest abt what you wld actually do in this situation.

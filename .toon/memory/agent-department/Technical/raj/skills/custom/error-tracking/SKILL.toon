@@ -1,0 +1,127 @@
+#MEM id=error-tracking source=/root/yvon/agent-department/Technical/raj/skills/custom/error-tracking/SKILL.md savings=-1%
+M||tx|---
+M||name|er-tracking
+M||desc|SOURCE OF TRUTH for yv's structured er log format. rj implements this in every rt. qn's er-log-audit verifies compliance w/ this standard. Covers log format, er classification, HTTP status code rules, and no-PII policy.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv's rt have 60+ ap endpoints across two vt. w/o a consistent er format, debugging a production issue means parsing different log shapes from different rt. This skill defines the one format every rt uses — making vc logs parseable, qn's audit reliable, and production debugging fast.
+M|Purp|tx|**This is the source of truth.** qn's `er-log-audit` skill references this file. If they conflict, up this file and sync qn's skill.
+M|Purp|tx|---
+M|Stru|Ever|
+M|Stru|tx|```ts
+M|Stru|tx|if YVONErrorLog {
+M|Stru|tp|'route_error' \| 'auth_error' \| 'db_error' \| 'external_api_error' \| 'validation_error'
+M|Stru|rt|string          // '/ap/[exact-rt-name]'
+M|Stru|meth|'GET' \| 'POST' \| 'PUT' \| 'dl' \| 'PATCH'
+M|Stru|mess|string        // us-safe message only — NOT err.message
+M|Stru|vent|string   // context for multi-vt debugging, not PII
+M|Stru|time|string      // new Date().toISOString()
+M|Stru|// N|stack trace, err.message, ap keys, em, name, payment info
+M|Stru|tx|}
+M|Stru|tx|```
+M|Stru|**Im|**
+M|Stru|tx|```ts
+M|Stru|func|Partial<YVONErrorLog>) {
+M|Stru|tx|console.er(JSON.stringify({
+M|Stru|tp|er.tp ?? 'route_error',
+M|Stru|rt|er.rt,
+M|Stru|meth|er.method,
+M|Stru|mess|er.message ?? 'An er occurred.',
+M|Stru|vent|er.venture_slug ?? 'unknown',
+M|Stru|time|new Date().toISOString()
+M|Stru|tx|}))
+M|Stru|tx|}
+M|Stru|tx|```
+M|Stru|tx|---
+M|Erro|tx|\| er tp \| When to use \| Log level \|
+M|Erro|tx|\|-----------\|------------\|-----------\|
+M|Erro|tx|\| `validation_error` \| Zod parse failed, bad input \| `console.warn` (INFO) \|
+M|Erro|tx|\| `auth_error` \| getUser() failed, sn expired \| `console.warn` (INFO) \|
+M|Erro|tx|\| `route_error` \| Unexpected er in handler \| `console.er` (er) \|
+M|Erro|tx|\| `db_error` \| sb query failed \| `console.er` (er) \|
+M|Erro|tx|\| `external_api_error` \| Apify, YouTube, GA4 fl \| `console.warn` (WARN) \|
+M|Erro|tx|`4xx` er → WARN (client caused this, not our bug)
+M|Erro|tx|`5xx` er → er (our sy failed)
+M|Erro|tx|---
+M|HTTP|tx|\| Scenario \| Status \| Notes \|
+M|HTTP|tx|\|----------\|--------\|-------\|
+M|HTTP|tx|\| Zod validation failed \| `400` \| Bad Request \|
+M|HTTP|tx|\| Missing or invalid auth \| `401` \| Unauthorized \|
+M|HTTP|tx|\| Authenticated, not authorized \| `403` \| Forbidden (wrong vt, wrong role) \|
+M|HTTP|tx|\| Resource not found \| `404` \| Not Found \|
+M|HTTP|tx|\| Rate limit exceeded \| `429` \| + `Retry-After` header required \|
+M|HTTP|tx|\| Unexpected server er \| `500` \| Internal Server er \|
+M|HTTP|| De|5` header \|
+M|HTTP|**No|** Never return `200` w/ an er body. Never return `500` for a client input er. Never return `401` for an authorization fl (that's `403`).
+M|HTTP|tx|---
+M|No-P|**Ne|**
+M|No-P|it|em addresses
+M|No-P|it|Full names
+M|No-P|it|Phone numbers
+M|No-P|it|Payment or financial data
+M|No-P|it|sn tk or auth tk
+M|No-P|it|Raw ap keys or secrets
+M|No-P|it|IP addresses (in logs — rate limiting uses IP but doesn't log it)
+M|No-P|**Ac|**
+M|No-P|it|`user_id` (UUID only — not em, not name)
+M|No-P|it|`venture_slug`
+M|No-P|it|`rt` and `method`
+M|No-P|it|HTTP status code
+M|No-P|it|A generic us-safe message string
+M|No-P|tx|---
+M|Rout|tx|```ts
+M|Rout|expo|NextRequest) {
+M|Rout|tx|const ventureSlug = req.headers.get('x-vt-slug') ?? 'unknown'
+M|Rout|tx|try {
+M|Rout|tx|// ... handler logic
+M|Rout|tx|} catch (err) {
+M|Rout|tx|logError({
+M|Rout|tp|'route_error',
+M|Rout|rt|'/ap/[rt-name]',
+M|Rout|meth|'POST',
+M|Rout|mess|'An unexpected er occurred.',
+M|Rout|vent|ventureSlug
+M|Rout|tx|})
+M|Rout|tx|return NextResponse.json(
+M|Rout|er|'An unexpected er occurred. Please try again.' },
+M|Rout|{ st|500 }
+M|Rout|tx|)
+M|Rout|tx|}
+M|Rout|tx|}
+M|Rout|tx|```
+M|Rout|tx|---
+M|Supa|tx|```ts
+M|Supa|tx|const { data, er } = await sb.from('table').select('...')
+M|Supa|tx|if (er) {
+M|Supa|tx|logError({
+M|Supa|tp|'db_error',
+M|Supa|rt|'/ap/[rt-name]',
+M|Supa|meth|'GET',
+M|Supa|mess|'db query failed.',
+M|Supa|vent|ventureSlug
+M|Supa|tx|})
+M|Supa|tx|return NextResponse.json(
+M|Supa|er|'Service temporarily unavailable. Please try again.' },
+M|Supa|{ st|503, headers: { 'Retry-After': '5' } }
+M|Supa|tx|)
+M|Supa|tx|}
+M|Supa|tx|```
+M|Supa|tx|---
+M|Exte|tx|```ts
+M|Exte|tx|try {
+M|Exte|tx|const result = await apifyClient.actor('...').call(input)
+M|Exte|tx|} catch (err) {
+M|Exte|tx|logError({
+M|Exte|tp|'external_api_error',
+M|Exte|rt|'/ap/cr',
+M|Exte|meth|'POST',
+M|Exte|mess|'External data service unavailable.',
+M|Exte|vent|ventureSlug
+M|Exte|tx|})
+M|Exte|tx|// Return cached data if available, or degraded state
+M|Exte|tx|return NextResponse.json(
+M|Exte|{ da|cachedData ?? null, degraded: true, er: 'Using cached data — live data temporarily unavailable.' },
+M|Exte|{ st|cachedData ? 200 : 503 }
+M|Exte|tx|)
+M|Exte|tx|}
+M|Exte|tx|```

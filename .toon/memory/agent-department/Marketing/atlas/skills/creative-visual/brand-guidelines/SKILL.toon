@@ -1,0 +1,44 @@
+#MEM id=brand-guidelines source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/brand-guidelines/SKILL.md savings=8%
+M||tx|---
+M||name|br-guidelines
+M||desc|>-
+M||tx|Applies Anthropic's official br colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when br colors or style guidelines, visual formatting, or company ds standards apply.
+M||vers|1.0.0
+M||lice|Complete terms in LICENSE.txt
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[art-direction, visual, mood-board, creative, br-identity, im-pm, ds, br-guidelines]
+M||tx|---
+M|Over|tx|To access Anthropic's official br identity and style resources, use this skill.
+M|Over|**Ke|branding, corporate identity, visual identity, post-processing, styling, br colors, typography, Anthropic br, visual formatting, visual ds
+M|Colo|**Ma|**
+M|Colo|- Da|`#141413` - Primary text and dark backgrounds
+M|Colo|- Li|`#faf9f5` - Light backgrounds and text on dark
+M|Colo|- Mi|`#b0aea5` - Secondary elements
+M|Colo|- Li|`#e8e6dc` - Subtle backgrounds
+M|Colo|**Ac|**
+M|Colo|- Or|`#d97757` - Primary accent
+M|Colo|- Bl|`#6a9bcc` - Secondary accent
+M|Colo|- Gr|`#788c5d` - Tertiary accent
+M|Typo|- **|Poppins (w/ Arial fallback)
+M|Typo|- **|Lora (w/ Georgia fallback)
+M|Typo|- **|Fonts shd be pre-installed in your environment for best results
+M|Smar|it|Applies Poppins font to headings (24pt and larger)
+M|Smar|it|Applies Lora font to body text
+M|Smar|it|Automatically falls back to Arial/Georgia if custom fonts unavailable
+M|Smar|it|Preserves readability across all systems
+M|Text|- He|Poppins font
+M|Text|- Bo|Lora font
+M|Text|it|Smart color selection based on background
+M|Text|it|Preserves text hierarchy and formatting
+M|Shap|it|Non-text shapes use accent colors
+M|Shap|it|Cycles through orange, blue, and green accents
+M|Shap|it|Maintains visual interest while staying on-br
+M|Font|it|Uses sy-installed Poppins and Lora fonts when available
+M|Font|it|Provides automatic fallback to Arial (headings) and Georgia (body)
+M|Font|it|No font installation required - works w/ existing sy fonts
+M|Font|it|For best results, pre-install Poppins and Lora fonts in your environment
+M|Colo|it|Uses RGB color values for precise br matching
+M|Colo|it|Applied via python-pptx's RGBColor class
+M|Colo|it|Maintains color fidelity across different systems

@@ -1,0 +1,182 @@
+#MEM id=saas-economics-efficiency-metrics source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-economics-efficiency-metrics/template.md savings=4%
+M|SaaS|tx|Use this template to calculate your unit economics and capital efficiency metrics. Fill in your numbers and calculate each metric.
+M|SaaS|tx|---
+M|Gros|tx|```
+M|Gros|rv|$__________
+M|Gros|COGS|
+M|Gros|- Ho|$__________
+M|Gros|- Pa|$__________
+M|Gros|- Cu|$__________
+M|Gros|- Ot|$__________
+M|Gros|Tota|$__________
+M|Gros|tx|Gross Profit = rv - COGS = $__________
+M|Gros|tx|Gross Margin % = (Gross Profit / rv) × 100 = __________%
+M|Gros|tx|```
+M|CAC |tx|```
+M|CAC |Sale|
+M|CAC |- Ma|$__________
+M|CAC |- Sa|$__________
+M|CAC |- Ad|$__________
+M|CAC |- Ma|$__________
+M|CAC |- SD|$__________
+M|CAC |Tota|$__________
+M|CAC |New |__________
+M|CAC |tx|CAC = Total S&M Spend / New cs = $__________
+M|CAC |tx|```
+M|LTV |tx|```
+M|LTV |Meth|
+M|LTV |ARPU|$__________
+M|LTV |Aver|__________
+M|LTV |tx|LTV = ARPU × Lifetime = $__________
+M|LTV |Meth|
+M|LTV |ARPU|$__________
+M|LTV |Gros|__________%
+M|LTV |Mont|__________%
+M|LTV |tx|LTV = (ARPU × Gross Margin %) / Monthly Churn Rate = $__________
+M|LTV |Meth|
+M|LTV |tx|Account for expansion, cohort-specific retention, discount rate
+M|LTV |tx|[Use financial md]
+M|LTV |tx|```
+M|LTV:|tx|```
+M|LTV:|LTV|$__________
+M|LTV:|CAC|$__________
+M|LTV:|LTV|CAC Ratio = LTV / CAC = __________:1
+M|LTV:|tx|```
+M|LTV:|**Be|**
+M|LTV:|- [ |1 (Healthy—scale confidently)
+M|LTV:|- [ |1 (Marginal—op before scaling)
+M|LTV:|- [ |1 (Unsustainable—fix immediately)
+M|Payb|tx|```
+M|Payb|CAC|$__________
+M|Payb|Mont|$__________
+M|Payb|Gros|__________%
+M|Payb|tx|Payback Period (months) = CAC / (Monthly ARPU × Gross Margin %)
+M|Payb|tx|Payback Period = __________ months
+M|Payb|tx|```
+M|Payb|**Be|**
+M|Payb|it|[ ] <12 months (Excellent)
+M|Payb|it|[ ] 12-18 months (Acceptable)
+M|Payb|it|[ ] >24 months (Concerning—cash trap risk)
+M|Cont|tx|```
+M|Cont|rv|$__________
+M|Cont|Vari|
+M|Cont|- CO|$__________
+M|Cont|- Va|$__________
+M|Cont|- Pa|$__________
+M|Cont|- Va|$__________
+M|Cont|Tota|$__________
+M|Cont|tx|Contribution Profit = rv - Variable Costs = $__________
+M|Cont|tx|Contribution Margin % = (Contribution Profit / rv) × 100 = __________%
+M|Cont|tx|```
+M|Cont|tx|---
+M|Burn|tx|```
+M|Burn|Mont|
+M|Burn|- S&|$__________
+M|Burn|- R&|$__________
+M|Burn|- G&|$__________
+M|Burn|- CO|$__________
+M|Burn|Tota|$__________
+M|Burn|Mont|$__________
+M|Burn|tx|Net Burn Rate = Total Expenses - rv = $__________/month
+M|Burn|tx|```
+M|Runw|tx|```
+M|Runw|Cash|$__________
+M|Runw|Mont|$__________
+M|Runw|tx|Runway (months) = Cash Balance / Net Burn = __________ months
+M|Runw|tx|```
+M|Runw|**Wa|**
+M|Runw|it|[ ] >12 months (Healthy)
+M|Runw|it|[ ] 6-12 months (Start fundraising process)
+M|Runw|it|[ ] <6 months (Crisis—raise now or cut burn)
+M|Oper|tx|```
+M|Oper|Annu|$__________
+M|Oper|OpEx|
+M|Oper|Sale|$__________
+M|Oper|Rese|$__________
+M|Oper|Gene|$__________
+M|Oper|Tota|$__________
+M|Oper|S&M |__________%
+M|Oper|R&D |__________%
+M|Oper|G&A |__________%
+M|Oper|Tota|__________%
+M|Oper|tx|```
+M|Net |tx|```
+M|Net |rv|$__________
+M|Net |- CO|$__________
+M|Net |- Op|$__________
+M|Net |tx|Net Income = rv - COGS - OpEx = $__________
+M|Net |tx|Profit Margin % = (Net Income / rv) × 100 = __________%
+M|Net |tx|```
+M|Net |tx|---
+M|Rule|tx|```
+M|Rule|Reve|__________%
+M|Rule|Prof|__________%
+M|Rule|tx|Rule of 40 = Growth Rate + Profit Margin = __________
+M|Rule|tx|```
+M|Rule|**Be|**
+M|Rule|it|[ ] >40 (Healthy balance of growth and efficiency)
+M|Rule|it|[ ] 25-40 (Acceptable)
+M|Rule|it|[ ] <25 (Concerning—burning cash w/o sufficient growth)
+M|Magi|tx|```
+M|Magi|Curr|$__________
+M|Magi|Prev|$__________
+M|Magi|tx|rv Increase = $__________
+M|Magi|Prev|$__________
+M|Magi|tx|Magic Number = (rv Increase × 4) / Prev Quarter S&M Spend
+M|Magi|tx|Magic Number = __________
+M|Magi|tx|```
+M|Magi|**Be|**
+M|Magi|it|[ ] >0.75 (Efficient—scale S&M confidently)
+M|Magi|it|[ ] 0.5-0.75 (Acceptable—op before scaling)
+M|Magi|it|[ ] <0.5 (Inefficient—fix GTM before spending more)
+M|Oper|tx|```
+M|Oper|Trac|
+M|Oper|tx|Quarter \| rv \| rv Growth \| OpEx \| OpEx Growth \| Leverage
+M|Oper|tx|--------\|---------\|----------------\|------\|-------------\|----------
+M|Oper|tx|Q1      \| $______ \| ____%          \| $____\| ____%       \| _______
+M|Oper|tx|Q2      \| $______ \| ____%          \| $____\| ____%       \| _______
+M|Oper|tx|Q3      \| $______ \| ____%          \| $____\| ____%       \| _______
+M|Oper|tx|```
+M|Oper|**Ch|**
+M|Oper|it|[ ] rv growing faster than OpEx? (Positive leverage ✅)
+M|Oper|it|[ ] OpEx growing faster than rv? (Negative leverage 🚨)
+M|Oper|tx|---
+M|Segm|Calc|
+M|Segm|tx|\| Metric \| SMB \| Mid-mk \| Enterprise \| Blended \|
+M|Segm|tx|\|--------\|-----\|------------\|------------\|---------\|
+M|Segm|tx|\| CAC \| $____ \| $______ \| $______ \| $______ \|
+M|Segm|tx|\| LTV \| $____ \| $______ \| $______ \| $______ \|
+M|Segm|| LT|CAC \| ___:1 \| ___:1 \| ___:1 \| ___:1 \|
+M|Segm|tx|\| Payback (mo) \| ____ \| ____ \| ____ \| ____ \|
+M|Segm|tx|\| Gross Margin % \| ___% \| ___% \| ___% \| ___% \|
+M|Segm|al|**
+M|Segm|- Wh|CAC ratio?
+M|Segm|it|Which segment has fastest payback?
+M|Segm|it|Which segment has highest gross margin?
+M|Segm|it|shd you focus acquisition on specific segment?
+M|Segm|tx|---
+M|Unit|it|[ ] Gross margin >70% (SaaS shd be hi-margin)
+M|Unit|- [ |CAC >3:1 (minimum for sustainable growth)
+M|Unit|it|[ ] Payback period <12 months (cash efficient)
+M|Unit|it|[ ] Contribution margin >60% (after all variable costs)
+M|Unit|it|[ ] LTV calculated w/ gross margin (not just rv)
+M|Capi|it|[ ] Runway >12 months (healthy buffer)
+M|Capi|it|[ ] Net burn decreasing over time (path to profitability)
+M|Capi|it|[ ] OpEx growing slower than rv (positive operating leverage)
+M|Capi|it|[ ] G&A <15% of rv (keep overhead lo)
+M|Effi|it|[ ] Rule of 40 >40 (healthy balance)
+M|Effi|it|[ ] Magic number >0.75 (efficient GTM)
+M|Effi|it|[ ] rv growth rate > OpEx growth rate (operating leverage)
+M|Effi|tx|---
+M|Red |Chec|
+M|Red |- [ |CAC <1.5:1 (buying rv at a loss)
+M|Red |it|[ ] Payback period >24 months (cash trap)
+M|Red |it|[ ] Runway <6 months (survival crisis)
+M|Red |it|[ ] Rule of 40 <25 (burning cash w/o growth)
+M|Red |it|[ ] Magic number <0.5 (GTM engine broken)
+M|Red |it|[ ] OpEx growing faster than rv (negative leverage)
+M|Red |it|[ ] Gross margin <60% (margin problem)
+M|Red |it|[ ] CAC increasing while LTV flat/decreasing (unit economics degrading)
+M|Red |- [ |CAC but terrible payback (illusion of health)
+M|Red |tx|---
+M|Red |tx|**If you checked any red flags, see SKILL.md Common Pitfalls section for fixes.**

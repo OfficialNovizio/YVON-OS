@@ -1,0 +1,28 @@
+#DOC source=/root/yvon/docs/yvon-dashboard/ISSUES.md strip=72% toon=-4% net=72%
+# YVON Dashboard — Issues Log
+Rolling. Updated by agents whenever an issue is found or resolved.
+Open issues block relevant work. Read before starting any feature on the YVON platform.
+Priority: 🔴 Critical (blocks work) | 🟡 High (degrades quality) | 🟢 Low (nice to fix)
+
+---
+
+## Open Issues
+
+[TABLE:6×8]
+---
+
+## Recently Resolved (last 30 days)
+
+[TABLE:5×4]
+---
+
+## How to File an Issue
+
+Any agent that discovers a bug, gap, or architectural problem files it here during ADJOURNING.
+
+Format:
+[CODE::1LOC]
+
+Categories: API · Security · Auth · UI · Infrastructure · Alerts · Competitor · YVON OS · Performance · Data
+
+Moving to Resolved: When an issue is fixed, move it to "Recently Resolved" with a notes column saying what changed. Drop entries older than 30 days from Resolved.

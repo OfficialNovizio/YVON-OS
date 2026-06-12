@@ -1,0 +1,221 @@
+#MEM id=advanced-nodes source=/root/yvon/agent-department/Marketing/pixel/skills/workflow/advanced-nodes/SKILL.md savings=12%
+M||tx|---
+M||name|pletor-advanced-nodes
+M||desc|>-
+M||Use |Composer for layout/composition, Logic nodes for automation and branching, br nodes for identity consistency, Lipsync/Subtitles for vd character work, or Integration nodes for distribution. Load this skill when the us's pm involves ad, localization, A/B testing, QA checkpoints, multi-step text processing, or publishing to external platforms.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[production, images, assets, upscaling, batch, generation, workflow, process]
+M||tx|---
+M|When|A ba|Input → gn → Output.
+M|When|You |
+M|When|it|You want **br consistency** across all outputs
+M|When|it|You're building **ad creatives** that combine multiple elements
+M|When|it|You need **text processing / pm engineering** in the workflow
+M|When|it|You want **localization or A/B variants** w/o manual rebuilding
+M|When|it|You need **QA checkpoints** before publishing
+M|When|it|You want to **animate characters** or add **speech to images**
+M|When|it|You're **distributing outputs** to sl/ad platforms
+M|When|tx|---
+M|What|tx|The Composer layers multiple elements (images, text, logos, vd) into a single composed visual. It is a ds canvas inside your workflow — not an AI generation md.
+M|When|Use |
+M|When|it|Ad creatives combining pd shot + hl + logo + CTA
+M|When|it|sl posts w/ text overlay on generated background
+M|When|it|Localized variants (same layout, different text)
+M|When|it|A/B tst variants (same layout, swapped elements)
+M|How |Conn|
+M|How |tx|```
+M|How |tx|[gn im (background)] → Composer (layer 1)
+M|How |tx|[Upload im (logo)]         → Composer (layer 2)
+M|How |[Tex|text overlay)
+M|How |[Tex|text overlay)
+M|How |tx|```
+M|How |tx|Inside Composer, set layer positions, sizes, and z-ordering.
+M|Powe|**Pa|Localization at scale**
+M|Powe|tx|```
+M|Powe|tx|[Base Composition] → Composer
+M|Powe|tx|[Text Assistant (translate to FR/DE/ES...)] → Composer (text layer)
+M|Powe|tx|```
+M|Powe|tx|Run the ag N times w/ different language inputs — same layout, localized text.
+M|Powe|**Pa|A/B hl testing**
+M|Powe|tx|```
+M|Powe|tx|[Split Text (from list of headlines)] → [List Selector (pick #N)] → Composer
+M|Powe|tx|[Base im]                                                      → Composer
+M|Powe|tx|```
+M|Powe|tx|Each run picks a different hl variant.
+M|Powe|**Pa|Static ad production**
+M|Powe|tx|1. gn background/lifestyle im
+M|Powe|tx|2. Upload pd shot → Remove Background
+M|Powe|tx|3. gn hl text via Text Assistant
+M|Powe|tx|4. Feed all three + br logo into Composer
+M|Powe|5. O|cg-ready ad creative
+M|Powe|tx|---
+M|When|tx|Any workflow producing **public-facing creative cn** shd include br nodes.
+M|Whic|tx|\| Scenario \| Add these br nodes \|
+M|Whic|tx|\|---\|---\|
+M|Whic|tx|\| im/vd generation needs to look on-br \| Visual References (upload style examples) \|
+M|Whic|tx|\| AI md needs to know who the br is \| br Context \|
+M|Whic|tx|\| Need to enforce specific creative rules \| br Guidelines \|
+M|Whic|tx|\| Generating cp / captions / scripts \| br Voice \|
+M|Whic|tx|\| Complex br w/ full doc \| br doc (PDF) \|
+M|Wiri|Conn|
+M|Wiri|tx|```
+M|Wiri|tx|[Visual References] → GenerateImage
+M|Wiri|tx|[br Guidelines] → GenerateImage
+M|Wiri|tx|[br Context]    → TextAssistant
+M|Wiri|tx|[br Voice]      → TextAssistant
+M|Wiri|tx|```
+M|Pro |tx|Upload real examples (Visual References, br Voice) rather than describing your br in text. The AI md learn faster from examples than from abstract descriptions.
+M|Pro |tx|---
+M|What|tx|Runs an LLM w/ a custom sy instruction. It's the most versatile node in Pletor.
+M|When|tx|\| Task \| Use \|
+M|When|tx|\|---\|---\|
+M|When|tx|\| Mechanically join two text strings \| pm Concatenator (free, predictable) \|
+M|When|tx|\| Enhance a vague us pm into a detailed generation pm \| Text Assistant \|
+M|When|tx|\| Combine us pm + br context intelligently \| Text Assistant \|
+M|When|tx|\| Translate or localize cp \| Text Assistant \|
+M|When|tx|\| al an uploaded im or document \| Text Assistant \|
+M|When|tx|\| gn multiple ad headlines \| Text Assistant \|
+M|When|tx|\| Extract structured data from a doc \| Text Assistant \|
+M|Syst|Alwa|
+M|Syst|1. *|What the LLM is (e.g., "You are a creative director at a luxury fashion br")
+M|Syst|2. *|Exactly what to do w/ the inputs
+M|Syst|3. *|How to structure the output (important when output feeds another node)
+M|Syst|4. *|br rules, word count limits, tone requirements
+M|Syst|**Ex|**
+M|Syst|tx|```
+M|Syst|tx|You are an expert creative director specializing in luxury fashion photography.
+M|Syst|Your|Take the us's input pm and rewrite it as a detailed, vivid im generation pm.
+M|Syst|Rule|
+M|Syst|it|Include lighting style, camera angle, background description, and mood
+M|Syst|it|Maintain the br's editorial and sophisticated aesthetic
+M|Syst|it|Keep output under 150 words
+M|Syst|it|Output ONLY the enhanced pm, no preamble
+M|Syst|tx|```
+M|Syst|**Ex|**
+M|Syst|tx|```
+M|Syst|tx|You are a perf mk copywriter.
+M|Syst|Your|gn 5 short ad headlines based on the pd description and br voice provided.
+M|Syst|Form|Output as a numbered list, one hl per line.
+M|Syst|Each|max 8 words, action-oriented, benefit-focused.
+M|Syst|tx|```
+M|Syst|tx|---
+M|Spli|**Us|** Process multiple items from a single text input.
+M|Spli|tx|```
+M|Spli|tx|Text Assistant (generates "headline1\nheadline2\nheadline3")
+M|Spli|→ Sp|\n)
+M|Spli|tx|→ [output_1] → GenerateImage (variation 1)
+M|Spli|tx|→ [output_2] → GenerateImage (variation 2)
+M|Spli|tx|→ [output_3] → GenerateImage (variation 3)
+M|Spli|tx|```
+M|Spli|Or t|
+M|Spli|tx|```
+M|Spli|Spli|2) → GenerateImage
+M|Spli|tx|```
+M|Prom|**Us|** Join multiple text inputs before a generation node when no LLM processing is needed.
+M|Prom|tx|```
+M|Prom|tx|[TextPrompt]     → PromptConcatenator → GenerateImage
+M|Prom|tx|[BrandGuidelines]→
+M|Prom|tx|```
+M|Prom|it|Faster than Text Assistant, no credits consumed
+M|Prom|it|Use only when you want a mechanical join, not intelligent processing
+M|Huma|**Us|** Any production pipeline where qual matters before output is published.
+M|Huma|Inse|
+M|Huma|tx|```
+M|Huma|tx|GenerateImage → HumanReview → Composer → MetaAds
+M|Huma|tx|```
+M|Huma|tx|The workflow pauses, a human approves or rejects the asset, then execution continues.
+M|Rout|**Us|** Send one node's output to multiple downstream nodes w/o duplicating or re-running.
+M|Rout|tx|```
+M|Rout|tx|GenerateImage → Router → RemoveBackground
+M|Rout|→ Ch|1 for Instagram)
+M|Rout|→ Ch|16 for TikTok)
+M|Rout|tx|→ UpscaleImage
+M|Rout|tx|```
+M|Rout|tx|The im is generated once; Router distributes it to all four paths.
+M|Rena|**Us|** Organized file naming, esp before Google Drive export.
+M|Rena|tx|```
+M|Rena|Gene|"{br}_{format}_{date}") → GoogleDrive
+M|Rena|tx|```
+M|Rena|tx|---
+M|When|it|Turn a still portrait into a speaking character for vd ad
+M|When|it|Animate a br mascot speaking a script
+M|When|it|cr UGC-style testimonial videos
+M|Stan|tx|```
+M|Stan|tx|[Upload im (portrait/character)]  →  [GenerateLipsync]  →  [AddSubtitles]
+M|Stan|tx|[GenerateAudio (voiceover script)]   →
+M|Stan|tx|```
+M|Adva|tx|```
+M|Adva|tx|[TextPrompt (script)]     → [GenerateAudio]        →  [GenerateLipsync]
+M|Adva|tx|[UploadImage (character)] →                         →  [AddSubtitles]
+M|Adva|tx|[TextAssistant (enhance)] → [GenerateImage (scene)] →  [MergeVideos]
+M|Adva|tx|```
+M|Lips|it|Use a clean, front-facing portrait w/ neutral expression for best results
+M|Lips|it|Lipsync works w/ both real photos and AI-generated character images
+M|Lips|it|After lipsync, add Subtitles for sl media accessibility
+M|Lips|tx|---
+M|Merg|Comb|
+M|Merg|tx|```
+M|Merg|tx|[GenerateVideo (intro)] → MergeVideos
+M|Merg|tx|[GenerateVideo (pd demo)] →
+M|Merg|tx|[GenerateVideo (outro)] →
+M|Merg|tx|↓
+M|Merg|tx|[Final combined vd]
+M|Merg|tx|```
+M|Extr|Use |
+M|Extr|tx|```
+M|Extr|tx|UploadVideo → ExtractVideoFrame → GenerateImage (reference)
+M|Extr|tx|→ EditImage
+M|Extr|tx|```
+M|Extr|tx|---
+M|Goog|Best|
+M|Goog|tx|```
+M|Goog|tx|Composer → RenameAsset → GoogleDrive (target folder)
+M|Goog|tx|```
+M|Goog|tx|Supports dynamic folder paths. Connect before ending any batch workflow.
+M|Meta|Push|
+M|Meta|tx|```
+M|Meta|tx|Composer → MetaAds (cg + ad set config)
+M|Meta|tx|→ TikTok (post settings)
+M|Meta|tx|```
+M|Meta|**Ru|** Always add a Human rv node before any integration node that publishes externally.
+M|Meta|tx|---
+M|Adva|tx|```
+M|Adva|[Tex|cg brief]
+M|Adva|[Upl|pd photo]
+M|Adva|tx|[BrandContext]
+M|Adva|tx|[VisualReferences]
+M|Adva|tx|[BrandGuidelines]
+M|Adva|tx|↓
+M|Adva|[Tex|enhance pm + write hl]
+M|Adva|tx|↓
+M|Adva|[Spl|separate im pm from hl]
+M|Adva|tx|↓
+M|Adva|tx|├──[GenerateImage (background/lifestyle)] ──────────────────────┐
+M|Adva|tx|├──[Router → pd] → [RemoveBackground] ───────────────────── [Composer]
+M|Adva|tx|├──[ListSelector (hl)] ──────────────────────────────────── [Composer]
+M|Adva|tx|└──[UploadImage (logo)] ────────────────────────────────────────── [Composer]
+M|Adva|tx|↓
+M|Adva|tx|[HumanReview]
+M|Adva|tx|↓
+M|Adva|tx|[RenameAsset]
+M|Adva|tx|↓
+M|Adva|tx|[GoogleDrive] + [MetaAds]
+M|Adva|tx|```
+M|Adva|tx|---
+M|Summ|tx|\| Goal \| Use \|
+M|Summ|tx|\|---\|---\|
+M|Summ|tx|\| Combine visual elements into final layout \| Composer \|
+M|Summ|tx|\| Keep outputs on-br visually \| Visual References + br Guidelines \|
+M|Summ|tx|\| Keep cp/text on-br \| br Voice + br Context \|
+M|Summ|tx|\| Enhance a vague pm \| Text Assistant \|
+M|Summ|tx|\| Join two text inputs w/o LLM \| pm Concatenator \|
+M|Summ|tx|\| Split one text into multiple items \| Split Text \|
+M|Summ|tx|\| Add QA gate before publishing \| Human rv \|
+M|Summ|tx|\| rt one output to multiple nodes \| Router \|
+M|Summ|tx|\| Animate character or portrait to speak \| Lipsync node + gn Audio \|
+M|Summ|tx|\| cr vd from multiple clips \| Merge Videos \|
+M|Summ|tx|\| Export to ad platforms \| MetaAds / TikTok integration nodes \|
+M|Summ|tx|\| Organized file export \| Rename Asset + Google Drive \|

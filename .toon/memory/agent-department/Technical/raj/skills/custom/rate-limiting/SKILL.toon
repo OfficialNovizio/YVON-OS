@@ -1,0 +1,112 @@
+#MEM id=rate-limiting source=/root/yvon/agent-department/Technical/raj/skills/custom/rate-limiting/SKILL.md savings=5%
+M||tx|---
+M||name|rate-limiting
+M||desc|Rate limiting implementation for yv using vc Edge mw. Covers per-rt limits, sliding window pattern, 429 rp format, and sb-based fallback. No Upstash — not in yv's stack.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|w/o rate limiting, yv's AI rt (`/ap/team-chat`, `/ap/*-ag`) can be exhausted by a single client making rapid requests — burning Anthropic ap credits and degrading rp qual for all us. This skill defines what rj implements and how.
+M|Purp|tx|---
+M|Per-|tx|\| rt category \| Limit \| Window \|
+M|Per-|tx|\|---------------\|-------\|--------\|
+M|Per-|tx|\| AI rt (`/ap/team-chat`, `/ap/*-ag`, `/ap/creative-engine`) \| 20 req/min \| per IP \|
+M|Per-|tx|\| Data rt (`/ap/an`, `/ap/cr`, `/ap/sl`) \| 60 req/min \| per IP \|
+M|Per-|tx|\| Auth rt \| 10 req/min \| per IP \|
+M|Per-|tx|\| Cron rt \| 1 req/min \| enforced by vc schedule, not mw \|
+M|Per-|tx|---
+M|Requ|tx|```ts
+M|Requ|tx|return NextResponse.json(
+M|Requ|er|'Rate limit exceeded. Please wait before retrying.' },
+M|Requ|tx|{
+M|Requ|stat|429,
+M|Requ|head|{
+M|Requ|'Ret|'60',
+M|Requ|'X-R|String(limit),
+M|Requ|'X-R|'0',
+M|Requ|'X-R|String(Math.ceil(Date.now() / 1000) + 60)
+M|Requ|tx|}
+M|Requ|tx|}
+M|Requ|tx|)
+M|Requ|tx|```
+M|Requ|tx|Never return `200` or `500` for a rate limit. Always `429` w/ `Retry-After`.
+M|Requ|tx|---
+M|Impl|`mid|
+M|Impl|tx|```ts
+M|Impl|tx|import { NextRequest, NextResponse } from 'nx/server'
+M|Impl|cons|Record<string, { limit: number; window: number }> = {
+M|Impl|'/ap|{ limit: 20, window: 60 },
+M|Impl|'/ap|{ limit: 20, window: 60 },
+M|Impl|'/ap|{ limit: 60, window: 60 },
+M|Impl|tx|}
+M|Impl|tx|// Sliding window using Edge runtime — in-memory per Edge instance
+M|Impl|tx|// Resets on cold start (acceptable — degrades gracefully, doesn't block)
+M|Impl|cons|number; resetAt: number }>()
+M|Impl|expo|NextRequest) {
+M|Impl|tx|const pathname = req.nextUrl.pathname
+M|Impl|tx|const config = Object.entries(RATE_LIMITS).find(([rt]) => pathname.startsWith(rt))
+M|Impl|tx|if (!config) return NextResponse.nx()
+M|Impl|cons|windowSec }] = config
+M|Impl|tx|const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'unknown'
+M|Impl|cons|${pathname}`
+M|Impl|tx|const now = Date.now()
+M|Impl|tx|const entry = requestCounts.get(key)
+M|Impl|tx|if (!entry \|\| now > entry.resetAt) {
+M|Impl|requ|1, resetAt: now + windowSec * 1000 })
+M|Impl|tx|return NextResponse.nx()
+M|Impl|tx|}
+M|Impl|tx|if (entry.count >= limit) {
+M|Impl|tx|return NextResponse.json(
+M|Impl|er|'Rate limit exceeded. Please wait before retrying.' },
+M|Impl|{ st|429, headers: { 'Retry-After': String(windowSec) } }
+M|Impl|tx|)
+M|Impl|tx|}
+M|Impl|tx|entry.count++
+M|Impl|tx|return NextResponse.nx()
+M|Impl|tx|}
+M|Impl|tx|export const config = {
+M|Impl|matc|['/ap/team-chat', '/ap/creative-engine', '/ap/an/:path*']
+M|Impl|tx|}
+M|Impl|tx|```
+M|Impl|tx|---
+M|Impl|For |
+M|Impl|tx|```sql
+M|Impl|tx|cr TABLE rate_limits (
+M|Impl|tx|id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+M|Impl|tx|ip TEXT NOT NULL,
+M|Impl|tx|rt TEXT NOT NULL,
+M|Impl|tx|venture_slug TEXT NOT NULL,
+M|Impl|tx|window_start TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+M|Impl|tx|request_count INTEGER NOT NULL DEFAULT 1,
+M|Impl|tx|UNIQUE(ip, rt, venture_slug, window_start)
+M|Impl|tx|);
+M|Impl|tx|```
+M|Impl|tx|```ts
+M|Impl|tx|// In rt handler — check before processing
+M|Impl|tx|const windowStart = new Date(Math.floor(Date.now() / 60000) * 60000) // 1-minute bucket
+M|Impl|cons|rateEntry } = await sb
+M|Impl|tx|.from('rate_limits')
+M|Impl|tx|.upsert({
+M|Impl|ip|clientIp,
+M|Impl|rt|'/ap/team-chat',
+M|Impl|vent|ventureSlug,
+M|Impl|wind|windowStart.toISOString(),
+M|Impl|requ|1
+M|Impl|tx|}, {
+M|Impl|onCo|'ip,rt,venture_slug,window_start',
+M|Impl|igno|false
+M|Impl|tx|})
+M|Impl|tx|.select('request_count')
+M|Impl|tx|.single()
+M|Impl|tx|if (rateEntry && rateEntry.request_count > 20) {
+M|Impl|tx|return NextResponse.json(
+M|Impl|er|'Rate limit exceeded. Please wait before retrying.' },
+M|Impl|{ st|429, headers: { 'Retry-After': '60' } }
+M|Impl|tx|)
+M|Impl|tx|}
+M|Impl|tx|```
+M|Impl|tx|---
+M|Raj'|Befo|
+M|Raj'|it|[ ] rt is in the mw matcher config
+M|Raj'|it|[ ] 429 rp includes `Retry-After` header
+M|Raj'|it|[ ] IP extraction handles `x-forwarded-for` (vc header)
+M|Raj'|it|[ ] Venture_slug is included in the rate limit key (nz and hb have separate quotas)
+M|Raj'|it|[ ] Cron rt are NOT in mw (they're protected by CRON_SECRET, not IP limits)

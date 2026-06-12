@@ -1,0 +1,69 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/references/copy-guidelines.md savings=-1%
+M|Cont|it|Structure
+M|Cont|it|Formatting
+M|Cont|it|Tone
+M|Cont|it|Length
+M|Cont|it|CTA Buttons vs. Links
+M|Cont|it|Personalization (merge fields, dynamic cn, triggered emails)
+M|Cont|it|Segmentation Strategies (by behavior, by stage, by profile)
+M|Cont|it|Testing and op (what to tst, how to tst, metrics to track)
+M|Stru|1. *|First line grabs attention
+M|Stru|2. *|Why this matters to them
+M|Stru|3. *|The useful cn
+M|Stru|4. *|What to do nx
+M|Stru|5. *|Human, warm close
+M|Form|it|Short paragraphs (1-3 sentences)
+M|Form|it|White space btw sections
+M|Form|it|Bullet points for scanability
+M|Form|it|Bold for emphasis (sparingly)
+M|Form|it|Mobile-first (most read on phone)
+M|Tone|it|Conversational, not formal
+M|Tone|it|First-person (I/we) and second-person (you)
+M|Tone|it|Active voice
+M|Tone|it|Match your br but lean friendly
+M|Tone|it|Read it out loud—does it sound human?
+M|Leng|it|Shorter is usually better
+M|Leng|it|50-125 words for transactional
+M|Leng|it|150-300 words for educational
+M|Leng|it|300-500 words for story-driven
+M|Leng|it|If it's long, it better be good
+M|CTA |- Bu|Primary actions, hi-visibility
+M|CTA |- Li|Secondary actions, in-text
+M|CTA |it|One clear primary CTA per em
+M|CTA |- Bu|Action + outcome
+M|CTA |tx|---
+M|Merg|it|First name (fallback to "there" or "friend")
+M|Merg|it|Company name (B2B)
+M|Merg|it|Relevant data (usage, plan, etc.)
+M|Dyna|it|Based on segment
+M|Dyna|it|Based on behavior
+M|Dyna|it|Based on stage
+M|Trig|it|Action-based sends
+M|Trig|it|More relevant than time-based
+M|Trig|- Ex|Feature used, milestone hit, inactivity
+M|Trig|tx|---
+M|By B|it|Openers vs. non-openers
+M|By B|it|Clickers vs. non-clickers
+M|By B|it|Active vs. inactive
+M|By S|it|Trial vs. paid
+M|By S|it|New vs. long-term
+M|By S|it|Engaged vs. at-risk
+M|By P|it|Industry/role (B2B)
+M|By P|it|Use case / goal
+M|By P|it|Company size
+M|By P|tx|---
+M|What|it|Subject lines (highest impact)
+M|What|it|Send times
+M|What|it|em length
+M|What|it|CTA placement and cp
+M|What|it|Personalization level
+M|What|it|Sequence timing
+M|How |it|A/B tst one variable at a time
+M|How |it|Sufficient sample size
+M|How |it|Statistical significance
+M|How |it|Document learnings
+M|Metr|- Op|20-40%)
+M|Metr|- Cl|2-5%)
+M|Metr|it|Unsubscribe rate (keep under 0.5%)
+M|Metr|it|Conversion rate (specific to sequence goal)
+M|Metr|it|rv per em (if applicable)

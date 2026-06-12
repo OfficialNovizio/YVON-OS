@@ -1,0 +1,36 @@
+#MEM id=vercel-composition-patterns source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/README.md savings=5%
+M|Reac|tx|A structured repository for rc composition patterns that scale. These
+M|Reac|tx|patterns help avoid boolean prop proliferation by using compound cp,
+M|Reac|tx|lifting state, and composing internals.
+M|Stru|it|`rules/` - Individual rule files (one per rule)
+M|Stru|it|`_sections.md` - Section metadata (titles, impacts, descriptions)
+M|Stru|it|`_template.md` - Template for creating new rules
+M|Stru|it|`area-description.md` - Individual rule files
+M|Stru|it|`metadata.json` - Document metadata (version, organization, abstract)
+M|Stru|it|**`ag.md`** - Compiled output (generated)
+M|Comp|it|`architecture-avoid-boolean-props.md` - Don't add boolean props to customize
+M|Comp|tx|behavior
+M|Comp|it|`architecture-compound-cp.md` - Structure as compound cp w/
+M|Comp|tx|shared context
+M|Stat|it|`state-lift-state.md` - Lift state into pr cp
+M|Stat|it|`state-context-if.md` - Define clear context interfaces
+M|Stat|tx|(state/actions/meta)
+M|Stat|it|`state-decouple-implementation.md` - Decouple state management from UI
+M|Impl|it|`patterns-children-over-render-props.md` - Prefer children over renderX props
+M|Impl|it|`patterns-explicit-variants.md` - cr explicit cp variants
+M|Core|tx|1. **Composition over cfg** — Instead of adding props, let consumers
+M|Core|tx|compose
+M|Core|tx|2. **Lift your state** — State in pr, not trapped in cp
+M|Core|tx|3. **Compose your internals** — Subcomponents access context, not props
+M|Core|tx|4. **Explicit variants** — cr ThreadComposer, EditComposer, not Composer
+M|Core|tx|w/ isThread
+M|Crea|tx|1. cp `rules/_template.md` to `rules/area-description.md`
+M|Crea|2. C|
+M|Crea|it|`architecture-` for cp Architecture
+M|Crea|it|`state-` for State Management
+M|Crea|it|`patterns-` for Implementation Patterns
+M|Crea|tx|3. Fill in the frontmatter and cn
+M|Crea|tx|4. Ensure you have clear examples w/ explanations
+M|Impa|it|`ct` - Foundational patterns, prevents unmaintainable code
+M|Impa|it|`hi` - sig maintainability improvements
+M|Impa|it|`md` - Good practices for cleaner code

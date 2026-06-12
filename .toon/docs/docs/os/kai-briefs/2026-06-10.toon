@@ -1,0 +1,51 @@
+#DOC source=/root/yvon/docs/os/kai-briefs/2026-06-10.md strip=3% toon=4% net=7%
+T|Novi|0|Situation: sb connection unavailable for the second consecutive day — no live socialsnapshots, socialposts, or cr data cld be queried. The an pipeline (POST /ap/instagram → sb social_snapshots) remains unprimed. No new ag sn have been recorded since May 10 (ln + at, SS26 ct drafts). The SS26 cg — targeting late June launch — is now within a ~10-20 day window w/ zero pre-cg perf baselines. ka's last analytical output was April 15 (IG engagement rate drop flagged — status unresolved). ro's ad-brief of June 9 expected either today's ro follow-up or "ka's first IG snapshot" — neither has materialized.
+T|Novi|1|
+T|Novi|2|Diagnosis: This is now a compounding sequencing gap. Yesterday's brief identified the problem (pipeline unprimed). Today confirms the problem is not self-correcting — the blockage is not a one-day glitch but a structural stall. Two hypotheses, in order of base rate:
+T|Novi|3|Credentials gap (70% likelihood): The .env.local file w/ SUPABASEURL and SUPABASESERVICEROLEKEY is not present on this dpl. The .env.example template exists but has never been copied and filled. w/o these, neither ka's direct query nor the /ap/instagram rt can write to the db. This is the simplest explanation and the most actionable.
+T|Novi|4|Priority reprioritization (30% likelihood): The War Room pipeline overhaul (done June 4) consumed available engineering cycles, and the an pipeline priming was deferred. sn.md's "Still pnd" list confirms "Connect daily brief to real cr data" is on the roadmap but not yet done.
+T|Novi|5|
+T|Novi|6|Base rate context: DTC fashion brands launching cg w/o engagement baselines underperform first-month ROAS by 30-40%. At £80-120 AOV (fx's target range), every week w/o baseline data costs signal that cld op cn mix allocation before launch.
+T|Novi|7|
+T|Novi|8|Action: Escalate from recommendation to dependency declaration. The previous brief said "prime the pipeline." Today I'm saying: the SS26 cg shd not launch w/o at least one IG snapshot. Specifically:
+T|Novi|9|Stark or dn must ensure .env.local exists w/ valid SUPABASEURL + SUPABASESERVICEROLEKEY on the production dpl. This is a one-time 5-minute cfg task w/ zero code changes.
+T|Novi|10|Once credentials land, trigger POST /ap/instagram for nz → populate social_snapshots w/ current baseline. This unlocks ka's analytical fn, ro's ROAS targeting, and nt's experiment ds simultaneously.
+T|Novi|11|Set SOCIALSNAPSHOTSCRON to weekly — if the SS26 launch date is confirmed for late June, we need at minimum 2 data points before launch to establish a pre-cg tn line. A single snapshot is a point; two snapshots is a direction.
+T|Novi|12|
+T|Novi|13|Confidence: hi — the diagnosis is unchanged from yesterday but strengthened by the confirmation that the stall is persistent, not transient. The only path to resolution is credentials → pipeline → data → al. Every alternative (manual data collection, industry benchmarks alone) produces lower-confidence intelligence than a live snapshot.
+T|Novi|14|
+T|Novi|15|---
+T|Novi|16|
+T|Hour|0|Situation: Identical to yesterday — hb's metrics remain entirely "[not yet recorded]" or "[fill in]" across all 12 KPIs. No pd, no us, no pricing md, no acquisition channel, and no measurement baseline. Last recorded ag sn remains April 8, 2026 (sb sc setup by dv + rj). The vt is in pre-launch planning, not measurement. ka's analytical fn for hb (LinkedIn metrics, cohort retention, churn signals, app sn/us) is structurally defined but has zero data to operate on.
+T|Hour|1|
+T|Hour|2|Diagnosis: The status is unchanged from yesterday, which is itself the signal: no forward progress on the ct-path items that unlock ka's fn. The sequencing dependency remains:
+T|Hour|3|fx → runway al + pricing md recommendation (HRB-002)
+T|Hour|4|Stark → pricing approval
+T|Hour|5|dv → trial-to-paid funnel (HRB-001)
+T|Hour|6|First cohort → ka's an activate
+T|Hour|7|
+T|Hour|8|The window btw "pricing approved" and "first us lands" is the instrumentation window — the period when an tracking must be built into the pd. If that window is missed, ka spends the first 90 days post-launch retrofitting measurement instead of producing intelligence. Yesterday's brief recommended writing the event tracking spec now; that recommendation stands and gains urgency w/ each day the pd bd proceeds w/o an scaffolding.
+T|Hour|9|
+T|Hour|10|Action: Write the hb event tracking specification today — before the pd bd outpaces it. Deliverable:
+T|Hour|11|Define every us action that gets instrumented: signup, trial start, first workspace created, first transaction logged, invite sent, upgrade to paid, churn event.
+T|Hour|12|Specify properties per event (userid, ventureid, timestamp, session_id, feature flags active).
+T|Hour|13|Define cohort segments: trial-started-this-week, active-4-of-4-weeks, churned-after-trial, upgraded-within-14-days.
+T|Hour|14|Pre-configure alert thresholds from ag.md: M1 retention < 65% → onboarding broken (flag nt + dv); LTV:CAC < 2:1 → pause acquisition spend (flag fx + mc).
+T|Hour|15|Deliver as a markdown spec to /doc/vt/hb/ANALYTICS_SPEC.md and rt to dv/rj via dn's sprint planning.
+T|Hour|16|
+T|Hour|17|Confidence: hi — this is standard pre-launch SaaS an practice and carries negligible risk. The risk is entirely in omission: if the spec isn't written before the pd bd completes, the cost of retrofitting an is 3-5x the cost of building it in from the start (software engineering base rate).
+T|Hour|18|
+T|Hour|19|---
+T|Hour|20|
+T|Cros|0|Two days, same diagnosis: the an ag (ka) is fully defined but fully starved. The pattern from yesterday holds and hardens:
+T|Cros|1|
+T|Cros|2|nz is ~10-20 days from its highest-stakes initiative (SS26 launch) w/ zero pre-cg baselines. The fix is a cfg task (.env.local + one ap call), not a code change. The bottleneck is operational, not tc.
+T|Cros|3|hb is earlier in its lifecycle — the an scaffolding must be built during pd dv, not after. The fix is a specification document that defines instrumentation before the first line of pd code ships w/o it.
+T|Cros|4|
+T|Cros|5|The common thread: ka's posture needs to shift from consumer of data to owner of the data pipeline. The ag.md routing table assigns ka an ownership, but ka cannot execute on that ownership w/o (a) db access for nz and (b) instrumentation authority for hb. dn (co) shd add "verify an pipeline live" to the Monday checklist, and Stark shd treat the absence of an data w/ the same urgency as a bd fl — bc a cg launched blind and a cg launched w/ data differ by 30-40% in first-month ROAS.
+T|Cros|6|
+T|Cros|7|Stark's highest-leverage single action this week: cp .env.example to .env.local on the production dpl, fill in the sb credentials, and trigger one IG snapshot. That one action — maybe 10 minutes — unlocks ka, ro, nt, and fx simultaneously for nz, and sets the pattern for hb when its time comes.
+T|Cros|8|
+T|Cros|9|---
+T|Cros|10|
+T|Cros|11|ka out. Brief delivered to mc.

@@ -1,0 +1,193 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/references/ga4-implementation.md savings=0%
+M|GA4 |tx|Detailed implementation guide for Google an 4.
+M|Cont|it|cfg (data streams, enhanced measurement events, recommended events)
+M|Cont|it|Custom Events (gtag.js implementation, Google Tag Manager)
+M|Cont|it|Conversions Setup (creating conversions, conversion values)
+M|Cont|it|Custom Dimensions and Metrics (when to use, setup steps, examples)
+M|Cont|it|Audiences (creating audiences, audience examples)
+M|Cont|it|Debugging (DebugView, real-time reports, common issues)
+M|Cont|it|Data qual (filters, cross-domain tracking, sn settings)
+M|Cont|it|Integration w/ Google ad (linking, audience export)
+M|Data|it|One stream per platform (web, iOS, Android)
+M|Data|it|Enable enhanced measurement for automatic tracking
+M|Data|it|Configure data retention (2 months default, 14 months max)
+M|Data|it|Enable Google Signals (for cross-device, if consented)
+M|Enha|tx|\| Event \| Description \| cfg \|
+M|Enha|tx|\|-------\|-------------\|---------------\|
+M|Enha|tx|\| page_view \| Page loads \| Automatic \|
+M|Enha|tx|\| scroll \| 90% scroll depth \| Toggle on/off \|
+M|Enha|tx|\| outbound_click \| Click to external domain \| Automatic \|
+M|Enha|tx|\| site_search \| Search query used \| Configure parameter \|
+M|Enha|tx|\| video_engagement \| YouTube vd plays \| Toggle on/off \|
+M|Enha|tx|\| file_download \| PDF, doc, etc. \| Configurable extensions \|
+M|Reco|Use |
+M|Reco|**Al|**
+M|Reco|it|login, sign_up
+M|Reco|it|share
+M|Reco|it|search
+M|Reco|**E-|**
+M|Reco|it|view_item, view_item_list
+M|Reco|it|add_to_cart, remove_from_cart
+M|Reco|it|begin_checkout
+M|Reco|it|add_payment_info
+M|Reco|it|purchase, refund
+M|Reco|**Ga|**
+M|Reco|it|level_up, unlock_achievement
+M|Reco|it|post_score, spend_virtual_currency
+M|Reco|Refe|https://support.google.com/an/answer/9267735
+M|Reco|tx|---
+M|gtag|tx|```javascript
+M|gtag|tx|// Basic event
+M|gtag|tx|gtag('event', 'signup_completed', {
+M|gtag|'met|'em',
+M|gtag|'pla|'free'
+M|gtag|tx|});
+M|gtag|tx|// Event w/ value
+M|gtag|tx|gtag('event', 'purchase', {
+M|gtag|'tra|'T12345',
+M|gtag|'val|99.99,
+M|gtag|'cur|'USD',
+M|gtag|'ite|[{
+M|gtag|'ite|'SKU123',
+M|gtag|'ite|'pd Name',
+M|gtag|'pri|99.99
+M|gtag|tx|}]
+M|gtag|tx|});
+M|gtag|tx|// us properties
+M|gtag|tx|gtag('set', 'user_properties', {
+M|gtag|'use|'premium',
+M|gtag|'pla|'pro'
+M|gtag|tx|});
+M|gtag|tx|// us ID (for logged-in us)
+M|gtag|tx|gtag('config', 'GA_MEASUREMENT_ID', {
+M|gtag|'use|'USER_ID'
+M|gtag|tx|});
+M|gtag|tx|```
+M|Goog|tx|```javascript
+M|Goog|tx|// Custom event
+M|Goog|tx|dataLayer.push({
+M|Goog|'eve|'signup_completed',
+M|Goog|'met|'em',
+M|Goog|'pla|'free'
+M|Goog|tx|});
+M|Goog|tx|// Set us properties
+M|Goog|tx|dataLayer.push({
+M|Goog|'use|'12345',
+M|Goog|'use|'premium'
+M|Goog|tx|});
+M|Goog|tx|// E-commerce purchase
+M|Goog|tx|dataLayer.push({
+M|Goog|'eve|'purchase',
+M|Goog|'eco|{
+M|Goog|'tra|'T12345',
+M|Goog|'val|99.99,
+M|Goog|'cur|'USD',
+M|Goog|'ite|[{
+M|Goog|'ite|'SKU123',
+M|Goog|'ite|'pd Name',
+M|Goog|'pri|99.99,
+M|Goog|'qua|1
+M|Goog|tx|}]
+M|Goog|tx|}
+M|Goog|tx|});
+M|Goog|tx|// Clear ecommerce before sending (best practice)
+M|Goog|data|null });
+M|Goog|tx|dataLayer.push({
+M|Goog|'eve|'view_item',
+M|Goog|'eco|{
+M|Goog|tx|// ...
+M|Goog|tx|}
+M|Goog|tx|});
+M|Goog|tx|```
+M|Goog|tx|---
+M|Crea|tx|1. **Collect the event** - Ensure event is firing in GA4
+M|Crea|tx|2. **Mark as conversion** - Admin > Events > Mark as conversion
+M|Crea|3. *|
+M|Crea|it|Once per sn (leads, signups)
+M|Crea|it|Every event (purchases)
+M|Crea|tx|4. **Import to Google ad** - For conversion-optimized bidding
+M|Conv|tx|```javascript
+M|Conv|tx|// Event w/ conversion value
+M|Conv|tx|gtag('event', 'purchase', {
+M|Conv|'val|99.99,
+M|Conv|'cur|'USD'
+M|Conv|tx|});
+M|Conv|tx|```
+M|Conv|tx|Or set default value in GA4 Admin when marking conversion.
+M|Conv|tx|---
+M|When|**Cu|**
+M|When|it|Properties you want to segment/filter by
+M|When|it|us attributes (plan tp, industry)
+M|When|it|cn attributes (author, category)
+M|When|**Cu|**
+M|When|it|Numeric values to aggregate
+M|When|it|Scores, counts, durations
+M|Setu|tx|1. Admin > Data display > Custom definitions
+M|Setu|tx|2. cr dimension or metric
+M|Setu|3. C|
+M|Setu|- **|Per event (content_type)
+M|Setu|- **|Per us (account_type)
+M|Setu|- **|Per pd (product_category)
+M|Setu|tx|4. Enter parameter name (must match event parameter)
+M|Exam|tx|\| Dimension \| Scope \| Parameter \| Description \|
+M|Exam|tx|\|-----------\|-------\|-----------\|-------------\|
+M|Exam|tx|\| us tp \| us \| user_type \| Free, trial, paid \|
+M|Exam|tx|\| cn Author \| Event \| author \| Blog post author \|
+M|Exam|tx|\| pd Category \| Item \| item_category \| E-commerce category \|
+M|Exam|tx|---
+M|Crea|tx|Admin > Data display > Audiences
+M|Crea|**Us|**
+M|Crea|it|Remarketing audiences (export to ad)
+M|Crea|it|Segment al
+M|Crea|it|Trigger-based events
+M|Audi|**Hi|**
+M|Audi|it|Viewed pricing page
+M|Audi|it|Did not convert
+M|Audi|it|In last 7 days
+M|Audi|**En|**
+M|Audi|it|3+ sn
+M|Audi|it|Or 5+ minutes total engagement
+M|Audi|**Pu|**
+M|Audi|it|Purchase event
+M|Audi|it|For exclusion or lookalike
+M|Audi|tx|---
+M|Debu|Enab|
+M|Debu|- UR|`?debug_mode=true`
+M|Debu|- Ch|GA Debugger
+M|Debu|- gt|`'debug_mode': true` in config
+M|Debu|View|Reports > Configure > DebugView
+M|Real|Chec|
+M|Real|tx|Reports > Real-time
+M|Comm|**Ev|**
+M|Comm|it|Check DebugView first
+M|Comm|it|Verify gtag/GTM firing
+M|Comm|it|Check filter exclusions
+M|Comm|**Pa|**
+M|Comm|it|Custom dimension not created
+M|Comm|it|Parameter name mismatch
+M|Comm|it|Data still processing (24-48 hrs)
+M|Comm|**Co|**
+M|Comm|it|Event not marked as conversion
+M|Comm|it|Event name doesn't match
+M|Comm|it|Counting method (once vs. every)
+M|Comm|tx|---
+M|Filt|tx|Admin > Data streams > [Stream] > Configure tag settings > Define internal traffic
+M|Filt|**Ex|**
+M|Filt|it|Internal IP addresses
+M|Filt|it|Developer traffic
+M|Filt|it|Testing environments
+M|Cros|For |
+M|Cros|tx|1. Admin > Data streams > [Stream] > Configure tag settings
+M|Cros|tx|2. Configure your domains
+M|Cros|tx|3. List all domains that shd share sn
+M|Sess|tx|Admin > Data streams > [Stream] > Configure tag settings
+M|Sess|it|sn timeout (default 30 min)
+M|Sess|it|Engaged sn duration (10 sec default)
+M|Sess|tx|---
+M|Link|tx|1. Admin > pd links > Google ad links
+M|Link|tx|2. Enable auto-tagging in Google ad
+M|Link|tx|3. Import conversions in Google ad
+M|Audi|Audi|
+M|Audi|it|Remarketing cg
+M|Audi|it|cs match
+M|Audi|it|Similar audiences

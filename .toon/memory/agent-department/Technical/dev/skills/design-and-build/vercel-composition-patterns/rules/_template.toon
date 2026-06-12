@@ -1,0 +1,17 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/_template.md savings=-12%
+M||tx|---
+M||titl|Rule Title Here
+M||impa|md
+M||impa|brief description of impact
+M||tags|composition, cp
+M||tx|---
+M|Rule|tx|Brief explanation of the rule and why it matters.
+M|Rule|**In|**
+M|Rule|tx|```tsx
+M|Rule|tx|// Bad code example
+M|Rule|tx|```
+M|Rule|**Co|**
+M|Rule|tx|```tsx
+M|Rule|tx|// Good code example
+M|Rule|tx|```
+M|Rule|Refe|[Link](https://example.com)

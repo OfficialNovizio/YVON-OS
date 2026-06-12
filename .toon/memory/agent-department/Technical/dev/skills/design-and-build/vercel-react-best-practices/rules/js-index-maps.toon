@@ -1,0 +1,29 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-index-maps.md savings=8%
+M||tx|---
+M||titl|bd Index Maps for Repeated Lookups
+M||impa|lo-md
+M||impa|1M ops to 2K ops
+M||tags|javascript, map, indexing, op, perf
+M||tx|---
+M|Buil|tx|Multiple `.find()` calls by the same key shd use a Map.
+M|Buil|**In|**
+M|Buil|tx|```ts
+M|Buil|func|Order[], us: us[]) {
+M|Buil|tx|return orders.map(order => ({
+M|Buil|tx|...order,
+M|Buil|us|us.find(u => u.id === order.userId)
+M|Buil|tx|}))
+M|Buil|tx|}
+M|Buil|tx|```
+M|Buil|**Co|**
+M|Buil|tx|```ts
+M|Buil|func|Order[], us: us[]) {
+M|Buil|tx|const userById = new Map(us.map(u => [u.id, u]))
+M|Buil|tx|return orders.map(order => ({
+M|Buil|tx|...order,
+M|Buil|us|userById.get(order.userId)
+M|Buil|tx|}))
+M|Buil|tx|}
+M|Buil|tx|```
+M|Buil|tx|bd map once (O(n)), then all lookups are O(1).
+M|Buil|For |1M ops → 2K ops.

@@ -1,0 +1,85 @@
+SKILL|spike|"Throwaway experiments to validate an idea before build."
+STEP|1|The answer is knowable from docs or reading code — just do research, don't build
+STEP|2|The work is production path — use the `plan` skill instead
+STEP|3|The idea is already validated — jump straight to implementation
+STEP|4|Spike types:**
+STEP|5|**standard** — one approach answering one question
+STEP|6|**comparison** — same question, different approaches (shared number, letter suffix `a`/`b`/`c`)
+STEP|7|Good spike questions:** specific feasibility with observable output.
+STEP|8|Bad spike questions:** too broad, no observable output, or just "read the docs about X".
+STEP|9|Order by risk.** The spike most likely to kill the idea runs first. No point prototyping the easy parts if the hard part doesn't work.
+STEP|10|Skip decomposition** only if the user already knows exactly what they want to spike and says so. Then take their idea as a single spike.
+STEP|11|**Brief it.** 2-3 sentences: what this spike is, why it matters, key risk.
+STEP|12|**Surface competing approaches** if there's real choice:
+STEP|13|**Pick one.** State why. If 2+ are credible, build quick variants within the spike.
+STEP|14|**Skip research** for pure logic with no external dependencies.
+STEP|15|`web_search("python websocket streaming libraries 2025")` — find candidates
+STEP|16|`web_extract(urls=["https://websockets.readthedocs.io/..."])` — read the actual docs (returns markdown)
+STEP|17|`terminal("pip show websockets \| grep Version")` — check what's installed in the project's venv
+STEP|18|Bias toward something the user can interact with.** Spikes fail when the only output is a log line that says "it works." The user wants to *feel* the spike working. Default choices, in order of prefer
+STEP|19|A runnable CLI that takes input and prints observable output
+STEP|20|A minimal HTML page that demonstrates the behavior
+STEP|21|A small web server with one endpoint
+STEP|22|A unit test that exercises the question with recognizable assertions
+STEP|23|Depth over speed.** Never declare "it works" after one happy-path run. Test edge cases. Follow surprising findings. The verdict is only trustworthy when the investigation was honest.
+STEP|24|Avoid** unless the spike specifically requires it: complex package management, build tools/bundlers, Docker, env files, config systems. Hardcode everything — it's a spike.
+STEP|25|Building one spike** — a typical tool sequence:
+STEP|26|Parallel comparison spikes (002a / 002b) — delegate.** When two approaches can run in parallel and both need real engineering (not 10-line prototypes), fan out with `delegate_task`:
+STEP|27|...
+STEP|28|...
+STEP|29|...
+STEP|30|...
+STEP|31|VALIDATED** = the core question was answered yes, with evidence.
+STEP|32|PARTIAL** = it works under constraints X, Y, Z — document them.
+STEP|33|INVALIDATED** = doesn't work, for this reason. This is a successful spike.
+STEP|34|Winner:** pdfjs for our use case. Camelot if we need table-first extraction later.
+STEP|35|**Integration risks** — two validated spikes that touch the same resource but were tested independently
+STEP|36|**Data handoffs** — spike A's output was assumed compatible with spike B's input; never proven
+STEP|37|**Gaps in the vision** — capabilities assumed but unproven
+STEP|38|**Alternative approaches** — different angles for PARTIAL or INVALIDATED spikes
+STEP|39|Create `spikes/` (or `.planning/spikes/` if the user is using GSD conventions) in the repo root
+STEP|40|One dir per spike: `NNN-descriptive-name/`
+STEP|41|`README.md` per spike captures question, approach, results, verdict
+STEP|42|Keep the code throwaway — a spike that takes 2 days to "clean up for production" was a bad spike
+PIT|The answer is knowable from docs or reading code — just do research, don't build
+PIT|The work is production path — use the `plan` skill instead
+PIT|The idea is already validated — jump straight to implementation
+PIT|Spike types:**
+PIT|**standard** — one approach answering one question
+PIT|**comparison** — same question, different approaches (shared number, letter suffix `a`/`b`/`c`)
+PIT|Good spike questions:** specific feasibility with observable output.
+PIT|Bad spike questions:** too broad, no observable output, or just "read the docs about X".
+PIT|Order by risk.** The spike most likely to kill the idea runs first. No point prototyping the easy parts if the hard part doesn't work.
+PIT|Skip decomposition** only if the user already knows exactly what they want to spike and says so. Then take their idea as a single spike.
+PIT|**Brief it.** 2-3 sentences: what this spike is, why it matters, key risk.
+PIT|**Surface competing approaches** if there's real choice:
+PIT|**Pick one.** State why. If 2+ are credible, build quick variants within the spike.
+PIT|**Skip research** for pure logic with no external dependencies.
+PIT|`web_search("python websocket streaming libraries 2025")` — find candidates
+PIT|`web_extract(urls=["https://websockets.readthedocs.io/..."])` — read the actual docs (returns markdown)
+PIT|`terminal("pip show websockets \| grep Version")` — check what's installed in the project's venv
+PIT|Bias toward something the user can interact with.** Spikes fail when the only output is a log line that says "it works." The user wants to *feel* the spike working. Default choices, in order of prefer
+PIT|A runnable CLI that takes input and prints observable output
+PIT|A minimal HTML page that demonstrates the behavior
+PIT|A small web server with one endpoint
+PIT|A unit test that exercises the question with recognizable assertions
+PIT|Depth over speed.** Never declare "it works" after one happy-path run. Test edge cases. Follow surprising findings. The verdict is only trustworthy when the investigation was honest.
+PIT|Avoid** unless the spike specifically requires it: complex package management, build tools/bundlers, Docker, env files, config systems. Hardcode everything — it's a spike.
+PIT|Building one spike** — a typical tool sequence:
+PIT|Parallel comparison spikes (002a / 002b) — delegate.** When two approaches can run in parallel and both need real engineering (not 10-line prototypes), fan out with `delegate_task`:
+PIT|...
+PIT|...
+PIT|...
+PIT|...
+PIT|VALIDATED** = the core question was answered yes, with evidence.
+PIT|PARTIAL** = it works under constraints X, Y, Z — document them.
+PIT|INVALIDATED** = doesn't work, for this reason. This is a successful spike.
+PIT|Winner:** pdfjs for our use case. Camelot if we need table-first extraction later.
+PIT|**Integration risks** — two validated spikes that touch the same resource but were tested independently
+PIT|**Data handoffs** — spike A's output was assumed compatible with spike B's input; never proven
+PIT|**Gaps in the vision** — capabilities assumed but unproven
+PIT|**Alternative approaches** — different angles for PARTIAL or INVALIDATED spikes
+PIT|Create `spikes/` (or `.planning/spikes/` if the user is using GSD conventions) in the repo root
+PIT|One dir per spike: `NNN-descriptive-name/`
+PIT|`README.md` per spike captures question, approach, results, verdict
+PIT|Keep the code throwaway — a spike that takes 2 days to "clean up for production" was a bad spike

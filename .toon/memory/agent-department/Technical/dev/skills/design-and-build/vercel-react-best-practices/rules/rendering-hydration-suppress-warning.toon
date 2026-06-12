@@ -1,0 +1,24 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-hydration-suppress-warning.md savings=0%
+M||tx|---
+M||titl|Suppress Expected Hydration Mismatches
+M||impa|lo-md
+M||impa|avoids noisy hydration warnings for known differences
+M||tags|rendering, hydration, ssr, nx
+M||tx|---
+M|Supp|tx|In SSR frameworks (e.g., nx.js), some values are intentionally different on server vs client (random IDs, dates, locale/timezone formatting). For these *expected* mismatches, wrap the dynamic text in an element w/ `suppressHydrationWarning` to prevent noisy warnings. Do not use this to hide real bugs. Don’t overuse it.
+M|Supp|**In|**
+M|Supp|tx|```tsx
+M|Supp|tx|fn Timestamp() {
+M|Supp|tx|return <span>{new Date().toLocaleString()}</span>
+M|Supp|tx|}
+M|Supp|tx|```
+M|Supp|**Co|**
+M|Supp|tx|```tsx
+M|Supp|tx|fn Timestamp() {
+M|Supp|tx|return (
+M|Supp|tx|<span suppressHydrationWarning>
+M|Supp|tx|{new Date().toLocaleString()}
+M|Supp|tx|</span>
+M|Supp|tx|)
+M|Supp|tx|}
+M|Supp|tx|```

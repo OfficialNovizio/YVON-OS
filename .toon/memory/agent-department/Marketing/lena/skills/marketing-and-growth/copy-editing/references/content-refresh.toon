@@ -1,0 +1,25 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copy-editing/references/content-refresh.md savings=10%
+M|Cont|tx|cp editing isn't just for new cn. Existing pages and posts decay over time — outdated stats, stale examples, drifted br voice, and missed SEO opportunities. A cn refresh applies the same editing rigor to cn that's already published.
+M|When|it|**Traffic declining** on a page that used to perform well
+M|When|it|**Stats or data** are more than 12 months old
+M|When|it|**pd has changed** — features, pricing, or positioning no longer match
+M|When|it|**cr updated** their version of the same cn
+M|When|it|**AI search visibility** matters — outdated cn gets cited less (see ai-seo skill)
+M|Cont|tx|1. **Freshness pass** — up all dates, stats, and examples. Replace "in 2024" w/ current data. Remove references to deprecated features or tools.
+M|Cont|tx|2. **Accuracy pass** — Verify all claims are still true. Check that linked resources still exist. Confirm pricing and feature descriptions match current state.
+M|Cont|tx|3. **Voice pass** — Does the tone match your current br voice? Older cn often reflects an earlier stage of the company.
+M|Cont|4. *|[date]" prominently.
+M|Cont|tx|5. **Proof pass** — Can you add newer testimonials, case studies, or data points that didn't exist when this was first published?
+M|Cont|tx|6. **Structure pass** — Add comparison tables, FAQ sections, or other scannable formats that make the cn easier to consume.
+M|Refr|tx|\| Signal \| Action \|
+M|Refr|tx|\|--------\|--------\|
+M|Refr|tx|\| Core message still valid, details outdated \| Refresh (up facts, stats, examples) \|
+M|Refr|tx|\| br voice has evolved significantly \| Refresh + voice rewrite \|
+M|Refr|tx|\| Topic angle or audience has shifted \| Full rewrite \|
+M|Refr|tx|\| Page structure doesn't match current search intent \| Full rewrite \|
+M|Refr|tx|\| Just needs updated stats and links \| Light refresh \|
+M|Refr|- **|Every quarter, or when pricing/features change
+M|Refr|- **|Every 6 months
+M|Refr|- **|Every 3-6 months (cr change fast)
+M|Refr|- **|Annually, unless traffic drops sooner
+M|Refr|- **|Only when traffic data suggests an opportunity

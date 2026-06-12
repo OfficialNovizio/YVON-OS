@@ -1,0 +1,111 @@
+#MEM id=vercel-react-best-practices source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/SKILL.md savings=3%
+M||tx|---
+M||name|vc-rc-best-practices
+M||desc|>-
+M||tx|rc and nx.js perf op guidelines from vc Engineering. This skill shd be used when writing, reviewing, or refactoring rc/nx.js code to ensure optimal perf patterns. Triggers on tasks involving rc cp, nx.js pages, data fetching, bundle op, or perf improvements.
+M||vers|1.0.0
+M||lice|MIT
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, tc]
+M||auth|vc
+M||vers|"1.0.0"
+M||tx|---
+M|Verc|tx|Comprehensive perf op guide for rc and nx.js applications, maintained by vc. Contains 69 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
+M|When|Refe|
+M|When|it|Writing new rc cp or nx.js pages
+M|When|it|Implementing data fetching (client or server-side)
+M|When|it|Reviewing code for perf issues
+M|When|it|Refactoring existing rc/nx.js code
+M|When|it|Optimizing bundle size or load times
+M|Rule|tx|\| Priority \| Category \| Impact \| Prefix \|
+M|Rule|tx|\|----------\|----------\|--------\|--------\|
+M|Rule|tx|\| 1 \| Eliminating Waterfalls \| ct \| `async-` \|
+M|Rule|tx|\| 2 \| Bundle Size op \| ct \| `bundle-` \|
+M|Rule|tx|\| 3 \| Server-Side perf \| hi \| `server-` \|
+M|Rule|tx|\| 4 \| Client-Side Data Fetching \| md-hi \| `client-` \|
+M|Rule|tx|\| 5 \| Re-render op \| md \| `rerender-` \|
+M|Rule|tx|\| 6 \| Rendering perf \| md \| `rendering-` \|
+M|Rule|tx|\| 7 \| JavaScript perf \| lo-md \| `js-` \|
+M|Rule|tx|\| 8 \| Advanced Patterns \| lo \| `advanced-` \|
+M|1. E|it|`async-cheap-condition-before-await` - Check cheap sync conditions before awaiting flags or remote values
+M|1. E|it|`async-defer-await` - Move await into branches where actually used
+M|1. E|it|`async-parallel` - Use Promise.all() for independent operations
+M|1. E|it|`async-dependencies` - Use better-all for partial dependencies
+M|1. E|it|`async-ap-rt` - Start promises early, await late in ap rt
+M|1. E|it|`async-suspense-boundaries` - Use Suspense to stream cn
+M|2. B|it|`bundle-barrel-imports` - Import directly, avoid barrel files
+M|2. B|it|`bundle-dynamic-imports` - Use nx/dynamic for heavy cp
+M|2. B|it|`bundle-defer-third-party` - Load an/logging after hydration
+M|2. B|it|`bundle-conditional` - Load modules only when feature is activated
+M|2. B|it|`bundle-preload` - Preload on hover/focus for perceived speed
+M|3. S|it|`server-auth-actions` - Authenticate server actions like ap rt
+M|3. S|it|`server-cache-rc` - Use rc.cache() for per-request deduplication
+M|3. S|it|`server-cache-lru` - Use LRU cache for cross-request caching
+M|3. S|it|`server-dedup-props` - Avoid duplicate serialization in RSC props
+M|3. S|it|`server-hoist-static-io` - Hoist static I/O (fonts, logos) to md level
+M|3. S|it|`server-no-shared-md-state` - Avoid md-level mutable request state in RSC/SSR
+M|3. S|it|`server-serialization` - Minimize data passed to client cp
+M|3. S|it|`server-parallel-fetching` - Restructure cp to parallelize fetches
+M|3. S|it|`server-parallel-nested-fetching` - Chain nested fetches per item in Promise.all
+M|3. S|it|`server-after-nonblocking` - Use after() for non-blocking operations
+M|4. C|it|`client-swr-dedup` - Use SWR for automatic request deduplication
+M|4. C|it|`client-event-listeners` - Deduplicate global event listeners
+M|4. C|it|`client-passive-event-listeners` - Use passive listeners for scroll
+M|4. C|it|`client-localstorage-sc` - Version and minimize localStorage data
+M|5. R|it|`rerender-defer-reads` - Don't subscribe to state only used in callbacks
+M|5. R|it|`rerender-memo` - Extract expensive work into memoized cp
+M|5. R|it|`rerender-memo-w/-default-value` - Hoist default non-primitive props
+M|5. R|it|`rerender-dependencies` - Use primitive dependencies in effects
+M|5. R|it|`rerender-derived-state` - Subscribe to derived booleans, not raw values
+M|5. R|it|`rerender-derived-state-no-effect` - Derive state during render, not effects
+M|5. R|it|`rerender-functional-setstate` - Use functional setState for stable callbacks
+M|5. R|it|`rerender-lazy-state-init` - Pass fn to useState for expensive values
+M|5. R|it|`rerender-simple-expression-in-memo` - Avoid memo for simple primitives
+M|5. R|it|`rerender-split-combined-hooks` - Split hooks w/ independent dependencies
+M|5. R|it|`rerender-move-effect-to-event` - Put interaction logic in event handlers
+M|5. R|it|`rerender-transitions` - Use startTransition for non-ur updates
+M|5. R|it|`rerender-use-deferred-value` - Defer expensive renders to keep input responsive
+M|5. R|it|`rerender-use-ref-transient-values` - Use refs for transient frequent values
+M|5. R|it|`rerender-no-inline-cp` - Don't define cp inside cp
+M|6. R|it|`rendering-animate-svg-wrapper` - Animate div wrapper, not SVG element
+M|6. R|it|`rendering-cn-visibility` - Use cn-visibility for long lists
+M|6. R|it|`rendering-hoist-jsx` - Extract static JSX outside cp
+M|6. R|it|`rendering-svg-precision` - Reduce SVG coordinate precision
+M|6. R|it|`rendering-hydration-no-flicker` - Use inline script for client-only data
+M|6. R|it|`rendering-hydration-suppress-wn` - Suppress expected mismatches
+M|6. R|it|`rendering-activity` - Use Activity cp for show/hide
+M|6. R|it|`rendering-conditional-render` - Use ternary, not && for conditionals
+M|6. R|it|`rendering-usetransition-loading` - Prefer useTransition for loading state
+M|6. R|it|`rendering-resource-hints` - Use rc DOM resource hints for preloading
+M|6. R|it|`rendering-script-defer-async` - Use defer or async on script tags
+M|7. J|it|`js-batch-dom-css` - Group CSS changes via classes or cssText
+M|7. J|it|`js-index-maps` - bd Map for repeated lookups
+M|7. J|it|`js-cache-property-access` - Cache object properties in loops
+M|7. J|it|`js-cache-fn-results` - Cache fn results in md-level Map
+M|7. J|it|`js-cache-storage` - Cache localStorage/sessionStorage reads
+M|7. J|it|`js-combine-iterations` - Combine multiple filter/map into one loop
+M|7. J|it|`js-length-check-first` - Check array length before expensive comparison
+M|7. J|it|`js-early-exit` - Return early from functions
+M|7. J|it|`js-hoist-regexp` - Hoist RegExp creation outside loops
+M|7. J|it|`js-min-max-loop` - Use loop for min/max instead of sort
+M|7. J|it|`js-set-map-lookups` - Use Set/Map for O(1) lookups
+M|7. J|it|`js-tosorted-immutable` - Use toSorted() for immutability
+M|7. J|it|`js-flatmap-filter` - Use flatMap to map and filter in one pass
+M|7. J|it|`js-request-idle-callback` - Defer non-ct work to browser idle time
+M|8. A|it|`advanced-effect-event-deps` - Don't put `useEffectEvent` results in effect deps
+M|8. A|it|`advanced-event-handler-refs` - Store event handlers in refs
+M|8. A|it|`advanced-init-once` - Initialize app once per app load
+M|8. A|it|`advanced-use-latest` - useLatest for stable callback refs
+M|How |Read|
+M|How |tx|```
+M|How |tx|rules/async-parallel.md
+M|How |tx|rules/bundle-barrel-imports.md
+M|How |tx|```
+M|How |Each|
+M|How |it|Brief explanation of why it matters
+M|How |it|Incorrect code example w/ explanation
+M|How |it|Correct code example w/ explanation
+M|How |it|Additional context and references
+M|Full|For |`ag.md`

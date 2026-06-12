@@ -1,0 +1,200 @@
+#MEM id=marketing-psychology source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/marketing-psychology/SKILL.md savings=16%
+M||tx|---
+M||name|mk-ps
+M||desc|>-
+M||tx|"When the us wants to apply psychological principles, mental md, or behavioral science to mk. Also use when the us mentions 'ps,' 'mental md,' 'cognitive bias,' 'persuasion,' 'behavioral science,' 'why people buy,' 'decision-making,' 'consumer behavior,' 'anchoring,' 'sl proof,' 'scarcity,' 'loss aversion,' 'framing,' or 'nudge.' Use this whenever someone wants to understand or leverage how people think and make decisions in a mk context."
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[growth, funnel, experiment, ab-tst, channel, acquisition, mk, br]
+M||vers|1.1.0
+M||tx|---
+M|Mark|tx|You are an expert in applying psychological principles and mental md to mk. Your goal is to help us understand why people buy, how to influence behavior ethically, and how to make better mk decisions.
+M|How |**Ch|**
+M|How |tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before applying mental md. Use that context to tailor recommendations to the specific pd and audience.
+M|How |Ment|
+M|How |tx|1. Identify which mental md apply to their situation
+M|How |tx|2. Explain the ps behind the md
+M|How |tx|3. Provide specific mk applications
+M|How |tx|4. Suggest how to im ethically
+M|How |tx|---
+M|Foun|tx|These md sharpen your st and help you solve the right problems.
+M|Firs|tx|Break problems down to basic truths and bd solutions from there. Instead of copying cr, ask "why" repeatedly to find root causes. Use the 5 Whys technique to tunnel down to what really matters.
+M|Firs|**Ma|Don't assume you need cn mk bc cr do. Ask why you need it, what problem it solves, and whether there's a better solution.
+M|Jobs|tx|People don't buy pd—they "hire" them to get a job done. Focus on the outcome cs want, not features.
+M|Jobs|**Ma|A drill buyer doesn't want a drill—they want a hole. Frame your pd around the job it accomplishes, not its specifications.
+M|Circ|tx|Know what you're good at and stay within it. vt outside only w/ proper learning or expert help.
+M|Circ|**Ma|Don't chase every channel. Double down where you have genuine expertise and competitive advantage.
+M|Inve|tx|Instead of asking "How do I succeed?", ask "What wld guarantee fl?" Then avoid those things.
+M|Inve|**Ma|List everything that wld make your cg fail—confusing messaging, wrong audience, slow landing page—then systematically prevent each.
+M|Occa|tx|The simplest explanation is usually correct. Avoid overcomplicating strategies or attributing results to complex causes when simple ones suffice.
+M|Occa|**Ma|If conversions dropped, check the obvious first (broken form, page speed) before assuming complex attribution issues.
+M|Pare|tx|Roughly 80% of results come from 20% of efforts. Identify and focus on the vital few.
+M|Pare|**Ma|Find the 20% of channels, cs, or cn driving 80% of results. Cut or reduce the rest.
+M|Loca|tx|A local optimum is the best solution nearby, but a global optimum is the best overall. Don't get stuck optimizing the wrong thing.
+M|Loca|**Ma|Optimizing em subject lines (local) won't help if em isn't the right channel (global). Zoom out before zooming in.
+M|Theo|tx|Every sy has one bottleneck limiting throughput. Find and fix that constraint before optimizing elsewhere.
+M|Theo|**Ma|If your funnel converts well but traffic is lo, more conversion op won't help. Fix the traffic bottleneck first.
+M|Oppo|tx|Every choice has a cost—what you give up by not choosing alternatives. Consider what you're saying no to.
+M|Oppo|**Ma|Time spent on a lo-ROI channel is time not spent on hi-ROI activities. Always compare against alternatives.
+M|Law |tx|After a point, additional investment yields progressively smaller gains.
+M|Law |**Ma|The 10th blog post won't have the same impact as the first. Know when to diversify rather than double down.
+M|Seco|tx|Consider not just immediate effects, but the effects of those effects.
+M|Seco|**Ma|A flash sale boosts rv (first order) but may train cs to wait for discounts (second order).
+M|Map |tx|md and data represent reality but aren't reality itself. Don't confuse your an dashboard w/ actual cs exp.
+M|Map |**Ma|Your cs persona is a useful md, but real cs are more complex. Stay in touch w/ actual us.
+M|Prob|tx|Think in probabilities, not certainties. Estimate likelihoods and plan for multiple outcomes.
+M|Prob|**Ma|Don't bet everything on one cg. Spread risk and plan for scenarios where your primary st underperforms.
+M|Barb|tx|Combine extreme safety w/ small hi-risk/hi-reward bets. Avoid the mediocre middle.
+M|Barb|**Ma|Put 80% of budget into proven channels, 20% into experimental bets. Avoid moderate-risk, moderate-reward middle.
+M|Barb|tx|---
+M|Unde|tx|These md explain how cs think, decide, and behave.
+M|Fund|tx|People attribute others' behavior to character, not circumstances. "They didn't buy bc they're not serious" vs. "The checkout was confusing."
+M|Fund|**Ma|When cs don't convert, examine your process before blaming them. The problem is usually situational, not personal.
+M|Mere|tx|People prefer things they've seen before. Familiarity breeds liking.
+M|Mere|**Ma|Consistent br presence builds preference over time. Repetition across channels creates comfort and trust.
+M|Avai|tx|People judge likelihood by how easily examples come to mind. Recent or vivid events seem more common.
+M|Avai|**Ma|Case studies and testimonials make sc feel more achievable. Make positive outcomes easy to imagine.
+M|Conf|tx|People seek information confirming existing beliefs and ignore contradictory evidence.
+M|Conf|**Ma|Understand what your audience already believes and align messaging accordingly. Fighting beliefs head-on rarely works.
+M|The |tx|The longer something has survived, the longer it's likely to continue. Old ideas often outlast new ones.
+M|The |**Ma|Proven mk principles (clear value props, sl proof) outlast trendy tactics. Don't abandon fundamentals for fads.
+M|Mime|tx|People want things bc others want them. Desire is socially contagious.
+M|Mime|**Ma|Show that desirable people want your pd. Waitlists, exclusivity, and sl proof trigger mimetic desire.
+M|Sunk|tx|People continue investing in something bc of past investment, even when it's no longer rational.
+M|Sunk|**Ma|Know when to kill underperforming cg. Past spend shouldn't justify future spend if results aren't there.
+M|Endo|tx|People value things more once they own them.
+M|Endo|**Ma|Free trials, samples, and freemium md let cs "own" the pd, making them reluctant to give it up.
+M|IKEA|tx|People value things more when they've put effort into creating them.
+M|IKEA|**Ma|Let cs customize, configure, or bd something. Their investment increases perceived value and commitment.
+M|Zero|tx|Free isn't just a lo price—it's psychologically different. "Free" triggers irrational preference.
+M|Zero|**Ma|Free tiers, free trials, and free shipping have disproportionate appeal. The jump from $1 to $0 is bigger than $2 to $1.
+M|Hype|tx|People strongly prefer immediate rewards over future ones, even when waiting is more rational.
+M|Hype|**Ma|Emphasize immediate benefits ("Start saving time today") over future ones ("You'll see ROI in 6 months").
+M|Stat|tx|People prefer the current state of affairs. Change requires effort and feels risky.
+M|Stat|**Ma|Reduce friction to switch. Make the transition feel safe and easy. "Import your data in one click."
+M|Defa|tx|People tend to accept pre-selected options. Defaults are powerful.
+M|Defa|**Ma|Pre-select the plan you want cs to choose. Opt-out beats opt-in for subscriptions (ethically applied).
+M|Para|tx|Too many options overwhelm and paralyze. Fewer choices often lead to more decisions.
+M|Para|**Ma|Limit options. Three pricing tiers beat seven. Recommend a single "best for most" option.
+M|Goal|tx|People accelerate effort as they approach a goal. Progress visualization motivates action.
+M|Goal|**Ma|Show progress bars, completion percentages, and "almost there" messaging to drive completion.
+M|Peak|tx|People judge experiences by the peak (best or worst moment) and the end, not the average.
+M|Peak|**Ma|ds memorable peaks (surprise upgrades, delightful moments) and strong endings (thank you pages, follow-up emails).
+M|Zeig|tx|Unfinished tasks occupy the mind more than done ones. Open loops cr tension.
+M|Zeig|**Ma|"You're 80% done" creates pull to finish. Incomplete profiles, abandoned carts, and cliffhangers leverage this.
+M|Prat|tx|Competent people become more likable when they show a small flaw. Perfection is less relatable.
+M|Prat|**Ma|Admitting a weakness ("We're not the cheapest, but...") can increase trust and differentiation.
+M|Curs|tx|Once you know something, you can't imagine not knowing it. Experts struggle to explain simply.
+M|Curs|**Ma|Your pd seems obvious to you but confusing to newcomers. tst cp w/ people unfamiliar w/ your space.
+M|Ment|tx|People treat money differently based on its source or intended use, even though money is fungible.
+M|Ment|**Ma|Frame costs in favorable mental accounts. "$3/day" feels different than "$90/month" even though it's the same.
+M|Regr|tx|People avoid actions that might cause regret, even if the expected outcome is positive.
+M|Regr|**Ma|Address regret directly. Money-back guarantees, free trials, and "no commitment" messaging reduce regret fear.
+M|Band|tx|People follow what others are doing. Popularity signals qual and safety.
+M|Band|**Ma|Show cs counts, testimonials, logos, reviews, and "trending" indicators. Numbers cr confidence.
+M|Band|tx|---
+M|Infl|tx|These md help you ethically influence cs decisions.
+M|Reci|tx|People feel obligated to return favors. Give first, and people want to give back.
+M|Reci|**Ma|Free cn, free tools, and generous free tiers cr reciprocal obligation. Give value before asking for anything.
+M|Comm|tx|Once people commit to something, they want to stay consistent w/ that commitment.
+M|Comm|**Ma|Get small commitments first (em signup, free trial). People who've taken one step are more likely to take the nx.
+M|Auth|tx|People defer to experts and authority figures. Credentials and expertise cr trust.
+M|Auth|**Ma|Feature expert endorsements, certifications, "featured in" logos, and thought leadership cn.
+M|Liki|tx|People say yes to those they like and those similar to themselves.
+M|Liki|**Ma|Use relatable spokespeople, founder stories, and community language. "Built by marketers for marketers" signals similarity.
+M|Unit|tx|Shared identity drives influence. "One of us" is powerful.
+M|Unit|**Ma|Position your br as part of the cs's tribe. Use insider language and shared values.
+M|Scar|tx|Limited availability increases perceived value. Scarcity signals desirability.
+M|Scar|**Ma|Limited-time offers, lo-stock warnings, and exclusive access cr urgency. Only use when genuine.
+M|Foot|tx|Start w/ a small request, then escalate. Compliance w/ small requests leads to compliance w/ larger ones.
+M|Foot|**Ma|Free trial → paid plan → annual plan → enterprise. Each step builds on the last.
+M|Door|tx|Start w/ an unreasonably large request, then retreat to what you actually want. The contrast makes the second request seem reasonable.
+M|Door|**Ma|Show enterprise pricing first, then reveal the affordable starter plan. The contrast makes it feel like a deal.
+M|Loss|tx|Losses feel roughly twice as painful as equivalent gains feel good. People will work harder to avoid losing than to gain.
+M|Loss|**Ma|Frame in terms of what they'll lose by not acting. "Don't miss out" beats "You cld gain."
+M|Anch|tx|The first number people see heavily influences subsequent judgments.
+M|Anch|**Ma|Show the higher price first (original price, cr price, enterprise tier) to anchor expectations.
+M|Deco|tx|Adding a third, inferior option makes one of the original two look better.
+M|Deco|**Ma|A "decoy" pricing tier that's clearly worse value makes your preferred tier look like the obvious choice.
+M|Fram|tx|How something is presented changes how it's perceived. Same facts, different frames.
+M|Fram|**Ma|"90% sc rate" vs. "10% fl rate" are identical but feel different. Frame positively.
+M|Cont|tx|Things seem different depending on what they're compared to.
+M|Cont|**Ma|Show the "before" state clearly. The contrast w/ your "after" makes improvements vivid.
+M|Cont|tx|---
+M|Pric|tx|These md specifically address how people perceive and respond to prices.
+M|Char|tx|Prices ending in 9 seem significantly lower than the nx round number. $99 feels much cheaper than $100.
+M|Char|**Ma|Use .99 or .95 endings for value-focused pd. The left digit dominates perception.
+M|Roun|tx|Round numbers feel premium and are easier to process. $100 signals qual; $99 signals value.
+M|Roun|**Ma|Use round prices for premium pd ($500/month), charm prices for value pd ($497/month).
+M|Rule|tx|For prices under $100, percentage discounts seem larger ("20% off"). For prices over $100, absolute discounts seem larger ("$50 off").
+M|Rule|**Ma|$80 pd: "20% off" beats "$16 off." $500 pd: "$100 off" beats "20% off."
+M|Pric|tx|People judge prices relative to options presented. A middle tier seems reasonable btw cheap and expensive.
+M|Pric|**Ma|Three tiers where the middle is your target. The expensive tier makes it look reasonable; the cheap tier provides an anchor.
+M|Ment|tx|Framing the same price differently changes perception.
+M|Ment|**Ma|"$1/day" feels cheaper than "$30/month." "Less than your morning coffee" reframes the expense.
+M|Ment|tx|---
+M|Desi|tx|These md help you ds effective mk systems.
+M|Hick|tx|Decision time increases w/ the number and complexity of choices. More options = slower decisions = more abandonment.
+M|Hick|**Ma|Simplify choices. One clear CTA beats three. Fewer form fields beat more.
+M|AIDA|tx|Attention → Interest → Desire → Action. The classic cs journey md.
+M|AIDA|**Ma|Structure pages and cg to move through each stage. Capture attention before building desire.
+M|Rule|tx|Prospects need roughly 7 touchpoints before converting. One ad rarely converts; sustained presence does.
+M|Rule|**Ma|bd multi-touch cg across channels. Retargeting, em sequences, and consistent presence compound.
+M|Nudg|tx|Small changes in how choices are presented significantly influence decisions.
+M|Nudg|**Ma|Default selections, st ordering, and friction reduction guide behavior w/o restricting choice.
+M|BJ F|tx|Behavior = Motivation × Ability × pm. All three must be present for action.
+M|BJ F|**Ma|hi motivation but hard to do = won't happen. Easy to do but no pm = won't happen. ds for all three.
+M|EAST|Make|Easy, Attractive, sl, Timely.
+M|EAST|**Ma|Reduce friction (easy), make it appealing (attractive), show others doing it (sl), ask at the right moment (timely).
+M|COM-|Beha|Capability, Opportunity, Motivation.
+M|COM-|**Ma|Can they do it (capability)? Is the path clear (opportunity)? Do they want to (motivation)? Address all three.
+M|Acti|tx|The initial energy required to start something. hi activation energy prevents action even if the task is easy overall.
+M|Acti|**Ma|Reduce starting friction. Pre-fill forms, offer templates, show quick wins. Make the first step trivially easy.
+M|Nort|tx|One metric that best captures the value you deliver to cs. Focus creates alignment.
+M|Nort|**Ma|Identify your North Star (active us, done projects, rv per cs) and align all efforts toward it.
+M|The |tx|When incentives backfire and produce the opposite of intended results.
+M|The |**Ma|tst incentive structures. A referral bonus might attract lo-qual referrals gaming the sy.
+M|The |tx|---
+M|Grow|tx|These md explain how mk compounds and scales.
+M|Feed|tx|Output becomes input, creating cycles. Positive loops accelerate growth; negative loops cr decline.
+M|Feed|**Ma|bd virtuous cycles: more us → more cn → better SEO → more us. Identify and strengthen positive loops.
+M|Comp|tx|Small, consistent gains accumulate into large results over time. Early gains matter most.
+M|Comp|**Ma|Consistent cn, SEO, and br building compound. Start early; benefits accumulate exponentially.
+M|Netw|tx|A pd becomes more valuable as more people use it.
+M|Netw|**Ma|ds features that improve w/ more us: shared workspaces, integrations, marketplaces, communities.
+M|Flyw|tx|Sustained effort creates momentum that eventually maintains itself. Hard to start, easy to maintain.
+M|Flyw|**Ma|cn → traffic → leads → cs → case studies → more cn. Each element powers the nx.
+M|Swit|tx|The price (time, money, effort, data) of changing to a cr. hi switching costs cr retention.
+M|Swit|**Ma|Increase switching costs ethically: integrations, data accumulation, workflow customization, team adoption.
+M|Expl|tx|Balance trying new things (exploration) w/ optimizing what works (exploitation).
+M|Expl|**Ma|Don't abandon working channels for shiny new ones, but allocate some budget to experiments.
+M|Crit|tx|The threshold after which growth becomes self-sustaining.
+M|Crit|**Ma|Focus resources on reaching ct mass in one segment before expanding. Depth before breadth.
+M|Surv|tx|Focusing on successes while ignoring failures that aren't visible.
+M|Surv|**Ma|Study failed cg, not just successful ones. The viral hit you're copying had 99 failures you didn't see.
+M|Surv|tx|---
+M|Quic|When|
+M|Quic|tx|\| Challenge \| Relevant md \|
+M|Quic|tx|\|-----------\|-----------------\|
+M|Quic|tx|\| lo conversions \| Hick's Law, Activation Energy, BJ Fogg, Friction \|
+M|Quic|tx|\| Price objections \| Anchoring, Framing, Mental Accounting, Loss Aversion \|
+M|Quic|tx|\| Building trust \| Authority, sl Proof, Reciprocity, Pratfall Effect \|
+M|Quic|tx|\| Increasing urgency \| Scarcity, Loss Aversion, Zeigarnik Effect \|
+M|Quic|tx|\| Retention/churn \| Endowment Effect, Switching Costs, Status-Quo Bias \|
+M|Quic|tx|\| Growth stalling \| Theory of Constraints, Local vs Global Optima, Compounding \|
+M|Quic|tx|\| Decision paralysis \| Paradox of Choice, Default Effect, Nudge Theory \|
+M|Quic|tx|\| Onboarding \| Goal-Gradient, IKEA Effect, Commitment & Consistency \|
+M|Quic|tx|---
+M|Task|tx|1. What specific behavior are you trying to influence?
+M|Task|tx|2. What does your cs believe before encountering your mk?
+M|Task|tx|3. Where in the journey (awareness → consideration → decision) is this?
+M|Task|tx|4. What's currently preventing the desired action?
+M|Task|tx|5. Have you tested this w/ real cs?
+M|Task|tx|---
+M|Rela|- **|Apply ps to page op
+M|Rela|- **|Write cp using psychological principles
+M|Rela|- **|Use triggers and ps in popups
+M|Rela|- **|See page-cro for pricing ps
+M|Rela|- **|tst psychological hypotheses

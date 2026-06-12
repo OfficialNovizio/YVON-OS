@@ -1,0 +1,19 @@
+#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/MEMORY-novizio.md savings=18%
+M|Pixe|tx|> Load alongside MEMORY.md when active vt is nz.
+M|Pixe|tx|> nz-specific context only — universal rules live in MEMORY.md.
+M|Vent|- **|editorial, natural, authentic — not commercial or stock
+M|Vent|- **|Instagram (1:1, 4:5, 9:16), TikTok (9:16), website banners
+M|Novi|tx|\| Platform \| Format \| Dimensions \| File size \|
+M|Novi|tx|\|----------\|--------\|------------\|-----------\|
+M|Novi|| In|1 square \| 1080×1080px \| < 8MB \|
+M|Novi|| In|5 portrait \| 1080×1350px \| < 8MB \|
+M|Novi|| In|16 vertical \| 1080×1920px \| < 650MB (vd) \|
+M|Novi|| In|16 vertical \| 1080×1920px \| < 8MB \|
+M|Novi|| Ti|16 vertical \| 1080×1920px \| < 650MB (vd) \|
+M|Novi|| We|9 wide \| 1920×1080px \| < 3MB \|
+M|Novi|Stan|
+M|Novi|tx|1. **Lighting check** — is it natural, soft, directional? No harsh shadows or over-lit studio?
+M|Novi|tx|2. **Background check** — is it clean and neutral? No busy patterns or promotional clutter?
+M|Novi|tx|3. **Energy check** — does the im feel editorial (magazine spread) or commercial (catalogue)?
+M|Reje|> Po|[date] — rejection reason — what pm tag caused it — fix.
+M|Neve|> Ea|[date] — nz-specific production er — rule.

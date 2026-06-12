@@ -1,0 +1,13 @@
+#MEM id=felix source=/root/yvon/agent-department/Finance/felix/SESSION.md savings=14%
+M|Feli|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Feli|tx|> Always load this first. Load MEMORY.md for financial md, rp format, and fx's rules.
+M|Curr|- **|** 2026-03-23
+M|Curr|- **|** idle
+M|Curr|- **|** none
+M|Curr|- **|** hb pricing md al — mc is waiting on this
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-03-23 \| Memory sy initialised \| File seeded w/ yv fi context \| — \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|hb pricing md rv — mc awaiting fx runway al
+M|Open|it|nz SS26 cg budget — not yet scoped, awaiting Alex brief

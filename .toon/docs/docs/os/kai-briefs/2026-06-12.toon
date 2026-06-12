@@ -1,0 +1,50 @@
+#DOC source=/root/yvon/docs/os/kai-briefs/2026-06-12.md strip=3% toon=3% net=5%
+T|Novi|0|Situation: Fourth consecutive day of complete an blackout. socialsnapshots: 0 rows. socialposts: 2 records from February 2025 (launch posts, <0.17% engagement), unchanged since May 28 backfill. cr: 10 tracked, 0 differentiated signals. sb URL is real (mckatwpnivqylrukhsux.sb.co) but SUPABASESERVICEROLE_KEY in .env.local remains a 13-character placeholder (eyJhbG...DhS4) — last modified June 11 06:05, unchanged. No dv server running on localhost:3000. Direct Node.js query via @sb/sb-js fails — the key is not a truncation artifact; it is a literal placeholder string.
+T|Novi|1|
+T|Novi|2|Diagnosis: The situation is now day 4 of a confirmed structural stall, not a transient glitch. The root cause is unambiguous: .env.local has never been populated w/ real sb credentials on this dpl. This is a one-file, 5-minute cfg task w/ zero code changes required. Yesterday's brief escalated this to a dependency declaration; today I'm noting that the escalation has not produced action. The compounding cost grows each day: SS26 — targeting late June launch — is now within a ~14-day window w/ zero pre-cg baselines.
+T|Novi|3|
+T|Novi|4|New contextual signal: The War Room Pipeline Overhaul is now marked COMPLETE ✅ in sn.md (Phases 5–10 landed: TOON format, compression engine, feature gap closure, qual gates, dpl hints). This means the engineering capacity that was consumed by the overhaul is now freeing up — removing the "priority reprioritization" hypothesis from yesterday's diagnosis. The an pipeline priming was deferred for the overhaul; the overhaul is done. The blockage is now purely a credentials/config gap.
+T|Novi|5|
+T|Novi|6|SS26 urgency recalibration: At 14 days to launch and zero baselines, the cg is tracking toward the 30–40% first-month ROAS underperformance base rate. Two pre-launch snapshots (the minimum for a directional tn line) require data to start flowing by June 16 at the absolute latest. That's 4 days from now.
+T|Novi|7|
+T|Novi|8|Action: Same recommendation, escalated urgency — fill .env.local today. The single highest-leverage move is unchanged bc the bottleneck hasn't moved:
+T|Novi|9|Stark or dn copies a real SUPABASESERVICEROLE_KEY into /root/yv/.env.local (the URL is already correct — this is a 2-minute edit).
+T|Novi|10|Trigger POST /ap/instagram for nz → populate social_snapshots w/ current baseline. This one ap call unlocks ka, ro, nt, and fx simultaneously for pre-cg intelligence.
+T|Novi|11|Set SOCIALSNAPSHOTSCRON to weekly — the minimum viable cadence to have 2 data points before SS26 launch.
+T|Novi|12|
+T|Novi|13|If credentials are unavailable for this dpl, the fallback is: run ka on a machine that does have access (e.g., Stark's local dv environment where .env.local is presumably populated) and pipe the output back via a manual file write. A brief based on live data from a different machine is infinitely better than a fourth day of structural zeros.
+T|Novi|14|
+T|Novi|15|Confidence: hi on the diagnosis (4 days of identical zero-data state, placeholder key confirmed, sn.md confirms "connect daily brief to real cr data" is still pnd). md on execution velocity — the pattern of the last 3 days suggests that briefs alone are not producing config-level action. The confidence that this brief will break the logjam is, candidly, lo — which is itself a signal mc shd see.
+T|Novi|16|
+T|Novi|17|---
+T|Novi|18|
+T|Hour|0|Situation: Fourth consecutive day of total data vacuum. Zero sl posts, zero sl snapshots, zero cr tracked. vt record exists (created 2026-03-22, status "active", Canada-based) but has no an instrumentation whatsoever. Last ag sn: April 8, 2026 (sb sc setup by dv + rj) — 65 days ago. The vt's sn.md shows no active ag, no in-flight work, and the same open items from months ago: pricing md undefined, acquisition channel undecided, trial-to-paid funnel not designed.
+T|Hour|1|
+T|Hour|2|Diagnosis: hb is in a pre-launch planning stasis — not an an problem but a vt momentum problem. The an scaffolding ka has been recommending (event tracking spec, cohort definitions, alert thresholds) is downstream of pd decisions that haven't been made yet. The ct path remains: fx → runway al + pricing → Stark → approval → dv → trial-to-paid funnel → first us. Until step 1 (fx's runway al) completes, ka's analytical fn cannot activate bc there is nothing to measure.
+T|Hour|3|
+T|Hour|4|The signal in the silence: hb's sn.md Last 5 sn table contains exactly one entry — April 8. The vt has had zero ag attention in over two months. For a pre-launch SaaS, that length of inactivity carries risk: the competitive window doesn't pause while internal prioritization sorts itself out. Canadian fintech SaaS is a space where first-mover advantages compound quickly (network effects in payroll/accounting integrations).
+T|Hour|5|
+T|Hour|6|Action: Unblock fx. The single dependency that unlocks everything downstream is fx's runway al and pricing md recommendation (HRB-002). Specifically:
+T|Hour|7|mc or dn shd trigger a fx sn explicitly: "Run hb runway al and deliver pricing md recommendation by June 16."
+T|Hour|8|Parallel to fx: ka's event tracking spec (proposed in the June 9 brief) can be written now as a non-blocking artifact — delivered to dv/rj so the instrumentation ds exists before the first line of pd code ships.
+T|Hour|9|dn shd add "hb vt rv" to the Monday checklist — the 65-day ag inactivity window is long enough to warrant a structured re-engagement decision (re-prioritize or formally pause).
+T|Hour|10|
+T|Hour|11|Confidence: md. The prescription is sound for any pre-launch SaaS, but it assumes hb is still an active vt rather than a parked one. That assumption may be worth verifying: if the vt has been intentionally deprioritized, ka's briefs shd reflect that and stop recommending actions that assume forward momentum. If it's not parked, the inactivity itself is the most important signal — and mc shd see it.
+T|Hour|12|
+T|Hour|13|---
+T|Hour|14|
+T|Cros|0|The pattern from days 1–3 holds and hardens on day 4: ka is fully defined but fully starved of data. What's changed this morning is context:
+T|Cros|1|
+T|Cros|2|Engineering capacity is freeing up. The War Room Pipeline Overhaul (Phases 5–10) is COMPLETE ✅. The argument that "engineering cycles are consumed by the overhaul" — which was Hypothesis 2 in yesterday's brief at 30% likelihood — is now invalid. The capacity exists. The bottleneck is pure cfg.
+T|Cros|3|
+T|Cros|4|nz's SS26 clock is now audible. 14 days to launch, minimum 2 pre-cg snapshots needed = data must start flowing by June 16. That's Monday. If .env.local isn't filled by Monday, the cg launches blind — and the 30–40% ROAS underperformance base rate locks in.
+T|Cros|5|
+T|Cros|6|hb's silence is approaching a decision point. 65 days w/o ag attention for a pre-launch vt crosses the threshold where "we'll get to it" becomes "we shd decide whether we're doing this." mc shd either unblock fx this week or formally pause hb — the ambiguity is consuming ka's analytical cycles w/o producing intelligence.
+T|Cros|7|
+T|Cros|8|The meta-signal: 4 consecutive briefs w/ the same diagnosis, zero config change. ka's value proposition is intelligence from data. When data is absent, ka becomes a broken-record detector — useful for mc to see the stall, but not the role ka was built for. The fix is a 2-minute .env.local edit. Until that happens, every ka brief will carry the same core message w/ escalating urgency.
+T|Cros|9|
+T|Cros|10|mc's single highest-leverage action this week (unchanged, urgency elevated): cp a real SUPABASESERVICEROLE_KEY into /root/yv/.env.local. That one action — 2 minutes — is the key that turns ka from a stall-detector into an intelligence engine.
+T|Cros|11|
+T|Cros|12|---
+T|Cros|13|
+T|Cros|14|ka out. Brief delivered to mc.

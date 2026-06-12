@@ -1,0 +1,29 @@
+SKILL|spec-audit|Audit a feature or system against its documented purpose — read the spec, read the code, cross-reference, produce a purpose-vs-reality gap table with prioritized fixes.
+STEP|1|Read the **spec/documentation** files:
+STEP|2|Read the **agent definitions** (MEMORY.md, SESSION.md) for agents that own the feature — understand their role, data sources, output schema.
+STEP|3|Extract the **stated purpose**: what this feature is supposed to produce, who it serves, what decisions it enables.
+STEP|4|List all files in the feature directory (`search_files` on the screen/route folder).
+STEP|5|Read the **page entry points** (`page.tsx`, `layout.tsx`).
+STEP|6|Read **sub-components** (`_*.tsx` files) — understand what each tab/panel renders and what data it expects.
+STEP|7|Read **settings/feature-flags** (`lib/*-tabs.ts`, settings pages) — what's ON/OFF, what's live vs legacy.
+STEP|8|Read **all API routes** the frontend calls (`fetch` calls → find corresponding `app/api/*/route.ts`).
+STEP|9|Read **shared utilities** (`_use-*.ts`, `_subnav.tsx`, `_shared.tsx`).
+STEP|10|Full Audit Report** (when asked for full analysis, detailed report, "audit the dashboard"):
+STEP|11|CEO Verdict** (when asked to "rate 1–5", "give a final verdict", "what works/broken/missing", "highest-leverage fix"):
+STEP|12|Do NOT start coding.** Present the report and ask which fixes to prioritize. The user values seeing the full picture before committing to changes.
+STEP|13|Run `npx tsc --noEmit` — zero errors required before proceeding.
+STEP|14|Spawn **Quinn** (QA agent) via `delegate_task` with goal "Audit the changed files for code quality, unused imports, dead code, broken references, misleading empty states" + toolsets=["terminal","file"
+STEP|15|Quinn's report will find issues that tsc cannot catch — dead render blocks, missing event handlers, dishonest UI states, architectural concerns. Fix ALL flagged issues.
+STEP|16|**Re-verify** — spawn Quinn again for a second pass. The first pass always finds things the second pass confirms are fixed.
+STEP|17|Run `npm run build` if environment allows (may fail without Supabase .env — not a code issue).
+STEP|18|Why this is mandatory**: The audit finds the problems; agent verification confirms the fixes actually resolved them. Skipping verification means shipping with known or unknown regressions. The user ex
+STEP|19|**Don't trust first impressions on API routes** — `search_files` on large directories can truncate results. Use `find` or `ls` with `-d` flags to verify whether a route directory actually exists befor
+STEP|20|**Always check settings/panels page** — features may be toggled OFF in localStorage-based settings that the code still ships. These are deliberate exclusions, not bugs.
+STEP|21|**Read agent MEMORY.md files** — they define the intended data flow (Kai reads social stats → writes brief → Marcus synthesizes). The gap is often in the missing middle agent, not the frontend.
+STEP|22|**Distinguish "broken" from "never wired"** — a panel showing zeros may have a real API route that just hasn't been connected yet. Check the route.ts, not just the frontend.
+STEP|23|**Seed data ≠ working feature** — hardcoded data that looks realistic is NOT a substitute for live generation. Flag it.
+PIT|**Don't trust first impressions on API routes** — `search_files` on large directories can truncate results. Use `find` or `ls` with `-d` flags to verify whether a route directory actually exists befor
+PIT|**Always check settings/panels page** — features may be toggled OFF in localStorage-based settings that the code still ships. These are deliberate exclusions, not bugs.
+PIT|**Read agent MEMORY.md files** — they define the intended data flow (Kai reads social stats → writes brief → Marcus synthesizes). The gap is often in the missing middle agent, not the frontend.
+PIT|**Distinguish "broken" from "never wired"** — a panel showing zeros may have a real API route that just hasn't been connected yet. Check the route.ts, not just the frontend.
+PIT|**Seed data ≠ working feature** — hardcoded data that looks realistic is NOT a substitute for live generation. Flag it.

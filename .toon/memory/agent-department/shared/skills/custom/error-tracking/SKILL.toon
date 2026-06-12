@@ -1,0 +1,78 @@
+#MEM id=error-tracking source=/root/yvon/agent-department/shared/skills/custom/error-tracking/SKILL.md savings=4%
+M||tx|---
+M||name|er-tracking-shared
+M||desc|Shared er tracking standard for all yv ag. Defines structured log format, er classification, HTTP status rules, and no-PII policy. Source of truth referenced by rj, dv, mi, and qn.
+M||vers|1.1.0
+M||appl|all-tc-ag
+M||tx|---
+M|Erro|> Ca|`shared/skills/custom/er-tracking/SKILL.md`
+M|Erro|tx|> rj's cp at `tc/rj/skills/custom/er-tracking/SKILL.md` is the origin — this shared file mirrors it.
+M|Erro|tx|> If they conflict, up rj's file and sync here.
+M|Erro|tx|---
+M|Stru|Ever|
+M|Stru|tx|```ts
+M|Stru|tx|if YVONErrorLog {
+M|Stru|tp|'route_error' \| 'auth_error' \| 'db_error' \| 'external_api_error' \| 'validation_error'
+M|Stru|rt|string          // '/ap/[exact-rt-name]'
+M|Stru|meth|'GET' \| 'POST' \| 'PUT' \| 'dl' \| 'PATCH'
+M|Stru|mess|string        // us-safe message only — NOT err.message
+M|Stru|vent|string   // context for multi-vt debugging, not PII
+M|Stru|time|string      // new Date().toISOString()
+M|Stru|// N|stack trace, err.message, ap keys, em, name, payment info
+M|Stru|tx|}
+M|Stru|tx|```
+M|Stru|**Im|**
+M|Stru|tx|```ts
+M|Stru|func|Partial<YVONErrorLog>) {
+M|Stru|tx|console.er(JSON.stringify({
+M|Stru|tp|er.tp ?? 'route_error',
+M|Stru|rt|er.rt,
+M|Stru|meth|er.method,
+M|Stru|mess|er.message ?? 'An er occurred.',
+M|Stru|vent|er.venture_slug ?? 'unknown',
+M|Stru|time|new Date().toISOString()
+M|Stru|tx|}))
+M|Stru|tx|}
+M|Stru|tx|```
+M|Stru|tx|---
+M|Erro|tx|\| er tp \| When to use \| Log level \|
+M|Erro|tx|\|-----------\|------------\|-----------\|
+M|Erro|tx|\| `validation_error` \| Zod parse failed, bad input \| `console.warn` \|
+M|Erro|tx|\| `auth_error` \| getUser() failed, sn expired \| `console.warn` \|
+M|Erro|tx|\| `route_error` \| Unexpected er in handler \| `console.er` \|
+M|Erro|tx|\| `db_error` \| sb query failed \| `console.er` \|
+M|Erro|tx|\| `external_api_error` \| Apify, YouTube, GA4 fl \| `console.warn` \|
+M|Erro|tx|`4xx` er → WARN (client fault) · `5xx` er → er (our sy fault)
+M|Erro|tx|---
+M|HTTP|tx|\| Scenario \| Status \|
+M|HTTP|tx|\|----------\|--------\|
+M|HTTP|tx|\| Zod validation failed \| `400` \|
+M|HTTP|tx|\| Missing or invalid auth \| `401` \|
+M|HTTP|tx|\| Authenticated, not authorized \| `403` \|
+M|HTTP|tx|\| Resource not found \| `404` \|
+M|HTTP|tx|\| Rate limit exceeded \| `429` + `Retry-After` header \|
+M|HTTP|tx|\| Unexpected server er \| `500` \|
+M|HTTP|| De|5` \|
+M|HTTP|**No|** Never return `200` w/ an er body. Never `500` for client input. Never `401` for authorization fl (that is `403`).
+M|HTTP|tx|---
+M|No-P|**Ne|** em, full names, phone, payment data, sn/auth tk, raw ap keys, IP addresses.
+M|No-P|**Sa|** `user_id` (UUID only), `venture_slug`, `rt`, `method`, HTTP status code, generic us-safe message.
+M|No-P|tx|---
+M|Rout|tx|```ts
+M|Rout|expo|NextRequest) {
+M|Rout|tx|const ventureSlug = req.headers.get('x-vt-slug') ?? 'unknown'
+M|Rout|tx|try {
+M|Rout|tx|// handler logic
+M|Rout|tx|} catch (err) {
+M|Rout|logE|'route_error', rt: '/ap/[rt]', method: 'POST', message: 'An unexpected er occurred.', venture_slug: ventureSlug })
+M|Rout|retu|'An unexpected er occurred. Please try again.' }, { status: 500 })
+M|Rout|tx|}
+M|Rout|tx|}
+M|Rout|tx|```
+M|Rout|tx|---
+M|Agen|tx|\| ag \| Role \|
+M|Agen|tx|\|-------\|------\|
+M|Agen|tx|\| rj \| Authors er handling in all `/ap/` rt \|
+M|Agen|tx|\| dv \| Reviews er handling in architecture rv \|
+M|Agen|tx|\| mi \| Handles client-side er states (not server er) \|
+M|Agen|tx|\| qn \| Audits er format compliance via `er-log-audit` skill \|

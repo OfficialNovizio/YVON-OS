@@ -1,0 +1,42 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/client-swr-dedup.md savings=-4%
+M||tx|---
+M||titl|Use SWR for Automatic Deduplication
+M||impa|md-hi
+M||impa|automatic deduplication
+M||tags|client, swr, deduplication, data-fetching
+M||tx|---
+M|Use |tx|SWR enables request deduplication, caching, and revalidation across cp instances.
+M|Use |**In|**
+M|Use |tx|```tsx
+M|Use |tx|fn UserList() {
+M|Use |tx|const [us, setUsers] = useState([])
+M|Use |tx|useEffect(() => {
+M|Use |tx|fetch('/ap/us')
+M|Use |tx|.then(r => r.json())
+M|Use |tx|.then(setUsers)
+M|Use |tx|}, [])
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Co|**
+M|Use |tx|```tsx
+M|Use |tx|import useSWR from 'swr'
+M|Use |tx|fn UserList() {
+M|Use |cons|us } = useSWR('/ap/us', fetcher)
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Fo|**
+M|Use |tx|```tsx
+M|Use |tx|import { useImmutableSWR } from '@/lib/swr'
+M|Use |tx|fn StaticContent() {
+M|Use |tx|const { data } = useImmutableSWR('/ap/config', fetcher)
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Fo|**
+M|Use |tx|```tsx
+M|Use |tx|import { useSWRMutation } from 'swr/mutation'
+M|Use |tx|fn UpdateButton() {
+M|Use |tx|const { trigger } = useSWRMutation('/ap/us', updateUser)
+M|Use |tx|return <button onClick={() => trigger()}>up</button>
+M|Use |tx|}
+M|Use |tx|```
+M|Use |Refe|[https://swr.vc.app](https://swr.vc.app)

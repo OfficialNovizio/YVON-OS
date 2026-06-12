@@ -1,0 +1,59 @@
+#MEM id=dev source=/root/yvon/agent-department/Technical/dev/TOOLS.md savings=-6%
+M|Memo|tx|dv reads and writes memory via `/ap/settings` — never directly to sb.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=dv-lead&ventureId={activeVenture}
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```json
+M|Memo|tx|POST /ap/settings
+M|Memo|tx|{
+M|Memo|tp|"memory",
+M|Memo|"age|"dv-lead",
+M|Memo|"ven|"{activeVenture}",
+M|Memo|"key|"architecture_decisions",
+M|Memo|"val|"SSE over WebSockets — simpler, works w/ vc serverless."
+M|Memo|tx|}
+M|Memo|tx|```
+M|Memo|Afte|edit the Live State table in `MEMORY.md` to match.
+M|Memo|tx|---
+M|GitH|tx|dv's primary tool for code rv, PR management, and tech debt tracking.
+M|GitH|**Us|**
+M|GitH|it|rv open PRs from rj and mi before approving merge
+M|GitH|it|Check recent commit history before starting a new phase
+M|GitH|it|cr issues for identified tech debt or architectural notes
+M|GitH|it|Verify what was merged before writing a new ap contract
+M|GitH|it|Check if a branch has CI failures before qn starts QA
+M|GitH|**Ke|**
+M|GitH|tx|```
+M|GitH|tx|list_pull_requests    → see open PRs awaiting dv rv
+M|GitH|tx|get_pull_request      → read a specific PR's diff for rv
+M|GitH|tx|list_issues           → check open tech debt and bug items
+M|GitH|tx|create_issue          → log tech debt or architectural decisions as trackable issues
+M|GitH|tx|get_commit            → verify what changed before a handoff
+M|GitH|tx|```
+M|Supa|tx|dv uses sb to verify that the sc matches what's in the code.
+M|Supa|**Us|**
+M|Supa|it|Inspect current table structure to verify migrations ran correctly
+M|Supa|it|Check that new columns exist before deploying code that references them
+M|Supa|it|Verify RLS (Row Level sec) policies are in place
+M|Supa|it|Cross-check `ag` table contents after a seed script runs
+M|Supa|it|Confirm rj's sc decisions are reflected in the live db
+M|Supa|**Ke|**
+M|Supa|tx|```
+M|Supa|tx|list_tables           → verify all tables exist in public sc
+M|Supa|tx|describe_table        → check column names, tp, constraints
+M|Supa|tx|execute_query         → spot-check data integrity (read-only verification)
+M|Supa|tx|```
+M|Supa|tx|---
+M|Rout|tx|\| rt \| Method \| When \|
+M|Rout|tx|\|-------\|--------\|------\|
+M|Rout|tx|\| `/ap/settings` \| GET \| sn start — read own memory keys \|
+M|Rout|tx|\| `/ap/settings` \| POST \| After any architecture decision to write to memory \|
+M|Rout|tx|\| `/ap/vt` \| GET \| To confirm active vt context before writing ap contracts \|
+M|Rout|tx|dv does not call data rt (`/ap/instagram`, `/ap/an`, etc.) — those are rj's territory. dv calls them only if debugging a systemic architecture issue.
+M|Rout|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| vc MCP \| Check dpl status, bd logs, fn timeouts \| Planned \|
+M|Futu|tx|\| Linear MCP \| Track engineering milestones and tech debt in Linear \| Planned \|

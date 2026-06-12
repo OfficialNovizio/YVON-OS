@@ -1,0 +1,127 @@
+SKILL|ascii-video|"ASCII video: convert video/audio to colored ASCII MP4/GIF."
+STEP|1|Before writing a single line of code**, articulate the creative concept. What is the mood? What visual story does this tell? What makes THIS project different from every other ASCII video? The user's 
+STEP|2|First-render excellence is non-negotiable.** The output must be visually striking without requiring revision rounds. If something looks generic, flat, or like "AI-generated ASCII art," it is wrong — r
+STEP|3|Go beyond the reference vocabulary.** The effect catalogs, shader presets, and palette libraries in the references are a starting vocabulary. For every project, combine, modify, and invent new pattern
+STEP|4|Be proactively creative.** Extend the skill's vocabulary when the project calls for it. If the references don't have what the vision demands, build it. Include at least one visual moment the user didn
+STEP|5|Cohesive aesthetic over technical correctness.** All scenes in a video must feel connected by a unifying visual language — shared color temperature, related character palettes, consistent motion vocab
+STEP|6|Dense, layered, considered.** Every frame should reward viewing. Never flat black backgrounds. Always multi-grid composition. Always per-scene variation. Always intentional color.
+STEP|7|**INPUT** — Load/decode source material (video frames, audio samples, images, or nothing)
+STEP|8|**ANALYZE** — Extract per-frame features (audio bands, video luminance/edges, motion vectors)
+STEP|9|**SCENE_FN** — Scene function renders to pixel canvas (`uint8 H,W,3`). Composes multiple character grids via `_render_vf()` + pixel blend modes. See `references/composition.md`
+STEP|10|**TONEMAP** — Percentile-based adaptive brightness normalization. See `references/composition.md` § Adaptive Tonemap
+STEP|11|**SHADE** — Post-processing via `ShaderChain` + `FeedbackBuffer`. See `references/shaders.md`
+STEP|12|**ENCODE** — Pipe raw RGB frames to ffmpeg for H.264/GIF encoding
+STEP|13|**Different background effect** (or compose 2-3)
+STEP|14|**Different character palette** (match the mood)
+STEP|15|**Different color strategy** (or at minimum a different hue)
+STEP|16|**Vary shader intensity** (more bloom during peaks, more grain during quiet)
+STEP|17|**Different particle types** if particles are active
+STEP|18|A custom character palette matching the theme
+STEP|19|A custom background effect (combine/modify existing building blocks)
+STEP|20|A custom color palette (discrete RGB set matching the brand/mood)
+STEP|21|A custom particle character set
+STEP|22|A novel scene transition or visual moment
+STEP|23|**Mood/atmosphere**: What should the viewer feel? Energetic, meditative, chaotic, elegant, ominous?
+STEP|24|**Visual story**: What happens over the duration? Build tension? Transform? Dissolve?
+STEP|25|**Color world**: Warm/cool? Monochrome? Neon? Earth tones? What's the dominant hue?
+STEP|26|**Character texture**: Dense data? Sparse stars? Organic dots? Geometric blocks?
+STEP|27|**What makes THIS different**: What's the one thing that makes this project unique?
+STEP|28|**Emotional arc**: How do scenes progress? Open with energy, build to climax, resolve?
+STEP|29|**Mode** — which of the 6 modes above
+STEP|30|**Resolution** — landscape 1920x1080 (default), portrait 1080x1920, square 1080x1080 @ 24fps
+STEP|31|**Hardware detection** — auto-detect cores/RAM, set quality profile. See `references/optimization.md`
+STEP|32|**Sections** — map timestamps to scene functions, each with its own effect/palette/color/shader config
+STEP|33|**Output format** — MP4 (default), GIF (640x360 @ 15fps), PNG sequence
+STEP|34|**Hardware detection + quality profile** — `references/optimization.md`
+STEP|35|**Input loader** — mode-dependent; `references/inputs.md`
+STEP|36|**Feature analyzer** — audio FFT, video luminance, or synthetic
+STEP|37|**Grid + renderer** — multi-density grids with bitmap cache; `references/architecture.md`
+STEP|38|**Character palettes** — multiple per project; `references/architecture.md` § Palettes
+STEP|39|**Color system** — HSV + discrete RGB + harmony generation; `references/architecture.md` § Color
+STEP|40|**Scene functions** — each returns `canvas (uint8 H,W,3)`; `references/scenes.md`
+STEP|41|**Tonemap** — adaptive brightness normalization; `references/composition.md`
+STEP|42|**Shader pipeline** — `ShaderChain` + `FeedbackBuffer`; `references/shaders.md`
+STEP|43|**Scene table + dispatcher** — time → scene function + config; `references/scenes.md`
+STEP|44|**Parallel encoder** — N-worker clip rendering with ffmpeg pipes
+STEP|45|**Main** — orchestrate full pipeline
+STEP|46|**Test frames first**: render single frames at key timestamps before full render
+STEP|47|**Brightness check**: `canvas.mean() > 8` for all ASCII content. If dark, lower gamma
+STEP|48|**Visual coherence**: do all scenes feel like they belong to the same video?
+STEP|49|**Creative vision check**: does the output match the concept from Step 1? If it looks generic, go back
+STEP|50|**Forced Connections** — when the user wants cross-domain inspiration ("make it look organic," "industrial aesthetic")
+STEP|51|**Conceptual Blending** — when the user names two things to combine ("ocean meets music," "space + calligraphy")
+STEP|52|**Oblique Strategies** — when the user is maximally open ("surprise me," "something I've never seen")
+STEP|53|Pick a domain unrelated to the visual goal (weather systems, microbiology, architecture, fluid dynamics, textile weaving)
+STEP|54|List its core visual/structural elements (erosion → gradual reveal; mitosis → splitting duplication; weaving → interlocking patterns)
+STEP|55|Map those elements onto ASCII characters and animation patterns
+STEP|56|Synthesize — what does "erosion" or "crystallization" look like in a character grid?
+STEP|57|Name two distinct visual/conceptual spaces (e.g., ocean waves + sheet music)
+STEP|58|Map correspondences (crests = high notes, troughs = rests, foam = staccato)
+STEP|59|Blend selectively — keep the most interesting mappings, discard forced ones
+STEP|60|Develop emergent properties that exist only in the blend
+STEP|61|Draw one: "Honor thy error as a hidden intention" / "Use an old idea" / "What would your closest friend do?" / "Emphasize the flaws" / "Turn it upside down" / "Only a part, not the whole" / "Reverse"
+STEP|62|Interpret the directive against the current ASCII animation challenge
+STEP|63|Apply the lateral insight to the visual design before writing code
+PIT|Before writing a single line of code**, articulate the creative concept. What is the mood? What visual story does this tell? What makes THIS project different from every other ASCII video? The user's 
+PIT|First-render excellence is non-negotiable.** The output must be visually striking without requiring revision rounds. If something looks generic, flat, or like "AI-generated ASCII art," it is wrong — r
+PIT|Go beyond the reference vocabulary.** The effect catalogs, shader presets, and palette libraries in the references are a starting vocabulary. For every project, combine, modify, and invent new pattern
+PIT|Be proactively creative.** Extend the skill's vocabulary when the project calls for it. If the references don't have what the vision demands, build it. Include at least one visual moment the user didn
+PIT|Cohesive aesthetic over technical correctness.** All scenes in a video must feel connected by a unifying visual language — shared color temperature, related character palettes, consistent motion vocab
+PIT|Dense, layered, considered.** Every frame should reward viewing. Never flat black backgrounds. Always multi-grid composition. Always per-scene variation. Always intentional color.
+PIT|**INPUT** — Load/decode source material (video frames, audio samples, images, or nothing)
+PIT|**ANALYZE** — Extract per-frame features (audio bands, video luminance/edges, motion vectors)
+PIT|**SCENE_FN** — Scene function renders to pixel canvas (`uint8 H,W,3`). Composes multiple character grids via `_render_vf()` + pixel blend modes. See `references/composition.md`
+PIT|**TONEMAP** — Percentile-based adaptive brightness normalization. See `references/composition.md` § Adaptive Tonemap
+PIT|**SHADE** — Post-processing via `ShaderChain` + `FeedbackBuffer`. See `references/shaders.md`
+PIT|**ENCODE** — Pipe raw RGB frames to ffmpeg for H.264/GIF encoding
+PIT|**Different background effect** (or compose 2-3)
+PIT|**Different character palette** (match the mood)
+PIT|**Different color strategy** (or at minimum a different hue)
+PIT|**Vary shader intensity** (more bloom during peaks, more grain during quiet)
+PIT|**Different particle types** if particles are active
+PIT|A custom character palette matching the theme
+PIT|A custom background effect (combine/modify existing building blocks)
+PIT|A custom color palette (discrete RGB set matching the brand/mood)
+PIT|A custom particle character set
+PIT|A novel scene transition or visual moment
+PIT|**Mood/atmosphere**: What should the viewer feel? Energetic, meditative, chaotic, elegant, ominous?
+PIT|**Visual story**: What happens over the duration? Build tension? Transform? Dissolve?
+PIT|**Color world**: Warm/cool? Monochrome? Neon? Earth tones? What's the dominant hue?
+PIT|**Character texture**: Dense data? Sparse stars? Organic dots? Geometric blocks?
+PIT|**What makes THIS different**: What's the one thing that makes this project unique?
+PIT|**Emotional arc**: How do scenes progress? Open with energy, build to climax, resolve?
+PIT|**Mode** — which of the 6 modes above
+PIT|**Resolution** — landscape 1920x1080 (default), portrait 1080x1920, square 1080x1080 @ 24fps
+PIT|**Hardware detection** — auto-detect cores/RAM, set quality profile. See `references/optimization.md`
+PIT|**Sections** — map timestamps to scene functions, each with its own effect/palette/color/shader config
+PIT|**Output format** — MP4 (default), GIF (640x360 @ 15fps), PNG sequence
+PIT|**Hardware detection + quality profile** — `references/optimization.md`
+PIT|**Input loader** — mode-dependent; `references/inputs.md`
+PIT|**Feature analyzer** — audio FFT, video luminance, or synthetic
+PIT|**Grid + renderer** — multi-density grids with bitmap cache; `references/architecture.md`
+PIT|**Character palettes** — multiple per project; `references/architecture.md` § Palettes
+PIT|**Color system** — HSV + discrete RGB + harmony generation; `references/architecture.md` § Color
+PIT|**Scene functions** — each returns `canvas (uint8 H,W,3)`; `references/scenes.md`
+PIT|**Tonemap** — adaptive brightness normalization; `references/composition.md`
+PIT|**Shader pipeline** — `ShaderChain` + `FeedbackBuffer`; `references/shaders.md`
+PIT|**Scene table + dispatcher** — time → scene function + config; `references/scenes.md`
+PIT|**Parallel encoder** — N-worker clip rendering with ffmpeg pipes
+PIT|**Main** — orchestrate full pipeline
+PIT|**Test frames first**: render single frames at key timestamps before full render
+PIT|**Brightness check**: `canvas.mean() > 8` for all ASCII content. If dark, lower gamma
+PIT|**Visual coherence**: do all scenes feel like they belong to the same video?
+PIT|**Creative vision check**: does the output match the concept from Step 1? If it looks generic, go back
+PIT|**Forced Connections** — when the user wants cross-domain inspiration ("make it look organic," "industrial aesthetic")
+PIT|**Conceptual Blending** — when the user names two things to combine ("ocean meets music," "space + calligraphy")
+PIT|**Oblique Strategies** — when the user is maximally open ("surprise me," "something I've never seen")
+PIT|Pick a domain unrelated to the visual goal (weather systems, microbiology, architecture, fluid dynamics, textile weaving)
+PIT|List its core visual/structural elements (erosion → gradual reveal; mitosis → splitting duplication; weaving → interlocking patterns)
+PIT|Map those elements onto ASCII characters and animation patterns
+PIT|Synthesize — what does "erosion" or "crystallization" look like in a character grid?
+PIT|Name two distinct visual/conceptual spaces (e.g., ocean waves + sheet music)
+PIT|Map correspondences (crests = high notes, troughs = rests, foam = staccato)
+PIT|Blend selectively — keep the most interesting mappings, discard forced ones
+PIT|Develop emergent properties that exist only in the blend
+PIT|Draw one: "Honor thy error as a hidden intention" / "Use an old idea" / "What would your closest friend do?" / "Emphasize the flaws" / "Turn it upside down" / "Only a part, not the whole" / "Reverse"
+PIT|Interpret the directive against the current ASCII animation challenge
+PIT|Apply the lateral insight to the visual design before writing code

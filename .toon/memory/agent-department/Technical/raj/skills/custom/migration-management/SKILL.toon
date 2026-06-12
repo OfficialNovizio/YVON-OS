@@ -1,0 +1,93 @@
+#MEM id=migration-management source=/root/yvon/agent-department/Technical/raj/skills/custom/migration-management/SKILL.md savings=5%
+M||tx|---
+M||name|migration-management
+M||desc|rj's safe sb migration protocol for yv. Covers migration naming, RLS verification, rollback scripts, dv-to-production workflow, and the 33-migration audit pattern. Run before creating any new migration.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv has 33 applied migrations w/ no structured rollback protocol. As the sc grows w/ P3-B (`daily_logs`), P6-A (cost tracking), and new vt tables, unmanaged migrations cr irreversible state in production. This skill defines the protocol for every migration rj writes.
+M|Purp|tx|---
+M|When|it|Before writing any new `.sql` migration file
+M|When|- Be|mg` on any environment
+M|When|it|After any sc change — RLS verification step is always required
+M|When|it|When a migration contains a destructive operation (DROP, ALTER, TRUNCATE)
+M|When|tx|---
+M|Migr|tx|```
+M|Migr|tx|[timestamp]_[action]_[table]_[detail].sql
+M|Migr|Exam|
+M|Migr|tx|20260528_create_daily_logs_table.sql
+M|Migr|tx|20260528_add_rls_daily_logs_per_venture.sql
+M|Migr|tx|20260528_alter_decisions_add_venture_slug.sql
+M|Migr|tx|20260601_drop_deprecated_agent_sessions_v1.sql
+M|Migr|tx|```
+M|Migr|**Ru|**
+M|Migr|it|Timestamp = YYYYMMDD (date only — not time, to avoid ordering conflicts on the same day)
+M|Migr|- If|add `_01`, `_02` suffix
+M|Migr|it|Never use generic names like `schema_update.sql`
+M|Migr|tx|---
+M|Pre-|Befo|
+M|Pre-|tx|```
+M|Pre-|tx|□ Is this additive (new table, new column) → lo RISK — proceed
+M|Pre-|tx|□ Is this altering a column tp or removing a column → hi RISK — write rollback first
+M|Pre-|tx|□ Is this dropping a table → ct RISK — get mc approval before proceeding
+M|Pre-|tx|□ Does this touch a table used by both vt? → Add RLS per vt BEFORE data is written
+M|Pre-|tx|□ Does this table need a venture_slug column? → YES for any multi-vt table
+M|Pre-|tx|□ Is there existing data that will be affected? → tst on dv first
+M|Pre-|tx|```
+M|Pre-|tx|---
+M|RLS |tx|Every table that can contain data from both nz and hb MUST have Row Level sec enabled before any data is written to it.
+M|RLS |tx|```sql
+M|RLS |tx|-- Enable RLS on the table
+M|RLS |tx|ALTER TABLE [table_name] ENABLE ROW LEVEL sec;
+M|RLS |tx|-- nz access policy
+M|RLS |tx|cr POLICY "[table]_novizio_isolation"
+M|RLS |tx|ON [table_name]
+M|RLS |tx|USING (venture_slug = 'nz');
+M|RLS |tx|-- hb access policy
+M|RLS |tx|cr POLICY "[table]_hourbour_isolation"
+M|RLS |tx|ON [table_name]
+M|RLS |tx|USING (venture_slug = 'hb');
+M|RLS |tx|-- Service role bypass (for admin operations only)
+M|RLS |tx|cr POLICY "[table]_service_role_bypass"
+M|RLS |tx|ON [table_name]
+M|RLS |tx|TO service_role
+M|RLS |tx|USING (true);
+M|RLS |tx|```
+M|RLS |**No|** If a table has no RLS and contains data from both vt, nz data is visible in hb context and vice versa. This is a data leak — not a future concern, a current risk.
+M|RLS |tx|---
+M|Roll|Ever|
+M|Roll|tx|```sql
+M|Roll|-- M|20260528_alter_decisions_add_venture_slug.sql
+M|Roll|tx|ALTER TABLE decisions ADD COLUMN venture_slug text NOT NULL DEFAULT 'nz';
+M|Roll|-- R|20260528_rollback_alter_decisions_add_venture_slug.sql
+M|Roll|tx|ALTER TABLE decisions DROP COLUMN IF EXISTS venture_slug;
+M|Roll|tx|```
+M|Roll|tx|Store rollback scripts in `scripts/migrations/rollbacks/` alongside the main migration.
+M|Roll|tx|---
+M|Post|Afte|
+M|Post|tx|```
+M|Post|tx|1. Confirm row count unchanged (for ALTER) or table created (for cr)
+M|Post|2. R|
+M|Post|tx|SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public';
+M|Post|tx|→ Verify rowsecurity = true for all multi-vt tables
+M|Post|3. T|
+M|Post|tx|→ nz context shd not see hb rows
+M|Post|tx|→ hb context shd not see nz rows
+M|Post|tx|4. Run npx tsc --noEmit — confirm no ts tp er from sc change
+M|Post|5. L|scripts/mg.mjs confirms applied migrations
+M|Post|tx|```
+M|Post|tx|---
+M|Dest|For |
+M|Dest|tx|```
+M|Dest|tx|1. Get explicit approval from mc (or Stark) in sn.md
+M|Dest|→ Re|"Approved by [who] on [date]: [what was approved]"
+M|Dest|2. B|
+M|Dest|tx|INSERT INTO [table_backup] SELECT * FROM [table];
+M|Dest|tx|3. Run on dv environment first and verify
+M|Dest|tx|4. Run on production only after dv verification
+M|Dest|tx|5. Keep backup table for 7 days before dropping
+M|Dest|tx|```
+M|Dest|tx|---
+M|Curr|33 m|
+M|Curr|- Ru|mg` to confirm no pnd migrations
+M|Curr|it|Check `scripts/mg.mjs` for the applied migration list
+M|Curr|it|New table for P3-B (`daily_logs`) requires RLS from day one

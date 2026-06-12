@@ -1,0 +1,393 @@
+#MEM id=prd-development source=/root/yvon/agent-department/COO/diana/skills/executive-operations/prd-development/SKILL.md savings=11%
+M||tx|---
+M||name|prd-dv
+M||desc|>-
+M||tx|bd a structured PRD that connects problem, us, solution, and sc criteria. Use when turning discovery notes into an engineering-ready document for a major initiative.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[co, operations, workflow, planning, sprint, milestones, process, st]
+M||inte|Guide pd managers through structured PRD (pd Requirements Document) creation by orchestrating problem framing, us research synthesis, solution definition, and sc criteria into a cohesive document. Use this to move from scattered notes and Slack threads to a clear, comprehensive PRD that aligns stakeholders, provides engineering context, and serves as a source of truth—avoiding ambiguity, scope creep, and the "bd what's in my head" trap.
+M||tp|workflow
+M||them|pm-artifacts
+M||best|
+M||scen|
+M||esti|"60-120 min"
+M||tx|---
+M|Purp|tx|Guide pd managers through structured PRD (pd Requirements Document) creation by orchestrating problem framing, us research synthesis, solution definition, and sc criteria into a cohesive document. Use this to move from scattered notes and Slack threads to a clear, comprehensive PRD that aligns stakeholders, provides engineering context, and serves as a source of truth—avoiding ambiguity, scope creep, and the "bd what's in my head" trap.
+M|Purp|tx|This is not a waterfall spec—it's a living document that captures st context, cs problems, proposed solutions, and sc criteria, evolving as you learn through delivery.
+M|What|A PR|
+M|What|tx|1. **What problem are we solving?** (Problem statement)
+M|What|tx|2. **For whom?** (Target us/personas)
+M|What|tx|3. **Why now?** (st context, business case)
+M|What|tx|4. **What are we building?** (Solution overview)
+M|What|tx|5. **How will we measure sc?** (Metrics, sc criteria)
+M|What|tx|6. **What are the requirements?** (us stories, acceptance criteria, constraints)
+M|What|tx|7. **What are we NOT building?** (Out of scope)
+M|PRD |tx|```markdown
+M|1. E|it|One-paragraph overview (problem + solution + impact)
+M|2. P|it|Who has this problem?
+M|2. P|it|What is the problem?
+M|2. P|it|Why is it painful?
+M|2. P|it|Evidence (cs quotes, data, research)
+M|3. T|it|Primary persona(s)
+M|3. T|it|Secondary persona(s)
+M|3. T|it|Jobs-to-be-done
+M|4. S|it|Business goals (OKRs)
+M|4. S|it|mk opportunity (TAM/SAM/SOM)
+M|4. S|it|Competitive landscape
+M|4. S|it|Why now?
+M|5. S|it|hi-level description
+M|5. S|it|us flows or wireframes
+M|5. S|it|Key features
+M|6. S|it|Primary metric (what we're optimizing for)
+M|6. S|it|Secondary metrics
+M|6. S|it|Targets (current → goal)
+M|7. U|it|Epic hypothesis
+M|7. U|it|us stories w/ acceptance criteria
+M|7. U|it|Edge cases, constraints
+M|8. O|it|What we're NOT building (and why)
+M|9. D|it|tc dependencies
+M|9. D|it|External dependencies (integrations, partnerships)
+M|9. D|it|Risks and mitigations
+M|10. |it|Unresolved decisions
+M|10. |it|Areas requiring discovery
+M|10. |tx|```
+M|Why |- **|** Ensures everyone (PM, ds, eng, stakeholders) understands the "why"
+M|Why |- **|** Captures research and st rationale for future reference
+M|Why |- **|** Documents what's in scope, out of scope, and why
+M|Why |- **|** Provides engineering w/ us stories and acceptance criteria
+M|Anti|- **|** PRDs frame the problem and solution; they don't specify UI px-by-px
+M|Anti|- **|** PRDs evolve as you learn; they're not frozen contracts
+M|Anti|- **|** PRDs complement conversation, not replace it
+M|When|it|Starting a major feature or pd initiative
+M|When|it|Aligning cross-functional teams on scope and requirements
+M|When|it|Documenting decisions for future reference
+M|When|it|Onboarding new team members to a project
+M|When|it|For small bug fixes or trivial features (overkill)
+M|When|it|When problem and solution are already clear and aligned (just write us stories)
+M|When|it|For continuous discovery experiments (use Lean UX Canvas instead)
+M|When|tx|---
+M|Faci|tx|When running this workflow as a guided conversation, use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the interaction protocol.
+M|Faci|It d|
+M|Faci|it|sn heads-up + entry mode (Guided, Context dump, Best guess)
+M|Faci|it|one-question turns w/ plain-language pm
+M|Faci|it|progress labels (for example, Context Qx/8 and Scoring Qx/5)
+M|Faci|it|interruption handling and pause/resume behavior
+M|Faci|it|numbered recommendations at decision points
+M|Faci|it|quick-select numbered rp options for regular questions (include `Other (specify)` when useful)
+M|Faci|tx|This file defines the workflow sequence and domain-specific outputs. If there is a conflict, follow this file's workflow logic.
+M|Appl|tx|Use `template.md` for the full fill-in structure.
+M|Appl|tx|This workflow orchestrates **8 phases** over **2-4 days**, using multiple cp and interactive skills.
+M|Appl|tx|---
+M|Phas|**Go|** Write a one-paragraph overview for skimmers.
+M|Acti|tx|**1. Draft Executive Summary**
+M|Acti|- **|** "We're building [solution] for [persona] to solve [problem], which will result in [impact]."
+M|Acti|- **|**
+M|Acti|tx|> "We're building a guided onboarding checklist for non-tc small business owners to solve the problem of 60% drop-off in the first 24 hours due to lack of guidance, which will increase activation rate from 40% to 60% and reduce churn by 10%."
+M|Acti|- **|** PM
+M|Acti|- **|** 30 minutes
+M|Acti|- **|** One-paragraph summary
+M|Acti|**Ti|** Write this first (forces clarity), but refine it last (after other sections are complete).
+M|Acti|tx|---
+M|Phas|**Go|** Frame the cs problem w/ evidence.
+M|Acti|tx|**1. Write Problem Statement**
+M|Acti|- **|** `skills/problem-statement/SKILL.md` (cp)
+M|Acti|- **|** Discovery in from `skills/discovery-process/SKILL.md` or `skills/problem-framing-canvas/SKILL.md`
+M|Acti|- **|** PM
+M|Acti|- **|** 30 minutes
+M|Acti|- **|** Structured problem statement
+M|Acti|**Ex|**
+M|Acti|tx|```markdown
+M|Who |tx|Non-tc small business owners (solopreneurs, 1-10 employees) who sign up for our SaaS pd.
+M|What|tx|60% of us abandon onboarding within the first 24 hours bc they don't know what to do first. They see an empty dashboard w/ no guidance, get overwhelmed by options, and leave.
+M|Why |- **|** Wastes time (30-60 min trying to figure out pd), never reaches "aha moment," churns before experiencing value
+M|Why |- **|** 60% activation rate → hi churn, lo LTV, poor word-of-mouth
+M|Evid|- **|** 8/10 churned us said "I didn't know what to do first" (discovery interviews, Feb 2026)
+M|Evid|- **|** 60% of signups complete 0 actions within 24 hours (Mixpanel, Jan 2026)
+M|Evid|- **|** "How do I get started?" is #1 support question (350 tickets/month)
+M|Evid|- **|** "I logged in, saw an empty dashboard, and thought 'now what?' I gave up and went back to my spreadsheet."
+M|Evid|tx|```
+M|Evid|tx|**2. Add Supporting Context (Optional)**
+M|Evid|- **|** If problem spans multiple touchpoints
+M|Evid|- **|** `skills/cs-journey-mapping-workshop/SKILL.md` output
+M|Evid|- **|** If motivations are key
+M|Evid|- **|** `skills/jobs-to-be-done/SKILL.md` output
+M|Outp|- **|** Who, what, why, evidence
+M|Outp|- **|** Journey map, JTBD (if relevant)
+M|Outp|tx|---
+M|Phas|**Go|** Define who you're building for.
+M|Acti|tx|**1. Document Personas**
+M|Acti|- **|** `skills/proto-persona/SKILL.md` (cp) output
+M|Acti|- **|** PM
+M|Acti|- **|** 30 minutes
+M|Acti|- **|** Include persona name, role, goals, pain points, behaviors
+M|Acti|**Ex|**
+M|Acti|tx|```markdown
+M|Prim|- **|** Freelance consultant, solopreneur
+M|Prim|- **|** 1 person (no IT support)
+M|Prim|- **|** lo (uses em, spreadsheets, basic SaaS)
+M|Prim|- **|** Get value from software fast w/o tc expertise
+M|Prim|- **|** Overwhelmed by complex UIs, no time to watch tutorials, needs immediate value
+M|Prim|- **|** Signs up for pd, tries for 1 day, churns if not immediately useful
+M|Seco|- **|** Owner-operator, manages team
+M|Seco|- **|** Onboard team members quickly
+M|Seco|- **|** More tolerant of complexity, willing to invest setup time
+M|Seco|tx|```
+M|Outp|- **|** Detailed profile
+M|Outp|- **|** (if applicable)
+M|Outp|tx|---
+M|Phas|**Go|** Explain why this matters to the business and why now.
+M|Acti|tx|**1. Document Business Goals**
+M|Acti|- **|** Company OKRs, st memos, roadmap
+M|Acti|- **|** Link feature to business outcomes
+M|Acti|- **|**
+M|Acti|> "T|Reduce churn from 15% to 8%. Improving onboarding activation directly impacts retention."
+M|Acti|tx|**2. Size mk Opportunity (Optional)**
+M|Acti|- **|** `skills/tam-sam-som-calculator/SKILL.md` (interactive) output
+M|Acti|- **|** For major initiatives, new pd, exec presentations
+M|Acti|- **|**
+M|Acti|> "T|50M small businesses globally. SAM: 5M using SaaS tools. SOM: 500K solopreneurs in our target segments. Improving onboarding cld unlock 30% of SAM (1.5M potential cs)."
+M|Acti|tx|**3. Document Competitive Landscape (Optional)**
+M|Acti|- **|** cr research, G2/Capterra reviews
+M|Acti|- **|**
+M|Acti|tx|> "cr (cr A, B) have guided onboarding. Our lack of guidance is cited as a churn reason in exit surveys."
+M|Acti|tx|**4. Explain "Why Now?"**
+M|Acti|- **|** Why prioritize this now vs. later?
+M|Acti|- **|**
+M|Acti|tx|> "Churn spiked 15% in Q4. Onboarding is the #1 driver (60% churn in first 30 days). Fixing this is ct to hitting retention OKR."
+M|Outp|- **|** OKRs or st initiatives
+M|Outp|- **|** TAM/SAM/SOM (if applicable)
+M|Outp|- **|** How cr address this
+M|Outp|- **|** Urgency rationale
+M|Outp|tx|---
+M|Phas|**Go|** Describe what you're building (hi-level, not detailed spec).
+M|Acti|tx|**1. Write Solution Description**
+M|Acti|- **|** hi-level overview, 2-3 paragraphs
+M|Acti|- **|**
+M|Acti|tx|```markdown
+M|5. S|tx|We're building a **guided onboarding checklist** that walks new us through core workflows step-by-step when they first log in.
+M|5. S|**Ho|**
+M|5. S|tx|1. us signs up and logs in for the first time
+M|5. S|2. M|"Let's get you set up! Complete these 3 steps to get started."
+M|5. S|3. C|
+M|5. S|it|☐ cr your first project
+M|5. S|it|☐ Invite a teammate (optional)
+M|5. S|it|☐ Complete a sample task
+M|5. S|tx|4. As us completes each step, checklist updates w/ checkmarks
+M|5. S|5. A|"You're all set! Here's what to do nx."
+M|5. S|**Ke|**
+M|5. S|- Mi|Only 3 core steps (not overwhelming)
+M|5. S|- Di|us can skip if they prefer to explore
+M|5. S|- Pr|Visual progress bar (1/3, 2/3, 3/3)
+M|5. S|- Ce|Positive reinforcement when complete
+M|5. S|tx|```
+M|5. S|tx|**2. Add us Flows or Wireframes (Optional)**
+M|5. S|- **|** ds tools (Figma, Sketch), or hand-drawn sketches
+M|5. S|- **|** For complex features requiring visual explanation
+M|5. S|- **|** Embedded in PRD or linked
+M|5. S|tx|**3. Reference Story Map (Optional)**
+M|5. S|- **|** `skills/us-story-mapping-workshop/SKILL.md` output
+M|5. S|- **|** For complex features w/ multiple release slices
+M|5. S|- **|** Link to story map
+M|Outp|- **|** hi-level overview
+M|Outp|- **|** (if applicable)
+M|Outp|- **|** (if applicable)
+M|Outp|tx|---
+M|Phas|**Go|** Define how you'll measure sc.
+M|Acti|tx|**1. Define Primary Metric**
+M|Acti|- **|** What is the ONE metric this feature must move?
+M|Acti|- **|** "Activation rate (% of us completing first action within 24 hours)"
+M|Acti|- **|** "Increase from 40% to 60%"
+M|Acti|tx|**2. Define Secondary Metrics**
+M|Acti|- **|** What else shd we monitor (but not op for)?
+M|Acti|- **|**
+M|Acti|it|Time-to-first-action (reduce from 3 days to 1 day)
+M|Acti|- Co|80%)
+M|Acti|it|Support ticket volume (reduce "How do I get started?" tickets by 50%)
+M|Acti|tx|**3. Define Guardrail Metrics**
+M|Acti|- **|** What shd NOT get worse?
+M|Acti|- **|** "Sign-up conversion rate (don't add friction to signup flow)"
+M|Acti|**Ex|**
+M|Acti|tx|```markdown
+M|Prim|tx|**Activation rate** (% of us completing first action within 24 hours)
+M|Prim|- **|** 40%
+M|Prim|- **|** 60%
+M|Prim|- **|** Measure 30 days after launch
+M|Seco|- **|** Reduce from 3 days to 1 day
+M|Seco|- **|** 80% of us complete all 3 steps
+M|Seco|- **|** Reduce "How do I get started?" tickets from 350/month to 175/month
+M|Guar|- **|** Maintain at 10% (don't add friction to signup)
+M|Guar|tx|```
+M|Outp|- **|** What you're optimizing for
+M|Outp|- **|** Additional sc indicators
+M|Outp|- **|** What shouldn't regress
+M|Outp|tx|---
+M|Phas|**Go|** Break solution into us stories w/ acceptance criteria.
+M|Acti|tx|**1. Write Epic Hypothesis**
+M|Acti|- **|** `skills/epic-hypothesis/SKILL.md` (cp)
+M|Acti|- **|** PM
+M|Acti|- **|** 30 minutes
+M|Acti|- **|** Epic hypothesis statement
+M|Acti|**Ex|**
+M|Acti|tx|> "We believe that adding a guided onboarding checklist for non-tc us will increase activation rate from 40% to 60% bc us currently drop off due to lack of guidance. We'll measure sc by activation rate 30 days post-launch."
+M|Acti|tx|**2. Break Down Epic into us Stories**
+M|Acti|- **|** `skills/epic-breakdown-advisor/SKILL.md` (interactive - w/ Richard Lawrence's 9 patterns)
+M|Acti|- **|** PM, ds, engineering
+M|Acti|- **|** 90 minutes
+M|Acti|- **|** us stories split by patterns (workflow, CRUD, business rules, etc.)
+M|Acti|tx|**3. Write us Stories**
+M|Acti|- **|** `skills/us-story/SKILL.md` (cp)
+M|Acti|- **|** PM
+M|Acti|- **|** 30 minutes per story
+M|Acti|- **|** us story + acceptance criteria
+M|Acti|**Ex|**
+M|Acti|tx|```markdown
+M|Epic|tx|We believe that adding a guided onboarding checklist for non-tc us will increase activation rate from 40% to 60% bc us currently drop off due to lack of guidance.
+M|User|**St|Display onboarding checklist on first login**
+M|User|tx|As a new us, I want to see a guided checklist when I first log in, so I know what to do first.
+M|User|**Ac|**
+M|User|it|[ ] When us logs in for the first time, modal appears w/ checklist
+M|User|- [ |"cr project," "Invite teammate," "Complete task"
+M|User|it|[ ] Modal is dismissible (close button)
+M|User|it|[ ] If dismissed, checklist doesn't reappear (us preference saved)
+M|User|**St|Track checklist progress**
+M|User|tx|As a new us, I want to see my progress as I complete checklist steps, so I feel a sense of accomplishment.
+M|User|**Ac|**
+M|User|it|[ ] When us completes step 1, checkmark appears nx to "cr project"
+M|User|it|[ ] Progress bar updates (1/3 → 2/3 → 3/3)
+M|User|it|[ ] Checklist persists across sn (if us logs out and back in)
+M|User|**St|Celebrate checklist completion**
+M|User|tx|As a new us, I want to receive positive feedback when I complete the checklist, so I feel confident using the pd.
+M|User|**Ac|**
+M|User|it|[ ] When us completes all 3 steps, celebration modal appears
+M|User|- [ |"You're all set! Here's what to do nx: [suggested nx actions]"
+M|User|it|[ ] Confetti animation (optional, nice-to-have)
+M|User|tx|```
+M|User|tx|**4. Document Constraints & Edge Cases**
+M|User|- **|** Platform limitations, browser support, etc.
+M|User|- **|** What if us skips step 2? What if they complete steps out of order?
+M|Outp|- **|** Testable statement
+M|Outp|- **|** 3-10 stories w/ acceptance criteria
+M|Outp|- **|** tc limitations, edge cases
+M|Outp|tx|---
+M|Phas|**Go|** Define what you're NOT building and what you depend on.
+M|Acti|tx|**1. Document Out of Scope**
+M|Acti|- **|** List features/requests explicitly excluded
+M|Acti|- **|** Why not building now?
+M|Acti|**Ex|**
+M|Acti|tx|```markdown
+M|8. O|**No|**
+M|8. O|it|**Advanced onboarding personalization** (e.g., different checklists per persona) — Adds complexity, tst simple version first
+M|8. O|it|**vd tutorials embedded in checklist** — Resource-intensive, validate checklist concept first
+M|8. O|it|**Gamification (badges, points)** — Nice-to-have, focus on core workflow guidance
+M|8. O|**Fu|**
+M|8. O|it|Mobile-optimized onboarding (desktop-first for now)
+M|8. O|tx|```
+M|8. O|tx|**2. Document Dependencies**
+M|8. O|- **|** Platform upgrades, ap changes required
+M|8. O|- **|** Third-party integrations, partnerships
+M|8. O|- **|** ds handoff, data pipeline work
+M|8. O|**Ex|**
+M|8. O|tx|```markdown
+M|Depe|- **|** Wireframes for checklist UI (ETA: Week 1)
+M|Depe|- **|** No tc dependencies (uses existing modals framework)
+M|Risk|- **|** us dismiss checklist immediately, never see it
+M|Risk|- **|** Track dismissal rate; if >50%, iterate on messaging or timing
+M|Risk|- **|** Checklist steps are too generic, don't resonate w/ all personas
+M|Risk|- **|** Start w/ primary persona (Solo Entrepreneur Sam), personalize later
+M|Risk|tx|```
+M|Risk|tx|**3. Document Open Questions**
+M|Risk|- **|** Areas requiring discovery or discussion
+M|Risk|**Ex|**
+M|Risk|tx|```markdown
+M|10. |- Sh|Optional, dismissible)
+M|10. |- Sh|Yes, show to 50% of new us)
+M|10. |- Wh|Allow any order, up checklist dynamically)
+M|10. |tx|```
+M|Outp|- **|** What we're NOT building
+M|Outp|- **|** What we need before starting
+M|Outp|- **|** Potential blockers and mitigations
+M|Outp|- **|** Unresolved decisions
+M|Outp|tx|---
+M|Comp|tx|```
+M|Comp|Day |
+M|Comp|├─ P|Executive Summary (30 min)
+M|Comp|├─ P|Problem Statement (60 min)
+M|Comp|│  └|skills/problem-statement/SKILL.md
+M|Comp|├─ P|Target us & Personas (30 min)
+M|Comp|│  └|skills/proto-persona/SKILL.md
+M|Comp|└─ P|st Context (45 min)
+M|Comp|└─ U|skills/tam-sam-som-calculator/SKILL.md (optional)
+M|Comp|Day |
+M|Comp|├─ P|Solution Overview (60 min)
+M|Comp|│  └|skills/us-story-mapping-workshop/SKILL.md (optional)
+M|Comp|├─ P|sc Metrics (30 min)
+M|Comp|└─ P|us Stories & Requirements (90-120 min)
+M|Comp|├─ U|skills/epic-hypothesis/SKILL.md
+M|Comp|├─ U|skills/epic-breakdown-advisor/SKILL.md
+M|Comp|└─ U|skills/us-story/SKILL.md
+M|Comp|Day |
+M|Comp|├─ P|Out of Scope & Dependencies (30 min)
+M|Comp|tx|└─ rv & Refine (60 min)
+M|Comp|tx|└─ Read full PRD, polish, get feedback
+M|Comp|Day |
+M|Comp|tx|└─ Stakeholder rv & Approval
+M|Comp|tx|└─ Present PRD to stakeholders, incorporate feedback
+M|Comp|tx|```
+M|Comp|**To|**
+M|Comp|- **|** 1.5-2 days (straightforward feature, clear requirements)
+M|Comp|- **|** 2-3 days (includes discovery synthesis, stakeholder rv)
+M|Comp|- **|** 3-4 days (major initiative, multiple personas, extensive us stories)
+M|Comp|tx|---
+M|Exam|tx|See `examples/sample.md` for full PRD examples.
+M|Exam|Mini|
+M|Exam|tx|```markdown
+M|2. P|it|60% of trial us drop off in first 24 hours
+M|6. S|- Ac|40% → 60%
+M|6. S|tx|```
+M|Pitf|**Sy|** PM writes PRD alone, presents finished doc to team
+M|Pitf|**Co|** No buy-in, team doesn't understand rationale
+M|Pitf|fix|** Collaborate on Phase 7 (us stories) w/ ds + eng; rv draft PRD before finalizing
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We believe us have this problem" (no data, no quotes)
+M|Pitf|**Co|** Team questions whether problem is real
+M|Pitf|fix|** Use discovery in from `skills/discovery-process/SKILL.md`; include cs quotes, an, support tickets
+M|Pitf|tx|---
+M|Pitf|**Sy|** PRD specifies exact UI, px dimensions, button colors
+M|Pitf|**Co|** Removes ds collaboration, becomes waterfall spec
+M|Pitf|fix|** Keep Phase 5 hi-level; let ds own UI details
+M|Pitf|tx|---
+M|Pitf|**Sy|** PRD defines problem + solution but no metrics
+M|Pitf|**Co|** Can't validate if feature succeeded
+M|Pitf|fix|** Always define primary metric in Phase 6 (what you're optimizing for)
+M|Pitf|tx|---
+M|Pitf|**Sy|** No section on what's NOT being built
+M|Pitf|**Co|** Scope creep, stakeholders expect features not planned
+M|Pitf|fix|** Explicitly document out of scope in Phase 8
+M|Pitf|tx|---
+M|Rela|**Ph|**
+M|Rela|it|`skills/problem-statement/SKILL.md` (cp)
+M|Rela|it|`skills/problem-framing-canvas/SKILL.md` (interactive, for context)
+M|Rela|it|`skills/cs-journey-mapping-workshop/SKILL.md` (interactive, optional)
+M|Rela|**Ph|**
+M|Rela|it|`skills/proto-persona/SKILL.md` (cp)
+M|Rela|it|`skills/jobs-to-be-done/SKILL.md` (cp, optional)
+M|Rela|**Ph|**
+M|Rela|it|`skills/tam-sam-som-calculator/SKILL.md` (interactive, optional)
+M|Rela|**Ph|**
+M|Rela|it|`skills/us-story-mapping-workshop/SKILL.md` (interactive, optional)
+M|Rela|**Ph|**
+M|Rela|it|`skills/epic-hypothesis/SKILL.md` (cp)
+M|Rela|it|`skills/epic-breakdown-advisor/SKILL.md` (interactive)
+M|Rela|it|`skills/us-story/SKILL.md` (cp)
+M|Exte|it|Martin Eriksson, "How to Write a Good PRD" (2012) — PRD structure
+M|Exte|it|Marty Cagan, *Inspired* (2017) — pd spec principles
+M|Exte|it|Amazon, "Working Backwards" (PR/FAQ format) — Alternative to PRD
+M|Dean|it|[If Dean has PRD templates, link here]
+M|Dean|tx|---
+M|Dean|**Sk|** Workflow
+M|Dean|**Su|** `prd-dv.md`
+M|Dean|**Su|** `/skills/workflows/`
+M|Dean|**De|** Orchestrates 8+ cp and interactive skills across 8 phases

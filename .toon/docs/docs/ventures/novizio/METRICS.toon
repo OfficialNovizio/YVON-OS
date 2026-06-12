@@ -1,0 +1,21 @@
+#DOC source=/root/yvon/docs/ventures/novizio/METRICS.md strip=74% toon=0% net=74%
+T|Novi|0|Rolling. Updated by ka weekly as baselines are established and actuals come in.
+T|Novi|1|These are nz-specific KPIs. Platform-level metrics → yd/METRICS.md
+T|Novi|2|
+T|Novi|3|---
+T|Novi|4|
+G|KPI |0|[TABLE:5×8]
+G|KPI |1|---
+G|KPI |2|
+T|Curr|0|[TABLE:5×5]
+T|Curr|1|---
+T|Curr|2|
+T|SS26|0|Launch target: late June 2026 (Stark to confirm).
+T|SS26|1|
+T|SS26|2|[TABLE:3×5]
+T|SS26|3|---
+T|SS26|4|
+T|Repo|0|[TABLE:4×4]
+T|Repo|1|---
+T|Repo|2|
+T|How |0|ka updates actuals after pulling an data. fx updates financial metrics after order cycles. Any ag can add a metric if a gap is identified during their work — new targets require mc approval.

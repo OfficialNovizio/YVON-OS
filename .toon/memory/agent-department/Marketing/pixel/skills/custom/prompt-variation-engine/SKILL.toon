@@ -1,0 +1,119 @@
+#MEM id=prompt-variation-engine source=/root/yvon/agent-department/Marketing/pixel/skills/custom/prompt-variation-engine/SKILL.md savings=7%
+M||tx|---
+M||name|pm-variation-engine
+M||desc|Systematic recovery when QC fails. Variation hierarchy for im and vd pm — what to change first, what to change last. Stops px from guessing. Covers negative pm, seed, steps, CFG, sampler, and pm rewrites.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|When an im fails QC, the wrong rp is to regenerate w/ the same pm and hope for a different result. The right rp is to change one variable at a time, in a known order, and read the result before changing another. This skill makes recovery systematic.
+M|Purp|tx|---
+M|The |**Ru|** Change the lowest-cost variable first. Work down the hierarchy only when the higher level doesn't fix it.
+M|The |tx|```
+M|The |tx|Level 1 — Negative pm (fastest, no qual cost)
+M|The |tx|Level 2 — Seed (nx fastest)
+M|The |tx|Level 3 — Steps / CFG scale (affects generation cost)
+M|The |tx|Level 4 — Sampler (affects generation style)
+M|The |tx|Level 5 — pm rewrite (consult at if > 3 words change)
+M|The |tx|Level 6 — Return to at (direction is broken, not the execution)
+M|The |tx|```
+M|The |tx|Never skip levels unless the fl reason clearly maps to a deeper level (e.g., anatomy er almost always start at Level 1; style direction failures often indicate Level 6).
+M|The |tx|---
+M|Leve|tx|The fastest fix. Add to the negative pm before touching anything else.
+M|Anat|tx|```
+M|Anat|tx|extra fingers, fused fingers, extra limbs, deformed hands, malformed hands,
+M|Anat|tx|mutated hands, bad anatomy, distorted face, asymmetrical face, floating limbs,
+M|Anat|tx|disconnected limbs, extra head, cloned face, ugly, deformed
+M|Anat|tx|```
+M|Text|tx|```
+M|Text|tx|text, watermark, signature, logo, label, letters, numbers, words, typography,
+M|Text|tx|blurry text, illegible text, copyright
+M|Text|tx|```
+M|Back|tx|```
+M|Back|tx|busy background, cluttered background, pattern background, tiling, repetitive pattern,
+M|Back|tx|extra people, extra figures, crowded, messy environment
+M|Back|tx|```
+M|Cata|tx|```
+M|Cata|tx|white background, plain background, catalogue, stock photo, commercial, posed,
+M|Cata|tx|fake smile, perfect symmetry, pd shot, flat lay on white
+M|Cata|tx|```
+M|Fint|tx|```
+M|Fint|tx|coins, cash, money, piggy bank, dollar sign, graph lines, upward arrow,
+M|Fint|tx|boardroom, suits, handshake, floating phone, sterile, clinical
+M|Fint|tx|```
+M|Fint|tx|---
+M|Leve|When|change the seed. Same pm + same negative pm + new seed = different im composition w/ the same style direction.
+M|Leve|tx|\| Situation \| Action \|
+M|Leve|tx|\|-----------\|--------\|
+M|Leve|tx|\| Anatomy er persists after negative pm \| gn 3 new seeds before escalating \|
+M|Leve|tx|\| Background composition is wrong but style is right \| Try 2 new seeds \|
+M|Leve|tx|\| Subject pose is off \| Try 2 new seeds before rewriting pm \|
+M|Leve|tx|\| Batch inconsistency (one outlier im) \| Regenerate the outlier w/ a new seed \|
+M|Leve|**Ru|** Try at least 2 different seeds before moving to Level 3.
+M|Leve|tx|---
+M|Leve|tx|When subject detail or pm adherence is the issue (not anatomy or background).
+M|Leve|tx|\| Problem \| Adjustment \|
+M|Leve|tx|\|---------\|-----------\|
+M|Leve|| Im|+5 to +10 \|
+M|Leve|| Su|+0.5 to +1.0 \|
+M|Leve|| Im|-0.5 to -1.0 \|
+M|Leve|| To|-5 \|
+M|Leve|**Ty|**
+M|Leve|- St|20–50 (start at 30 for standard production)
+M|Leve|- CF|5.0–9.0 (start at 7.0 for standard)
+M|Leve|**Ru|** Change one at a time. Steps first if detail is the issue. CFG if pm adherence is the issue.
+M|Leve|tx|---
+M|Leve|tx|When style register is wrong (the im looks different in texture or rendering qual from what the style spec intends).
+M|Leve|tx|\| Current sampler \| Try instead \| When \|
+M|Leve|tx|\|----------------\|-------------\|------\|
+M|Leve|tx|\| Euler a \| DPM++ 2M Karras \| More detail, smoother result \|
+M|Leve|tx|\| DPM++ 2M Karras \| Euler a \| Softer, more painterly \|
+M|Leve|tx|\| DDIM \| DPM++ SDE Karras \| Better pm adherence \|
+M|Leve|**Ru|** Only change sampler when style register is wrong, not when subject or anatomy is wrong. Sampler does not fix anatomy.
+M|Leve|tx|---
+M|Leve|tx|When the fl is not in execution but in what the pm is asking for.
+M|Leve|**Pi|**
+M|Leve|it|Swapping a vague adjective for a specific one (e.g., `beautiful` → `soft editorial`)
+M|Leve|it|Removing a descriptor that conflicts w/ QC result
+M|Leve|it|Adding a specific composition instruction (e.g., `rule of thirds`, `subject left-aligned`)
+M|Leve|**Pi|**
+M|Leve|it|Changing the subject description
+M|Leve|it|Changing the setting or environment
+M|Leve|it|Changing any mood adjective that was explicit in at's brief
+M|Leve|it|Removing any element that at included deliberately
+M|Leve|**Fo|**
+M|Leve|tx|```
+M|Leve|Vari|
+M|Leve|Batc|[name]
+M|Leve|Imag|[N] / [total]
+M|Leve|Reje|[specific]
+M|Leve|Prop|[exact text to change] → [proposed replacement]
+M|Leve|Reas|[why this variation targets the fl pattern]
+M|Leve|Awai|approval to run variation batch
+M|Leve|tx|```
+M|Leve|tx|---
+M|Leve|Retu|
+M|Leve|it|Rejection rate > 20% after Levels 1–4 applied
+M|Leve|it|The fl pattern is structural (every im fails the same check)
+M|Leve|it|pm contains a fundamental contradiction that variations cannot resolve
+M|Leve|it|The style spec direction is producing images that are technically correct but off-br
+M|Leve|**Fo|**
+M|Leve|tx|```
+M|Leve|Prod|
+M|Leve|Batc|[name] — [vt] — [cg]
+M|Leve|Reje|[%] after [N] variation attempts
+M|Leve|Root|[specific pattern — not "images look bad"]
+M|Leve|Vari|[list what was tried at each level]
+M|Leve|Asse|pm architecture needs revision before batch can proceed
+M|Leve|tx|```
+M|Leve|tx|---
+M|Vide|Vide|
+M|Vide|tx|```
+M|Vide|tx|Level 1 — Negative pm additions (same as im)
+M|Vide|tx|Level 2 — Motion pm adjustment (reduce motion descriptors if output is unstable)
+M|Vide|tx|Level 3 — Duration / frame count reduction (shorter clips are more stable)
+M|Vide|tx|Level 4 — Return to at (vd direction is broken)
+M|Vide|tx|```
+M|Vide|Vide|
+M|Vide|tx|```
+M|Vide|tx|flickering, jittery motion, morphing face, distorted movement, teleporting subject,
+M|Vide|tx|background morphing, inconsistent lighting, color flicker
+M|Vide|tx|```

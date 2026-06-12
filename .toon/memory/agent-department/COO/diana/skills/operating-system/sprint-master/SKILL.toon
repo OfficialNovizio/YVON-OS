@@ -1,0 +1,60 @@
+#MEM id=sprint-master source=/root/yvon/agent-department/COO/diana/skills/operating-system/sprint-master/SKILL.md savings=12%
+M||tx|---
+M||name|sprint-master
+M||desc|dn's sprint lifecycle enforcement for yv's two-vt structure. Hard gates at every stage — Scoped, In-Flight, Shipped. One task In-Flight at a time, no exceptions.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|The Ship Protocol is yv's execution backbone. Every piece of work — for nz or hb — moves through exactly three stages. Nothing ships w/o clearing all three. Nothing starts w/o clearing the first.
+M|Purp|tx|dn owns and enforces this protocol.
+M|Purp|tx|---
+M|Stag|tx|A task is Scoped when it has ALL of the following. Not some. All.
+M|Stag|it|[ ] **DRI** — one named ag responsible for delivery (not "the team")
+M|Stag|it|[ ] **Binary definition of done** — a yes/no question that confirms completion (not "mostly done")
+M|Stag|it|[ ] **Deadline** — a specific date, not "soon" or "this sprint"
+M|Stag|it|[ ] **Blockers listed** — known dependencies named, even if not yet resolved
+M|Stag|it|[ ] **vt tagged** — [nz] or [hb] — never mixed
+M|Stag|tx|If any field is missing → dn does not mark it Scoped. She adds the missing field or asks Stark to provide it.
+M|Stag|The |
+M|Stag|tx|**One task In-Flight per vt at any time.**
+M|Stag|tx|nz can have one In-Flight. hb can have one In-Flight. That is the maximum.
+M|Stag|If a|
+M|Stag|- Op|The new task goes to Scoped queue
+M|Stag|- Op|Stark explicitly approves deprioritizing the current In-Flight → dn pauses it, documents where it stopped, starts the new task
+M|Stag|tx|dn never silently opens a second In-Flight. She names the conflict and asks for a decision.
+M|Stag|**Mi|**
+M|Stag|- We|still on track?
+M|Stag|it|If ag reports a blocker → dn surfaces it to mc immediately, does not wait for Friday
+M|Stag|it|If ETA slips >2 days → flag to Stark, up deadline, document reason
+M|Stag|A ta|
+M|Stag|it|[ ] DRI confirms delivery
+M|Stag|it|[ ] Binary definition of done answered YES
+M|Stag|it|[ ] qn has signed off (if code or cn going live)
+M|Stag|it|[ ] No regressions flagged
+M|Stag|tx|If qn flags a regression → task goes back to In-Flight, not marked Shipped.
+M|Stag|tx|If definition of done is only partially met → task is not Shipped, dn names the gap.
+M|Stag|tx|---
+M|Spri|Dian|
+M|Spri|tx|```
+M|Spri|IN-F|
+M|Spri|[nov|[ag] \| Due: [date] \| Status: on track / at risk
+M|Spri|[hou|[ag] \| Due: [date] \| Status: on track / at risk
+M|Spri|SCOP|
+M|Spri|1. [|[ag] \| Due: [date]
+M|Spri|2. [|[ag] \| Due: [date]
+M|Spri|BLOC|
+M|Spri|[ven|[what] \| Owner of blocker: [who]
+M|Spri|tx|```
+M|Spri|tx|up this queue every Monday and every time a task moves stage.
+M|Spri|tx|---
+M|Cros|If t|
+M|Cros|tx|1. dn names the conflict immediately — she does not silently assign
+M|Cros|2. D|"ag X is DRI for [nz task] due [date] and [hb task] due [date]. Which takes priority?"
+M|Cros|tx|3. Stark decides. dn executes the decision and updates the queue.
+M|Cros|tx|dn never makes the priority call btw vt. That is mc's domain.
+M|Cros|tx|---
+M|The |tx|Stark can override the one-In-Flight rule w/ an explicit "priority override" instruction.
+M|The |When|
+M|The |tx|1. Pauses the current In-Flight task at its current state (documents progress)
+M|The |tx|2. Starts the override task as the new In-Flight
+M|The |tx|3. Names what was paused and when it will resume
+M|The |tx|4. Does not let the override run indefinitely — it gets a deadline too

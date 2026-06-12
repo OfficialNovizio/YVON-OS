@@ -1,0 +1,36 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/cold-email/references/personalization.md savings=9%
+M|Pers|Pers|**if your personalization has nothing to do w/ the problem you solve, it's just an attention hack** (Clay).
+M|Leve|tx|First name, company name, job title. Table stakes, no longer differentiating. ~5% lift.
+M|Leve|tx|Industry-specific pain points, tn, regulatory challenges. Scalable via micro-segmentation.
+M|Leve|tx|> Most {{industry}} teams struggle w/ {{lead gen problem}}, which often leads to wasted effort.
+M|Leve|tx|Challenges specific to their role and seniority.
+M|Leve|tx|> As Head of Sales, keeping pipeline steady is probably your biggest headache. Your RevOps team is small, so you're likely wearing multiple hats during scaling.
+M|Leve|tx|Specific, timely observations abt that person connected to the problem you solve.
+M|Leve|tx|> Noticed you're hiring 3 SDRs — sounds like you're scaling outbound fast. Most teams hit follow-up fatigue during onboarding.
+M|Rese|tx|\| Signal            \| Where to find it                   \| How to use it                                                                \|
+M|Rese|tx|\| ----------------- \| ---------------------------------- \| ---------------------------------------------------------------------------- \|
+M|Rese|tx|\| Recent funding    \| Crunchbase, LinkedIn, press        \| "Congrats on Series B — scaling teams fast usually creates X challenge"      \|
+M|Rese|tx|\| Job postings      \| LinkedIn Jobs, careers page        \| "Noticed you're hiring 3 SDRs — sounds like you're scaling outbound"         \|
+M|Rese|tx|\| Tech stack        \| BuiltWith, Wappalyzer, HG in \| "I see you're using HubSpot — most teams at your stage hit a ceiling w/ X" \|
+M|Rese|tx|\| LinkedIn activity \| Posts, comments, job changes       \| "Really enjoyed your post abt X"                                           \|
+M|Rese|tx|\| Company news      \| Google News, press releases        \| "Congrats on acquiring X — integrating teams usually creates Y challenge"    \|
+M|Rese|tx|\| Podcast/talks     \| Google, YouTube, podcasts          \| "Caught your talk at SaaStr on X — really insightful"                        \|
+M|Rese|tx|\| Website changes   \| Manual rv                      \| "Your new pricing page caught my eye — curious how it's converting"          \|
+M|The |From|
+M|The |**St|** bd a research stack of top 10 buying signals — 5 company triggers, 5 person triggers. Stack-rank by relevance.
+M|The |**St|** bd a 3x3 template: (1) personalization attached to a problem, (2) problem you solve, (3) one-sentence solution + lo-friction CTA.
+M|The |**St|** cr 5 "trigger templates" — pre-written personalization paragraphs for each trigger, w/ a smooth segue into the problem.
+M|The |tx|The personalization must logically connect to the problem. This creates 5 reusable triggers w/ the rest of the em constant. A top SDR writes a personalized em in **under 3 minutes**.
+M|The |it|**Demographic** — Age, profession, background
+M|The |it|**Technographic** — Tech stack, tools used
+M|The |it|**Firmographic** — Company size, funding, industry, growth stage
+M|The |it|**Psychographic** — Values, passions, beliefs (highest-impact dimension)
+M|The |tx|Tapping into what prospects are passionate abt drives significantly higher rp rates.
+M|Obse|**Tr|** "Congrats on the recent funding round — scaling the team from here is exciting, and I imagine [challenge] is top of mind."
+M|Obse|**Ob|** "Your recent post abt [topic] resonated — esp the part abt [detail]. Got me thinking abt how that applies to [challenge]."
+M|Obse|**In|** "Most [role titles] I talk to spend [X hours/week] on [problem] — curious if that matches your exp at [Company]."
+M|What|it|AI-generated emails w/ similar phrasing ("I hope this em finds you well")
+M|What|it|Generic attention hacks disconnected from problem ("Cool that you went to UCLA!" → pitch)
+M|What|it|Over-personalizing to creepiness
+M|What|it|"I saw your LinkedIn profile and wanted to reach out" — signals mass automation
+M|The |Afte|"So what? Why wld I care?" If the answer is nothing, rewrite.

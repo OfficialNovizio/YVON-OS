@@ -1,0 +1,48 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/VERIFICATION.md strip=73% toon=-1% net=73%
+# Verification Report — Triple Check
+
+This report verifies that the briefings cover everything in the source material. Three independent passes were run:
+
+Pass 1 — Screenshots: every one of the 32 screenshots mapped to a briefing.
+Pass 2 — Transcript: every page/feature described in the walkthrough mapped to a briefing.
+Pass 3 — Creator's Briefings folder: every filename visible in screenshot 181510 (the creator's own Briefings/ folder) reconciled against my files.
+
+Confidence key: ✅ Confirmed (visible in a screenshot) · 🗣️ Stated (described in transcript) · 🔎 Inferred (named but not shown in detail).
+
+---
+
+## Pass 1 — All 32 screenshots → briefing file
+
+[TABLE:5×32]
+Result: 32 / 32 screenshots represented.
+
+---
+
+## Pass 2 — Transcript sections → briefing file
+
+[TABLE:3×30]
+Result: every distinct topic in the transcript is mapped. No transcript section is unrepresented.
+
+---
+
+## Pass 3 — Creator's Briefings/ folder (screenshot 181510) → my files
+
+The creator's folder is alphabetical and the capture is cut off after sched…. Visible filenames and how they reconcile:
+
+[TABLE:3×27]
+Gaps found and closed this pass: dashboard-home, docs, logs, people-page, projects-page were named in the creator's folder but had no dedicated file. All five now exist (briefings 28–32), each flagged Inferred because they have no dedicated UI screenshot.
+
+---
+
+## Honest limitations
+
+Inferred pages (no dedicated screenshot): Production Calendar (09), YouTube Analytics (11), Short Pipeline (12), Social Analytics (16), Trend Radar (20), Idea Feed (21), Consulting CRM (23), Cinematic Sites (24), Skill Workshop (07), and the five Pass-3 additions (28–32). Each file states this at the bottom. Their existence is confirmed (sidebar item or creator's folder); their internal detail is reasoned from context, not observed.
+YouTube video: could not be fetched in this environment; the user-supplied transcript was used in full instead and every section is mapped above.
+Truncation: screenshot 181510 cuts off after sched…, so a handful of the creator's filenames below that line are not directly legible; the corresponding pages exist on my side regardless (verified via sidebar + transcript).
+
+## Final tally
+
+Briefing files: 33 (00 inventory + 01–32) plus README.md and this VERIFICATION.md.
+Screenshots covered: 32 / 32.
+Transcript topics covered: all.
+Creator's-folder filenames reconciled: all legible entries, with 5 gaps closed.

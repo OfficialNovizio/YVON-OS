@@ -1,0 +1,93 @@
+#MEM id=writing-plans source=/root/yvon/agent-department/Technical/dev/skills/superpowers/writing-plans/SKILL.md savings=11%
+M||tx|---
+M||name|writing-plans
+M||desc|>-
+M||tx|Use when you have a spec or requirements for a multi-step task, before touching code
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, productivity]
+M||tx|---
+M|Over|Writ|which files to touch for each task, code, testing, doc they might need to check, how to tst it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+M|Over|tx|Assume they are a skilled developer, but know almost nothing abt our toolset or problem domain. Assume they don't know good tst ds very well.
+M|Over|**An|** "I'm using the writing-plans skill to cr the implementation plan."
+M|Over|**Co|** This shd be run in a dedicated worktree (created by brainstorming skill).
+M|Over|**Sa|** `doc/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+M|Over|it|(us preferences for plan location override this default)
+M|Scop|tx|If the spec covers multiple independent subsystems, it shd have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan shd produce working, testable software on its own.
+M|File|tx|Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+M|File|it|ds units w/ clear boundaries and well-defined interfaces. Each file shd have one clear responsibility.
+M|File|it|You reason best abt code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+M|File|it|Files that change together shd live together. Split by responsibility, not by tc layer.
+M|File|it|In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, inc a split in the plan is reasonable.
+M|File|tx|This structure informs the task decomposition. Each task shd produce self-contained changes that make sense independently.
+M|Bite|**Ea|**
+M|Bite|it|"Write the failing tst" - step
+M|Bite|it|"Run it to make sure it fails" - step
+M|Bite|it|"im the minimal code to make the tst pass" - step
+M|Bite|it|"Run the tests and make sure they pass" - step
+M|Bite|it|"Commit" - step
+M|Plan|**Ev|**
+M|Plan|tx|```markdown
+M|[Fea|> **|** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-dv (recommended) or superpowers:executing-plans to im this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+M|[Fea|**Go|** [One sentence describing what this builds]
+M|[Fea|**Ar|** [2-3 sentences abt approach]
+M|[Fea|**Te|** [Key technologies/libraries]
+M|[Fea|tx|---
+M|[Fea|tx|```
+M|Task|tx|````markdown
+M|Task|**Fi|**
+M|Task|- Cr|`exact/path/to/file.py`
+M|Task|- Mo|`exact/path/to/existing.py:123-145`
+M|Task|- Te|`tests/exact/path/to/tst.py`
+M|Task|- [ |Write the failing tst**
+M|Task|tx|```python
+M|Task|def |
+M|Task|tx|result = fn(input)
+M|Task|tx|assert result == expected
+M|Task|tx|```
+M|Task|- [ |Run tst to verify it fails**
+M|Task|Run|`pytest tests/path/tst.py::test_name -v`
+M|Task|Expe|FAIL w/ "fn not defined"
+M|Task|- [ |Write minimal implementation**
+M|Task|tx|```python
+M|Task|def |
+M|Task|tx|return expected
+M|Task|tx|```
+M|Task|- [ |Run tst to verify it passes**
+M|Task|Run|`pytest tests/path/tst.py::test_name -v`
+M|Task|Expe|PASS
+M|Task|- [ |Commit**
+M|Task|tx|```bash
+M|Task|tx|git add tests/path/tst.py src/path/file.py
+M|Task|git |add specific feature"
+M|Task|tx|```
+M|Task|tx|````
+M|No P|Ever|
+M|No P|it|"TBD", "TODO", "im later", "fill in details"
+M|No P|it|"Add appropriate er handling" / "add validation" / "handle edge cases"
+M|No P|it|"Write tests for the above" (w/o actual tst code)
+M|No P|it|"Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
+M|No P|it|Steps that describe what to do w/o showing how (code blocks required for code steps)
+M|No P|it|References to tp, functions, or methods not defined in any task
+M|Reme|it|Exact file paths always
+M|Reme|it|Complete code in every step — if a step changes code, show the code
+M|Reme|it|Exact commands w/ expected output
+M|Reme|it|DRY, YAGNI, TDD, frequent commits
+M|Self|tx|After writing the complete plan, look at the spec w/ fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
+M|Self|**1.|** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
+M|Self|**2.|** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
+M|Self|**3.|** Do the tp, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A fn called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
+M|Self|tx|If you find issues, fix them inline. No need to re-rv — just fix and move on. If you find a spec requirement w/ no task, add the task.
+M|Exec|Afte|
+M|Exec|**"P|**
+M|Exec|tx|**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, rv btw tasks, fast iteration
+M|Exec|tx|**2. Inline Execution** - Execute tasks in this sn using executing-plans, batch execution w/ checkpoints
+M|Exec|tx|**Which approach?"**
+M|Exec|**If|**
+M|Exec|- **|** Use superpowers:subagent-driven-dv
+M|Exec|it|Fresh subagent per task + two-stage rv
+M|Exec|**If|**
+M|Exec|- **|** Use superpowers:executing-plans
+M|Exec|it|Batch execution w/ checkpoints for rv

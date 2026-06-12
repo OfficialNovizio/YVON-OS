@@ -1,0 +1,126 @@
+#MEM id=nodes-overview source=/root/yvon/agent-department/COO/diana/skills/workflow/nodes-overview/SKILL.md savings=2%
+M||tx|---
+M||name|pletor-node-basics
+M||desc|>-
+M||tx|Core knowledge for building Pletor workflows. Use this skill whenever the us wants to cr, ds, or describe a Pletor workflow — even partially. Covers node categories, how nodes connect, data flow, workflow logic, and pm structure best practices. Trigger this skill any time you see words like "Pletor workflow", "ag", "canvas", "nodes", "bd a workflow", "automate creative", or when the us describes a creative output goal and you need to translate it into a node chain.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[co, operations, workflow, planning, sprint, milestones, process, automation]
+M||tx|---
+M|Plet|tx|Pletor is a no-code workflow builder for AI-powered visual mk. Workflows are built
+M|Plet|tx|by connecting **nodes** on a canvas. Data flows **left → right** from inputs through
+M|Plet|tx|processing to outputs.
+M|Plet|tx|---
+M|1. P|tx|These nodes feed information into the workflow. They have no AI processing.
+M|1. P|tx|\| Node \| What it does \|
+M|1. P|tx|\|------\|-------------\|
+M|1. P|tx|\| **Text pm** \| us-typed instruction (the creative brief) \|
+M|1. P|tx|\| **Upload im** \| Static or us-uploaded im reference \|
+M|1. P|tx|\| **Upload vd / Audio / File** \| Other media or document inputs \|
+M|1. P|tx|\| **br Context** \| Company name, positioning, audience \|
+M|1. P|tx|\| **Visual References** \| Reference images that anchor the visual style \|
+M|1. P|tx|\| **br Guidelines** \| Creative do's/don'ts, colors, layout rules \|
+M|1. P|tx|\| **br Voice** \| Writing samples and tone-of-voice examples \|
+M|1. P|tx|\| **br doc** \| Full br books as PDF/CSV/JSON/TXT \|
+M|1. P|> **|** Always add br Context + Visual References for br-safe output.
+M|1. P|tx|> Layer multiple br nodes — each adds a different dimension of consistency.
+M|1. P|tx|---
+M|2. U|tx|These nodes run AI md. They are the creative engines.
+M|2. U|tx|\| Node \| What it does \|
+M|2. U|tx|\|------\|-------------\|
+M|2. U|tx|\| **gn im** \| Text-to-im or im-to-im \|
+M|2. U|tx|\| **Edit im** \| Modify an existing im w/ text instructions \|
+M|2. U|tx|\| **gn vd** \| Text-to-vd or im-to-vd \|
+M|2. U|tx|\| **gn Lipsync** \| Animate a portrait/vd character to speak audio \|
+M|2. U|tx|\| **gn Audio** \| Voice or sound ds generation \|
+M|2. U|tx|\| **Text Assistant** \| Pre-built LLM expert (pm enhancer, cp writer, analyzer) \|
+M|2. U|tx|\| **gn Text** \| Raw LLM w/ custom instructions \|
+M|2. U|tx|\| **Upscale im / vd** \| Resolution enhancement post-generation \|
+M|2. U|tx|\| **Remove Background** \| Strip im/vd background to transparent \|
+M|2. U|tx|\| **Edit vd** \| Modify vd cn w/ text instructions \|
+M|2. U|tx|\| **Extract vd Frame** \| Pull a still frame from vd (useful as im input) \|
+M|2. U|tx|---
+M|3. A|tx|These nodes control flow, combine data, and connect to external services.
+M|3. A|tx|\| Node \| What it does \|
+M|3. A|tx|\|------\|-------------\|
+M|3. A|tx|\| **Composer** \| Layer images, text, logos into a final composed visual or vd \|
+M|3. A|tx|\| **pm Concatenator** \| Mechanically join multiple text inputs into one pm \|
+M|3. A|tx|\| **Split Text** \| Break text into parts by delimiter \|
+M|3. A|tx|\| **List Selector** \| Pick one item from a list by index \|
+M|3. A|tx|\| **Human rv** \| Pause workflow for manual approval before continuing \|
+M|3. A|tx|\| **Router** \| Reuse one node's output in multiple downstream nodes \|
+M|3. A|tx|\| **Rename Asset** \| Set custom filenames (supports dynamic naming patterns) \|
+M|3. A|tx|\| **Merge Videos** \| Combine multiple vd clips into one \|
+M|3. A|tx|\| **Google Drive** \| Pull assets in or push outputs out \|
+M|3. A|tx|\| **Meta / TikTok / Instagram** \| Publish directly to ad platforms \|
+M|3. A|tx|---
+M|The |tx|**Always put a Text Assistant btw us input and generation nodes.**
+M|The |tx|Raw us pm are rarely optimal for AI md. A Text Assistant enhances, combines,
+M|The |tx|and structures the pm before it reaches the generator — this dramatically improves
+M|The |tx|output qual and consistency.
+M|Core|tx|**Pattern 1 — Simple Generation**
+M|Core|tx|```
+M|Core|Text|Enhance pm] → gn im → Upscale im
+M|Core|tx|```
+M|Core|tx|**Pattern 2 — br-safe im**
+M|Core|tx|```
+M|Core|tx|Text pm ───┐
+M|Core|tx|br Context ─┼─ Text Assistant → gn im
+M|Core|tx|Visual Refs ───┘
+M|Core|tx|```
+M|Core|tx|**Pattern 3 — im-to-vd (recommended over text-to-vd)**
+M|Core|tx|```
+M|Core|tx|Upload im → [Text Assistant] → gn im → gn vd
+M|Core|tx|```
+M|Core|tx|gn a still im first for far more control over the final vd.
+M|Core|tx|**Pattern 4 — pd Shot w/ Custom Background**
+M|Core|tx|```
+M|Core|tx|Upload im → gn im → Remove Background → Composer
+M|Core|tx|```
+M|Core|tx|**Pattern 5 — Ad Creative w/ Localization**
+M|Core|tx|```
+M|Core|tx|Text pm ───┐
+M|Core|tx|br Nodes ───┼─ Text Assistant → gn im → Composer
+M|Core|tx|Logo Upload ───┘
+M|Core|tx|→ Localization Text Assistant ───→ Text pm (language)
+M|Core|tx|```
+M|Core|tx|**Pattern 6 — Lipsync Talking Character**
+M|Core|tx|```
+M|Core|tx|Upload im/vd → gn Lipsync (+ audio input or text-to-speech)
+M|Core|tx|```
+M|Core|tx|---
+M|Prom|When|
+M|For |tx|```
+M|For |tx|[Subject/Character] → [Action/Pose] → [Setting/Background] → [Style/Mood] →
+M|For |tx|[Lighting] → [Camera/Composition] → [br/Color cues]
+M|For |tx|```
+M|For |Exam|
+M|For |tx|> "A confident woman in her 30s holding a coffee cup, seated in a modern co-working
+M|For |tx|> space, warm natural light from the left, editorial lifestyle photography,
+M|For |> Le|off-white and forest green"
+M|For |Be e|
+M|For |1. *|"You are a creative director specializing in luxury br photography."
+M|For |2. *|"Enhance the us's raw pm into a detailed im generation pm."
+M|For |3. *|"Return only the final pm, no explanation."
+M|For |4. *|"Always include the br color palette: [colors]. Never include human faces."
+M|For |tx|```
+M|For |tx|[Subject] → [Motion/Action description] → [Camera movement] → [Duration/Pace] → [Style]
+M|For |tx|```
+M|For |Key|describe motion explicitly. vd md respond to verbs.
+M|For |Exam|
+M|For |tx|> "A bottle of perfume rotating slowly on a marble surface, camera gently pushes in,
+M|For |tx|> soft diffused studio lighting, cinematic, 5-second loop"
+M|For |tx|---
+M|Buil|Choo|
+M|Buil|- **|Start w/ what you have (pd im, brief) → add transformation nodes forward
+M|Buil|- **|Start w/ the desired output (Instagram ad) → pick the right AI node → work backwards to define inputs
+M|Buil|tx|Start simple (2–3 nodes), tst, then add complexity. tst individual nodes in isolation before running the full chain.
+M|Buil|tx|---
+M|Work|When|
+M|Work|1. *|one sentence describing what the workflow produces
+M|Work|2. *|step-by-step list w/ node tp and its role
+M|Work|3. *|any ct settings, md choices, or pm tips
+M|Work|4. *|nodes to add for more power (br nodes, human rv, etc.)
+M|Work|tx|See `skills/workflow/md-selection/SKILL.md` (at) for md choices, and `skills/workflow/advanced-nodes/SKILL.md` (px) for Composer, Logic nodes, and integration nodes in depth.

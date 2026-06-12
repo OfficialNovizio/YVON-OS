@@ -1,0 +1,183 @@
+SKILL|test-driven-development|"TDD: enforce RED-GREEN-REFACTOR, tests before code."
+STEP|1|Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
+STEP|2|Violating the letter of the rules is violating the spirit of the rules.**
+STEP|3|Always:**
+STEP|4|New features
+STEP|5|Bug fixes
+STEP|6|Refactoring
+STEP|7|Behavior changes
+STEP|8|Exceptions (ask the user first):**
+STEP|9|Throwaway prototypes
+STEP|10|Generated code
+STEP|11|Configuration files
+STEP|12|No exceptions:**
+STEP|13|Don't keep it as "reference"
+STEP|14|Don't "adapt" it while writing tests
+STEP|15|Don't look at it
+STEP|16|Delete means delete
+STEP|17|Good test:**
+STEP|18|Bad test:**
+STEP|19|Requirements:**
+STEP|20|One behavior per test
+STEP|21|Clear descriptive name ("and" in name? Split it)
+STEP|22|Real code, not mocks (unless truly unavoidable)
+STEP|23|Name describes behavior, not implementation
+STEP|24|MANDATORY. Never skip.**
+STEP|25|Test fails (not errors from typos)
+STEP|26|Failure message is expected
+STEP|27|Fails because the feature is missing
+STEP|28|Test passes immediately?** You're testing existing behavior. Fix the test.
+STEP|29|Test errors?** Fix the error, re-run until it fails correctly.
+STEP|30|Good:**
+STEP|31|Bad:**
+STEP|32|Cheating is OK in GREEN:**
+STEP|33|Hardcode return values
+STEP|34|Copy-paste
+STEP|35|Duplicate code
+STEP|36|Skip edge cases
+STEP|37|MANDATORY.**
+STEP|38|Test passes
+STEP|39|Other tests still pass
+STEP|40|Output pristine (no errors, warnings)
+STEP|41|Test fails?** Fix the code, not the test.
+STEP|42|Other tests fail?** Fix regressions now.
+STEP|43|Remove duplication
+STEP|44|Improve names
+STEP|45|Extract helpers
+STEP|46|Simplify expressions
+STEP|47|If tests fail during refactor:** Undo immediately. Take smaller steps.
+STEP|48|"I'll write tests after to verify it works"**
+STEP|49|Might test the wrong thing
+STEP|50|Might test implementation, not behavior
+STEP|51|Might miss edge cases you forgot
+STEP|52|You never saw it catch the bug
+STEP|53|"I already manually tested all the edge cases"**
+STEP|54|No record of what you tested
+STEP|55|Can't re-run when code changes
+STEP|56|Easy to forget cases under pressure
+STEP|57|"It worked when I tried it" ≠ comprehensive
+STEP|58|"Deleting X hours of work is wasteful"**
+STEP|59|Delete and rewrite with TDD (high confidence)
+STEP|60|Keep it and add tests after (low confidence, likely bugs)
+STEP|61|"TDD is dogmatic, being pragmatic means adapting"**
+STEP|62|Finds bugs before commit (faster than debugging after)
+STEP|63|Prevents regressions (tests catch breaks immediately)
+STEP|64|Documents behavior (tests show how to use code)
+STEP|65|Enables refactoring (change freely, tests catch breaks)
+STEP|66|"Tests after achieve the same goals — it's spirit not ritual"**
+STEP|67|Code before test
+STEP|68|Test after implementation
+STEP|69|Test passes immediately on first run
+STEP|70|Can't explain why test failed
+STEP|71|Tests added "later"
+STEP|72|Rationalizing "just this once"
+STEP|73|"I already manually tested it"
+STEP|74|"Tests after achieve the same purpose"
+STEP|75|"Keep as reference" or "adapt existing code"
+STEP|76|"Already spent X hours, deleting is wasteful"
+STEP|77|"TDD is dogmatic, I'm being pragmatic"
+STEP|78|"This is different because..."
+STEP|79|All of these mean: Delete code. Start over with TDD.**
+STEP|80|[ ] Every new function/method has a test
+STEP|81|[ ] Watched each test fail before implementing
+STEP|82|[ ] Each test failed for expected reason (feature missing, not typo)
+STEP|83|[ ] Wrote minimal code to pass each test
+STEP|84|[ ] All tests pass
+STEP|85|[ ] Output pristine (no errors, warnings)
+STEP|86|[ ] Tests use real code (mocks only if unavoidable)
+STEP|87|[ ] Edge cases and errors covered
+STEP|88|**Testing mock behavior instead of real behavior** — mocks should verify interactions, not replace the system under test
+STEP|89|**Testing implementation details** — test behavior/results, not internal method calls
+STEP|90|**Happy path only** — always test edge cases, errors, and boundaries
+STEP|91|**Brittle tests** — tests should verify behavior, not structure; refactoring shouldn't break them
+PIT|Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
+PIT|Violating the letter of the rules is violating the spirit of the rules.**
+PIT|Always:**
+PIT|New features
+PIT|Bug fixes
+PIT|Refactoring
+PIT|Behavior changes
+PIT|Exceptions (ask the user first):**
+PIT|Throwaway prototypes
+PIT|Generated code
+PIT|Configuration files
+PIT|No exceptions:**
+PIT|Don't keep it as "reference"
+PIT|Don't "adapt" it while writing tests
+PIT|Don't look at it
+PIT|Delete means delete
+PIT|Good test:**
+PIT|Bad test:**
+PIT|Requirements:**
+PIT|One behavior per test
+PIT|Clear descriptive name ("and" in name? Split it)
+PIT|Real code, not mocks (unless truly unavoidable)
+PIT|Name describes behavior, not implementation
+PIT|MANDATORY. Never skip.**
+PIT|Test fails (not errors from typos)
+PIT|Failure message is expected
+PIT|Fails because the feature is missing
+PIT|Test passes immediately?** You're testing existing behavior. Fix the test.
+PIT|Test errors?** Fix the error, re-run until it fails correctly.
+PIT|Good:**
+PIT|Bad:**
+PIT|Cheating is OK in GREEN:**
+PIT|Hardcode return values
+PIT|Copy-paste
+PIT|Duplicate code
+PIT|Skip edge cases
+PIT|MANDATORY.**
+PIT|Test passes
+PIT|Other tests still pass
+PIT|Output pristine (no errors, warnings)
+PIT|Test fails?** Fix the code, not the test.
+PIT|Other tests fail?** Fix regressions now.
+PIT|Remove duplication
+PIT|Improve names
+PIT|Extract helpers
+PIT|Simplify expressions
+PIT|If tests fail during refactor:** Undo immediately. Take smaller steps.
+PIT|"I'll write tests after to verify it works"**
+PIT|Might test the wrong thing
+PIT|Might test implementation, not behavior
+PIT|Might miss edge cases you forgot
+PIT|You never saw it catch the bug
+PIT|"I already manually tested all the edge cases"**
+PIT|No record of what you tested
+PIT|Can't re-run when code changes
+PIT|Easy to forget cases under pressure
+PIT|"It worked when I tried it" ≠ comprehensive
+PIT|"Deleting X hours of work is wasteful"**
+PIT|Delete and rewrite with TDD (high confidence)
+PIT|Keep it and add tests after (low confidence, likely bugs)
+PIT|"TDD is dogmatic, being pragmatic means adapting"**
+PIT|Finds bugs before commit (faster than debugging after)
+PIT|Prevents regressions (tests catch breaks immediately)
+PIT|Documents behavior (tests show how to use code)
+PIT|Enables refactoring (change freely, tests catch breaks)
+PIT|"Tests after achieve the same goals — it's spirit not ritual"**
+PIT|Code before test
+PIT|Test after implementation
+PIT|Test passes immediately on first run
+PIT|Can't explain why test failed
+PIT|Tests added "later"
+PIT|Rationalizing "just this once"
+PIT|"I already manually tested it"
+PIT|"Tests after achieve the same purpose"
+PIT|"Keep as reference" or "adapt existing code"
+PIT|"Already spent X hours, deleting is wasteful"
+PIT|"TDD is dogmatic, I'm being pragmatic"
+PIT|"This is different because..."
+PIT|All of these mean: Delete code. Start over with TDD.**
+PIT|[ ] Every new function/method has a test
+PIT|[ ] Watched each test fail before implementing
+PIT|[ ] Each test failed for expected reason (feature missing, not typo)
+PIT|[ ] Wrote minimal code to pass each test
+PIT|[ ] All tests pass
+PIT|[ ] Output pristine (no errors, warnings)
+PIT|[ ] Tests use real code (mocks only if unavoidable)
+PIT|[ ] Edge cases and errors covered
+PIT|**Testing mock behavior instead of real behavior** — mocks should verify interactions, not replace the system under test
+PIT|**Testing implementation details** — test behavior/results, not internal method calls
+PIT|**Happy path only** — always test edge cases, errors, and boundaries
+PIT|**Brittle tests** — tests should verify behavior, not structure; refactoring shouldn't break them

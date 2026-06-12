@@ -1,0 +1,487 @@
+#DOC source=/root/yvon/docs/plans/PHASE-5-PLAN.md strip=66% toon=-6% net=66%
+# Phase 5: Wire Remaining 17 Pages — Full YVON OS Live Data
+
+For Hermes: Execute task-by-task following the bite-sized steps. Each task includes exact file paths, complete code, and verification commands. Commit after every task.
+
+Goal: Wire all 17 remaining mock/stub pages to live API routes + Supabase, achieving 100% real-data coverage across all 32 YVON OS screens.
+
+Architecture: Each page gets one of three treatments: (a) wire to an existing API route that already provides compatible data, (b) create a new /api/ route backed by Supabase with graceful mock fallback via useLiveData, or (c) enhance visual-only pages with real agent status/hardware telemetry while keeping their visual identity. Every wired page uses the shared useLiveData hook for consistent loading/error/mock-fallback behavior.
+
+Tech Stack: Next.js 15 App Router · TypeScript strict · Tailwind CSS · Supabase (existing tables) · useLiveData hook · YouTube Data API v3 · Apify
+
+Before starting: Read docs/WORKFLOW.md per project convention.
+
+---
+
+## Phase 5A: Trend Radar + KaisRead — Live Intelligence Feed
+
+### Task 5A.1: Add GET /api/trend-radar read endpoint
+
+Objective: Create a public GET endpoint that returns trends from Supabase without requiring CRON_SECRET auth
+
+Files:
+Create: app/api/trend-radar/route.ts
+
+Step 1: Write the route
+
+[CODE:typescript:15LOC]
+Step 2: Verify
+
+[CODE:bash:1LOC]
+Step 3: Commit
+
+[CODE:bash:2LOC]
+---
+
+### Task 5A.2: Wire Trend Radar page to /api/trend-radar
+
+Objective: Replace the hardcoded TRENDS array with useLiveData call to the new API
+
+Files:
+Modify: app/trend-radar/page.tsx
+
+Step 1: Replace mock data with live hook
+
+The current file (47 lines) has const TRENDS: Trend[] = [...] hardcoded. Replace the data section:
+
+[CODE:typescript:37LOC]
+Step 2: Full replacement
+
+Rewrite the component body to use trends variable (from hook) instead of TRENDS constant. The existing card grid and modal structure stays identical — only the data source changes.
+
+Step 3: Verify
+
+[CODE:bash:1LOC]
+Step 4: Commit
+
+[CODE:bash:2LOC]
+---
+
+## Phase 5B: YouTube Studio + YouTube Analytics — Channel Data
+
+### Task 5B.1: Add GET /api/youtube endpoint
+
+Objective: The existing /api/youtube/route.ts only has POST. Add a GET handler that returns cached stats.
+
+Files:
+Modify: app/api/youtube/route.ts
+
+Step 1: Add GET handler
+
+Append to the existing file (after the POST handler):
+
+[CODE:typescript:21LOC]
+Step 2: Verify
+
+[CODE:bash:1LOC]
+Step 3: Commit
+
+[CODE:bash:2LOC]
+---
+
+### Task 5B.2: Wire YouTube Studio page to /api/youtube
+
+Objective: Replace mock video list with live YouTube channel data
+
+Files:
+Modify: app/youtube-studio/page.tsx
+
+Step 1: Add useLiveData import and hook call
+
+[CODE:typescript:12LOC]
+Step 2: Replace mock arrays
+
+Replace the hardcoded video list with data?.latestVideos and KPI cards with data.subscribers / data.totalViews / data.videoCount. Keep the existing UI structure — swap only the data source.
+
+Step 3: Verify
+
+[CODE:bash:1LOC]
+Step 4: Commit
+
+[CODE:bash:2LOC]
+---
+
+### Task 5B.3: Wire YouTube Analytics page to /api/social-stats
+
+Objective: YouTube Analytics is a thin 1.8KB stub. Wire it to the existing /api/social-stats?platform=youtube
+
+Files:
+Modify: app/youtube-analytics/page.tsx
+
+Step 1: Rewrite with live data
+
+[CODE:typescript:30LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5C: Idea Feed + Software Pipeline Intake
+
+### Task 5C.1: Create GET /api/idea-feed route
+
+Objective: Serve ideas from Supabase ideas table (or tasks table filtered by stage), with mock fallback
+
+Files:
+Create: app/api/idea-feed/route.ts
+
+Step 1: Write route
+
+[CODE:typescript:27LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5C.2: Wire Idea Feed page to /api/idea-feed
+
+Objective: Replace hardcoded SEED array with useLiveData call
+
+Files:
+Modify: app/idea-feed/page.tsx
+
+Step 1: Add hook
+
+[CODE:typescript:13LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5D: Social Analytics — Live Dashboards
+
+### Task 5D.1: Wire Social Analytics page to /api/social-stats
+
+Objective: The existing 2.3KB stub. Wire to the existing multi-platform /api/social-stats endpoint.
+
+Files:
+Modify: app/social-analytics/page.tsx
+
+Step 1: Full rewrite with live data
+
+[CODE:typescript:39LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5E: Logs + Activity — Real-time System Audit
+
+### Task 5E.1: Create GET /api/logs route (REST, not SSE)
+
+Objective: The existing /api/activity is SSE-only. Create a REST endpoint for the Logs page.
+
+Files:
+Create: app/api/logs/route.ts
+
+Step 1: Write route
+
+[CODE:typescript:16LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5E.2: Wire Logs page to /api/logs
+
+Objective: Replace the 6-item hardcoded LOGS array with live activity feed
+
+Files:
+Modify: app/logs/page.tsx
+
+Step 1: Add useLiveData
+
+Replace the hardcoded LOGS array with:
+
+[CODE:typescript:9LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5F: Hardware — Live System Telemetry
+
+### Task 5F.1: Add GET /api/hardware route
+
+Objective: Serve real system telemetry — machine status, agent count, RAM usage
+
+Files:
+Create: app/api/hardware/route.ts
+
+Step 1: Write route
+
+[CODE:typescript:30LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5F.2: Wire Hardware page to /api/hardware
+
+Objective: Replace hardcoded STATS and MACHINES with live telemetry
+
+Files:
+Modify: app/hardware/page.tsx
+
+Step 1: Add hook
+
+[CODE:typescript:13LOC]
+Replace the STATS and MACHINES constants with data?.stats and data?.machines. Map the stat keys to icons (use a lookup).
+
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5G: Office — 3D Agent Floor (Visual Enhancement)
+
+### Task 5G.1: Wire Office page to /api/agent-status for live agent positions
+
+Objective: The Office page has a beautiful 3D isometric floor plan with agent rooms. Connect agent status so rooms reflect live agent state (working/standup/moving/idle).
+
+Files:
+Modify: app/office/page.tsx
+
+Step 1: Add useLiveData for agent status
+
+The existing Office page already has ROOMS and agent positions defined. Add:
+
+[CODE:typescript:11LOC]
+Step 2: Derive room status from agent data
+
+Create a lookup that maps agent IDs to their room, then color rooms based on the most "active" agent inside:
+
+[CODE:typescript:14LOC]
+Step 3: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5H: People, Projects, Docs — CRM + Knowledge Layer
+
+### Task 5H.1: Create GET /api/people route
+
+Objective: Serve contacts from Supabase (or mock for now)
+
+Files:
+Create: app/api/people/route.ts
+
+Step 1: Write route
+
+[CODE:typescript:14LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5H.2: Wire People page to /api/people
+
+Files:
+Modify: app/people/page.tsx
+
+Step 1: Add hook, replace PEOPLE constant
+
+[CODE:typescript:7LOC]
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5H.3: Create GET /api/projects route + wire Projects page
+
+Objective: Projects page (1.6KB stub) — serve project data
+
+Files:
+Create: app/api/projects/route.ts
+Modify: app/projects/page.tsx
+
+Step 1: Write route
+
+[CODE:typescript:12LOC]
+Step 2: Wire page
+
+Replace the stub with a card grid showing project name, venture, status badge, and progress bar. Use useLiveData hooked to /api/projects.
+
+Step 3: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5H.4: Wire Docs page to /api/knowledge-graph
+
+Objective: Docs page is a 2KB stub. Wire it to the existing knowledge graph API for document listings.
+
+Files:
+Modify: app/docs/page.tsx
+
+Step 1: Add useLiveData
+
+[CODE:typescript:7LOC]
+Step 2: Build document list UI
+
+Display documents from data.docs with title, type badge, and link. Keep the existing PageHeader. Use the Brain & Wiki's LibraryDoc type.
+
+Step 3: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5I: Production Calendar + Short Pipeline — Derived Content Views
+
+### Task 5I.1: Wire Production Calendar to /api/content-feed
+
+Objective: Derive the calendar from video/content items already fetched by Content Pipeline
+
+Files:
+Modify: app/production-calendar/page.tsx
+
+Step 1: Add hook using existing API
+
+[CODE:typescript:8LOC]
+Step 2: Derive ITEMS from data
+
+Replace the hardcoded ITEMS record with a derived map from data.items, grouped by day index.
+
+Step 3: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5I.2: Wire Short Pipeline to /api/content-feed?type=shorts
+
+Objective: 2KB stub — wire to existing content-feed
+
+Files:
+Modify: app/short-pipeline/page.tsx
+
+Step 1: Add hook, stage filter
+
+[CODE:typescript:4LOC]
+Wire to the Shorts pipeline stages (Ideas → Filming → Editing → Ready → Posted).
+
+Step 2: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5J: Consulting CRM + Cinematic Sites — Revenue Pages
+
+### Task 5J.1: Create GET /api/consulting route + wire Consulting CRM
+
+Files:
+Create: app/api/consulting/route.ts
+Modify: app/consulting-crm/page.tsx
+
+Step 1: Route
+
+[CODE:typescript:11LOC]
+Step 2: Wire page
+
+Replace mock with useLiveData hooked to /api/consulting. Show deal pipeline with value, stage badge, and company.
+
+Step 3: Commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 5J.2: Wire Cinematic Sites page (portfolio showcase)
+
+Objective: 2.7KB stub — enhance with portfolio mock data served from a new API
+
+Files:
+Create: app/api/cinematic-sites/route.ts
+Modify: app/cinematic-sites/page.tsx
+
+Step 1: Route with portfolio mock data
+
+[CODE:typescript:10LOC]
+Step 2: Wire page with card grid
+
+Show each site as a card with name, client, status badge, and visit link. Use useLiveData.
+
+Step 3: Commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5K: Skill Workshop — Agent Skill Registry
+
+### Task 5K.1: Wire Skill Workshop to /api/agent-status + /api/skills
+
+Objective: The Skill Workshop page shows agent skill trees. Wire to existing endpoints.
+
+Files:
+Modify: app/skill-workshop/page.tsx
+
+Step 1: Add hooks for agents and skills
+
+[CODE:typescript:12LOC]
+Step 2: Build skill matrix UI
+
+Display agents as columns, skills as rows. Use existing mock fallback structure but wire to real data when available.
+
+Step 3: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5L: Settings Page — New Simple Page
+
+### Task 5L.1: Create Settings page + route
+
+Objective: Settings was never created. Build a minimal settings page with system preferences.
+
+Files:
+Create: app/settings/page.tsx
+
+Step 1: Build page
+
+Simple page with sections for Profile, Notifications, API Keys status, and Theme preference. No API needed — can read from localStorage and show Supabase connection status.
+
+[CODE:typescript:33LOC]
+Step 2: Add to sidebar
+
+Update components/Sidebar.tsx — add { label: 'Settings', href: '/settings', icon: 'settings' } to the System section.
+
+Step 3: Verify + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 5M: Final Integration — Build, Typecheck, Deploy
+
+### Task 5M.1: Full typecheck + build
+
+[CODE:bash:3LOC]
+Expected: 0 type errors, all 33 pages build successfully.
+
+### Task 5M.2: Audit all pages for useLiveData consistency
+
+Checklist:
+Every wired page uses useLiveData with:
+url pointing to correct API
+mockData for graceful degradation
+pollIntervalMs where real-time matters
+No remaining hardcoded data arrays in wired pages
+Stub pages that remain visual-only have clear comments explaining why
+
+### Task 5M.3: Verify sidebar links all 33 pages
+
+[CODE:bash:1LOC]
+### Task 5M.4: Push + trigger Vercel deploy
+
+[CODE:bash:3LOC]
+GitHub CI will auto-deploy via amondnet/vercel-action.
+
+---
+
+## Summary: Pages Wired in Phase 5
+
+[TABLE:4×17]
+New API routes created: 8
+/api/trend-radar, /api/idea-feed, /api/logs, /api/hardware, /api/people, /api/projects, /api/consulting, /api/cinematic-sites
+
+Existing APIs reused: 6
+/api/youtube (GET added), /api/social-stats, /api/agent-status, /api/knowledge-graph, /api/content-feed, /api/skills
+
+Final state: 33 pages (32 original + 1 new Settings), all wired to live APIs. 100% YVON OS coverage.

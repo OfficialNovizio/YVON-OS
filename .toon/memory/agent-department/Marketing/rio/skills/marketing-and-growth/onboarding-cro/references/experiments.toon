@@ -1,0 +1,173 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/onboarding-cro/references/experiments.md savings=-15%
+M|Onbo|tx|Comprehensive list of A/B tests and experiments for us onboarding and activation.
+M|Cont|it|Flow Simplification Experiments (reduce friction, step sequencing, progress & motivation)
+M|Cont|it|Guided exp Experiments (pd tours, CTA op, UI guidance)
+M|Cont|it|Personalization Experiments (us segmentation, dynamic cn)
+M|Cont|it|Quick Wins & Engagement Experiments (time-to-value, motivation mechanics, support & help)
+M|Cont|it|em & Multi-Channel Experiments (onboarding emails, em cn, feedback loops)
+M|Cont|it|Re-engagement Experiments (stalled us recovery, return exp)
+M|Cont|it|tc & UX Experiments (perf, mobile onboarding, accessibility)
+M|Cont|it|Metrics to Track
+M|Redu|tx|\| tst \| Hypothesis \|
+M|Redu|tx|\|------\|------------\|
+M|Redu|tx|\| em verification timing \| During vs. after onboarding \|
+M|Redu|tx|\| Empty states vs. dummy data \| Pre-populated examples \|
+M|Redu|tx|\| Pre-filled templates \| Accelerate setup w/ templates \|
+M|Redu|tx|\| OAuth options \| Faster account linking \|
+M|Redu|tx|\| Required step count \| Fewer required steps \|
+M|Redu|tx|\| Optional vs. required fields \| Minimize requirements \|
+M|Redu|tx|\| Skip options \| Allow bypassing non-ct steps \|
+M|Step|tx|\| tst \| Hypothesis \|
+M|Step|tx|\|------\|------------\|
+M|Step|tx|\| Step ordering \| tst different sequences \|
+M|Step|tx|\| Value-first ordering \| Highest-value features first \|
+M|Step|tx|\| Friction placement \| Move hard steps later \|
+M|Step|tx|\| Required vs. optional balance \| Ratio of required steps \|
+M|Step|tx|\| Single vs. branching paths \| One path vs. personalized \|
+M|Step|tx|\| Quick start vs. full setup \| Minimal path to value \|
+M|Prog|tx|\| tst \| Hypothesis \|
+M|Prog|tx|\|------\|------------\|
+M|Prog|tx|\| Progress bars \| Show completion percentage \|
+M|Prog|tx|\| Checklist length \| 3-5 items vs. 5-7 items \|
+M|Prog|tx|\| Gamification \| Badges, rewards, achievements \|
+M|Prog|tx|\| Completion messaging \| "X% complete" visibility \|
+M|Prog|tx|\| Starting point \| Begin at 20% vs. 0% \|
+M|Prog|tx|\| Celebration moments \| Acknowledge completions \|
+M|Prog|tx|---
+M|Prod|tx|\| tst \| Hypothesis \|
+M|Prod|tx|\|------\|------------\|
+M|Prod|tx|\| Interactive tours \| Tools like Navattic, Storylane \|
+M|Prod|tx|\| Tooltip vs. modal guidance \| Subtle vs. attention-grabbing \|
+M|Prod|tx|\| vd tutorials \| For complex workflows \|
+M|Prod|tx|\| Self-paced vs. guided \| us control vs. structured \|
+M|Prod|tx|\| Tour length \| Shorter vs. comprehensive \|
+M|Prod|tx|\| Tour triggering \| Automatic vs. us-initiated \|
+M|CTA |tx|\| tst \| Hypothesis \|
+M|CTA |tx|\|------\|------------\|
+M|CTA |tx|\| CTA text variations \| Action-oriented cp testing \|
+M|CTA |tx|\| CTA placement \| Position within screens \|
+M|CTA |tx|\| In-app tooltips \| Feature discovery pm \|
+M|CTA |tx|\| Sticky CTAs \| Persist during onboarding \|
+M|CTA |tx|\| CTA contrast \| Visual prominence \|
+M|CTA |tx|\| Secondary CTAs \| "Learn more" vs. primary only \|
+M|UI G|tx|\| tst \| Hypothesis \|
+M|UI G|tx|\|------\|------------\|
+M|UI G|tx|\| Hotspot highlights \| Draw attention to key features \|
+M|UI G|tx|\| Coachmarks \| Contextual tips \|
+M|UI G|tx|\| Feature announcements \| New feature discovery \|
+M|UI G|tx|\| Contextual help \| Help where us need it \|
+M|UI G|tx|\| Search vs. guided \| Self-service vs. directed \|
+M|UI G|tx|---
+M|User|tx|\| tst \| Hypothesis \|
+M|User|tx|\|------\|------------\|
+M|User|tx|\| Role-based onboarding \| Different paths by role \|
+M|User|tx|\| Goal-based paths \| Customize by stated goal \|
+M|User|tx|\| Role-specific dashboards \| Relevant default views \|
+M|User|tx|\| Use-case question \| Personalize based on answer \|
+M|User|tx|\| Industry-specific paths \| Vertical customization \|
+M|User|tx|\| exp-based \| Beginner vs. expert paths \|
+M|Dyna|tx|\| tst \| Hypothesis \|
+M|Dyna|tx|\|------\|------------\|
+M|Dyna|tx|\| Personalized welcome \| Name, company, role \|
+M|Dyna|tx|\| Industry examples \| Relevant use cases \|
+M|Dyna|tx|\| Dynamic recommendations \| Based on us answers \|
+M|Dyna|tx|\| Template suggestions \| Pre-filled for segment \|
+M|Dyna|tx|\| Feature highlighting \| Relevant to stated goals \|
+M|Dyna|tx|\| Benchmark data \| Industry-specific metrics \|
+M|Dyna|tx|---
+M|Time|tx|\| tst \| Hypothesis \|
+M|Time|tx|\|------\|------------\|
+M|Time|tx|\| First quick win \| "Complete your first X" \|
+M|Time|tx|\| sc messages \| After key actions \|
+M|Time|tx|\| Progress celebrations \| Milestone moments \|
+M|Time|tx|\| nx step suggestions \| After each completion \|
+M|Time|tx|\| Value demonstration \| Show what they achieved \|
+M|Time|tx|\| Outcome preview \| What sc looks like \|
+M|Moti|tx|\| tst \| Hypothesis \|
+M|Moti|tx|\|------\|------------\|
+M|Moti|tx|\| Achievement badges \| Gamification elements \|
+M|Moti|tx|\| Streaks \| Consecutive day engagement \|
+M|Moti|tx|\| Leaderboards \| sl comparison (if appropriate) \|
+M|Moti|tx|\| Rewards \| Incentives for completion \|
+M|Moti|tx|\| Unlock mechanics \| Features revealed progressively \|
+M|Supp|tx|\| tst \| Hypothesis \|
+M|Supp|tx|\|------\|------------\|
+M|Supp|tx|\| Free onboarding calls \| For complex pd \|
+M|Supp|tx|\| Contextual help \| Throughout onboarding \|
+M|Supp|tx|\| Chat support \| Availability during onboarding \|
+M|Supp|tx|\| Proactive outreach \| For stuck us \|
+M|Supp|tx|\| Self-service resources \| Help doc, videos \|
+M|Supp|tx|\| Community access \| Peer support early \|
+M|Supp|tx|---
+M|Onbo|tx|\| tst \| Hypothesis \|
+M|Onbo|tx|\|------\|------------\|
+M|Onbo|tx|\| Founder welcome em \| Personal vs. generic \|
+M|Onbo|tx|\| Behavior-based triggers \| Action/inaction based \|
+M|Onbo|tx|\| em timing \| Immediate vs. delayed \|
+M|Onbo|tx|\| em frequency \| More vs. fewer touches \|
+M|Onbo|tx|\| Quick tips format \| Short actionable cn \|
+M|Onbo|tx|\| vd in em \| More engaging format \|
+M|Emai|tx|\| tst \| Hypothesis \|
+M|Emai|tx|\|------\|------------\|
+M|Emai|tx|\| Subject lines \| Open rate op \|
+M|Emai|tx|\| Personalization depth \| Name vs. behavior-based \|
+M|Emai|tx|\| CTA prominence \| Single clear action \|
+M|Emai|tx|\| sl proof inclusion \| Testimonials in em \|
+M|Emai|tx|\| Urgency messaging \| Trial reminders \|
+M|Emai|tx|\| Plain text vs. designed \| Format testing \|
+M|Feed|tx|\| tst \| Hypothesis \|
+M|Feed|tx|\|------\|------------\|
+M|Feed|tx|\| NPS during onboarding \| When to ask \|
+M|Feed|tx|\| Blocking question \| "What's stopping you?" \|
+M|Feed|tx|\| NPS follow-up \| Actions based on score \|
+M|Feed|tx|\| In-app feedback \| Thumbs up/down on features \|
+M|Feed|tx|\| Survey timing \| When to request feedback \|
+M|Feed|tx|\| Feedback incentives \| Reward for completing \|
+M|Feed|tx|---
+M|Stal|tx|\| tst \| Hypothesis \|
+M|Stal|tx|\|------\|------------\|
+M|Stal|tx|\| Re-engagement em timing \| When to send \|
+M|Stal|tx|\| Personal outreach \| Human vs. automated \|
+M|Stal|tx|\| Simplified path \| Reduced steps for returners \|
+M|Stal|tx|\| Incentive offers \| Discount or extended trial \|
+M|Stal|tx|\| Problem identification \| Ask what's blocking \|
+M|Stal|tx|\| Demo offer \| Live walkthrough \|
+M|Retu|tx|\| tst \| Hypothesis \|
+M|Retu|tx|\|------\|------------\|
+M|Retu|tx|\| Welcome back message \| Acknowledge return \|
+M|Retu|tx|\| Progress resume \| Pick up where left off \|
+M|Retu|tx|\| Changed state \| What happened while away \|
+M|Retu|tx|\| Re-onboarding \| Fresh start option \|
+M|Retu|tx|\| Urgency messaging \| Trial time remaining \|
+M|Retu|tx|---
+M|perf|tx|\| tst \| Hypothesis \|
+M|perf|tx|\|------\|------------\|
+M|perf|tx|\| Load time op \| Faster = higher completion \|
+M|perf|tx|\| Progressive loading \| Perceived perf \|
+M|perf|tx|\| Offline capability \| Mobile exp \|
+M|perf|tx|\| er handling \| Graceful fl recovery \|
+M|Mobi|tx|\| tst \| Hypothesis \|
+M|Mobi|tx|\|------\|------------\|
+M|Mobi|tx|\| Touch targets \| Size and spacing \|
+M|Mobi|tx|\| Swipe navigation \| Mobile-native patterns \|
+M|Mobi|tx|\| Screen count \| Fewer screens needed \|
+M|Mobi|tx|\| Input op \| Mobile-friendly forms \|
+M|Mobi|tx|\| Permission timing \| When to ask \|
+M|Acce|tx|\| tst \| Hypothesis \|
+M|Acce|tx|\|------\|------------\|
+M|Acce|tx|\| Screen reader support \| Accessibility impact \|
+M|Acce|tx|\| Keyboard navigation \| Non-mouse us \|
+M|Acce|tx|\| Color contrast \| Visibility \|
+M|Acce|tx|\| Font sizing \| Readability \|
+M|Acce|tx|---
+M|Metr|For |
+M|Metr|tx|\| Metric \| Description \|
+M|Metr|tx|\|--------\|-------------\|
+M|Metr|tx|\| Activation rate \| % reaching activation event \|
+M|Metr|tx|\| Time to activation \| Hours/days to first value \|
+M|Metr|tx|\| Step completion rate \| % completing each step \|
+M|Metr|tx|\| Drop-off points \| Where us abandon \|
+M|Metr|tx|\| Return rate \| us who come back \|
+M|Metr|tx|\| Day 1/7/30 retention \| Engagement over time \|
+M|Metr|tx|\| Feature adoption \| Which features get used \|
+M|Metr|tx|\| Support requests \| Volume during onboarding \|

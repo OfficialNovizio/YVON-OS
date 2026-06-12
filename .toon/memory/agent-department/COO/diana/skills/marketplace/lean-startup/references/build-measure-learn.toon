@@ -1,0 +1,140 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/build-measure-learn.md savings=11%
+M|Buil|The |you plan the loop in reverse (Learn-Measure-bd) but execute it forward (bd-Measure-Learn). Speed through the loop determines competitive advantage.
+M|Reve|Ever|"What do we need to learn?" This reversal prevents the most common startup fl: building something nobody asked for.
+M|The |tx|\| Step \| Question \| Output \|
+M|The |tx|\|------\|----------\|--------\|
+M|The |tx|\| 1. Learn \| What assumption must we validate? \| Clear hypothesis \|
+M|The |tx|\| 2. Measure \| What metric proves or disproves it? \| sc/fl criteria \|
+M|The |tx|\| 3. bd \| What is the minimum we must bd to get that metric? \| MVP specification \|
+M|Exam|**Le|** Do freelance designers need automated invoicing?
+M|Exam|**Me|** Track sign-up conversion from landing page. sc = 5% conversion from targeted traffic (200 visitors minimum).
+M|Exam|**Bu|** Single landing page w/ value proposition, feature mockups, and em capture form. No actual pd needed.
+M|The |Once|
+M|Phas|tx|bd the minimum artifact needed to run the experiment. This is not abt building a pd; it is abt building a learning vehicle.
+M|Phas|**Bu|**
+M|Phas|it|[ ] Hypothesis is written and visible to the team
+M|Phas|it|[ ] sc/fl criteria are defined before building
+M|Phas|it|[ ] The artifact is the smallest thing that can gn the needed data
+M|Phas|it|[ ] Time-box is set (typically 1-2 weeks for the bd phase)
+M|Phas|it|[ ] No features are included that do not directly serve the hypothesis
+M|Phas|tx|Collect quantitative and qualitative data from real cs behavior.
+M|Phas|**Me|**
+M|Phas|it|[ ] Instrumentation is in place before launch
+M|Phas|it|[ ] Baseline metrics are recorded
+M|Phas|it|[ ] Data collection method can distinguish signal from noise
+M|Phas|it|[ ] Sample size is sufficient for the decision being made
+M|Phas|it|[ ] Qualitative feedback channels are open (interviews, support, observation)
+M|Phas|tx|al data, draw conclusions, and decide nx action.
+M|Phas|**Le|**
+M|Phas|it|[ ] Data is reviewed against pre-set criteria (not post-hoc rationalization)
+M|Phas|it|[ ] Team discusses what surprised them
+M|Phas|- [ |persevere, pivot, or run another experiment
+M|Phas|it|[ ] Learnings are documented for organizational memory
+M|Phas|it|[ ] nx loop is planned based on this loop's output
+M|Time|tx|The total time through one complete loop is your fundamental unit of progress. Reducing loop time is the single highest-leverage activity for a startup.
+M|Meas|tx|\| cp \| Typical Range \| World-Class \|
+M|Meas|tx|\|-----------\|--------------\|-------------\|
+M|Meas|tx|\| bd \| 1-4 weeks \| 1-3 days \|
+M|Meas|tx|\| Measure \| 1-2 weeks \| 1-3 days \|
+M|Meas|tx|\| Learn \| 1 week \| 1 day \|
+M|Meas|tx|\| **Total** \| **3-7 weeks** \| **3-7 days** \|
+M|Loop|tx|1. **Reduce bd scope.** The number one time sink. Ask "can we tst this w/ less?"
+M|Loop|tx|2. **Pre-instrument everything.** Set up an, event tracking, and dashboards before the bd starts.
+M|Loop|tx|3. **Automate dpl.** Continuous dpl eliminates manual release bottlenecks.
+M|Loop|tx|4. **Set decision meetings in advance.** Schedule the "learn" rv before the experiment starts.
+M|Loop|tx|5. **Use existing platforms.** bd on top of Shopify, WordPress, Zapier, or Airtable instead of custom code.
+M|SaaS|**Hy|** Small mk teams will pay $49/month for AI-generated sl media captions.
+M|SaaS|tx|\| Phase \| Activity \| Duration \|
+M|SaaS|tx|\|-------\|----------\|----------\|
+M|SaaS|tx|\| bd \| Landing page w/ pricing, feature list, and "Start Free Trial" button that captures em \| 3 days \|
+M|SaaS|| Me|page views, CTA clicks, em signups \| 7 days \|
+M|SaaS|| Le|12 replied to follow-up em expressing interest. Decision: bd concierge MVP for top 10 signups. \| 1 day \|
+M|Mobi|**Hy|** Parents of toddlers want a screen-time tracker that suggests offline activities.
+M|Mobi|tx|\| Phase \| Activity \| Duration \|
+M|Mobi|tx|\|-------\|----------\|----------\|
+M|Mobi|tx|\| bd \| Clickable Figma prototype w/ 5 screens. Recruit 15 parents from local playgroups. \| 5 days \|
+M|Mobi|| Me|task completion, time on task, Net Promoter Score, willingness to pay. \| 5 days \|
+M|Mobi|tx|\| Learn \| Parents loved the activity suggestions but did not care abt tracking. Pivot hypothesis to focus on curated activity recommendations only. \| 1 day \|
+M|Mark|**Hy|** Homeowners will pay a premium for pre-vetted, same-day handyman service.
+M|Mark|tx|\| Phase \| Activity \| Duration \|
+M|Mark|tx|\|-------\|----------\|----------\|
+M|Mark|tx|\| bd \| Google Form for service requests. Manually match requests to 3 pre-vetted handymen. Charge via Square invoices. \| 2 days \|
+M|Mark|| Me|form submissions, done jobs, repeat requests, NPS. \| 14 days \|
+M|Mark|| Le|tst handyman recruitment and retention. \| 1 day \|
+M|Hard|**Hy|** Home brewers want a connected thermometer that alerts them during fermentation.
+M|Hard|tx|\| Phase \| Activity \| Duration \|
+M|Hard|tx|\|-------\|----------\|----------\|
+M|Hard|tx|\| bd \| 3D-printed case w/ off-the-shelf temperature sensor and Bluetooth md. Basic app showing real-time temperature. \| 10 days \|
+M|Hard|| Me|usage frequency, alert engagement, unsolicited feedback. \| 21 days \|
+M|Hard|| Le|invest in waterproof ds, start pre-order cg. \| 2 days \|
+M|Expe|Use |
+M|Expe|tx|```
+M|Expe|tx|EXPERIMENT CARD
+M|Expe|tx|===============
+M|Expe|Date|_______________
+M|Expe|Loop|_______________
+M|Expe|tx|HYPOTHESIS
+M|Expe|What|_______________
+M|Expe|For |_______________
+M|Expe|bc|_______________
+M|Expe|tx|METRIC
+M|Expe|Prim|_______________
+M|Expe|Curr|_______________
+M|Expe|Succ|_______________
+M|Expe|Fail|_______________
+M|Expe|tx|bd
+M|Expe|What|_______________
+M|Expe|Maxi|_______________
+M|Expe|Reso|_______________
+M|Expe|tx|MEASURE
+M|Expe|How |_______________
+M|Expe|Samp|_______________
+M|Expe|Dura|_______________
+M|Expe|tx|LEARN (fill after experiment)
+M|Expe|Resu|_______________
+M|Expe|What|_______________
+M|Expe|Deci|[ ] Persevere  [ ] Pivot  [ ] Run another experiment
+M|Expe|Next|_______________
+M|Expe|tx|```
+M|Fail|**Sy|** Team keeps building w/o measuring. "Just one more feature and then we will launch."
+M|Fail|fix|** Enforce a maximum bd time-box of 2 weeks. If you cannot tst a hypothesis in 2 weeks of building, the hypothesis is too big. Break it down.
+M|Fail|**Sy|** Every loop "succeeds" bc the team measures page views, downloads, or sign-ups w/o connecting to value creation.
+M|Fail|fix|** Every experiment must have an actionable metric w/ a pre-set decision threshold. If the metric goes up but does not change your nx action, it is vanity.
+M|Fail|**Sy|** The Learn phase stretches for weeks. Team debates data endlessly w/o deciding.
+M|Fail|fix|** Schedule the decision meeting before the experiment starts. Use pre-set criteria. If the data is ambiguous, run the experiment again w/ a larger sample or clearer metric, but decide that within one day.
+M|Fail|**Sy|** Team interprets all data as supporting their original idea. Pivots never happen.
+M|Fail|fix|** Assign a "devil's advocate" for every Learn sn. Write down what data wld cause you to abandon the idea before you see the data. Have someone outside the team rv the results.
+M|Fail|**Sy|** Team runs one experiment, declares sc, and shifts to full-scale dv.
+M|Fail|fix|** A single experiment validates a single assumption. Most pd have 5-15 ct assumptions. Plan a sequence of loops, each targeting a different assumption.
+M|Fail|**Sy|** The team runs experiments but cannot recall what they learned three months ago. Same hypotheses get retested.
+M|Fail|fix|** Maintain an experiment log (spreadsheet or wiki). Every experiment card gets archived w/ results. rv the log at the start of each new loop.
+M|Para|tx|Run multiple experiments simultaneously when they tst independent assumptions. A team of 6 can often run 2-3 concurrent loops if the assumptions do not depend on each other.
+M|Para|**Wh|**
+M|Para|it|Assumptions are independent (result of one does not affect another)
+M|Para|it|Team has bandwidth w/o context-switching overhead
+M|Para|it|Each loop has a dedicated owner
+M|Para|**Wh|**
+M|Para|it|Assumptions are sequential (must validate A before B makes sense)
+M|Para|it|Team is small (fewer than 4 people)
+M|Para|it|Results from one experiment change the ds of another
+M|Comp|Tech|
+M|Comp|tx|\| Technique \| How It Works \| Best For \|
+M|Comp|tx|\|-----------\|-------------\|----------\|
+M|Comp|tx|\| Five-second tests \| Show a ds for 5 seconds, ask what it communicates \| Value proposition clarity \|
+M|Comp|tx|\| Fake door tests \| Add a button/link for an unbuilt feature, measure clicks \| Feature demand validation \|
+M|Comp|tx|\| Concierge MVP \| Deliver the service manually to 5-10 cs \| Service-based hypotheses \|
+M|Comp|tx|\| Painted door w/ survey \| After click, explain feature is coming and ask 3 questions \| Qualitative + quantitative signal \|
+M|Comp|tx|\| Pre-sell \| Charge money before the pd exists \| Willingness-to-pay validation \|
+M|Loop|Esta|
+M|Loop|it|**Weekly loops** for early-stage, pre-pd-mk-fit teams
+M|Loop|it|**Bi-weekly loops** for teams w/ an existing pd testing new features
+M|Loop|it|**Monthly loops** for hardware or complex B2B pd w/ longer sales cycles
+M|Loop|tx|The cadence creates accountability. Every loop has a start date and an end date. Missing the cadence is a signal that scope is too large or the team needs help.
+M|Loop|tx|\| Level \| Description \| Loop Time \| Characteristics \|
+M|Loop|tx|\|-------\|-------------\|-----------\|-----------------\|
+M|Loop|tx|\| 1 - Ad hoc \| No formal process \| 2-3 months \| Experiments happen accidentally \|
+M|Loop|tx|\| 2 - Aware \| Team understands the concept \| 4-6 weeks \| Experiments are planned but not systematic \|
+M|Loop|tx|\| 3 - Practicing \| Regular loop cadence \| 2-3 weeks \| Hypotheses documented, decisions data-informed \|
+M|Loop|tx|\| 4 - Proficient \| Parallel loops, pre-set criteria \| 1-2 weeks \| Team challenges its own assumptions proactively \|
+M|Loop|tx|\| 5 - Mastery \| Loops are second nature \| 3-7 days \| Continuous experimentation culture, institutional learning \|
+M|Loop|tx|Most teams start at Level 1 or 2. Reaching Level 3 is a sig milestone. Levels 4 and 5 typically require organizational support, tooling, and cultural commitment.

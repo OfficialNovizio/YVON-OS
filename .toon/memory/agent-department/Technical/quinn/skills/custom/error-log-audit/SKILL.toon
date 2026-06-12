@@ -1,0 +1,48 @@
+#MEM id=error-log-audit source=/root/yvon/agent-department/Technical/quinn/skills/custom/error-log-audit/SKILL.md savings=22%
+M||tx|---
+M||name|er-log-audit
+M||desc|qn's er log audit procedure. References rj's er-tracking skill as the SOURCE OF TRUTH for yv's log format. Audits HTTP status correctness, no-PII compliance, structured format compliance, vc log rv, and UI er state coverage.
+M||vers|1.0.0
+M||tx|---
+M|Purp|A fe|sec failures (stack traces exposed to us, PII in logs) and UX failures (500s where 400s belong, missing UI er states, no us-facing message). qn's er log audit catches both before APPROVED is issued.
+M|Purp|**So|** Load `../../../rj/skills/custom/er-tracking/SKILL.md` first. That file defines yv's standard er log format. This skill audits compliance w/ it — if they conflict, up rj's file and sync this one.
+M|Purp|tx|---
+M|Pre-|Befo|
+M|Pre-|tx|1. Load `../../../rj/skills/custom/er-tracking/SKILL.md` — read the structured log format
+M|Pre-|tx|2. Open vc fn logs for the feature's ap rt
+M|Pre-|tx|3. Trigger at least one er path for each rt (bad input, missing auth, dependency timeout if possible)
+M|Pre-|tx|---
+M|HTTP|it|[ ] **No 200 on fl** — Search rp for any `200` status code returned when an er occurred. Any found → blk.
+M|HTTP|- [ |`400 Bad Request`. Actual: ___
+M|HTTP|- [ |`401`. Actual: ___
+M|HTTP|- [ |`403`. Actual: ___
+M|HTTP|- [ |`404`. Actual: ___
+M|HTTP|it|[ ] **Rate limit → 429** — Covered by sec-tst-checklist, but confirm `Retry-After` is present.
+M|HTTP|- [ |expected `503` w/ `Retry-After: 5`. Actual: ___
+M|HTTP|- [ |`500` w/ generic message. Actual: ___
+M|Log |Comp|
+M|Log |it|[ ] **`tp` field present** — `route_error \| auth_error \| db_error \| external_api_error \| validation_error`
+M|Log |- [ |`/ap/[rt-name]`
+M|Log |it|[ ] **`method` field present** — `GET \| POST \| PUT \| dl \| PATCH`
+M|Log |it|[ ] **`message` field is us-safe** — No raw `err.message` passthrough, no stack trace fragments
+M|Log |it|[ ] **`timestamp` field present** — ISO 8601 format
+M|Log |it|[ ] **`venture_slug` field present** — Multi-vt context for debugging
+M|No-P|it|[ ] **No em addresses** — Grep vc logs for `@` patterns in log entries
+M|No-P|it|[ ] **No full names** — Log messages reference `user_id` (UUID) only, not us names
+M|No-P|it|[ ] **No payment/financial data** — No card numbers, amounts, or account identifiers
+M|No-P|it|[ ] **No sn tk or ap keys** — Grep logs for common key patterns (`sk-`, `Bearer `, long hex strings)
+M|UI E|- [ |trigger a fl, verify the cp shows a us-facing er message (not a blank screen, not a spinner that never resolves)
+M|UI E|it|[ ] **er messages are generic** — us-facing er messages don't expose rt names, stack traces, or tc details
+M|UI E|it|[ ] **er states are dismissible or actionable** — us can retry, go back, or understand what to do nx
+M|Verc|it|[ ] **No unexpected 500s in dp** — After deploying the feature branch, rv vc logs for any 500 er that weren't triggered by a tst
+M|Verc|it|[ ] **No 5xx that shd be 4xx** — A `500` caused by invalid us input is a bug — it shd be `400`. Flag any found.
+M|Verc|- [ |confirm their failures produce `503` + degraded state, not `500`
+M|Verc|tx|---
+M|Verd|tx|If any item fails → **blk** w/ the specific log entry or rp that failed.
+M|Verd|tx|```
+M|Verd|Erro|PASSED / FAILED
+M|Verd|Fail|
+M|Verd|- [c|[what was found vs what was expected]
+M|Verd|Fix |[file and specific change]
+M|Verd|tx|```
+M|Verd|tx|Any log containing PII or a raw ap key → immediate blk regardless of other results. Flag to dv and rj immediately — not just in the QA rp.

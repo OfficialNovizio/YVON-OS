@@ -1,0 +1,127 @@
+#DOC source=/root/yvon/docs/plans/PHASE-2-PLAN.md strip=55% toon=4% net=57%
+T|Agen|0|[TABLE:3×4]
+T|Agen|1|---
+T|Agen|2|
+T|1. C|[TABLE:4×12]
+T|2. A|[TABLE:4×10]
+T|3. C|[TABLE:4×8]
+T|4. M|[TABLE:4×7]
+T|5. C|[TABLE:4×3]
+T|6. W|[TABLE:4×3]
+C|7. S|[TABLE:4×8]
+T|8. O|0|[TABLE:4×3]
+T|8. O|1|---
+T|8. O|2|
+K|Task|0|dv (💻): cr GET /ap/dashboard rt
+K|Task|1|Aggregates from Decision Queue ap (pnd count)
+K|Task|2|ag status (queries agent_memory for recent activity)
+K|Task|3|tk usage (queries token_usage table, last 24h spend)
+K|Task|4|DeepSeek balance (calls /ap/deepseek-balance, already ported)
+K|Task|5|KPI snapshot per vt (queries vt + social_posts + cr)
+K|Task|6|
+K|Task|7|rj (🔧): Verify sb tables for dashboard queries
+K|Task|8|agent_memory — recent activity entries exist
+K|Task|9|token_usage — has recent data
+K|Task|10|vt — nz + hb exist
+K|Task|11|cr — per-vt counts
+K|Task|12|
+K|Task|13|mi (🎨): bd app/dashboard/page.tsx
+K|Task|14|Morning overview cards: "X items need you" (linked to decision-queue)
+K|Task|15|sy health strip: ag live, sb OK, DeepSeek balance
+K|Task|16|KPI cards per vt (pulls from ap)
+K|Task|17|Recent ag activity feed
+K|Task|18|Quick-jump grid: Decision Queue, Task Board, Advisory Council, Software Pipeline
+K|Task|19|Responsive: single column mobile, 2-col tablet, 3-col desktop
+K|Task|20|
+K|Task|21|qn (🧪): Verify: tsc --noEmit, nx bd, lint
+K|Task|22|
+K|Task|0|dv (💻): cr GET /ap/task-board rt
+K|Task|1|ag-proposed tasks (from agentmemory + warroom_plans)
+K|Task|2|Active tasks (execution_steps in progress)
+K|Task|3|rv items (execution_steps in rv)
+K|Task|4|done items (last 7 days)
+K|Task|5|POST /ap/task-board — ap/reject/defer task actions
+K|Task|6|
+K|Task|7|rj (🔧): Wire existing tables
+K|Task|8|warroomplans → Proposed column
+K|Task|9|execution_steps → In Progress / rv / Done columns
+K|Task|10|Add deferred_until column if missing
+K|Task|11|
+K|Task|12|mi (🎨): Wire app/task-board/page.tsx
+K|Task|13|Kanban columns: Proposed → Backlog → This Week → rv → Done
+K|Task|14|Live Activity tracker (right rail)
+K|Task|15|Card actions: ap, Reject, Defer
+K|Task|16|Color-coded by workspace
+K|Task|17|Responsive: horizontal scroll on mobile, full columns on desktop
+K|Task|18|
+K|Task|19|qn (🧪): Verify: tsc, bd, lint, spawn ka to rv
+K|Task|20|
+K|Task|0|dv (💻): cr GET /ap/projects rt
+K|Task|1|Per-vt cards w/ metrics
+K|Task|2|cr counts per vt
+K|Task|3|Recent activity per vt
+K|Task|4|Health indicators
+K|Task|5|
+K|Task|6|rj (🔧): Query existing data
+K|Task|7|vt table — names, slugs, br tiers
+K|Task|8|cr — count per vt
+K|Task|9|social_posts — recent post count per vt
+K|Task|10|
+K|Task|11|mi (🎨): Wire app/projects/page.tsx
+K|Task|12|vt cards (nz, hb) w/ metrics
+K|Task|13|cr landscape per vt
+K|Task|14|Quick links to each vt's pages
+K|Task|15|Responsive grid
+K|Task|16|
+K|Task|17|qn (🧪): Verify
+K|Task|18|
+K|Task|0|mi (🎨): bd app/settings/page.tsx
+K|Task|1|Tabbed layout: Profile, ag, pr, Secrets, vt, Features, Danger
+K|Task|2|Each tab reads from existing ap rt (already ported)
+K|Task|3|Glass-card styling consistent w/ yv ds
+K|Task|4|
+K|Task|5|dv (💻): Verify existing ap rt for settings
+K|Task|6|/ap/profile ✅
+K|Task|7|/ap/vt ✅
+K|Task|8|/ap/secrets ✅ (from lib/secrets.ts)
+K|Task|9|/ap/pr ✅
+K|Task|10|
+K|Task|11|qn (🧪): Verify
+K|Task|12|
+K|Task|13|---
+K|Task|14|
+K|Part|0|For every coding task in Phase 2:
+K|Part|1|dv writes the code
+K|Part|2|rj verifies data layer (sb queries, sc)
+K|Part|3|mi builds/verifies the UI
+K|Part|4|qn runs final QA: npx tsc --noEmit, npm run bd, npx rc-doctor
+K|Part|5|
+T|Tech|0|[CODE:bash:11LOC]
+T|Tech|1|---
+T|Tech|2|
+S|Summ|0|[TABLE:4×4]
+S|Summ|1|yv 2.0 feature coverage after Phase 2:
+S|Summ|2|ce Dashboard: 11/13 features mapped (2 deferred: calendar, legacy)
+S|Summ|3|an: 10/10 mapped ✅
+S|Summ|4|cr: 7/7 mapped ✅
+S|Summ|5|mk: 7/7 mapped ✅
+S|Summ|6|Creative Studio: 2/2 mapped ✅
+S|Summ|7|War Room: 2/2 mapped ✅
+S|Summ|8|Settings: 7/7 mapped ✅
+S|Summ|9|Health: 1/1 mapped ✅
+S|Summ|10|
+S|Summ|11|Total: 47/49 features → 96% coverage after Phase 2
+S|Summ|12|
+R|═══ |0|[TABLE:4×3]
+R|═══ |1|Issues found & resolved:
+R|═══ |2|Dashboard ap /ap/dashboard: DeepSeek balance CNY→USD conversion fixed, env var validation added at top, er rp use 500, empty catch blocks now log warnings
+R|═══ |3|KaisRead.tsx: Unused useWorkspace import removed, HTTP !r.ok check added, AbortError distinguished from real er, console.er added to catch
+R|═══ |4|ESLint config: .eslintrc.json → eslint.config.js for ESLint 9 compatibility
+R|═══ |5|
+R|═══ |6|Deferred to Phase 3 (plan items marked at gate-time):
+R|═══ |7|app/ap/task-board/rt.ts — Task Board ap (page exists, no backend)
+R|═══ |8|app/ap/projects/rt.ts — Projects ap (page exists, no backend)
+R|═══ |9|app/settings/page.tsx — Settings page
+R|═══ |10|ce st Briefing panel port
+R|═══ |11|tk Usage panel port
+R|═══ |12|Software Pipeline ap backend (UI done in Phase 2)

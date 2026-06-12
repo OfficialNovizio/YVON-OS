@@ -1,0 +1,94 @@
+#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/ADS-PRINCIPLES.md savings=6%
+M|ADS-|> Lo|designing a paid cg, analyzing ad perf, writing an ad st brief, or diagnosing a conversion funnel problem.
+M|ADS-|tx|---
+M|Cont|Befo|
+M|Cont|tx|1. Active vt (nz or hb)
+M|Cont|tx|2. `roas_benchmark` from memory — what's the target we're optimizing toward?
+M|Cont|tx|3. `active_campaigns_*` from memory — what's already running?
+M|Cont|tx|4. `ad_budget_split` from memory — what's the approved channel allocation?
+M|Cont|tx|5. fx's budget context — how much is available to spend?
+M|Cont|tx|Never recommend a cg w/o a budget and a hypothesis. Spend w/o hypothesis is waste.
+M|Cont|tx|---
+M|Camp|All |
+M|Camp|tx|```
+M|Camp|Camp|awareness / traffic / conversion)
+M|Camp|└── |cold / warm / retargeting)
+M|Camp|└── |vd / carousel / static)
+M|Camp|tx|└── cp (hl + body + CTA)
+M|Camp|tx|```
+M|Camp|tx|One cg = one objective. Never mix awareness and conversion in the same cg.
+M|Camp|tx|---
+M|Novi|tx|\| Audience tp \| Definition \|
+M|Novi|tx|\|--------------\|------------\|
+M|Novi|tx|\| Cold — Interest \| Fashion, luxury brands, Vogue, lifestyle publications \|
+M|Novi|tx|\| Cold — Lookalike \| 1–3% LAL of purchasers \|
+M|Novi|tx|\| Warm — Engagers \| IG/FB page engagers (last 60 days) \|
+M|Novi|tx|\| Retargeting \| Website visitors (last 30 days), add-to-cart abandoners \|
+M|Hour|tx|\| Audience tp \| Definition \|
+M|Hour|tx|\|--------------\|------------\|
+M|Hour|| Co|job title + seniority) \|
+M|Hour|tx|\| Cold — Lookalike \| 1–3% LAL of app installs \|
+M|Hour|tx|\| Warm — Engagers \| App page visitors, vd viewers (25%+) \|
+M|Hour|tx|\| Retargeting \| Trial us who haven't activated \|
+M|Hour|tx|---
+M|Ad C|Ever|hl + body (optional) + CTA
+M|Ad C|**He|**
+M|Ad C|- Be|"[Outcome] w/o [pain point]"
+M|Ad C|- Cu|"Why [audience] are switching to [vt]"
+M|Ad C|- So|"[Number] people already [outcome]"
+M|Ad C|**Bo|** 1–2 sentences max. Expand the hl. Do not repeat it.
+M|Ad C|**CT|** One action only. Match to cg objective:
+M|Ad C|it|Awareness → "Learn more"
+M|Ad C|it|Traffic → "Shop now" / "See how it works"
+M|Ad C|it|Conversion → "Start free" / "Get yours"
+M|Ad C|tx|ro writes the st brief. ln writes the actual words. ro reviews for conversion fit.
+M|Ad C|tx|---
+M|Perf|tx|\| Metric \| nz Target \| hb Target \|
+M|Perf|tx|\|--------\|---------------\|----------------\|
+M|Perf|tx|\| CTR \| > 1.5% \| > 2.0% \|
+M|Perf|tx|\| CPM \| < $8 \| < $12 \|
+M|Perf|tx|\| ROAS \| > 2.5x \| — \|
+M|Perf|tx|\| CAC \| < $15 (first purchase) \| < $8 (app install) \|
+M|Perf|| LT|CAC \| > 3:1 \| > 3:1 \|
+M|Perf|If a|pause, diagnose, rebuild.
+M|Perf|tx|---
+M|A/B |Ever|
+M|A/B |tx|```
+M|A/B |Hypo|[If we change X, then Y will improve bc Z]
+M|A/B |Vari|[what is being tested — one change only]
+M|A/B |Cont|[current version]
+M|A/B |Vari|[new version]
+M|A/B |Prim|[the single number that determines winner]
+M|A/B |Min |[usually 7–14 days]
+M|A/B |Min |[$X per variant — enough for statistical significance]
+M|A/B |Succ|[e.g., 20% CTR improvement]
+M|A/B |tx|```
+M|A/B |tx|tst one variable at a time. Never tst hl + im + audience simultaneously.
+M|A/B |tx|---
+M|Budg|tx|1. New cg — start w/ minimum viable spend (1–2 weeks at lo budget)
+M|Budg|tx|2. Winning creative — scale spend 20–30% every 3 days max to avoid fatigue
+M|Budg|tx|3. Never increase budget more than 2x in one change — algorithm resets
+M|Budg|tx|4. Kill an ad set after 7 days w/ < 50% of benchmark perf
+M|Budg|tx|5. Always reserve 20% of budget for testing; 80% to proven performers
+M|Budg|tx|---
+M|Attr|tx|yv uses **7-day click, 1-day view** attribution as default.
+M|Attr|When|
+M|Attr|it|Always specify attribution window
+M|Attr|it|Compare to organic baseline (ka's data)
+M|Attr|it|Never count a conversion if there's no plausible ad touchpoint
+M|Attr|tx|---
+M|Paid|it|Audience × Creative × Offer — op the weakest link, not all three at once.
+M|Paid|it|tst one variable at a time. Kill underperformers at the 7-day benchmark.
+M|Paid|- **|scaling a cg before it has statistically sig data.
+M|Ad C|it|Pattern interrupt in first 3 seconds. Problem → agitate → solve structure.
+M|Ad C|- St|2–3 weeks. Refresh before fatigue, not after.
+M|Ad C|- **|benefit-led ad w/o a hook — nobody reads past line 1.
+M|Page|- Ab|hl, subheadline, CTA, and one trust signal.
+M|Page|it|Single CTA per page. Competing CTAs reduce conversion.
+M|Page|- **|sliders, autoplay vd, and popups on page load.
+M|Payw|it|Show value before price. Match upgrade trigger to the "aha moment."
+M|Payw|it|Frame as "unlock more" not "upgrade to paid" — the mental md matters.
+M|Payw|- **|paywall modals that block us from seeing what they'd get.
+M|Onbo|it|First meaningful action within 60 seconds. Progressive disclosure of features.
+M|Onbo|it|sc milestone before feature tour — let them win before you explain.
+M|Onbo|- **|onboarding flows that frontload cfg before value.

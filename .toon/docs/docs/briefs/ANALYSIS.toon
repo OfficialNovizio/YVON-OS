@@ -1,0 +1,142 @@
+#DOC source=/root/yvon/docs/briefs/ANALYSIS.md strip=38% toon=6% net=42%
+T|Life|0|Built from 35 LifeOS briefing files (32 pages + README + VERIFICATION).
+T|Life|1|yv state audited 2026-06-09 through 2026-06-11 across 10 screens, 40+ tabs, 13 ag.
+T|Life|2|
+T|Life|3|---
+T|Life|4|
+T|COMM|[TABLE:5×7]
+T|LONG|[TABLE:5×4]
+T|SHOR|[TABLE:5×2]
+T|POST|[TABLE:5×4]
+T|KNOW|[TABLE:5×3]
+T|BUIL|[TABLE:5×2]
+T|REVE|[TABLE:5×2]
+T|SYST|[TABLE:5×8]
+S|Summ|0|[TABLE:3×5]
+S|Summ|1|---
+S|Summ|2|
+T|Part|0|These aren't features — they're the architectural philosophy that makes every page work. yv shd adopt these patterns, not just cp pages.
+T|Part|1|
+T|Patt|0|"hy digests everything the team is doing across all workspaces, filters out as much as he can decide himself, and only lets through the items that genuinely need the owner's rv."
+T|Patt|1|
+T|Patt|2|Every ag output flows through a filter layer before reaching the human. The filter ag (hy/mc) learns what needs human attention vs. what can be auto-handled. The explicit metric is reduction percentage.
+T|Patt|3|
+T|Patt|4|yv status: No filter layer. All ag output goes directly to dashboards or ap rp. mc shd become this filter.
+T|Patt|5|
+T|Patt|0|"The sy shall learn which kind of tasks need rv, which ones can just be good from the get-go."
+T|Patt|1|
+T|Patt|2|Every approval surface is designed to collect decision data that trains the sy to auto-ap nx time. Three consecutive same-tp approvals → auto-ap future instances. This applies to: task proposals, sl posts, em drafts, code rv.
+T|Patt|3|
+T|Patt|4|yv status: No learning. Every interaction is stateless. tk tracking exists but decision-pattern tracking does not.
+T|Patt|5|
+D|Patt|0|"Two yellow stages where they need my input, Proposed and rv, which again also wld get escalated into the decision queue."
+D|Patt|1|
+D|Patt|2|Every workflow has exactly two human-touch points: proposal/approval and output rv. Both escalate into a single unified Decision Queue. Nothing waits silently — if it needs a human, it appears in the queue.
+D|Patt|3|
+D|Patt|4|yv status: No unified escalation. War Room tasks exist. sl cn exists. Code exists. But no single "what needs me" view across all domains.
+D|Patt|5|
+T|Patt|0|"I want hy to periodically push me on Telegram if decisions are open and unanswered."
+T|Patt|1|
+T|Patt|2|Items can be deferred (after a day, tonight, tomorrow morning, in a couple of days). When the deferral elapses, a Telegram nudge fires. This prevents human bottleneck from stalling the ag team.
+T|Patt|3|
+T|Patt|4|yv status: No defer/snooze. No Telegram nudge integration. The cron sy cld handle this.
+T|Patt|5|
+T|Patt|0|"The sy is set up in a way that the emails get drafted... Only there the ag needs my input for a draft."
+T|Patt|1|
+T|Patt|2|Everything starts as a draft. ag prepare, human reviews and sends. Full automation is the vision, not the starting point. Trust is built incrementally: draft-first → rv-then-send → auto-send for trusted categories.
+T|Patt|3|
+T|Patt|4|yv status: ag execute directly. No draft-rv-send pipeline. ka's Read is the closest (read-only intelligence, no execution).
+T|Patt|5|
+T|Patt|0|"Each workspace has its unique and cool ds. Each mission control for each project will be designed separately, will have their own pages, their own page structure, and their own workflows."
+T|Patt|1|
+T|Patt|2|Workspaces aren't just data filters — they carry full visual identity (color theme, layout, custom pages). Partners get scoped logins that only see their workspace.
+T|Patt|3|
+T|Patt|4|yv status: nz and hb share the same glass-morphism ds. VentureSwitcher changes data, not aesthetics.
+T|Patt|5|
+K|Patt|0|"I can literally rv the draft rp here and send and edit from right here. I don't need to go to my em inbox anymore."
+K|Patt|1|
+K|Patt|2|Every decision and action happens inline — ap a post, send an em, merge a PR, rotate a key — w/o navigating away. The page is the tool.
+K|Patt|3|
+K|Patt|4|yv status: Mixed. Some dashboards have action buttons; most require navigation to different pages.
+K|Patt|5|
+K|Patt|6|---
+K|Patt|7|
+T|TIER|0|[TABLE:5×4]
+T|TIER|1|Decision Queue 2.0 detail:
+T|TIER|2|mc becomes the hy filter: reads all ag output, decides what reaches ce
+T|TIER|3|Defer/snooze w/ Telegram nudges via existing cron → send_message plumbing
+T|TIER|4|"Clear my queue" one-by-one mode
+T|TIER|5|Reduction stat: "mc filtered X% — 7 items need you"
+T|TIER|6|Sources: Task Board, sl Approvals, Software Pipeline, (future) em
+T|TIER|7|
+T|TIER|8|Software Pipeline detail:
+T|TIER|9|dv ag: cr PR only, never push to master
+T|TIER|10|qn: automated QA gate (rc-doctor + lint + typecheck)
+T|TIER|11|ce reviews after QA passes → merge
+T|TIER|12|Failed QA → back to Planning (not In Progress)
+T|TIER|13|Portfolio view: one card per project/repo w/ progress %
+T|TIER|14|
+T|TIER|0|[TABLE:4×4]
+T|TIER|1|Task Board detail:
+T|TIER|2|Proposed → Backlog → This Week → rv → Done
+T|TIER|3|No "In Progress" column (Live Activity tracker replaces it)
+T|TIER|4|Two yellow gates escalate to Decision Queue
+T|TIER|5|Learning: auto-ap safe task tp after 3 successes
+T|TIER|6|
+T|TIER|7|Brain & Wiki upgrade:
+T|TIER|8|3D force-directed graph (replace current 2D graph)
+T|TIER|9|Library tab: browse/search all MD files by category
+T|TIER|10|Visibility scoping: Private / Team / vt / Cross-vt
+T|TIER|11|"What the ag don't know" gaps panel → actionable tasks
+T|TIER|12|
+T|TIER|[TABLE:4×4]
+T|NOT |0|YouTube Studio / cn Pipeline / Shorts → yv is e-commerce, not a cn creator
+T|NOT |1|Consulting CRM / Cinematic Sites → rv md differenct
+T|NOT |2|3D Office → Fun gimmick, zero business value for yv
+T|NOT |3|Hardware & Runtime → Single server, not a 3-Mac-Mini fleet
+T|NOT |4|
+T|NOT |5|---
+T|NOT |6|
+D|Deci|0|mc shd become yv's "hy" — a dedicated filter layer btw all 13 ag and the ce dashboard. Every ag output passes through mc before reaching any dashboard. mc decides: auto-handle, escalate to ce, or defer w/ nudge.
+D|Deci|1|
+D|Deci|0|yv currently has dv pushing directly to master. Change to: dv creates PR → qn runs automated QA (rc-doctor, lint, typecheck, tst) → if QA passes, escalates to ce Decision Queue → ce merges. This is non-negotiable for production code safety.
+D|Deci|1|
+D|Deci|0|All ag actions that have external side effects (sl posting, em sending, code merging, key rotation) must start as drafts requiring human approval. Only read-only actions (ka's Read, an queries) can execute autonomously. This puts yv on the trust-building trajectory.
+D|Deci|1|
+D|Deci|0|Replace the current scattered approval pattern (War Room tasks here, sl cn there, code elsewhere) w/ a single Decision Queue that aggregates everything needing ce attention. mc is the gatekeeper; the queue is the single source of truth for "what needs me."
+D|Deci|1|
+D|Deci|0|Give nz its own dark-fashion aesthetic and hb its own fintech palette. The glass-morphism sy stays as the shared foundation, but each vt gets unique accent colors, typography tweaks, and custom page layouts where appropriate. This is what LifeOS calls "each workspace designed separately w/ its own pages."
+D|Deci|1|
+D|Deci|2|---
+D|Deci|3|
+T|Part|0|Credit where it's due — yv is ahead of LifeOS in several areas:
+T|Part|1|
+T|Part|2|Actually built and deployed. LifeOS is 100% mockups — hardcoded data, no functionality. yv ships real code w/ CI/CD.
+T|Part|3|
+T|Part|4|Business domain depth. yv has: cr intelligence, merchandising, vt financials, GA4 an, Apify scraping, Facebook Graph ap, DeepSeek balance tracking. LifeOS is a personal productivity tool.
+T|Part|5|
+T|Part|6|ag specialization. yv's 13 ag are more specialized than LifeOS's ~12. yv has dedicated fi (fx), merchandising, and cr ag.
+T|Part|7|
+T|Part|8|sb maturity. yv has 49 migrations, production sb, real tk tracking w/ live DeepSeek balance. LifeOS mentions sb but has no migrations shown.
+T|Part|9|
+T|Part|10|CI/CD pipeline. yv has lint → typecheck → bd → tst → sec → dp to vc. LifeOS has no bd pipeline shown.
+T|Part|11|
+T|Part|12|Hermes ag integration. yv spawns real Hermes subprocesses w/ graph memory injection. LifeOS relies on its own ag runtime.
+T|Part|13|
+T|Part|14|---
+T|Part|15|
+T|Part|0|LifeOS's real innovation isn't any single page — it's the process and the ds philosophy:
+T|Part|1|
+T|Part|2|"I didn't show you a finished pd. None of this is built yet. I showed you a process."
+T|Part|3|
+T|Part|4|The process: brain dump → structure w/ ag → audit current sy → cast vision per page → PRDs → mockups → final pass → bd.
+T|Part|5|
+T|Part|6|The philosophy: every screen answers one question — how do I save the human's time and attention?
+T|Part|7|
+T|Part|8|yv was built feature-first ("let's add a cr dashboard, let's add an, let's add a war room"). LifeOS was built human-first ("what are the 7 things that actually need me?").
+T|Part|9|
+T|Part|10|The upgrade path for yv isn't "cp these pages." It's "adopt this philosophy" — then the pages will ds themselves.
+T|Part|11|
+T|Part|12|---
+T|Part|13|
+T|Part|14|al done 2026-06-11. Source: 35 LifeOS briefing files. yv state: commit 58983ba (bd passing, deploys running).

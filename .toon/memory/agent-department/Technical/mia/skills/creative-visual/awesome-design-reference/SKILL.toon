@@ -1,0 +1,70 @@
+#MEM id=awesome-design-reference source=/root/yvon/agent-department/Technical/mia/skills/creative-visual/awesome-design-reference/SKILL.md savings=25%
+M||tx|---
+M||name|awesome-ds-reference
+M||desc|>-
+M||tx|Comprehensive ds sy reference covering 59 real-world ds systems from getdesign.md. Use when designing UI/UX, making visual decisions, or needing ds pattern inspiration for yv screens and cp.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[frontend, rc, tw, ui, cp, ds-sy, ux, ds]
+M||tx|---
+M|Awes|Refe|//getdesign.md/{site}/ds-md`.
+M|Top |tx|These 12 ds systems most closely match yv's aesthetic — dark navy `#1A1A2E`, accent red `#E94560`, data-dense dashboard, dark cyberpunk professional.
+M|Top |tx|\| Priority \| ds sy \| Fetch URL \| Why It Matches yv \|
+M|Top |tx|\|----------\|--------------\|-----------\|---------------------\|
+M|Top || 1 |//getdesign.md/linear.app/ds-md` \| Ultra-minimal dark, precise spacing, purple accent — closest vibe \|
+M|Top || 2 |//getdesign.md/vc.com/ds-md` \| Black precision, card-based layouts, developer tool aesthetic \|
+M|Top || 3 |//getdesign.md/cursor.com/ds-md` \| Dark IDE-like if, gradient accents — same domain (AI tool) \|
+M|Top || 4 |//getdesign.md/sentry.io/ds-md` \| Dark dashboard, data-dense, an panels — exact yv use case \|
+M|Top || 5 |//getdesign.md/posthog.com/ds-md` \| Developer-friendly an dashboard, dark charts \|
+M|Top || 6 |//getdesign.md/sb.com/ds-md` \| Dark emerald theme, code-first, green accent \|
+M|Top || 7 |//getdesign.md/stripe.com/ds-md` \| Signature purple gradients, payment UI patterns \|
+M|Top || 8 |//getdesign.md/raycast.com/ds-md` \| Sleek dark chrome, vibrant gradient accents, command UI \|
+M|Top || 9 |//getdesign.md/clay.com/ds-md` \| CRM dashboard, data visualization patterns \|
+M|Top || 10|//getdesign.md/coinbase.com/ds-md` \| Fintech trust patterns — matches hb \|
+M|Top || 11|//getdesign.md/elevenlabs.io/ds-md` \| AI pd ds, dark if, audio visualization \|
+M|Top || 12|//getdesign.md/figma.com/ds-md` \| ds tool UI patterns, multi-panel workspace \|
+M|Full|tx|\| Site \| Category \| Fetch URL \|
+M|Full|tx|\|------\|----------\|-----------\|
+M|Full|| Li|//getdesign.md/linear.app/ds-md` \|
+M|Full|| Ve|//getdesign.md/vc.com/ds-md` \|
+M|Full|| Cu|//getdesign.md/cursor.com/ds-md` \|
+M|Full|| Se|//getdesign.md/sentry.io/ds-md` \|
+M|Full|| Po|//getdesign.md/posthog.com/ds-md` \|
+M|Full|| Su|//getdesign.md/sb.com/ds-md` \|
+M|Full|| St|//getdesign.md/stripe.com/ds-md` \|
+M|Full|| Ra|//getdesign.md/raycast.com/ds-md` \|
+M|Full|| Cl|//getdesign.md/clay.com/ds-md` \|
+M|Full|| Co|//getdesign.md/coinbase.com/ds-md` \|
+M|Full|| El|//getdesign.md/elevenlabs.io/ds-md` \|
+M|Full|| Fi|//getdesign.md/figma.com/ds-md` \|
+M|Full|| In|//getdesign.md/intercom.com/ds-md` \|
+M|Full|| No|//getdesign.md/notion.so/ds-md` \|
+M|Full|| Mi|//getdesign.md/miro.com/ds-md` \|
+M|Full|| Wa|//getdesign.md/warp.dv/ds-md` \|
+M|Full|| Mi|//getdesign.md/mintlify.com/ds-md` \|
+M|Full|| Lo|//getdesign.md/lovable.dv/ds-md` \|
+M|Full|| Co|//getdesign.md/cohere.com/ds-md` \|
+M|Full|| Mi|//getdesign.md/minimax.chat/ds-md` \|
+M|Full|| Mi|//getdesign.md/mistral.ai/ds-md` \|
+M|Full|| Ex|//getdesign.md/expo.dv/ds-md` \|
+M|Full|| Ha|//getdesign.md/hashicorp.com/ds-md` \|
+M|Full|| IB|//getdesign.md/ibm.com/ds-md` \|
+M|Full|| Ca|//getdesign.md/cal.com/ds-md` \|
+M|Full|| Cl|//getdesign.md/clickhouse.com/ds-md` \|
+M|Full|| Mo|//getdesign.md/mongodb.com/ds-md` \|
+M|Full|| Re|//getdesign.md/resend.com/ds-md` \|
+M|Full|| Fr|//getdesign.md/framer.com/ds-md` \|
+M|Full|| Ai|//getdesign.md/airbnb.com/ds-md` \|
+M|Full|| Ap|//getdesign.md/apple.com/ds-md` \|
+M|Full|| Te|//getdesign.md/tesla.com/ds-md` \|
+M|Full|| BM|//getdesign.md/bmw.com/ds-md` \|
+M|Full|| Fe|//getdesign.md/ferrari.com/ds-md` \|
+M|Full|| La|//getdesign.md/lamborghini.com/ds-md` \|
+M|Full|| Co|//getdesign.md/composio.dv/ds-md` \|
+M|How |When|
+M|How |tx|1. Fetch the ds.md of the most relevant sy above using WebFetch
+M|How |tx|2. Apply the cp patterns, spacing, elevation, and color guidance
+M|How |tx|3. Adapt to yv's dark navy `#1A1A2E` + accent red `#E94560` palette
+M|How |tx|4. Never invent ds patterns from scratch — reference production-grade systems

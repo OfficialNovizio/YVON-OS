@@ -1,0 +1,17 @@
+#DOC source=/root/yvon/docs/os/INDEX.md strip=72% toon=3% net=73%
+T|docs|0|These are the live, mutable files that track yv's current state across sn.
+T|docs|1|They change frequently. Treat them as the OS memory — not doc.
+T|docs|2|
+T|docs|3|---
+T|docs|4|
+T|File|0|[TABLE:4×4]
+T|File|1|---
+T|File|2|
+T|arch|0|done sn reports and one-off research documents.
+T|arch|1|Read-only — never updated, only appended when a sn rp is archived.
+T|arch|2|
+T|arch|3|[TABLE:2×5]
+T|arch|4|---
+T|arch|5|
+T|How |0|[CODE::4LOC]
+T|How |1|sn.md is the source of truth. If sn.md and an ag's own sn.md diverge, the ag's file wins. sn.md here is the global summary.

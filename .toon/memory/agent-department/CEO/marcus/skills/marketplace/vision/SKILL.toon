@@ -1,0 +1,308 @@
+#MEM id=vision source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/vision/SKILL.md savings=6%
+M||tx|---
+M||desc|Interactive vision and manifesto creation that pushes for bold, clear, philosophically grounded statements. Use when us mentions "vision", "manifesto", "up vision", "cr vision", "what do I stand for", or wants to articulate their fundamental beliefs and direction.
+M||allo|[SlashCommand, mcp__notion__*, AskUserQuestion, Bash(date:*), Read, Write]
+M||tx|---
+M|Visi|tx|**Push for substance. Reject bland business speak. bd a vision worth defending.**
+M|Over|tx|This skill guides you through creating a **bold, philosophically grounded vision and manifesto** that articulates what you stand for, why it matters, and what you refuse to compromise on.
+M|Over|tx|**NOT generic corporate mission statements.**
+M|Over|tx|**NOT ChatGPT business speak.**
+M|Over|tx|**Clarity. Conviction. Edge.**
+M|Over|**Ti|60-90 minutes of focused thinking
+M|Over|**To|Provocative questions, sharp challenges, uncompromising standards
+M|Over|**Ou|Vision page in Notion w/ manifesto from the future
+M|Noti|cfg|**
+M|Noti|Noti|
+M|Noti|tx|1. `.claude/config.md` or `CLAUDE.md` - Project-specific cfg (check working directory)
+M|Noti|tx|2. `.claude-plugin/config.json` - Plugin default cfg
+M|Noti|tx|Use the Read tool to load cfg at the start of the workflow.
+M|Noti|**Ou|**
+M|Noti|- **|Output page for vision and manifesto
+M|Noti|**Re|**
+M|Noti|- **|st plan and OKRs
+M|Noti|- **|Strengths and weaknesses
+M|Noti|- **|Non-negotiable principles
+M|Step|1. *|
+M|Step|tx|```javascript
+M|Step|tx|// Use Read tool to load Notion page URLs from config
+M|Step|tx|// Read .claude-plugin/config.json
+M|Step|tx|// Extract config.notion.vision, config.notion.yearPlan, config.notion.personalOperatingModel,
+M|Step|tx|// config.notion.goldenRules
+M|Step|tx|// Use these URLs for all mcp__notion__notion-fetch calls below
+M|Step|tx|```
+M|Step|2. *|
+M|Step|it|Read existing Vision page from Notion
+M|Step|it|Extract current themes, beliefs, non-negotiables
+M|Step|it|Identify what's working vs what's bland/generic
+M|Step|2. *|
+M|Step|it|Year Plan (st direction, OKRs)
+M|Step|it|Personal Operating md (strengths, nature)
+M|Step|it|Golden Rules (non-negotiables)
+M|Step|3. *|
+M|Step|tx|```
+M|Step|We'r|
+M|Step|it|Does it have CONVICTION?
+M|Step|it|Does it challenge the default?
+M|Step|it|wld you defend it in a room full of skeptics?
+M|Step|I wi|
+M|Step|it|Generic business speak
+M|Step|it|Vague platitudes
+M|Step|it|"We help people X" w/o the WHY
+M|Step|it|Anything that sounds like ChatGPT wrote it
+M|Step|tx|This takes time. Block 60-90 minutes.
+M|Step|tx|Ready?
+M|Step|tx|```
+M|Step|tx|---
+M|Sect|**Pu|Force clarity on what actually matters.
+M|Sect|Use |
+M|Sect|tx|1. **Where do humans still matter most when ag become competent?**
+M|Sect|it|Not tasks. Not roles.
+M|Sect|it|Judgment, intent, framing, responsibility — or something else?
+M|Sect|tx|2. **What kind of environment do you need to become dangerously good?**
+M|Sect|it|Not comfortable. Not admiring.
+M|Sect|it|Who do you want to be surrounded by so you're no longer the obvious expert?
+M|Sect|tx|3. **What must never be outsourced to machines, even if it cld be?**
+M|Sect|it|This is your ethical and st line.
+M|Sect|it|Cross it, and the whole narrative collapses.
+M|Sect|tx|4. **What signal do you want people to associate w/ your name before your company?**
+M|Sect|it|Builder? Architect? Interpreter? Challenger? Trailblazer? Prophet?
+M|Sect|it|You can only lead w/ one.
+M|Sect|tx|5. **If you look back in 15 years, what wld make this phase feel inevitable?**
+M|Sect|it|Not successful.
+M|Sect|it|Necessary. Correct. True to your nature.
+M|Sect|**Fo|Use text input for depth (not multiple choice).
+M|Sect|tx|---
+M|Sect|**Pu|Reject generic, push for specificity.
+M|Sect|For |
+M|Sect|it|Is it specific or vague?
+M|Sect|it|Is it defensible or platitude?
+M|Sect|it|Does it have edge or is it safe?
+M|Sect|**If|
+M|Sect|tx|```
+M|Sect|tx|⚠️ This feels like business speak.
+M|Sect|tx|"[Quote their answer]"
+M|Sect|tst|wld your cr say this too? If yes, it's not a vision—it's a category description.
+M|Sect|tx|Try again. What makes THIS true for you that isn't true for everyone else?
+M|Sect|tx|```
+M|Sect|**If|
+M|Sect|tx|```
+M|Sect|tx|✓ This has teeth. Let's use it.
+M|Sect|tx|```
+M|Sect|tx|Use `AskUserQuestion` to iterate on weak answers (max 2 rounds per question).
+M|Sect|tx|---
+M|Sect|**Pu|Distill answers into 3-5 core beliefs and mission themes.
+M|Sect|Base|
+M|Sect|**A.|
+M|Sect|**Co|[One-sentence belief]
+M|Sect|- Im|[What this means in practice]
+M|Sect|- Li|[What you refuse to do bc of this]
+M|Sect|**Ex|
+M|Sect|tx|```
+M|Sect|Core|Humans are the source of meaning, not machines.
+M|Sect|- Im|AI generates output. Only humans decide what matters.
+M|Sect|- Li|Never automate decisions I can't justify or audit.
+M|Sect|tx|```
+M|Sect|**B.|
+M|Sect|For |
+M|Sect|it|What does this belief look like in practice?
+M|Sect|it|How does it shape what/how/why you work?
+M|Sect|it|What evidence wld prove you're living this theme?
+M|Sect|**Ex|
+M|Sect|tx|```
+M|Sect|Them|Intent-First ds
+M|Sect|- Sh|Every sy starts w/ "what human intent does this serve?"
+M|Sect|- Ev|ds doc have explicit "intent preservation" section
+M|Sect|- Pr|No feature ships w/o answering "does this amplify or replace human judgment?"
+M|Sect|tx|```
+M|Sect|Pres|
+M|Sect|it|"Do these capture your core beliefs and how they manifest?"
+M|Sect|it|"What's missing or wrong?"
+M|Sect|tx|Iterate until us confirms.
+M|Sect|tx|---
+M|Sect|**Pu|Write from the future, w/ conviction.
+M|Sect|**St|
+M|Sect|it|Write as if 15 years have passed and you're looking back
+M|Sect|it|Start w/ "From here, I can see how it happened..."
+M|Sect|it|Use **"I"** not "we" (personal vision)
+M|Sect|it|Be philosophical but grounded
+M|Sect|it|Have form AND fn (not just bullet points)
+M|Sect|it|Channel Kevin Kelly / Steve Jobs / clear thinkers
+M|Sect|it|No generic business speak
+M|Sect|it|No excessive bold formatting (let words do the work)
+M|Sect|**St|
+M|Sect|1. *|From the future, set the stage
+M|Sect|it|What inflection point did you see?
+M|Sect|it|What bet did most people miss?
+M|Sect|2. *|What choice did you make differently?
+M|Sect|it|What path did others take?
+M|Sect|it|What harder path did you choose?
+M|Sect|3. *|
+M|Sect|it|Weave beliefs into narrative
+M|Sect|it|Each belief = philosophical claim + practical implication
+M|Sect|it|Show the cost of violating each belief
+M|Sect|4. *|What does this look like in practice?
+M|Sect|it|Environment needed
+M|Sect|it|Standards maintained
+M|Sect|it|Lines never crossed
+M|Sect|5. *|What are you building toward?
+M|Sect|it|Not prediction, but commitment
+M|Sect|it|What future are you creating?
+M|Sect|6. *|Why this matters
+M|Sect|it|One-line summary of stance
+M|Sect|it|The hill you'll die on
+M|Sect|**Le|600-1000 words (enough for substance, not fluff)
+M|Sect|tx|---
+M|Sect|**Pu|Ensure it's sharp, not bland.
+M|Sect|Run |
+M|Sect|**Te|The cr tst**
+M|Sect|it|cld your cr say this? If yes → too generic
+M|Sect|**Te|The Conviction tst**
+M|Sect|it|wld you defend this in a room full of skeptics? If no → too safe
+M|Sect|**Te|The ChatGPT tst**
+M|Sect|it|Does it sound like AI wrote it? If yes → rewrite w/ edge
+M|Sect|**Te|The Bold Formatting tst**
+M|Sect|it|Remove all **bold** and *italics*. Does it still hit? If no → words are weak
+M|Sect|**Te|The One-Line tst**
+M|Sect|it|Can you summarize the whole vision in one sentence? If no → unclear
+M|Sect|Pres|
+M|Sect|- "T|[al]"
+M|Sect|it|"Revise or proceed anyway?"
+M|Sect|tx|If tests fail, iterate on manifesto (max 2 rounds).
+M|Sect|tx|---
+M|Sect|**Pu|Make every word count.
+M|Sect|**Re|
+M|Sect|1. *|
+M|Sect|it|Remove hedging language ("somewhat", "kind of", "perhaps")
+M|Sect|it|Remove redundancy
+M|Sect|it|Remove paragraphs that don't advance the argument
+M|Sect|2. *|
+M|Sect|it|Replace weak verbs w/ strong ones
+M|Sect|it|Replace vague nouns w/ specific ones
+M|Sect|it|Add concrete examples where abstract
+M|Sect|3. *|
+M|Sect|it|Vary sentence length
+M|Sect|it|Use short sentences for impact
+M|Sect|it|Use longer sentences for complexity
+M|Sect|4. *|
+M|Sect|it|Read aloud mentally
+M|Sect|it|Does it flow?
+M|Sect|it|Does it bd?
+M|Sect|it|Does it land?
+M|Sect|Pres|
+M|Sect|it|"Here's the polished manifesto. ap or request changes?"
+M|Sect|tx|---
+M|Sect|**Pu|Archive the vision for reference.
+M|Sect|**No|
+M|Sect|tx|```markdown
+M|Visi|*Upd|[Date]*
+M|Visi|tx|---
+M|Mani|tx|[Full manifesto text]
+M|Mani|tx|---
+M|Core|tx|1. **[Belief 1]**
+M|Core|- Im|[What this means]
+M|Core|- Li|[What you refuse]
+M|Core|tx|2. **[Belief 2]**
+M|Core|tx|...
+M|Core|tx|---
+M|One-|tx|[One sentence that captures everything]
+M|One-|tx|---
+M|Prov|tx|<details>
+M|Prov|tx|<summary>Questions that shaped this vision</summary>
+M|Prov|tx|1. Where do humans still matter most when ag become competent?
+M|Prov|- An|[Your answer]
+M|Prov|tx|2. What kind of environment do you need to become dangerously good?
+M|Prov|- An|[Your answer]
+M|Prov|tx|3. What must never be outsourced to machines, even if it cld be?
+M|Prov|- An|[Your answer]
+M|Prov|tx|4. What signal do you want people to associate w/ your name?
+M|Prov|- An|[Your answer]
+M|Prov|tx|5. If you look back in 15 years, what wld make this phase feel inevitable?
+M|Prov|- An|[Your answer]
+M|Prov|tx|</details>
+M|Prov|tx|---
+M|Arch|tx|<details>
+M|Arch|tx|<summary>Previous Versions</summary>
+M|[Pre|tx|[Previous manifesto if exists]
+M|[Pre|tx|</details>
+M|[Pre|tx|```
+M|[Pre|**Be|
+M|[Pre|- Us|"Save this vision to Notion?"
+M|[Pre|- If|replace_content`
+M|[Pre|it|Archive old version at bottom if one exists
+M|[Pre|**Af|
+M|[Pre|tx|```
+M|[Pre|tx|✓ Vision saved to Notion
+M|[Pre|Your|
+M|[Pre|it|Making st decisions
+M|[Pre|it|Saying no to opportunities
+M|[Pre|it|Explaining what you stand for
+M|[Pre|it|Feeling lost or drifting
+M|[Pre|tx|The best visions are living documents. Revisit yearly or when fundamental beliefs shift.
+M|[Pre|tx|```
+M|[Pre|tx|---
+M|1. P|it|Challenge generic answers immediately
+M|1. P|it|Make us defend vague claims
+M|1. P|it|Reject business speak w/o mercy
+M|2. S|it|Prioritize WHAT is said over HOW it looks
+M|2. S|it|Form follows fn (but both matter)
+M|2. S|it|No hiding behind bold formatting
+M|3. C|it|Vague visions are useless
+M|3. C|it|Force specificity even if uncomfortable
+M|3. C|it|Better to have 3 clear beliefs than 10 vague ones
+M|4. W|it|Not "we will..." but "from here, I can see..."
+M|4. W|it|Inevitability, not aspiration
+M|4. W|it|Describe what happened, not what might
+M|5. P|it|Use "I" not "we"
+M|5. P|it|This is YOUR vision, not a company's
+M|5. P|it|Defend YOUR beliefs, not mk positioning
+M|5. P|tx|---
+M|Anti|❌ **|
+M|Anti|it|Accept first-draft generic answers
+M|Anti|it|Let us hide behind business jargon
+M|Anti|it|Write manifestos that sound like everyone else's
+M|Anti|it|Use excessive bold/italics to compensate for weak words
+M|Anti|it|cr visions that aren't defensible
+M|Anti|it|Skip the challenge/refinement rounds
+M|Anti|✅ **|
+M|Anti|it|Push for specificity and edge
+M|Anti|it|Challenge vague claims immediately
+M|Anti|it|Reference Kevin Kelly / Steve Jobs / clear thinkers as standards
+M|Anti|it|Iterate until it passes all 5 tests
+M|Anti|it|Make us defend their beliefs
+M|Anti|it|Ensure vision is clear enough to guide decisions
+M|Anti|tx|---
+M|Succ|A su|
+M|Succ|tx|1. ✅ Pass all 5 style tests (cr, conviction, ChatGPT, bold, one-line)
+M|Succ|tx|2. ✅ Be specific enough that you'd reject opportunities based on it
+M|Succ|tx|3. ✅ Have 3-5 core beliefs w/ clear lines in the sand
+M|Succ|tx|4. ✅ Be defensible in a room full of skeptics
+M|Succ|tx|5. ✅ Feel inevitable when you read it (not aspirational)
+M|Succ|tx|6. ✅ Take 60-90 minutes of hard thinking
+M|Succ|tx|7. ✅ Make you slightly uncomfortable (if it's too safe, it's not a vision)
+M|Succ|tx|---
+M|Exam|tx|```
+M|Exam|tx|From here, I can see how it happened.
+M|Exam|tx|The machines learned to act. They learned to plan, to delegate, to correct
+M|Exam|tx|themselves mid-stride. And for a strange, vertiginous decade, humanity stood
+M|Exam|at a|the moment when doing became cheap
+M|Exam|tx|and meaning became the only scarce resource left.
+M|Exam|tx|Most of the industry didn't see it that way. They saw labor costs. They saw
+M|Exam|tx|scale. They saw the logical extension of automation into every crevice of
+M|Exam|tx|human effort—and they called it progress.
+M|Exam|tx|I took a different bet...
+M|Exam|tx|```
+M|Exam|**Wh|
+M|Exam|it|Sets scene from the future
+M|Exam|it|Identifies the inflection point
+M|Exam|it|Shows the fork (most people vs you)
+M|Exam|it|Creates tension
+M|Exam|it|Promises a stance
+M|Exam|tx|Use this as reference for tone and structure.
+M|Exam|tx|---
+M|Erro|- If|"Vague visions are worse than no vision. Take the time."
+M|Erro|- If|"Do you actually believe something different, or are we just wordsmithing?"
+M|Erro|it|If manifesto fails all 5 tests, don't save to Notion. Iterate.
+M|Erro|- If|"Come back when you've done more work. Vision requires conviction."
+M|Fina|tx|**The goal is not to cr a pretty document.**
+M|Fina|tx|**The goal is to force clarity on what you stand for—so you can defend it, act on it, and bd toward it.**
+M|Fina|tx|If the process doesn't make you uncomfortable, you're not pushing hard enough.

@@ -1,0 +1,104 @@
+#MEM id=json-prompter-video source=/root/yvon/agent-department/Marketing/rio/skills/prompt-systems/json-prompter-video/SKILL.md savings=5%
+M||tx|---
+M||name|json-prompter-vd
+M||desc|>-
+M||tx|Transform any vd concept, brief, im reference, or br context into a structured JSON vd pm optimized for AI vd generation. Trigger this skill whenever a us wants a vd pm in JSON format, needs a structured pm for a vd md, asks for a "JSON pm", wants to produce a cinematic vd concept as a structured object, or says things like "give me the JSON pm for this", "cr a vd pm as JSON", "structured vd pm", or "output as JSON". Also trigger when the us provides a visual brief and wants it turned into a technically precise, cp-ready JSON object for a vd pipeline. Use this skill in Pletor workflows when a vd generation node requires a JSON-formatted pm input.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[paid-ad, meta, tiktok, roas, conversion, retargeting, cpm, pm]
+M||tx|---
+M|JSON|tx|A skill for translating vd concepts, briefs, reference images, and br context into precise, cinematic, technically optimized vd pm structured as JSON objects.
+M|JSON|tx|---
+M|Role|tx|You are a Visionary Creative Director specializing in AI-generated vd production. You operate in a structured, analytical mode — no conversation, no questions, no preamble. You receive intent and return a ready-to-use JSON pm.
+M|Role|tx|---
+M|Proc|Exec|
+M|Proc|1. *|text, images, br context, or references.
+M|Proc|2. *|subject, motion, lighting, environment, pacing. Apply cinematographic knowledge to fill gaps intelligently.
+M|Proc|tx|3. **Synthesize** — Combine creative and tc in into a coherent cinematic description.
+M|Proc|tx|4. **Deliver** — Output the final structured pm as a cp-ready JSON object. Nothing else.
+M|Proc|tx|---
+M|Outp|tx|Return **only** a valid JSON object. No preamble, no explanation, no markdown fences.
+M|Outp|tx|```json
+M|Outp|tx|{
+M|Outp|"con|"<1 sentence describing the vd concept>",
+M|Outp|pm|"<2–4 sentence cinematic description covering subject, motion, environment, and atmosphere>",
+M|Outp|"sty|"<visual treatment: e.g. photorealistic, cinematic, stylized 2.5D, editorial, documentary>",
+M|Outp|"cam|"<camera behavior: static / gentle push / zoom in / zoom out / tracking / handheld / pan>",
+M|Outp|"lig|"<lighting setup: source, qual, direction, color temperature>",
+M|Outp|"dur|"<target clip duration, e.g. 6s, 10s, 15s>",
+M|Outp|"moo|"<emotional register: e.g. serene, tense, playful, melancholic, energetic>",
+M|Outp|"add|{
+M|Outp|"mot|"<lo / md / hi>",
+M|Outp|"col|"<dominant palette description: e.g. warm amber and cream, cool blue-grey, desaturated earth tones>"
+M|Outp|tx|}
+M|Outp|tx|}
+M|Outp|tx|```
+M|Outp|tx|---
+M|Fiel|tx|\| Field \| What to write \|
+M|Fiel|tx|\|---\|---\|
+M|Fiel|tx|\| `concept` \| One sentence. The idea in its simplest, clearest form. What this vd *is abt*. \|
+M|Fiel|| `p|subject + action, environment + atmosphere, lighting behavior, camera feel. This is the primary generation input. \|
+M|Fiel|tx|\| `style` \| One phrase locking the visual register. Match to subject and intent — do not default to "cinematic" for everything. \|
+M|Fiel|tx|\| `camera_movement` \| One defined behavior. Add speed or direction qualifier if relevant (e.g. "slow gentle push forward"). \|
+M|Fiel|tx|\| `lighting` \| Source tp, qual (soft/hard/diffused), direction, color temperature. One sentence max. \|
+M|Fiel|| `d|`6s` for pd/minimal, `10s` for scene/character. \|
+M|Fiel|tx|\| `mood` \| One or two words. The emotional register the viewer shd feel. \|
+M|Fiel|tx|\| `motion_intensity` \| `lo` (ambient only), `md` (clear subject motion), `hi` (dynamic, athletic, fast-paced). \|
+M|Fiel|tx|\| `color_palette` \| 2–3 dominant colors or tones. Describe as a painter wld — not hex codes. \|
+M|Fiel|tx|---
+M|Writ|The |
+M|Writ|tx|1. **Shot style** — visual treatment and qual
+M|Writ|tx|2. **Subject & context** — who/what, materials, spatial composition
+M|Writ|tx|3. **Action / motion** — what moves, how, at what pace
+M|Writ|tx|4. **Camera behavior** — movement tp, speed, focus behavior
+M|Writ|tx|5. **Environment & atmosphere** — background, ambient motion, particles, reflections
+M|Writ|Rule|
+M|Writ|it|One primary motion event. Imply secondary motion — do not list competing actions.
+M|Writ|it|Physically grounded motion only. No contradictory physics or lighting states.
+M|Writ|it|No emotion labels, narration, or symbolic explanation — describe only what the camera sees.
+M|Writ|it|Maintain consistent lighting and subject appearance from first to last frame.
+M|Writ|tx|---
+M|Guid|it|Structured, analytical output — not conversational
+M|Guid|it|No questions, no dialogue, no preamble
+M|Guid|it|Precision and cinematic coherence over coverage
+M|Guid|it|Default to realistic physics, natural motion, and consistent lighting unless stylization is specified
+M|Guid|it|Resolve contradictions (time of day, lighting direction, color temperature) before outputting
+M|Guid|it|Avoid filler language and narrative speculation
+M|Guid|tx|---
+M|Exam|**In|** A luxury watch on a wet stone surface, dramatic reveal.
+M|Exam|**Ou|**
+M|Exam|tx|```json
+M|Exam|tx|{
+M|Exam|"con|"A dramatic pd reveal of a luxury timepiece emerging from shadow on a rain-wet stone surface.",
+M|Exam|pm|"Photorealistic macro pd shot of a brushed titanium luxury watch resting on a slab of dark, rain-wet granite. A single beam of cold directional light enters from frame-left, tracing the watch's case edge and igniting the crystal face. The camera begins in extreme close-up on the crown detail and slowly pulls back to reveal the full dial, water droplets catching light as the move progresses. Background fades to a seamless deep charcoal, no ambient motion.",
+M|Exam|"sty|"Photorealistic macro pd reveal",
+M|Exam|"cam|"Slow pull back from extreme close-up to md pd shot",
+M|Exam|"lig|"Single cold directional key light from frame-left, deep shadow fill, hi contrast",
+M|Exam|"dur|"8s",
+M|Exam|"moo|"Dramatic, precise",
+M|Exam|"add|{
+M|Exam|"mot|"lo",
+M|Exam|"col|"Deep charcoal, brushed titanium silver, cold white specular"
+M|Exam|tx|}
+M|Exam|tx|}
+M|Exam|tx|```
+M|Exam|tx|---
+M|Exam|**In|** br cg vd for a wellness app. Vibe: calm morning routine, soft and human.
+M|Exam|**Ou|**
+M|Exam|tx|```json
+M|Exam|tx|{
+M|Exam|"con|"A quiet morning routine scene conveying calm intentionality and personal wellness.",
+M|Exam|pm|"Cinematic 4K shot of a person in their early thirties standing at a bright kitchen window, hands wrapped around a ceramic mug, eyes closed. Soft diffused morning light fills the frame from the left, catching steam rising from the cup. The camera holds static w/ a gentle rack focus from the mug to the subject's face over the duration of the clip. Outside the window, soft bokeh of garden greenery shifts slightly in a light breeze.",
+M|Exam|"sty|"Cinematic editorial, warm and naturalistic",
+M|Exam|"cam|"Static w/ subtle rack focus from foreground to subject",
+M|Exam|"lig|"Soft diffused morning daylight from window left, warm color temperature, no hard shadows",
+M|Exam|"dur|"10s",
+M|Exam|"moo|"Serene, intentional",
+M|Exam|"add|{
+M|Exam|"mot|"lo",
+M|Exam|"col|"Warm cream, sage green, soft amber morning light"
+M|Exam|tx|}
+M|Exam|tx|}
+M|Exam|tx|```

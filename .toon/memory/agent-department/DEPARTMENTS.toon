@@ -1,0 +1,58 @@
+#MEM id=agent-department source=/root/yvon/agent-department/DEPARTMENTS.md savings=8%
+M|YVON|tx|yv organizes 13 ag into 4 departments. Each ag owns a specific domain and collaborates through defined handoff protocols.
+M|CEO |tx|\| ag \| Role \| Responsibility \|
+M|CEO |tx|\|-------\|------\|---------------\|
+M|CEO |tx|\| [mc/](mc/) \| ce \| st, synthesis, executive briefs, investor updates \|
+M|CEO |tx|\| [dn/](dn/) \| co \| Operations, workflow, process, sprint planning \|
+M|Tech|tx|\| ag \| Role \| Responsibility \|
+M|Tech|tx|\|-------\|------\|---------------\|
+M|Tech|tx|\| [dv/](dv/) \| Lead Developer \| Architecture, code rv, nx.js, tech decisions \|
+M|Tech|tx|\| [rj/](rj/) \| Backend dv \| sb, ap rt, db, migrations \|
+M|Tech|tx|\| [mi/](mi/) \| Frontend dv \| rc, tw, UI cp, ds sy \|
+M|Tech|tx|\| [qn/](qn/) \| QA Engineer \| Testing, bug reports, regression, qual gate \|
+M|Mark|tx|\| ag \| Role \| Responsibility \|
+M|Mark|tx|\|-------\|------\|---------------\|
+M|Mark|tx|\| [ka/](ka/) \| Lead Analyst \| an, GA4, tn, cr intel, cohort al \|
+M|Mark|tx|\| [ln/](ln/) \| br Strategist \| cp, captions, br voice, em, cn writing \|
+M|Mark|tx|\| [ro/](ro/) \| ad Specialist \| Paid media, Meta, TikTok, ROAS, audience targeting \|
+M|Mark|tx|\| [nt/](nt/) \| Growth Specialist \| Growth experiments, funnel, referral, LTV \|
+M|Mark|tx|\| [at/](at/) \| Art Director \| Visual sy, mood boards, creative direction \|
+M|Mark|tx|\| [px/](px/) \| Production \| im batch, asset delivery, pm op \|
+M|Fina|tx|\| ag \| Role \| Responsibility \|
+M|Fina|tx|\|-------\|------\|---------------\|
+M|Fina|tx|\| [fx/](fx/) \| fi Manager \| Budget, P&L, ROI, unit economics, runway modeling \|
+M|Psyc|tx|\| ag \| Role \| Responsibility \|
+M|Psyc|tx|\|-------\|------\|---------------\|
+M|Psyc|tx|\| [Daniel_Kahneman/](ps/Daniel_Kahneman/) \| Behavioral Economist \| Decision debiasing, framing validation, sy 1/2 audit, psychological lever selection, calibration tracking, bias correction for mk + fi \|
+M|Psyc|**Ka|**
+M|Psyc|it|Called by mc when any decision has hi financial or st stakes
+M|Psyc|it|Mandatory validator for ln (cp framing) and ro (ad framing) before delivery
+M|Psyc|it|Supports ka (bias-corrected data interpretation) and nt (A/B calibration)
+M|Psyc|- Tw|`lean` (fast, hi-frequency cn) — `deep` (cg, repositioning, hi-stakes)
+M|Psyc|- Re|`@kh lean/deep — [check tp]: [cn or decision]`
+M|Psyc|tx|---
+M|Shar|All |
+M|Shar|tx|\| Skill \| Location \| Purpose \|
+M|Shar|tx|\|-------\|----------\|---------\|
+M|Shar|tx|\| Memory sy \| `shared/skills/ag/01-memory.md` \| sn start/end protocols \|
+M|Shar|tx|\| Coding Rules \| `shared/skills/coding/01-karpathy.md` \| Karpathy coding behavioral guidelines \|
+M|Shar|tx|\| nz br \| `shared/brands/nz.md` \| Fashion e-commerce br profile \|
+M|Shar|tx|\| hb br \| `shared/brands/hb.md` \| Fintech SaaS br profile \|
+M|Shar|**Cr|** Never edit a local cp of a shared skill. Edit the shared version and all ag inherit the change.
+M|Shar|tx|---
+M|Coll|it|mc (ce) is always the entry point — no ag calls another directly w/o going through him
+M|Coll|- Ha|2 specialists max per War Room sn
+M|Coll|- Le|can act w/o rv
+M|Coll|- Le|draft + rv before publish
+M|Coll|it|fi department operates independently — can be consulted directly for financial al
+M|Coll|tx|---
+M|Agen|Each|
+M|Agen|it|`ag.md` — ag identity and core behavior
+M|Agen|it|`MEMORY.md` — rolling log of tasks and outcomes
+M|Agen|it|`SKILLS.md` — domain-specific skills (not shared skills)
+M|Agen|it|`COMMANDS.md` — available slash commands
+M|Agen|it|`PRINCIPLES.md` — ag-specific behavioral rules
+M|Agen|it|`TOOLS.md` — tool preferences and usage
+M|Agen|it|`CONFLICTS.md` — what to avoid
+M|Agen|it|`skills/` — domain-specific skill bundles
+M|Agen|tx|ag-specific skills (not shared) stay in each ag's `skills/` folder.

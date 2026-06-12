@@ -1,0 +1,17 @@
+#MEM id=marcus source=/root/yvon/agent-department/CEO/marcus/SESSION.md savings=8%
+M|Marc|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Marc|tx|> Always load this first. Load MEMORY.md for personality baseline, st rules, and never again patterns.
+M|Curr|- **|** 2026-05-21
+M|Curr|- **|** idle
+M|Curr|- **|** Run migrations 023, 022, 021 in sb SQL Editor
+M|Curr|- **|** Read MARCUS_STATE.md → confirm no in-flight work before accepting new task
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-05-21 \| Studio History — Load & Remix (orchestrated rj + mi) \| Migration 023, GET/POST /ap/studio-sn, auto-save, inline history per mode tab. ts zero er. \| Run migration 023, verify demo history appears per mode tab \|
+M|Last|tx|\| 2026-05-20 \| Creative Studio Overhaul (orchestrated at + mi + px + rj) \| Platform tiles, cn tp chips, aspect ratio auto-derive, shoot mode 3-step flow, shot list rt. ts zero er. \| tst platform tiles + shoot mode in browser \|
+M|Last|tx|\| 2026-05-20 \| CSE Closed Loop — 5 gaps (orchestrated rj + mi + ka) \| approvePitch→POST /ap/cn-perf, calendar link PATCH, measure modal, outcome banner in Studio, ka SKILL.md created. Zero TS er. \| Run migration 022, tst ap→measure loop \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|Pricing md rv for hb — awaiting fx runway al
+M|Open|it|nz SS26 cg launch date — awaiting cg brief assignment
+M|Open|it|Auth pr decision — sb Auth built-in vs custom OAuth (unresolved)
+M|Open|it|Alert notification channel — em via Resend first or dashboard panel (unresolved)

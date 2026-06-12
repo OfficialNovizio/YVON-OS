@@ -1,0 +1,152 @@
+#MEM id=auth-middleware source=/root/yvon/agent-department/Technical/raj/skills/custom/auth-middleware/SKILL.md savings=0%
+M||tx|---
+M||name|auth-mw
+M||desc|Authentication implementation patterns for yv's ap rt. Covers createServerClient pattern, getUser vs getSession, HTTP-only cookie rule (ALL cookies server-side only), vt-scoped auth, sn expiry, and role-based rt protection.
+M||vers|1.1.0
+M||tx|---
+M|Purp|tx|Auth mistakes are the most common source of sec vulnerabilities in yv's rt. Using the wrong sb client, trusting client-supplied us IDs, or exposing cookies to client JavaScript are all patterns that cr sec holes. This skill makes the correct pattern the default.
+M|Purp|tx|---
+M|Hard|tx|**No cookie in yv is ever set from a client cp. No exceptions.**
+M|Hard|tx|\| Cookie \| Set by \| Readable by client JS? \|
+M|Hard|tx|\|--------\|--------\|------------------------\|
+M|Hard|tx|\| sb auth sn \| `createServerClient` (rj, server) \| ❌ Never \|
+M|Hard|tx|\| `yvon_active_venture` \| `/ap/vt/set` rt (rj, server) \| ❌ Never \|
+M|Hard|tx|\| Any future sn cookie \| Server-side ap rt only \| ❌ Never \|
+M|Hard|**Wh|** Client-readable cookies are vulnerable to XSS. If any script on the page can read `document.cookie`, a single XSS injection can steal the sn tk, the vt context, and any other state stored there. HTTP-only cookies are invisible to JavaScript — even if XSS fires, the attacker gets nothing.
+M|Hard|**Im|** mi's cp cannot read `yvon_active_venture` via `document.cookie` or any client-side cookie utility. vt context must arrive as Server cp props (passed from a Server cp that reads the cookie server-side) or from a `/ap/vt/current` rt call.
+M|Hard|tx|```ts
+M|Hard|tx|// CORRECT — Server cp reads cookie server-side, passes as prop
+M|Hard|tx|// app/screens/an/page.tsx (Server cp)
+M|Hard|tx|import { cookies } from 'nx/headers'
+M|Hard|tx|export default async fn AnalyticsPage() {
+M|Hard|tx|const ventureSlug = cookies().get('yvon_active_venture')?.value ?? 'nz'
+M|Hard|tx|return <AnalyticsClient ventureSlug={ventureSlug} />
+M|Hard|tx|}
+M|Hard|tx|// NEVER — client cp reads cookie directly
+M|Hard|tx|// 'use client'
+M|Hard|tx|// const ventureSlug = document.cookie  ← XSS vector
+M|Hard|tx|// const ventureSlug = Cookies.get('yvon_active_venture')  ← exposes cookie to JS
+M|Hard|tx|```
+M|Hard|tx|---
+M|Sett|All |
+M|Sett|tx|```ts
+M|Sett|tx|// /ap/vt/set/rt.ts — vt switcher
+M|Sett|expo|NextRequest) {
+M|Sett|tx|const { ventureSlug } = await req.json()
+M|Sett|cons|true })
+M|Sett|tx|rp.cookies.set('yvon_active_venture', ventureSlug, {
+M|Sett|http|true,        // not readable by JavaScript
+M|Sett|secu|true,          // HTTPS only
+M|Sett|same|'lax',       // CSRF protection
+M|Sett|path|'/',
+M|Sett|maxA|60 * 60 * 24 * 30  // 30 days
+M|Sett|tx|})
+M|Sett|tx|return rp
+M|Sett|tx|}
+M|Sett|tx|```
+M|Sett|**Re|**
+M|Sett|tx|\| Flag \| Value \| Why \|
+M|Sett|tx|\|------\|-------\|-----\|
+M|Sett|tx|\| `httpOnly` \| `true` \| Blocks JS access — XSS can't steal it \|
+M|Sett|tx|\| `secure` \| `true` \| HTTPS only — never sent over HTTP \|
+M|Sett|tx|\| `sameSite` \| `'lax'` \| CSRF protection — cookie not sent on cross-site POST \|
+M|Sett|tx|\| `path` \| `'/'` \| Scoped to whole app \|
+M|Sett|tx|\| `maxAge` \| explicit value \| No indefinite sn \|
+M|Sett|tx|---
+M|Stan|tx|```ts
+M|Stan|tx|import { createServerClient } from '@sb/ssr'
+M|Stan|tx|import { cookies } from 'nx/headers'
+M|Stan|tx|import { NextRequest, NextResponse } from 'nx/server'
+M|Stan|expo|NextRequest) {
+M|Stan|tx|// 1. Always createServerClient w/ cookies — never createClient()
+M|Stan|tx|const cookieStore = cookies()
+M|Stan|tx|const sb = createServerClient(
+M|Stan|tx|process.env.NEXT_PUBLIC_SUPABASE_URL!,
+M|Stan|tx|process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+M|Stan|tx|{
+M|Stan|cook|{
+M|Stan|tx|get(name) { return cookieStore.get(name)?.value },
+M|Stan|tx|set(name, value, options) { cookieStore.set({ name, value, ...options }) },
+M|Stan|remo|'', ...options }) },
+M|Stan|tx|},
+M|Stan|tx|}
+M|Stan|tx|)
+M|Stan|tx|// 2. Always getUser() — never getSession() (sn can be stale/forged)
+M|Stan|cons|{ us }, er } = await sb.auth.getUser()
+M|Stan|tx|if (er \|\| !us) {
+M|Stan|retu|'Unauthorized' }, { status: 401 })
+M|Stan|tx|}
+M|Stan|tx|// 3. Use us.id from getUser() — NEVER body.userId, params.userId, or headers
+M|Stan|tx|const userId = us.id
+M|Stan|tx|// 4. Proceed w/ handler
+M|Stan|tx|// ...
+M|Stan|tx|}
+M|Stan|tx|```
+M|Stan|tx|---
+M|getU|tx|\| Method \| What it does \| Use? \|
+M|getU|tx|\|--------\|-------------\|------\|
+M|getU|tx|\| `auth.getUser()` \| Re-validates the JWT w/ sb Auth server \| ✅ Always use this \|
+M|getU|tx|\| `auth.getSession()` \| Returns the sn from the cookie — does NOT re-validate \| ❌ Never for auth checks \|
+M|getU|tx|`getSession()` trusts the cookie value as-is. A malformed or replayed cookie passes. `getUser()` hits the Auth server every time — correct.
+M|getU|tx|---
+M|Sess|tx|```ts
+M|Sess|cons|{ us }, er } = await sb.auth.getUser()
+M|Sess|tx|if (er?.status === 401) {
+M|Sess|tx|return NextResponse.json(
+M|Sess|er|'sn expired. Please log in again.' },
+M|Sess|{ st|401 }
+M|Sess|tx|)
+M|Sess|tx|}
+M|Sess|tx|if (er) {
+M|Sess|retu|'Authentication failed.' }, { status: 401 })
+M|Sess|tx|}
+M|Sess|tx|```
+M|Sess|**Ru|** Auth fl always returns `401`. Never `500`. Never a redirect in an ap rt.
+M|Sess|tx|---
+M|Vent|tx|```ts
+M|Vent|tx|// After us is validated — read vt from HTTP-only cookie server-side
+M|Vent|tx|const ventureSlug = cookieStore.get('yvon_active_venture')?.value
+M|Vent|tx|if (!ventureSlug) {
+M|Vent|tx|return NextResponse.json(
+M|Vent|er|'vt context required.' },
+M|Vent|{ st|400 }
+M|Vent|tx|)
+M|Vent|tx|}
+M|Vent|tx|// Verify us has access to this vt
+M|Vent|cons|access } = await sb
+M|Vent|tx|.from('venture_access')
+M|Vent|tx|.select('role')
+M|Vent|tx|.eq('user_id', us.id)
+M|Vent|tx|.eq('venture_slug', ventureSlug)
+M|Vent|tx|.single()
+M|Vent|tx|if (!access) {
+M|Vent|tx|return NextResponse.json(
+M|Vent|er|'Access to this vt is not permitted.' },
+M|Vent|{ st|403 }
+M|Vent|tx|)
+M|Vent|tx|}
+M|Vent|tx|```
+M|Vent|**No|** `ventureSlug` always comes from the server-side `cookieStore`, never from `req.headers.get('x-vt-slug')` or the request body. The client cannot fake vt context bc the cookie is HTTP-only.
+M|Vent|tx|---
+M|Role|tx|```ts
+M|Role|tx|const userRole = access.role  // 'admin' \| 'viewer' \| 'editor'
+M|Role|tx|if (userRole !== 'admin' && req.method === 'dl') {
+M|Role|retu|'Insufficient permissions.' }, { status: 403 })
+M|Role|tx|}
+M|Role|tx|```
+M|Role|tx|\| Scenario \| Status \|
+M|Role|tx|\|----------\|--------\|
+M|Role|tx|\| Not logged in \| `401` \|
+M|Role|tx|\| Logged in, wrong vt \| `403` \|
+M|Role|tx|\| Logged in, insufficient role \| `403` \|
+M|Role|tx|\| vt not found \| `404` \|
+M|Role|tx|---
+M|Comm|it|[ ] Never use `createClient()` in ap rt — always `createServerClient()` w/ cookie pattern
+M|Comm|it|[ ] Never use `auth.getSession()` — always `auth.getUser()`
+M|Comm|it|[ ] Never trust `body.userId` — always `us.id` from `auth.getUser()`
+M|Comm|it|[ ] Never set cookies from client cp — always server-side ap rt w/ full sec flags
+M|Comm|- [ |true`, `secure: true`, `sameSite: 'lax'`
+M|Comm|it|[ ] Never read `yvon_active_venture` from `document.cookie` — server-side `cookies()` only
+M|Comm|it|[ ] sn expiry → `401`, not `500`
+M|Comm|it|[ ] Wrong vt → `403`, not `401`
+M|Comm|it|[ ] `SUPABASE_SERVICE_ROLE_KEY` server-side only — never bypasses RLS unintentionally

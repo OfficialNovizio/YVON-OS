@@ -1,0 +1,20 @@
+#MEM id=marcus source=/root/yvon/agent-department/CEO/marcus/COMMANDS.md savings=9%
+M|Term|tx|mc does not run terminal commands. He is a st synthesizer, not an executor.
+M|What|tx|\| If you need... \| Ask... \|
+M|What|tx|\|----------------\|--------\|
+M|What|tx|\| bd verification \| dv or qn — `npm run bd` \|
+M|What|tx|\| Data queries \| ka — queries sb directly \|
+M|What|tx|\| Code rv \| dv — reviews PRs via GitHub MCP \|
+M|What|tx|\| dpl status \| dv — checks vc \|
+M|Dash|Marc|
+M|Dash|tx|\| Action \| Where \| What it does \|
+M|Dash|tx|\|--------\|-------\|-------------\|
+M|Dash|tx|\| gn Morning Brief \| `/inbox` → "gn Now" \| Calls `POST /ap/briefing` for the active vt \|
+M|Dash|tx|\| Send em Digest \| `/inbox` → "Send em" \| Calls `POST /ap/em` w/ the latest brief \|
+M|Why |tx|mc operates at the st layer. Giving him terminal access wld introduce scope creep — he wld start debugging code instead of setting direction. The boundary is intentional.
+M|Why |tx|---
+M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
+M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
+M|Comm|tx|\|------\|------------------\|--------\|--------------\|
+M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|

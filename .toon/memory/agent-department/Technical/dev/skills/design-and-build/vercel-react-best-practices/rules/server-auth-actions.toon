@@ -1,0 +1,72 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-auth-actions.md savings=4%
+M||tx|---
+M||titl|Authenticate Server Actions Like ap rt
+M||impa|ct
+M||impa|prevents unauthorized access to server mutations
+M||tags|server, server-actions, authentication, sec, authorization
+M||tx|---
+M|Auth|**Im|ct (prevents unauthorized access to server mutations)**
+M|Auth|tx|Server Actions (functions w/ `"use server"`) are exposed as public endpoints, just like ap rt. Always verify authentication and authorization **inside** each Server Action—do not rely solely on mw, layout guards, or page-level checks, as Server Actions can be invoked directly.
+M|Auth|Next|"Treat Server Actions w/ the same sec considerations as public-facing ap endpoints, and verify if the us is allowed to perform a mutation."
+M|Auth|**In|**
+M|Auth|tx|```ts
+M|Auth|tx|'use server'
+M|Auth|expo|string) {
+M|Auth|tx|// Anyone can call this! No auth check
+M|Auth|awai|{ id: userId } })
+M|Auth|retu|true }
+M|Auth|tx|}
+M|Auth|tx|```
+M|Auth|**Co|**
+M|Auth|tx|```ts
+M|Auth|tx|'use server'
+M|Auth|tx|import { verifySession } from '@/lib/auth'
+M|Auth|tx|import { unauthorized } from '@/lib/er'
+M|Auth|expo|string) {
+M|Auth|tx|// Always check auth inside the action
+M|Auth|tx|const sn = await verifySession()
+M|Auth|tx|if (!sn) {
+M|Auth|tx|throw unauthorized('Must be logged in')
+M|Auth|tx|}
+M|Auth|tx|// Check authorization too
+M|Auth|tx|if (sn.us.role !== 'admin' && sn.us.id !== userId) {
+M|Auth|tx|throw unauthorized('Cannot dl other us')
+M|Auth|tx|}
+M|Auth|awai|{ id: userId } })
+M|Auth|retu|true }
+M|Auth|tx|}
+M|Auth|tx|```
+M|Auth|**Wi|**
+M|Auth|tx|```ts
+M|Auth|tx|'use server'
+M|Auth|tx|import { verifySession } from '@/lib/auth'
+M|Auth|tx|import { z } from 'zod'
+M|Auth|tx|const updateProfileSchema = z.object({
+M|Auth|user|z.string().uuid(),
+M|Auth|name|z.string().min(1).max(100),
+M|Auth|em|z.string().em()
+M|Auth|tx|})
+M|Auth|expo|unknown) {
+M|Auth|tx|// Validate input first
+M|Auth|tx|const validated = updateProfileSchema.parse(data)
+M|Auth|tx|// Then authenticate
+M|Auth|tx|const sn = await verifySession()
+M|Auth|tx|if (!sn) {
+M|Auth|tx|throw new er('Unauthorized')
+M|Auth|tx|}
+M|Auth|tx|// Then authorize
+M|Auth|tx|if (sn.us.id !== validated.userId) {
+M|Auth|tx|throw new er('Can only up own profile')
+M|Auth|tx|}
+M|Auth|tx|// Finally perform the mutation
+M|Auth|tx|await db.us.up({
+M|Auth|wher|{ id: validated.userId },
+M|Auth|data|{
+M|Auth|name|validated.name,
+M|Auth|em|validated.em
+M|Auth|tx|}
+M|Auth|tx|})
+M|Auth|retu|true }
+M|Auth|tx|}
+M|Auth|tx|```
+M|Auth|Refe|[https://nx.org/doc/app/guides/authentication](https://nx.org/doc/app/guides/authentication)

@@ -1,0 +1,35 @@
+#MEM id=frontend-design source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/frontend-design/SKILL.md savings=9%
+M||tx|---
+M||name|frontend-ds
+M||desc|>-
+M||tx|cr distinctive, production-grade frontend interfaces w/ hi ds qual. Use this skill when the us asks to bd web cp, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, rc cp, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI ds that avoids generic AI aesthetics.
+M||vers|1.0.0
+M||lice|Complete terms in LICENSE.txt
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[frontend, rc, tw, ui, cp, ds-sy, ux, dv]
+M||tx|---
+M||tx|This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. im real working code w/ exceptional attention to aesthetic details and creative choices.
+M||The |a cp, page, application, or if to bd. They may include context abt the purpose, audience, or tc constraints.
+M|Desi|Befo|
+M|Desi|- **|What problem does this if solve? Who uses it?
+M|Desi|- **|Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but ds one that is true to the aesthetic direction.
+M|Desi|- **|tc requirements (framework, perf, accessibility).
+M|Desi|- **|What makes this UNFORGETTABLE? What's the one thing someone will remember?
+M|Desi|ct|Choose a clear conceptual direction and execute it w/ precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+M|Desi|Then|
+M|Desi|it|Production-grade and functional
+M|Desi|it|Visually striking and memorable
+M|Desi|it|Cohesive w/ a clear aesthetic point-of-view
+M|Desi|it|Meticulously refined in every detail
+M|Fron|Focu|
+M|Fron|- **|Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font w/ a refined body font.
+M|Fron|- **|Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors w/ sharp accents outperform timid, evenly-distributed palettes.
+M|Fron|- **|Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for rc when available. Focus on hi-impact moments: one well-orchestrated page load w/ staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
+M|Fron|- **|Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density.
+M|Fron|- **|cr atmosphere and depth rather than defaulting to solid colors. Add contextual effects and textures that match the overall aesthetic. Apply creative forms like gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, custom cursors, and grain overlays.
+M|Fron|tx|NEVER use generic AI-generated aesthetics like overused font families (Inter, Roboto, Arial, sy fonts), cliched color schemes (particularly purple gradients on white backgrounds), predictable layouts and cp patterns, and cookie-cutter ds that lacks context-specific character.
+M|Fron|tx|Interpret creatively and make unexpected choices that feel genuinely designed for the context. No ds shd be the same. Vary btw light and dark themes, different fonts, different aesthetics. NEVER converge on common choices (Space Grotesk, for example) across generations.
+M|Fron|**IM|Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code w/ extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
+M|Fron|Reme|Claude is capable of extraordinary creative work. Don't hold back, show what can truly be created when thinking outside the box and committing fully to a distinctive vision.

@@ -1,0 +1,32 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/COO/diana/skills/operating-system/triple-pass-protocol/SKILL.md savings=7%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|dn's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any ops plan, sprint brief, KPI rp, or process recommendation is delivered. Stark never sees the process, only the final output.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|An ops recommendation w/o a named owner isn't a recommendation — it's a wish. A sprint plan w/ an aspirational deadline doesn't fail on delivery day — it fails when dn signs off w/o challenging it. This protocol catches ownership gaps, metric vagueness, and feasibility fiction before they reach mc or Stark.
+M|Purp|tx|---
+M|Pass|Writ|ops plan, sprint brief, KPI rp, process recommendation, or post-mortem. Don't self-edit during generation.
+M|Pass|Stop|
+M|Pass|**Ow|**
+M|Pass|it|Does every action item have exactly one named DRI? Not "the team" — one person.
+M|Pass|it|Has the DRI been informed before being named? A surprise DRI is not a DRI.
+M|Pass|it|Is accountability binary — one owner, one outcome? If two people share it, who answers when it fails?
+M|Pass|**Me|**
+M|Pass|it|Is every KPI stated as a number w/ a period (e.g., "sn up 12% WoW" not "sn improved")?
+M|Pass|it|Does every metric have a baseline to compare against? A number w/o a baseline is decoration.
+M|Pass|it|Are leading and lagging indicators distinguished? Lagging metrics tell you what happened; leading metrics tell you what's coming.
+M|Pass|**Fe|**
+M|Pass|it|Is every deadline realistic or aspirational? Challenge the deadline before it ships, not after it misses.
+M|Pass|it|Does the plan account for ag capacity? One sprint w/ 6 ag all at 100% is a fiction.
+M|Pass|it|Are dependencies named? If Task B requires Task A to be done first, is that stated?
+M|Pass|**Pr|**
+M|Pass|it|Does this recommendation fix the root cause — or the most recent instance of it?
+M|Pass|it|If the same fl occurred before, does this plan change the process or just re-address the symptom?
+M|Pass|it|wld this plan prevent the same fl from recurring by ds, not by reminder?
+M|Pass|**Es|**
+M|Pass|it|Is it clear what triggers escalation to mc vs. what dn resolves within ops?
+M|Pass|it|Is the threshold named? ("If burn exceeds plan by 20%, escalate" — not "escalate if it gets bad")
+M|Pass|tx|Name every missing DRI. Rewrite every vague metric. Challenge every aspirational deadline. Remove any recommendation that doesn't have a process change behind it.
+M|Pass|tx|---
+M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

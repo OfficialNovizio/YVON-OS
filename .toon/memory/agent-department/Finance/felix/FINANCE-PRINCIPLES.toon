@@ -1,0 +1,152 @@
+#MEM id=felix source=/root/yvon/agent-department/Finance/felix/FINANCE-PRINCIPLES.md savings=14%
+M|FINA|tx|> Load this file before preparing any financial rp, md, or investor up.
+M|FINA|tx|---
+M|Vent|Feli|
+M|Novi|tx|\| Metric \| Formula \| Benchmark \|
+M|Novi|tx|\|--------\|---------\|-----------\|
+M|Novi|| Gr|40–60% \|
+M|Novi|| Ne|15–25% \|
+M|Novi|tx|\| Inventory Turnover \| COGS / Avg Inventory \| Higher = better; target ≥ 4× \|
+M|Novi|tx|\| CAC \| mk Spend / New cs \| Depends on channel mix \|
+M|Novi|tx|\| ROAS \| rv from ad / Ad Spend \| Target ≥ 3× \|
+M|Novi|| Ru|< 6 months \|
+M|Novi|Key |
+M|Novi|it|rv (gross sales − returns)
+M|Novi|it|COGS (production, materials, fulfillment)
+M|Novi|it|Gross Profit
+M|Novi|it|mk & ad
+M|Novi|it|Operations (tools, admin)
+M|Novi|it|Net Profit/Loss
+M|Hour|tx|\| Metric \| Formula \| Benchmark \|
+M|Hour|tx|\|--------\|---------\|-----------\|
+M|Hour|tx|\| MRR \| Σ (monthly subscription rv) \| Track monthly growth % \|
+M|Hour|tx|\| ARR \| MRR × 12 \| Investor-facing metric \|
+M|Hour|| Ch|< 3% monthly \|
+M|Hour|| Ne|> 100% \|
+M|Hour|| CA|< 12 months \|
+M|Hour|| LT|ARPU × Avg cs Lifetime \|
+M|Hour|| LT|CAC \| LTV / CAC \| Healthy: ≥ 3:1 \|
+M|Hour|tx|\| Burn Rate \| Monthly Expenses − Monthly rv \| Track net burn \|
+M|Hour|| Ru|< 6 months \|
+M|Hour|Key |
+M|Hour|it|MRR (new + expansion − churn)
+M|Hour|it|Infrastructure / hosting
+M|Hour|it|dv costs
+M|Hour|it|cs acquisition (ad, cn)
+M|Hour|it|Operations
+M|Hour|it|Net Burn / Net Income
+M|Hour|tx|---
+M|P&L |Feli|
+M|P&L |tx|```markdown
+M|rv|tx|\| Source \| Amount \| vs Prior Month \| vs Target \|
+M|rv|tx|\|--------\|--------\|---------------\|----------\|
+M|rv|tx|\| [Source] \| $X \| +X% \| +X% \|
+M|rv|tx|\| **Total rv** \| **$X** \| **+X%** \| **+X%** \|
+M|Expe|tx|\| Category \| Amount \| vs Prior Month \| vs Budget \|
+M|Expe|tx|\|---------\|--------\|---------------\|----------\|
+M|Expe|tx|\| [Category] \| $X \| +X% \| +X% \|
+M|Expe|tx|\| **Total Expenses** \| **$X** \| **+X%** \| **+X%** \|
+M|Summ|tx|\| \| Amount \|
+M|Summ|tx|\|-\|--------\|
+M|Summ|tx|\| Gross Profit \| $X \|
+M|Summ|tx|\| Gross Margin \| X% \|
+M|Summ|tx|\| Net Profit / (Loss) \| $X \|
+M|Summ|tx|\| Net Margin \| X% \|
+M|Summ|tx|\| Cash Runway \| X months \|
+M|Key |tx|1. [Most important tn — positive or negative]
+M|Key |tx|2. [Second observation]
+M|Flag|it|[Any metric significantly off target — w/ proposed action]
+M|Flag|tx|```
+M|Flag|tx|---
+M|SaaS|tx|```markdown
+M|SaaS|tx|\| Metric \| This Month \| Prior Month \| MoM Change \| Target \|
+M|SaaS|tx|\|--------\|-----------\|------------\|-----------\|--------\|
+M|SaaS|tx|\| MRR \| $X \| $X \| +X% \| $X \|
+M|SaaS|tx|\| New MRR \| $X \| — \| — \| — \|
+M|SaaS|tx|\| Expansion MRR \| $X \| — \| — \| — \|
+M|SaaS|tx|\| Churned MRR \| ($X) \| — \| — \| — \|
+M|SaaS|tx|\| Net MRR Growth \| $X \| — \| — \| — \|
+M|SaaS|tx|\| Total us \| X \| X \| +X% \| — \|
+M|SaaS|tx|\| Paying us \| X \| X \| +X% \| X \|
+M|SaaS|tx|\| Churn Rate \| X% \| X% \| — \| <3% \|
+M|SaaS|| LT|CAC \| X:1 \| — \| — \| ≥3:1 \|
+M|SaaS|tx|\| Burn Rate \| $X/mo \| — \| — \| — \|
+M|SaaS|tx|\| Runway \| X months \| — \| — \| >6mo \|
+M|SaaS|tx|```
+M|SaaS|tx|---
+M|Cash|For |
+M|Cash|tx|```markdown
+M|Cash|**Op|** $X
+M|Cash|**Mo|** $X
+M|Cash|**Mo|** $X
+M|Cash|**Ne|** $(X) / $X
+M|Cash|**Cl|** $X
+M|Cash|**Ru|** X months
+M|Cash|**If|**
+M|Cash|tx|→ Runway extends to X months
+M|Cash|→ Br|[date]
+M|Cash|**If|**
+M|Cash|tx|→ Runway shrinks to X months
+M|Cash|→ Br|[date]
+M|Cash|tx|```
+M|Cash|tx|---
+M|Scen|When|
+M|Scen|tx|1. **State assumptions explicitly** — never bury them in the numbers.
+M|Scen|tx|2. **Base / Upside / Downside** — three scenarios minimum for any material decision.
+M|Scen|tx|3. **Identify the key variable** — what is the single number that most changes the outcome?
+M|Scen|4. *|CAC < 2)?
+M|Scen|tx|```markdown
+M|Scen|**Ba|** [List]
+M|Scen|**Up|** [List]
+M|Scen|**Do|** [List]
+M|Scen|tx|\| Metric \| Downside \| Base \| Upside \|
+M|Scen|tx|\|--------\|---------\|------\|--------\|
+M|Scen|tx|\| [Metric] \| $X \| $X \| $X \|
+M|Scen|tx|\| Runway \| X mo \| X mo \| X mo \|
+M|Scen|**Ke|** [What matters most]
+M|Scen|**Cl|** [When does this become a problem]
+M|Scen|**Re|** [fx's read on what the numbers say]
+M|Scen|tx|```
+M|Scen|tx|---
+M|Inve|Quar|
+M|Inve|tx|```markdown
+M|Head|- No|$X (vs $X prior quarter, +X%)
+M|Head|- Ho|$X (vs $X prior quarter, +X%)
+M|Head|- Co|X months
+M|What|- [2|shipped pd/features]
+M|What|- [2|what moved the needle]
+M|Chal|- [1|honest assessment — investors respect transparency]
+M|Next|- [2|what we're building toward]
+M|Key |tx|[Use SaaS Metrics rp for hb; P&L Summary for nz]
+M|Ask |tx|[Introductions / advice / connections needed]
+M|Ask |tx|```
+M|Ask |tx|fx drafts. mc reviews and adds narrative before sending.
+M|Ask |tx|---
+M|Budg|When|
+M|Budg|tx|\| Variance \| Action \|
+M|Budg|tx|\|---------\|--------\|
+M|Budg|tx|\| < 5% over \| Note it; monitor nx month \|
+M|Budg|tx|\| 5–15% over \| Flag to dn; identify root cause \|
+M|Budg|tx|\| > 15% over \| Flag to mc AND dn immediately; pause new spend until resolved \|
+M|Budg|tx|\| > 20% over \| Emergency rv; propose reallocation before nx spend cycle \|
+M|Budg|tx|\| Under budget by > 20% \| Check if activity was deferred — flag as risk if ct work is slipping \|
+M|Budg|tx|Variance is not always bad — underspend on a key initiative is a planning fl, not a win.
+M|Budg|tx|---
+M|Fina|- An|entry / core / power.
+M|Fina|it|Every pricing md includes a sensitivity al — what happens if conversion drops 20%?
+M|Fina|- **|pricing decisions made w/o LTV:CAC impact modeled.
+M|Fina|- Co|MRR, ARR, Churn, LTV, CAC, CAC Payback, Gross Margin, Burn Rate, Runway.
+M|Fina|it|Always include the healthy SaaS benchmark alongside the current metric.
+M|Fina|- **|reporting a metric w/o its benchmark and tn direction.
+M|SaaS|- Tr|MRR, ARR, MoM growth rate, NRR, churn rate, expansion MRR, contraction MRR.
+M|SaaS|it|Cohort-based retention is more actionable than aggregate churn for hb.
+M|SaaS|- **|reporting MRR growth w/o breaking out new / expansion / contraction / churn.
+M|SaaS|- CA|CAC ratio, NRR, magic number — benchmark against ARR band.
+M|SaaS|it|Flag any metric outside the healthy range immediately to mc and dn.
+M|SaaS|- **|efficiency reports that isolate one metric — always show the full picture.
+M|Busi|- Ru|growth, retention, margin, cash — across all three vt scopes.
+M|Busi|it|Flag any metric 20%+ below benchmark immediately — not at end of sn.
+M|Busi|- **|health diagnostics that skip the yv consolidated view.
+M|TAM |it|TAM = total mk. SAM = serviceable segment. SOM = realistic 3-year capture.
+M|TAM |it|Every estimate needs a sourced assumption — no magic numbers.
+M|TAM |- **|presenting SOM > 10% of SAM w/o a strong distribution rationale.

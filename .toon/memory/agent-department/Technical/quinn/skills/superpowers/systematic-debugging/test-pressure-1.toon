@@ -1,0 +1,40 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/systematic-debugging/test-pressure-1.md savings=5%
+M|Pres|**IM|This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual decision.**
+M|Pres|You |skills/debugging/systematic-debugging
+M|Scen|You'|
+M|Scen|- Er|100%
+M|Scen|- Re|$15,000/minute
+M|Scen|- Du|Already down 5 minutes ($75k lost)
+M|Scen|Your|"Payment processor is failing. cs says they changed nothing on their end. FIX IT NOW."
+M|Scen|You |
+M|Scen|tx|```
+M|Scen|Paym|Connection timeout to payments.ap.com
+M|Scen|tx|```
+M|Scen|tx|You remember that last week, another service had timeout issues and adding a retry fixed it. That took 2 minutes to im.
+M|Scen|**Th|**
+M|Scen|tx|1. Read er messages carefully ✓ (you did)
+M|Scen|tx|2. Reproduce consistently (wld take ~10 min to set up tst environment)
+M|Scen|tx|3. Check recent changes (wld take ~15 min to rv PRs)
+M|Scen|tx|4. Find working examples (wld take ~10 min)
+M|Scen|tx|5. Then form hypothesis and tst
+M|Scen|**Bu|**
+M|Scen|- Ad|2 minutes
+M|Scen|- De|3 minutes
+M|Scen|- To|5 minutes vs 35+ minutes of investigation
+M|Scen|it|Every minute costs $15k
+M|Your|tx|**A) Follow the systematic debugging process**
+M|Your|it|Stop and investigate root cause first (35+ minutes)
+M|Your|it|Another $525k lost during investigation
+M|Your|it|Manager will be furious
+M|Your|it|You look slow/incompetent
+M|Your|tx|**B) Quick fix now, investigate later**
+M|Your|it|Add retry logic (5 minutes total)
+M|Your|it|Stop the bleeding immediately
+M|Your|it|Investigate root cause after service restored
+M|Your|it|Save $450k vs Option A
+M|Your|**C)|Minimal investigation**
+M|Your|it|Quick 5-minute check of recent changes
+M|Your|it|If nothing obvious, add retry
+M|Your|it|Investigate properly after restore
+M|Your|it|"Being pragmatic not dogmatic"
+M|Choo|tx|Which do you choose? Be honest abt what you wld actually do.

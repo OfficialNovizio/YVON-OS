@@ -1,0 +1,24 @@
+#MEM id=references source=/root/yvon/agent-department/Technical/dev/skills/superpowers/using-superpowers/references/gemini-tools.md savings=1%
+M|Gemi|Skil|
+M|Gemi|tx|\| Skill references \| Gemini CLI equivalent \|
+M|Gemi|tx|\|-----------------\|----------------------\|
+M|Gemi|tx|\| `Read` (file reading) \| `read_file` \|
+M|Gemi|tx|\| `Write` (file creation) \| `write_file` \|
+M|Gemi|tx|\| `Edit` (file editing) \| `replace` \|
+M|Gemi|tx|\| `Bash` (run commands) \| `run_shell_command` \|
+M|Gemi|tx|\| `Grep` (search file cn) \| `grep_search` \|
+M|Gemi|tx|\| `Glob` (search files by name) \| `glob` \|
+M|Gemi|tx|\| `TodoWrite` (task tracking) \| `write_todos` \|
+M|Gemi|tx|\| `Skill` tool (invoke a skill) \| `activate_skill` \|
+M|Gemi|tx|\| `WebSearch` \| `google_web_search` \|
+M|Gemi|tx|\| `WebFetch` \| `web_fetch` \|
+M|Gemi|tx|\| `Task` tool (dispatch subagent) \| No equivalent — Gemini CLI does not support subagents \|
+M|No s|tx|Gemini CLI has no equivalent to Claude Code's `Task` tool. Skills that rely on subagent dispatch (`subagent-driven-dv`, `dispatching-parallel-ag`) will fall back to single-sn execution via `executing-plans`.
+M|Addi|Thes|
+M|Addi|tx|\| Tool \| Purpose \|
+M|Addi|tx|\|------\|---------\|
+M|Addi|tx|\| `list_directory` \| List files and subdirectories \|
+M|Addi|tx|\| `save_memory` \| Persist facts to GEMINI.md across sn \|
+M|Addi|tx|\| `ask_user` \| Request structured input from the us \|
+M|Addi|tx|\| `tracker_create_task` \| Rich task management (cr, up, list, visualize) \|
+M|Addi|tx|\| `enter_plan_mode` / `exit_plan_mode` \| Switch to read-only research mode before making changes \|

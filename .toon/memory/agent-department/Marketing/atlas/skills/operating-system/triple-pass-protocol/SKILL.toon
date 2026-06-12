@@ -1,0 +1,31 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/atlas/skills/operating-system/triple-pass-protocol/SKILL.md savings=12%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|at's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any visual direction, mood board, or pm architecture is delivered. Stark never sees the process, only the final output.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|A weak visual brief sent to px creates a failed batch. A batch QC fl rate above 20% means the pm architecture failed — not px. This protocol catches ambiguity, br inconsistency, and missing qual criteria before production begins.
+M|Purp|tx|---
+M|Pass|Writ|Visual Brief, Mood Board references, Style Spec, pm Architecture, and qual Bar (3 pass/fail criteria). Don't self-edit during generation.
+M|Pass|Stop|
+M|Pass|**Br|**
+M|Pass|it|Is this visual direction anchored to mc's cg brief? Or is it unsolicited creative?
+M|Pass|- Do|"What does this communicate?"
+M|Pass|it|wld removing one more element make this cleaner? (Dieter Rams tst)
+M|Pass|**Pr|**
+M|Pass|it|Are there contradictory style tags in the pm? (e.g., "candid" + "studio-lit" conflict)
+M|Pass|it|Is the subject, setting, lighting, and mood specific enough that two different AI md wld produce similar results?
+M|Pass|it|Is the Avoid list populated w/ vt-specific no-gos?
+M|Pass|**Qu|**
+M|Pass|it|Are exactly 3 pass/fail QC criteria defined — clear enough that px can apply them w/o consulting at?
+M|Pass|it|Are the criteria specific (not "looks good") and measurable ("background is neutral w/ no patterns")?
+M|Pass|- Is|composition/lighting, br fit, subject/mood?
+M|Pass|**3-|**
+M|Pass|it|wld this visual direction still feel right in 3 years — or only this week?
+M|Pass|it|Is there a tn element that will date this cg?
+M|Pass|**Ve|**
+M|Pass|- No|is it editorial minimalism, or has something slipped into catalogue / stock energy?
+M|Pass|- Ho|is it clean and modern, or has something slipped into generic fintech cliché?
+M|Pass|tx|Resolve every contradiction in the style spec. Rewrite vague qual bar criteria. Remove anything that fails the 3-year tst. Don't send ambiguous pm to px.
+M|Pass|tx|---
+M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

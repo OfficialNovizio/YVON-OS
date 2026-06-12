@@ -1,0 +1,174 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/references/people.md savings=4%
+M|Peop|tx|The People cp is where most entrepreneurial companies struggle the hardest. Having the right people in the right seats is the single biggest factor in a company's ability to execute its vision. This guide covers the Accountability Chart, the Visionary/Integrator dynamic, the People Analyzer, GWC assessment, and practical frameworks for making difficult people decisions.
+M|The |tx|The Accountability Chart is not an org chart. An org chart shows hierarchy and reporting lines. An Accountability Chart shows the major functions of the business and who is accountable for each fn's results.
+M|Why |tx|\| Org Chart \| Accountability Chart \|
+M|Why |tx|\|-----------\|---------------------\|
+M|Why |tx|\| Shows who reports to whom \| Shows who owns what outcomes \|
+M|Why |tx|\| People-centric \| fn-centric \|
+M|Why |tx|\| Grows w/ headcount \| Stays simple (5-7 major functions) \|
+M|Why |tx|\| Can mask shared accountability \| Enforces single-point accountability \|
+M|Buil|**St|Start w/ the Three Major Functions**
+M|Buil|Ever|
+M|Buil|tx|```
+M|Buil|tx|Visionary ←→ Integrator
+M|Buil|tx|\|
+M|Buil|tx|┌──────────────┼──────────────┐
+M|Buil|tx|\|              \|              \|
+M|Buil|tx|Sales/mk  Operations     fi
+M|Buil|tx|```
+M|Buil|**St|Define 3-5 Accountabilities per fn**
+M|Buil|tx|Each major fn has specific outcomes it is responsible for. Write these as bullet points under each seat.
+M|Buil|tx|\| fn \| Key Accountabilities \|
+M|Buil|tx|\|----------\|---------------------\|
+M|Buil|tx|\| **Sales/mk** \| rv targets, lead generation, br management, cs acquisition, sales process \|
+M|Buil|tx|\| **Operations** \| Service/pd delivery, qual assurance, project management, cs satisfaction, capacity planning \|
+M|Buil|tx|\| **fi** \| Financial reporting, cash flow management, budgeting, legal compliance, risk management \|
+M|Buil|**St|Add Custom Functions if Needed**
+M|Buil|Some|
+M|Buil|it|**Technology/Engineering** (for pd companies)
+M|Buil|it|**People/HR** (for companies w/ 50+ employees)
+M|Buil|it|**cs sc** (for subscription businesses)
+M|Buil|**St|Name the Seat, Then Fill It**
+M|Buil|tx|ds the Accountability Chart for the company you need, not the company you have. Determine the right structure first, then identify who shd fill each seat. Sometimes one person holds multiple seats (common in smaller companies). That is fine as long as it is explicit.
+M|The |Ever|
+M|The |it|Neither feels fully responsible
+M|The |it|Conflicts go unresolved
+M|The |it|Results suffer
+M|The |tx|When two people argue abt who owns a fn, the Integrator decides.
+M|Visi|tx|The two most important seats in any EOS company are the Visionary and the Integrator. These roles are complementary and must work in partnership.
+M|Role|tx|\| Dimension \| Visionary \| Integrator \|
+M|Role|tx|\|-----------\|-----------\|------------\|
+M|Role|tx|\| **Focus** \| Future, big picture \| Present, details \|
+M|Role|tx|\| **Strength** \| Ideas, relationships, culture \| Execution, accountability, alignment \|
+M|Role|tx|\| **Energy** \| Inspires and energizes \| Organizes and stabilizes \|
+M|Role|tx|\| **Meetings** \| Often bored in operational meetings \| Runs the Level 10 meeting \|
+M|Role|tx|\| **Decisions** \| Makes 10 decisions, 7 are great \| Makes fewer decisions, all well-considered \|
+M|Role|tx|\| **People** \| Attracts talent \| Develops and manages talent \|
+M|Role|tx|\| **Conflict** \| May avoid hard conversations \| Resolves conflict directly \|
+M|The |1. *|** gn new pd, markets, and strategies
+M|The |2. *|** Set the tone, md core values
+M|The |3. *|** Manage top cs, partners, industry connections
+M|The |4. *|** Tackle the company's biggest challenges
+M|The |5. *|** Close major deals and evangelize the company
+M|The |1. *|** Manage day-to-day operations
+M|The |2. *|** Facilitate meetings, hold leaders accountable
+M|The |3. *|** Translate vision into quarterly and weekly action
+M|The |4. *|** Break ties, mediate disputes, make hard calls
+M|The |5. *|** Evaluate which ideas to pursue and which to shelve
+M|The |**He|**
+M|The |it|[ ] They meet weekly for a 30-60 minute "Same Page Meeting"
+M|The |it|[ ] The Visionary shares ideas freely; the Integrator evaluates and filters
+M|The |it|[ ] The Integrator has authority to run the business w/o daily Visionary approval
+M|The |it|[ ] Disagreements are resolved privately, not in front of the team
+M|The |it|[ ] Both publicly support each other's decisions
+M|The |**Un|**
+M|The |it|The Visionary micromanages the Integrator
+M|The |it|The Integrator blocks all new ideas
+M|The |it|They contradict each other in team meetings
+M|The |it|Neither is willing to let the other lead in their domain
+M|The |tx|Below is a detailed breakdown of each major seat, inc common sub-functions and what "great" looks like.
+M|1. S|**Pu|** gn rv and bd the br.
+M|1. S|tx|\| Sub-fn \| Accountabilities \|
+M|1. S|tx|\|-------------\|-----------------\|
+M|1. S|tx|\| mk \| Lead generation, cn, br, cg, mk research \|
+M|1. S|tx|\| Sales \| Pipeline management, closing, account management, forecasting \|
+M|1. S|tx|\| Business dv \| Partnerships, st accounts, new mk entry \|
+M|2. O|**Pu|** Deliver the pd or service at the promised qual.
+M|2. O|tx|\| Sub-fn \| Accountabilities \|
+M|2. O|tx|\|-------------\|-----------------\|
+M|2. O|tx|\| Delivery/Fulfillment \| On-time delivery, qual standards, capacity planning \|
+M|2. O|tx|\| Project Management \| Resource allocation, timeline management, scope control \|
+M|2. O|tx|\| cs Service \| Issue resolution, satisfaction metrics, retention \|
+M|3. F|**Pu|** Manage the money and mitigate risk.
+M|3. F|tx|\| Sub-fn \| Accountabilities \|
+M|3. F|tx|\|-------------\|-----------------\|
+M|3. F|tx|\| Accounting \| Books, AP/AR, payroll, tax compliance \|
+M|3. F|tx|\| Financial Planning \| Budgets, forecasting, cash flow management \|
+M|3. F|tx|\| Legal/Compliance \| Contracts, regulatory compliance, risk assessment \|
+M|4-5.|Adde|
+M|4-5.|- **|** pd dv, infrastructure, sec, tc debt
+M|4-5.|- **|** Recruiting, onboarding, training, culture, perf management
+M|The |The |core values fit (Right Person) and role fit (Right Seat).
+M|Scor|**St|Rate Core Values**
+M|Scor|For |
+M|Scor|tx|\| Symbol \| Meaning \| Description \|
+M|Scor|tx|\|--------\|---------\|-------------\|
+M|Scor|tx|\| **+** \| Most of the time \| Exhibits this value consistently (80%+) \|
+M|Scor|tx|\| **+/-** \| Sometimes \| Exhibits this value inconsistently (50-80%) \|
+M|Scor|tx|\| **-** \| Rarely \| Does not exhibit this value (<50%) \|
+M|Scor|**Th|** Everyone must be "+" on every core value. One "+/-" is a coaching conversation w/ a 90-day deadline to improve. Two "+/-" or any "-" means this is the wrong person.
+M|Peop|tx|\| Name \| Core Value 1 \| Core Value 2 \| Core Value 3 \| Core Value 4 \| GWC \| Decision \|
+M|Peop|tx|\|------\|-------------\|-------------\|-------------\|-------------\|-----\|----------\|
+M|Peop|tx|\| Sarah \| + \| + \| + \| + \| Y/Y/Y \| Keep (A-player) \|
+M|Peop|tx|\| James \| + \| +/- \| + \| + \| Y/Y/Y \| Coach (90-day plan) \|
+M|Peop|tx|\| Priya \| + \| + \| + \| + \| Y/N/Y \| Move seat \|
+M|Peop|tx|\| Dave \| - \| +/- \| + \| + \| Y/Y/Y \| Exit \|
+M|Peop|tx|\| Lisa \| + \| + \| + \| + \| Y/Y/N \| Develop or move \|
+M|GWC |tx|GWC stands for Get it, Want it, Capacity to do it. All three must be "yes" for someone to be in the right seat.
+M|Get |tx|Does this person truly understand the role? Not just the tasks, but the nuances, the judgment calls, the unwritten rules. Someone who "gets it" can anticipate problems, see connections, and make decisions w/o being told.
+M|Get |**Di|**
+M|Get |it|Can they explain the role's purpose in one sentence?
+M|Get |it|Do they see the downstream impact of their decisions?
+M|Get |it|Do they need constant direction, or do they figure things out?
+M|Want|tx|Does this person genuinely want this specific role? Not a paycheck. Not a title. This actual work, every day. People who "want it" show up w/ energy for the role, not just tolerance.
+M|Want|**Di|**
+M|Want|it|wld they choose this role if money were not a factor?
+M|Want|it|Do they light up when talking abt their work?
+M|Want|it|Are they making sacrifices willingly, or resentfully?
+M|Capa|tx|Does this person have the intellectual, physical, emotional, and time capacity to excel? Capacity is the hardest to change. Skills can be trained. Capacity is more fundamental.
+M|Capa|**Di|**
+M|Capa|it|Can they handle the volume and complexity of the role?
+M|Capa|it|Do they have the emotional resilience the role requires?
+M|Capa|it|Are they already at capacity, or do they have room to grow into the role?
+M|GWC |tx|\| G \| W \| C \| Verdict \| Action \|
+M|GWC |tx|\|---\|---\|---\|---------\|--------\|
+M|GWC |tx|\| Y \| Y \| Y \| Right seat \| Invest and retain \|
+M|GWC |tx|\| Y \| Y \| N \| Capacity gap \| Train, reduce scope, or move \|
+M|GWC |tx|\| Y \| N \| Y \| Motivation issue \| Have honest conversation, likely move seats \|
+M|GWC |tx|\| Y \| N \| N \| Wrong seat entirely \| Move to a different seat \|
+M|GWC |tx|\| N \| Y \| Y \| Doesn't get it \| Coach for 90 days, may not be fixable \|
+M|GWC |tx|\| N \| Y \| N \| Square peg, round hole \| Move seats \|
+M|GWC |tx|\| N \| N \| Y \| Capable but wrong fit \| Find the seat they get and want \|
+M|GWC |tx|\| N \| N \| N \| Wrong seat \| Move immediately \|
+M|Righ|tx|\| \| Right Seat \| Wrong Seat \|
+M|Righ|tx|\|---\|-----------\|------------\|
+M|Righ|tx|\| **Right Person** \| A-player. Protect, invest, promote. \| Move to the right seat. They share your values -- find where they thrive. \|
+M|Righ|tx|\| **Wrong Person** \| Hardest call. They produce results but damage culture. The answer is almost always exit. \| Exit. No fit on either dimension. Delay makes it worse. \|
+M|The |This|
+M|The |1. *|** Direct conversation. "Here is the core value you are violating, here is the specific behavior, here is what needs to change."
+M|The |2. *|** Written 30-day improvement plan w/ specific behavioral milestones.
+M|The |3. *|** Exit. The team is watching. Keeping a wrong person teaches everyone that core values are negotiable.
+M|Prep|it|[ ] Write down the specific issue w/ concrete examples
+M|Prep|it|[ ] Identify which core value or GWC element is in question
+M|Prep|it|[ ] Choose a private setting w/ no interruptions
+M|Prep|it|[ ] Plan to listen more than talk (60/40 rule)
+M|Prep|it|[ ] Have a clear outcome in mind (coaching plan, role change, or exit)
+M|The |tx|1. **State the issue directly.** "I need to talk abt [specific behavior/perf]. This is important for both of us."
+M|The |tx|2. **Give specific examples.** "On [date], [what happened]. Last week, [another example]."
+M|The |tx|3. **Connect to core values or GWC.** "This conflicts w/ our core value of [value]" or "I'm concerned abt your capacity for [specific aspect]."
+M|The |4. *|"What's your perspective?" Listen w/o interrupting.
+M|The |tx|5. **Agree on nx steps.** "Here's what needs to change, by when, and how we'll measure it."
+M|The |tx|6. **Document.** Confirm the conversation and commitments in writing within 24 hours.
+M|Inte|**St|Screen for core values first.** Before evaluating skills, assess whether the candidate aligns w/ each core value.
+M|Inte|**St|Use behavioral questions tied to each core value.**
+M|Inte|tx|\| Core Value \| Interview Question \|
+M|Inte|tx|\|-----------\|-------------------\|
+M|Inte|tx|\| Own It \| "Tell me abt a time you made a mistake at work. What happened and what did you do?" \|
+M|Inte|tx|\| Do the Right Thing \| "Describe a situation where you had to choose btw what was easy and what was right." \|
+M|Inte|tx|\| Grow or Die \| "What's the last skill you taught yourself? How did you go abt it?" \|
+M|Inte|**St|Back-channel references.** Ask references specifically abt core values behaviors, not just competence.
+M|Inte|**St|Trial period.** The first 90 days are an extended interview. Evaluate core values fit at 30, 60, and 90 days.
+M|Quar|Ever|
+M|Quar|tx|\| Section \| Time \| Focus \|
+M|Quar|tx|\|---------\|------\|-------\|
+M|Quar|tx|\| Core Values rv \| 10 min \| Rate each value (+, +/-, -). Discuss any +/- w/ specific examples. Acknowledge strengths. \|
+M|Quar|tx|\| GWC Check \| 10 min \| Get it (clear on role?), Want it (still energized?), Capacity (right-sized workload?) \|
+M|Quar|tx|\| Rock rv \| 5 min \| On track / off track. What support is needed? \|
+M|Quar|tx|\| Forward Look \| 5 min \| nx quarter outlook, dv goals, feedback for the leader \|
+M|Docu|tx|```
+M|Docu|Empl|____________  Manager: ____________  Date: ____________
+M|Docu|Core|[V1] +/+/-/-  [V2] +/+/-/-  [V3] +/+/-/-
+M|Docu|GWC|G(Y/N) W(Y/N) C(Y/N)
+M|Docu|Asse|Right Person/Right Seat \| Action Needed
+M|Docu|Acti|____________  nx rv: ____________
+M|Docu|tx|```

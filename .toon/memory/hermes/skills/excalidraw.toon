@@ -1,0 +1,97 @@
+SKILL|excalidraw|"Hand-drawn Excalidraw JSON diagrams (arch, flow, seq)."
+STEP|1|**Load this skill** (you already did)
+STEP|2|**Write the elements JSON** -- an array of Excalidraw element objects
+STEP|3|**Save the file** using `write_file` to create a `.excalidraw` file
+STEP|4|**Optionally upload** for a shareable link using `scripts/upload.py` via `terminal`
+STEP|5|`strokeColor`: `"#1e1e1e"`
+STEP|6|`backgroundColor`: `"transparent"`
+STEP|7|`fillStyle`: `"solid"`
+STEP|8|`strokeWidth`: `2`
+STEP|9|`roughness`: `1` (hand-drawn look)
+STEP|10|`opacity`: `100`
+STEP|11|Rectangle**:
+STEP|12|`roundness: { "type": 3 }` for rounded corners
+STEP|13|`backgroundColor: "#a5d8ff"`, `fillStyle: "solid"` for filled
+STEP|14|Ellipse**:
+STEP|15|Diamond**:
+STEP|16|Labeled shape (container binding)** -- create a text element bound to the shape:
+STEP|17|Works on rectangle, ellipse, diamond
+STEP|18|Text is auto-centered by Excalidraw when `containerId` is set
+STEP|19|The text `x`/`y`/`width`/`height` are approximate -- Excalidraw recalculates them on load
+STEP|20|`originalText` should match `text`
+STEP|21|Always include `fontFamily: 1` (Virgil/hand-drawn font)
+STEP|22|Labeled arrow** -- same container binding approach:
+STEP|23|Standalone text** (titles and annotations only -- no container):
+STEP|24|`x` is the LEFT edge. To center at position `cx`: `x = cx - (text.length * fontSize * 0.5) / 2`
+STEP|25|Do NOT rely on `textAlign` or `width` for positioning
+STEP|26|Arrow**:
+STEP|27|`points`: `[dx, dy]` offsets from element `x`, `y`
+STEP|28|`endArrowhead`: `null` \| `"arrow"` \| `"bar"` \| `"dot"` \| `"triangle"`
+STEP|29|`strokeStyle`: `"solid"` (default) \| `"dashed"` \| `"dotted"`
+STEP|30|Array order = z-order (first = back, last = front)
+STEP|31|Emit progressively: background zones → shape → its bound text → its arrows → next shape
+STEP|32|BAD: all rectangles, then all texts, then all arrows
+STEP|33|GOOD: bg_zone → shape1 → text_for_shape1 → arrow1 → arrow_label_text → shape2 → text_for_shape2 → ...
+STEP|34|Always place the bound text element immediately after its container shape
+STEP|35|Font sizes:**
+STEP|36|Minimum `fontSize`: **16** for body text, labels, descriptions
+STEP|37|Minimum `fontSize`: **20** for titles and headings
+STEP|38|Minimum `fontSize`: **14** for secondary annotations only (sparingly)
+STEP|39|NEVER use `fontSize` below 14
+STEP|40|Element sizes:**
+STEP|41|Minimum shape size: 120x60 for labeled rectangles/ellipses
+STEP|42|Leave 20-30px gaps between elements minimum
+STEP|43|Prefer fewer, larger elements over many tiny ones
+STEP|44|Use the color palette consistently across the diagram
+STEP|45|**Text contrast is CRITICAL** -- never use light gray on white backgrounds. Minimum text color on white: `#757575`
+STEP|46|Do NOT use emoji in text -- they don't render in Excalidraw's font
+STEP|47|For dark mode diagrams, see `references/dark-mode.md`
+STEP|48|For larger examples, see `references/examples.md`
+PIT|**Load this skill** (you already did)
+PIT|**Write the elements JSON** -- an array of Excalidraw element objects
+PIT|**Save the file** using `write_file` to create a `.excalidraw` file
+PIT|**Optionally upload** for a shareable link using `scripts/upload.py` via `terminal`
+PIT|`strokeColor`: `"#1e1e1e"`
+PIT|`backgroundColor`: `"transparent"`
+PIT|`fillStyle`: `"solid"`
+PIT|`strokeWidth`: `2`
+PIT|`roughness`: `1` (hand-drawn look)
+PIT|`opacity`: `100`
+PIT|Rectangle**:
+PIT|`roundness: { "type": 3 }` for rounded corners
+PIT|`backgroundColor: "#a5d8ff"`, `fillStyle: "solid"` for filled
+PIT|Ellipse**:
+PIT|Diamond**:
+PIT|Labeled shape (container binding)** -- create a text element bound to the shape:
+PIT|Works on rectangle, ellipse, diamond
+PIT|Text is auto-centered by Excalidraw when `containerId` is set
+PIT|The text `x`/`y`/`width`/`height` are approximate -- Excalidraw recalculates them on load
+PIT|`originalText` should match `text`
+PIT|Always include `fontFamily: 1` (Virgil/hand-drawn font)
+PIT|Labeled arrow** -- same container binding approach:
+PIT|Standalone text** (titles and annotations only -- no container):
+PIT|`x` is the LEFT edge. To center at position `cx`: `x = cx - (text.length * fontSize * 0.5) / 2`
+PIT|Do NOT rely on `textAlign` or `width` for positioning
+PIT|Arrow**:
+PIT|`points`: `[dx, dy]` offsets from element `x`, `y`
+PIT|`endArrowhead`: `null` \| `"arrow"` \| `"bar"` \| `"dot"` \| `"triangle"`
+PIT|`strokeStyle`: `"solid"` (default) \| `"dashed"` \| `"dotted"`
+PIT|Array order = z-order (first = back, last = front)
+PIT|Emit progressively: background zones → shape → its bound text → its arrows → next shape
+PIT|BAD: all rectangles, then all texts, then all arrows
+PIT|GOOD: bg_zone → shape1 → text_for_shape1 → arrow1 → arrow_label_text → shape2 → text_for_shape2 → ...
+PIT|Always place the bound text element immediately after its container shape
+PIT|Font sizes:**
+PIT|Minimum `fontSize`: **16** for body text, labels, descriptions
+PIT|Minimum `fontSize`: **20** for titles and headings
+PIT|Minimum `fontSize`: **14** for secondary annotations only (sparingly)
+PIT|NEVER use `fontSize` below 14
+PIT|Element sizes:**
+PIT|Minimum shape size: 120x60 for labeled rectangles/ellipses
+PIT|Leave 20-30px gaps between elements minimum
+PIT|Prefer fewer, larger elements over many tiny ones
+PIT|Use the color palette consistently across the diagram
+PIT|**Text contrast is CRITICAL** -- never use light gray on white backgrounds. Minimum text color on white: `#757575`
+PIT|Do NOT use emoji in text -- they don't render in Excalidraw's font
+PIT|For dark mode diagrams, see `references/dark-mode.md`
+PIT|For larger examples, see `references/examples.md`

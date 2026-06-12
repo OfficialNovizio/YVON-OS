@@ -1,0 +1,508 @@
+#MEM id=business-health-diagnostic source=/root/yvon/agent-department/CEO/marcus/skills/executive-operations/business-health-diagnostic/SKILL.md savings=7%
+M||tx|---
+M||name|business-health-diagnostic
+M||desc|>-
+M||tx|Diagnose SaaS business health across growth, retention, efficiency, and capital. Use when preparing a business rv or prioritizing ur fixes.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[ce, executive, st, synthesis, brief, okr, war-room, business]
+M||inte|Diagnose overall SaaS business health by analyzing growth, retention, unit economics, and capital efficiency metrics together. Use this to identify problems early, prioritize actions by urgency, and deliver a comprehensive health scorecard for board meetings, quarterly reviews, or fundraising preparation.
+M||tp|interactive
+M||them|fi-metrics
+M||best|
+M||scen|
+M||esti|"20-30 min"
+M||tx|---
+M|Purp|tx|Diagnose overall SaaS business health by analyzing growth, retention, unit economics, and capital efficiency metrics together. Use this to identify problems early, prioritize actions by urgency, and deliver a comprehensive health scorecard for board meetings, quarterly reviews, or fundraising preparation.
+M|Purp|tx|This is not a single-metric check—it's a holistic diagnostic that connects rv, retention, economics, and efficiency to reveal systemic issues and opportunities.
+M|The |A Sa|
+M|The |tx|1. **Growth & Retention** — Are you growing and keeping cs?
+M|The |it|rv growth rate
+M|The |it|NRR (Net rv Retention)
+M|The |it|Churn rate
+M|The |it|Quick Ratio
+M|The |tx|2. **Unit Economics** — Is the business md profitable at the cs level?
+M|The |it|CAC (cs Acquisition Cost)
+M|The |it|LTV (Lifetime Value)
+M|The |- LT|CAC ratio
+M|The |it|Payback period
+M|The |it|Gross margin
+M|The |tx|3. **Capital Efficiency** — Are you using cash efficiently?
+M|The |it|Burn rate
+M|The |it|Runway
+M|The |it|Rule of 40
+M|The |it|Magic Number
+M|The |tx|4. **st Position** — Are you positioned for sustainable sc?
+M|The |it|mk positioning (below, at, above mk pricing)
+M|The |it|Competitive moat (network effects, data, br)
+M|The |it|rv concentration risk
+M|The |it|Operating leverage
+M|Stag|**Ea|**
+M|Stag|- Fo|pd-mk fit, unit economics
+M|Stag|- Gr|>50% YoY
+M|Stag|- LT|CAC: >3:1
+M|Stag|- Gr|>70%
+M|Stag|- Ru|>12 months
+M|Stag|- Ac|Negative margins, hi burn (if unit economics work)
+M|Stag|**Gr|**
+M|Stag|- Fo|Scaling efficiently
+M|Stag|- Gr|>40% YoY
+M|Stag|- NR|>100%
+M|Stag|- Ru|>40
+M|Stag|- Ma|>0.75
+M|Stag|- Ac|Moderate burn if growth is strong
+M|Stag|**Sc|**
+M|Stag|- Fo|Profitability, efficiency
+M|Stag|- Gr|>25% YoY
+M|Stag|- NR|>110%
+M|Stag|- Ru|>40
+M|Stag|- Pr|>10%
+M|Stag|- Re|Positive or near-positive cash flow
+M|Red |**Cr|**
+M|Red |it|Runway <6 months
+M|Red |- LT|CAC <1.5:1
+M|Red |it|Churn accelerating cohort-over-cohort
+M|Red |it|NRR <90%
+M|Red |it|Magic Number <0.3
+M|Red |**Hi|**
+M|Red |it|Rule of 40 <25
+M|Red |it|Payback >24 months
+M|Red |it|Quick Ratio <2
+M|Red |it|Gross margin <60%
+M|Red |it|rv concentration >50% in top 10 cs
+M|Red |**Me|**
+M|Red |it|NRR 90-100% (flat, not growing)
+M|Red |it|Magic Number 0.3-0.5
+M|Red |it|Operating leverage negative
+M|Red |it|Churn rate stable but hi (>5% monthly)
+M|Anti|- **|** "rv is growing 50%, we're great!" (ignoring burn, churn, unit economics)
+M|Anti|- **|** Early-stage burn is acceptable; scale-stage burn is a problem
+M|Anti|- **|** Health is directional—are metrics improving or degrading?
+M|Anti|- **|** Context matters (competitive pressure, mk changes, team capacity)
+M|When|**Us|**
+M|When|it|Preparing for board meetings or investor updates
+M|When|it|Quarterly business reviews (QBR)
+M|When|it|Fundraising preparation (know your numbers)
+M|When|it|Annual planning (identify improvement areas)
+M|When|it|You suspect problems but can't pinpoint them
+M|When|it|New PM/exec joining and needs health assessment
+M|When|**Do|**
+M|When|it|You're pre-rv (focus on pd-mk fit first)
+M|When|it|You're in pure research mode (not enough data)
+M|When|- Yo|feature, channel, pricing)
+M|When|tx|---
+M|Faci|tx|Use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the default interaction protocol for this skill.
+M|Faci|It d|
+M|Faci|it|sn heads-up + entry mode (Guided, Context dump, Best guess)
+M|Faci|it|one-question turns w/ plain-language pm
+M|Faci|it|progress labels (for example, Context Qx/8 and Scoring Qx/5)
+M|Faci|it|interruption handling and pause/resume behavior
+M|Faci|it|numbered recommendations at decision points
+M|Faci|it|quick-select numbered rp options for regular questions (include `Other (specify)` when useful)
+M|Faci|tx|This file defines the domain-specific assessment cn. If there is a conflict, follow this file's domain logic.
+M|Appl|tx|This interactive skill asks **up to 4 adaptive questions**, then delivers a comprehensive diagnostic w/ prioritized recommendations.
+M|Appl|tx|---
+M|Step|**Ag|**
+M|Step|"Let|growth, retention, unit economics, and capital efficiency.
+M|Step|**Co|**
+M|Step|- St|(Pre-$10M ARR, $10M-$50M ARR, $50M+ ARR)
+M|Step|- Bu|(PLG, sales-led, hybrid)
+M|Step|- Ta|(SMB, mid-mk, enterprise, mixed)
+M|Step|**Wh|** Benchmarks vary by stage. Early-stage optimizes for growth; scale-stage optimizes for efficiency.
+M|Step|tx|Please provide the following metrics. Use 'unknown' if you don't have a metric."
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|"**G|**
+M|Step|1. *|**
+M|Step|- Cu|$___
+M|Step|- Re|___% (MoM or YoY)
+M|Step|2. *|**
+M|Step|- Mo|___%
+M|Step|- NR|___%
+M|Step|- Qu|___ (or I can calculate it)
+M|Step|3. *|**
+M|Step|- Ex|___%
+M|Step|4. *|**
+M|Step|it|Are recent cohorts retaining better or worse than older cohorts?
+M|Step|tx|1. Better (improving)
+M|Step|tx|2. Same (stable)
+M|Step|tx|3. Worse (degrading)
+M|Step|tx|4. Unknown"
+M|Step|**Ba|**
+M|Step|- ✅ |** Growth >40% YoY (growth stage) or >25% (scale stage)
+M|Step|- ✅ |** NRR >100%, churn <5% monthly, Quick Ratio >2
+M|Step|- 🚨|** Growth <20% YoY
+M|Step|- 🚨|** NRR <100%, churn >5%, cohort degradation
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|"**U|**
+M|Step|1. *|**
+M|Step|- CA|$___
+M|Step|it|Blended or by channel? (If by channel, what's your best channel CAC?)
+M|Step|2. *|**
+M|Step|- LT|$___
+M|Step|- LT|CAC ratio: ___ (or I can calculate it)
+M|Step|- Pa|___ months (or I can calculate it)
+M|Step|3. *|**
+M|Step|- Gr|___%
+M|Step|- Co|___%
+M|Step|4. *|**
+M|Step|it|Is CAC increasing, stable, or decreasing over time?
+M|Step|tx|1. Decreasing (improving efficiency)
+M|Step|tx|2. Stable
+M|Step|tx|3. Increasing (diminishing returns)
+M|Step|tx|4. Unknown"
+M|Step|**Ba|**
+M|Step|- ✅ |** LTV:CAC >3:1, payback <12 months, gross margin >70%
+M|Step|- ⚠️|** LTV:CAC 2-3:1, payback 12-18 months
+M|Step|- 🚨|** LTV:CAC <2:1, payback >24 months, gross margin <60%
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|"**C|**
+M|Step|1. *|**
+M|Step|- Ca|$___
+M|Step|- Mo|$___
+M|Step|- Ru|___ months (or I can calculate it)
+M|Step|2. *|**
+M|Step|- Ru|___ (Growth % + Profit Margin %) (or I can calculate it)
+M|Step|- Ma|___ (S&M efficiency) (or I can calculate it)
+M|Step|3. *|**
+M|Step|- S&|___%
+M|Step|- R&|___%
+M|Step|it|Is OpEx growing faster than rv?
+M|Step|tx|1. No (positive operating leverage)
+M|Step|tx|2. Yes (negative operating leverage)
+M|Step|tx|3. Unknown
+M|Step|4. *|**
+M|Step|- Pr|___%
+M|Step|- Pa|(already profitable, 6-12 months, 12-24 months, >24 months, unknown)"
+M|Step|**Ba|**
+M|Step|- ✅ |** Rule of 40 >40, magic number >0.75, runway >12 months
+M|Step|- ⚠️|** Rule of 40 25-40, magic number 0.5-0.75, runway 6-12 months
+M|Step|- 🚨|** Rule of 40 <25, magic number <0.5, runway <6 months
+M|Step|tx|---
+M|Step|**Ag|**
+M|Step|tx|1. **Overall Health Score** — Healthy / Moderate / Concerning / ct
+M|Step|tx|2. **Dimension Scores** — Growth, Retention, Economics, Efficiency
+M|Step|tx|3. **Red Flags** — ct, hi Priority, md Priority
+M|Step|tx|4. **Prioritized Recommendations** — Top 3-5 actions w/ expected impact
+M|Step|tx|5. **Stage-Appropriate Benchmarks** — How you compare to peers
+M|Step|tx|---
+M|Diag|**Wh|**
+M|Diag|it|Growth, retention, economics, and efficiency all meet stage-appropriate benchmarks
+M|Diag|it|No ct red flags
+M|Diag|it|Improving tn
+M|Diag|**Ou|**
+M|Diag|"## |**Healthy**
+M|Diag|tx|Your business shows strong fundamentals across all dimensions.
+M|Diag|tx|---
+M|Heal|tx|\| Dimension \| Score \| Status \|
+M|Heal|tx|\|-----------\|-------\|--------\|
+M|Heal|tx|\| **Growth & Retention** \| ✅ Healthy \| Growth ___% YoY, NRR ___%, Churn ___% \|
+M|Heal|| **|CAC ___:1, Payback ___ months \|
+M|Heal|| **|___, Runway ___ months \|
+M|Heal|tx|\| **Overall** \| ✅ **Healthy** \| Strong position for scaling \|
+M|Heal|tx|---
+M|Key |tx|1. **[Specific strength 1]**
+M|Key |- Me|[e.g., NRR 120%]
+M|Key |- Wh|[Expanding within base w/o new logos]
+M|Key |tx|2. **[Specific strength 2]**
+M|Key |- Me|[e.g., LTV:CAC 5:1]
+M|Key |- Wh|[Sustainable unit economics support scaling]
+M|Key |tx|3. **[Specific strength 3]**
+M|Key |- Me|[e.g., Rule of 40 = 65]
+M|Key |- Wh|[Excellent balance of growth and efficiency]
+M|Key |tx|---
+M|Oppo|Even|
+M|Oppo|tx|**1. [Opportunity 1]**
+M|Oppo|- Cu|[e.g., Magic Number 0.9]
+M|Oppo|- Op|[cld scale S&M spend 2x and maintain efficiency]
+M|Oppo|- Im|[+$___ MRR/month]
+M|Oppo|tx|**2. [Opportunity 2]**
+M|Oppo|- Cu|[e.g., Expansion rv 15% of total]
+M|Oppo|- Op|[bd upsell paths, target 25% expansion rv]
+M|Oppo|- Im|[NRR 110% → 120%]
+M|Oppo|tx|**3. [Opportunity 3]**
+M|Oppo|- Cu|[e.g., CAC $500, stable]
+M|Oppo|- Op|[Improve conversion, reduce CAC to $400]
+M|Oppo|- Im|[Faster payback, better LTV:CAC]
+M|Oppo|tx|---
+M|Reco|**Pr|Scale what's working**
+M|Reco|it|[e.g., Double cn mk budget (best channel)]
+M|Reco|- Ex|[+___ cs/month, +$___ MRR]
+M|Reco|**Pr|Expand within base**
+M|Reco|it|[e.g., Launch premium tier for 20% of cs]
+M|Reco|- Ex|[NRR 110% → 115%]
+M|Reco|**Pr|Improve efficiency**
+M|Reco|it|[e.g., op paid acquisition (reduce CAC 10%)]
+M|Reco|- Ex|[Payback 8mo → 7mo]
+M|Reco|tx|---
+M|Moni|**We|**
+M|Moni|it|NRR (shd stay >___%)
+M|Moni|it|Churn rate (shd stay <___%)
+M|Moni|it|Quick Ratio (shd stay >___)
+M|Moni|**Mo|**
+M|Moni|it|Rule of 40 (shd stay >___)
+M|Moni|it|Magic Number (shd stay >___)
+M|Moni|- LT|CAC (shd stay >___:1)
+M|Moni|**Qu|**
+M|Moni|it|Cohort retention tn
+M|Moni|it|rv concentration risk
+M|Moni|it|Operating leverage
+M|Moni|tx|---
+M|Benc|tx|\| Metric \| Your perf \| Benchmark \| Status \|
+M|Benc|tx|\|--------\|------------------\|-----------\|--------\|
+M|Benc|tx|\| Growth Rate \| ___% \| >40% (growth) / >25% (scale) \| ✅ \|
+M|Benc|tx|\| NRR \| ___% \| >100% \| ✅ \|
+M|Benc|| LT|CAC \| ___:1 \| >3:1 \| ✅ \|
+M|Benc|tx|\| Rule of 40 \| ___ \| >40 \| ✅ \|
+M|Benc|tx|\| Gross Margin \| ___% \| >70% \| ✅ \|
+M|Benc|tx|You're performing at or above benchmarks across the board."
+M|Benc|tx|---
+M|Diag|**Wh|**
+M|Diag|it|Most metrics acceptable, but 1-2 dimensions have problems
+M|Diag|it|md-priority red flags
+M|Diag|it|Solvable w/ focus
+M|Diag|**Ou|**
+M|Diag|"## |**Moderate** (Fixable Issues)
+M|Diag|tx|Your business has good fundamentals but needs attention in [specific dimension].
+M|Diag|tx|---
+M|Heal|tx|\| Dimension \| Score \| Status \|
+M|Heal|tx|\|-----------\|-------\|--------\|
+M|Heal|tx|\| **Growth & Retention** \| [✅ / ⚠️ / 🚨] \| [Details] \|
+M|Heal|tx|\| **Unit Economics** \| [✅ / ⚠️ / 🚨] \| [Details] \|
+M|Heal|tx|\| **Capital Efficiency** \| [✅ / ⚠️ / 🚨] \| [Details] \|
+M|Heal|tx|\| **Overall** \| ⚠️ **Moderate** \| [Primary issue area] needs attention \|
+M|Heal|tx|---
+M|Red |tx|**hi Priority** 🚨
+M|Red |tx|1. **[Specific red flag]**
+M|Red |- Me|[e.g., NRR 95%]
+M|Red |- Th|[shd be >100%]
+M|Red |- Im|[Base is contracting, not expanding]
+M|Red |- Fi|[End of quarter]
+M|Red |tx|**md Priority** ⚠️
+M|Red |tx|1. **[Specific issue]**
+M|Red |- Me|[e.g., Magic Number 0.6]
+M|Red |- Th|[shd be >0.75]
+M|Red |- Im|[S&M spend moderately efficient, room for improvement]
+M|Red |- Fi|[6 months]
+M|Red |tx|---
+M|Root|**Pr|[e.g., Retention & Expansion]**
+M|Root|**Sy|**
+M|Root|it|NRR 95% (shd be >100%)
+M|Root|it|Churn rate 5% monthly (shd be <3%)
+M|Root|it|Expansion rv only 10% of MRR (shd be 20-30%)
+M|Root|**Di|**
+M|Root|tx|[e.g., cs are churning before they expand. Onboarding is weak, no clear upsell paths.]
+M|Root|**Im|**
+M|Root|- Lo|[Calculate churn impact]
+M|Root|- Mi|[Calculate expansion opportunity]
+M|Root|- To|[Combined rv loss]
+M|Root|tx|---
+M|Prio|**Im|**
+M|Prio|tx|**1. Fix [Primary Issue]**
+M|Prio|- Ac|[Specific step, e.g., "Launch onboarding improvement program"]
+M|Prio|- Ow|[PM, cs sc]
+M|Prio|- Ta|[Reduce churn 5% → 4%]
+M|Prio|- Im|[Save $___K MRR/month]
+M|Prio|**Sh|**
+M|Prio|tx|**2. [Secondary Action]**
+M|Prio|- Ac|[e.g., "bd premium tier for upsell"]
+M|Prio|- Ta|[NRR 95% → 105%]
+M|Prio|- Im|[+$___K expansion MRR]
+M|Prio|tx|**3. [Tertiary Action]**
+M|Prio|- Ac|[e.g., "op S&M spend, improve magic number"]
+M|Prio|- Ta|[Magic Number 0.6 → 0.8]
+M|Prio|- Im|[More efficient growth]
+M|Prio|tx|---
+M|What|**Ta|**
+M|What|- NR|95% → 105% (+10pp)
+M|What|- Ch|5% → 3.5% (-30%)
+M|What|- Ma|0.6 → 0.8 (+33%)
+M|What|**Im|**
+M|What|- Mo|+$___K
+M|What|- Ex|+$___K
+M|What|- Mo|[details]
+M|What|tx|**If you hit these targets, you'll be in 'Healthy' territory.**
+M|What|tx|---
+M|Moni|**Mu|**
+M|Moni|it|Churn rate (track to ensure it's decreasing)
+M|Moni|it|NRR (track to ensure it's improving)
+M|Moni|it|cs feedback (are improvements working?)
+M|Moni|**Le|**
+M|Moni|it|Onboarding completion rate
+M|Moni|it|Time-to-value
+M|Moni|it|Usage metrics (activation, engagement)
+M|Moni|tx|---
+M|What|**Do|**
+M|What|it|Scale acquisition until retention is fixed (you'll just churn faster)
+M|What|it|Ignore expansion (it's easier than new acquisition)
+M|What|it|Wait too long (retention problems compound)"
+M|What|tx|---
+M|Diag|**Wh|**
+M|Diag|it|Multiple ct red flags
+M|Diag|it|2+ dimensions problematic
+M|Diag|it|Requires immediate intervention
+M|Diag|**Ou|**
+M|Diag|"## |**Concerning** (ur Action Required)
+M|Diag|tx|Your business has multiple ct issues that need immediate attention.
+M|Diag|tx|---
+M|Heal|tx|\| Dimension \| Score \| Status \|
+M|Heal|tx|\|-----------\|-------\|--------\|
+M|Heal|tx|\| **Growth & Retention** \| 🚨 Concerning \| [Details] \|
+M|Heal|tx|\| **Unit Economics** \| 🚨 Concerning \| [Details] \|
+M|Heal|tx|\| **Capital Efficiency** \| 🚨 ct \| [Details] \|
+M|Heal|tx|\| **Overall** \| 🚨 **Concerning** \| Multiple ur issues \|
+M|Heal|tx|---
+M|Crit|tx|**1. [ct Issue 1 - e.g., Runway]**
+M|Crit|- Cu|[6 months runway]
+M|Crit|- Th|[<6 months = crisis]
+M|Crit|- Im|[Survival risk]
+M|Crit|- Ac|[Raise capital OR cut burn immediately]
+M|Crit|- Ti|[30 days]
+M|Crit|tx|**2. [ct Issue 2 - e.g., Unit Economics]**
+M|Crit|- Cu|[LTV:CAC 1.2:1]
+M|Crit|- Th|[<1.5:1 = unsustainable]
+M|Crit|- Im|[Losing money on every cs]
+M|Crit|- Ac|[Reduce CAC OR increase LTV]
+M|Crit|- Ti|[60 days]
+M|Crit|tx|**3. [ct Issue 3 - e.g., Cohort Degradation]**
+M|Crit|- Cu|[Newer cohorts churning 2x faster than old]
+M|Crit|- Th|[Degrading PMF]
+M|Crit|- Im|[Scaling makes problem worse]
+M|Crit|- Ac|[Stop scaling, fix retention]
+M|Crit|- Ti|[90 days]
+M|Crit|tx|---
+M|Surv|**We|Triage**
+M|Surv|**Im|**
+M|Surv|tx|1. **Extend runway** (if <6 months)
+M|Surv|- Op|Raise bridge round ($___K)
+M|Surv|- Op|Cut burn by ___%
+M|Surv|- Op|Combination
+M|Surv|- De|[Date]
+M|Surv|tx|2. **Stop scaling broken channels**
+M|Surv|- Pa|CAC <2:1
+M|Surv|it|Reallocate budget to [best-performing channel]
+M|Surv|tx|3. **Assemble crisis team**
+M|Surv|it|Daily standups on key metrics
+M|Surv|it|Weekly progress reviews
+M|Surv|tx|---
+M|Surv|**Mo|Stop the Bleeding**
+M|Surv|**Pr|Fix Unit Economics**
+M|Surv|- Cu|LTV:CAC ___:1 (unsustainable)
+M|Surv|- Ac|
+M|Surv|1. R|[Specific tactics]
+M|Surv|2. I|[Improve retention, add expansion]
+M|Surv|- Ta|LTV:CAC >2:1 within 30 days
+M|Surv|**Pr|Improve Retention**
+M|Surv|- Cu|Churn ___% (too hi)
+M|Surv|- Ac|
+M|Surv|tx|1. Interview churned cs (identify top 3 reasons)
+M|Surv|tx|2. Fix onboarding (reduce early churn)
+M|Surv|tx|3. Proactive outreach to at-risk accounts
+M|Surv|- Ta|Reduce churn by 20% within 30 days
+M|Surv|tx|---
+M|Surv|**Mo|Stabilize**
+M|Surv|**Mi|Positive Unit Economics**
+M|Surv|- LT|CAC >2:1 ✅
+M|Surv|it|Payback <18 months ✅
+M|Surv|it|Gross margin >60% ✅
+M|Surv|**Mi|Slowing Churn**
+M|Surv|it|Churn decreasing month-over-month
+M|Surv|it|Cohort degradation stopped
+M|Surv|it|NRR improving toward 100%
+M|Surv|**Mi|Runway Extended**
+M|Surv|it|12+ months runway (via fundraise or burn reduction)
+M|Surv|it|Clear path to nx milestone
+M|Surv|tx|---
+M|What|**Me|**
+M|What|- Ru|___ months → 12+ months ✅
+M|What|- LT|CAC: ___:1 → >2:1 ✅
+M|What|- Ch|___% → reduced by 30% ✅
+M|What|- NR|___% → improving toward 100%
+M|What|**Po|**
+M|What|it|Out of crisis mode
+M|What|it|Stable foundation to rebuild growth
+M|What|it|Clear plan for nx 6-12 months
+M|What|tx|---
+M|What|**Do|**
+M|What|it|Try to grow your way out of this (fix unit economics first)
+M|What|it|Ignore the data (hope is not a st)
+M|What|it|Scale before you fix retention (accelerates fl)
+M|What|it|Wait until runway <3 months to fundraise (too late)
+M|What|**Do|**
+M|What|it|Focus ruthlessly on retention and unit economics
+M|What|it|Cut costs to extend runway
+M|What|it|Be honest w/ board/investors abt problems
+M|What|it|Move fast (you don't have time to waste)"
+M|What|tx|---
+M|Diag|**Wh|**
+M|Diag|it|Runway <3 months OR
+M|Diag|- Mu|CAC <1:1, massive churn, no path to profitability)
+M|Diag|**Ou|**
+M|Diag|"## |**ct** (Existential Crisis)
+M|Diag|tx|Your business is in survival mode. Immediate drastic action required.
+M|Diag|tx|[Similar structure to Pattern 3, but more ur tone, shorter timelines, more drastic measures]
+M|Diag|**Im|**
+M|Diag|tx|1. Emergency board meeting
+M|Diag|tx|2. Fundraise immediately OR cut burn 50%+
+M|Diag|tx|3. Stop all non-essential spend
+M|Diag|tx|4. Fix top 1-2 ct issues (runway, unit economics)"
+M|Diag|tx|---
+M|Exam|See |
+M|Exam|**Me|**
+M|Exam|- AR|$20M, Growth: 60% YoY
+M|Exam|- NR|115%, Churn: 2.5%
+M|Exam|- LT|CAC: 4:1, Payback: 10 months
+M|Exam|- Ru|50, Runway: 18 months
+M|Exam|**Di|** Healthy. Scale aggressively.
+M|Exam|tx|---
+M|Exam|**Me|**
+M|Exam|- AR|$15M, Growth: 40% YoY
+M|Exam|- NR|95%, Churn: 5%
+M|Exam|- LT|CAC: 3.5:1, Payback: 12 months
+M|Exam|- Ru|38, Runway: 12 months
+M|Exam|**Di|** Moderate. Fix retention before scaling further.
+M|Exam|tx|---
+M|Exam|**Me|**
+M|Exam|- AR|$8M, Growth: 25% YoY (slowing)
+M|Exam|- NR|88%, Churn: 7% (increasing)
+M|Exam|- LT|CAC: 1.8:1, Payback: 20 months
+M|Exam|- Ru|15, Runway: 8 months
+M|Exam|**Di|** Concerning. ur action on retention and unit economics required.
+M|Exam|tx|---
+M|Pitf|**Sy|** "rv growing 50%!" (ignoring burn, churn, unit economics)
+M|Pitf|**Co|** Unsustainable growth. Scaling broken md.
+M|Pitf|fix|** Look at all four dimensions together.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "We're not profitable yet, is that bad?" (early-stage company)
+M|Pitf|**Co|** Misplaced worry. Early-stage shd op for growth and unit economics, not profitability.
+M|Pitf|fix|** Use stage-appropriate benchmarks.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Churn is 5%, let's watch it"
+M|Pitf|**Co|** By the time lagging indicators (churn, NRR) show problems, it's late.
+M|Pitf|fix|** Track leading indicators (usage, engagement, onboarding completion).
+M|Pitf|tx|---
+M|Pitf|**Sy|** "NRR <100% for 3 quarters, but we'll fix it eventually"
+M|Pitf|**Co|** Problems compound. Becomes crisis.
+M|Pitf|fix|** Set clear timelines. If metric doesn't improve in X time, escalate.
+M|Pitf|tx|---
+M|Pitf|**Sy|** "Let's improve growth, retention, CAC, and efficiency simultaneously"
+M|Pitf|**Co|** Resources spread thin. Nothing improves.
+M|Pitf|fix|** Prioritize top 1-3 issues. Fix sequentially.
+M|Pitf|tx|---
+M|Rela|it|`saas-rv-growth-metrics` — Detailed growth and retention metrics
+M|Rela|it|`saas-economics-efficiency-metrics` — Detailed unit economics and capital efficiency
+M|Rela|it|`fi-metrics-quickref` — Fast lookup for all metrics and benchmarks
+M|Rela|it|`feature-investment-advisor` — Uses health diagnostic to inform feature priorities
+M|Rela|it|`acquisition-channel-advisor` — Uses health diagnostic to inform channel priorities
+M|Rela|it|`fi-based-pricing-advisor` — Uses health diagnostic to inform pricing decisions
+M|Exte|- **|** "SaaS Metrics 2.0" — Comprehensive benchmarks
+M|Exte|- **|** "SaaS Metrics" — Unit economics benchmarks
+M|Exte|- **|** SaaS benchmarking reports
+M|Exte|- **|** "State of SaaS" annual rp
+M|Prov|it|Adapted from `research/fi/Finance_QuickRef.md` (Red flags table)
+M|Prov|it|Decision frameworks from `research/fi/Finance_For_PMs.Putting_It_Together_Synthesis.md`
+M|Prov|it|Benchmarks from `research/fi/fi for pd Managers.md`

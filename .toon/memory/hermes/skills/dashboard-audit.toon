@@ -1,0 +1,47 @@
+SKILL|dashboard-audit|Systematic audit and fix of dashboard applications (Next.js, React, Tailwind). Read all tabs, trace API routes, categorize issues by severity, deliver ordered fix plan with execution.
+STEP|1|"audit the dashboard", "fix my dashboard", "review all tabs"
+STEP|2|"does this dashboard make sense", "is this dashboard actually working"
+STEP|3|"find broken things", "improve the dashboard", "what's wrong with this dashboard"
+STEP|4|Any request to assess or overhaul a multi-tab dashboard application
+STEP|5|Read every tab file (layout, page, `_*.tsx` components) and the tab manager/router.
+STEP|6|Read every API route consumed by the dashboard (trace imports from tab files → `/api/*` endpoints).
+STEP|7|Read related settings/config files (NavBar registration, feature flags, subnav).
+STEP|8|**Glass CSS duplication**: G1-G4, I1-I4, L1-L4 redeclared in 3+ files. Extract to `_glass-tokens.ts`.
+STEP|9|**Demo data disguised as real**: `\|\| N` fallbacks on Supabase fetches, `SUGGESTIONS`/`DEMO_PITCHES` arrays, `platforms`/`ambassadors`/`ugcQueue` hardcoded.
+STEP|10|**Fake verification**: `setTimeout(1500)` that flips a boolean with no API call.
+STEP|11|**Stale timestamps**: `generatedAt: new Date()` on static data — always appears fresh.
+STEP|12|**Dead `\|\| N` fallbacks**: When a Supabase call returns empty, a fallback like `planned \|\| 16` fills in — indistinguishable from real data.
+STEP|13|**Broken/wrong API routes**: Tab calls endpoint that doesn't exist, or calls wrong endpoint (e.g., growth-sprint for community prompts).
+STEP|14|**Missing Kai's Read**: Dashboard has no live AI intelligence layer — all static or fake.
+STEP|15|**No venture/brand rotation**: Dashboard doesn't adapt accent colors, KPIs, or agent contexts when switching active brands.
+STEP|16|**Cron-gated API routes with UI buttons**: An API route requires a secret header (`CRON_SECRET`, `API_KEY`) but the frontend button calls it without auth → 401 → falls through to demo data → user sees
+STEP|17|**Monolithic tab files**: A single tab component exceeds 1000 lines combining calendar CRUD, pitch boards, CSE scoring, weight proposals, performance measurement, and suggestion generation. Split into
+STEP|18|**Agent prompts without real data**: When an LLM agent prompt asks for analysis ("what changed this week — 2-3 specific metrics") but no database data is piped in, the agent hallucinates plausible-sou
+STEP|19|**Token usage not tracked**: If the dashboard has no visible token usage panel and no writer for usage records, AI cost is invisible. Fix: add `trackTokenUsage()` calls in the AI client (fire-and-forg
+STEP|20|Problem**: `_section.tsx` has `function XSection() {}` + `export { XSection }` at the bottom. Next.js treats the re-export as a page export.
+STEP|21|Fix**: Change `function XSection` to `export function XSection` at the declaration, remove the bottom `export { XSection }`.
+STEP|22|function XSection({ ... }: { ... }) {
+STEP|23|export { XSection }
+PIT|"audit the dashboard", "fix my dashboard", "review all tabs"
+PIT|"does this dashboard make sense", "is this dashboard actually working"
+PIT|"find broken things", "improve the dashboard", "what's wrong with this dashboard"
+PIT|Any request to assess or overhaul a multi-tab dashboard application
+PIT|Read every tab file (layout, page, `_*.tsx` components) and the tab manager/router.
+PIT|Read every API route consumed by the dashboard (trace imports from tab files → `/api/*` endpoints).
+PIT|Read related settings/config files (NavBar registration, feature flags, subnav).
+PIT|**Glass CSS duplication**: G1-G4, I1-I4, L1-L4 redeclared in 3+ files. Extract to `_glass-tokens.ts`.
+PIT|**Demo data disguised as real**: `\|\| N` fallbacks on Supabase fetches, `SUGGESTIONS`/`DEMO_PITCHES` arrays, `platforms`/`ambassadors`/`ugcQueue` hardcoded.
+PIT|**Fake verification**: `setTimeout(1500)` that flips a boolean with no API call.
+PIT|**Stale timestamps**: `generatedAt: new Date()` on static data — always appears fresh.
+PIT|**Dead `\|\| N` fallbacks**: When a Supabase call returns empty, a fallback like `planned \|\| 16` fills in — indistinguishable from real data.
+PIT|**Broken/wrong API routes**: Tab calls endpoint that doesn't exist, or calls wrong endpoint (e.g., growth-sprint for community prompts).
+PIT|**Missing Kai's Read**: Dashboard has no live AI intelligence layer — all static or fake.
+PIT|**No venture/brand rotation**: Dashboard doesn't adapt accent colors, KPIs, or agent contexts when switching active brands.
+PIT|**Cron-gated API routes with UI buttons**: An API route requires a secret header (`CRON_SECRET`, `API_KEY`) but the frontend button calls it without auth → 401 → falls through to demo data → user sees
+PIT|**Monolithic tab files**: A single tab component exceeds 1000 lines combining calendar CRUD, pitch boards, CSE scoring, weight proposals, performance measurement, and suggestion generation. Split into
+PIT|**Agent prompts without real data**: When an LLM agent prompt asks for analysis ("what changed this week — 2-3 specific metrics") but no database data is piped in, the agent hallucinates plausible-sou
+PIT|**Token usage not tracked**: If the dashboard has no visible token usage panel and no writer for usage records, AI cost is invisible. Fix: add `trackTokenUsage()` calls in the AI client (fire-and-forg
+PIT|Problem**: `_section.tsx` has `function XSection() {}` + `export { XSection }` at the bottom. Next.js treats the re-export as a page export.
+PIT|Fix**: Change `function XSection` to `export function XSection` at the declaration, remove the bottom `export { XSection }`.
+PIT|function XSection({ ... }: { ... }) {
+PIT|export { XSection }

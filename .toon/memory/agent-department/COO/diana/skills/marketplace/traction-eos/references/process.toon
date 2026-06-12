@@ -1,0 +1,174 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/references/process.md savings=2%
+M|Proc|tx|Most companies have processes. Few have them documented. Even fewer have them followed consistently. The Process cp fixes this by identifying your handful of core processes, documenting them simply, and ensuring they are followed by all. This guide covers the 20/80 rule, how to identify your core processes, doc format, implementation through FBA (Followed By All), and department-specific examples.
+M|The |tx|You do not need to document every procedure in your company. That leads to thousand-page manuals nobody reads. Instead, document the 20% of your processes that drive 80% of your results.
+M|The |**Wh|**
+M|The |it|Identify 5-7 core processes (not 50)
+M|The |it|Document each process in 5-20 major steps (not 200)
+M|The |it|Add just enough detail so someone competent can follow it (not a manual for someone w/ zero context)
+M|The |tx|\| Too Little \| Just Right \| Too Much \|
+M|The |tx|\|-----------\|------------\|----------\|
+M|The |tx|\| "Handle cs complaints" \| 8 steps from complaint received to resolution confirmed, w/ key decision points noted \| 47-page complaint handling manual w/ scripts for every scenario \|
+M|The |tx|\| No one knows the process \| New hires can follow it in their first week \| No one reads the doc \|
+M|The |tx|\| Inconsistent execution \| 80%+ consistency across the team \| Rigid process that cannot adapt \|
+M|Iden|tx|Every company, regardless of industry, has a set of core processes that define how the business runs. Most companies have 5-7 core processes.
+M|Comm|tx|\| Process \| What It Covers \| Who Owns It \|
+M|Comm|tx|\|---------\|---------------\|-------------\|
+M|Comm|tx|\| **HR Process** \| Hiring, onboarding, perf reviews, offboarding \| Head of People / Integrator \|
+M|Comm|tx|\| **Sales Process** \| Lead qualification through close and handoff \| Head of Sales \|
+M|Comm|tx|\| **mk Process** \| Lead generation, nurturing, and conversion to sales-ready leads \| Head of mk \|
+M|Comm|tx|\| **Operations/Delivery Process** \| How you produce and deliver your pd or service \| Head of Operations \|
+M|Comm|tx|\| **cs Retention Process** \| Onboarding, support, renewals, upsells \| Head of cs sc \|
+M|Comm|tx|\| **fi Process** \| Invoicing, collections, reporting, budgeting \| Head of fi \|
+M|Comm|tx|\| **pd/Engineering Process** \| Ideation, dv, QA, dpl \| Head of pd/Engineering \|
+M|Disc|Ask |
+M|Disc|tx|1. "What are the major processes that run our business?"
+M|Disc|tx|2. "If a new leadership team took over tomorrow, what processes wld they need to understand to run the company?"
+M|Disc|tx|3. "Where does inconsistency cause the most problems for cs or employees?"
+M|Disc|tx|List everything mentioned, then consolidate into 5-7 core processes. Each shd span a meaningful arc of work (lead to close, not just "make a phone call").
+M|Proc|tx|Every core process follows the same doc structure. Keep it simple. The goal is clarity, not comprehensiveness.
+M|Docu|tx|```
+M|Docu|Proc|_________________________ (give it a branded name)
+M|Docu|Owne|_________________________
+M|Docu|Last|_________________________
+M|Docu|Vers|_________________________
+M|Docu|Purp|One sentence describing what this process achieves.
+M|Docu|Step|
+M|Docu|tx|1. [Step Name]
+M|Docu|it|Key details or substeps
+M|Docu|it|Decision point or criteria
+M|Docu|tx|2. [Step Name]
+M|Docu|it|Key details or substeps
+M|Docu|tx|3. [Step Name]
+M|Docu|tx|...
+M|Docu|tx|```
+M|Nami|tx|Give each process a memorable, branded name. This makes it easier for the team to reference and creates a sense of identity around how you work.
+M|Nami|**Ex|**
+M|Nami|- Sa|"The Closer" or "The rv Engine"
+M|Nami|- On|"The Welcome Track" or "First 30 Days"
+M|Nami|- Su|"The Resolution Path" or "Care Loop"
+M|Nami|- De|"The bd Cycle" or "Ship It"
+M|Sale|**Ow|** VP of Sales
+M|Sale|**Pu|** Convert qualified leads into paying cs through a consistent, repeatable process.
+M|Sale|tx|\| Step \| Action \| Key Details \| Exit Criteria \|
+M|Sale|tx|\|------\|--------\|-------------\|--------------\|
+M|Sale|tx|\| 1 \| **Qualify Lead** \| Apply BANT criteria (Budget, Authority, Need, Timeline). Score 1-4. \| Score of 3+ moves forward \|
+M|Sale|tx|\| 2 \| **Discovery Call** \| 30-minute structured call using question guide. Uncover 3 core pain points. \| Pain points documented, nx step agreed \|
+M|Sale|tx|\| 3 \| **Demo** \| Customized to prospect's pain points. Show, don't tell. 45 minutes max. \| Prospect confirms fit \|
+M|Sale|tx|\| 4 \| **Proposal** \| Send within 24 hours of demo. Include 3 options (good/better/best). \| Proposal delivered and receipt confirmed \|
+M|Sale|| 5 |em (day 1), call (day 3), em (day 7). \| Decision received \|
+M|Sale|tx|\| 6 \| **Close** \| Signed agreement and payment terms confirmed. \| Contract signed \|
+M|Sale|tx|\| 7 \| **Handoff** \| Introduce cs to onboarding team. Complete handoff doc. \| Onboarding team confirms receipt \|
+M|Oper|**Ow|** VP of Operations
+M|Oper|**Pu|** Deliver projects on time, on budget, and at the qual standard promised.
+M|Oper|tx|\| Step \| Action \| Key Details \| Exit Criteria \|
+M|Oper|tx|\|------\|--------\|-------------\|--------------\|
+M|Oper|tx|\| 1 \| **Kickoff** \| Internal kickoff within 48 hours of signed contract. rv scope, timeline, team. \| All team members clear on deliverables \|
+M|Oper|tx|\| 2 \| **Planning** \| cr project plan w/ milestones. Identify risks. \| Plan approved by project sponsor \|
+M|Oper|tx|\| 3 \| **Execution** \| Weekly status updates. Flag blockers within 24 hours. \| Milestones met on schedule \|
+M|Oper|tx|\| 4 \| **qual Check** \| Internal rv before any deliverable goes to client. \| Passes qual checklist \|
+M|Oper|tx|\| 5 \| **Client rv** \| Present deliverable. Collect feedback. \| Client approval or revision list \|
+M|Oper|tx|\| 6 \| **Revisions** \| Address feedback within 3 business days. One round included. \| Revisions approved \|
+M|Oper|tx|\| 7 \| **Close Out** \| Final delivery, doc, lessons learned, satisfaction survey. \| Survey score 4+/5 \|
+M|HR P|**Ow|** Head of People / Integrator
+M|HR P|**Pu|** Attract, hire, develop, and retain people who are the right people in the right seats.
+M|HR P|tx|\| Step \| Action \| Key Details \| Exit Criteria \|
+M|HR P|tx|\|------\|--------\|-------------\|--------------\|
+M|HR P|tx|\| 1 \| **Job Definition** \| Write Accountability Chart seat description w/ core values requirements. \| Approved by hiring manager and Integrator \|
+M|HR P|tx|\| 2 \| **Source** \| Post on 3+ channels. Employee referral bonus active. \| 10+ qualified applicants \|
+M|HR P|tx|\| 3 \| **Screen** \| Phone screen (15 min) for core values and basic qualifications. \| 5 candidates advance \|
+M|HR P|| 4 |core values interview (behavioral), skills interview (tc). \| 2-3 finalists \|
+M|HR P|tx|\| 5 \| **People Analyzer** \| Score each finalist on core values and GWC. \| All "+" on values, all "Y" on GWC \|
+M|HR P|tx|\| 6 \| **Offer** \| Extend offer within 48 hours of final interview. \| Offer accepted \|
+M|HR P|| 7 |Week 1 orientation, 30/60/90 check-ins. \| 90-day rv passed \|
+M|HR P|tx|\| 8 \| **Develop** \| Quarterly conversations using core values and GWC framework. \| Ongoing \|
+M|Cust|**Ow|** Head of cs sc
+M|Cust|**Pu|** Resolve cs issues quickly and use feedback to improve the pd and service.
+M|Cust|tx|\| Step \| Action \| Key Details \| Exit Criteria \|
+M|Cust|tx|\|------\|--------\|-------------\|--------------\|
+M|Cust|tx|\| 1 \| **Receive** \| Ticket created via em, chat, or phone. Auto-acknowledge within 1 hour. \| Ticket logged in sy \|
+M|Cust|tx|\| 2 \| **Triage** \| Classify severity (P1-P4). Assign to appropriate team member. \| Assigned within 2 hours \|
+M|Cust|tx|\| 3 \| **Investigate** \| Reproduce the issue. Check knowledge base. Consult engineering if needed. \| Root cause identified \|
+M|Cust|tx|\| 4 \| **Resolve** \| im fix or workaround. Communicate resolution to cs. \| cs confirms resolution \|
+M|Cust|tx|\| 5 \| **Follow Up** \| Check in 48 hours later. Confirm issue has not recurred. \| cs satisfied \|
+M|Cust|tx|\| 6 \| **Document** \| up knowledge base if new issue tp. Flag pd bugs for engineering. \| KB updated \|
+M|Cust|| 7 |volume, resolution time, CSAT, recurring issues. \| Scorecard updated \|
+M|Fina|**Ow|** Head of fi / Controller
+M|Fina|**Pu|** Manage the company's financial health through timely invoicing, accurate reporting, and proactive cash management.
+M|Fina|tx|\| Step \| Action \| Key Details \| Exit Criteria \|
+M|Fina|tx|\|------\|--------\|-------------\|--------------\|
+M|Fina|tx|\| 1 \| **Invoice** \| gn invoice within 24 hours of deliverable/milestone. \| Invoice sent and confirmed \|
+M|Fina|tx|\| 2 \| **Track** \| Monitor payment status weekly. Flag AR over 30 days. \| AR rp updated \|
+M|Fina|| 3 |em at 31 days, call at 45 days, escalate at 60 days. \| Payment received or escalated \|
+M|Fina|tx|\| 4 \| **rp** \| Weekly flash rp (rv, expenses, cash). Monthly P&L. \| Reports delivered on schedule \|
+M|Fina|tx|\| 5 \| **fc** \| Quarterly cash flow fc. Annual budget rv. \| fc approved by leadership \|
+M|FBA:|tx|Documented processes are worthless if nobody follows them. FBA (Followed By All) is the implementation framework that turns doc into habit.
+M|The |tx|```
+M|The |tx|Document → Train → Measure → up → Repeat
+M|The |tx|```
+M|The |**St|Document** (covered above)
+M|The |**St|Train**
+M|The |it|Every employee involved in a process receives training on the documented steps
+M|The |it|Training is not a 2-hour lecture. It is hands-on practice w/ feedback.
+M|The |it|New hires are trained on relevant processes in their first two weeks
+M|The |**St|Measure**
+M|The |it|Spot-check compliance monthly (rv 5-10 random instances of the process)
+M|The |it|Track process-related qual metrics on the Scorecard
+M|The |- As|"Is the process being followed? If not, why?"
+M|The |**St|up**
+M|The |it|Processes shd be reviewed quarterly
+M|The |it|If the team consistently deviates from a step, either enforce it or up it
+M|The |it|The person who owns the process owns the updates
+M|FBA |tx|\| Question \| Yes/No \| Action if No \|
+M|FBA |tx|\|----------\|--------\|-------------\|
+M|FBA |tx|\| Is the process documented and accessible? \| \| Write/share it \|
+M|FBA |tx|\| Has everyone been trained on it? \| \| Schedule training \|
+M|FBA |tx|\| Are we measuring compliance? \| \| Add spot-checks \|
+M|FBA |tx|\| Is the process producing consistent results? \| \| Identify which step is failing \|
+M|FBA |tx|\| Has it been reviewed in the past quarter? \| \| Schedule rv \|
+M|Visu|Proc|
+M|Flow|tx|```
+M|Flow|tx|[Lead Received] → [Qualify (BANT)] → Score 3+?
+M|Flow|tx|├── Yes → [Discovery Call]
+M|Flow|tx|└── No  → [Nurture Sequence]
+M|Flow|tx|```
+M|Swim|Use |
+M|Swim|tx|\| mk \| Sales \| Operations \|
+M|Swim|tx|\|-----------\|-------\|------------\|
+M|Swim|tx|\| gn lead \| \| \|
+M|Swim|tx|\| Qualify MQL \| \| \|
+M|Swim|tx|\| \| Accept SQL \| \|
+M|Swim|tx|\| \| Discovery call \| \|
+M|Swim|tx|\| \| Close deal \| \|
+M|Swim|tx|\| \| \| Kick off project \|
+M|Swim|tx|\| \| \| Deliver \|
+M|Chec|For |
+M|Chec|tx|**New Employee Onboarding Checklist**
+M|Chec|it|[ ] Equipment ordered (IT, day -7)
+M|Chec|it|[ ] Accounts created (IT, day -3)
+M|Chec|it|[ ] Welcome em sent (HR, day -1)
+M|Chec|it|[ ] Office tour (Manager, day 1)
+M|Chec|it|[ ] Core values training (HR, day 1)
+M|Chec|it|[ ] Process training begins (Manager, day 2)
+M|Chec|it|[ ] 30-day check-in scheduled (Manager, day 1)
+M|The |1. *|** New hire observes an experienced team member performing the process
+M|The |2. *|** New hire performs the process w/ the experienced team member coaching
+M|The |3. *|** New hire explains the process back to someone else
+M|The |tx|If they can teach it, they know it. This method works for any process in any department.
+M|Trai|tx|\| Week \| Focus \| Method \| Assessment \|
+M|Trai|tx|\|------\|-------\|--------\|------------\|
+M|Trai|tx|\| 1 \| Company overview, core values, core processes overview \| Orientation sn \| Can state core values and name all core processes \|
+M|Trai|tx|\| 2 \| Primary process (the one they will use daily) \| See-Do-Teach \| Completes process independently w/ <2 er \|
+M|Trai|tx|\| 3 \| Secondary processes (ones they interact w/) \| See + doc rv \| Can explain how their work connects to upstream/downstream processes \|
+M|Trai|tx|\| 4 \| Edge cases and exceptions \| Scenario-based practice \| Handles 3 of 4 edge case scenarios correctly \|
+M|Quar|Ever|
+M|Revi|1. *|** Are people following the process? Where are the deviations?
+M|Revi|2. *|** Is the process producing the desired outcomes? What do the Scorecard metrics say?
+M|Revi|3. *|** What feedback have we received? What steps shd be added, removed, or changed?
+M|Proc|tx|\| Process \| Compliance Rate \| Outcome qual \| Last Updated \| Status \|
+M|Proc|tx|\|---------\|---------------\|-----------------\|-------------\|--------\|
+M|Proc|tx|\| The rv Engine \| 85% \| Win rate 28% \| Jan 15 \| Healthy \|
+M|Proc|tx|\| The bd Cycle \| 70% \| On-time 82% \| Dec 1 \| Needs attention \|
+M|Proc|tx|\| The People Path \| 90% \| 90-day retention 95% \| Jan 20 \| Healthy \|
+M|Proc|tx|\| The Care Loop \| 60% \| CSAT 3.8/5 \| Oct 15 \| At risk \|
+M|Proc|tx|\| The Money Flow \| 95% \| AR <30 days 92% \| Jan 10 \| Healthy \|
+M|Proc|tx|Any process below 80% compliance or w/ declining outcome qual goes to the Issues List for IDS.

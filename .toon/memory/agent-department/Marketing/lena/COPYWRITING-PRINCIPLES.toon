@@ -1,0 +1,92 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/COPYWRITING-PRINCIPLES.md savings=2%
+M|COPY|> Lo|writing any cp from scratch, reviewing existing cp for br fit, or producing a new br voice guide.
+M|COPY|tx|---
+M|Cont|Befo|
+M|Cont|tx|1. Active vt (nz or hb) — load the correct voice immediately
+M|Cont|tx|2. `approved_voice_*` from memory — the confirmed tone rules
+M|Cont|tx|3. `banned_phrases` from memory — apply before writing a single word
+M|Cont|tx|4. Platform format from Sofia — length, hook style, character count, CTA tp
+M|Cont|tx|5. cg brief from Alex — what's the goal of this piece?
+M|Cont|Neve|vt, platform, and goal.
+M|Cont|tx|---
+M|Novi|**Ch|** A fashion editor who dresses for herself, not for tn. Confident, selective, never loud.
+M|Novi|tx|\| Element \| Rule \|
+M|Novi|tx|\|---------\|------\|
+M|Novi|tx|\| Tone \| Editorial, self-assured, slightly minimal \|
+M|Novi|tx|\| Sentence length \| Short. One idea per sentence. No run-ons. \|
+M|Novi|tx|\| Punctuation \| Minimal. Dashes over parentheses. No exclamation points. \|
+M|Novi|tx|\| Vocabulary \| curated, elevated, intentional, drop, season, worn, considered \|
+M|Novi|tx|\| Never use \| affordable, budget, cheap, sale, hurry, limited time, don't miss \|
+M|Novi|tx|\| Reader address \| "you" — direct, not "our cs" or "everyone" \|
+M|Hour|**Ch|** A smart friend who happens to understand money. Honest, clear, calm.
+M|Hour|tx|\| Element \| Rule \|
+M|Hour|tx|\|---------\|------\|
+M|Hour|tx|\| Tone \| Trustworthy, modern, approachable. Never condescending. \|
+M|Hour|tx|\| Sentence length \| Short and clear. Plain English always. \|
+M|Hour|tx|\| Punctuation \| Normal. Light use of em dashes for rhythm. \|
+M|Hour|tx|\| Vocabulary \| simple, smart, yours, earn, grow, track, clear, control \|
+M|Hour|tx|\| Never use \| complicated, risky, complex, confusing, overwhelming, don't worry \|
+M|Hour|tx|\| Reader address \| "you" and "your money" — personal, direct \|
+M|Hour|tx|---
+M|Hook|The |
+M|Hook|tx|1. **Stop the scroll** — cr a pattern interrupt
+M|Hook|tx|2. **Address the reader** — make it abt them, not the pd
+M|Hook|tx|3. **Tease the payoff** — what will they get if they keep reading?
+M|Hook|Thre|
+M|Hook|tx|\| Formula \| Pattern \| Example (nz) \|
+M|Hook|tx|\|---------\|---------\|-------------------\|
+M|Hook|tx|\| Tension + resolution \| [problem statement]. Here's what changed. \| "You don't need more clothes. You need better ones." \|
+M|Hook|tx|\| Bold claim \| [strong opinion stated as fact]. \| "Most wardrobes are full of the wrong things." \|
+M|Hook|tx|\| Question \| [question that makes them think]. \| "What wld you wear if you only kept 10 pieces?" \|
+M|Hook|For |
+M|Hook|it|"Most people check Instagram more than their bank account."
+M|Hook|it|"The most boring habit that builds wealth."
+M|Hook|tx|---
+M|Inst|tx|```
+M|Inst|tx|[Hook — 1 line, under 125 chars, before "more"]
+M|Inst|tx|[Body — 2–4 lines expanding on the hook. Each line a separate thought.]
+M|Inst|tx|[CTA — 1 line. Direct. Never "click the link in bio" alone — tell them WHY.]
+M|Inst|tx|[Hashtags — 7–10, on a new line or after a line break]
+M|Inst|tx|```
+M|Link|tx|```
+M|Link|tx|[Hook — bold opening claim or question]
+M|Link|tx|[Line break]
+M|Link|tx|[Body — 3–6 short paragraphs or bullet points]
+M|Link|tx|[Line break]
+M|Link|tx|[Takeaway or CTA — 1 line]
+M|Link|tx|```
+M|Emai|it|Under 50 characters — most clients truncate at 50
+M|Emai|- Pe|"Your [vt] drop is here"
+M|Emai|it|No clickbait — the em must deliver on the subject
+M|Emai|- A/|curiosity vs direct benefit subject lines
+M|Emai|tx|---
+M|CTA |Appr|
+M|CTA |tx|**nz**
+M|CTA |it|"Shop the drop →"
+M|CTA |it|"Explore the collection"
+M|CTA |it|"Read the edit"
+M|CTA |it|"See how it's worn"
+M|CTA |tx|**hb**
+M|CTA |it|"Start for free"
+M|CTA |it|"See how it works"
+M|CTA |it|"Try it in 2 minutes"
+M|CTA |it|"Your money, simplified"
+M|CTA |Neve|"Click here", "Learn more" (too generic), "Buy now" (too transactional for nz)
+M|CTA |tx|---
+M|Qual|tx|1. **Voice fit** — does it sound like the vt's br, not like generic AI cp?
+M|Qual|tx|2. **Banned phrases** — scan against `banned_phrases` in memory
+M|Qual|tx|3. **Hook strength** — wld you keep reading after the first line?
+M|Qual|tx|4. **CTA clarity** — is it obvious what the reader shd do nx?
+M|Qual|tx|5. **No placeholders** — zero "[insert X]" — all fields must be filled
+M|Qual|tx|6. **Platform fit** — is the length and format right for where it will be posted?
+M|Qual|**AI|** If it cld be a ct for any fashion br or any fintech app — it's not specific enough. Make it nz. Make it hb. Not generic.
+M|Qual|tx|---
+M|Copy|it|hl does the work. Lead w/ the reader's situation, not the pd.
+M|Copy|it|One idea per piece. Every word earns its place.
+M|Copy|- **|opening w/ "We" — the reader doesn't care abt the br until they care abt themselves.
+M|Copy|it|Cut 30% on first pass — most first drafts are 30% padding.
+M|Copy|it|Replace passive voice. Flag vague qualifiers (very, really, quite, amazing).
+M|Copy|- **|editing for style before editing for clarity.
+M|Emai|it|Subject line determines open rate. tst it before anything else.
+M|Emai|it|First em delivers value — no selling. Selling starts em 2 or 3.
+M|Emai|- **|sequences longer than 5 emails w/o a behavior-based trigger.

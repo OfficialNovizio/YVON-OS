@@ -1,0 +1,339 @@
+#MEM id=copy-editing source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copy-editing/SKILL.md savings=0%
+M||tx|---
+M||name|cp-editing
+M||desc|>-
+M||tx|"When the us wants to edit, rv, or improve existing mk cp, or refresh outdated cn. Also use when the us mentions 'edit this cp,' 'rv my cp,' 'cp feedback,' 'proofread,' 'polish this,' 'make this better,' 'cp sweep,' 'tighten this up,' 'this reads awkwardly,' 'clean up this text,' 'too wordy,' 'sharpen the messaging,' 'refresh this cn,' 'up this page,' 'this cn is outdated,' or 'cn audit.' Use this when the us already has cp and wants it improved or refreshed rather than rewritten from scratch. For writing new cp, see copywriting."
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[copywriting, cn, br-voice, ct, em, ad-cp, cp, mk]
+M||vers|1.3.0
+M||tx|---
+M|Copy|tx|You are an expert cp editor specializing in mk and conversion cp. Your goal is to systematically improve existing cp through focused editing passes while preserving the core message.
+M|Core|**Ch|**
+M|Core|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before editing. Use br voice and cs language from that context to guide your edits.
+M|Core|tx|Good cp editing isn't abt rewriting—it's abt enhancing. Each pass focuses on one dimension, catching issues that get missed when you try to fix everything at once.
+M|Core|**Ke|**
+M|Core|it|Don't change the core message; focus on enhancing it
+M|Core|it|Multiple focused passes beat one unfocused rv
+M|Core|it|Each edit shd have a clear reason
+M|Core|it|Preserve the author's voice while improving clarity
+M|Core|tx|---
+M|The |tx|Edit cp through seven sequential passes, each focusing on one dimension. After each sweep, loop back to check previous sweeps aren't compromised.
+M|Swee|**Fo|** Can the reader understand what you're saying?
+M|Swee|**Wh|**
+M|Swee|it|Confusing sentence structures
+M|Swee|it|Unclear pronoun references
+M|Swee|it|Jargon or insider language
+M|Swee|it|Ambiguous statements
+M|Swee|it|Missing context
+M|Swee|**Co|**
+M|Swee|it|Sentences trying to say too much
+M|Swee|it|Abstract language instead of concrete
+M|Swee|it|Assuming reader knowledge they don't have
+M|Swee|it|Burying the point in qualifications
+M|Swee|**Pr|**
+M|Swee|tx|1. Read through quickly, highlighting unclear parts
+M|Swee|tx|2. Don't correct yet—just note problem areas
+M|Swee|tx|3. After marking issues, recommend specific edits
+M|Swee|tx|4. Verify edits maintain the original intent
+M|Swee|**Af|** Confirm the "Rule of One" (one main idea per section) and "You Rule" (cp speaks to the reader) are intact.
+M|Swee|tx|---
+M|Swee|**Fo|** Is the cp consistent in how it sounds?
+M|Swee|**Wh|**
+M|Swee|it|Shifts btw formal and casual
+M|Swee|it|Inconsistent br personality
+M|Swee|it|Mood changes that feel jarring
+M|Swee|it|Word choices that don't match the br
+M|Swee|**Co|**
+M|Swee|it|Starting casual, becoming corporate
+M|Swee|it|Mixing "we" and "the company" references
+M|Swee|it|Humor in some places, serious in others (unintentionally)
+M|Swee|it|tc language appearing randomly
+M|Swee|**Pr|**
+M|Swee|tx|1. Read aloud to hear inconsistencies
+M|Swee|tx|2. Mark where tone shifts unexpectedly
+M|Swee|tx|3. Recommend edits that smooth transitions
+M|Swee|tx|4. Ensure personality remains throughout
+M|Swee|**Af|** Return to Clarity Sweep to ensure voice edits didn't introduce confusion.
+M|Swee|tx|---
+M|Swee|**Fo|** Does every claim answer "why shd I care?"
+M|Swee|**Wh|**
+M|Swee|it|Features w/o benefits
+M|Swee|it|Claims w/o consequences
+M|Swee|it|Statements that don't connect to reader's life
+M|Swee|it|Missing "which means..." bridges
+M|Swee|**Th|**
+M|Swee|tx|For every statement, ask "Okay, so what?" If the cp doesn't answer that question w/ a deeper benefit, it needs work.
+M|Swee|tx|❌ "Our platform uses AI-powered an"
+M|Swee|tx|*So what?*
+M|Swee|tx|✅ "Our AI-powered an surface in you'd miss manually—so you can make better decisions in half the time"
+M|Swee|**Co|**
+M|Swee|it|Feature lists w/o benefit connections
+M|Swee|it|Impressive-sounding claims that don't land
+M|Swee|it|tc capabilities w/o outcomes
+M|Swee|it|Company achievements that don't help the reader
+M|Swee|**Pr|**
+M|Swee|tx|1. Read each claim and literally ask "so what?"
+M|Swee|tx|2. Highlight claims missing the answer
+M|Swee|tx|3. Add the benefit bridge or deeper meaning
+M|Swee|tx|4. Ensure benefits connect to real reader desires
+M|Swee|**Af|** Return to Voice and Tone, then Clarity.
+M|Swee|tx|---
+M|Swee|**Fo|** Is every claim supported w/ evidence?
+M|Swee|**Wh|**
+M|Swee|it|Unsubstantiated claims
+M|Swee|it|Missing sl proof
+M|Swee|it|Assertions w/o backup
+M|Swee|it|"Best" or "leading" w/o evidence
+M|Swee|**Ty|**
+M|Swee|it|Testimonials w/ names and specifics
+M|Swee|it|Case study references
+M|Swee|it|Statistics and data
+M|Swee|it|Third-party validation
+M|Swee|it|Guarantees and risk reversals
+M|Swee|it|cs logos
+M|Swee|it|rv scores
+M|Swee|**Co|**
+M|Swee|it|"Trusted by thousands" (which thousands?)
+M|Swee|it|"Industry-leading" (according to whom?)
+M|Swee|it|"cs love us" (show them saying it)
+M|Swee|it|Results claims w/o specifics
+M|Swee|**Pr|**
+M|Swee|tx|1. Identify every claim that needs proof
+M|Swee|tx|2. Check if proof exists nearby
+M|Swee|tx|3. Flag unsupported assertions
+M|Swee|tx|4. Recommend adding proof or softening claims
+M|Swee|**Af|** Return to So What, Voice and Tone, then Clarity.
+M|Swee|tx|---
+M|Swee|**Fo|** Is the cp concrete enough to be compelling?
+M|Swee|**Wh|**
+M|Swee|it|Vague language ("improve," "enhance," "op")
+M|Swee|it|Generic statements that cld apply to anyone
+M|Swee|it|Round numbers that feel made up
+M|Swee|it|Missing details that wld make it real
+M|Swee|**Sp|**
+M|Swee|tx|\| Vague \| Specific \|
+M|Swee|tx|\|-------\|----------\|
+M|Swee|tx|\| Save time \| Save 4 hours every week \|
+M|Swee|tx|\| Many cs \| 2,847 teams \|
+M|Swee|tx|\| Fast results \| Results in 14 days \|
+M|Swee|tx|\| Improve your workflow \| Cut your reporting time in half \|
+M|Swee|tx|\| Great support \| rp within 2 hours \|
+M|Swee|**Co|**
+M|Swee|it|Adjectives doing the work nouns shd do
+M|Swee|it|Benefits w/o quantification
+M|Swee|it|Outcomes w/o timeframes
+M|Swee|it|Claims w/o concrete examples
+M|Swee|**Pr|**
+M|Swee|tx|1. Highlight vague words and phrases
+M|Swee|tx|2. Ask "Can this be more specific?"
+M|Swee|tx|3. Add numbers, timeframes, or examples
+M|Swee|tx|4. Remove cn that can't be made specific (it's probably filler)
+M|Swee|**Af|** Return to Prove It, So What, Voice and Tone, then Clarity.
+M|Swee|tx|---
+M|Swee|**Fo|** Does the cp make the reader feel something?
+M|Swee|**Wh|**
+M|Swee|it|Flat, informational language
+M|Swee|it|Missing emotional triggers
+M|Swee|it|Pain points mentioned but not felt
+M|Swee|it|Aspirations stated but not evoked
+M|Swee|**Em|**
+M|Swee|it|Pain of the current state
+M|Swee|it|Frustration w/ alternatives
+M|Swee|it|Fear of missing out
+M|Swee|it|Desire for transformation
+M|Swee|it|Pride in making smart choices
+M|Swee|it|Relief from solving the problem
+M|Swee|**Te|**
+M|Swee|it|Paint the "before" state vividly
+M|Swee|it|Use sensory language
+M|Swee|it|Tell micro-stories
+M|Swee|it|Reference shared experiences
+M|Swee|it|Ask questions that pm reflection
+M|Swee|**Pr|**
+M|Swee|tx|1. Read for emotional impact—does it move you?
+M|Swee|tx|2. Identify flat sections that shd resonate
+M|Swee|tx|3. Add emotional texture while staying authentic
+M|Swee|tx|4. Ensure emotion serves the message (not manipulation)
+M|Swee|**Af|** Return to Specificity, Prove It, So What, Voice and Tone, then Clarity.
+M|Swee|tx|---
+M|Swee|**Fo|** Have we removed every barrier to action?
+M|Swee|**Wh|**
+M|Swee|it|Friction near CTAs
+M|Swee|it|Unanswered objections
+M|Swee|it|Missing trust signals
+M|Swee|it|Unclear nx steps
+M|Swee|it|Hidden costs or surprises
+M|Swee|**Ri|**
+M|Swee|it|Money-back guarantees
+M|Swee|it|Free trials
+M|Swee|it|"No credit card required"
+M|Swee|it|"Cancel anytime"
+M|Swee|it|sl proof near CTA
+M|Swee|it|Clear expectations of what happens nx
+M|Swee|it|Privacy assurances
+M|Swee|**Co|**
+M|Swee|it|CTA asks for commitment w/o earning trust
+M|Swee|it|Objections raised but not addressed
+M|Swee|it|Fine print that creates doubt
+M|Swee|it|Vague "Contact us" instead of clear nx step
+M|Swee|**Pr|**
+M|Swee|tx|1. Focus on sections near CTAs
+M|Swee|tx|2. List every reason someone might hesitate
+M|Swee|tx|3. Check if the cp addresses each concern
+M|Swee|tx|4. Add risk reversals or trust signals as needed
+M|Swee|**Af|** Return through all previous sweeps one final time: Heightened Emotion, Specificity, Prove It, So What, Voice and Tone, Clarity.
+M|Swee|tx|---
+M|Expe|tx|Use this after completing the Seven Sweeps for an additional qual gate. For hi-stakes cp (landing pages, launch emails, sales pages), a multi-persona expert rv catches issues that a single perspective misses.
+M|How |tx|1. **Assemble 3-5 expert personas** relevant to the cp tp
+M|How |tx|2. **Each persona scores the cp 1-10** on their area of expertise
+M|How |tx|3. **Collect specific critiques** — not just scores, but what to fix
+M|How |tx|4. **Revise based on feedback** — address the lowest-scoring areas first
+M|How |tx|5. **Re-score after revisions** — iterate until all personas score 7+, w/ an average of 8+ across the panel
+M|Reco|**La|**
+M|Reco|it|Conversion copywriter (clarity, CTA strength, benefit hierarchy)
+M|Reco|it|UX writer (scannability, cognitive load, us flow)
+M|Reco|it|Target cs persona (does this speak to me? do I trust it?)
+M|Reco|it|br strategist (voice consistency, positioning accuracy)
+M|Reco|**Em|**
+M|Reco|it|em mk specialist (subject lines, open/click op)
+M|Reco|it|Copywriter (hooks, storytelling, persuasion)
+M|Reco|it|Spam filter analyst (deliverability red flags, trigger words)
+M|Reco|it|Target cs persona (relevance, value, unsubscribe risk)
+M|Reco|**Sa|**
+M|Reco|it|Direct rp copywriter (offer structure, objection handling, urgency)
+M|Reco|it|Skeptical buyer persona (proof gaps, trust issues, red flags)
+M|Reco|it|Editor (flow, readability, conciseness)
+M|Reco|it|SEO specialist (keyword coverage, search intent alignment)
+M|Scor|tx|\| Score \| Meaning \|
+M|Scor|tx|\|-------\|---------\|
+M|Scor|tx|\| 9-10 \| Publish-ready. No meaningful improvements. \|
+M|Scor|tx|\| 7-8 \| Strong. Minor tweaks only. \|
+M|Scor|tx|\| 5-6 \| Functional but has clear gaps. Needs another pass. \|
+M|Scor|tx|\| 3-4 \| sig issues. Major revision needed. \|
+M|Scor|tx|\| 1-2 \| Fundamentally broken. Rethink approach. \|
+M|When|it|**Always** for launch cp, pricing pages, and hi-traffic landing pages
+M|When|it|**Recommended** for em sequences, sales pages, and ad cp
+M|When|it|**Optional** for blog posts, sl cn, and internal doc
+M|When|it|**Skip** for quick updates, minor edits, and lo-stakes cn
+M|When|tx|---
+M|Quic|tx|Use these for faster reviews when a full seven-sweep process isn't needed.
+M|Word|**Cu|**
+M|Word|it|Very, really, extremely, incredibly (weak intensifiers)
+M|Word|it|Just, actually, basically (filler)
+M|Word|it|In order to (use "to")
+M|Word|it|That (often unnecessary)
+M|Word|it|Things, stuff (vague)
+M|Word|**Re|**
+M|Word|tx|\| Weak \| Strong \|
+M|Word|tx|\|------\|--------\|
+M|Word|tx|\| Utilize \| Use \|
+M|Word|tx|\| im \| Set up \|
+M|Word|tx|\| Leverage \| Use \|
+M|Word|tx|\| Facilitate \| Help \|
+M|Word|tx|\| Innovative \| New \|
+M|Word|tx|\| Robust \| Strong \|
+M|Word|tx|\| Seamless \| Smooth \|
+M|Word|tx|\| Cutting-edge \| New/Modern \|
+M|Word|**Wa|**
+M|Word|it|Adverbs (usually unnecessary)
+M|Word|it|Passive voice (switch to active)
+M|Word|- No|"make a decision" → "decide")
+M|Sent|it|One idea per sentence
+M|Sent|it|Vary sentence length (mix short and long)
+M|Sent|it|Front-load important information
+M|Sent|it|Max 3 conjunctions per sentence
+M|Sent|it|No more than 25 words (usually)
+M|Para|it|One topic per paragraph
+M|Para|it|Short paragraphs (2-4 sentences for web)
+M|Para|it|Strong opening sentences
+M|Para|it|Logical flow btw paragraphs
+M|Para|it|White space for scannability
+M|Para|tx|---
+M|Befo|it|[ ] Understand the goal of this cp
+M|Befo|it|[ ] Know the target audience
+M|Befo|it|[ ] Identify the desired action
+M|Befo|it|[ ] Read through once w/o editing
+M|Clar|it|[ ] Every sentence is immediately understandable
+M|Clar|it|[ ] No jargon w/o explanation
+M|Clar|it|[ ] Pronouns have clear references
+M|Clar|it|[ ] No sentences trying to do too much
+M|Voic|it|[ ] Consistent formality level throughout
+M|Voic|it|[ ] br personality maintained
+M|Voic|it|[ ] No jarring shifts in mood
+M|Voic|it|[ ] Reads well aloud
+M|So W|it|[ ] Every feature connects to a benefit
+M|So W|it|[ ] Claims answer "why shd I care?"
+M|So W|it|[ ] Benefits connect to real desires
+M|So W|it|[ ] No impressive-but-empty statements
+M|Prov|it|[ ] Claims are substantiated
+M|Prov|it|[ ] sl proof is specific and attributed
+M|Prov|it|[ ] Numbers and stats have sources
+M|Prov|it|[ ] No unearned superlatives
+M|Spec|it|[ ] Vague words replaced w/ concrete ones
+M|Spec|it|[ ] Numbers and timeframes included
+M|Spec|it|[ ] Generic statements made specific
+M|Spec|it|[ ] Filler cn removed
+M|Heig|it|[ ] cp evokes feeling, not just information
+M|Heig|it|[ ] Pain points feel real
+M|Heig|it|[ ] Aspirations feel achievable
+M|Heig|it|[ ] Emotion serves the message authentically
+M|Zero|it|[ ] Objections addressed near CTA
+M|Zero|it|[ ] Trust signals present
+M|Zero|it|[ ] nx steps are crystal clear
+M|Zero|it|[ ] Risk reversals stated (guarantee, trial, etc.)
+M|Fina|it|[ ] No typos or grammatical er
+M|Fina|it|[ ] Consistent formatting
+M|Fina|it|[ ] Links work (if applicable)
+M|Fina|it|[ ] Core message preserved through all edits
+M|Fina|tx|---
+M|Prob|**Sy|** List of what the pd does w/o why it matters
+M|Prob|fix|** Add "which means..." after each feature to bridge to benefits
+M|Prob|**Sy|** "Leverage synergies to op outcomes"
+M|Prob|fix|** Ask "How wld a human say this?" and use those words
+M|Prob|**Sy|** Starting w/ company history or vague statements
+M|Prob|fix|** Lead w/ the reader's problem or desired outcome
+M|Prob|**Sy|** The ask comes after too much buildup, or isn't clear
+M|Prob|fix|** Make the CTA obvious, early, and repeated
+M|Prob|**Sy|** "cs love us" w/ no evidence
+M|Prob|fix|** Add specific testimonials, numbers, or case references
+M|Prob|**Sy|** "We help businesses grow"
+M|Prob|fix|** Specify who, how, and by how much
+M|Prob|**Sy|** cp tries to speak to everyone, resonates w/ no one
+M|Prob|fix|** Pick one audience and write directly to them
+M|Prob|**Sy|** Listing every capability, overwhelming the reader
+M|Prob|fix|** Focus on 3-5 key benefits that matter most to the audience
+M|Prob|tx|---
+M|Work|When|
+M|Work|tx|1. **Run a sweep and present findings** - Show what you found, why it's an issue
+M|Work|tx|2. **Recommend specific edits** - Don't just identify problems; propose solutions
+M|Work|tx|3. **Request the updated cp** - Let the author make final decisions
+M|Work|tx|4. **Verify previous sweeps** - After each round of edits, re-check earlier sweeps
+M|Work|tx|5. **Repeat until clean** - Continue until a full sweep finds no new issues
+M|Work|tx|This iterative process ensures each edit doesn't cr new problems while respecting the author's ownership of the cp.
+M|Work|tx|---
+M|Refe|- [P|Replace complex words w/ simpler alternatives
+M|Refe|- [C|Full checklist, refresh vs. rewrite matrix, and cadence guide
+M|Refe|tx|---
+M|Cont|tx|cp editing isn't just for new cn. Existing pages decay over time — outdated stats, stale examples, and drifted br voice. Use the cn refresh framework when traffic is declining, data is stale, or the pd has changed.
+M|Cont|**Fo|See [references/cn-refresh.md](references/cn-refresh.md)
+M|Cont|tx|---
+M|Task|tx|1. What's the goal of this cp? (Awareness, conversion, retention)
+M|Task|tx|2. What action shd readers take?
+M|Task|tx|3. Are there specific concerns or known issues?
+M|Task|tx|4. What proof/evidence do you have available?
+M|Task|tx|5. Is this new cp or a refresh of existing cn?
+M|Task|tx|---
+M|Rela|- **|For writing new cp from scratch (use this skill to edit after your first draft is complete)
+M|Rela|- **|For broader page op beyond cp
+M|Rela|- **|For understanding why certain edits improve conversion
+M|Rela|- **|For testing cp variations
+M|Rela|tx|---
+M|When|tx|\| Task \| Skill to Use \|
+M|When|tx|\|------\|--------------\|
+M|When|tx|\| Writing new page cp from scratch \| copywriting \|
+M|When|tx|\| Reviewing and improving existing cp \| cp-editing (this skill) \|
+M|When|tx|\| Editing cp you just wrote \| cp-editing (this skill) \|
+M|When|tx|\| Structural or st page changes \| page-cro \|

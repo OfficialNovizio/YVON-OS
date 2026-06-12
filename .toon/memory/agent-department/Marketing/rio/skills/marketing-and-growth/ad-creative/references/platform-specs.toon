@@ -1,0 +1,139 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ad-creative/references/platform-specs.md savings=-5%
+M|Plat|tx|Complete character limits, format requirements, and best practices for each ad platform.
+M|Plat|tx|---
+M|Resp|tx|\| Element \| Character Limit \| Required \| Notes \|
+M|Resp|tx|\|---------\|----------------\|----------\|-------\|
+M|Resp|tx|\| hl \| 30 chars \| 3 minimum, 15 max \| Any 3 may be shown together \|
+M|Resp|tx|\| Description \| 90 chars \| 2 minimum, 4 max \| Any 2 may be shown together \|
+M|Resp|tx|\| Display path 1 \| 15 chars \| Optional \| Appears after domain in URL \|
+M|Resp|tx|\| Display path 2 \| 15 chars \| Optional \| Appears after path 1 \|
+M|Resp|tx|\| Final URL \| No limit \| Required \| Landing page URL \|
+M|Resp|**Co|**
+M|Resp|it|Google selects up to 3 headlines and 2 descriptions to show
+M|Resp|it|Headlines appear separated by " \| " or stacked
+M|Resp|it|Any hl can appear in any position unless pinned
+M|Resp|it|Pinning reduces Google's ability to op — use sparingly
+M|Resp|**Pi|**
+M|Resp|it|Pin your br name to position 1 if br guidelines require it
+M|Resp|it|Pin your strongest CTA to position 2 or 3
+M|Resp|it|Leave most headlines unpinned for machine learning
+M|Resp|**He|**
+M|Resp|it|3-4 keyword-focused (match search intent)
+M|Resp|it|3-4 benefit-focused (what they get)
+M|Resp|it|2-3 sl proof (numbers, awards, cs)
+M|Resp|it|2-3 CTA-focused (action to take)
+M|Resp|it|1-2 differentiators (why you over cr)
+M|Resp|it|1 br name hl
+M|Resp|**De|**
+M|Resp|it|1 benefit + proof point
+M|Resp|it|1 feature + outcome
+M|Resp|it|1 sl proof + CTA
+M|Resp|it|1 urgency/offer + CTA (if applicable)
+M|Perf|tx|\| Element \| Character Limit \| Notes \|
+M|Perf|tx|\|---------\|----------------\|-------\|
+M|Perf|tx|\| hl \| 30 chars (5 required) \| Short headlines for various placements \|
+M|Perf|tx|\| Long hl \| 90 chars (5 required) \| Used in display, vd, discover \|
+M|Perf|tx|\| Description \| 90 chars (1 required, 5 max) \| Accompany various ad formats \|
+M|Perf|tx|\| Business name \| 25 chars \| Required \|
+M|Disp|tx|\| Element \| Character Limit \|
+M|Disp|tx|\|---------\|----------------\|
+M|Disp|tx|\| hl \| 30 chars \|
+M|Disp|tx|\| Long hl \| 90 chars \|
+M|Disp|tx|\| Description \| 90 chars \|
+M|Disp|tx|\| Business name \| 25 chars \|
+M|Disp|tx|---
+M|Sing|tx|\| Element \| Recommended \| Maximum \| Notes \|
+M|Sing|tx|\|---------\|-------------\|---------\|-------\|
+M|Sing|tx|\| Primary text \| 125 chars \| 2,200 chars \| Text above im; truncated after ~125 \|
+M|Sing|tx|\| hl \| 40 chars \| 255 chars \| Below im; truncated after ~40 \|
+M|Sing|tx|\| Description \| 30 chars \| 255 chars \| Below hl; may not show \|
+M|Sing|tx|\| URL display link \| 40 chars \| N/A \| Optional custom display URL \|
+M|Sing|**Pl|**
+M|Sing|- **|All elements show; primary text most visible
+M|Sing|- **|Primary text overlaid; keep under 72 chars
+M|Sing|- **|Only hl visible; skip description
+M|Sing|- **|Varies by publisher
+M|Sing|**Be|**
+M|Sing|it|Front-load the hook in primary text (first 125 chars)
+M|Sing|it|Use line breaks for readability in longer primary text
+M|Sing|- Em|tst, but don't overuse — 1-2 per ad max
+M|Sing|it|Questions in primary text increase engagement
+M|Sing|it|hl shd be a clear CTA or value statement
+M|Lead|tx|\| Element \| Limit \|
+M|Lead|tx|\|---------\|-------\|
+M|Lead|tx|\| Greeting hl \| 60 chars \|
+M|Lead|tx|\| Greeting description \| 360 chars \|
+M|Lead|tx|\| Privacy policy text \| 200 chars \|
+M|Lead|tx|---
+M|Sing|tx|\| Element \| Recommended \| Maximum \| Notes \|
+M|Sing|tx|\|---------\|-------------\|---------\|-------\|
+M|Sing|tx|\| Intro text \| 150 chars \| 600 chars \| Above the im; truncated after ~150 \|
+M|Sing|tx|\| hl \| 70 chars \| 200 chars \| Below the im \|
+M|Sing|tx|\| Description \| 100 chars \| 300 chars \| Only shows on Audience Network \|
+M|Caro|tx|\| Element \| Limit \|
+M|Caro|tx|\|---------\|-------\|
+M|Caro|tx|\| Intro text \| 255 chars \|
+M|Caro|tx|\| Card hl \| 45 chars \|
+M|Caro|tx|\| Card count \| 2-10 cards \|
+M|Mess|tx|\| Element \| Limit \|
+M|Mess|tx|\|---------\|-------\|
+M|Mess|tx|\| Subject line \| 60 chars \|
+M|Mess|tx|\| Message body \| 1,500 chars \|
+M|Mess|tx|\| CTA button \| 20 chars \|
+M|Text|tx|\| Element \| Limit \|
+M|Text|tx|\|---------\|-------\|
+M|Text|tx|\| hl \| 25 chars \|
+M|Text|tx|\| Description \| 75 chars \|
+M|Text|**Li|**
+M|Text|it|Professional tone, but not boring
+M|Text|it|Use job-specific language the audience recognizes
+M|Text|it|Statistics and data points perform well
+M|Text|it|Avoid consumer-style hype ("Amazing!" "Incredible!")
+M|Text|it|First-person testimonials from peers resonate
+M|Text|tx|---
+M|In-F|tx|\| Element \| Recommended \| Maximum \| Notes \|
+M|In-F|tx|\|---------\|-------------\|---------\|-------\|
+M|In-F|tx|\| Ad text \| 80 chars \| 100 chars \| Above the vd \|
+M|In-F|tx|\| Display name \| N/A \| 40 chars \| br name \|
+M|In-F|tx|\| CTA button \| Platform options \| Predefined \| Select from TikTok's options \|
+M|Spar|tx|\| Element \| Notes \|
+M|Spar|tx|\|---------\|-------\|
+M|Spar|tx|\| ct \| Uses original post ct \|
+M|Spar|tx|\| CTA button \| Added by advertiser \|
+M|Spar|tx|\| Display name \| Original creator's handle \|
+M|Spar|**Ti|**
+M|Spar|it|Native cn outperforms polished ad
+M|Spar|it|First 2 seconds determine if they watch
+M|Spar|it|Use trending sounds and formats
+M|Spar|it|Text overlay is essential (most watch w/ sound off)
+M|Spar|- Ve|16)
+M|Spar|tx|---
+M|Prom|tx|\| Element \| Limit \| Notes \|
+M|Prom|tx|\|---------\|-------\|-------\|
+M|Prom|tx|\| Tweet text \| 280 chars \| Full tweet w/ im/vd \|
+M|Prom|tx|\| Card hl \| 70 chars \| Website card \|
+M|Prom|tx|\| Card description \| 200 chars \| Website card \|
+M|Webs|tx|\| Element \| Limit \|
+M|Webs|tx|\|---------\|-------\|
+M|Webs|tx|\| hl \| 70 chars \|
+M|Webs|tx|\| Description \| 200 chars \|
+M|Webs|**Tw|**
+M|Webs|it|Conversational, casual tone
+M|Webs|it|Short sentences work best
+M|Webs|it|One clear message per tweet
+M|Webs|- Ha|1-2 max (0 is often better for ad)
+M|Webs|it|Threads can work for consideration-stage cn
+M|Webs|tx|---
+M|Char|it|**Spaces count** as characters on all platforms
+M|Char|it|**Emojis** count as 1-2 characters depending on platform
+M|Char|it|**Special characters** (\|, &, etc.) count as 1 character
+M|Char|it|**URLs** in body text count against limits
+M|Char|- **|default}`) can exceed limits — set safe defaults
+M|Char|it|Always verify in the platform's ad preview before launching
+M|Char|tx|---
+M|Mult|When|
+M|Mult|tx|1. **Google Search headlines** (30 chars) — forces the tightest messaging
+M|Mult|tx|2. **Expand to Meta headlines** (40 chars) — add a word or two
+M|Mult|tx|3. **Expand to LinkedIn intro text** (150 chars) — add context and proof
+M|Mult|tx|4. **Expand to Meta primary text** (125+ chars) — full hook and value prop
+M|Mult|tx|This cascading approach ensures your core message works everywhere, then gets enriched for platforms that allow more space.

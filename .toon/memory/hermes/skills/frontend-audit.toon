@@ -1,0 +1,41 @@
+SKILL|frontend-audit|Systematic audit and repair of frontend dashboards, screens, or pages — find demo data, dead code, duplicated styles, fake operations, auth gates, and missing intelligence layers.
+STEP|1|User asks to audit or review a specific screen/dashboard
+STEP|2|User says a dashboard "is a mess" or "needs overhaul"
+STEP|3|User wants to know if a UI "makes sense" or "is actually working"
+STEP|4|User asks to "fix everything" on a page
+STEP|5|Read layout.tsx, page.tsx, tab manager
+STEP|6|Read every _component.tsx (tabs, sections)
+STEP|7|Read every API route the components call
+STEP|8|Note total lines, size, and file count
+STEP|9|🔴 **Critical** — fake data, broken API calls, silent failures, 401s
+STEP|10|🟡 **Medium** — duplicated code, hardcoded dates, missing features
+STEP|11|🟢 **Working** — what actually functions correctly
+STEP|12|**Kill demo data first** — delete all fabricated arrays, replace with empty arrays and honest empty states. Pattern for empty state:
+STEP|13|**Dedup glass CSS** — extract to shared file (see references/glass-tokens-pattern.md)
+STEP|14|**Fix auth gates** — remove CRON_SECRET-only gates that block UI buttons, or add cookie-based auth fallback
+STEP|15|**Add intelligence layer** — import shared KaisRead component, pass ventureSlug
+STEP|16|**Fix fake operations** — replace setTimeout lies with real API calls
+STEP|17|**>5 KB** — wired (rich component with real logic)
+STEP|18|**2–5 KB** — mock (styled UI with hardcoded data)
+STEP|19|**<2 KB** — stub (thin placeholder)
+STEP|20|When a dashboard has no live data:** the agents must report honestly. If no data exists, Kai's prompt must say "NO LIVE DATA AVAILABLE." If no social accounts are connected, Nate reads "No platform da
+PIT|User asks to audit or review a specific screen/dashboard
+PIT|User says a dashboard "is a mess" or "needs overhaul"
+PIT|User wants to know if a UI "makes sense" or "is actually working"
+PIT|User asks to "fix everything" on a page
+PIT|Read layout.tsx, page.tsx, tab manager
+PIT|Read every _component.tsx (tabs, sections)
+PIT|Read every API route the components call
+PIT|Note total lines, size, and file count
+PIT|🔴 **Critical** — fake data, broken API calls, silent failures, 401s
+PIT|🟡 **Medium** — duplicated code, hardcoded dates, missing features
+PIT|🟢 **Working** — what actually functions correctly
+PIT|**Kill demo data first** — delete all fabricated arrays, replace with empty arrays and honest empty states. Pattern for empty state:
+PIT|**Dedup glass CSS** — extract to shared file (see references/glass-tokens-pattern.md)
+PIT|**Fix auth gates** — remove CRON_SECRET-only gates that block UI buttons, or add cookie-based auth fallback
+PIT|**Add intelligence layer** — import shared KaisRead component, pass ventureSlug
+PIT|**Fix fake operations** — replace setTimeout lies with real API calls
+PIT|**>5 KB** — wired (rich component with real logic)
+PIT|**2–5 KB** — mock (styled UI with hardcoded data)
+PIT|**<2 KB** — stub (thin placeholder)
+PIT|When a dashboard has no live data:** the agents must report honestly. If no data exists, Kai's prompt must say "NO LIVE DATA AVAILABLE." If no social accounts are connected, Nate reads "No platform da

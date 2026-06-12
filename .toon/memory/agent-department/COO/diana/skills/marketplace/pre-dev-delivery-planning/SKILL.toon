@@ -1,0 +1,158 @@
+#MEM id=pre-dev-delivery-planning source=/root/yvon/agent-department/COO/diana/skills/marketplace/pre-dev-delivery-planning/SKILL.md savings=6%
+M||tx|---
+M||name|ring:pre-dv-delivery-planning
+M||desc|\|
+M||Gate|Delivery roadmap and timeline planning.
+M||tx|Transforms tasks into realistic delivery schedule w/ ct path al,
+M||tx|resource allocation, and delivery breakdown. MANDATORY gate for both workflows.
+M||tx|---
+M|When|it|Tasks passed Gate 7 validation (Full Track) OR Gate 3 (Small Track)
+M|When|it|Need realistic delivery timeline w/ dates
+M|When|it|Ready to convert tasks into delivery schedule
+M|When|it|Team composition known or determinable
+M|Skip|it|Tasks not validated → complete task breakdown first
+M|Skip|it|Proof-of-concept w/o delivery commitment
+M|Skip|it|Research/exploration work w/o delivery deadline
+M|Sequ|**Ru|** ring:dv-cycle
+M|Sequ|**Ru|** ring:pre-dv-task-breakdown, ring:pre-dv-subtask-creation
+M|Sequ|tx|Every roadmap must be grounded in reality, not optimism. Tasks not validated, team composition unknown, or start date absent → STOP and gather the missing input before proceeding.
+M|Phas|tx|\| Phase \| Activities \|
+M|Phas|tx|\|-------\|------------\|
+M|Phas|tx|\| **1. Input Gathering** \| Load tasks.md; ask us for start date, team composition, delivery cadence, period cfg, velocity multiplier \|
+M|Phas|tx|\| **2. Dependency al** \| bd dependency graph, identify ct path, find parallelization opportunities \|
+M|Phas|tx|\| **3. Capacity Planning** \| Calculate team velocity (custom multiplier), allocate resources, identify bottlenecks \|
+M|Phas|tx|\| **4. Delivery Breakdown** \| Group tasks by cadence (sprint/cycle/continuous), calculate period boundaries, identify spill overs, map parallel streams \|
+M|Phas|tx|\| **5. Risk al** \| Flag hi-risk dependencies, add contingency buffer (10-20%), define mitigations \|
+M|Phas|tx|\| **6. Gate Validation** \| Verify all tasks scheduled, ct path correct, dates achievable, period boundaries respected \|
+M|Q1: |When|YYYY-MM-DD
+M|Q2: |How |1 (solo), 2 (pair), 3-4 (squad), 5+ (large team)
+M|Q3: |Opti|Sprints (1-2 weeks), Cycles (1-3 months), Continuous (no fixed intervals)
+M|Q4 (|- Du|1w, 2w, 1mo, 2mo, 3mo
+M|Q4 (|- St|YYYY-MM-DD
+M|Q5: |tx|\| Option \| Multiplier \| Example \|
+M|Q5: |tx|\|--------\|-----------\|---------\|
+M|Q5: |tx|\| Minimal validation \| 1.2x \| 4h AI → 4.8h adjusted \|
+M|Q5: |tx|\| Standard validation ← recommended \| 1.5x \| 4h AI → 6.0h adjusted \|
+M|Q5: |tx|\| Deep validation \| 2.0x \| 4h AI → 8.0h adjusted \|
+M|Q5: |tx|\| Heavy rework \| 2.5x \| 4h AI → 10.0h adjusted \|
+M|Q5: |tx|\| Custom \| us-specified \| — \|
+M|Velo|tx|```
+M|Velo|tx|adjusted_hours = ai_estimate × multiplier
+M|Velo|tx|calendar_hours = adjusted_hours ÷ 0.90
+M|Velo|tx|calendar_days  = calendar_hours ÷ 8 ÷ team_size
+M|Velo|tx|task_days      = calendar_days + taura_days
+M|Velo|Wher|
+M|Velo|tx|ai_estimate = from tasks.md (AI-ag-hours)
+M|Velo|tx|0.90        = capacity utilization (AI ag standard)
+M|Velo|tx|taura_days  = 0 (dv/Delivery) \| 5 (qual) \| 10 (qual integration)
+M|Velo|tx|```
+M|Peri|For |`task_end_date <= period_end_date`
+M|Peri|it|If yes → fits completely (✅)
+M|Peri|- If|allocate days split across periods
+M|Peri|Cont|no period boundaries — tasks scheduled by dependency and capacity only.
+M|Crit|tx|1. bd dependency graph from tasks.md
+M|Crit|tx|2. Calculate Earliest Start Date (ESD) per task
+M|Crit|tx|3. Calculate Latest Start Date (LSD) w/o delaying project
+M|Crit|tx|4. Tasks where ESD = LSD → on ct path (zero slack)
+M|Outp|MUST|
+M|Outp|it|`doc/pre-dv/{feature}/delivery-roadmap.md` — human-readable
+M|Outp|it|`doc/pre-dv/{feature}/delivery-roadmap.json` — machine-readable (see sc below)
+M|Outp|**To|**
+M|Outp|tx|\| Structure \| Files Generated \|
+M|Outp|tx|\|-----------\|-----------------\|
+M|Outp|tx|\| single-repo \| `doc/pre-dv/{feature}/delivery-roadmap.{md,json}` \|
+M|Outp|tx|\| monorepo \| Index + per-md `{md.path}/doc/pre-dv/{feature}/delivery-roadmap.{md,json}` \|
+M|Outp|tx|\| multi-repo \| Per-repo `{repo.path}/doc/pre-dv/{feature}/delivery-roadmap.{md,json}` \|
+M|JSON|tx|```json
+M|JSON|tx|{
+M|JSON|"ver|"1.0.0",
+M|JSON|"gat|9,
+M|JSON|"fea|"{feature-name}",
+M|JSON|"gen|"ISO-8601",
+M|JSON|"dat|{
+M|JSON|"sta|"YYYY-MM-DD",
+M|JSON|"end|"YYYY-MM-DD",
+M|JSON|"mvp|"YYYY-MM-DD or null",
+M|JSON|"tot|"5.5 weeks"
+M|JSON|tx|},
+M|JSON|"vel|{
+M|JSON|"tea|2,
+M|JSON|"uti|0.9,
+M|JSON|"hum|1.5,
+M|JSON|"mul|"default \| custom"
+M|JSON|tx|},
+M|JSON|"del|{
+M|JSON|tp|"sprint \| cycle \| continuous",
+M|JSON|"per|"2 weeks \| 1 month \| null",
+M|JSON|"per|"YYYY-MM-DD or null"
+M|JSON|tx|},
+M|JSON|"tas|[{
+M|JSON|"id"|"T-001",
+M|JSON|"des|"...",
+M|JSON|"aiE|"4.5h",
+M|JSON|"adj|"6.75h",
+M|JSON|"cal|"7.5h",
+M|JSON|"day|0.94,
+M|JSON|"pha|"dv \| qual \| delivery",
+M|JSON|"tau|0,
+M|JSON|"dep|[],
+M|JSON|"ass|"Backend \| Frontend \| DevOps \| QA",
+M|JSON|"sta|"ready \| blk \| wip \| done",
+M|JSON|"onC|true
+M|JSON|tx|}],
+M|JSON|"mil|[{
+M|JSON|"nam|"Sprint 1",
+M|JSON|tp|"sprint \| cycle \| milestone",
+M|JSON|"sta|"YYYY-MM-DD",
+M|JSON|"tar|"YYYY-MM-DD",
+M|JSON|"tas|["T-001"],
+M|JSON|"del|"...",
+M|JSON|"spi|[]
+M|JSON|tx|}],
+M|JSON|"cri|{
+M|JSON|"tas|["T-001", "T-002"],
+M|JSON|"tot|"5.5 weeks",
+M|JSON|"min|"5.5 weeks"
+M|JSON|tx|},
+M|JSON|"ris|[{"taskIds": ["T-001"], "level": "hi", "impact": "...", "mitigation": "..."}],
+M|JSON|"cyc|{
+M|JSON|"gro|28,
+M|JSON|"bug|5.6,
+M|JSON|"ava|22.4,
+M|JSON|"all|19.2,
+M|JSON|"sla|3.2
+M|JSON|tx|},
+M|JSON|"con|{"percentage": 15, "days": 4},
+M|JSON|"con|85
+M|JSON|tx|}
+M|JSON|tx|```
+M|JSON|tx|1. `dates.startDate` and `dates.endDate` REQUIRED — not null
+M|JSON|tx|2. `tasks` array MUST have ≥1 item
+M|JSON|tx|3. Every task MUST have `id`, `description`, `aiEstimate`, `adjusted`, `calendar`, `days`
+M|JSON|tx|4. `confidenceScore` MUST be 0-100
+M|JSON|tx|5. `milestones` MUST have ≥1 item
+M|JSON|tx|6. `criticalPath.taskIds` MUST reference valid task IDs
+M|JSON|tx|7. `version` MUST be `"1.0.0"`
+M|JSON|tx|8. `milestones[].taskIds` and `spillOvers` MUST reference valid task IDs
+M|JSON|tx|9. `velocity.teamSize` > 0
+M|JSON|tx|10. `cycleCapacity` MUST be present w/ all 5 fields
+M|JSON|tx|11. `cycleCapacity.availableDays` = `grossDays - bugBufferDays`
+M|JSON|tx|12. `cycleCapacity.slackDays` = `availableDays - allocatedDays` (negative = over-committed → add risk)
+M|JSON|13. |0 for dv/delivery, 5 or 10 for qual
+M|JSON|14. |`periodDuration` = null, `periodStartDate` = null, milestones tp = `milestone`, spillOvers = `[]`
+M|Gate|tx|\| Category \| Requirements \|
+M|Gate|tx|\|----------\|--------------\|
+M|Gate|tx|\| **Input Completeness** \| Start date, team composition, cadence, period config (if sprint/cycle), velocity multiplier all confirmed \|
+M|Gate|tx|\| **Dependency al** \| Graph built, ct path identified, parallel streams defined, no circular deps \|
+M|Gate|tx|\| **Capacity Planning** \| Velocity calculated, resources allocated, bottlenecks identified, ≤80% utilization \|
+M|Gate|tx|\| **Delivery Breakdown** \| Periods match cadence, boundaries calculated, spill overs identified, delivery goals measurable \|
+M|Gate|tx|\| **Risk Management** \| hi-risk deps flagged, buffer added (10-20%), mitigations defined \|
+M|Gate|tx|\| **Timeline Realism** \| No best-case assumptions, ct path validated, dates achievable \|
+M|Gate|**Ga|** ✅ PASS → Ready for execution \| ⚠️ CONDITIONAL (adjust) \| ❌ FAIL (rework)
+M|Conf|tx|\| Factor \| Points \| Criteria \|
+M|Conf|tx|\|--------\|--------\|----------\|
+M|Conf|| De|30, Most clear: 20, Ambiguous: 10 \|
+M|Conf|| Ca|25, Optimistic (90%+): 10, Undefined: 0 \|
+M|Conf|| Cr|25, Partial: 15, Assumptions: 5 \|
+M|Conf|| Ri|20, Some: 10, None: 0 \|
+M|Conf|Scor|proceed w/ confidence. 50-79: flag assumptions. <50: resolve unknowns before committing dates.

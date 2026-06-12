@@ -1,0 +1,13 @@
+SKILL|cron-timezone-scheduling|Schedule cron jobs with timezone awareness — always check server vs user timezone before setting schedules. Use when creating or updating cron jobs, especially for users in non-UTC timezones.
+STEP|1|Always check the server timezone BEFORE setting cron schedules.** The `cronjob` tool uses the server's system time, not the user's local time. Never assume UTC or any specific timezone.
+STEP|2|Check memory (`memory action=add target=user`) for stored timezone
+STEP|3|If unknown, check project context: India-based brands → IST, US-based → ask
+STEP|4|When in doubt, **ask the user** what timezone they're in
+STEP|5|**Never assume UTC**: Server timezone varies by hosting provider. Always verify with `timedatectl`.
+STEP|6|**Never assume user timezone**: Project location ≠ user location. Check memory or ask.
+STEP|7|**Label both timezones in the job name**: Future you (or another agent) needs to know the conversion without re-deriving it.
+STEP|8|**Hermes cronjob `next_run_at` is always in UTC**: The `+00:00` suffix confirms this. Convert mentally to verify correctness.
+PIT|**Never assume UTC**: Server timezone varies by hosting provider. Always verify with `timedatectl`.
+PIT|**Never assume user timezone**: Project location ≠ user location. Check memory or ask.
+PIT|**Label both timezones in the job name**: Future you (or another agent) needs to know the conversion without re-deriving it.
+PIT|**Hermes cronjob `next_run_at` is always in UTC**: The `+00:00` suffix confirms this. Convert mentally to verify correctness.

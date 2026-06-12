@@ -1,0 +1,28 @@
+#DOC source=/root/yvon/docs/novizio/ISSUES.md strip=68% toon=-3% net=68%
+# Novizio — Issues Log
+Rolling. Updated by agents whenever an issue is found or resolved.
+Open issues block relevant campaign, content, or tech work. Read before starting any Novizio task.
+Priority: 🔴 Critical (blocks work) | 🟡 High (degrades quality) | 🟢 Low (nice to fix)
+
+---
+
+## Open Issues
+
+[TABLE:6×7]
+---
+
+## Recently Resolved (last 30 days)
+
+[TABLE:5×2]
+---
+
+## How to File an Issue
+
+Any agent that discovers a gap or blocker during Novizio work files it here during ADJOURNING.
+
+Format:
+[CODE::1LOC]
+
+Categories: Brand · Campaign · Analytics · Production · Financial · Content · Tech · SEO · Ads
+
+Moving to Resolved: When an issue is fixed, move it to "Recently Resolved." Drop entries older than 30 days from Resolved.

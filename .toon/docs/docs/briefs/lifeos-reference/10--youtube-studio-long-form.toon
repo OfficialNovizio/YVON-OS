@@ -1,0 +1,29 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/10--youtube-studio-long-form.md strip=5% toon=3% net=8%
+T|10 ·|0|The packaging cockpit for a finished vd: title iteration, thumbnail ds, the upload checklist, and — once the transcript is dropped — an auto-generated description w/ chapters.
+T|10 ·|1|
+T|Purp|0|Take a filmed/edited vd and pk it for upload: iterate titles, get thumbnail help, run a pre-publish checklist, and gn the description/chapters from the transcript. hy/ag prepare the pk; the owner can publish (Shorts may auto-upload; long-form is reviewed first).
+T|Purp|1|
+T|Page|0|Title: YouTube Studio, breadcrumb Vibe w/ AI / YouTube Studio.
+T|Page|1|Buttons: Open in Asset Lab (jump to thumbnails/assets) and gn upload pk.
+T|Page|2|A status line: "pk · X finished vd in upload-ready — the cockpit is the same flow when it's back."
+T|Page|3|Flow chips across the top: While footage w/ the editor → When it's back → Then ready to upload / pre-publish — i.e. the lifecycle of the vd while editing, when it returns, and when it's ready.
+T|Page|4|A note that Shorts may auto-upload (private/list form) while long-form is published manually after rv.
+T|Page|5|
+T|Left|0|"Ready for packaging" card listing the current vd(s), e.g. "Claude ran my business for 7 days," "I planned an app w/ zero code."
+T|Left|1|Upload checklist — a checklist of pre-publish items (thumbnail picked, title chosen, description ready, chapters, etc.) that must be green before upload.
+T|Left|2|
+T|Cent|0|Title field w/ the working title (e.g. "I gave my entire business to AI ag for 7 days").
+T|Cent|1|Title candidates / variants — the ag proposes alternate titles to iterate on (e.g. "What happened when I gave my company to AI ag"), and notes which performed in past tests.
+T|Cent|2|hy's note — e.g. "Your best-testing titles w/ '7' + a number out-performed the last 3 / 4 for A vs the candidates; then we tune the working title/slogan you land on the thumbnail." — i.e. data-informed title coaching, plus further title options.
+T|Cent|3|
+T|Thum|0|Thumbnail builder w/ elements: character, studio background, and a Change action per element, plus Add tags / hint.
+T|Thum|1|A row of thumbnail candidate frames ("a wall of screens and small shots, view studio shot") to pick from — wired to Leonardo / Asset Lab.
+T|Thum|2|
+T|Desc|0|A second mode/section for the finished upload:
+T|Desc|1|Drop the final transcript → generates a full description w/ chapters that's "pretty much ready, only needs minor tweaking."
+T|Desc|2|Full description preview w/ cp full description button.
+T|Desc|3|Chapters auto-extracted w/ timestamps (e.g. 00:00 Intro, 01:30 The cockpit, … 04:?? Decision Queue).
+T|Desc|4|Pinned comment generator ("gn" a pinned first comment) and A/B tst helper for title/thumbnail.
+T|Desc|5|Links onward to Export thumbnail brief / follow-up Shorts.
+T|Desc|6|
+T|Work|0|cn Pipeline (Ready) → YouTube Studio packaging (titles + thumbnail + checklist) → publish → drop transcript → auto description + chapters + pinned comment → feeds Shorts (follow-up shorts) and YouTube an.

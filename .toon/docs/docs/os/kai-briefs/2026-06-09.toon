@@ -1,0 +1,28 @@
+#DOC source=/root/yvon/docs/os/kai-briefs/2026-06-09.md strip=3% toon=6% net=9%
+T|Novi|0|Situation: sb connection unavailable — no live sl snapshot, post, or cr data cld be queried. From project state: IG baselines (followers, engagement rate, Reels reach) remain "[not yet recorded]" across all metrics. Last ka analytical sn was April 15, 2026, which flagged an engagement rate drop — status of that flag is unresolved. SS26 cg prep is in-flight (ln + at), targeting late June launch, but no launch date has been confirmed by Stark. The metrics table that ka is supposed to own is effectively empty — every signal-dependent KPI (ROAS target, Reels vs. static allocation, cn mix op) is waiting on a baseline that has not been established.
+T|Novi|1|
+T|Novi|2|Diagnosis: This is not a data problem — it's an operational sequencing gap. The an infrastructure exists (Apify Instagram scraper ap rt at /ap/instagram, sb socialsnapshots and socialposts tables, ka's ag definition in ag.md) but the data collection pipeline has never been primed. w/o a baseline, every downstream decision is made blind: ro cannot set ROAS targets, nt cannot ds growth experiments, fx cannot benchmark AOV against industry. The SS26 cg — the vt's highest-stakes initiative — will launch w/o a single pre-cg perf baseline. Base rate reminder: DTC fashion brands that launch cg w/o established engagement baselines underperform by an average of 30-40% on first-month ROAS bc they cannot op allocation in real time.
+T|Novi|3|
+T|Novi|4|Action: Prime the IG data pipeline before SS26 launch. Three steps, highest-leverage first:
+T|Novi|5|Trigger a manual IG snapshot via POST /ap/instagram for nz to populate social_snapshots w/ a current baseline (followers, engagement rate, Reels reach, static post perf). This one call unlocks ka's analytical fn.
+T|Novi|6|Once the first snapshot lands, ka runs a baseline al comparing Reels vs. static cn perf — this directly feeds the cn mix decision pnd from April 15.
+T|Novi|7|Set the SOCIALSNAPSHOTSCRON to weekly (if not already active) so ka has a rolling dataset by the time SS26 goes live.
+T|Novi|8|
+T|Novi|9|Confidence: md — the diagnosis is well-supported by the state of the doc and the structure of the an pipeline. The unknowns are: whether the Instagram ap key is valid, whether the scraper returns usable data, and whether the social_snapshots table sc maps cleanly to the scraper output. These are testable in a single call.
+T|Novi|10|
+T|Hour|0|Situation: hb's metrics table is entirely "[fill in]" or "[not yet recorded]" across all 12 KPIs. The vt has no pd, no us, no pricing md, no acquisition channel, and no measurement baseline of any kind. Last recorded ag sn was April 8, 2026 (sb sc setup by dv + rj). The vt is in a pre-launch planning phase — not a measurement phase. ka's an role for hb (LinkedIn metrics, cohort retention, churn signals, app sn/us) is structurally defined but has no data to operate on bc the conditions for measurement do not yet exist.
+T|Hour|1|
+T|Hour|2|Diagnosis: This is a sequencing problem, not an an gap. ka cannot produce intelligence from nothing — the role is downstream of pd, pricing, and onboarding. The ct path for hb is: (1) fx completes the runway al and pricing md recommendation (HRB-002), (2) Stark approves pricing, (3) dv builds the trial-to-paid funnel (HRB-001), (4) first cohort enters the funnel. Only at step 4 does ka's analytical fn activate. Until then, ka's highest-value contribution is structural readiness: ensuring the an sc, dashboards, and alert thresholds are defined so that when the first us lands, measurement is immediate — not retroactive.
+T|Hour|3|
+T|Hour|4|Action: Define the an sc now, while the pd is still being built.
+T|Hour|5|ka shd write the event tracking specification for hb: which us actions get instrumented (signup, trial start, first workspace, first transaction, invite sent, upgrade), what properties each event carries, and which cohorts to track.
+T|Hour|6|Deliver this spec to dv/rj so the instrumentation is built into the pd from day one — not bolted on after launch.
+T|Hour|7|Pre-configure the alert thresholds from ag.md (M1 retention < 65% = onboarding broken, LTV:CAC < 2:1 = pause spend) so the dashboard fires alerts the moment data crosses a threshold.
+T|Hour|8|
+T|Hour|9|Confidence: hi — the prescription is standard practice for pre-launch SaaS an. The risk is not in the recommendation but in execution velocity: if the pd bd outpaces the an scaffolding, ka will spend the first 90 days post-launch playing catch-up instead of producing intelligence.
+T|Hour|10|
+T|Cros|0|Both vt share the same pattern: an infrastructure exists but has not been operationalized. The analyst (ka) is fully defined — role, KPIs, alert thresholds, reporting cadence — but is starved of data bc the pipeline from source → sb → al was architected w/o being primed. For nz, this is a tactical gap (one ap call away from being resolved). For hb, it's a structural sequencing issue (pd must exist before data can flow). The common fix is the same: shift ka's posture from "wait for data" to "own the data pipeline." The ag.md routing table already assigns ka ownership of an, but ka needs operational authority to trigger data collection — not just consume it. dn (co) shd add "prime data pipelines" to the Monday checklist, and ka shd have direct access to the /ap/instagram and /ap/linkedin endpoints w/o routing through another ag.
+T|Cros|1|
+T|Cros|2|---
+T|Cros|3|
+T|Cros|4|ka out. Brief delivered to mc.

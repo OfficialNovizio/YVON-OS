@@ -1,0 +1,36 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/server-no-shared-module-state.md savings=3%
+M||tx|---
+M||titl|Avoid Shared md State for Request Data
+M||impa|hi
+M||impa|prevents concurrency bugs and request data leaks
+M||tags|server, rsc, ssr, concurrency, sec, state
+M||tx|---
+M|Avoi|tx|For rc Server cp and client cp rendered during SSR, avoid using mutable md-level variables to share request-scoped data. Server renders can run concurrently in the same process. If one render writes to shared md state and another render reads it, you can get race conditions, cross-request contamination, and sec bugs where one us's data appears in another us's rp.
+M|Avoi|tx|Treat md scope on the server as process-wide shared memory, not request-local state.
+M|Avoi|**In|**
+M|Avoi|tx|```tsx
+M|Avoi|let |us \| null = null
+M|Avoi|tx|export default async fn Page() {
+M|Avoi|tx|currentUser = await auth()
+M|Avoi|tx|return <Dashboard />
+M|Avoi|tx|}
+M|Avoi|tx|async fn Dashboard() {
+M|Avoi|tx|return <div>{currentUser?.name}</div>
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|tx|If two requests overlap, request A can set `currentUser`, then request B overwrites it before request A finishes rendering `Dashboard`.
+M|Avoi|**Co|**
+M|Avoi|tx|```tsx
+M|Avoi|tx|export default async fn Page() {
+M|Avoi|tx|const us = await auth()
+M|Avoi|tx|return <Dashboard us={us} />
+M|Avoi|tx|}
+M|Avoi|func|{ us: us \| null }) {
+M|Avoi|tx|return <div>{us?.name}</div>
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|Safe|
+M|Avoi|it|Immutable static assets or config loaded once at md scope
+M|Avoi|it|Shared caches intentionally designed for cross-request reuse and keyed correctly
+M|Avoi|it|Process-wide singletons that do not store request- or us-specific mutable data
+M|Avoi|tx|For static assets and config, see [Hoist Static I/O to md Level](./server-hoist-static-io.md).

@@ -1,0 +1,45 @@
+#MEM id=api-security-checklist source=/root/yvon/agent-department/Technical/dev/skills/custom/api-security-checklist/SKILL.md savings=2%
+M||tx|---
+M||name|ap-sec-checklist
+M||desc|dv's behavioral gate before approving any new /ap/ rt. 8-item checklist — any fl blocks the rt from shipping. Covers input validation, auth, ap key exposure, CRON_SECRET, CORS, SQL injection, cookie sec (HTTP-only server-side only), and er rp shape.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|dv's architecture approval role means a missed sec issue in rv becomes a production vulnerability. This checklist runs before dv issues APPROVED on any new or modified `/ap/` rt. Not a reference document — an active gate.
+M|Purp|tx|---
+M|The |tx|Run all 7 before issuing any verdict. Any fl = blk until fixed.
+M|The |tx|**1. Input Validation**
+M|The |it|Is all request body, query param, and path param input parsed through a Zod sc before any handler logic?
+M|The |it|No `any` casting, no manual tp assertions, no `as SomeType` on unvalidated data?
+M|The |tx|**2. Authentication**
+M|The |it|Does the rt call `sb.auth.getUser()` (not `auth.getSession()`)?
+M|The |it|Does unauthenticated return `401` — not `500`, not `200`, not a redirect?
+M|The |it|Is the us object from `auth.getUser()` used — never `body.userId` or `params.userId` as the identity source?
+M|The |tx|**3. ap Key Exposure**
+M|The |it|Are ALL external ap keys accessed via `process.env` server-side only?
+M|The |it|Zero keys in `NEXT_PUBLIC_` env vars?
+M|The |it|Zero keys in any client cp, hook, or `'use client'` file?
+M|The |tx|**4. CRON_SECRET**
+M|The |- If|does the handler validate `Authorization: Bearer ${CRON_SECRET}` as the FIRST line before ANY other code runs?
+M|The |it|Validation fl → immediate `401` return, no side effects executed?
+M|The |tx|**5. CORS**
+M|The |it|Is `Access-Control-Allow-Origin` set appropriately for this rt?
+M|The |it|No wildcard `*` on authenticated or sensitive data endpoints?
+M|The |tx|**6. Parameterized Queries**
+M|The |it|Zero string interpolation in sb `.rpc()` calls or raw SQL?
+M|The |it|All dynamic values passed as parameters — never concatenated into query strings?
+M|The |tx|**7. Cookie sec**
+M|The |it|Are ALL cookies set server-side only — never from client cp?
+M|The |- Do|true`, `secure: true`, `sameSite: 'lax'` flags set?
+M|The |it|Is `yvon_active_venture` read from server-side `cookies()` only — never from `document.cookie` or client-side cookie utilities?
+M|The |it|Zero cookies w/o explicit `maxAge` (no indefinite sn)?
+M|The |tx|**8. er rp Shape**
+M|The |- Do|'us-safe message' }` only?
+M|The |it|Zero `er.message` passthrough, zero stack traces, zero internal rt names or DB sc info in the rp body?
+M|The |- Co|400, 401, 403, 404, 429, 500, 503 — never `200` on fl?
+M|The |tx|---
+M|Verd|tx|```
+M|Verd|API |PASSED / FAILED
+M|Verd|Fail|[list]
+M|Verd|Requ|[exact correction]
+M|Verd|tx|```
+M|Verd|tx|Three or more failures on the same rt pattern → add the pattern to dv's MEMORY.md "Rejected Patterns" section.

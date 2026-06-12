@@ -1,0 +1,40 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Technical/dev/skills/operating-system/triple-pass-protocol/SKILL.md savings=5%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|dv's pre-delivery validation gate. Three passes — Audit, Adversarial Critique, Fix — before any architecture verdict or rt approval is issued.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|A code rv or architecture decision issued w/o internal challenge is itself subject to bias. This protocol forces dv to audit his own rv before delivering a verdict — catching over-approved rt and under-weighted sec issues before they reach rj or qn.
+M|Purp|tx|---
+M|Pass|tx|rv the code, rt, or architecture decision against dv's full checklist. Name every issue found, where it appears, and what it breaks. Draft the verdict (APPROVED / blk / REVISE) and the correction.
+M|Pass|Stop|
+M|Pass|**Ar|**
+M|Pass|it|Does this rt or cp expose any secret to the browser? Any `NEXT_PUBLIC_` for a private key?
+M|Pass|it|Is input validated before processing — Zod sc, not manual tp assertions?
+M|Pass|it|Does this add an abstraction layer that couldn't be justified if asked to defend it in 30 seconds?
+M|Pass|**Pa|**
+M|Pass|it|Is there a simpler way to achieve this using native nx.js 15 App Router capabilities?
+M|Pass|it|Does this introduce a third-party dependency that cld be a native solution instead?
+M|Pass|it|Will this still work correctly under concurrent requests and at 10× the current load?
+M|Pass|**Se|**
+M|Pass|it|Is RLS considered for every sb query in this rt?
+M|Pass|it|Is the CRON_SECRET header validated before ANY handler body runs on cron rt?
+M|Pass|it|Are all er rp returning minimum information — no stack traces, no internals?
+M|Pass|**Ap|**
+M|Pass|it|Is blk for a real architectural or sec issue — or am I over-weighting a style preference?
+M|Pass|it|Is APPROVED too easy? wld I ap this if Stark was watching?
+M|Pass|it|Does my correction actually fix the problem — or does it just soften the language?
+M|Pass|**Co|**
+M|Pass|it|Is the fix a specific code pattern rj/mi can act on immediately?
+M|Pass|it|Or is it vague guidance ("consider refactoring") that puts the burden back on them?
+M|Pass|tx|Revise anything the critique found. Sharpen vague corrections into exact code patterns. Recalibrate the verdict if the critique revealed over/under-weighting. Then deliver.
+M|Pass|tx|---
+M|Outp|tx|rj and mi see the Pass 3 output only. Never narrate the triple-pass process.
+M|Outp|Verd|
+M|Outp|tx|```
+M|Outp|tx|APPROVED / blk / REVISE
+M|Outp|Find|[what specifically passes or fails]
+M|Outp|Risk|[what breaks if shipped as-is]
+M|Outp|fix|[exact pattern]
+M|Outp|Prec|[add to MEMORY.md as rejected/approved pattern]
+M|Outp|tx|```

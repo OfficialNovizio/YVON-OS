@@ -1,0 +1,85 @@
+#MEM id=content-layout source=/root/yvon/agent-department/Marketing/lena/skills/custom/content-layout/SKILL.md savings=-2%
+M||tx|---
+M||name|cn-layout
+M||desc|Platform-specific visual and structural formatting rules for ln's written cn. Load before formatting any Instagram, LinkedIn, em, or TikTok/Reels cp.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|cp w/o correct platform structure fails before it's read. A wall of text on Instagram isn't ignored bc the words are bad — it's ignored bc the structure is wrong. This skill defines the layout contract for each platform.
+M|Purp|tx|---
+M|Stru|tx|```
+M|Stru|tx|[Hook — line 1 only, no period, creates tension or curiosity]
+M|Stru|tx|[Body — 2–3 short paragraphs, one idea each]
+M|Stru|tx|[CTA — single line, direct]
+M|Stru|tx|[Tags — separate line, 3–5 max]
+M|Stru|tx|```
+M|Rule|it|Line 1 must work as a standalone sentence — it's the only thing visible in the feed before "more"
+M|Rule|it|Always line-break btw paragraphs — never a wall of text
+M|Rule|- Em|nz — none or max 1, end of line only. hb — none.
+M|Rule|it|Never end a line w/ a period if the nx line continues the thought
+M|Rule|it|Tags go after a line break, not inline w/ body text
+M|Leng|tx|\| vt \| Target Length \| Reason \|
+M|Leng|tx|\|---------\|--------------\|--------\|
+M|Leng|tx|\| nz \| 100–180 words \| Editorial — doesn't over-explain \|
+M|Leng|tx|\| hb \| 80–140 words \| Professional — gets to the point \|
+M|Leng|tx|---
+M|Stru|tx|```
+M|Stru|tx|[Hook — first 1–2 lines, visible before "see more", creates a knowledge gap]
+M|Stru|tx|[White space]
+M|Stru|tx|[Body — 3–5 short paragraphs, max 3 sentences each]
+M|Stru|tx|[White space]
+M|Stru|tx|[CTA — single line]
+M|Stru|tx|```
+M|Rule|- Ho|a cold reader who sees only line 1 shd want to click "see more"
+M|Rule|it|Never use "I" as the first word of the hook — algorithm and reader both prefer a concrete claim
+M|Rule|it|No exclamation marks — on either vt
+M|Rule|it|White space is structural, not decoration — short paragraphs, visible breathing room
+M|Rule|it|hb primary platform. Professional tone throughout. No casual register.
+M|Rule|- No|thought-leadership framing only (industry perspective, not pd push)
+M|Leng|tx|\| vt \| Target Length \| Reason \|
+M|Leng|tx|\|---------\|--------------\|--------\|
+M|Leng|tx|\| nz \| 200–300 words \| Thought-leadership register — needs dv \|
+M|Leng|tx|\| hb \| 250–400 words \| Professional depth — evidence-driven \|
+M|Leng|tx|---
+M|Anat|tx|```
+M|Anat|Subj|[40–50 chars, no clickbait, matches cn]
+M|Anat|Prev|[Complements subject — does not repeat it]
+M|Anat|tx|[Greeting — 1 line, name or "Hey [name]"]
+M|Anat|tx|[Lead — 1–2 sentences, the hook and why this matters now]
+M|Anat|tx|[Body — 3–4 short paragraphs]
+M|Anat|tx|[CTA — single button or link, clear action]
+M|Anat|tx|[Sign-off — name + one-line br signature]
+M|Anat|tx|```
+M|Rule|it|Subject line cannot exceed 50 characters — mobile truncates beyond that
+M|Rule|it|Preview text must add information, not restate the subject line
+M|Rule|it|Body paragraphs max 4 sentences — readers scan, not read
+M|Rule|it|Single CTA only — multiple links split attention and reduce clicks
+M|Rule|- No|treat as editorial correspondence, not mk blast — never "SALE" or "LAST CHANCE" in subject
+M|Rule|- Ho|direct, outcome-focused — subject line states the benefit, not the feature
+M|Subj|tx|\| vt \| Pattern \| Example \|
+M|Subj|tx|\|---------\|---------\|---------\|
+M|Subj|tx|\| nz \| [Quiet revelation or identity statement] \| "This season's edit is different." \|
+M|Subj|tx|\| hb \| [Specific outcome for the reader] \| "Your hours, tracked to the minute." \|
+M|Subj|tx|---
+M|Stru|tx|```
+M|Stru|[Hoo|spoken or text overlay, creates immediate tension]
+M|Stru|[Bui|evidence, story, context]
+M|Stru|[Res|payoff + CTA]
+M|Stru|tx|```
+M|Rule|it|Hook must cr tension in under 3 seconds — the viewer decides to stay in the first cut
+M|Rule|it|Text overlay must be max 6 words per screen — reading and watching compete
+M|Rule|- Le|spoken script + text overlay cp
+M|Rule|- At|visual direction. ln does not specify shot tp.
+M|Rule|it|CTA spoken, not just text — "Follow for..." or "Link in bio for..." as last line of script
+M|Rule|- No|visual hook relies on at's brief. ln's script supports, not leads.
+M|Rule|- Ho|problem-solution-proof arc. Hook names the pain, bd proves the fix, resolution delivers the CTA.
+M|Scri|tx|```
+M|Scri|[0-3|"[spoken line]" / OVERLAY: "[max 6 words]"
+M|Scri|[3-2|"[2–3 spoken sentences]"
+M|Scri|[20-|"[1 sentence payoff] + [CTA spoken]"
+M|Scri|tx|```
+M|Scri|tx|---
+M|Cros|tx|1. Never write cp that only works as text — think abt how it looks in the layout
+M|Cros|tx|2. One idea per paragraph. Multiple ideas in one block = reader exits.
+M|Cros|tx|3. First line of every platform carries the entire weight — if it doesn't earn the nx line, the rest is wasted
+M|Cros|tx|4. Match length to platform, not to how much there is to say
+M|Cros|tx|5. Formatting is part of the cp. A perfectly written wall of text is a fl.

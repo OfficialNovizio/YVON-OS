@@ -1,0 +1,30 @@
+#MEM id=code-review source=/root/yvon/agent-department/Technical/dev/skills/code-review/02-review-pr.md savings=15%
+M||tx|---
+M||prio|hi
+M||appl|dv
+M||load|on-request
+M||md|qwen3.5-4b
+M||conf|[]
+M||sour|github.com/tirth8205/code-rv-graph
+M||tx|---
+M|PR R|tx|Full pull request rv using code-rv-graph for tk-efficient al.
+M|Pre-|tx|```bash
+M|Buil|tx|uv run code-rv-graph up
+M|Buil|tx|```
+M|Revi|1. *|[title]")`
+M|Revi|tx|2. **Check impact** — `detect_changes()` — read risk scores
+M|Revi|tx|3. **Spot broken callers** — `query_graph(target="[changed fn]")`
+M|Revi|tx|4. **Verify tests exist** — check tst coverage nodes in rp
+M|Revi|tx|5. **Write verdict** — use output format below
+M|PR V|tx|```
+M|PR R|**Ri|** [lo / md / hi]
+M|PR R|**Ch|** [list]
+M|PR R|**Te|** [covered / partial / missing]
+M|Issu|1. [|line reference]
+M|Issu|tx|2. ...
+M|Verd|tx|[ap / REQUEST CHANGES / NEEDS DISCUSSION]
+M|Verd|Reas|[one sentence]
+M|Verd|tx|```
+M|Hard|it|Never ap a PR w/ hi risk and no tests
+M|Hard|it|Never ap if unrelated files were modified
+M|Hard|it|Always check that the PR touches only what the task required (karpathy surgical rule)

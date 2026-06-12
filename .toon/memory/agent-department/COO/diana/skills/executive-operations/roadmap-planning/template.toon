@@ -1,0 +1,17 @@
+#MEM id=roadmap-planning source=/root/yvon/agent-department/COO/diana/skills/executive-operations/roadmap-planning/template.md savings=1%
+M|Road|tx|Use this template to summarize a st roadmap w/ outcomes and sequencing.
+M|Temp|tx|```markdown
+M|Stra|it|[Business goals / OKRs]
+M|Stra|it|[cs problems]
+M|Stra|it|[Constraints / dependencies]
+M|Road|tx|\| Stage \| Initiative \| Outcome \| Metric \| Notes \|
+M|Road|tx|\|---\|---\|---\|---\|---\|
+M|Road|tx|\| Now \| [Initiative] \| [Outcome] \| [Metric] \| [Notes] \|
+M|Road|tx|\| nx \| [Initiative] \| [Outcome] \| [Metric] \| [Notes] \|
+M|Road|tx|\| Later \| [Initiative] \| [Outcome] \| [Metric] \| [Notes] \|
+M|Sequ|- Q1|[Initiatives]
+M|Sequ|- Q2|[Initiatives]
+M|Sequ|- Q3|[Initiatives]
+M|Risk|it|[Risk 1]
+M|Risk|it|[Dependency 1]
+M|Risk|tx|```

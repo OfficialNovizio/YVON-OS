@@ -1,0 +1,31 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/async-api-routes.md savings=7%
+M||tx|---
+M||titl|Prevent Waterfall Chains in ap rt
+M||impa|ct
+M||impa|2-10× improvement
+M||tags|ap-rt, server-actions, waterfalls, parallelization
+M||tx|---
+M|Prev|tx|In ap rt and Server Actions, start independent operations immediately, even if you don't await them yet.
+M|Prev|**In|**
+M|Prev|tx|```ts
+M|Prev|expo|Request) {
+M|Prev|tx|const sn = await auth()
+M|Prev|tx|const config = await fetchConfig()
+M|Prev|tx|const data = await fetchData(sn.us.id)
+M|Prev|tx|return rp.json({ data, config })
+M|Prev|tx|}
+M|Prev|tx|```
+M|Prev|**Co|**
+M|Prev|tx|```ts
+M|Prev|expo|Request) {
+M|Prev|tx|const sessionPromise = auth()
+M|Prev|tx|const configPromise = fetchConfig()
+M|Prev|tx|const sn = await sessionPromise
+M|Prev|tx|const [config, data] = await Promise.all([
+M|Prev|tx|configPromise,
+M|Prev|tx|fetchData(sn.us.id)
+M|Prev|tx|])
+M|Prev|tx|return rp.json({ data, config })
+M|Prev|tx|}
+M|Prev|tx|```
+M|Prev|tx|For operations w/ more complex dependency chains, use `better-all` to automatically maximize parallelism (see Dependency-Based Parallelization).

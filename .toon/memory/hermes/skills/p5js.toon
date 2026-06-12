@@ -1,0 +1,187 @@
+SKILL|p5js|"p5.js sketches: gen art, shaders, interactive, 3D."
+STEP|1|Before writing a single line of code**, articulate the creative concept. What does this piece communicate? What makes the viewer stop scrolling? What separates this from a code tutorial example? The u
+STEP|2|First-render excellence is non-negotiable.** The output must be visually striking on first load. If it looks like a p5.js tutorial exercise, a default configuration, or "AI-generated creative coding,"
+STEP|3|Go beyond the reference vocabulary.** The noise functions, particle systems, color palettes, and shader effects in the references are a starting vocabulary. For every project, combine, layer, and inve
+STEP|4|Be proactively creative.** If the user asks for "a particle system," deliver a particle system with emergent flocking behavior, trailing ghost echoes, palette-shifted depth fog, and a background noise
+STEP|5|Dense, layered, considered.** Every frame should reward viewing. Never flat white backgrounds. Always compositional hierarchy. Always intentional color. Always micro-detail that only appears on close 
+STEP|6|Cohesive aesthetic over feature count.** All elements must serve a unified visual language — shared color temperature, consistent stroke weight vocabulary, harmonious motion speeds. A sketch with ten 
+STEP|7|p5.js 1.x** (1.11.3) is the default — stable, well-documented, broadest library compatibility. Use this unless a project requires 2.x features.
+STEP|8|p5.js 2.x** (2.2+) adds: `async setup()` replacing `preload()`, OKLCH/OKLAB color modes, `splineVertex()`, shader `.modify()` API, variable fonts, `textToContours()`, pointer events. Required for p5.b
+STEP|9|**CONCEPT** — Articulate the creative vision: mood, color world, motion vocabulary, what makes this unique
+STEP|10|**DESIGN** — Choose mode, canvas size, interaction model, color system, export format. Map concept to technical decisions
+STEP|11|**CODE** — Write single HTML file with inline p5.js. Structure: globals → `preload()` → `setup()` → `draw()` → helpers → classes → event handlers
+STEP|12|**PREVIEW** — Open in browser, verify visual quality. Test at target resolution. Check performance
+STEP|13|**EXPORT** — Capture output: `saveCanvas()` for PNG, `saveGif()` for GIF, `saveFrames()` + ffmpeg for MP4, Puppeteer for headless batch
+STEP|14|**VERIFY** — Does the output match the concept? Is it visually striking at the intended display size? Would you frame it?
+STEP|15|**Custom color palette** — never raw `fill(255, 0, 0)`. Always a designed palette with 3-7 colors
+STEP|16|**Custom stroke weight vocabulary** — thin accents (0.5), medium structure (1-2), bold emphasis (3-5)
+STEP|17|**Background treatment** — never plain `background(0)` or `background(255)`. Always textured, gradient, or layered
+STEP|18|**Motion variety** — different speeds for different elements. Primary at 1x, secondary at 0.3x, ambient at 0.1x
+STEP|19|**At least one invented element** — a custom particle behavior, a novel noise application, a unique interaction response
+STEP|20|A custom color palette matching the mood (not a preset)
+STEP|21|A novel noise field combination (e.g., curl noise + domain warp + feedback)
+STEP|22|A unique particle behavior (custom forces, custom trails, custom spawning)
+STEP|23|An interaction mechanic the user didn't request but that elevates the piece
+STEP|24|A compositional technique that creates visual hierarchy
+STEP|25|Good parameters** expose the algorithm's character:
+STEP|26|**Quantities** — how many particles, branches, cells (controls density)
+STEP|27|**Scales** — noise frequency, element size, spacing (controls texture)
+STEP|28|**Rates** — speed, growth rate, decay (controls energy)
+STEP|29|**Thresholds** — when does behavior change? (controls drama)
+STEP|30|**Ratios** — proportions, balance between forces (controls harmony)
+STEP|31|Bad parameters** are generic controls unrelated to the algorithm:
+STEP|32|"color1", "color2", "size" — meaningless without context
+STEP|33|Toggle switches for unrelated effects
+STEP|34|Parameters that only change cosmetics, not behavior
+STEP|35|**Mood / atmosphere**: What should the viewer feel? Contemplative? Energized? Unsettled? Playful?
+STEP|36|**Visual story**: What happens over time (or on interaction)? Build? Decay? Transform? Oscillate?
+STEP|37|**Color world**: Warm/cool? Monochrome? Complementary? What's the dominant hue? The accent?
+STEP|38|**Shape language**: Organic curves? Sharp geometry? Dots? Lines? Mixed?
+STEP|39|**Motion vocabulary**: Slow drift? Explosive burst? Breathing pulse? Mechanical precision?
+STEP|40|**What makes THIS different**: What is the one thing that makes this sketch unique?
+STEP|41|**Mode** — which of the 7 modes from the table above
+STEP|42|**Canvas size** — landscape 1920x1080, portrait 1080x1920, square 1080x1080, or responsive `windowWidth/windowHeight`
+STEP|43|**Renderer** — `P2D` (default) or `WEBGL` (for 3D, shaders, advanced blend modes)
+STEP|44|**Frame rate** — 60fps (interactive), 30fps (ambient animation), or `noLoop()` (static generative)
+STEP|45|**Export target** — browser display, PNG still, GIF loop, MP4 video, SVG vector
+STEP|46|**Interaction model** — passive (no input), mouse-driven, keyboard-driven, audio-reactive, scroll-driven
+STEP|47|**Viewer UI** — for interactive generative art, start from `templates/viewer.html` which provides seed navigation, parameter sliders, and download. For simple sketches or video export, use bare HTML
+STEP|48|**Seeded randomness**: Always `randomSeed()` + `noiseSeed()` for reproducibility
+STEP|49|**Color mode**: Use `colorMode(HSB, 360, 100, 100, 100)` for intuitive color control
+STEP|50|**State separation**: CONFIG for parameters, PALETTE for colors, globals for mutable state
+STEP|51|**Class-based entities**: Particles, agents, shapes as classes with `update()` + `display()` methods
+STEP|52|**Offscreen buffers**: `createGraphics()` for layered composition, trails, masks
+STEP|53|Open HTML file directly in browser — no server needed for basic sketches
+STEP|54|For `loadImage()`/`loadFont()` from local files: use `scripts/serve.sh` or `python3 -m http.server`
+STEP|55|Chrome DevTools Performance tab to verify 60fps
+STEP|56|Test at target export resolution, not just the window size
+STEP|57|Adjust parameters until the visual matches the concept from Step 1
+STEP|58|**Does it match the vision?** Compare output to the creative concept. If it looks generic, go back to Step 1
+STEP|59|**Resolution check**: Is it sharp at the target display size? No aliasing artifacts?
+STEP|60|**Performance check**: Does it hold 60fps in browser? (30fps minimum for animations)
+STEP|61|**Color check**: Do the colors work together? Test on both light and dark monitors
+STEP|62|**Edge cases**: What happens at canvas edges? On resize? After running for 10 minutes?
+STEP|63|`createCanvas(w, h, WEBGL)` — origin is center, not top-left
+STEP|64|Y-axis is inverted (positive Y goes up in WEBGL, down in P2D)
+STEP|65|`translate(-width/2, -height/2)` to get P2D-like coordinates
+STEP|66|`push()`/`pop()` around every transform — matrix stack overflows silently
+STEP|67|`texture()` before `rect()`/`plane()` — not after
+STEP|68|Custom shaders: `createShader(vert, frag)` — test on multiple browsers
+STEP|69|**Write the HTML file** — single self-contained file, all code inline
+STEP|70|**Open in browser** — `open sketch.html` (macOS) or `xdg-open sketch.html` (Linux)
+STEP|71|**Local assets** (fonts, images) require a server: `python3 -m http.server 8080` in the project directory, then open `http://localhost:8080/sketch.html`
+STEP|72|**Export PNG/GIF** — add `keyPressed()` shortcuts as shown above, tell the user which key to press
+STEP|73|**Headless export** — `node scripts/export-frames.js sketch.html --frames 300` for automated frame capture (sketch must use `noLoop()` + `_p5Ready`)
+STEP|74|**MP4 rendering** — `bash scripts/render.sh sketch.html output.mp4 --duration 30`
+STEP|75|**Iterative refinement** — edit the HTML file, user refreshes browser to see changes
+STEP|76|**Load references on demand** — use `skill_view(name="p5js", file_path="references/...")` to load specific reference files as needed during implementation
+STEP|77|**Conceptual Blending** — when the user names two things to combine or wants hybrid aesthetics
+STEP|78|**SCAMPER** — when the user wants a twist on a known generative art pattern
+STEP|79|**Distance Association** — when the user gives a single concept and wants exploration ("make something about time")
+STEP|80|Name two distinct visual systems (e.g., particle physics + handwriting)
+STEP|81|Map correspondences (particles = ink drops, forces = pen pressure, fields = letterforms)
+STEP|82|Blend selectively — keep mappings that produce interesting emergent visuals
+STEP|83|Code the blend as a unified system, not two systems side-by-side
+STEP|84|**Substitute**: replace circles with text characters, lines with gradients
+STEP|85|**Combine**: merge two patterns (flow field + voronoi)
+STEP|86|**Adapt**: apply a 2D pattern to a 3D projection
+STEP|87|**Modify**: exaggerate scale, warp the coordinate space
+STEP|88|**Purpose**: use a physics sim for typography, a sorting algorithm for color
+STEP|89|**Eliminate**: remove the grid, remove color, remove symmetry
+STEP|90|**Reverse**: run the simulation backward, invert the parameter space
+STEP|91|Anchor on the user's concept (e.g., "loneliness")
+STEP|92|Generate associations at three distances:
+STEP|93|Develop the medium-distance associations — they're specific enough to visualize but unexpected enough to be interesting
+PIT|Before writing a single line of code**, articulate the creative concept. What does this piece communicate? What makes the viewer stop scrolling? What separates this from a code tutorial example? The u
+PIT|First-render excellence is non-negotiable.** The output must be visually striking on first load. If it looks like a p5.js tutorial exercise, a default configuration, or "AI-generated creative coding,"
+PIT|Go beyond the reference vocabulary.** The noise functions, particle systems, color palettes, and shader effects in the references are a starting vocabulary. For every project, combine, layer, and inve
+PIT|Be proactively creative.** If the user asks for "a particle system," deliver a particle system with emergent flocking behavior, trailing ghost echoes, palette-shifted depth fog, and a background noise
+PIT|Dense, layered, considered.** Every frame should reward viewing. Never flat white backgrounds. Always compositional hierarchy. Always intentional color. Always micro-detail that only appears on close 
+PIT|Cohesive aesthetic over feature count.** All elements must serve a unified visual language — shared color temperature, consistent stroke weight vocabulary, harmonious motion speeds. A sketch with ten 
+PIT|p5.js 1.x** (1.11.3) is the default — stable, well-documented, broadest library compatibility. Use this unless a project requires 2.x features.
+PIT|p5.js 2.x** (2.2+) adds: `async setup()` replacing `preload()`, OKLCH/OKLAB color modes, `splineVertex()`, shader `.modify()` API, variable fonts, `textToContours()`, pointer events. Required for p5.b
+PIT|**CONCEPT** — Articulate the creative vision: mood, color world, motion vocabulary, what makes this unique
+PIT|**DESIGN** — Choose mode, canvas size, interaction model, color system, export format. Map concept to technical decisions
+PIT|**CODE** — Write single HTML file with inline p5.js. Structure: globals → `preload()` → `setup()` → `draw()` → helpers → classes → event handlers
+PIT|**PREVIEW** — Open in browser, verify visual quality. Test at target resolution. Check performance
+PIT|**EXPORT** — Capture output: `saveCanvas()` for PNG, `saveGif()` for GIF, `saveFrames()` + ffmpeg for MP4, Puppeteer for headless batch
+PIT|**VERIFY** — Does the output match the concept? Is it visually striking at the intended display size? Would you frame it?
+PIT|**Custom color palette** — never raw `fill(255, 0, 0)`. Always a designed palette with 3-7 colors
+PIT|**Custom stroke weight vocabulary** — thin accents (0.5), medium structure (1-2), bold emphasis (3-5)
+PIT|**Background treatment** — never plain `background(0)` or `background(255)`. Always textured, gradient, or layered
+PIT|**Motion variety** — different speeds for different elements. Primary at 1x, secondary at 0.3x, ambient at 0.1x
+PIT|**At least one invented element** — a custom particle behavior, a novel noise application, a unique interaction response
+PIT|A custom color palette matching the mood (not a preset)
+PIT|A novel noise field combination (e.g., curl noise + domain warp + feedback)
+PIT|A unique particle behavior (custom forces, custom trails, custom spawning)
+PIT|An interaction mechanic the user didn't request but that elevates the piece
+PIT|A compositional technique that creates visual hierarchy
+PIT|Good parameters** expose the algorithm's character:
+PIT|**Quantities** — how many particles, branches, cells (controls density)
+PIT|**Scales** — noise frequency, element size, spacing (controls texture)
+PIT|**Rates** — speed, growth rate, decay (controls energy)
+PIT|**Thresholds** — when does behavior change? (controls drama)
+PIT|**Ratios** — proportions, balance between forces (controls harmony)
+PIT|Bad parameters** are generic controls unrelated to the algorithm:
+PIT|"color1", "color2", "size" — meaningless without context
+PIT|Toggle switches for unrelated effects
+PIT|Parameters that only change cosmetics, not behavior
+PIT|**Mood / atmosphere**: What should the viewer feel? Contemplative? Energized? Unsettled? Playful?
+PIT|**Visual story**: What happens over time (or on interaction)? Build? Decay? Transform? Oscillate?
+PIT|**Color world**: Warm/cool? Monochrome? Complementary? What's the dominant hue? The accent?
+PIT|**Shape language**: Organic curves? Sharp geometry? Dots? Lines? Mixed?
+PIT|**Motion vocabulary**: Slow drift? Explosive burst? Breathing pulse? Mechanical precision?
+PIT|**What makes THIS different**: What is the one thing that makes this sketch unique?
+PIT|**Mode** — which of the 7 modes from the table above
+PIT|**Canvas size** — landscape 1920x1080, portrait 1080x1920, square 1080x1080, or responsive `windowWidth/windowHeight`
+PIT|**Renderer** — `P2D` (default) or `WEBGL` (for 3D, shaders, advanced blend modes)
+PIT|**Frame rate** — 60fps (interactive), 30fps (ambient animation), or `noLoop()` (static generative)
+PIT|**Export target** — browser display, PNG still, GIF loop, MP4 video, SVG vector
+PIT|**Interaction model** — passive (no input), mouse-driven, keyboard-driven, audio-reactive, scroll-driven
+PIT|**Viewer UI** — for interactive generative art, start from `templates/viewer.html` which provides seed navigation, parameter sliders, and download. For simple sketches or video export, use bare HTML
+PIT|**Seeded randomness**: Always `randomSeed()` + `noiseSeed()` for reproducibility
+PIT|**Color mode**: Use `colorMode(HSB, 360, 100, 100, 100)` for intuitive color control
+PIT|**State separation**: CONFIG for parameters, PALETTE for colors, globals for mutable state
+PIT|**Class-based entities**: Particles, agents, shapes as classes with `update()` + `display()` methods
+PIT|**Offscreen buffers**: `createGraphics()` for layered composition, trails, masks
+PIT|Open HTML file directly in browser — no server needed for basic sketches
+PIT|For `loadImage()`/`loadFont()` from local files: use `scripts/serve.sh` or `python3 -m http.server`
+PIT|Chrome DevTools Performance tab to verify 60fps
+PIT|Test at target export resolution, not just the window size
+PIT|Adjust parameters until the visual matches the concept from Step 1
+PIT|**Does it match the vision?** Compare output to the creative concept. If it looks generic, go back to Step 1
+PIT|**Resolution check**: Is it sharp at the target display size? No aliasing artifacts?
+PIT|**Performance check**: Does it hold 60fps in browser? (30fps minimum for animations)
+PIT|**Color check**: Do the colors work together? Test on both light and dark monitors
+PIT|**Edge cases**: What happens at canvas edges? On resize? After running for 10 minutes?
+PIT|`createCanvas(w, h, WEBGL)` — origin is center, not top-left
+PIT|Y-axis is inverted (positive Y goes up in WEBGL, down in P2D)
+PIT|`translate(-width/2, -height/2)` to get P2D-like coordinates
+PIT|`push()`/`pop()` around every transform — matrix stack overflows silently
+PIT|`texture()` before `rect()`/`plane()` — not after
+PIT|Custom shaders: `createShader(vert, frag)` — test on multiple browsers
+PIT|**Write the HTML file** — single self-contained file, all code inline
+PIT|**Open in browser** — `open sketch.html` (macOS) or `xdg-open sketch.html` (Linux)
+PIT|**Local assets** (fonts, images) require a server: `python3 -m http.server 8080` in the project directory, then open `http://localhost:8080/sketch.html`
+PIT|**Export PNG/GIF** — add `keyPressed()` shortcuts as shown above, tell the user which key to press
+PIT|**Headless export** — `node scripts/export-frames.js sketch.html --frames 300` for automated frame capture (sketch must use `noLoop()` + `_p5Ready`)
+PIT|**MP4 rendering** — `bash scripts/render.sh sketch.html output.mp4 --duration 30`
+PIT|**Iterative refinement** — edit the HTML file, user refreshes browser to see changes
+PIT|**Load references on demand** — use `skill_view(name="p5js", file_path="references/...")` to load specific reference files as needed during implementation
+PIT|**Conceptual Blending** — when the user names two things to combine or wants hybrid aesthetics
+PIT|**SCAMPER** — when the user wants a twist on a known generative art pattern
+PIT|**Distance Association** — when the user gives a single concept and wants exploration ("make something about time")
+PIT|Name two distinct visual systems (e.g., particle physics + handwriting)
+PIT|Map correspondences (particles = ink drops, forces = pen pressure, fields = letterforms)
+PIT|Blend selectively — keep mappings that produce interesting emergent visuals
+PIT|Code the blend as a unified system, not two systems side-by-side
+PIT|**Substitute**: replace circles with text characters, lines with gradients
+PIT|**Combine**: merge two patterns (flow field + voronoi)
+PIT|**Adapt**: apply a 2D pattern to a 3D projection
+PIT|**Modify**: exaggerate scale, warp the coordinate space
+PIT|**Purpose**: use a physics sim for typography, a sorting algorithm for color
+PIT|**Eliminate**: remove the grid, remove color, remove symmetry
+PIT|**Reverse**: run the simulation backward, invert the parameter space
+PIT|Anchor on the user's concept (e.g., "loneliness")
+PIT|Generate associations at three distances:
+PIT|Develop the medium-distance associations — they're specific enough to visualize but unexpected enough to be interesting

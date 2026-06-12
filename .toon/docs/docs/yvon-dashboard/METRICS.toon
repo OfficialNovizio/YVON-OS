@@ -1,0 +1,21 @@
+#DOC source=/root/yvon/docs/yvon-dashboard/METRICS.md strip=71% toon=1% net=71%
+T|YVON|0|Rolling. Updated by ka/fx weekly as baselines and actuals are established.
+T|YVON|1|These are sy-level metrics for the yv platform itself, not for nz or hb.
+T|YVON|2|
+T|YVON|3|---
+T|YVON|4|
+G|KPI |0|[TABLE:5×7]
+G|KPI |1|---
+G|KPI |2|
+T|Curr|0|[TABLE:5×5]
+T|Curr|1|---
+T|Curr|2|
+T|Syst|0|qn runs a weekly yv Health Pulse every Friday — spot-checking one random output per ag layer. Scoring: 🟢 Green (meets bar) / 🟡 Yellow (minor gaps) / 🔴 Red (structural fl).
+T|Syst|1|
+T|Syst|2|[TABLE:4×5]
+T|Syst|3|---
+T|Syst|4|
+T|Repo|0|[TABLE:4×5]
+T|Repo|1|---
+T|Repo|2|
+T|How |0|fx or ka updates baselines during Monday's ce brief preparation. Any ag can file a new KPI target if a gap is identified during their work. New targets require mc approval before being added.

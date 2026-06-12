@@ -1,0 +1,91 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-batch-dom-css.md savings=-2%
+M||tx|---
+M||titl|Avoid Layout Thrashing
+M||impa|md
+M||impa|prevents forced synchronous layouts and reduces perf bottlenecks
+M||tags|javascript, dom, css, perf, reflow, layout-thrashing
+M||tx|---
+M|Avoi|tx|Avoid interleaving style writes w/ layout reads. When you read a layout property (like `offsetWidth`, `getBoundingClientRect()`, or `getComputedStyle()`) btw style changes, the browser is forced to trigger a synchronous reflow.
+M|Avoi|**Th|**
+M|Avoi|tx|```ts
+M|Avoi|func|HTMLElement) {
+M|Avoi|tx|// Each line invalidates style, but browser batches the recalculation
+M|Avoi|tx|element.style.width = '100px'
+M|Avoi|tx|element.style.height = '200px'
+M|Avoi|tx|element.style.backgroundColor = 'blue'
+M|Avoi|tx|element.style.border = '1px solid black'
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|**In|**
+M|Avoi|tx|```ts
+M|Avoi|func|HTMLElement) {
+M|Avoi|tx|element.style.width = '100px'
+M|Avoi|tx|const width = element.offsetWidth  // Forces reflow
+M|Avoi|tx|element.style.height = '200px'
+M|Avoi|tx|const height = element.offsetHeight  // Forces another reflow
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|**Co|**
+M|Avoi|tx|```ts
+M|Avoi|func|HTMLElement) {
+M|Avoi|tx|// Batch all writes together
+M|Avoi|tx|element.style.width = '100px'
+M|Avoi|tx|element.style.height = '200px'
+M|Avoi|tx|element.style.backgroundColor = 'blue'
+M|Avoi|tx|element.style.border = '1px solid black'
+M|Avoi|tx|// Read after all writes are done (single reflow)
+M|Avoi|tx|const { width, height } = element.getBoundingClientRect()
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|**Co|**
+M|Avoi|tx|```ts
+M|Avoi|func|HTMLElement) {
+M|Avoi|tx|// Read phase - all layout queries first
+M|Avoi|tx|const rect1 = element.getBoundingClientRect()
+M|Avoi|tx|const offsetWidth = element.offsetWidth
+M|Avoi|tx|const offsetHeight = element.offsetHeight
+M|Avoi|tx|// Write phase - all style changes after
+M|Avoi|tx|element.style.width = '100px'
+M|Avoi|tx|element.style.height = '200px'
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|**Be|use CSS classes**
+M|Avoi|tx|```css
+M|Avoi|tx|.highlighted-box {
+M|Avoi|widt|100px;
+M|Avoi|heig|200px;
+M|Avoi|back|blue;
+M|Avoi|bord|1px solid black;
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|tx|```ts
+M|Avoi|func|HTMLElement) {
+M|Avoi|tx|element.classList.add('highlighted-box')
+M|Avoi|tx|const { width, height } = element.getBoundingClientRect()
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|**Re|**
+M|Avoi|tx|```tsx
+M|Avoi|// I|interleaving style changes w/ layout queries
+M|Avoi|func|{ isHighlighted: boolean }) {
+M|Avoi|tx|const ref = useRef<HTMLDivElement>(null)
+M|Avoi|tx|useEffect(() => {
+M|Avoi|tx|if (ref.current && isHighlighted) {
+M|Avoi|tx|ref.current.style.width = '100px'
+M|Avoi|tx|const width = ref.current.offsetWidth // Forces layout
+M|Avoi|tx|ref.current.style.height = '200px'
+M|Avoi|tx|}
+M|Avoi|tx|}, [isHighlighted])
+M|Avoi|tx|return <div ref={ref}>cn</div>
+M|Avoi|tx|}
+M|Avoi|// C|toggle class
+M|Avoi|func|{ isHighlighted: boolean }) {
+M|Avoi|tx|return (
+M|Avoi|<div|''}>
+M|Avoi|tx|cn
+M|Avoi|tx|</div>
+M|Avoi|tx|)
+M|Avoi|tx|}
+M|Avoi|tx|```
+M|Avoi|tx|Prefer CSS classes over inline styles when possible. CSS files are cached by the browser, and classes provide better separation of concerns and are easier to maintain.
+M|Avoi|See |//gist.github.com/paulirish/5d52fb081b3570c81e3a) and [CSS Triggers](https://csstriggers.com/) for more information on layout-forcing operations.

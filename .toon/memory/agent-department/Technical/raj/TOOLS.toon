@@ -1,0 +1,61 @@
+#MEM id=raj source=/root/yvon/agent-department/Technical/raj/TOOLS.md savings=-2%
+M|Memo|tx|rj reads and writes memory via `/ap/settings` — never directly to sb in code outside of rt handlers.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=rj-backend&ventureId={activeVenture}
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```json
+M|Memo|tx|POST /ap/settings
+M|Memo|tx|{
+M|Memo|tp|"memory",
+M|Memo|"age|"rj-backend",
+M|Memo|"ven|"{activeVenture}",
+M|Memo|"key|"integration_notes",
+M|Memo|"val|"Apify: startRun returns runId, poll every 2s, max 25s timeout."
+M|Memo|tx|}
+M|Memo|tx|```
+M|Memo|Afte|edit the Live State table in `MEMORY.md` to match.
+M|Memo|tx|---
+M|Supa|tx|rj's primary tool for all db work.
+M|Supa|**Us|**
+M|Supa|it|Inspect current sc before writing a new query (check column names, tp, constraints)
+M|Supa|it|Run a tst query to verify data is being written correctly
+M|Supa|it|Check UNIQUE constraints before writing upsert logic
+M|Supa|it|Verify that a migration ran correctly (table exists, columns present)
+M|Supa|it|Debug a failing query by running it directly in the MCP before adding it to code
+M|Supa|**Ke|**
+M|Supa|tx|```
+M|Supa|tx|list_tables           → see all tables in the public sc
+M|Supa|tx|describe_table        → get column names, tp, constraints for a specific table
+M|Supa|tx|execute_query         → run a SQL query directly (verification only — not production writes via MCP)
+M|Supa|tx|```
+M|GitH|tx|rj uses GitHub to check existing rt implementations for established patterns.
+M|GitH|**Us|**
+M|GitH|it|Read an existing rt file to match er handling and rp shape patterns
+M|GitH|it|Check if a similar integration already exists before writing from scratch
+M|GitH|it|See what changed in a recent commit that might affect a rt being built
+M|GitH|**Ke|**
+M|GitH|tx|```
+M|GitH|tx|get_file_contents     → read an existing rt.ts for pattern reference
+M|GitH|tx|list_commits          → check recent backend changes before starting new work
+M|GitH|tx|```
+M|GitH|tx|---
+M|File|All |
+M|File|tx|\| File \| What it wraps \|
+M|File|tx|\|------\|--------------\|
+M|File|tx|\| `lib/apify.ts` \| Apify Actor run + poll + dataset fetch \|
+M|File|tx|\| `lib/youtube.ts` \| YouTube Data ap v3 client \|
+M|File|tx|\| `lib/google-an.ts` \| GA4 Data ap (service account auth) \|
+M|File|tx|\| `lib/sb.ts` \| Server-side sb client (`createServerClient`) \|
+M|File|tx|---
+M|Rout|tx|\| rt \| Method \| When \|
+M|Rout|tx|\|-------\|--------\|------\|
+M|Rout|tx|\| `/ap/settings` \| GET \| sn start — read own memory keys \|
+M|Rout|tx|\| `/ap/settings` \| POST \| After discovering a new pattern or quirk to write to memory \|
+M|Rout|tx|\| `/ap/vt` \| GET \| To load vt-specific config (handles, IDs) before calling external APIs \|
+M|Rout|tx|rj never calls `/ap/claude`, `/ap/team-chat`, or `/ap/rt-intent` — those are the chat layer, not backend data.
+M|Rout|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| vc MCP \| Check fn timeout logs for slow Apify/GA4 rt \| Planned \|

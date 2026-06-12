@@ -1,0 +1,27 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/operating-system/triple-pass-protocol/SKILL.md savings=7%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|kh's pre-delivery validation gate. Three passes — Audit, Critique (adversarial), Fix — before any verdict is issued. Stark never sees the process, only the final verdict.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|A bias audit issued w/o internal challenge is itself subject to bias. This protocol forces kh to audit his own audit before delivering a verdict — catching overconfident 🟢 verdicts and under-weighted 🔴 blocks before they reach Stark.
+M|Purp|tx|---
+M|Pass|tx|Run the full bias checklist against the ag's output. Name every bias found, where it appears, and what it distorts. Draft the verdict (🟢 / 🟡 / 🔴) and the correction.
+M|Pass|Stop|
+M|Pass|**Ch|**
+M|Pass|it|Did I run all 8 bias items — or did I stop at the first 2-3 I found?
+M|Pass|it|Did I check for biases that favour the output (confirmation bias in my own audit)?
+M|Pass|it|Did I check the outside view — did I actually look up a base rate, or just accept the ag's number?
+M|Pass|**Ve|**
+M|Pass|it|Is this 🟢 too easy? wld a 🔴 have been more appropriate if I'm honest?
+M|Pass|it|Is this 🔴 too strict? Is the bias material enough to block, or is this a 🟡 caution?
+M|Pass|it|Does my correction actually remove the bias — or does it just soften the language?
+M|Pass|**Co|**
+M|Pass|it|Is the correction a specific reframe the ag can act on immediately?
+M|Pass|it|Or is it vague guidance ("consider revising") that puts the burden back on the ag to figure out what I mean?
+M|Pass|**Es|**
+M|Pass|it|Am I escalating to mc for a reason that's within ag scope?
+M|Pass|it|Is this genuinely a 🔴 st issue, or a 🟡 that I'm over-weighting?
+M|Pass|tx|Revise anything the critique found. Sharpen vague corrections into specific rewrites. Recalibrate the verdict if the critique revealed over/under-weighting. Then deliver.
+M|Pass|tx|---
+M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

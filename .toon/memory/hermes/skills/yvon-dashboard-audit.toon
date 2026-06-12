@@ -1,0 +1,67 @@
+SKILL|yvon-dashboard-audit|Systematically audit, fix, and verify any YVON dashboard — kill demo data, deduplicate glass CSS, add Kai's Read, wire real data pipelines, run workflow audit. Applied to Analytics, Competitor, Marketing, Creator Studio, CEO.
+STEP|1|"Audit the [X] dashboard"
+STEP|2|"Fix the [X] tab/dashboard"
+STEP|3|"Check if [X] is working properly"
+STEP|4|"Review [dashboard] workflow"
+STEP|5|Any variation of "is this dashboard broken"
+STEP|6|Read ALL files in the dashboard directory (`search_files` for `**/*`)
+STEP|7|Read ALL API routes the dashboard consumes (`app/api/<route>/route.ts`)
+STEP|8|Read any supporting lib functions referenced
+STEP|9|Note: never skip files — the biggest file is usually where the problems hide
+STEP|10|Number of tabs/pages
+STEP|11|Glass CSS definitions (are they inline or shared?)
+STEP|12|Agent involvement (which agents, real API calls or fake?)
+STEP|13|Data sources (Supabase tables, API routes, hardcoded?)
+STEP|14|API routes consumed and their auth requirements
+STEP|15|**🔴 Demo Data** — Look for arrays named `DEMO_*`, `SUGGESTIONS`, `TOP_*`, `FAKE_*`. Any hardcoded data with specific numbers (views, engagement rates, follower counts). Also `\|\| fallback` patterns 
+STEP|16|**🔴 Glass CSS Duplication** — Look for `const G1 = { background: 'linear-gradient(...'` pattern repeated across files. Check if a `_glass-tokens.ts` exists.
+STEP|17|**🔴 Broken Auth Gates** — API routes that require `CRON_SECRET` but are called from UI with no auth header. Pattern: `cronSecret !== await getSecret('CRON_SECRET')` in POST handler.
+STEP|18|**🔴 Fake Verifications** — `setTimeout(r, 1500)` with no actual API call. `await new Promise()` doing nothing.
+STEP|19|**🟡 Missing Kai's Read** — Does the dashboard have a live intelligence card? Check for `<KaisRead` import. Every production dashboard should have one.
+STEP|20|**🟡 Hallucinated Agent Data** — Agent prompts that say "What changed this week — 2-3 specific metrics" but have NO Supabase data injected. Look for `callFast({ messages: [{ role: 'user', content: \`V
+STEP|21|**🟡 Hardcoded Dates/Labels** — `"May 2026"`, static month names, `new Date().toISOString()` in demo data arrays.
+STEP|22|**Kill demo data first** — Replace fake arrays with `= []`, replace fake renders with honest empty states. Pattern: `"No [X] data yet. [Setup instructions with CTA]."`
+STEP|23|**Extract glass tokens** — Create `_glass-tokens.ts` if missing, import in all files. G1-G4, I1-I4, ACCENT, INK_4.
+STEP|24|**Unlock blocked APIs** — Remove CRON_SECRET gates from UI-facing POST handlers. Keep cron auth optional.
+STEP|25|**Fix fake operations** — Replace setTimeout lies with real API calls.
+STEP|26|**Add Kai's Read** — Import `KaisRead` from `@/app/components/KaisRead`, add `<KaisRead ventureSlug={ventureSlug} variant="dark" />` after the header section. Requires `useVentureSlug()` hook.
+STEP|27|**Wire real data** — Query Supabase before building agent prompts. Use `supabase.from('table').select(...).eq('venture_slug', slug)`. Graceful fallback: "NO LIVE DATA AVAILABLE. [Setup CTA]."
+STEP|28|**TypeScript verification** — Run `npx tsc --noEmit` after every change. Never leave the dashboard with TS errors.
+STEP|29|Verify TypeScript: `npx tsc --noEmit`
+STEP|30|Trace the full data flow end-to-end (user action → API → Supabase → response)
+STEP|31|Check API route connectivity (does the frontend button call the right endpoint?)
+STEP|32|Run `npm run build` if Supabase creds available
+STEP|33|Present a summary: what was fixed, what's still gated on credentials, what remains
+PIT|"Audit the [X] dashboard"
+PIT|"Fix the [X] tab/dashboard"
+PIT|"Check if [X] is working properly"
+PIT|"Review [dashboard] workflow"
+PIT|Any variation of "is this dashboard broken"
+PIT|Read ALL files in the dashboard directory (`search_files` for `**/*`)
+PIT|Read ALL API routes the dashboard consumes (`app/api/<route>/route.ts`)
+PIT|Read any supporting lib functions referenced
+PIT|Note: never skip files — the biggest file is usually where the problems hide
+PIT|Number of tabs/pages
+PIT|Glass CSS definitions (are they inline or shared?)
+PIT|Agent involvement (which agents, real API calls or fake?)
+PIT|Data sources (Supabase tables, API routes, hardcoded?)
+PIT|API routes consumed and their auth requirements
+PIT|**🔴 Demo Data** — Look for arrays named `DEMO_*`, `SUGGESTIONS`, `TOP_*`, `FAKE_*`. Any hardcoded data with specific numbers (views, engagement rates, follower counts). Also `\|\| fallback` patterns 
+PIT|**🔴 Glass CSS Duplication** — Look for `const G1 = { background: 'linear-gradient(...'` pattern repeated across files. Check if a `_glass-tokens.ts` exists.
+PIT|**🔴 Broken Auth Gates** — API routes that require `CRON_SECRET` but are called from UI with no auth header. Pattern: `cronSecret !== await getSecret('CRON_SECRET')` in POST handler.
+PIT|**🔴 Fake Verifications** — `setTimeout(r, 1500)` with no actual API call. `await new Promise()` doing nothing.
+PIT|**🟡 Missing Kai's Read** — Does the dashboard have a live intelligence card? Check for `<KaisRead` import. Every production dashboard should have one.
+PIT|**🟡 Hallucinated Agent Data** — Agent prompts that say "What changed this week — 2-3 specific metrics" but have NO Supabase data injected. Look for `callFast({ messages: [{ role: 'user', content: \`V
+PIT|**🟡 Hardcoded Dates/Labels** — `"May 2026"`, static month names, `new Date().toISOString()` in demo data arrays.
+PIT|**Kill demo data first** — Replace fake arrays with `= []`, replace fake renders with honest empty states. Pattern: `"No [X] data yet. [Setup instructions with CTA]."`
+PIT|**Extract glass tokens** — Create `_glass-tokens.ts` if missing, import in all files. G1-G4, I1-I4, ACCENT, INK_4.
+PIT|**Unlock blocked APIs** — Remove CRON_SECRET gates from UI-facing POST handlers. Keep cron auth optional.
+PIT|**Fix fake operations** — Replace setTimeout lies with real API calls.
+PIT|**Add Kai's Read** — Import `KaisRead` from `@/app/components/KaisRead`, add `<KaisRead ventureSlug={ventureSlug} variant="dark" />` after the header section. Requires `useVentureSlug()` hook.
+PIT|**Wire real data** — Query Supabase before building agent prompts. Use `supabase.from('table').select(...).eq('venture_slug', slug)`. Graceful fallback: "NO LIVE DATA AVAILABLE. [Setup CTA]."
+PIT|**TypeScript verification** — Run `npx tsc --noEmit` after every change. Never leave the dashboard with TS errors.
+PIT|Verify TypeScript: `npx tsc --noEmit`
+PIT|Trace the full data flow end-to-end (user action → API → Supabase → response)
+PIT|Check API route connectivity (does the frontend button call the right endpoint?)
+PIT|Run `npm run build` if Supabase creds available
+PIT|Present a summary: what was fixed, what's still gated on credentials, what remains

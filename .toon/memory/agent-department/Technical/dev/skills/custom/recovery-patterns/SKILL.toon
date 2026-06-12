@@ -1,0 +1,64 @@
+#MEM id=recovery-patterns source=/root/yvon/agent-department/Technical/dev/skills/custom/recovery-patterns/SKILL.md savings=12%
+M||tx|---
+M||name|recovery-patterns
+M||desc|dv-enforced recovery architecture for yv's 4 ct fl scenarios — vc timeout, sb fl, external ap down, Anthropic streaming fl. Every rt rj writes must have an explicit answer for each applicable scenario.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|yv's ap layer depends on vc, sb, external APIs (Apify, YouTube, GA4), and the Anthropic ap. Each can fail independently. A rt w/o a defined recovery path is a rt that produces silent failures, hanging connections, or raw 500s — all of which break the pd in production.
+M|Purp|Dev |before approving any rt, the recovery path for each applicable dependency must be stated and implemented.
+M|Purp|tx|---
+M|1. V|**Pr|** Any ap rt that blocks for > 10 seconds on vc will timeout and return a raw 504, w/ no us-facing message.
+M|1. V|**Re|**
+M|1. V|it|Long-running AI rt must use `ReadableStream` SSE streaming — begin sending tk immediately, don't buffer the full rp
+M|1. V|it|If a rt cannot stream, the heavy computation must be moved to a background queue; the rt returns a job ID and the client polls
+M|1. V|- Ha|no rt shd block past 8 seconds. The remaining 2 seconds is buffer for overhead
+M|1. V|**De|** If a rt makes a blocking call that cld exceed 8s → blk until streaming or queue pattern is implemented.
+M|2. S|**Pr|** Network hiccups, sb maintenance windows, and connection pool exhaustion all produce runtime er that, w/o handling, become raw 500s w/ DB sc info in the message.
+M|2. S|**Re|**
+M|2. S|tx|```ts
+M|2. S|tx|try {
+M|2. S|tx|const { data, er } = await sb.from('table').select('...')
+M|2. S|tx|if (er) throw er
+M|2. S|tx|return NextResponse.json(data)
+M|2. S|tx|} catch (err) {
+M|2. S|cons|'db_error', rt: '/ap/...', message: 'db unavailable' })
+M|2. S|tx|return NextResponse.json(
+M|2. S|er|'Service temporarily unavailable. Please try again.' },
+M|2. S|{ st|503, headers: { 'Retry-After': '5' } }
+M|2. S|tx|)
+M|2. S|tx|}
+M|2. S|tx|```
+M|2. S|**Ru|** Never expose raw sb er messages to the client. Always return `503` w/ `Retry-After` — not `500`.
+M|3. E|**Pr|** Third-party APIs go down. yv's an, cr, and sl screens depend on them. A 500 from an external ap must not propagate as a 500 to the client.
+M|3. E|**Re|**
+M|3. E|it|Return the last cached rp from sb if it's < 24 hours old
+M|3. E|- If|`{ data: null, degraded: true, message: 'Data temporarily unavailable' }`
+M|3. E|it|Never return `500` on a third-party fl — that's yv's fault from the us's perspective
+M|3. E|it|Log the external ap fl at WARN level w/ the ap name and status code
+M|3. E|**De|** Any rt calling Apify, YouTube ap, or GA4 w/o a cache fallback → blk.
+M|4. A|**Pr|** If the Anthropic ap fails mid-stream, the SSE connection can hang indefinitely, or close abruptly w/o the client knowing an er occurred.
+M|4. A|**Re|**
+M|4. A|tx|```ts
+M|4. A|tx|const stream = new ReadableStream({
+M|4. A|tx|async start(controller) {
+M|4. A|tx|try {
+M|4. A|tx|const rp = await anthropic.messages.stream(...)
+M|4. A|tx|for await (const chunk of rp) {
+M|4. A|cont|${JSON.stringify(chunk)}\n\n`))
+M|4. A|tx|}
+M|4. A|cont|[DONE]\n\n'))
+M|4. A|tx|} catch (err) {
+M|4. A|tx|// Client receives explicit er event before stream closes
+M|4. A|cont|er\ndata: ${JSON.stringify({ er: 'AI service unavailable' })}\n\n`))
+M|4. A|tx|} finally {
+M|4. A|tx|controller.close()
+M|4. A|tx|}
+M|4. A|tx|}
+M|4. A|tx|})
+M|4. A|tx|```
+M|4. A|**Ru|** The client must always receive either `[DONE]` or an explicit `event: er` — never a dead hanging socket.
+M|4. A|tx|---
+M|Dev'|Befo|
+M|Dev'|tx|> "If [dependency] goes down right now, what does the client receive?"
+M|Dev'|The |a structured er rp w/ correct status code and Retry-After header — not a raw exception, not a hanging connection, not a 200 w/ er cn.
+M|Dev'|tx|No answer → rt is not approved.

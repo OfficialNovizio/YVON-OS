@@ -1,0 +1,12 @@
+#MEM id=diana source=/root/yvon/agent-department/COO/diana/SESSION.md savings=10%
+M|Dian|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
+M|Dian|tx|> Always load this first. Load MEMORY.md for operational KPIs, workflow rules, and process decisions.
+M|Curr|- **|** 2026-03-23
+M|Curr|- **|** idle
+M|Curr|- **|** none
+M|Curr|- **|** Cross-vt resource check — flag any allocation conflicts btw nz and hb
+M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
+M|Last|tx|\|------\|------\|---------\|-----------\|
+M|Last|tx|\| 2026-03-23 \| Memory sy initialised \| File seeded w/ yv ops context \| — \|
+M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
+M|Open|it|None currently

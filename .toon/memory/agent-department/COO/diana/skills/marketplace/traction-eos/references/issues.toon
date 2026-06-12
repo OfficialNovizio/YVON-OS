@@ -1,0 +1,195 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/references/issues.md savings=6%
+M|Issu|tx|Every organization has issues. The difference btw great companies and mediocre ones is how quickly and permanently they solve them. The Issues cp provides a disciplined process called IDS -- Identify, Discuss, Solve -- that turns chronic problems into resolved action items. This guide covers the full IDS framework, facilitation techniques, issue tp, list management, and practice scenarios.
+M|Tabl|tx|1. [The IDS Framework](#the-ids-framework)
+M|Tabl|2. [|Identify the Real Issue](#step-1-identify-the-real-issue)
+M|Tabl|3. [|Discuss](#step-2-discuss)
+M|Tabl|4. [|Solve](#step-3-solve)
+M|Tabl|tx|5. [Three tp of Issues](#three-tp-of-issues)
+M|Tabl|tx|6. [Issues List Management](#issues-list-management)
+M|Tabl|tx|7. [Common IDS Facilitation Mistakes](#common-ids-facilitation-mistakes)
+M|Tabl|tx|8. [Practice Scenarios for IDS Training](#practice-scenarios-for-ids-training)
+M|Tabl|tx|---
+M|The |tx|IDS stands for Identify, Discuss, Solve. It is the core problem-solving methodology in EOS, used in every Level 10 meeting and every quarterly sn. The framework is deliberately simple bc simplicity drives discipline.
+M|The |tx|```
+M|The |tx|IDENTIFY the real issue
+M|The |tx|↓
+M|The |tx|DISCUSS openly and efficiently
+M|The |tx|↓
+M|The |tx|SOLVE w/ clear action items
+M|The |tx|```
+M|Why |tx|\| Traditional Problem Solving \| IDS \|
+M|Why |tx|\|---------------------------\|-----\|
+M|Why |tx|\| Discusses symptoms endlessly \| Forces identification of root cause first \|
+M|Why |tx|\| Everyone gets equal airtime \| Everyone gets input, not equal time \|
+M|Why |tx|\| Conversations meander \| Tangents are stopped immediately \|
+M|Why |tx|\| Decisions deferred \| Decision made before moving on \|
+M|Why |tx|\| Vague nx steps \| Specific who/what/when action items \|
+M|Why |tx|\| Same issue returns nx week \| Solved permanently or escalated \|
+M|Step|tx|This is the most ct and most frequently skipped step. Teams jump to discussion before they agree on what the actual issue is.
+M|Root|**Th|
+M|Root|**Th|**
+M|Root|tx|1. rv is down this quarter. Why?
+M|Root|tx|2. We closed fewer deals. Why?
+M|Root|tx|3. We gave fewer demos. Why?
+M|Root|tx|4. We had fewer qualified leads. Why?
+M|Root|tx|5. Our main lead source (paid ad) stopped converting after the algorithm change.
+M|Root|**Ro|** Overdependence on a single lead source. The fix is not "close more deals." The fix is "diversify lead generation channels."
+M|Root|**Th|**
+M|Root|tx|After identifying the issue, state it in one sentence. If you cannot state it in one sentence, you have not identified it clearly enough.
+M|Root|tx|\| Vague \| Clear \|
+M|Root|tx|\|-------\|-------\|
+M|Root|tx|\| "We have a mk problem" \| "Our paid ad CAC increased 40% after the platform algorithm change and we have no alternative lead channels" \|
+M|Root|tx|\| "The team isn't performing" \| "Three of five reps are below 80% quota bc they are not following the demo script" \|
+M|Root|tx|\| "cs complaints are up" \| "Onboarding takes 3 weeks instead of 1, causing 60% of complaints" \|
+M|Iden|it|[ ] State the symptom that surfaced the issue
+M|Iden|it|[ ] Ask "Why?" at least three times to find the root cause
+M|Iden|it|[ ] State the root cause in one clear sentence
+M|Iden|- [ |"Is this the real issue, or is there something deeper?"
+M|Iden|it|[ ] If the group disagrees on the root cause, spend more time on Identify before moving to Discuss
+M|Step|tx|Discussion is where the team adds perspective, data, and exp. The goal is not consensus. The goal is to hear all relevant input so the best decision can be made.
+M|Disc|**Th|**
+M|Disc|tx|Go around the table. Each person gets 60 seconds of uninterrupted input. No rebuttals during the round. This ensures quieter voices are heard before dominant personalities take over.
+M|Disc|**Th|**
+M|Disc|Befo|"What data do we have on this?" Opinions w/o data are just guesses. If no data exists, note it as an action item to gather data before the nx meeting.
+M|Disc|**Th|**
+M|Disc|When|"That's a separate issue. I'm adding it to the Issues List. Let's get back to [original issue]." No apology needed. This is not rude -- it is discipline.
+M|Disc|**Th|**
+M|Disc|If t|"What cld go wrong w/ this approach?" or "If we're wrong, what wld that look like?" This prevents groupthink.
+M|Disc|**Ti|**
+M|Disc|Most|
+M|Disc|it|The issue may be too big for a Level 10 meeting (move to a separate meeting)
+M|Disc|it|The team may not have enough information (cr a to-do to gather data)
+M|Disc|it|The facilitator may be allowing tangents (tighten the discussion)
+M|Disc|tx|\| Rule \| Rationale \|
+M|Disc|tx|\|------\|-----------\|
+M|Disc|tx|\| One conversation at a time \| Side conversations split attention \|
+M|Disc|tx|\| No devices \| Full presence required \|
+M|Disc|tx|\| Attack the issue, not the person \| Psychological safety enables honest input \|
+M|Disc|tx|\| Share your perspective, then let go \| Once you've said it, trust the process \|
+M|Disc|tx|\| Facilitator controls the floor \| Prevents dominant personalities from hijacking \|
+M|Disc|tx|\| Silence is agreement \| If you don't speak up, you support the outcome \|
+M|Step|tx|Solving means making a decision and assigning action items. A discussion w/o a clear decision and nx steps is wasted time.
+M|The |1. *|"Here is what we've decided."
+M|The |2. *|0 = block, 3 = can live w/ it, 5 = love it. Anything 3+ moves forward.
+M|The |3. *|
+M|The |tx|\| Element \| Example \|
+M|The |tx|\|---------\|---------\|
+M|The |tx|\| **Who** \| Sarah \|
+M|The |tx|\| **What** \| Research three alternative lead gen channels and present options \|
+M|The |tx|\| **When** \| By nx Tuesday's Level 10 \|
+M|The |tx|4. **Record it.** The action item goes on the To-Do List (7-day items) or becomes a Rock (if it is a 90-day initiative).
+M|The |tx|5. **Move on.** Do not revisit. Do not second-guess. The decision is made.
+M|Solv|Not |
+M|Solv|tx|\| Outcome \| When to Use \| Example \|
+M|Solv|tx|\|---------\|------------\|---------\|
+M|Solv|tx|\| **Action item (To-Do)** \| Issue can be resolved in 7 days \| "Jordan will up the pricing page by Friday" \|
+M|Solv|tx|\| **Rock** \| Issue requires 90 days of effort \| "Launch cs sc program" becomes a Q2 rock \|
+M|Solv|tx|\| **Kill it** \| Issue is not worth pursuing \| "We decided the new feature request doesn't align w/ our Core Focus" \|
+M|Solv|tx|\| **Information needed** \| Cannot decide w/o data \| "Alex will pull churn data by cohort and present nx week" \|
+M|Solv|tx|\| **Escalate** \| Beyond the team's authority \| "This requires board approval; Integrator will present at nx board meeting" \|
+M|Solv|tx|\| **Combine** \| Issue is a duplicate \| "This is the same root cause as issue #3; we'll solve them together" \|
+M|Prob|**De|** Something that is broken, underperforming, or causing pain.
+M|Prob|**Ex|**
+M|Prob|it|cs churn increased from 3% to 7% this quarter
+M|Prob|it|Two team members are in open conflict and it is affecting the department
+M|Prob|it|Our main vendor raised prices 25% and our margins are squeezed
+M|Prob|**ID|** Focus on root cause. The fix shd prevent recurrence, not just patch the symptom.
+M|Idea|**De|** A new opportunity, initiative, or approach that someone wants to propose.
+M|Idea|**Ex|**
+M|Idea|it|"What if we added a freemium tier to our pd?"
+M|Idea|it|"I think we shd open a second office in Austin."
+M|Idea|it|"shd we sponsor the industry conference this year?"
+M|Idea|**ID|** The decision is yes, no, or not now. If yes, it becomes a to-do or rock. If not now, it stays on the long-term Issues List.
+M|Obst|**De|** Something blocking a Rock or key initiative from moving forward.
+M|Obst|**Ex|**
+M|Obst|it|Engineering capacity is blocking the pd launch rock
+M|Obst|it|Legal rv is delaying the partnership agreement
+M|Obst|it|Budget constraints prevent hiring the needed role
+M|Obst|**ID|** Remove the obstacle or find a workaround. If the obstacle is outside the team's control, escalate it.
+M|Two |EOS |
+M|Two |tx|\| List \| Contents \| Reviewed \|
+M|Two |tx|\|------\|----------\|----------\|
+M|Two |tx|\| **Short-Term (Level 10)** \| Tactical issues for this week \| Every Level 10 meeting \|
+M|Two |tx|\| **Long-Term (V/TO)** \| st issues for quarterly sn \| Every quarterly sn \|
+M|Addi|Anyo|a short phrase that captures the issue. Details are discussed live during IDS.
+M|Addi|**Go|**
+M|Addi|it|"Sales demo no-show rate is 40%"
+M|Addi|it|"Need to decide on CRM migration"
+M|Addi|it|"Conflict btw engineering and pd on roadmap priorities"
+M|Addi|**Po|**
+M|Addi|it|"mk" (too vague)
+M|Addi|it|"Everything" (not an issue)
+M|Addi|it|Three paragraphs of background (save it for discussion)
+M|Prio|At t|
+M|Prio|tx|1. **rv the list.** Read each issue title aloud.
+M|Prio|2. *|"Which three issues, if solved today, wld have the biggest impact?"
+M|Prio|tx|3. **Number them 1, 2, 3.** Start w/ number 1.
+M|Prio|tx|4. **Re-prioritize after each solve.** The top 3 may shift as issues are resolved.
+M|Prio|**Cr|** Not all issues get solved every meeting. That is expected. Unsolved issues carry forward to nx week. What matters is that you always work on the most important issues first.
+M|Issu|Ever|
+M|Issu|it|Remove issues that are no longer relevant
+M|Issu|it|Promote issues that have become ur to the short-term list
+M|Issu|it|Merge duplicate issues
+M|Issu|it|Clarify vague entries
+M|Comm|tx|\| Mistake \| Impact \| Fix \|
+M|Comm|tx|\|---------\|--------\|-----\|
+M|Comm|tx|\| **Skipping Identify** \| Team solves the wrong problem \| Require the one-sentence root cause statement before any discussion \|
+M|Comm|tx|\| **Discussion w/o structure** \| Conversation goes in circles \| Use round-robin, then open discussion, then time-box \|
+M|Comm|tx|\| **Allowing tangents** \| Meeting goes long, real issues not addressed \| Facilitator immediately names tangent and redirects \|
+M|Comm|tx|\| **Seeking consensus** \| Decisions watered down to please everyone \| Integrator makes the call if team cannot agree in 15 minutes \|
+M|Comm|tx|\| **No action items** \| "Great discussion" but nothing changes \| Facilitator does not close an issue w/o who/what/when \|
+M|Comm|tx|\| **Rehashing solved issues** \| Undermines the process, wastes time \| Once solved, it is done. If the solution did not work, it is a new issue \|
+M|Comm|| **|"We haven't heard from you, what's your take?" \|
+M|Comm|tx|\| **Too polite** \| Real issues avoided to maintain comfort \| Establish that healthy conflict is expected and valued \|
+M|Comm|tx|\| **Solving symptoms** \| Root cause persists, issue returns \| Ask "Why?" at least three times before moving to Discuss \|
+M|Prac|tx|Use these scenarios to practice IDS w/ your leadership team. Each scenario shd take 10-15 minutes.
+M|Scen|**Sy|** Q2 rv is 20% below target.
+M|Scen|**In|**
+M|Scen|it|One of four reps is at 30% of quota
+M|Scen|it|That rep was a top performer last year
+M|Scen|it|They recently took on a new territory
+M|Scen|it|Their pipeline is full but close rate dropped from 30% to 8%
+M|Scen|**Pr|**
+M|Scen|it|What is the real issue? (Symptom vs. root cause)
+M|Scen|it|What data wld you want before discussing solutions?
+M|Scen|it|What are three possible root causes?
+M|Scen|**Sy|** Engineering team missed their Rock deadline by four weeks.
+M|Scen|**In|**
+M|Scen|it|The VP of Sales requested "ur" feature changes mid-quarter
+M|Scen|it|Engineering spent 3 weeks on unplanned work
+M|Scen|it|No one in leadership approved the scope change
+M|Scen|it|This is the third quarter in a row this has happened
+M|Scen|**Pr|**
+M|Scen|it|Who owns the decision abt engineering priorities?
+M|Scen|it|Is this a people issue, a process issue, or both?
+M|Scen|it|What structural change wld prevent recurrence?
+M|Scen|**Sy|** Three employees resigned in the past month, all citing "culture."
+M|Scen|**In|**
+M|Scen|it|Exit interviews mention a specific manager who "rules by fear"
+M|Scen|it|That manager's team has the highest perf metrics in the company
+M|Scen|it|Two of the departing employees were identified as hi-potential
+M|Scen|it|The manager has been w/ the company for seven years
+M|Scen|**Pr|**
+M|Scen|it|Is this a right person or right seat issue?
+M|Scen|it|How do you weigh perf metrics against culture impact?
+M|Scen|- Wh|the manager's behavior, or the sy that enabled it?
+M|Scen|**Sy|** A major cr just went out of business, freeing up 200 potential cs.
+M|Scen|**In|**
+M|Scen|it|Your team is already at capacity
+M|Scen|it|Hiring 5 new reps wld take 3-4 months
+M|Scen|it|A partner firm cld handle overflow but at lower margins
+M|Scen|it|The window of opportunity is 60-90 days before other cr move in
+M|Scen|**Pr|**
+M|Scen|it|Is this a problem, an idea, or an obstacle?
+M|Scen|it|What is the core decision that needs to be made?
+M|Scen|it|What are the trade-offs of each option?
+M|Scen|**Sy|** cs onboarding satisfaction dropped from 4.5 to 3.2 out of 5.
+M|Scen|**In|**
+M|Scen|it|The onboarding team grew from 2 to 6 people in the past quarter
+M|Scen|it|The four new hires were trained informally by the two original team members
+M|Scen|it|There is no documented onboarding process
+M|Scen|it|The two original team members each do onboarding differently
+M|Scen|**Pr|**
+M|Scen|it|Which EOS cp is this really abt? (Process? People? Both?)
+M|Scen|it|What is the fastest fix? What is the permanent fix?
+M|Scen|it|How wld you prevent this from recurring as the team continues to grow?

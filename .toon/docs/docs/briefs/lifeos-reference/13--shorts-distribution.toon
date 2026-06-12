@@ -1,0 +1,17 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/13--shorts-distribution.md strip=5% toon=1% net=5%
+T|13 ·|0|Drop an edited short, and the cp + distribution gets prepared for every platform. A per-platform queue to push shorts everywhere.
+T|13 ·|1|
+T|Purp|0|"Post & schedule your shorts — drop one clip, get a card for every platform, manage each queue." The owner drops an edited short; ag prepare the cp and distribution for all sl platforms; each platform has its own card/queue.
+T|Purp|1|
+T|Page|0|Title: Shorts, breadcrumb Vibe w/ AI / Shorts.
+T|Page|1|Sub-line: "Post & schedule your shorts — drop one clip, get a card for every platform, manage each queue."
+T|Page|2|
+T|Uplo|0|A large "Drop a short here" dropzone w/ constraints noted (e.g. "MP4/MOV or WebM · up to 1080p · captures for YouTube, Instagram & TikTok generated").
+T|Uplo|1|Choose file button.
+T|Uplo|2|A note that ag auto-gn platform captions from the dropped clip.
+T|Uplo|3|
+T|Per-|0|Platform filter chips: YouTube, LinkedIn, Instagram, TikTok (w/ avatars and per-platform status).
+T|Per-|1|A row of platform cards — one card per platform for the current short, each w/ its own preview, generated cp, and Status: Ready (or pnd) so each queue can be managed independently.
+T|Per-|2|A note like "make sure they're per-platform" / "drag a card from the Short Pipeline" — i.e. cards arrive from the Short Pipeline (12).
+T|Per-|3|
+T|Work|0|Short Pipeline prepares clip → drop into Shorts → per-platform captions/cards generated → rv/ready per platform → schedule (links into Scheduler, 15) → distributed across YouTube/LinkedIn/Instagram/TikTok.

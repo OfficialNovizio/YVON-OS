@@ -1,0 +1,542 @@
+#DOC source=/root/yvon/docs/os/archive/2026-04-01-yvon-roadmap-full.md strip=75% toon=-13% net=75%
+# YVON Roadmap — Full Implementation Plan
+
+For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (- [ ]) syntax for tracking.
+
+Goal: Implement all 13 roadmap priorities — brand sidebar, Kai's decision layer, approval mechanism, daily session logs, brand intelligence pipeline, Scout sidebar, GitHub integration, weekly cost report, and roadmap view on CEO page.
+
+Architecture: Next.js 15 App Router + Supabase Postgres for persistence + Anthropic SDK for AI routes. New Supabase tables: decisions, daily_logs. New API routes under /app/api/. New components under /components/. All external calls server-side only. No hardcoded colors — CSS variables only.
+
+Tech Stack: Next.js 15, TypeScript strict, Tailwind + CSS variables, Supabase (service role server, anon client), Anthropic SDK, GitHub REST API, @octokit/rest
+
+Scout decision: Keep Scout in sidebar and keep /scout/page.tsx — it already exists and is confirmed active.
+
+---
+
+## ⚠️ Scope Note
+This plan covers 11 independent subsystems. Each Phase is independently deployable. Build and verify Phase 1 before starting Phase 2. Never start a new Phase with a failing build.
+
+---
+
+## Pre-flight: Read these files before starting any task
+lib/types.ts — all existing types
+lib/db.ts — all existing Supabase helpers
+components/Sidebar.tsx — current sidebar
+app/ceo/page.tsx — CEO dashboard
+app/layout.tsx — Shell wrapper
+
+---
+
+## Phase 1 — Foundation (P1-A + P1-B)
+Done when: Clicking a brand card in sidebar scopes entire app. Project Memory file exists.
+
+---
+
+### Task 1: Supabase Tables — Create decisions + daily_logs
+
+Files:
+Create: supabase/migrations/001decisionsdaily_logs.sql
+
+Run this SQL in the Supabase Dashboard SQL editor. This is not code — it's a migration script.
+
+[ ] Step 1: Write the migration SQL
+
+[CODE:sql:29LOC]
+[ ] Step 2: Run migration in Supabase Dashboard
+Go to Supabase → SQL Editor → paste + run
+Verify: both tables appear in Table Editor
+Expected: decisions table + daily_logs table with correct columns
+
+[ ] Step 3: Commit the SQL file
+[CODE:bash:2LOC]
+
+---
+
+### Task 2: Types + DB Helpers for New Tables
+
+Files:
+Modify: lib/types.ts (add Decision, DailyLog types)
+Modify: lib/db.ts (add CRUD helpers for both tables)
+
+[ ] Step 1: Add types to lib/types.ts
+
+Add at the end of lib/types.ts:
+
+[CODE:typescript:29LOC]
+[ ] Step 2: Add db helpers to lib/db.ts
+
+Add after the last export in lib/db.ts:
+
+[CODE:typescript:110LOC]
+[ ] Step 3: Add missing imports to lib/db.ts
+
+At the top of lib/db.ts, ensure the import line includes the new types:
+[CODE:typescript:6LOC]
+
+[ ] Step 4: Run TypeScript check
+[CODE:bash:1LOC]
+Expected: 0 errors
+
+[ ] Step 5: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 3: Brand Sidebar — Venture Cards + Venture Cookie Writer
+
+What this does: Replace the current plain text "Brands" link in the Sidebar with actual brand cards. Clicking a brand card sets the yvonactiveventure cookie and highlights the active brand. Scout stays in Quick Access.
+
+Files:
+Modify: components/Sidebar.tsx
+Create: app/api/set-venture/route.ts
+
+[ ] Step 1: Create app/api/set-venture/route.ts
+
+[CODE:typescript:25LOC]
+[ ] Step 2: Create components/BrandCard.tsx
+
+[CODE:typescript:75LOC]
+[ ] Step 3: Update components/Sidebar.tsx — add brands section and keep Scout
+
+Replace the existing QUICK_ACCESS array and add a BRANDS constant at the top:
+
+[CODE:typescript:12LOC]
+The Sidebar component must become a client component to read the active venture cookie. Update the component signature:
+
+[CODE:typescript:71LOC]
+Also remove 'Personal' from QUICK_ACCESS (keep Scout).
+
+[ ] Step 4: Run TypeScript + lint check
+[CODE:bash:1LOC]
+Expected: 0 errors
+
+[ ] Step 5: Manual browser test
+Start dev server: npm run dev
+Go to localhost:3000
+Click "Hourbour" brand card → verify card shows ACTIVE badge
+Refresh page → verify Hourbour still shows as active
+Click "Novizio" → verify switches back
+
+[ ] Step 6: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 4: Project Memory File (P1-B)
+
+What this does: Creates the project-memory directory and initial PROJECT-MEMORY.md file. This is a protocol file — not application code.
+
+Files:
+Create: project-memory/PROJECT-MEMORY.md
+
+[ ] Step 1: Create project-memory/PROJECT-MEMORY.md
+
+[CODE:markdown:11LOC]
+[ ] Step 2: Commit
+[CODE:bash:2LOC]
+
+---
+
+## Phase 2 — Intelligence Layer (P2-A + P2-B)
+Done when: Every analytics/social page shows a "Kai's Read" card with data → insight → action.
+
+---
+
+### Task 5: Kai's Read API Route
+
+What this does: POST endpoint that takes raw metrics for a venture, runs them through Kai's system prompt, and returns 3-line analysis: what happened / why it matters / what to do.
+
+Files:
+Create: app/api/kai-read/route.ts
+
+[ ] Step 1: Create app/api/kai-read/route.ts
+
+[CODE:typescript:60LOC]
+[ ] Step 2: TypeScript check
+[CODE:bash:1LOC]
+Expected: 0 errors
+
+[ ] Step 3: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 6: KaiRead Component
+
+What this does: A reusable card component that calls /api/kai-read with the page's current metrics and renders the 3-line analysis.
+
+Files:
+Create: components/KaiRead.tsx
+Modify: app/analytics/page.tsx (add KaiRead card)
+
+[ ] Step 1: Create components/KaiRead.tsx
+
+[CODE:typescript:141LOC]
+[ ] Step 2: Wire KaiRead into app/analytics/page.tsx
+
+At the top of the analytics page data section, add:
+[CODE:tsx:5LOC]
+Import: import KaiRead from '@/components/KaiRead'
+
+Note: Check what variable names the analytics page already uses for its data. Map the existing data object to the metrics prop.
+
+[ ] Step 3: TypeScript check + lint
+[CODE:bash:1LOC]
+Expected: 0 errors
+
+[ ] Step 4: Browser test
+Navigate to /analytics
+Verify Kai's Read card appears at top
+Verify "Refresh →" button calls /api/kai-read and updates card
+Verify loading state shows "Analysing..."
+
+[ ] Step 5: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 7: WebSearch Tool Wiring into /api/claude
+
+What this does: Agents with webSearch: true in their config get the websearch20250305 Anthropic tool wired into their API calls. Marcus, Kai, Rio, Felix are the 4 search-enabled agents.
+
+Files:
+Modify: lib/types.ts (add webSearch to AgentConfig)
+Modify: lib/agents.ts (set webSearch: true on 4 agents)
+Modify: app/api/claude/route.ts (conditionally add tool)
+
+[ ] Step 1: Add webSearch to AgentConfig in lib/types.ts
+
+In the AgentConfig interface, add:
+[CODE:typescript:4LOC]
+
+[ ] Step 2: Add webSearch: true to 4 agents in lib/agents.ts
+
+Find each of the 4 agents and add the property:
+marcus-ceo: add webSearch: true
+kai-analyst: add webSearch: true
+rio-ads: add webSearch: true
+felix-finance: add webSearch: true
+
+[ ] Step 3: Read app/api/claude/route.ts to understand current structure
+
+Read the file before modifying it.
+
+[ ] Step 4: Modify app/api/claude/route.ts to add web search tool
+
+In the route handler, after resolving the agent config, add tool injection:
+
+[CODE:typescript:21LOC]
+IMPORTANT: The websearch20250305 tool is an Anthropic-native tool. It does not require an external API key. It is only available on Sonnet models. Verify the agent's model is claude-sonnet-4-6 before enabling.
+
+[ ] Step 5: Handle tool_use blocks in the SSE stream
+
+The stream response must handle both textdelta and toolresult event types when web search is active. Ensure the existing stream handler forwards only text to the client (tooluse/toolresult blocks are handled server-side by the Anthropic SDK in streaming mode).
+
+[ ] Step 6: TypeScript check
+[CODE:bash:1LOC]
+Expected: 0 errors
+
+[ ] Step 7: Browser test
+Open /agents/marcus-ceo
+Ask: "What is the current benchmark CAC for DTC fashion brands?"
+Verify Marcus responds with cited web data (not hallucinated)
+Check network tab: confirm /api/claude called with tool params
+
+[ ] Step 8: Commit
+[CODE:bash:2LOC]
+
+---
+
+## Phase 3 — Action & Approval (P3-A + P3-B)
+Done when: You can approve a decision in /inbox and it's logged to Supabase.
+
+---
+
+### Task 8: Decisions API Route
+
+Files:
+Create: app/api/decisions/route.ts
+
+[ ] Step 1: Create app/api/decisions/route.ts
+
+[CODE:typescript:82LOC]
+[ ] Step 2: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 3: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 9: DecisionCard Component + Wire into CEO Page
+
+Files:
+Create: components/DecisionCard.tsx
+Modify: app/ceo/page.tsx (replace static decisions with live Supabase decisions)
+
+[ ] Step 1: Create components/DecisionCard.tsx
+
+[CODE:typescript:99LOC]
+[ ] Step 2: Update app/ceo/page.tsx — replace static DECISIONS with live Supabase data
+
+Add a useEffect to fetch decisions from /api/decisions?resolved=false on mount:
+
+[CODE:typescript:29LOC]
+Replace the static Decision cards in the JSX with:
+[CODE:tsx:12LOC]
+
+[ ] Step 3: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 4: Browser test
+Go to /ceo
+Decision Queue should load from Supabase (empty initially — that's correct)
+Manually insert a test row in Supabase: INSERT INTO decisions (ventureid, agentid, decision_text, urgency) VALUES ('novizio', 'kai-analyst', 'Test decision', 'today');
+Refresh page — verify card appears
+Click "approved" — verify card fades out + Supabase row updated
+
+[ ] Step 5: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 10: Agent Log API Route + Daily Session Persistence (P3-B)
+
+Files:
+Create: app/api/agent-log/route.ts
+
+[ ] Step 1: Create app/api/agent-log/route.ts
+
+[CODE:typescript:54LOC]
+[ ] Step 2: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 3: Commit
+[CODE:bash:2LOC]
+
+---
+
+## Phase 4 — Content Intelligence (P4-A + P4-B)
+Done when: One click on /creative generates a content brief from real social data. Scout stays in sidebar.
+
+---
+
+### Task 11: Brand Intelligence Pipeline API
+
+What this does: Fetches latest social stats for the active venture, runs Kai analysis, then Lena generates content brief. One endpoint, three AI calls, one output.
+
+Files:
+Create: app/api/brand-intelligence/route.ts
+
+[ ] Step 1: Create app/api/brand-intelligence/route.ts
+
+[CODE:typescript:98LOC]
+[ ] Step 2: Add "Generate Brief" button to app/creative/page.tsx (or equivalent creative page)
+
+Read the creative page first. Add a section that calls /api/brand-intelligence and renders the result.
+
+[CODE:tsx:18LOC]
+[ ] Step 3: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 4: Commit
+[CODE:bash:2LOC]
+
+---
+
+### Task 12: Confirm Scout Page Works (P4-B)
+
+What this does: Scout already exists at /scout/page.tsx and is already in Sidebar Quick Access. Verify it's fully functional.
+
+[ ] Step 1: Navigate to /scout
+Verify page loads without errors
+Verify it reads active venture (check for yvonactiveventure cookie usage)
+If venture context is missing: add useEffect to read cookie and pass ventureId to Kai
+
+[ ] Step 2: Verify Scout is in Sidebar
+Check QUICK_ACCESS array in components/Sidebar.tsx includes { label: 'Scout', href: '/scout' }
+Confirm it wasn't accidentally removed in Task 3
+
+[ ] Step 3: Commit if any fixes needed
+[CODE:bash:2LOC]
+
+---
+
+## Phase 5 — Autonomy (P5-A)
+Done when: Dev can read a GitHub repo, propose a code fix diff in /technical, and Stark approves it which triggers a push.
+
+---
+
+### Task 13: GitHub Integration — Read + Propose + Push with Approval Gate
+
+Files:
+Create: app/api/github/route.ts
+Modify: app/technical/page.tsx (add "Propose Change" panel)
+
+Environment variable required: GITHUB_TOKEN (Personal Access Token with repo scope) — add to .env.local and Vercel environment.
+
+[ ] Step 1: Add GITHUB_TOKEN to .env.local
+[CODE::3LOC]
+
+[ ] Step 2: Create app/api/github/route.ts
+
+[CODE:typescript:157LOC]
+[ ] Step 3: Install @octokit/rest
+[CODE:bash:1LOC]
+
+[ ] Step 4: Add GITHUB_TOKEN to .env.local reference file
+
+Add to reference/ENV.md:
+[CODE::3LOC]
+
+[ ] Step 5: Add GitHub Propose panel to /technical page
+
+Read app/technical/page.tsx first. Add a "Dev Proposal" tab or section:
+
+[CODE:tsx:13LOC]
+Render the diff preview + Approve button when proposal is set.
+
+[ ] Step 6: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 7: Test
+POST to /api/github with a test path + proposed content
+Verify proposal object returns with diff
+PATCH with the proposal — verify branch + PR created in GitHub
+Verify no changes happen without the PATCH (proposal is non-destructive)
+
+[ ] Step 8: Commit
+[CODE:bash:2LOC]
+
+---
+
+## Phase 6 — Financial Visibility (P6-A)
+Done when: Felix delivers weekly API cost report in Monday CEO brief.
+
+---
+
+### Task 14: Weekly API Cost API Route
+
+What this does: Aggregates token usage from the token_usage Supabase table (already being written to) and returns weekly totals by service.
+
+Files:
+Create: app/api/api-costs/route.ts
+Modify: app/api/briefing/route.ts (add cost section to Monday brief)
+
+[ ] Step 1: Create app/api/api-costs/route.ts
+
+[CODE:typescript:49LOC]
+[ ] Step 2: Read app/api/briefing/route.ts
+
+Read the briefing route first to understand its structure.
+
+[ ] Step 3: Add cost section to Monday CEO brief
+
+In app/api/briefing/route.ts, before generating the brief content, add cost data fetch on Mondays:
+
+[CODE:typescript:11LOC]
+Append costSection to the brief prompt.
+
+[ ] Step 4: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 5: Test
+Hit GET /api/api-costs?days=7
+Verify JSON response with totalCostUsd, byModel
+Verify Monday brief includes cost section
+
+[ ] Step 6: Commit
+[CODE:bash:2LOC]
+
+---
+
+## Phase 7 — Roadmap View (P7-A)
+Done when: CEO page shows a "Roadmap Pulse" section with top 3 in-flight items + pending decisions count.
+
+---
+
+### Task 15: Roadmap API Route + CEO Page Section
+
+What this does: Reads roadmap items from a Supabase table (or parses ROADMAP.md for initial data). Surfaces top 3 in-flight items + pending decision count on CEO page.
+
+Files:
+Create: supabase/migrations/002roadmapitems.sql
+Create: app/api/roadmap/route.ts
+Modify: app/ceo/page.tsx (add Roadmap Pulse section)
+
+[ ] Step 1: Create roadmap_items table migration
+
+[CODE:sql:24LOC]
+Run in Supabase Dashboard SQL Editor.
+
+[ ] Step 2: Create app/api/roadmap/route.ts
+
+[CODE:typescript:64LOC]
+[ ] Step 3: Add Roadmap Pulse section to app/ceo/page.tsx
+
+Add a useEffect to fetch in-flight items:
+
+[CODE:typescript:10LOC]
+Add the Roadmap Pulse section in the right column, above Team Activity:
+
+[CODE:tsx:27LOC]
+[ ] Step 4: TypeScript check
+[CODE:bash:1LOC]
+
+[ ] Step 5: Browser test
+Navigate to CEO page
+Verify "Roadmap Pulse — In Flight" section shows 3 items
+Verify decision count in page header is live from Supabase
+
+[ ] Step 6: Commit
+[CODE:bash:2LOC]
+
+---
+
+## Phase 8 — Final Build Gate
+
+### Task 16: Full Build + Lint Verification
+
+[ ] Step 1: Run full TypeScript check
+[CODE:bash:1LOC]
+Expected: 0 errors
+
+[ ] Step 2: Run lint
+[CODE:bash:1LOC]
+Expected: 0 warnings
+
+[ ] Step 3: Update ROADMAP.md to reflect shipped items
+
+Mark items shipped in .yvon-os/ROADMAP.md:
+P1-A: Brand Sidebar → Shipped
+P1-B: Project Memory → Shipped
+P2-A: Decision Layer → Shipped
+P2-B: WebSearch → Shipped
+P3-A: Approval mechanism → Shipped
+P3-B: Daily logs → Shipped
+P4-A: Brand intelligence → Shipped
+P4-B: Scout sidebar → Shipped (was already working)
+P5-A: GitHub integration → Shipped
+P6-A: Weekly cost report → Shipped
+P7-A: Roadmap view → Shipped
+
+[ ] Step 4: Update SESSION.md
+
+[ ] Step 5: Final commit
+[CODE:bash:2LOC]
+
+---
+
+## Environment Variables Required (add to .env.local + Vercel)
+
+[CODE::16LOC]
+---
+
+## Supabase Tables Summary
+
+[TABLE:3×3]
+---
+
+## Package Dependencies
+
+[TABLE:3×1]

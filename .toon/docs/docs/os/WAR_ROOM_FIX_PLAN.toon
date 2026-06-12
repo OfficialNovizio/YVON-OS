@@ -1,0 +1,50 @@
+#DOC source=/root/yvon/docs/os/WAR_ROOM_FIX_PLAN.md strip=31% toon=10% net=37%
+P|War |0|Triple-pass reviewed (gn → critique → fix). Refinements from the critique are tagged [crit].
+P|War |1|Status: PART 1 already shipped (local, not pushed). PART 2 awaiting single approval.
+P|War |2|Locked decisions: Hermes → adopt natively + pull real skill files. Thinking → toggle + safe fallback.
+P|War |3|
+P|War |4|---
+P|War |5|
+T|PART|0|[TABLE:4×6]
+T|PART|1|---
+T|PART|2|
+T|Veri|0|[TABLE:3×6]
+T|Veri|1|
+T|Work|0|A1 bd gate (local mode). New bd-gate.ts: run flutter al via execP in localRepoPath. Baseline BEFORE fixes; after fixes compute NEW er. Feed exact file:line to the right specialist → re-fix → re-al, cap 3 rounds [crit]. mc gets the real verdict; cannot claim "fixed" while er remain.
+T|Work|1|A2 Spaced-path reliability. Fix isBashAllowedSingle to accept quoted paths validated inside localRepoPath; steer ag to Read/Glob/Grep + real full paths.
+T|Work|2|
+T|Work|0|C1 Tree-explore dedup. bd the repo tree ONCE per sn; cache by localRepoPath w/ TTL + write-invalidation [crit]; serve Glob/Grep/ls from cache; give ag the COMPLETE target subtree labeled "do not re-explore."
+T|Work|1|C2 cn dedup. Cache file contents on first Read (cross-ag, size-capped, invalidate on write [crit]); inject analyzer-read contents into fixer/QA briefs so they edit w/o re-reading.
+T|Work|2|
+T|Work|0|D1 Fix autoApprove. Make follow-ups actually execute Phase 2 — only when sessionId + history present, so the first-turn approval gate (WORKFLOW RULE 4) stays intact [crit]. Fallback: if execution can't start, show the approval card (never silently stall).
+T|Work|1|D2 Carry context. Reuse sessionId, pass full conversationHistory, restore ag cards (D5 already done) → resumed thread continues + appends to the same plan.
+T|Work|2|
+T|Work|0|B1 Wire memory + skills into every brief. Merge buildSpecialistBrief's recall (ag MEMORY.md, searchSkills, vt memories, OS-context) into analyzer/fixer/validator briefs; retire the dead path. Size-cap + cache recall to avoid pm bloat [crit].
+T|Work|1|B2 qn gets snapshot + QA memory (stops re-exploration, catches known bug patterns).
+T|Work|2|B3 Connect Hermes packs. Index the pulled ag-department/shared/skills/hermes/ packs into the skill-recall store and map each to its ag (registry table) so the right pack surfaces (e.g. qn ← adversarial-ux-tst). w/o B1/B3 the pulled files are inert [crit].**
+T|Work|3|
+T|Work|0|E1 Top-bar toggle, default ON, all ag. tool-loop catches the specific thinking-rejection er and retries once w/o thinking [crit]. Reliable on Claude, best-effort on DeepSeek. Note: thinking adds latency/tk — toggle lets you trade speed vs depth [crit].
+T|Work|1|
+T|Work|0|F1 Learning loop. After a bd-gate-VERIFIED fix [crit], capture a reusable skill note → memory/DB; B1 recall surfaces it nx time.
+T|Work|1|F2 Cross-sn recall. Resume + search past sn.
+T|Work|2|
+T|Work|3|---
+T|Work|4|
+T|Reco|0|A1 → A2 → C1 → C2 → D1 → D2 → B1 → B2 → B3 → E1 → F1 → F2
+T|Reco|1|Front-loads your three felt pains (correctness, tk waste, continuation); C early bc it cuts the cost of testing every later phase; B before F bc the learning loop feeds skill recall.
+T|Reco|2|
+T|Per-|0|After each workstream: npx tsc --noEmit green + one live War Room run on hb to confirm behavior (e.g. after A1, re-run "fix all issues" and confirm flutter al er actually drop and mc reports the true count).
+T|Per-|1|
+T|Fall|0|Flutter/dart not on PATH → skip gate, warn, read-based QA (never claim "verified").
+T|Fall|1|GitHub mode (vc) → bd gate local-only by ds; surfaced.
+T|Fall|2|er remain after 3 rounds → STOP, rp exact file:line, status "N er REMAIN".
+T|Fall|3|Thinking rejected → retry w/o it, mark thinking_unavailable once.
+T|Fall|4|Spaced path still fails in bash → ag switches to Read/Glob/Grep.
+T|Fall|5|Cache stale → invalidate on write_file to that path.
+T|Fall|6|Regression introduced → baseline diff catches it → rt back to author ag.
+T|Fall|7|Memory/skill recall er (DB down) → brief still builds w/ persona + OS skills (graceful degrade).
+T|Fall|8|Continuation can't start → fall back to approval card, never silent stall.
+T|Fall|9|
+T|Guar|0|Preserve the approval gate (WORKFLOW RULE 4) + local-mode sandbox.
+T|Guar|1|Gate on er severity, not the 818 info-lints.
+T|Guar|2|npx tsc --noEmit green after each phase; nothing pushed (all local) until you say so.

@@ -1,0 +1,31 @@
+#MEM id=prd-development source=/root/yvon/agent-department/COO/diana/skills/executive-operations/prd-development/template.md savings=9%
+M|PRD |tx|Use this template to produce a structured pd Requirements Document.
+M|Temp|tx|```markdown
+M|1. E|it|One-paragraph overview (problem + solution + impact)
+M|2. P|it|Who has this problem?
+M|2. P|it|What is the problem?
+M|2. P|it|Why is it painful?
+M|2. P|it|Evidence (cs quotes, data, research)
+M|3. T|it|Primary persona(s)
+M|3. T|it|Secondary persona(s)
+M|3. T|it|Jobs-to-be-done
+M|4. S|it|Business goals (OKRs)
+M|4. S|it|mk opportunity (TAM/SAM/SOM)
+M|4. S|it|Competitive landscape
+M|4. S|it|Why now?
+M|5. S|it|hi-level description
+M|5. S|it|us flows or wireframes
+M|5. S|it|Key features
+M|6. S|it|Primary metric (what we're optimizing for)
+M|6. S|it|Secondary metrics
+M|6. S|it|Targets (current → goal)
+M|7. U|it|Epic hypothesis
+M|7. U|it|us stories w/ acceptance criteria
+M|7. U|it|Edge cases, constraints
+M|8. O|it|What we're NOT building (and why)
+M|9. D|it|tc dependencies
+M|9. D|it|External dependencies (integrations, partnerships)
+M|9. D|it|Risks and mitigations
+M|10. |it|Unresolved decisions
+M|10. |it|Areas requiring discovery
+M|10. |tx|```

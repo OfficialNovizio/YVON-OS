@@ -1,0 +1,31 @@
+#DOC source=/root/yvon/docs/briefs/lifeos-reference/02--task-board.md strip=4% toon=3% net=7%
+K|02 ·|0|This is the ag' task board, not the owner's personal to-do list. ag propose work daily; the owner approves; ag execute; the owner reviews only when needed.
+K|02 ·|1|
+T|Purp|0|A Kanban board of the work the AI team wants to do and is doing. Every day the ag propose ideas/tasks they want to take on. The owner quickly approves them into the backlog and the week; ag execute (usually in minutes); the owner reviews only outputs that need verification.
+T|Purp|1|
+T|Page|0|Title: Task Board, breadcrumb Vibe w/ AI / Task Board.
+T|Page|1|Top bar: sy healthy, ag live counter.
+T|Page|2|Buttons: Search & filter, New task.
+T|Page|3|A sub-line w/ quick filters/labels (e.g. Needs me, plus filters for proposer, workspace, view).
+T|Page|4|
+T|Kanb|0|Left → right, the observed columns:
+T|Kanb|1|
+T|Kanb|2|PROPOSED (yellow / needs-human stage) — tasks ag want to do, each w/ an ap button. Examples seen: "Script benchmark: Claude 4.7 vs Gemini 3 on the OpenClaw rf"; "Research: is 'ag-as-a-service' a real hype/cycle category?". Approving moves a card to Backlog.
+T|Kanb|3|BACKLOG — approved-but-not-yet-scheduled work. Examples: "Draft the nl #13 outline"; "Rotate the exposed Google ap key"; "Compile 3D Ikea venue contacts."
+T|Kanb|4|THIS WEEK — scheduled for the current week. Example: "LinkedIn carousel — tighten the hook."
+T|Kanb|5|rv (yellow / needs-human stage) — ag output awaiting the owner's check, each w/ ap / discard. Examples: "nl #12 — first draft"; "Download concepts for 'shipping cuts'"; "Thumbnail v2 — '10 ag that ship code'"; "nl draft."
+T|Kanb|6|DONE — done and accepted work.
+T|Kanb|7|
+T|Kanb|8|ds decision — no "In Progress" column. The owner removed the in-process stage bc ag execute quickly (a few minutes, max ~20–30 min). Instead of cards sitting in an extra stage, live execution is shown by the Live Activity tracker (right rail). Cards only need to surface when they're ready to rv, then move to Done.
+T|Kanb|9|
+T|Kanb|10|Two yellow stages need the human: Proposed and rv. Both escalate into the Decision Queue so nothing waits silently.
+T|Kanb|11|
+T|Live|0|Replaces the "In Progress" column. Shows real-time ag work:
+T|Live|1|
+T|Live|2|A live feed of which ag are working and on which tasks (e.g. Nexus, Ivy, Leonardo, Kira, hy, William), each line w/ the ag avatar, the task, and a status.
+T|Live|3|A small "X working" counter at the top.
+T|Live|4|Lets the owner watch execution happen w/o managing a column.
+T|Live|5|
+T|Lear|0|The board is meant to learn which kinds of tasks need rv and which can ship from the get-go, so the owner has to ap less over time — both at the Proposed gate (auto-ap safe task tp) and the rv gate (auto-accept trusted outputs).
+T|Lear|1|
+S|Work|0|ag proposes → owner approves (Proposed→Backlog) → scheduled (This Week) → ag executes (shown in Live Activity, not a column) → output lands in rv → owner approves → Done. Proposed and rv items also appear in the Decision Queue.

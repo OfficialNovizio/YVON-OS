@@ -1,0 +1,75 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/patterns-children-over-render-props.md savings=-12%
+M||tx|---
+M||titl|Prefer Composing Children Over Render Props
+M||impa|md
+M||impa|cleaner composition, better readability
+M||tags|composition, children, render-props
+M||tx|---
+M|Pref|tx|Use `children` for composition instead of `renderX` props. Children are more
+M|Pref|tx|readable, compose naturally, and don't require understanding callback
+M|Pref|tx|signatures.
+M|Pref|**In|**
+M|Pref|tx|```tsx
+M|Pref|tx|fn Composer({
+M|Pref|tx|renderHeader,
+M|Pref|tx|renderFooter,
+M|Pref|tx|renderActions,
+M|Pref|}|{
+M|Pref|rend|() => rc.ReactNode
+M|Pref|rend|() => rc.ReactNode
+M|Pref|rend|() => rc.ReactNode
+M|Pref|tx|}) {
+M|Pref|tx|return (
+M|Pref|tx|<form>
+M|Pref|tx|{renderHeader?.()}
+M|Pref|tx|<Input />
+M|Pref|{ren|<DefaultFooter />}
+M|Pref|tx|{renderActions?.()}
+M|Pref|tx|</form>
+M|Pref|tx|)
+M|Pref|tx|}
+M|Pref|tx|// Usage is awkward and inflexible
+M|Pref|tx|return (
+M|Pref|tx|<Composer
+M|Pref|tx|renderHeader={() => <CustomHeader />}
+M|Pref|tx|renderFooter={() => (
+M|Pref|tx|<>
+M|Pref|tx|<Formatting />
+M|Pref|tx|<Emojis />
+M|Pref|tx|</>
+M|Pref|tx|)}
+M|Pref|tx|renderActions={() => <SubmitButton />}
+M|Pref|tx|/>
+M|Pref|tx|)
+M|Pref|tx|```
+M|Pref|**Co|**
+M|Pref|tx|```tsx
+M|Pref|func|{ children: rc.ReactNode }) {
+M|Pref|tx|return <form>{children}</form>
+M|Pref|tx|}
+M|Pref|func|{ children: rc.ReactNode }) {
+M|Pref|tx|return <footer className='flex'>{children}</footer>
+M|Pref|tx|}
+M|Pref|tx|// Usage is flexible
+M|Pref|tx|return (
+M|Pref|tx|<Composer.Frame>
+M|Pref|tx|<CustomHeader />
+M|Pref|tx|<Composer.Input />
+M|Pref|tx|<Composer.Footer>
+M|Pref|tx|<Composer.Formatting />
+M|Pref|tx|<Composer.Emojis />
+M|Pref|tx|<SubmitButton />
+M|Pref|tx|</Composer.Footer>
+M|Pref|tx|</Composer.Frame>
+M|Pref|tx|)
+M|Pref|tx|```
+M|Pref|**Wh|**
+M|Pref|tx|```tsx
+M|Pref|tx|// Render props work well when you need to pass data back
+M|Pref|tx|<List
+M|Pref|tx|data={items}
+M|Pref|tx|renderItem={({ item, index }) => <Item item={item} index={index} />}
+M|Pref|tx|/>
+M|Pref|tx|```
+M|Pref|tx|Use render props when the parent needs to provide data or state to the child.
+M|Pref|tx|Use children when composing static structure.

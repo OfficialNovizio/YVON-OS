@@ -1,0 +1,27 @@
+#DOC source=/root/yvon/docs/hourbour/CONTEXT.md strip=64% toon=-5% net=64%
+# Hourbour — Strategic Context
+LONG-TERM. Add only when a decision is permanently locked.
+Rolling state → SESSION.md · Operational rules → FEEDBACK.md
+
+---
+
+## Venture Identity
+[TABLE:2×5]
+
+---
+
+## Locked Decisions
+
+[TABLE:4×3]
+---
+
+## Open Strategic Questions
+[ ] Pricing model — monthly vs annual, freemium tier? (Felix analysis pending)
+[ ] Primary acquisition channel — LinkedIn ads vs SEO vs product-led referral
+[ ] Trial-to-paid conversion flow — not yet designed
+[ ] LTV:CAC target (must stay > 3:1 — current baseline unknown)
+
+---
+
+## Metrics Framework
+[TABLE:3×5]

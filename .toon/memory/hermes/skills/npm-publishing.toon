@@ -1,0 +1,32 @@
+SKILL|npm-publishing|"Publish npm packages from CI (GitHub Actions), including scoped packages (@scope/name), Automation tokens, 2FA bypass, and auto-publish on push."
+STEP|1|Package.json is publish-ready: `name`, `version`, `main`, `files`, `prepublishOnly` build script
+STEP|2|NPM Automation token created with **"Bypass two-factor authentication"** checked
+STEP|3|Token saved as GitHub secret `NPM_TOKEN`
+STEP|4|GitHub Actions workflow uses `setup-node` with `registry-url` + `NODE_AUTH_TOKEN` env var
+STEP|5|Critical:** `NODE_AUTH_TOKEN` MUST be at the **job level** (`jobs.<name>.env`), not at the step level. `setup-node` reads it from the job environment to write the `//registry.npmjs.org/:_authToken=...
+STEP|6|**Enable 2FA on your npm account first** — npm now REQUIRES 2FA to publish packages. If your account doesn't have 2FA enabled, publish returns `403 Forbidden`. Go to https://www.npmjs.com/settings/<us
+STEP|7|Go to https://www.npmjs.com → Access Tokens → **Generate New Token**
+STEP|8|Type: **Automation** (NOT Classic — Automation tokens are pre-configured for CI)
+STEP|9|✅ **CRITICAL:** Check "Bypass two-factor authentication for automation" — CI cannot prompt for 2FA
+STEP|10|Copy token (starts with `npm_`)
+STEP|11|Add to GitHub repo: Settings → Secrets and variables → Actions → New secret → Name: `NPM_TOKEN`
+STEP|12|**`NODE_AUTH_TOKEN` at step level instead of job level:** `setup-node` reads it from the job env. If it's only on the publish step, the `.npmrc` won't have auth. Symptom: `403 Forbidden` despite corre
+STEP|13|**npm account lacks 2FA:** npm now REQUIRES 2FA enabled on the account to publish. If account doesn't have 2FA, even a valid token returns `403 — Two-factor authentication or granular access token wit
+STEP|14|**`echo "${{ secrets.TOKEN }}"` to write `.npmrc`:** Breaks if the token contains bash-special characters (`!`, `$`, `\`). Use `NODE_AUTH_TOKEN` env var with `setup-node`'s `registry-url` instead — it
+STEP|15|**403 Forbidden with 2FA error:** Token missing the 2FA bypass option OR npm account doesn't have 2FA enabled. See `references/2fa-pitfall.md` for the full error transcript. Regenerate with the bypass
+STEP|16|**Scope auto-creation unreliable:** First publish of `@org/name` SHOULD auto-create the scope, but not all accounts have this permission. If scoped publish returns `E404` on PUT, fall back to an unsco
+STEP|17|**`prepublishOnly` vs `prepare`:** Use `prepublishOnly` for the build step — it runs before publish but NOT on `npm install` (prevents build failures for consumers).
+STEP|18|**bin permission:** If package has a `bin` entry, ensure the file is executable. Run: `chmod +x cli/my-cli.js && git update-index --chmod=+x cli/my-cli.js`
+STEP|19|**npx cache:** After publishing a new version, users may need `npx --yes` to bypass local cache, or `npm update @org/name` to get latest.
+STEP|20|Pitfall:** `npm publish` runs `prepublishOnly` which typically calls `tsc`. If `node_modules` isn't installed (fresh clone), this fails with `code 127`. Always `npm install` first.
+STEP|21|Pitfall — OTP timeout from prepublishOnly:** When publishing with `--otp=<code>`, the OTP code is valid for ~30 seconds. If `prepublishOnly` runs a slow build (e.g., TypeScript compilation), the OTP e
+STEP|22|Temporarily disabling both prepare and prepublishOnly:**
+STEP|23|WebAuthn vs TOTP:** Some npm accounts use WebAuthn (security key / browser prompt) instead of TOTP (authenticator app codes). If `--otp=123456` consistently fails despite correct codes, the account li
+PIT|**`NODE_AUTH_TOKEN` at step level instead of job level:** `setup-node` reads it from the job env. If it's only on the publish step, the `.npmrc` won't have auth. Symptom: `403 Forbidden` despite corre
+PIT|**npm account lacks 2FA:** npm now REQUIRES 2FA enabled on the account to publish. If account doesn't have 2FA, even a valid token returns `403 — Two-factor authentication or granular access token wit
+PIT|**`echo "${{ secrets.TOKEN }}"` to write `.npmrc`:** Breaks if the token contains bash-special characters (`!`, `$`, `\`). Use `NODE_AUTH_TOKEN` env var with `setup-node`'s `registry-url` instead — it
+PIT|**403 Forbidden with 2FA error:** Token missing the 2FA bypass option OR npm account doesn't have 2FA enabled. See `references/2fa-pitfall.md` for the full error transcript. Regenerate with the bypass
+PIT|**Scope auto-creation unreliable:** First publish of `@org/name` SHOULD auto-create the scope, but not all accounts have this permission. If scoped publish returns `E404` on PUT, fall back to an unsco
+PIT|**`prepublishOnly` vs `prepare`:** Use `prepublishOnly` for the build step — it runs before publish but NOT on `npm install` (prevents build failures for consumers).
+PIT|**bin permission:** If package has a `bin` entry, ensure the file is executable. Run: `chmod +x cli/my-cli.js && git update-index --chmod=+x cli/my-cli.js`
+PIT|**npx cache:** After publishing a new version, users may need `npx --yes` to bypass local cache, or `npm update @org/name` to get latest.

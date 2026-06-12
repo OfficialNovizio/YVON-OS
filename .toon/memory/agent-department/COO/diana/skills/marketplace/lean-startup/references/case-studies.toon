@@ -1,0 +1,184 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/case-studies.md savings=12%
+M|Lean|Thes|the situation before lean methods were applied, the specific lean approach used, the experiments conducted, the results achieved, and the lessons that generalize beyond the specific company. The final section examines companies that failed by ignoring lean principles, and cross-cutting patterns that emerge across all cases.
+M|Tabl|1. [|Dropbox - The Smoke tst MVP](#case-study-1-dropbox-the-smoke-tst-mvp)
+M|Tabl|2. [|IMVU - Continuous dpl and Learning](#case-study-2-imvu-continuous-dpl-and-learning)
+M|Tabl|3. [|Zappos - The Wizard of Oz MVP](#case-study-3-zappos-the-wizard-of-oz-mvp)
+M|Tabl|4. [|Groupon - The Piecemeal MVP](#case-study-4-groupon-the-piecemeal-mvp)
+M|Tabl|5. [|Food on the Table - The Concierge MVP](#case-study-5-food-on-the-table-the-concierge-mvp)
+M|Tabl|6. [|Aardvark - Before-Building Validation](#case-study-6-aardvark-before-building-validation)
+M|Tabl|7. [|Webvan - Scaling w/o Validation](#fl-case-1-webvan-scaling-w/o-validation)
+M|Tabl|8. [|Segway - The pd Nobody Asked For](#fl-case-2-segway-the-pd-nobody-asked-for)
+M|Tabl|tx|9. [Cross-Cutting Patterns](#cross-cutting-patterns)
+M|Tabl|tx|---
+M|Situ|Drew|wld people want this pd? And cld he explain the value proposition clearly enough to drive adoption?
+M|Situ|tx|Building a working prototype wld take months. The underlying technology (cross-platform sync, conflict resolution, efficient file transfer) was genuinely difficult. Traditional pd dv wld have required sig engineering before getting any mk signal.
+M|Lean|tx|Smoke tst MVP using a pd demonstration vd.
+M|Expe|**Ex|The vd MVP**
+M|Expe|tx|Houston created a 3-minute screencast demonstrating how Dropbox wld work. The vd showed the actual pd exp (drag files, they appear on other devices) even though the underlying technology was minimal. The vd was deliberately targeted at tech-savvy early adopters and included inside jokes that wld resonate w/ the Hacker News audience.
+M|Expe|tx|The vd was posted to Hacker News w/ a link to a beta signup page.
+M|Expe|**Me|**
+M|Expe|it|Beta waitlist went from 5,000 to 75,000 overnight
+M|Expe|it|No paid advertising was used
+M|Expe|it|The vd validated both demand and the ability to communicate the value proposition
+M|Expe|**Ex|Referral-Based Growth**
+M|Expe|Afte|both the referrer and the referred us received 500MB of free storage.
+M|Expe|**Me|**
+M|Expe|it|Permanent 60% increase in signups
+M|Expe|it|35% of daily signups came through the referral program
+M|Expe|it|Validated the viral engine of growth
+M|Resu|tx|Dropbox grew to 100 million us within 5 years. The vd MVP saved months of dv time by validating demand before building the complete pd. The referral experiment identified the growth engine early, allowing the team to invest in viral mechanics rather than paid acquisition.
+M|Less|tx|1. A vd can validate demand for complex tc pd w/o building them.
+M|Less|tx|2. The MVP does not have to be functional; it has to gn a decision-qual signal.
+M|Less|tx|3. Growth engine experiments shd be run early, not after pd-mk fit is assumed.
+M|Less|tx|4. Targeting early adopters w/ culturally resonant cn amplifies signal qual.
+M|Less|tx|---
+M|Situ|tx|IMVU was a 3D instant messaging pd founded in 2004. The team initially planned to bd an add-on to existing instant messaging networks (AIM, Yahoo Messenger), allowing us to cr 3D avatars and virtual rooms. The founding team included Eric Ries, who wld later codify the Lean Startup methodology based on his experiences at IMVU.
+M|Lean|tx|Continuous dpl, rapid iteration, and cs dv.
+M|Expe|**Ex|Interoperability Hypothesis**
+M|Expe|tx|The team spent 6 months building interoperability w/ AIM, believing us wld want to use IMVU w/ their existing contacts.
+M|Expe|**Re|** Complete fl. us did not want to introduce a new, unfamiliar pd to existing contacts. The interoperability feature that took months to bd was unused.
+M|Expe|**Le|** This was the "wasted" work that motivated lean thinking. Six months of engineering for zero cs value.
+M|Expe|**Ex|Standalone Network Pivot**
+M|Expe|tx|The team pivoted to a standalone pd where us met new people through IMVU rather than connecting w/ existing contacts.
+M|Expe|**Re|** Immediate traction. us were excited abt meeting new people in 3D virtual rooms.
+M|Expe|**Ex|Continuous dpl sy**
+M|Expe|tx|The team built an automated dpl sy that pushed code to production 50+ times per day w/ automated monitoring.
+M|Expe|**Ke|** An "immune sy" that monitored five key business metrics after each dp. If any metric degraded beyond a threshold, the dp was automatically rolled back.
+M|Expe|**Re|** Problems were detected within minutes. Each dp was so small that diagnosis was trivial. The team iterated faster than any cr.
+M|Resu|tx|IMVU reached profitability w/ over $50 million in annual rv. The continuous dpl sy became a key competitive advantage, enabling the team to run more experiments per month than cr ran per year.
+M|Less|tx|1. Building what you think cs want w/o testing is the most expensive way to learn.
+M|Less|tx|2. Continuous dpl is not just a tc practice; it is a learning advantage.
+M|Less|tx|3. Automated monitoring can catch problems faster than humans.
+M|Less|tx|4. The pivot from "connect w/ existing contacts" to "meet new people" came from observing actual cs behavior, not from surveys or focus groups.
+M|Less|tx|---
+M|Situ|tx|In 1999, Nick Swinmurn hypothesized that people wld buy shoes online. This was not obvious at the time. Shoes are personal, sizing varies by br, and cs typically want to try before they buy. Traditional retail wisdom said shoes cld not be sold online.
+M|Lean|tx|Wizard of Oz MVP. The front end looked like a real e-commerce site, but the back end was entirely manual.
+M|Expe|**Ex|The Manual Fulfillment MVP**
+M|Expe|tx|Swinmurn went to local shoe stores, photographed their inventory, and posted the photos on a simple website. When a cs placed an order, he went to the store, bought the shoes at full price, and shipped them to the cs.
+M|Expe|**Wh|**
+M|Expe|it|wld people buy shoes online? (Demand)
+M|Expe|it|wld they trust an unknown website w/ their credit card? (Trust)
+M|Expe|it|wld they keep the shoes or return them at hi rates? (Satisfaction)
+M|Expe|**Me|**
+M|Expe|it|Actual purchases (not surveys, not signups, not clicks)
+M|Expe|it|Return rates
+M|Expe|it|cs satisfaction (direct communication w/ every buyer)
+M|Expe|**Re|** People bought shoes. Return rates were manageable. cs were satisfied. The hypothesis was validated w/ minimal technology investment.
+M|Resu|tx|Zappos scaled to $1 billion in annual rv and was acquired by Amazon for $1.2 billion. The Wizard of Oz MVP phase cost almost nothing in technology but generated definitive evidence of demand.
+M|Less|tx|1. The best MVPs tst cs behavior (purchasing), not cs opinion (surveys).
+M|Less|tx|2. Manual fulfillment is a legitimate MVP st for any pd that involves logistics.
+M|Less|tx|3. Losing money on individual transactions during validation is acceptable if it generates hi-qual learning.
+M|Less|tx|4. The MVP does not need to be profitable; it needs to be informative.
+M|Less|tx|---
+M|Situ|tx|Groupon began as "The Point," a platform for collective action (group boycotts, fundraising cg, petitions). The platform was struggling to gain traction across its various use cases.
+M|Lean|tx|Zoom-in pivot followed by a piecemeal MVP.
+M|Expe|**Ex|Collective Action Platform**
+M|Expe|tx|The Point launched as a general collective action platform. us cld cr cg for any group activity.
+M|Expe|**Re|** lo engagement across most cg tp. One category stood out: group buying deals. When a business offered a discount if enough people committed to buy, cg succeeded consistently.
+M|Expe|**Ex|The WordPress Blog MVP**
+M|Expe|The |
+M|Expe|it|A WordPress blog (free)
+M|Expe|it|A daily blog post describing the deal
+M|Expe|it|A PDF coupon generated manually in FileMaker
+M|Expe|it|An em list (via Apple Mail)
+M|Expe|it|Manual deal negotiation w/ local businesses (phone calls)
+M|Expe|tx|No marketplace platform. No payment processing sy. No automated anything.
+M|Expe|**Me|**
+M|Expe|it|em list growth
+M|Expe|it|Coupon redemption rates
+M|Expe|it|Merchant satisfaction
+M|Expe|it|Repeat purchase rates
+M|Expe|**Re|** Immediate, strong demand. The em list grew rapidly through word of mouth. Merchants saw real cs arrive. The piecemeal approach validated the entire business md before any sig technology investment.
+M|Resu|tx|Groupon reached $1 billion in rv faster than any company in history at that time (within ~ 2 years of the pivot). The company went public at a $13 billion valuation.
+M|Less|tx|1. When one feature of a broad pd outperforms all others, consider a zoom-in pivot.
+M|Less|tx|2. Existing tools (WordPress, em, PDFs) can constitute a complete MVP.
+M|Less|tx|3. The "platform" can be humans w/ phones and spreadsheets until demand justifies technology.
+M|Less|tx|4. Speed of learning matters more than sophistication of tools.
+M|Less|tx|---
+M|Situ|tx|Manuel Rosso wanted to bd an app that helped families plan meals based on their food preferences, dietary restrictions, and local grocery store sales. The app wld gn personalized meal plans and shopping lists that saved families time and money.
+M|Lean|tx|Concierge MVP. Completely manual delivery of the service that the app wld eventually automate.
+M|Expe|**Ex|One-Family Concierge**
+M|Expe|Ross|
+M|Expe|tx|1. Visit the family to learn their food preferences
+M|Expe|tx|2. Manually check the weekly sales at their local grocery store
+M|Expe|tx|3. cr a personalized meal plan based on their preferences and the sales
+M|Expe|tx|4. gn a shopping list
+M|Expe|tx|5. Deliver the plan and list in person
+M|Expe|tx|He charged a small fee for the service.
+M|Expe|**Wh|**
+M|Expe|it|Is meal planning around store sales something families value?
+M|Expe|it|Will they pay for it?
+M|Expe|it|What information do families need to make this useful?
+M|Expe|it|How do they want to receive the plan?
+M|Expe|**Ex|Scaling to Multiple Families**
+M|Expe|tx|After validating w/ one family, Rosso expanded to several families, still delivering the service manually. He systematized his process w/ spreadsheets and templates.
+M|Expe|**Ex|Selective Automation**
+M|Expe|tx|Only after serving dozens of families manually did Rosso begin automating the most time-consuming parts of the process. Each automation decision was informed by real workflow data from the concierge phase.
+M|Resu|Food|
+M|Resu|it|Families cared more abt simplicity than variety
+M|Resu|it|Store sale data freshness was ct
+M|Resu|it|The shopping list was more valued than the meal plan itself
+M|Less|tx|1. Starting w/ one cs is a legitimate st. You do not need a mk to validate; you need a person.
+M|Less|tx|2. Manual delivery reveals the actual workflow, which informs what to automate and what to leave out.
+M|Less|tx|3. Charging during the concierge phase (even a small amount) validates willingness to pay.
+M|Less|tx|4. The concierge phase generates pd ds in that no amount of planning can replicate.
+M|Less|tx|---
+M|Situ|tx|Aardvark was founded in 2007 to cr a sl search engine. Instead of querying a db, us wld ask questions and the sy wld rt them to people in their sl network who cld answer.
+M|Lean|tx|Wizard of Oz MVP to validate the core exp before building the technology.
+M|Expe|**Ex|Human-Powered Routing**
+M|Expe|tx|Before building any routing algorithm, the team manually performed the routing fn. When a us submitted a question via instant message, a team member wld read the question, determine which person in the us's network might know the answer, and manually forward the question.
+M|Expe|**Wh|**
+M|Expe|it|wld people ask questions through this channel?
+M|Expe|it|wld people answer questions forwarded to them?
+M|Expe|it|Was the sl routing concept sound (right questions to right people)?
+M|Expe|it|Was the rp time acceptable?
+M|Expe|**Ex|Iterating on Question tp**
+M|Expe|tx|Through manual routing, the team learned which tp of questions worked well (subjective, local, opinion-based) and which did not (factual, research-heavy). This informed which use cases to op for.
+M|Resu|tx|Aardvark launched a working pd in 2009 and was acquired by Google for $50 million in 2010. The Wizard of Oz phase identified the core use case (subjective/local questions) that made the pd work, eliminating dead-end dv on question tp the sy cld not handle well.
+M|Less|tx|1. AI and algorithmic pd can be validated w/ humans performing the algorithm's fn manually.
+M|Less|tx|2. Manual routing revealed edge cases and fl modes that no specification cld have anticipated.
+M|Less|tx|3. The validation phase identified the "sweet spot" for the pd (subjective questions) that became the core value proposition.
+M|Less|tx|4. Building the technology last (not first) saved months of wasted engineering on the wrong problem.
+M|Less|tx|---
+M|Situ|Webv|automated warehouses, a fleet of delivery trucks, and custom logistics software. They planned to roll out to 26 cities within 3 years.
+M|What|Webv|scaling before validating.
+M|What|tx|\| Lean Principle \| What Webvan Did \|
+M|What|tx|\|---------------\|----------------\|
+M|What|tx|\| Start w/ an MVP \| Launched w/ full-scale automated warehouse ($35 million per facility) \|
+M|What|tx|\| Validate demand first \| Assumed demand based on the "inevitable" move to online shopping \|
+M|What|tx|\| Small batches \| Planned simultaneous rollout to 26 cities \|
+M|What|tx|\| bd-Measure-Learn \| Built everything, measured nothing meaningful, learned too late \|
+M|What|tx|\| Pivot when needed \| Too much invested to pivot; organizational inertia was overwhelming \|
+M|Resu|Webv|the cost of delivery exceeded the margin on groceries in nearly every order.
+M|Less|tx|The demand for online grocery delivery was real (as Amazon Fresh and Instacart later proved). Webvan's fl was not in the vision but in the execution approach. A lean approach wld have started w/ manual delivery in one neighborhood, validated unit economics, and scaled only after proving the md worked.
+M|Less|tx|---
+M|Situ|tx|Dean Kamen developed the Segway personal transporter in secrecy over 10 years. The project, codenamed "Ginger," was rumored to be revolutionary. Steve Jobs reportedly said it was "as big a deal as the PC." Kamen predicted Segway wld reach $1 billion in sales faster than any company in history and wld "be to the car what the car was to the horse and buggy."
+M|What|tx|\| Lean Principle \| What Segway Did \|
+M|What|tx|\|---------------\|----------------\|
+M|What|tx|\| cs dv \| Developed in secret; no cs testing until after launch \|
+M|What|tx|\| Problem validation \| Assumed people wanted a faster way to walk; never validated the problem \|
+M|What|tx|\| MVP \| Spent 10 years and $100 million on a polished pd before any mk tst \|
+M|What|tx|\| Pricing validation \| Launched at $5,000 w/o testing price sensitivity \|
+M|What|tx|\| Growth hypothesis \| Assumed the pd wld sell itself through novelty \|
+M|Resu|tx|Segway sold 30,000 units in its first 2 years, falling catastrophically short of the 50,000 units projected for the first 13 weeks. The company was eventually sold for a fraction of its invested capital. The pd found niche uses (mall sec, warehouse workers, tourist tours) but never achieved mainstream adoption.
+M|Less|tx|Technological brilliance does not validate mk demand. A lean approach wld have tested the core assumption (people want a faster way to walk and will pay $5,000 for it) before investing $100 million in dv. Even a simple vd MVP or pre-order cg wld have revealed the demand problem.
+M|Less|tx|---
+M|Patt|tx|Every successful case study validated demand before sig technology investment. Every fl case built technology first and sought demand second.
+M|Patt|tx|\| Company \| Demand Validation Method \| Technology Investment Before Validation \|
+M|Patt|tx|\|---------\|------------------------\|---------------------------------------\|
+M|Patt|tx|\| Dropbox \| vd MVP \| Minimal (basic prototype for vd) \|
+M|Patt|tx|\| Zappos \| Manual fulfillment \| Zero (website w/ store photos) \|
+M|Patt|tx|\| Groupon \| WordPress blog \| Zero \|
+M|Patt|tx|\| Food on the Table \| Manual service delivery \| Zero \|
+M|Patt|tx|\| Webvan (fl) \| None \| $375 million \|
+M|Patt|tx|\| Segway (fl) \| None \| $100+ million \|
+M|Patt|tx|Five of six sc cases started w/ entirely manual operations. Automation came after the process was validated and understood.
+M|Patt|tx|Food on the Table started w/ one family. Zappos started w/ individual shoe purchases. The successful companies did not try to serve a mk; they tried to serve a person.
+M|Patt|tx|\| Company \| MVP \| Why It Worked \|
+M|Patt|tx|\|---------\|-----\|---------------\|
+M|Patt|tx|\| Dropbox \| A 3-minute vd \| Tested demand and communication, not technology \|
+M|Patt|tx|\| Zappos \| Photos from shoe stores on a basic website \| Tested purchasing behavior w/ real money \|
+M|Patt|tx|\| Groupon \| A WordPress blog and emailed PDFs \| Tested the deal md w/o marketplace technology \|
+M|Patt|tx|\| Aardvark \| Humans routing questions via IM \| Tested the core exp before building the algorithm \|
+M|Patt|tx|IMVU pivoted from IM integration to standalone after observing us behavior. Groupon pivoted from collective action to deals after noticing which cg succeeded. These were calm, evidence-based decisions, not desperate changes.
+M|Patt|Both|building at scale before validating at small scale. The lean startup does not eliminate risk. It sequences the de-risking process so the most expensive investments come after the most uncertain questions are answered.

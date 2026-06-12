@@ -1,0 +1,274 @@
+#DOC source=/root/yvon/docs/plans/PHASE-6-PLAN.md strip=60% toon=-13% net=60%
+# Phase 6: E2E Quality Gates — Testing, Performance & Polish
+
+For Hermes: Execute task-by-task. Each task has exact commands and verification steps. Commit after every task.
+
+Goal: Add smoke tests, error boundaries, Lighthouse optimization, and final mobile QA to lock in production quality across all 33 YVON OS pages.
+
+Architecture: Four layers of quality: (1) Playwright smoke tests covering every page, (2) React Error Boundary preventing white screens, (3) Lighthouse audit with fixes for performance/accessibility/SEO, (4) Final mobile QA sweep. No heavy test frameworks — Playwright for E2E, lightweight assertions for API routes.
+
+Tech Stack: Playwright (E2E) · React Error Boundary · Lighthouse CI · next/bundle-analyzer
+
+Current state: 33 pages, 176 API routes, 9 components, ~44K LOC. Zero test infrastructure. Test scripts are placeholders. ESLint is the only dev dependency.
+
+---
+
+## Phase 6A: Playwright E2E Smoke Tests
+
+### Task 6A.1: Install Playwright + configure
+
+Objective: Set up Playwright with a minimal config targeting the local dev server
+
+Files:
+Create: playwright.config.ts
+Create: e2e/ directory
+Modify: package.json (scripts)
+
+Step 1: Install
+
+[CODE:bash:2LOC]
+Step 2: Create config
+
+[CODE:typescript:23LOC]
+Step 3: Update package.json scripts
+
+[CODE:json:4LOC]
+Step 4: Verify
+
+[CODE:bash:2LOC]
+Step 5: Commit
+
+[CODE:bash:2LOC]
+---
+
+### Task 6A.2: Smoke test — all 33 pages render without crashing
+
+Objective: One test file that visits every page and asserts the shell layout renders
+
+Files:
+Create: e2e/smoke.spec.ts
+
+Step 1: Write smoke test
+
+[CODE:typescript:42LOC]
+Step 2: Run smoke tests
+
+[CODE:bash:1LOC]
+Expected: 33 passed, 0 failed.
+
+Step 3: Commit
+
+[CODE:bash:2LOC]
+---
+
+### Task 6A.3: Mobile smoke test — responsive layout on 390px viewport
+
+Objective: Verify hamburger menu works and pages are readable on mobile
+
+Files:
+Create: e2e/mobile.spec.ts
+
+Step 1: Write mobile smoke test
+
+[CODE:typescript:27LOC]
+Step 2: Run
+
+[CODE:bash:1LOC]
+Step 3: Commit
+
+[CODE:bash:2LOC]
+---
+
+## Phase 6B: React Error Boundary — Global Crash Protection
+
+### Task 6B.1: Create ErrorBoundary component
+
+Objective: Wrap the entire app in an error boundary so a component crash shows a recovery UI instead of a white screen
+
+Files:
+Create: components/ErrorBoundary.tsx
+Modify: app/layout.tsx
+
+Step 1: Create ErrorBoundary
+
+[CODE:typescript:42LOC]
+Step 2: Wrap layout
+
+In app/layout.tsx, wrap children:
+
+[CODE:typescript:8LOC]
+Step 3: Verify
+
+[CODE:bash:1LOC]
+Step 4: Commit
+
+[CODE:bash:2LOC]
+---
+
+## Phase 6C: Lighthouse Performance Audit
+
+### Task 6C.1: Run Lighthouse audit on key pages
+
+Objective: Measure performance, accessibility, SEO, and best practices scores for critical pages
+
+Step 1: Install Lighthouse CLI
+
+[CODE:bash:1LOC]
+Step 2: Run audits
+
+[CODE:bash:15LOC]
+Step 3: Document scores
+
+Create .lighthouse/REPORT.md with scores for each page. Target: ≥90 performance, ≥95 accessibility, ≥90 best-practices, ≥90 SEO.
+
+Step 4: Commit
+
+[CODE:bash:2LOC]
+---
+
+### Task 6C.2: Fix accessibility issues from Lighthouse
+
+Objective: Address any <95 accessibility scores
+
+Common fixes:
+Add aria-label to icon-only buttons
+Ensure color contrast ≥ 4.5:1 for text
+Add alt text to any images
+Ensure form inputs have labels
+
+Step 1: Run axe-core for detailed accessibility report
+
+[CODE:bash:2LOC]
+Step 2: Apply fixes per page, re-audit
+
+Step 3: Commit
+
+[CODE:bash:1LOC]
+---
+
+### Task 6C.3: Performance optimizations
+
+Objective: Address Largest Contentful Paint (LCP) and Cumulative Layout Shift (CLS) issues
+
+Fixes (if needed):
+Add loading="lazy" to below-fold images
+Add explicit width/height to images to prevent CLS
+Consider next/image for the background image
+Add font display: swap for Inter/SF Pro fonts
+
+Files likely changed:
+app/layout.tsx — font optimization
+app/globals.css — font-display
+Any page with large inline images
+
+Step: Apply and verify Lighthouse re-audit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 6D: API Route Contract Tests
+
+### Task 6D.1: Test key API routes return valid JSON
+
+Objective: Verify the most-used API endpoints return 200 with valid JSON
+
+Files:
+Create: e2e/api.spec.ts
+
+Step 1: Write API tests
+
+[CODE:typescript:34LOC]
+Step 2: Run
+
+[CODE:bash:1LOC]
+Step 3: Commit
+
+[CODE:bash:2LOC]
+---
+
+## Phase 6E: Bundle Analysis
+
+### Task 6E.1: Analyze bundle size + optimize
+
+Objective: Identify large chunks and trim unnecessary imports
+
+Step 1: Install analyzer
+
+[CODE:bash:1LOC]
+Step 2: Run analysis
+
+[CODE:bash:1LOC]
+Step 3: Check for issues
+Any chunk > 200KB → investigate
+Duplicate dependencies → deduplicate
+Unused heavy imports → tree-shake
+
+Step 4: Commit fixes + report
+
+[CODE:bash:1LOC]
+---
+
+## Phase 6F: Final Mobile QA Sweep
+
+### Task 6F.1: Manual QA checklist on 390px viewport
+
+Checklist — verify on mobile (390×844):
+
+[ ] Sidebar hamburger opens/closes smoothly
+[ ] All 33 pages scrollable, no horizontal overflow
+[ ] Decision Queue: cards are full-width, touch targets ≥ 44px
+[ ] Kanban boards (Software Pipeline, Content Pipeline, Task Board): horizontal scroll works, cards visible
+[ ] Scheduler: calendar scrolls horizontally on mobile
+[ ] Office 3D: pinch-zoom disabled, scrollable viewport
+[ ] Modals: full-screen on mobile, close button accessible
+[ ] Forms/inputs: no zoom-on-focus on iOS (font-size ≥ 16px)
+[ ] No text truncation or overlapping
+[ ] Workspace switcher works in mobile sidebar
+
+Files to fix (if issues found):
+Any page with min-w-[760px] without scroll hint
+Modals without mobile full-screen behavior
+
+Step: Run mobile smoke tests first, then manual review
+
+[CODE:bash:1LOC]
+Step: Fix any issues + commit
+
+[CODE:bash:1LOC]
+---
+
+## Phase 6G: CI Integration
+
+### Task 6G.1: Update GitHub Actions CI to run E2E tests
+
+Files:
+Modify: .github/workflows/ci.yml
+
+Step 1: Add E2E job
+
+[CODE:yaml:12LOC]
+Step 2: Verify CI passes
+
+Push and check GitHub Actions.
+
+Step 3: Commit
+
+[CODE:bash:2LOC]
+---
+
+## Phase 6H: Final Deploy
+
+### Task 6H.1: Full build + typecheck + lint + E2E
+
+[CODE:bash:4LOC]
+### Task 6H.2: Push + deploy
+
+[CODE:bash:3LOC]
+Vercel auto-deploys via GitHub Actions.
+
+---
+
+## Summary: Phase 6 Deliverables
+
+[TABLE:4×7]
+Final state: 33 pages, 176 routes, E2E-tested, error-guarded, Lighthouse-optimized, mobile-verified, CI-gated.

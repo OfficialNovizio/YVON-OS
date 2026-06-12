@@ -1,0 +1,30 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/lena/skills/operating-system/triple-pass-protocol/SKILL.md savings=15%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|ln's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any cp is delivered. Stark never sees the process, only the final output.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|cp mistakes compound. A wrong tone in one post doesn't just affect that post — it drifts the br. This protocol catches voice er, weak headlines, and psychological framing issues before they reach Stark or go public.
+M|Purp|tx|---
+M|Pass|Writ|hooks, body, CTAs, hashtags. Don't self-edit during generation — complete the output first.
+M|Pass|Stop|
+M|Pass|**Vo|**
+M|Pass|it|Is this unmistakably nz or hb — or cld it belong to any br?
+M|Pass|- Do|editorial, self-assured. hb: plain English, trustworthy)
+M|Pass|- Ar|affordable, cheap; hb: complicated, risky)
+M|Pass|it|Any exclamation marks in nz body cp? Remove them.
+M|Pass|**He|**
+M|Pass|it|Did I write 5 headlines before choosing 1, or did I settle for the first?
+M|Pass|it|Does the hl earn the nx line, or is it vague enough to ignore?
+M|Pass|it|wld a reader who doesn't know the br still find this worth reading?
+M|Pass|**Ev|**
+M|Pass|it|Read back slowly. Mark every word that doesn't add meaning. Remove them.
+M|Pass|it|Are there filler phrases? ("In today's world", "We're excited to share", "Don't miss out")
+M|Pass|it|Is the CTA specific? ("Start your free trial" > "Learn more")
+M|Pass|**Ka|**
+M|Pass|it|What psychological frame is this cp using? Is it intentional?
+M|Pass|it|Is there conflicting framing in the same piece? (loss aversion + sl proof w/o coherence)
+M|Pass|it|wld this pass sy 1 — does it feel right immediately, not just on al?
+M|Pass|tx|Rewrite anything that failed Pass 2. Do not rationalize tone drift. If it doesn't sound like the vt, rewrite — don't leave it.
+M|Pass|tx|---
+M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

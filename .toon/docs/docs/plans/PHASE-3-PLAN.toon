@@ -1,0 +1,57 @@
+#DOC source=/root/yvon/docs/plans/PHASE-3-PLAN.md strip=59% toon=6% net=61%
+P|Phas|0|Status: AWAITING APPROVAL
+P|Phas|1|What Phase 2 delivered: Dashboard Home wired, Decision Queue real data, KaisRead ported,
+P|Phas|2|Software Pipeline ap, sy health widgets, responsive shell. All QA: tsc + bd pass.
+P|Phas|3|
+P|Phas|4|---
+P|Phas|5|
+T|What|0|Phase 3 connects three ct workflows:
+T|What|1|
+T|What|2|ag work execution — ag propose tasks → ce approves → execute → rv → done
+T|What|3|cn pipeline — sl posts w/ A/B cp/im variants, ap → schedule
+T|What|4|ce command briefing — st panels from yv 2.0 on the new Dashboard
+T|What|5|
+T|What|6|---
+T|What|7|
+K|3A: |0|[TABLE:3×3]
+K|3A: |1|Kanban columns: PROPOSED → BACKLOG → THIS WEEK → rv → DONE
+K|3A: |2|No "In Progress" column — live activity tracker replaces it.
+K|3A: |3|
+K|3A: |4|yv 2.0 used here: ag execution engine from lib/hermes-spawn.ts, task status from execution_steps table.
+K|3A: |5|
+K|3A: |6|---
+K|3A: |7|
+T|3B: |0|[TABLE:3×2]
+T|3B: |1|Sources: vt table, competitorsettings, socialposts, execution_steps.
+T|3B: |2|Not needed: Projects page is NOT the old yv ce dashboard — it's a lightweight vt portfolio view.
+T|3B: |3|
+T|3B: |4|---
+T|3B: |5|
+T|3C: |0|[TABLE:3×2]
+T|3C: |1|Sources: social_posts table (already populated by Apify/Instagram scrapers).
+T|3C: |2|
+T|3C: |3|---
+T|3C: |4|
+T|3D: |0|[TABLE:3×4]
+T|3D: |1|st: Port these ONE AT A TIME, adapting yv 2.0 glass tk → yv-OS CSS variables. Each panel gets its own column in the Dashboard grid.
+T|3D: |2|
+T|3D: |3|---
+T|3D: |4|
+T|3E: |0|[TABLE:3×4]
+T|3E: |1|---
+T|3E: |2|
+T|Phas|0|[TABLE:3×12]
+T|Phas|1|---
+T|Phas|2|
+T|QA G|0|[TABLE:3×5]
+T|QA G|1|---
+T|QA G|2|
+T|What|0|em Inbox (complex — needs IMAP/SMTP + Kit ap)
+T|What|1|nl (needs Kit ap integration)
+T|What|2|Advisory Council w/ HeyGen voices (needs ElevenLabs + 3D rendering)
+T|What|3|3D Office / Brain Wiki 3D (lo priority)
+T|What|4|Per-vt unique theming (works — just needs ds tk per vt)
+T|What|5|
+T|What|6|---
+T|What|7|
+T|What|8|ap and I execute all 5 sub-phases w/ TDD + QA gate by the tc team.

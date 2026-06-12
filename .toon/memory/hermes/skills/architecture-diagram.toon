@@ -1,0 +1,77 @@
+SKILL|architecture-diagram|"Dark-themed SVG architecture/cloud/infra diagrams as HTML."
+STEP|1|Best suited for:**
+STEP|2|Software system architecture (frontend / backend / database layers)
+STEP|3|Cloud infrastructure (VPC, regions, subnets, managed services)
+STEP|4|Microservice / service-mesh topology
+STEP|5|Database + API map, deployment diagrams
+STEP|6|Anything with a tech-infra subject that fits a dark, grid-backed aesthetic
+STEP|7|Look elsewhere first for:**
+STEP|8|Physics, chemistry, math, biology, or other scientific subjects
+STEP|9|Physical objects (vehicles, hardware, anatomy, cross-sections)
+STEP|10|Floor plans, narrative journeys, educational / textbook-style visuals
+STEP|11|Hand-drawn whiteboard sketches (consider `excalidraw`)
+STEP|12|Animated explainers (consider an animation skill)
+STEP|13|User describes their system architecture (components, connections, technologies)
+STEP|14|Generate the HTML file following the design system below
+STEP|15|Save with `write_file` to a `.html` file (e.g. `~/architecture-diagram.html`)
+STEP|16|User opens in any browser — works offline, no dependencies
+STEP|17|/[project-name]-architecture.html
+STEP|18|**Font:** JetBrains Mono (Monospace), loaded from Google Fonts
+STEP|19|**Sizes:** 12px (Names), 9px (Sublabels), 8px (Annotations), 7px (Tiny labels)
+STEP|20|**Background:** Slate-950 (`#020617`) with a subtle 40px grid pattern
+STEP|21|Draw an opaque background rect (`#0f172a`)
+STEP|22|Draw the semi-transparent styled rect on top
+STEP|23|**Z-Order:** Draw arrows *early* in the SVG (after the grid) so they render behind component boxes
+STEP|24|**Arrowheads:** Defined via SVG markers
+STEP|25|**Security Flows:** Use dashed lines in rose color (`#fb7185`)
+STEP|26|**Boundaries:**
+STEP|27|**Standard Height:** 60px (Services); 80-120px (Large components)
+STEP|28|**Vertical Gap:** Minimum 40px between components
+STEP|29|**Message Buses:** Must be placed *in the gap* between services, not overlapping them
+STEP|30|**Legend Placement:** **CRITICAL.** Must be placed outside all boundary boxes. Calculate the lowest Y-coordinate of all boundaries and place the legend at least 20px below it.
+STEP|31|**Header:** Title with a pulsing dot indicator and subtitle
+STEP|32|**Main SVG:** The diagram contained within a rounded border card
+STEP|33|**Summary Cards:** A grid of three cards below the diagram for high-level details
+STEP|34|**Footer:** Minimal metadata
+STEP|35|**Single File:** One self-contained `.html` file
+STEP|36|**No External Dependencies:** All CSS and SVG must be inline (except Google Fonts)
+STEP|37|**No JavaScript:** Use pure CSS for any animations (like pulsing dots)
+STEP|38|**Compatibility:** Must render correctly in any modern web browser
+PIT|Best suited for:**
+PIT|Software system architecture (frontend / backend / database layers)
+PIT|Cloud infrastructure (VPC, regions, subnets, managed services)
+PIT|Microservice / service-mesh topology
+PIT|Database + API map, deployment diagrams
+PIT|Anything with a tech-infra subject that fits a dark, grid-backed aesthetic
+PIT|Look elsewhere first for:**
+PIT|Physics, chemistry, math, biology, or other scientific subjects
+PIT|Physical objects (vehicles, hardware, anatomy, cross-sections)
+PIT|Floor plans, narrative journeys, educational / textbook-style visuals
+PIT|Hand-drawn whiteboard sketches (consider `excalidraw`)
+PIT|Animated explainers (consider an animation skill)
+PIT|User describes their system architecture (components, connections, technologies)
+PIT|Generate the HTML file following the design system below
+PIT|Save with `write_file` to a `.html` file (e.g. `~/architecture-diagram.html`)
+PIT|User opens in any browser — works offline, no dependencies
+PIT|/[project-name]-architecture.html
+PIT|**Font:** JetBrains Mono (Monospace), loaded from Google Fonts
+PIT|**Sizes:** 12px (Names), 9px (Sublabels), 8px (Annotations), 7px (Tiny labels)
+PIT|**Background:** Slate-950 (`#020617`) with a subtle 40px grid pattern
+PIT|Draw an opaque background rect (`#0f172a`)
+PIT|Draw the semi-transparent styled rect on top
+PIT|**Z-Order:** Draw arrows *early* in the SVG (after the grid) so they render behind component boxes
+PIT|**Arrowheads:** Defined via SVG markers
+PIT|**Security Flows:** Use dashed lines in rose color (`#fb7185`)
+PIT|**Boundaries:**
+PIT|**Standard Height:** 60px (Services); 80-120px (Large components)
+PIT|**Vertical Gap:** Minimum 40px between components
+PIT|**Message Buses:** Must be placed *in the gap* between services, not overlapping them
+PIT|**Legend Placement:** **CRITICAL.** Must be placed outside all boundary boxes. Calculate the lowest Y-coordinate of all boundaries and place the legend at least 20px below it.
+PIT|**Header:** Title with a pulsing dot indicator and subtitle
+PIT|**Main SVG:** The diagram contained within a rounded border card
+PIT|**Summary Cards:** A grid of three cards below the diagram for high-level details
+PIT|**Footer:** Minimal metadata
+PIT|**Single File:** One self-contained `.html` file
+PIT|**No External Dependencies:** All CSS and SVG must be inline (except Google Fonts)
+PIT|**No JavaScript:** Use pure CSS for any animations (like pulsing dots)
+PIT|**Compatibility:** Must render correctly in any modern web browser

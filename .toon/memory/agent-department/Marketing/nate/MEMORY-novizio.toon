@@ -1,0 +1,23 @@
+#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/MEMORY-novizio.md savings=12%
+M|Nate|tx|> Load alongside MEMORY.md when active vt is nz.
+M|Nate|tx|> nz-specific context only — universal rules live in MEMORY.md.
+M|Vent|- **|DTC fashion e-commerce (B2C)
+M|Vent|- **|rv from new cs per month
+M|Vent|- **|repeat purchase rate > 30% within 90 days of first order
+M|Novi|tx|```
+M|Novi|tx|Discovery (sl/Paid) → Website → pd Page → Cart → Purchase → Repeat
+M|Novi|tx|```
+M|Novi|tx|\| Stage \| Benchmark \| Drop-off to investigate \|
+M|Novi|tx|\|-------\|-----------\|------------------------\|
+M|Novi|tx|\| Website → pd page \| > 60% \| < 45% \|
+M|Novi|tx|\| pd page → Cart \| > 8% \| < 4% \|
+M|Novi|tx|\| Cart → Purchase \| > 65% \| < 50% \|
+M|Novi|tx|\| Purchase → Repeat (90d) \| > 30% \| < 20% \|
+M|Novi|1. *|effort ratio; compound over time
+M|Novi|tx|2. **em capture w/ lead magnet** — style quiz, outfit guide; nz audience responds to taste-validation mechanics
+M|Novi|tx|3. **Referral program** — "Give a friend 15%, get 15%" structure works for fashion (sl proof + reciprocity)
+M|Novi|tx|4. **Post-purchase sequence** — 3-em sequence; day 1 confirm, day 7 style tips, day 14 related pd
+M|Seas|- De|2× baseline opportunity; plan experiments in October, execute in November
+M|Seas|- Ja|acquisition slows; focus on retention and LTV experiments
+M|Grow|> Po|[date] — hypothesis — result — reusable in.
+M|Neve|> Ea|[date] — nz-specific growth er — rule.

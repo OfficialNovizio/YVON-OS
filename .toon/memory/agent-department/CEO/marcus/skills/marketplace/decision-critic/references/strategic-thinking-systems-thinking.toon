@@ -1,0 +1,54 @@
+#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/strategic-thinking-systems-thinking.md savings=7%
+M||tx|---
+M||sour|wiki/concepts/st Thinking/Systems Thinking.md
+M||crea|2026-04-11
+M||revi|2026-07-11
+M||tx|---
+M|Prin|tx|Understand behavior by examining the whole sy, not isolated parts. sy behavior emerges from the interactions btw cp, not from the cp themselves.
+M|Core|tx|\| Concept \| Definition \| Example \|
+M|Core|tx|\|---------\|-----------\|---------\|
+M|Core|tx|\| Feedback loops \| Output feeds back as input, amplifying or dampening \| Team velocity drops, so management adds process, which drops velocity further \|
+M|Core|tx|\| Emergence \| sy behavior not predictable from individual parts \| Microservices that each work fine but cr cascading failures together \|
+M|Core|tx|\| Delays \| Effects lag behind causes \| tc debt accrues silently, then explodes during a ct feature push \|
+M|Core|tx|\| Leverage points \| Small changes w/ outsized impact \| Fixing a shared library bug vs patching each consumer \|
+M|Core|tx|\| Mental md \| Assumptions that shape how we interpret the sy \| "More engineers = faster delivery" (ignoring Brooks's Law) \|
+M|Deci|tx|Use this md during **Challenge** (Steps 5-6) to identify second-order effects and feedback loops.
+M|Veri|When|
+M|Veri|tx|1. What feedback loops does this decision cr or break?
+M|Veri|tx|2. What are the second-order effects? Third-order?
+M|Veri|tx|3. Where are the delays btw action and consequence?
+M|Veri|tx|4. What leverage points exist? Are we acting on them or on symptoms?
+M|Veri|tx|5. What mental md are we assuming that might be wrong?
+M|Red |tx|\| Signal \| Risk \|
+M|Red |tx|\|--------\|------\|
+M|Red |tx|\| "This only affects cp X" \| Ignoring sy interconnections \|
+M|Red |tx|\| "We'll see results immediately" \| Ignoring delays in the sy \|
+M|Red |tx|\| "More resources will fix it" \| Linear thinking in a nonlinear sy \|
+M|Red |tx|\| "We fixed the symptom" \| Root cause unaddressed, will resurface \|
+M|Red || Op|metric becomes the target, not the goal \|
+M|Seco|For |
+M|Seco|tx|```
+M|Seco|Deci|[proposed action]
+M|Seco|-> F|[immediate, intended effect]
+M|Seco|-> S|[downstream consequence]
+M|Seco|-> T|[further ripple effect]
+M|Seco|tx|```
+M|Cont|it|"What if this fix creates a worse problem elsewhere in the sy?"
+M|Cont|it|"What feedback loop are we accidentally creating?"
+M|Cont|it|"Are we treating the symptom or the cause?"
+M|Cont|it|"What will this look like in 6 months when delays manifest?"
+M|Fail|it|Fixing a symptom while the root cause generates new symptoms
+M|Fail|it|Creating reinforcing feedback loops that accelerate problems
+M|Fail|it|Ignoring delays and declaring sc before consequences arrive
+M|Fail|it|Optimizing a subsystem at the expense of the whole sy
+M|Fail|it|Missing leverage points and applying effort where impact is lowest
+M|Prac|Befo|
+M|Prac|it|[ ] sy boundaries defined (what is inside/outside scope)
+M|Prac|it|[ ] Feedback loops identified (reinforcing and balancing)
+M|Prac|it|[ ] Second-order effects traced for at least 2 levels
+M|Prac|it|[ ] Delays btw action and effect estimated
+M|Prac|it|[ ] Leverage points identified and targeted
+M|Prac|it|[ ] Mental md assumptions stated explicitly
+M|Rela|- Ga|complex systems evolve from simple ones
+M|Rela|- Ch|understand the sy before changing it
+M|Rela|- Su|examine the full sy, not just visible outputs

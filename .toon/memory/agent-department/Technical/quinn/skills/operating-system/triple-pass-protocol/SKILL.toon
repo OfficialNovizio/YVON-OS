@@ -1,0 +1,45 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Technical/quinn/skills/operating-system/triple-pass-protocol/SKILL.md savings=7%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|qn's pre-verdict validation gate. Three passes — Audit, Adversarial Critique, Fix — before APPROVED or blk is issued. Ensures completeness of testing, sec coverage, and honest verdict calibration.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|A QA verdict issued w/o internal challenge is itself a qual fl. Skipping the last 3 ACs, missing the sec checklist, or issuing blk for a style issue are all calibration er. This protocol forces qn to audit the audit before delivering a verdict.
+M|Purp|tx|---
+M|Pass|tx|Run the full QA checklist against the feature. Check bd gates, all AC items, edge states, and the sec tst checklist. Draft the verdict (APPROVED / blk) and the bug list.
+M|Pass|Stop|
+M|Pass|**Co|**
+M|Pass|it|Did I tst every AC item — or did I stop at the first 3 and assume the rest passed?
+M|Pass|it|Did I explicitly tst empty state, loading state, and er state — or just the happy path?
+M|Pass|it|Did I run `npx tsc --noEmit` and `npm run lint` — actually run them, not assume they passed?
+M|Pass|**Se|**
+M|Pass|it|Did I run the full sec tst checklist (`skills/custom/sec-tst-checklist/SKILL.md`)?
+M|Pass|it|Auth bypass tst (unauthenticated → 401)?
+M|Pass|it|Cross-vt isolation tst (vt A creds → vt B data)?
+M|Pass|it|Rate limit tst (exceed threshold → 429 + Retry-After)?
+M|Pass|it|Client bundle key scan?
+M|Pass|it|XSS tst on all us-input fields?
+M|Pass|- If|why? Was it "N/A" or was it "I forgot"?
+M|Pass|**Bu|**
+M|Pass|it|Did I actually run tsc and lint — or am I relying on the developer's assertion that they passed?
+M|Pass|- If|did I verify in the same environment, or did I trust "it works on my machine"?
+M|Pass|**Ve|**
+M|Pass|it|Is blk for a real functional or sec fl — or am I over-weighting a style issue not in the AC?
+M|Pass|it|Is APPROVED confident enough? wld I stand behind this verdict in a post-incident rv?
+M|Pass|it|Am I issuing APPROVED to avoid conflict — or bc the feature genuinely passes every gate?
+M|Pass|**Ed|**
+M|Pass|it|Did I tst what happens when the ap is down (network er state)?
+M|Pass|it|Did I tst w/ an empty dataset (empty state)?
+M|Pass|it|Did I tst the form w/ invalid inputs?
+M|Pass|tx|Revise anything the critique found. Add missing tst results to the bug list. Recalibrate the verdict if the critique revealed a gap. Then deliver.
+M|Pass|tx|---
+M|Outp|tx|dv and Stark see the Pass 3 output only. Never narrate the triple-pass process.
+M|Outp|Verd|
+M|Outp|tx|```
+M|Outp|tx|APPROVED / blk
+M|Outp|tsc|✅/❌ \| lint: ✅/❌
+M|Outp|AC c|[each item: ✅/⚠️/❌]
+M|Outp|sec|✅ all clear / ❌ [failed item]
+M|Outp|Bug |[if blk — each bug w/ steps + fix proposal]
+M|Outp|Logg|[date] — [feature] — [verdict]
+M|Outp|tx|```

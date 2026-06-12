@@ -1,0 +1,70 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/social-content/references/platform-limits.md savings=-21%
+M|Plat|tx|Quick reference for hashtag limits, character counts, and visible text thresholds on each major sl platform.
+M|Plat|tx|---
+M|Inst|tx|\| Element \| Limit \|
+M|Inst|tx|\|---------\|-------\|
+M|Inst|tx|\| Max hashtags \| 5 (official limit) \|
+M|Inst|tx|\| Recommended hashtags \| 3 – 5 \|
+M|Inst|tx|\| Max ct chars \| 2,200 \|
+M|Inst|tx|\| Visible before "more" \| ~125 chars \|
+M|Inst|tx|---
+M|Face|tx|\| Element \| Limit \|
+M|Face|tx|\|---------\|-------\|
+M|Face|tx|\| Max hashtags \| No official limit \|
+M|Face|tx|\| Recommended hashtags \| 1 – 2 \|
+M|Face|tx|\| Max post chars \| 63,206 \|
+M|Face|tx|\| Ideal for engagement \| 40 – 80 chars \|
+M|Face|tx|---
+M|TikT|tx|\| Element \| Limit \|
+M|TikT|tx|\|---------\|-------\|
+M|TikT|tx|\| Max hashtags \| 5 (since August 2025) \|
+M|TikT|tx|\| Recommended hashtags \| 3 – 5 \|
+M|TikT|tx|\| Max ct chars \| 4,000 \|
+M|TikT|tx|\| Visible before "more" \| ~150 chars \|
+M|TikT|tx|---
+M|Link|tx|\| Element \| Limit \|
+M|Link|tx|\|---------\|-------\|
+M|Link|tx|\| Max hashtags \| No official limit \|
+M|Link|tx|\| Recommended hashtags \| 3 – 5 \|
+M|Link|tx|\| Max post chars \| 3,000 \|
+M|Link|tx|\| Visible before "more" \| ~210 chars \|
+M|Link|tx|---
+M|Twit|tx|\| Element \| Limit \|
+M|Twit|tx|\|---------\|-------\|
+M|Twit|tx|\| Max hashtags \| No official limit \|
+M|Twit|tx|\| Recommended hashtags \| 1 – 2 \|
+M|Twit|tx|\| Max tweet chars \| 280 (standard) / 25,000 (Premium+) \|
+M|Twit|tx|\| Visible before "more" \| Full tweet (280 standard) \|
+M|Twit|tx|---
+M|YouT|tx|\| Element \| Limit \|
+M|YouT|tx|\|---------\|-------\|
+M|YouT|tx|\| Max hashtags \| 15 (exceeding this causes YouTube to ignore ALL hashtags) \|
+M|YouT|tx|\| Recommended hashtags \| 3 – 5 \|
+M|YouT|| Ma|~70) \|
+M|YouT|tx|\| Max description chars \| 5,000 \|
+M|YouT|tx|\| Visible before "Show more" \| ~100 chars \|
+M|YouT|tx|> The first 3 hashtags in the description automatically appear above the title as clickable links. For Shorts, use 1 – 5 hashtags.
+M|YouT|tx|---
+M|Pint|tx|\| Element \| Limit \|
+M|Pint|tx|\|---------\|-------\|
+M|Pint|tx|\| Max hashtags \| 20 per pin \|
+M|Pint|tx|\| Recommended hashtags \| 2 – 5 \|
+M|Pint|tx|\| Max pin title chars \| 100 \|
+M|Pint|tx|\| Max description chars \| 500 \|
+M|Pint|tx|\| Visible before "More" \| ~50 chars (desktop) \|
+M|Pint|tx|> Pinterest has deprioritized hashtags. Focus on keywords as natural sentences within the description for better SEO instead of relying on hashtags.
+M|Pint|tx|---
+M|Thre|tx|\| Element \| Limit \|
+M|Thre|tx|\|---------\|-------\|
+M|Thre|tx|\| Max hashtags \| 1 per post (topic tag) \|
+M|Thre|tx|\| Recommended hashtags \| 1 \|
+M|Thre|tx|\| Max post chars \| 500 \|
+M|Thre|tx|\| Max w/ text attachment \| 10,500 (500 + 10,000 expandable) \|
+M|Thre|tx|\| Visible w/o expanding \| First ~1 – 2 lines \|
+M|Thre|tx|> Threads limits topic tags to one per post. The platform is not hashtag-driven — the algorithm prioritizes cn from followed accounts mixed w/ recommendations.
+M|Thre|tx|---
+M|Usag|it|**Hashtags count against character limits** on all platforms
+M|Usag|it|**Front-load your message** before the "more" truncation point
+M|Usag|it|On Instagram and TikTok, fewer hashtags now outperform hashtag-stuffing
+M|Usag|it|On LinkedIn, hashtags at the end of the post perform better than inline
+M|Usag|it|On Facebook, hashtags have minimal impact on reach — use sparingly

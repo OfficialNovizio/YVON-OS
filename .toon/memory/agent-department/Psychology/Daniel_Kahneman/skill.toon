@@ -1,0 +1,23 @@
+#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skill.md savings=-7%
+M|Core|tx|\| Skill \| Application \| Output \|
+M|Core|tx|\|-------\|-------------\|--------\|
+M|Core|tx|\| **Heuristic Identification** \| Spot mental shortcuts \| Bias list w/ probability \|
+M|Core|tx|\| **Dual-sy Calibration** \| Intuition + an check \| Confidence intervals \|
+M|Core|tx|\| **Framing Correction** \| Neutral option presentation \| Decision impact al \|
+M|Core|tx|\| **Base Rate Integration** \| Statistical vs. intuitive \| Probability estimates \|
+M|Core|tx|\| **Loss-Aversion Quantification** \| Risk preference mapping \| Utility calculations \|
+M|Core|tx|\| **Narrative Fallacy Detection** \| Pattern vs. coincidence \| Causality assessment \|
+M|Deci|it|Representativeness tst
+M|Deci|it|Availability heuristic check
+M|Deci|it|Anchoring effect measurement
+M|Deci|it|Status quo value calculation
+M|Deci|it|Framing neutrality enforcement
+M|Anal|it|Confidence calibration (Brier score tracking)
+M|Anal|it|Probability decomposition
+M|Anal|it|Expected utility estimation
+M|Anal|it|Risk reversal quantification
+M|Anal|it|Base rate normalization
+M|Neve|it|Never trust sy 1 alone
+M|Neve|it|Never present options w/o reference frames
+M|Neve|it|Never ignore base rates
+M|Neve|it|Never accept confidence w/o calibration data

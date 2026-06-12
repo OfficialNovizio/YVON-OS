@@ -1,0 +1,91 @@
+#MEM id=content-suggestion-engine source=/root/yvon/agent-department/Marketing/kai/skills/custom/content-suggestion-engine/SKILL.md savings=0%
+M|Cont|> Ow|ka (an) · Co-authors: nt (Growth), ln (br), kh (Bias rv)
+M|Cont|> La|2026-05-20
+M|Cont|> Ve|nz · hb
+M|Cont|tx|---
+M|What|tx|CSE is a self-learning cn scoring sy. It generates pitch recommendations,
+M|What|tx|scores them against live signals, tracks whether approved pitches overperform or
+M|What|tx|underperform benchmarks, and adjusts signal weights over time.
+M|What|The |
+M|What|tx|```
+M|What|tx|Signal → Score → Pitch → ap → Calendar → Post → Measure → Reflect → Re-weight
+M|What|tx|```
+M|What|tx|---
+M|Data|tx|\| Table \| Purpose \|
+M|Data|tx|\|-------\|---------\|
+M|Data|tx|\| `content_performance` \| One row per approved pitch. Tracks outcome, actual metrics, benchmark delta. \|
+M|Data|tx|\| `signal_reliability` \| Per-signal accuracy score. Updated after each measurement. \|
+M|Data|tx|\| `scoring_weight_history` \| Audit trail of E/R/G/B/T weight changes. \|
+M|Data|tx|\| `pitch_pass_reasons` \| Records why a pitch was dismissed. Penalises unreliable signals. \|
+M|Scor|tx|\| Code \| Dimension \| What it measures \|
+M|Scor|tx|\|------\|-----------\|-----------------\|
+M|Scor|tx|\| E \| Engagement Signal \| cr engagement delta, trending formats \|
+M|Scor|tx|\| R \| rv Correlation \| SEO search volume, buyer intent keywords \|
+M|Scor|tx|\| G \| Growth Fit \| Funnel stage alignment, audience match \|
+M|Scor|tx|\| B \| br Resonance \| Tone fit, br voice coherence \|
+M|Scor|tx|\| T \| Timing \| Platform tn window, urgency signals \|
+M|Scor|Defa|`E=0.25 · R=0.25 · G=0.20 · B=0.15 · T=0.15`
+M|Scor|tx|Weights are vt-specific and drift over time as CSE learns.
+M|Sign|tx|\| Signal \| Trigger condition \|
+M|Sign|tx|\|--------\|-----------------\|
+M|Sign|tx|\| `GAP_OPPORTUNITY` \| cr posts in a format we haven't tried — hi eng, lo our coverage \|
+M|Sign|tx|\| `PROVEN_FORMAT` \| Format we've done before w/ above-benchmark result \|
+M|Sign|tx|\| `SEO_WINDOW` \| Keyword search volume spike + lo SERP competition \|
+M|Sign|tx|\| `URGENCY_WINDOW` \| Trending topic w/ <72h relevance window \|
+M|Sign|tx|\| `FUNNEL_FIX` \| Funnel drop-off detected at a specific stage (ka identifies from GA4) \|
+M|Sign|tx|---
+M|API |tx|\| rt \| Method \| Purpose \|
+M|API |tx|\|-------\|--------\|---------\|
+M|API |tx|\| `/ap/cn-intelligence` \| POST \| gn a new pitch batch (5 pitches) \|
+M|API |tx|\| `/ap/cn-intelligence` \| GET \| Fetch current pitches + batch status \|
+M|API |tx|\| `/ap/cn-intelligence` \| PATCH \| up pitch status (approved / passed) \|
+M|API |tx|\| `/ap/cn-perf` \| POST \| Record a pitch going live (cr perf row) \|
+M|API |tx|\| `/ap/cn-perf` \| GET \| Fetch pnd (≥7d old, unmeasured) + stage \|
+M|API |tx|\| `/ap/cn-perf` \| GET `?pitchId=` \| Fetch single record for Studio outcome banner \|
+M|API || `/|link_calendar` \| Write `calendar_entry_id` back to perf row \|
+M|API || `/|measure` \| Submit actual metrics, compute outcome \|
+M|API |tx|\| `/ap/cn-perf/measure` \| POST \| Cron T+7 auto-measurement trigger \|
+M|API |tx|\| `/ap/signal-reliability` \| GET \| Fetch per-signal accuracy scores \|
+M|API |tx|\| `/ap/weight-proposal` \| GET \| Fetch pnd E/R/G/B/T weight change proposals \|
+M|API |tx|\| `/ap/weight-proposal` \| POST \| ap or reject a weight proposal \|
+M|API |tx|\| `/ap/cse-reflection` \| POST \| Cron weekly reflection — proposes weight changes \|
+M|API |tx|---
+M|Lear|tx|\| Stage \| Condition \| Scoring source \|
+M|Lear|tx|\|-------\|-----------\|----------------\|
+M|Lear|tx|\| 0 \| No measured posts \| Industry benchmarks (8K–12K follower cohort) \|
+M|Lear|| 1 |70% benchmarks + 30% own data \|
+M|Lear|tx|\| 2 \| 5+ measured posts \| Own historical data primary \|
+M|Lear|tx|---
+M|Clos|tx|1. **gn** — ka calls `/ap/cn-intelligence` POST → 5 pitches w/ CSE scores
+M|Clos|tx|2. **ap** — us clicks ap on a pitch card in mk → cn tab
+M|Clos|- PA|approved)
+M|Clos|it|POST `/ap/cn-perf` (creates perf row w/ pitch_id, signal_type, score_at_suggestion)
+M|Clos|it|Calendar modal opens pre-filled
+M|Clos|tx|3. **Schedule** — us saves the calendar entry
+M|Clos|it|POST `/ap/cn-calendar` → returns entry.id
+M|Clos|- PA|link_calendar` → writes calendar_entry_id back
+M|Clos|tx|4. **Post** — cn goes live. us marks status → `posted` in calendar
+M|Clos|5. *|
+M|Clos|it|Cron fires `/ap/cn-perf/measure` → auto-check for pnd
+M|Clos|it|OR us clicks "Measure X posts" pill in mk → cn tab → enters actual metrics
+M|Clos|it|PATCH `/ap/cn-perf` → computes outcome (overperformed / met / underperformed)
+M|Clos|it|Triggers `update_signal_reliability` RPC → adjusts signal accuracy
+M|Clos|tx|6. **Reflect** — Weekly cron fires `/ap/cse-reflection`
+M|Clos|it|Analyses recent outcomes vs signal tp
+M|Clos|it|If a signal tp has >70% accuracy → propose weight increase (weight-proposal table)
+M|Clos|it|us approves or rejects in the weight proposal panel on the pitch board
+M|Clos|tx|7. **Re-weight** — Approved weight changes take effect on nx pitch generation
+M|Clos|tx|---
+M|UI S|tx|\| Surface \| Location \| What it shows \|
+M|UI S|tx|\|---------\|----------\|---------------\|
+M|UI S|tx|\| Pitch cards \| mk → cn → pitch board \| CSE score, E/R/G/B/T bars, hook A/B, growth hypothesis \|
+M|UI S|tx|\| Stage banner \| mk → cn (top of pitch board) \| Stage 0/1/2 label, "Measure X posts" pill when pnd \|
+M|UI S|tx|\| Measure Now modal \| Triggered from stage banner \| Metric input (views/likes/comments/shares/saves/reach) \|
+M|UI S|tx|\| Weight proposal panel \| Below pitch board \| pnd E/R/G/B/T change proposals w/ ap/reject \|
+M|UI S|tx|\| Outcome banner \| Creative Studio (top, when opened from pitch) \| overperformed / met / underperformed + delta vs benchmark \|
+M|UI S|tx|---
+M|Kai |tx|1. Never gn pitches w/o checking `signal_reliability` first — penalised signals (accuracy < 0.40) get a 0.5× weight multiplier.
+M|Kai |tx|2. Always include `growthHypothesis` in `fullProposal` — it's the key field that connects to measurement.
+M|Kai |3. W|only propose if ≥3 data points exist for that signal tp. Fewer than 3 = noise.
+M|Kai |tx|4. Stage 0 → industry benchmarks only. Never invent own-history data.
+M|Kai |tx|5. After each `cse-reflection` run, save the proposed weight rationale to `scoring_weight_history` regardless of approval status.

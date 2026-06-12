@@ -1,0 +1,37 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/TOOLS.md savings=1%
+M|Memo|tx|ka never accesses sb directly for memory. All memory reads and writes go through `/ap/settings`.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=ka-analyst&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|**Wr|**
+M|Memo|tx|```
+M|Memo|tx|POST /ap/settings
+M|Memo|Body|{ tp: "memory", agentId: "ka-analyst", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|Memo|tx|```
+M|Memo|**Ke|**
+M|Memo|it|`current_status` — always overwrite
+M|Memo|it|`recent_tasks` — prepend + trim to 5
+M|Memo|it|`recent_errors` — append + trim to 5
+M|Memo|it|`recent_discussions` — append + trim to 5
+M|Memo|**Ke|**
+M|Memo|it|`last_data_pull_date` — after every successful data pull
+M|Memo|it|`baseline_*` — only at quarter start or Stark-explicit reset
+M|Memo|it|`tracked_anomalies` — add new anomalies; remove when resolved
+M|Memo|tx|---
+M|Anal|Kai |
+M|Anal|tx|```
+M|Anal|tx|GET /ap/instagram?ventureId=<activeVentureId>      — IG followers, engagement
+M|Anal|tx|GET /ap/youtube?ventureId=<activeVentureId>        — YT subscribers, views
+M|Anal|tx|GET /ap/linkedin?ventureId=<activeVentureId>       — LI followers, reach
+M|Anal|tx|GET /ap/an?ventureId=<activeVentureId>      — GA4 sn, bounce rate, top pages
+M|Anal|tx|```
+M|Anal|tx|---
+M|Vent|tx|```
+M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
+M|Vent|tx|```
+M|Vent|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| Google an ap (direct) \| Pull granular GA4 cohort and funnel reports \| Planned \|
+M|Futu|tx|\| Looker Studio MCP \| Produce formatted data visualizations \| Planned \|

@@ -1,0 +1,28 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/kai/skills/operating-system/triple-pass-protocol/SKILL.md savings=10%
+M||tx|---
+M||name|triple-pass-protocol
+M||desc|ka's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any al or rp is delivered. Stark never sees the process, only the final output.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Most an er happen in the interpretation step, not the data step. This protocol forces an adversarial self-rv before delivery — catching overconfident conclusions, misclassified signals, and missing context before they reach Stark.
+M|Purp|tx|---
+M|Pass|tx|Produce the al, rp, or in in full. Don't self-censor during generation — write the complete output inc all conclusions and recommendations.
+M|Pass|Stop|
+M|Pass|**Si|**
+M|Pass|it|Is this a signal or is it noise? Does it meet the 3+ consecutive periods tst?
+M|Pass|it|What is the base rate? Have I established the normal range before calling this an anomaly?
+M|Pass|it|Am I presenting a range and confidence level, or a point estimate?
+M|Pass|**Co|**
+M|Pass|it|Is this anomaly account-specific, or cld it be platform-wide? Did I WebSearch to check?
+M|Pass|it|Have I tier-matched cr? Is this a fair gap for our current follower count?
+M|Pass|it|Is the benchmark I'm using current (< 90 days old) or stale?
+M|Pass|**In|**
+M|Pass|it|Does the rp end w/ "so what?" — a specific actionable implication?
+M|Pass|it|Am I presenting data or interpretation? (ka provides interpretation, not just tables)
+M|Pass|- Ha|strong signal, early indicator, or insufficient data?
+M|Pass|**Ve|**
+M|Pass|it|Is this output scoped to the active vt? No cross-contamination?
+M|Pass|it|Have I loaded the correct vt baseline before interpreting the metric?
+M|Pass|tx|Address every issue found in Pass 2. Do not rationalize or skip. If the data doesn't support a conclusion, remove or downgrade the confidence level. If a benchmark is stale, flag it.
+M|Pass|tx|---
+M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

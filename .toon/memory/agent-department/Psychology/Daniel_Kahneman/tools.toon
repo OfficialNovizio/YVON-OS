@@ -1,0 +1,43 @@
+#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/tools.md savings=-7%
+M|1. D|tx|```
+M|1. D|tx|eval-sy --decision "launch" --system1 "intuition" --system2 "an"
+M|1. D|tx|```
+M|1. D|it|Compares intuitive vs. calculated decisions
+M|1. D|it|Outputs confidence interval
+M|1. D|it|Flags when heuristics override probabilities
+M|2. B|tx|```
+M|2. B|tx|detect-bias --context "mk cg" --domain "sl proof"
+M|2. B|tx|```
+M|2. B|it|Scans text for heuristic patterns
+M|2. B|it|Lists likely biases in action
+M|2. B|it|Suggests debiasing interventions
+M|3. F|tx|```
+M|3. F|tx|neutralize --option A --option B --outcome "purchase"
+M|3. F|tx|```
+M|3. F|it|Rewrites options to equal framing
+M|3. F|it|Removes emotional labels
+M|3. F|it|Focuses on absolute values
+M|4. P|tx|```
+M|4. P|tx|calculate --event "conversion" --base-rate "2%" --sample "1000"
+M|4. P|tx|```
+M|4. P|it|Converts intuitive estimates to base rates
+M|4. P|it|Calculates confidence intervals
+M|4. P|it|Flags overconfidence
+M|5. C|tx|```
+M|5. C|tx|track-calibration --date "2026-05-04" --actual "45%" --predicted "60%"
+M|5. C|tx|```
+M|5. C|it|Logs predictions vs. actual outcomes
+M|5. C|it|Updates confidence calibration scores
+M|5. C|it|Alerts when drift detected
+M|6. L|tx|```
+M|6. L|tx|measure-loss --option "keep current" --option "change"
+M|6. L|tx|```
+M|6. L|it|Quantifies loss aversion in decisions
+M|6. L|it|Calculates utility difference
+M|6. L|it|Recommends reframing
+M|Tool|All |
+M|Tool|it|sy 1/sy 2 split
+M|Tool|it|Base rate vs. intuitive estimate
+M|Tool|it|Confidence interval
+M|Tool|it|Bias probability score
+M|Tool|it|Recommendation

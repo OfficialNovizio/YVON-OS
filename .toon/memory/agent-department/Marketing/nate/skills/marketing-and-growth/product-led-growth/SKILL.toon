@@ -1,0 +1,83 @@
+#MEM id=product-led-growth source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/product-led-growth/SKILL.md savings=5%
+M||tx|---
+M||name|pd-led-growth
+M||desc|nt's PLG framework for hb (SaaS). Covers activation metrics, pd-qualified leads, aha moment identification, viral loops, bottom-up funnel ds, and self-serve expansion triggers.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|hb is a SaaS pd targeting working professionals. The highest-leverage growth md for this profile is PLG — where the pd itself drives acquisition, retention, and expansion. This skill prevents nt from defaulting to paid acquisition patterns (ro's domain) when the pd can do the work instead.
+M|Purp|**PL|** The pd is the primary growth channel. mk amplifies what the pd already demonstrates.
+M|Purp|tx|---
+M|When|it|Any growth experiment for hb
+M|When|it|When designing onboarding improvements
+M|When|it|When analyzing trial-to-paid conversion (before routing to ka for cohort data)
+M|When|it|When identifying viral or referral mechanics
+M|When|it|When evaluating whether a growth lever is pd-led or mk-led
+M|When|tx|---
+M|Laye|tx|The aha moment is the first time a us experiences the core value of hb. Until this is defined, no growth experiment is valid.
+M|Laye|**De|**
+M|Laye|tx|```
+M|Laye|pm|"What action, when done in the trial, predicts paid conversion?"
+M|Laye|Meth|Cross-reference w/ ka's cohort data — what do converting us do in Day 1–3 that non-converting us skip?
+M|Laye|Aha |
+M|Laye|tx|"us who [specific action] within [X days] convert at [Y%] vs [Z%] baseline"
+M|Laye|tx|```
+M|Laye|tx|Every onboarding experiment must move us toward the aha moment, not just through the setup flow.
+M|Laye|tx|A PQL is a trial us who has hit the aha moment and is ready for a conversion pm.
+M|Laye|**PQ|**
+M|Laye|tx|```
+M|Laye|tx|□ Has done core setup (defines "active" — not just "signed up")
+M|Laye|tx|□ Has used the pd on 2+ separate days within the trial window
+M|Laye|tx|□ Has reached [specific value milestone] within the pd
+M|Laye|tx|→ These us receive a targeted conversion nudge, not generic drip emails
+M|Laye|tx|```
+M|Laye|**Ro|** PQL list → ln for conversion em sequence, not generic drip.
+M|Laye|tx|Where does hb's pd cr natural sharing moments?
+M|Laye|tx|```
+M|Laye|Cand|
+M|Laye|tx|□ Shared outputs (reports, dashboards, summaries) — does sharing them expose the pd to new us?
+M|Laye|tx|□ Collaboration features — does inviting a colleague give both us more value?
+M|Laye|tx|□ Export artifacts — do exported items carry an attribution marker?
+M|Laye|tx|□ Public benchmarks — can us opt into public comparisons that drive discovery?
+M|Laye|tx|```
+M|Laye|**K-|**
+M|Laye|tx|```
+M|Laye|tx|K = Invites sent per us × Conversion rate of invitees
+M|Laye|tx|K > 1.0 = viral growth (rare)
+M|Laye|tx|K 0.3–0.5 = meaningful amplifier for paid acquisition
+M|Laye|tx|K < 0.1 = sharing mechanics are decorative, not functional
+M|Laye|tx|```
+M|Laye|tx|SaaS PLG converts individuals first, then expands to teams/orgs.
+M|Laye|tx|```
+M|Laye|Expa|
+M|Laye|tx|□ Single us inviting a second us from the same org domain
+M|Laye|tx|□ us hitting usage limits (positive constraint — triggers upgrade pm)
+M|Laye|tx|□ Power us behavior (daily active, hi feature usage) — candidate for team upsell pm
+M|Laye|tx|```
+M|Laye|tx|**nt rt expansion findings to fx for ARR impact modeling before recommending any pricing change.**
+M|Laye|tx|---
+M|PLG |Befo|
+M|PLG |tx|```
+M|PLG |EXPE|[name]
+M|PLG |LAYE|[Activation \| PQL \| Viral \| Expansion]
+M|PLG |HYPO|"If we [change X], [metric Y] will improve by [Z%] bc [mechanism]"
+M|PLG |AHA |[is this experiment moving us toward the aha moment? YES/NO]
+M|PLG |sc|[single binary metric — what does 'won' look like?]
+M|PLG |fl|[what does 'lost' look like? — name it before starting]
+M|PLG |SAMP|[minimum cohort size needed for significance — use n≥50 per variant]
+M|PLG |RISK|[what cld this break? — load pre-mortem skill]
+M|PLG |rt|[who executes: rj (pd change) / ln (cp change) / ro (paid amplification)]
+M|PLG |tx|```
+M|PLG |tx|---
+M|PLG |Befo|
+M|PLG |tx|```
+M|PLG |tx|1. Has the aha moment been validated w/ cohort data? → NO → do activation first
+M|PLG |tx|2. Is M1 retention ≥ 65%? → NO → do retention before acquisition
+M|PLG |tx|3. Is CAC currently sustainable? → NO → do PLG/viral before paid
+M|PLG |tx|4. Is the conversion path optimized? → NO → do CRO before buying more traffic
+M|PLG |tx|```
+M|PLG |tx|Failing any gate = PLG work before paid amplification. Document the gate result in the experiment proposal.
+M|PLG |tx|---
+M|Anti|it|Never run a paid acquisition experiment when activation rate is below 40% — pouring water into a leaky bucket
+M|Anti|it|Never define "activated" as "done signup" — activation = first exp of core value
+M|Anti|it|Never measure PLG sc on traffic metrics — measure on aha moment completion rate
+M|Anti|it|Never bd a viral loop w/o defining K-factor targets first

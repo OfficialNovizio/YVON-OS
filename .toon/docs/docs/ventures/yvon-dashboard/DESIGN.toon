@@ -1,0 +1,57 @@
+#DOC source=/root/yvon/docs/ventures/yvon-dashboard/DESIGN.md strip=60% toon=-7% net=60%
+# YVON Dashboard — Design System (v1)
+LONG-TERM. Canonical glass design system for the YVON BI dashboard.
+⚠️ These rules OVERRIDE any design content in agent MEMORY.md files for YVON dashboard work.
+Cross-venture shared patterns → docs/memory/design.md
+
+---
+
+## Background
+All screens use public/Background Image.jpg — light blue, no dark overlay ever.
+
+[CODE:tsx:7LOC]
+Hard rule: NO rgba overlay on top of this background. It kills the palette.
+
+---
+
+## Font
+SF Pro Display via @font-face in globals.css from /public/fonts/SFPRODISPLAY*.OTF.
+[CODE:css:1LOC]
+
+---
+
+## 4 Glass Container Variants
+
+Define as React.CSSProperties constants at the top of each component. Use all four per screen.
+
+[CODE:tsx:37LOC]
+## Glass Variant Usage
+
+[TABLE:4×4]
+HARD RULE: Light containers (V1, V4) → dark text. Dark containers (V2, V3) → light text. Never swap.
+
+---
+
+## Typography Scale
+
+[TABLE:3×9]
+Minimum: 12px for any readable text. 800 weight is the default throughout.
+
+---
+
+## NavBar
+.glass-nav CSS class — frosted white pill. All text inside: dark navy #0c2c52. Never text-white inside the nav.
+
+## Dark pill elements
+Ticker, TabStrip, dark modals: background: 'rgba(8,16,36,0.58)'
+
+## Component Rules
+Each list item: own glass card — no shared container for rows
+KPI metrics: individual V1 cards with 220×64 sparklines
+Lists that grow: maxHeight: 360–420px + overflowY: auto + scrollbarWidth: thin
+No drop shadows between stacked cards — remove 0 18px 50px from boxShadow
+
+---
+
+## Canonical Reference
+Copy exact G1–G4 + ink constants from app/screens/ceo-command-dashboard/_overview.tsx. That file is the source of truth for all glass implementation.

@@ -1,0 +1,64 @@
+#MEM id=production-pipeline source=/root/yvon/agent-department/Marketing/pixel/skills/custom/production-pipeline/SKILL.md savings=18%
+M||tx|---
+M||name|production-pipeline
+M||desc|>-
+M||YVON|gn plus QC plus Upscale plus Format plus Deliver. Batch management, platform export specs, and rejection handling.
+M||vers|1.0.0
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, yv]
+M||tx|---
+M|Prod|tx|px's 5-stage im production pipeline. Execute in order. Never skip a stage.
+M|Stag|**In|** Approved pm from at's pm Architecture
+M|Stag|**Pr|** Run generation w/ md-specific parameters. gn 4-8 variants per pm.
+M|Stag|**Ou|** Raw im set w/ seed metadata
+M|Stag|**Ba|**
+M|Stag|tx|```
+M|Stag|tx|\| Batch ID \| vt \| cg \| pm Count \| md \| Date \|
+M|Stag|tx|```
+M|Stag|**In|** Generated im set + at's 3 qual Criteria
+M|Stag|**Pr|** Evaluate each variant against at's qual bar
+M|Stag|**Ou|** Pass list (images approved) / Reject list (images + reason)
+M|Stag|**QC|**
+M|Stag|- Fa|no AI artifacts (blur, extra fingers, warped features)
+M|Stag|- Ba|matches Style Spec setting?
+M|Stag|- Co|aligns w/ br palette?
+M|Stag|- Co|as specified in pm?
+M|Stag|- No|nothing in "Avoid" list present?
+M|Stag|**If|** Flag to at w/ specific fl reasons. Do not proceed.
+M|Stag|**In|** QC-passed images at original resolution
+M|Stag|**Pr|** Apply AI upscaling to target resolution
+M|Stag|**Ou|** hi-resolution images (see Platform Specs below)
+M|Stag|**Ru|**
+M|Stag|it|Upscale before any other processing
+M|Stag|it|Check upscaled output at 100% to verify qual is acceptable
+M|Stag|- If|revert and try different upscale method
+M|Stag|**In|** Upscaled images
+M|Stag|**Pr|** Resize + compress per platform specs
+M|Stag|**Pl|**
+M|Stag|tx|\| Platform \| Format \| Dimensions \| Ratio \| Max Size \| Filename Pattern \|
+M|Stag|tx|\|----------\|--------\|------------\|-------\|----------\|-----------------\|
+M|Stag|| In|1 \| less than 30MB \| `{vt}_{cg}_{seq}_ig.jpg` \|
+M|Stag|| In|16 \| less than 30MB \| `{vt}_{cg}_{seq}_igr.jpg` \|
+M|Stag|| Li|1 \| less than 8MB \| `{vt}_{cg}_{seq}_li.jpg` \|
+M|Stag|| Ti|16 \| less than 287MB \| `{vt}_{cg}_{seq}_tt.jpg` \|
+M|Stag|| We|9 \| less than 500KB \| `{vt}_{cg}_{seq}_web.webp` \|
+M|Stag|| Pr|1 \| less than 1MB \| `{vt}_{cg}_{seq}_prod.webp` \|
+M|Stag|**In|** Formatted, named files
+M|Stag|**Pr|** Deliver assets to the destination (Opus for scheduling, ln for cp pairing, etc.)
+M|Stag|**Ou|** Delivery confirmation w/ file count and format summary
+M|Stag|**De|**
+M|Stag|tx|```
+M|Asse|tx|\| Format \| Count \| Status \|
+M|Asse|tx|\|--------\|-------\|--------\|
+M|Asse|**To|** [X] files
+M|Asse|**De|** [Where delivered]
+M|Asse|**Re|** [N] w/ reasons if any
+M|Asse|**Fe|** [pm architecture revision notes if qual was lo]
+M|Asse|tx|```
+M|Reje|When|
+M|Reje|tx|1. Log rejection reason w/ specific im reference
+M|Reje|2. C|pm issue (at's problem) vs md limitation (switch md) vs qual bar mismatch (clarify w/ at)
+M|Reje|3. I|at must revise pm architecture before nx generation
+M|Reje|4. T|if "hands" appears 3+ times, add hand-specific guidance to all future pm

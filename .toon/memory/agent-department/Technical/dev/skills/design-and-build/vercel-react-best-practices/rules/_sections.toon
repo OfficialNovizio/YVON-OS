@@ -1,0 +1,20 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/_sections.md savings=23%
+M|Sect|tx|This file defines all sections, their ordering, impact levels, and descriptions.
+M|Sect|tx|The section ID (in parentheses) is the filename prefix used to group rules.
+M|Sect|tx|---
+M|1. E|**Im|** ct
+M|1. E|**De|** Waterfalls are the #1 perf killer. Each sequential await adds full network latency. Eliminating them yields the largest gains.
+M|2. B|**Im|** ct
+M|2. B|**De|** Reducing initial bundle size improves Time to Interactive and Largest Contentful Paint.
+M|3. S|**Im|** hi
+M|3. S|**De|** Optimizing server-side rendering and data fetching eliminates server-side waterfalls and reduces rp times.
+M|4. C|**Im|** md-hi
+M|4. C|**De|** Automatic deduplication and efficient data fetching patterns reduce redundant network requests.
+M|5. R|**Im|** md
+M|5. R|**De|** Reducing unnecessary re-renders minimizes wasted computation and improves UI responsiveness.
+M|6. R|**Im|** md
+M|6. R|**De|** Optimizing the rendering process reduces the work the browser needs to do.
+M|7. J|**Im|** lo-md
+M|7. J|**De|** Micro-optimizations for hot paths can add up to meaningful improvements.
+M|8. A|**Im|** lo
+M|8. A|**De|** Advanced patterns for specific cases that require careful implementation.

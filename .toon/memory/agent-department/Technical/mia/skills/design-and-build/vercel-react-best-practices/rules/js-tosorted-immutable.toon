@@ -1,0 +1,44 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-tosorted-immutable.md savings=10%
+M||tx|---
+M||titl|Use toSorted() Instead of sort() for Immutability
+M||impa|md-hi
+M||impa|prevents mutation bugs in rc state
+M||tags|javascript, arrays, immutability, rc, state, mutation
+M||tx|---
+M|Use |tx|`.sort()` mutates the array in place, which can cause bugs w/ rc state and props. Use `.toSorted()` to cr a new sorted array w/o mutation.
+M|Use |**In|**
+M|Use |tx|```ts
+M|Use |func|{ us: us[] }) {
+M|Use |tx|// Mutates the us prop array!
+M|Use |tx|const sorted = useMemo(
+M|Use |tx|() => us.sort((a, b) => a.name.localeCompare(b.name)),
+M|Use |tx|[us]
+M|Use |tx|)
+M|Use |tx|return <div>{sorted.map(renderUser)}</div>
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Co|**
+M|Use |tx|```ts
+M|Use |func|{ us: us[] }) {
+M|Use |tx|// Creates new sorted array, original unchanged
+M|Use |tx|const sorted = useMemo(
+M|Use |tx|() => us.toSorted((a, b) => a.name.localeCompare(b.name)),
+M|Use |tx|[us]
+M|Use |tx|)
+M|Use |tx|return <div>{sorted.map(renderUser)}</div>
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Wh|**
+M|Use |tx|1. Props/state mutations break rc's immutability md - rc expects props and state to be treated as read-only
+M|Use |tx|2. Causes stale closure bugs - Mutating arrays inside closures (callbacks, effects) can lead to unexpected behavior
+M|Use |**Br|**
+M|Use |`.to|
+M|Use |tx|```ts
+M|Use |tx|// Fallback for older browsers
+M|Use |tx|const sorted = [...items].sort((a, b) => a.value - b.value)
+M|Use |tx|```
+M|Use |**Ot|**
+M|Use |it|`.toSorted()` - immutable sort
+M|Use |it|`.toReversed()` - immutable reverse
+M|Use |it|`.toSpliced()` - immutable splice
+M|Use |it|`.w/()` - immutable element replacement

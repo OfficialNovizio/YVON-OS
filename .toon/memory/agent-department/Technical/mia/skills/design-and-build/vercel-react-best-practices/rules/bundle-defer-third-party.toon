@@ -1,0 +1,40 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/bundle-defer-third-party.md savings=-2%
+M||tx|---
+M||titl|Defer Non-ct Third-Party Libraries
+M||impa|md
+M||impa|loads after hydration
+M||tags|bundle, third-party, an, defer
+M||tx|---
+M|Defe|tx|an, logging, and er tracking don't block us interaction. Load them after hydration.
+M|Defe|**In|**
+M|Defe|tx|```tsx
+M|Defe|tx|import { an } from '@vc/an/rc'
+M|Defe|tx|export default fn RootLayout({ children }) {
+M|Defe|tx|return (
+M|Defe|tx|<html>
+M|Defe|tx|<body>
+M|Defe|tx|{children}
+M|Defe|tx|<an />
+M|Defe|tx|</body>
+M|Defe|tx|</html>
+M|Defe|tx|)
+M|Defe|tx|}
+M|Defe|tx|```
+M|Defe|**Co|**
+M|Defe|tx|```tsx
+M|Defe|tx|import dynamic from 'nx/dynamic'
+M|Defe|tx|const an = dynamic(
+M|Defe|tx|() => import('@vc/an/rc').then(m => m.an),
+M|Defe|{ ss|false }
+M|Defe|tx|)
+M|Defe|tx|export default fn RootLayout({ children }) {
+M|Defe|tx|return (
+M|Defe|tx|<html>
+M|Defe|tx|<body>
+M|Defe|tx|{children}
+M|Defe|tx|<an />
+M|Defe|tx|</body>
+M|Defe|tx|</html>
+M|Defe|tx|)
+M|Defe|tx|}
+M|Defe|tx|```

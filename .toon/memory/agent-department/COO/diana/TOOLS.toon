@@ -1,0 +1,45 @@
+#MEM id=diana source=/root/yvon/agent-department/COO/diana/TOOLS.md savings=4%
+M|Memo|tx|dn never accesses sb directly. All memory reads and writes go through `/ap/settings`.
+M|Memo|**Re|**
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=dn-co&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|Also|
+M|Memo|tx|```
+M|Memo|tx|GET /ap/settings?tp=memory&agentId=ka-analyst&ventureId=<activeVentureId>
+M|Memo|tx|```
+M|Memo|tx|(Loads ka's last known metrics as baseline for ops rv.)
+M|Memo|**Wr|**
+M|Memo|tx|```
+M|Memo|tx|POST /ap/settings
+M|Memo|Body|{ tp: "memory", agentId: "dn-co", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|Memo|tx|```
+M|Memo|**Ke|**
+M|Memo|it|`current_status` — always overwrite
+M|Memo|it|`recent_tasks` — prepend + trim to 5
+M|Memo|it|`recent_errors` — append + trim to 5
+M|Memo|it|`recent_discussions` — append + trim to 5
+M|Memo|**Ke|**
+M|Memo|it|`current_quarter_okrs` — only at quarter start or mc revision
+M|Memo|it|`venture_kpi_snapshot` — whenever ka provides a fresh data set; include date
+M|Memo|it|`open_bottlenecks` — up whenever a blocker is added or resolved
+M|Memo|it|`resource_allocations` — up when team assignments change
+M|Memo|it|`last_ops_review_date` — up after every formal ops rv
+M|Memo|tx|---
+M|Vent|At s|
+M|Vent|tx|```
+M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
+M|Vent|tx|```
+M|Vent|Retu|`{ name, slug, igHandle, ytChannelId, liProfileUrl, ga4PropertyId, color }`
+M|Vent|tx|---
+M|Anal|Dian|
+M|Anal|tx|```
+M|Anal|tx|GET /ap/an?ventureId=<activeVentureId>     — GA4 sn, bounce rate, top pages
+M|Anal|tx|GET /ap/instagram?ventureId=<activeVentureId>     — IG follower count, engagement
+M|Anal|tx|GET /ap/youtube?ventureId=<activeVentureId>       — YT subscriber count, views
+M|Anal|tx|```
+M|Anal|tx|---
+M|Futu|tx|\| Tool \| Purpose \| Status \|
+M|Futu|tx|\|------\|---------\|--------\|
+M|Futu|tx|\| Notion MCP \| Write OKR doc and process SOPs \| Planned \|
+M|Futu|tx|\| Slack MCP \| Post weekly KPI digest to ops channel \| Planned \|

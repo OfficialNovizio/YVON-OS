@@ -1,0 +1,168 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/paid-ads/references/platform-setup-checklists.md savings=3%
+M|Plat|tx|Complete setup checklists for major ad platforms.
+M|Cont|it|Google ad Setup (Account Foundation, Conversion Tracking, an Integration, Audience Setup, cg Readiness, Ad Extensions, br Protection)
+M|Cont|it|Meta ad Setup (Business Manager Foundation, px & Tracking, Domain & Aggregated Events, Audience Setup, Catalog, Creative Assets, Compliance)
+M|Cont|it|LinkedIn ad Setup (cg Manager Foundation, in Tag & Tracking, Audience Setup, Lead Gen Forms, Document ad, Creative Assets, Budget Considerations)
+M|Cont|it|Twitter/X ad Setup (Account Foundation, Tracking, Audience Setup, Creative)
+M|Cont|it|TikTok ad Setup (Account Foundation, px & Tracking, Audience Setup, Creative)
+M|Cont|it|Universal Pre-Launch Checklist
+M|Acco|it|[ ] Google ad account created and verified
+M|Acco|it|[ ] Billing information added
+M|Acco|it|[ ] Time zone and currency set correctly
+M|Acco|it|[ ] Account access granted to team members
+M|Conv|it|[ ] Google tag installed on all pages
+M|Conv|it|[ ] Conversion actions created (purchase, lead, signup)
+M|Conv|it|[ ] Conversion values assigned (if applicable)
+M|Conv|it|[ ] Enhanced conversions enabled
+M|Conv|it|[ ] tst conversions firing correctly
+M|Conv|it|[ ] Import conversions from GA4 (optional)
+M|Anal|it|[ ] Google an 4 linked
+M|Anal|it|[ ] Auto-tagging enabled
+M|Anal|it|[ ] GA4 audiences available in Google ad
+M|Anal|it|[ ] Cross-domain tracking set up (if multiple domains)
+M|Audi|it|[ ] Remarketing tag verified
+M|Audi|- [ |
+M|Audi|it|All visitors (180 days)
+M|Audi|it|Key page visitors (pricing, demo, features)
+M|Audi|it|Converters (for exclusion)
+M|Audi|it|[ ] cs match lists uploaded
+M|Audi|it|[ ] Similar audiences enabled
+M|Camp|- [ |
+M|Camp|it|Universal negatives (free, jobs, careers, reviews, complaints)
+M|Camp|it|cr negatives (if needed)
+M|Camp|it|Irrelevant industry terms
+M|Camp|it|[ ] Location targeting set (include/exclude)
+M|Camp|it|[ ] Language targeting set
+M|Camp|it|[ ] Ad schedule configured (if B2B, business hours)
+M|Camp|it|[ ] Device bid adjustments considered
+M|Ad E|it|[ ] Sitelinks (4-6 relevant pages)
+M|Ad E|it|[ ] Callouts (key benefits, offers)
+M|Ad E|it|[ ] Structured snippets (features, tp, services)
+M|Ad E|it|[ ] Call extension (if phone leads valuable)
+M|Ad E|it|[ ] Lead form extension (if using)
+M|Ad E|it|[ ] Price extensions (if applicable)
+M|Ad E|it|[ ] im extensions (where available)
+M|Bran|it|[ ] br cg running (protect branded terms)
+M|Bran|it|[ ] cr cg considered
+M|Bran|it|[ ] br terms in negative lists for non-br cg
+M|Bran|tx|---
+M|Busi|it|[ ] Business Manager created
+M|Busi|it|[ ] Business verified (if running certain ad tp)
+M|Busi|it|[ ] Ad account created within Business Manager
+M|Busi|it|[ ] Payment method added
+M|Busi|it|[ ] Team access configured w/ proper roles
+M|Pixe|it|[ ] Meta px installed on all pages
+M|Pixe|- [ |
+M|Pixe|it|PageView (automatic)
+M|Pixe|it|ViewContent (pd/feature pages)
+M|Pixe|it|Lead (form submissions)
+M|Pixe|it|Purchase (conversions)
+M|Pixe|it|AddToCart (if e-commerce)
+M|Pixe|it|InitiateCheckout (if e-commerce)
+M|Pixe|it|[ ] Conversions ap (CAPI) set up for server-side tracking
+M|Pixe|it|[ ] Event Match qual score > 6
+M|Pixe|it|[ ] tst events in Events Manager
+M|Doma|it|[ ] Domain verified in Business Manager
+M|Doma|it|[ ] Aggregated Event Measurement configured
+M|Doma|it|[ ] Top 8 events prioritized in order of importance
+M|Doma|it|[ ] Web events prioritized for iOS 14+ tracking
+M|Audi|- [ |
+M|Audi|it|Website visitors (all, 30/60/90/180 days)
+M|Audi|it|Key page visitors
+M|Audi|it|vd viewers (25%, 50%, 75%, 95%)
+M|Audi|it|Page/Instagram engagers
+M|Audi|it|cs list uploaded
+M|Audi|it|[ ] Lookalike audiences created (1%, 1-3%)
+M|Audi|it|[ ] Saved audiences for common targeting
+M|Cata|it|[ ] pd catalog connected
+M|Cata|it|[ ] pd feed updating correctly
+M|Cata|it|[ ] Catalog sales cg enabled
+M|Cata|it|[ ] Dynamic pd ad configured
+M|Crea|- [ |
+M|Crea|- Fe|1080x1080 (1:1)
+M|Crea|- St|1080x1920 (9:16)
+M|Crea|- La|1200x628 (1.91:1)
+M|Crea|it|[ ] Videos in correct formats
+M|Crea|it|[ ] Ad cp variations ready
+M|Crea|it|[ ] UTM parameters in all destination URLs
+M|Comp|it|[ ] Special Ad Categories declared (if housing, credit, employment, politics)
+M|Comp|it|[ ] Landing page complies w/ Meta policies
+M|Comp|it|[ ] No prohibited cn in ad
+M|Comp|tx|---
+M|Camp|it|[ ] cg Manager account created
+M|Camp|it|[ ] Company Page connected
+M|Camp|it|[ ] Billing information added
+M|Camp|it|[ ] Team access configured
+M|Insi|it|[ ] LinkedIn in Tag installed on all pages
+M|Insi|it|[ ] Tag verified and firing
+M|Insi|- [ |
+M|Insi|it|URL-based conversions
+M|Insi|it|Event-specific conversions
+M|Insi|it|[ ] Conversion values set (if applicable)
+M|Audi|- [ |
+M|Audi|it|Website retargeting audiences
+M|Audi|it|Company list uploaded (for ABM)
+M|Audi|it|Contact list uploaded
+M|Audi|it|[ ] Lookalike audiences created
+M|Audi|it|[ ] Saved audiences for common targeting
+M|Lead|it|[ ] Lead gen form templates created
+M|Lead|it|[ ] Form fields selected (minimize for conversion)
+M|Lead|it|[ ] Privacy policy URL added
+M|Lead|it|[ ] Thank you message configured
+M|Lead|it|[ ] CRM integration set up (or CSV export process)
+M|Docu|it|[ ] Documents uploaded (PDF, PowerPoint)
+M|Docu|it|[ ] Gating configured (full gate or preview)
+M|Docu|it|[ ] Lead gen form connected
+M|Crea|- [ |1200x627 (1.91:1) or 1080x1080 (1:1)
+M|Crea|it|[ ] Carousel images ready
+M|Crea|it|[ ] vd specs met (if using)
+M|Crea|- [ |
+M|Crea|- In|600 max, 150 recommended
+M|Crea|- He|200 max, 70 recommended
+M|Budg|it|[ ] Budget realistic for LinkedIn CPCs ($8-15+ typical)
+M|Budg|it|[ ] Audience size validated (50K+ recommended)
+M|Budg|it|[ ] Daily vs. lifetime budget decided
+M|Budg|it|[ ] Bid st selected
+M|Budg|tx|---
+M|Acco|it|[ ] ad account created
+M|Acco|it|[ ] Payment method added
+M|Acco|it|[ ] Account verified (if required)
+M|Trac|it|[ ] Twitter px installed
+M|Trac|it|[ ] Conversion events created
+M|Trac|it|[ ] Website tag verified
+M|Audi|- [ |
+M|Audi|it|Website visitors
+M|Audi|it|cs lists
+M|Audi|it|[ ] Follower lookalikes identified
+M|Audi|it|[ ] Interest and keyword targets researched
+M|Crea|it|[ ] Tweet cp within 280 characters
+M|Crea|- [ |1200x675 (1.91:1) or 1200x1200 (1:1)
+M|Crea|it|[ ] vd specs met (if using)
+M|Crea|it|[ ] Cards configured (website, app, etc.)
+M|Crea|tx|---
+M|Acco|it|[ ] TikTok ad Manager account created
+M|Acco|it|[ ] Business verification done
+M|Acco|it|[ ] Payment method added
+M|Pixe|it|[ ] TikTok px installed
+M|Pixe|it|[ ] Events configured (ViewContent, Purchase, etc.)
+M|Pixe|it|[ ] Events ap set up (recommended)
+M|Audi|it|[ ] Custom audiences created
+M|Audi|it|[ ] Lookalike audiences created
+M|Audi|it|[ ] Interest categories identified
+M|Crea|- [ |16) ready
+M|Crea|it|[ ] Native-feeling cn (not too polished)
+M|Crea|it|[ ] First 3 seconds are compelling hooks
+M|Crea|it|[ ] Captions added (most watch w/o sound)
+M|Crea|it|[ ] Music/sounds selected (licensed if needed)
+M|Crea|tx|---
+M|Univ|Befo|
+M|Univ|it|[ ] Conversion tracking tested w/ real conversion
+M|Univ|it|[ ] Landing page loads fast (<3 sec)
+M|Univ|it|[ ] Landing page mobile-friendly
+M|Univ|it|[ ] UTM parameters working
+M|Univ|it|[ ] Budget set correctly (daily vs. lifetime)
+M|Univ|it|[ ] Start/end dates correct
+M|Univ|it|[ ] Targeting matches intended audience
+M|Univ|it|[ ] Ad creative approved
+M|Univ|it|[ ] Team notified of launch
+M|Univ|it|[ ] Reporting dashboard ready

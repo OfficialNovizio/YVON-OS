@@ -1,0 +1,91 @@
+#MEM id=decision-audit source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/custom/decision-audit/SKILL.md savings=8%
+M||tx|---
+M||name|decision-audit
+M||desc|Per-ag bias fl patterns for yv. Each ag has a distinct cognitive fl signature. Load when kh is auditing a specific ag's output to know where to look hardest.
+M||vers|1.0.0
+M||tx|---
+M|Purp|tx|Not all ag fail in the same way. ln's most common bias is not the same as fx's. This skill maps the characteristic cognitive fl pattern of each yv ag so kh looks in the right place first — w/o skipping the full 8-item checklist.
+M|Purp|**Ru|** Use this as a starting lens, not a replacement for the full bias checklist. Every bias on the checklist still runs. This skill tells kh which biases to weight more heavily for each ag.
+M|Purp|tx|---
+M|Agen|tx|---
+M|Lena|**Ch|** Availability bias + Survivorship bias
+M|Lena|**Wh|**
+M|Lena|it|"This format is trending" → tn data usually comes from accounts 10–50× larger than yv's vt. The available example is not representative of what works at this scale.
+M|Lena|- "T|the examples ln sees are the ones that worked.
+M|Lena|it|Loss aversion CTAs ("Don't miss out", "Last chance") applied when scarcity is not real — emotional lever activated on false premise.
+M|Lena|**Pr|**
+M|Lena|it|[ ] Is the tn evidence scale-matched to nz/hb's actual audience size?
+M|Lena|it|[ ] Is the sl proof cited (engagement rate, conversion) from a comparable account, not a 500K+ br?
+M|Lena|it|[ ] Is any loss aversion CTA anchored to a real scarcity condition?
+M|Lena|it|[ ] Is the lever selection based on what the br needs at this lifecycle stage, or what just performed well somewhere else?
+M|Lena|**Co|** Replace tn reference w/ a mechanism — not "this format is trending" but "this format activates [specific psychological lever] bc [mechanism]."
+M|Lena|tx|---
+M|Rio |**Ch|** Overconfidence + Anchoring
+M|Rio |**Wh|**
+M|Rio |it|ROAS projections stated as point estimates ("we'll hit 3.5× ROAS") w/o confidence intervals or base rate comparison.
+M|Rio |it|Anchoring on cr benchmark ROAS (often from brands w/ established audiences and optimized funnels) — sets a reference frame that is unrealistic for cold audience cg.
+M|Rio |it|"The cg failed" diagnosis that attributes fl to a single variable when multiple variables changed simultaneously — attribution overconfidence.
+M|Rio |**Pr|**
+M|Rio |it|[ ] Is the ROAS projection a range w/ a stated base rate, or a single number asserted as likely?
+M|Rio |it|[ ] Is the benchmark being used drawn from an account at yv's scale and funnel maturity?
+M|Rio |it|[ ] If diagnosing a cg fl — has ro isolated the variable, or are multiple changes confounded?
+M|Rio |it|[ ] Is audience size large enough for statistical confidence before calling a winning creative?
+M|Rio |**Co|** Replace point predictions w/ ranges: "ROAS target 2.5–3.5×, based on [comparable cg] at [comparable stage]."
+M|Rio |tx|---
+M|Nate|**Ch|** Planning fallacy + Overconfidence in ICE scores
+M|Nate|**Wh|**
+M|Nate|it|Experiment timelines of "14 days" stated w/o acknowledging that 14 days may produce insufficient sample at yv's current traffic volume.
+M|Nate|it|ICE scores presented as numbers w/o stating the assumptions behind each dimension — Impact 8 means nothing w/o knowing what it assumes.
+M|Nate|it|"This worked for [hi-growth SaaS]" → reference company is at 100× yv's scale. Mechanism may not transfer.
+M|Nate|**Pr|**
+M|Nate|it|[ ] Is the 14-day read window feasible at current traffic volume? What sample size is achievable?
+M|Nate|it|[ ] Does each ICE dimension have a named assumption? If Impact = 8, what does that assume?
+M|Nate|it|[ ] Is the benchmark being referenced from a comparable-stage company, not a scaled-up sc story?
+M|Nate|it|[ ] Is the experiment testing one variable — or are multiple changes confounded?
+M|Nate|**Co|** Force assumption naming: "Impact 8 assumes [X]. If [X] is wrong, score drops to [N]."
+M|Nate|tx|---
+M|Feli|**Ch|** Overconfidence in projections + Sunk cost
+M|Feli|**Wh|**
+M|Feli|it|rv forecasts built on best-case scenario inputs w/o a base-case or worst-case range.
+M|Feli|it|"We've already spent X on this channel" used as a reason to continue spend — sunk cost framing.
+M|Feli|it|Runway calculations that assume current burn rate is fixed when it is actually discretionary.
+M|Feli|it|LTV projections that md linear growth w/o acknowledging early cohort data is insufficient for long-term extrapolation.
+M|Feli|**Pr|**
+M|Feli|it|[ ] Are projections presented as ranges (base/worst/best) or as single-point forecasts?
+M|Feli|it|[ ] Is any recommendation influenced by money already spent rather than future expected value?
+M|Feli|it|[ ] Does the runway md show sensitivity to burn rate changes — or is burn treated as fixed?
+M|Feli|it|[ ] Is the LTV projection based on enough cohort data to be statistically meaningful?
+M|Feli|**Co|** Three-scenario modeling: "Base case [X], worst case [Y], best case [Z]. Decision holds under [base/worst]."
+M|Feli|tx|---
+M|Marc|**Ch|** Narrative fallacy + Confirmation bias
+M|Marc|**Wh|**
+M|Marc|it|st brief constructs a compelling story connecting a tn → in → st move. The story feels coherent, but coherence is not causality. The data may only support one part of the narrative.
+M|Marc|it|Evidence selected to support the st direction already decided — confirmation bias in which data gets cited.
+M|Marc|it|"The mk is moving toward X" stated as fact when it is an interpretation w/ genuine uncertainty.
+M|Marc|**Pr|**
+M|Marc|it|[ ] Is the st narrative supported by data at each logical step, or does the data only support the conclusion?
+M|Marc|it|[ ] Is contradictory evidence acknowledged and addressed — or absent from the brief?
+M|Marc|it|[ ] Are mk direction claims stated w/ appropriate uncertainty, or as fact?
+M|Marc|it|[ ] What wld have to be true for this st to be wrong? Is that condition discussed?
+M|Marc|**Co|** Separate the narrative from the evidence: "Here is what the data shows [X]. Here is the interpretation [Y]. Here is the assumption required to connect them [Z]."
+M|Marc|tx|---
+M|Kai |**Ch|** Recency bias + Availability bias
+M|Kai |**Wh|**
+M|Kai |it|A single spike in data treated as a durable tn rather than a one-period event.
+M|Kai |it|cr al citing the cr's most visible recent moves rather than a systematic rv of their st.
+M|Kai |it|"us are responding to X" based on 1–2 weeks of data w/o checking if the pattern holds over a longer window.
+M|Kai |**Pr|**
+M|Kai |it|[ ] Is the tn conclusion based on a single period or a consistent pattern across ≥3 comparable periods?
+M|Kai |it|[ ] Is the cr al based on a systematic rv or the most recently visible examples?
+M|Kai |it|[ ] Has the signal passed the WebSearch elimination tst — is this a platform-wide effect, not vt-specific?
+M|Kai |it|[ ] Is the sample size large enough to support the confidence level of the claim?
+M|Kai |**Co|** Time-extend the data window: "Pattern holds over [N] periods — not just the most recent spike."
+M|Kai |tx|---
+M|Outp|Befo|
+M|Outp|tx|```
+M|Outp|Agen|[name]
+M|Outp|Char|[bias name from profile above]
+M|Outp|Prio|[which checklist items weighted most heavily]
+M|Outp|Find|[what was found, or "profile bias not present — standard checklist applied"]
+M|Outp|tx|```
+M|Outp|tx|Then continue to full verdict in standard Communication DNA format.

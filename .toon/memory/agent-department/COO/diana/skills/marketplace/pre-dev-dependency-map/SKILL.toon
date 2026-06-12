@@ -1,0 +1,74 @@
+#MEM id=pre-dev-dependency-map source=/root/yvon/agent-department/COO/diana/skills/marketplace/pre-dev-dependency-map/SKILL.md savings=8%
+M||tx|---
+M||name|ring:pre-dv-dependency-map
+M||desc|\|
+M||Gate|Technology choices document - explicit, versioned, validated technology
+M||sele|Must load Ring Standards
+M||tx|and PROJECT_RULES.md before proceeding.
+M||tx|---
+M|When|it|Data md passed Gate 5 validation
+M|When|it|abt to select specific technologies
+M|When|it|Large Track workflow (2+ day features)
+M|Skip|it|Small Track workflow → skip to Task Breakdown
+M|Skip|it|Technologies already locked → skip to Task Breakdown
+M|Skip|it|Data md not validated → complete Gate 5 first
+M|Sequ|**Ru|** ring:pre-dv-task-breakdown
+M|Sequ|**Ru|** ring:pre-dv-data-md
+M|Sequ|tx|Every technology choice must be explicit, versioned, validated against Ring Standards, and justified. The Dependency Map answers WHAT specific pd, versions, packages, and infrastructure will be used.
+M|Step|Read|`dpl.md`, `tech_stack.primary`, `project_technologies[]`.
+M|Step|If T|"Go back to TRD (Gate 3) and complete Step 0.4."
+M|Step|tx|\| Standard \| URL \|
+M|Step|tx|\|----------\|-----\|
+M|Step|| go|//raw.githubusercontent.com/LerianStudio/ring/main/dv-team/doc/standards/golang/index.md` \|
+M|Step|| ty|//raw.githubusercontent.com/LerianStudio/ring/main/dv-team/doc/standards/ts.md` \|
+M|Step|| fr|//raw.githubusercontent.com/LerianStudio/ring/main/dv-team/doc/standards/frontend.md` \|
+M|Step|| de|//raw.githubusercontent.com/LerianStudio/ring/main/dv-team/doc/standards/devops.md` \|
+M|Step|| sr|//raw.githubusercontent.com/LerianStudio/ring/main/dv-team/doc/standards/sre.md` \|
+M|Step|Usin|dpl md, tech stack, per-category decisions (PRD requirement, technology, version, rationale, cloud service, on-premise alternative), version matrix, sec/compliance notes.
+M|Mand|tx|\| Phase \| Activities \|
+M|Mand|tx|\|-------\|------------\|
+M|Mand|tx|\| **1. Evaluation** \| Ring Standards loaded; map TRD cp to tech candidates; validate against Ring Standards; map Data md to storage; map ap contracts to protocols; check team expertise; estimate costs \|
+M|Mand|| **|check Ring Standards (mandatory/prohibited), specify exact version, list alternatives w/ trade-offs, verify compatibility, check sec (CVEs), validate licenses, calculate costs \|
+M|Mand|tx|\| **3. Gate 6 Validation** \| All dependencies explicit; no conflicts; no ct CVEs; licenses compliant; costs documented; all cp mapped \|
+M|Vers|1. *|`@v1.27.0` not `@latest` or `^1.0.0`
+M|Vers|2. *|If using `>=`, document why
+M|Vers|3. *|`go.mod`, `pk-lock.json`, etc.
+M|Vers|4. *|Document why locked/capped
+M|Vers|5. *|Document known conflicts
+M|Incl|it|Exact pk names w/ versions (`go.uber.org/zap@v1.27.0`)
+M|Incl|it|Tech stack w/ constraints (`Go 1.24+, PostgreSQL 16`)
+M|Incl|it|Infrastructure specs (`Valkey 8, MinIO`)
+M|Incl|it|External SDKs, dv tools, sec deps, monitoring tools
+M|Incl|it|Compatibility matrices
+M|Incl|it|License summary
+M|Incl|it|Cost al
+M|Neve|it|Implementation code or how to use dependencies
+M|Neve|it|Task breakdowns or setup instructions
+M|Neve|it|Architectural patterns (→ TRD)
+M|Neve|it|Business requirements (→ PRD)
+M|Outp|**Fi|** `doc/PROJECT_RULES.md`
+M|Outp|**Fi|** `doc/pre-dv/{feature}/dependencies.md`
+M|Outp|tx|```markdown
+M|Tech|tx|\| Category \| PRD Requirement \| Choice \| Version \| Rationale \| Alternatives Considered \|
+M|Tech|tx|\|----------\|----------------\|--------\|---------\|-----------\|------------------------\|
+M|Tech|tx|\| Relational DB \| Persistent us data \| PostgreSQL \| 16.2 \| Ring standard; team expertise; ACID \| MySQL (less preferred), SQLite (no concurrent writes) \|
+M|Tech|tx|\| Cache \| sn storage \| Valkey \| 8.0 \| Ring standard; Redis-compatible \| Redis (licensing change) \|
+M|Tech|tx|\| Message Queue \| Async processing \| RabbitMQ \| 3.13 \| Ring standard; existing infra \| Kafka (overkill for volume) \|
+M|Vers|tx|\| pk \| Version \| Lock File \| Upgrade Constraint \|
+M|Vers|tx|\|---------\|---------\|-----------\|-------------------\|
+M|Vers|tx|\| go.uber.org/zap \| v1.27.0 \| go.sum \| Stable ap; no breaking changes in minor \|
+M|Secu|tx|\| pk \| License \| CVE Status \| Risk \|
+M|Secu|tx|\|---------\|---------\|-----------\|------\|
+M|Secu|tx|\| github.com/jackc/pgx/v5 \| MIT \| None \| lo \|
+M|Cost|tx|\| cp \| Shared/Dedicated \| Monthly Cost \| Notes \|
+M|Cost|tx|\|-----------\|-----------------\|-------------\|-------\|
+M|Cost|tx|\| PostgreSQL (RDS) \| Dedicated \| R$ 1,490 \| 2 vCPU, 8GB RAM \|
+M|Cost|tx|```
+M|Gate|tx|\| Category \| Requirements \|
+M|Gate|tx|\|----------\|--------------\|
+M|Gate|tx|\| **Completeness** \| All TRD cp have specific technology choices; all dependencies explicit \|
+M|Gate|tx|\| **Versioning** \| Exact versions specified; no `@latest`; lock files referenced \|
+M|Gate|tx|\| **Standards Compliance** \| Choices validated against Ring Standards; prohibited packages avoided \|
+M|Gate|tx|\| **sec** \| No ct CVEs; licenses compliant; sec deps included \|
+M|Gate|tx|\| **Costs** \| Cost per cp documented; shared vs dedicated decisions made \|
+M|Gate|**Ga|** ✅ PASS → Task Breakdown \| ⚠️ CONDITIONAL (version gaps or cost estimates missing) \| ❌ FAIL (unresolved conflicts or CVEs)

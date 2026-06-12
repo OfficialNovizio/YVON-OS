@@ -1,0 +1,20 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/MEMORY-novizio.md savings=11%
+M|Lena|tx|> Load alongside MEMORY.md when active vt is nz.
+M|Lena|tx|> nz-specific context only — universal rules live in MEMORY.md.
+M|Vent|- **|DTC fashion e-commerce (B2C)
+M|Vent|- **|premium, editorial, self-assured — magazine spread, not catalogue
+M|Vent|- **|style-conscious buyers who want to wear something that means something
+M|Novi|- **|affordable, cheap, budget, discount, sale (unless it's a genuine sale event)
+M|Novi|- **|exclamation marks in body cp — too casual for this register
+M|Novi|- **|crafted, considered, precise, enduring, quiet, confident
+M|Novi|- **|short declarative statements; fragment sentences are fine ("Tailored to last.")
+M|Novi|- **|none in captions unless Stark explicitly approves
+M|Capt|tx|\| Platform \| Length \| Format \|
+M|Capt|tx|\|----------\|--------\|--------\|
+M|Capt|tx|\| Instagram feed \| 1–2 lines \| Hook + intent; hashtags optional at bottom \|
+M|Capt|tx|\| Instagram Reels \| 2–4 lines \| Hook + body + CTA; 3–5 hashtags \|
+M|Capt|tx|\| TikTok \| 1 line \| Pure hook — cp lives in the vd \|
+M|Capt|tx|\| em subject \| ≤9 words \| Front-load the value \|
+M|Capt|tx|\| LinkedIn \| 3–5 lines \| Hook + in + soft CTA \|
+M|Prov|> Po|[date] — hook — what made it work.
+M|Neve|> Ea|[date] — nz-specific cp er — rule.

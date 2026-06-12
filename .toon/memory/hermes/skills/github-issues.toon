@@ -1,0 +1,63 @@
+SKILL|github-issues|"Create, triage, label, assign GitHub issues via gh or REST."
+STEP|1|Authenticated with GitHub (see `github-auth` skill)
+STEP|2|Inside a git repo with a GitHub remote, or specify the repo explicitly
+STEP|3|With gh:**
+STEP|4|With curl:**
+STEP|5|With gh:**
+STEP|6|Navigate to /settings while logged out
+STEP|7|Get redirected to /login?next=/settings
+STEP|8|Log in
+STEP|9|Actual: redirected to /dashboard (should go to /settings)
+STEP|10|With curl:**
+STEP|11|<step>
+STEP|12|<step>
+STEP|13|OS: <os>
+STEP|14|Version: <version>
+STEP|15|With gh:**
+STEP|16|With curl:**
+STEP|17|With gh:**
+STEP|18|With curl:**
+STEP|19|With gh:**
+STEP|20|With curl:**
+STEP|21|With gh:**
+STEP|22|With curl:**
+STEP|23|With gh:**
+STEP|24|With git (manual equivalent):**
+STEP|25|**List untriaged issues:**
+STEP|26|**Read and categorize** each issue (view details, understand the bug/feature)
+STEP|27|**Apply labels and priority** (see Managing Issues above)
+STEP|28|**Assign** if the owner is clear
+STEP|29|**Comment with triage notes** if needed
+STEP|30|With gh:**
+STEP|31|With curl:**
+PIT|Authenticated with GitHub (see `github-auth` skill)
+PIT|Inside a git repo with a GitHub remote, or specify the repo explicitly
+PIT|With gh:**
+PIT|With curl:**
+PIT|With gh:**
+PIT|Navigate to /settings while logged out
+PIT|Get redirected to /login?next=/settings
+PIT|Log in
+PIT|Actual: redirected to /dashboard (should go to /settings)
+PIT|With curl:**
+PIT|<step>
+PIT|<step>
+PIT|OS: <os>
+PIT|Version: <version>
+PIT|With gh:**
+PIT|With curl:**
+PIT|With gh:**
+PIT|With curl:**
+PIT|With gh:**
+PIT|With curl:**
+PIT|With gh:**
+PIT|With curl:**
+PIT|With gh:**
+PIT|With git (manual equivalent):**
+PIT|**List untriaged issues:**
+PIT|**Read and categorize** each issue (view details, understand the bug/feature)
+PIT|**Apply labels and priority** (see Managing Issues above)
+PIT|**Assign** if the owner is clear
+PIT|**Comment with triage notes** if needed
+PIT|With gh:**
+PIT|With curl:**

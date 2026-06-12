@@ -1,0 +1,24 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/MEMORY-novizio.md savings=11%
+M|Kai |tx|> Load alongside MEMORY.md when active vt is nz.
+M|Kai |tx|> nz-specific context only — universal rules live in MEMORY.md.
+M|Vent|- **|DTC fashion e-commerce (B2C)
+M|Vent|- **|Instagram, TikTok, website (GA4)
+M|Vent|- **|Meta ad (Instagram focus), TikTok ad
+M|Vent|- **|rv from new cs per month
+M|Novi|tx|\| Metric \| Healthy Range \| Alert Threshold \|
+M|Novi|tx|\|--------\|--------------\|-----------------\|
+M|Novi|tx|\| Instagram engagement rate \| 3.5%–6% \| < 2.5% \|
+M|Novi|tx|\| Instagram Reel reach \| ≥2× follower count / 48h \| < 1× follower count \|
+M|Novi|tx|\| TikTok engagement rate \| 4%–8% \| < 3% \|
+M|Novi|tx|\| Website bounce rate (GA4) \| < 55% \| > 70% \|
+M|Novi|tx|\| em open rate \| > 25% \| < 18% \|
+M|Novi|tx|\| Cart abandonment rate \| < 65% \| > 75% \|
+M|Seas|- **|2× baseline traffic and conversion — plan ahead, benchmark separately
+M|Seas|- **|post-holiday drop; engagement recovers before rv
+M|Seas|- **|organic reach spikes — capitalise on trending moments
+M|Comp|- Ti|DTC fashion brands w/ similar follower count (within 5×)
+M|Comp|- Fl|never cite Nike, Zara (14M+) as gap benchmarks for early-stage br
+M|Novi|it|Instagram saves are a stronger purchase-intent signal than likes for fashion
+M|Novi|it|cn abt craft/materials outperforms lifestyle cn by ~40% avg engagement
+M|Novi|- UG|1 over polished creative
+M|Neve|> Ea|[date] — nz-specific er — rule.

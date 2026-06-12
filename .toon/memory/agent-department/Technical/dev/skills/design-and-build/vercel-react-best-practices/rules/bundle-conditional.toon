@@ -1,0 +1,24 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/bundle-conditional.md savings=1%
+M||tx|---
+M||titl|Conditional md Loading
+M||impa|hi
+M||impa|loads large data only when needed
+M||tags|bundle, conditional-loading, lazy-loading
+M||tx|---
+M|Cond|tx|Load large data or modules only when a feature is activated.
+M|Cond|**Ex|**
+M|Cond|tx|```tsx
+M|Cond|func|{ enabled: boolean; setEnabled: rc.Dispatch<rc.SetStateAction<boolean>> }) {
+M|Cond|tx|const [frames, setFrames] = useState<Frame[] \| null>(null)
+M|Cond|tx|useEffect(() => {
+M|Cond|tx|if (enabled && !frames && typeof window !== 'undefined') {
+M|Cond|tx|import('./animation-frames.js')
+M|Cond|tx|.then(mod => setFrames(mod.frames))
+M|Cond|tx|.catch(() => setEnabled(false))
+M|Cond|tx|}
+M|Cond|tx|}, [enabled, frames, setEnabled])
+M|Cond|tx|if (!frames) return <Skeleton />
+M|Cond|tx|return <Canvas frames={frames} />
+M|Cond|tx|}
+M|Cond|tx|```
+M|Cond|tx|The `typeof window !== 'undefined'` check prevents bundling this md for SSR, optimizing server bundle size and bd speed.

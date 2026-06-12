@@ -1,0 +1,28 @@
+#DOC source=/root/yvon/docs/os/kai-briefs/2026-06-11.md strip=2% toon=5% net=8%
+T|Novi|0|Situation: The an pipeline is effectively offline. socialsnapshots contains 0 rows — no historical snapshots exist to establish baselines or detect anomalies. socialposts holds only 2 records, both from February 2025 (Instagram launch posts, 7–11 likes, <0.17% engagement). No data newer than 16 months. The 10 tracked cr all show zero movement across every metric (follower growth, traffic spikes, viral cn, share of voice, WoW change) — the cr tracker is connected to the db but not producing differentiated signals.
+T|Novi|1|
+T|Novi|2|Diagnosis: This is not a lo-engagement problem; it's a data ingestion fl. We cannot assess whether nz is gaining or losing ground bc the measurement instruments are dark. The base rate for a functioning sl an stack is that fresh snapshots arrive at least weekly — we're at zero. Confidence in any tn statement is therefore negligible. The two existing posts serve only as a proof that sb connectivity worked at some point in May 2026 (both have created_at of 2026-05-28), suggesting a manual backfill or tst insert, not an active pipeline.
+T|Novi|3|
+T|Novi|4|Action: Connect sl data ingestion. The single highest-leverage move is getting social_snapshots populating — whether via Apify actors (Instagram scrapers), the YouTube ap, or manual CSV import. w/o snapshots, every mk decision (ro's ad spend, ln's cn calendar, nt's growth levers) is flying blind. The sb connection works — the problem is upstream.
+T|Novi|5|
+T|Novi|6|Confidence: hi on the diagnosis (the numbers speak clearly: zero data = broken pipeline); lo on specific remedies (we don't know whether the blockage is ap key expiration, rate limiting, or a script that was never deployed).
+T|Novi|7|
+T|Novi|8|---
+T|Novi|9|
+T|Hour|0|Situation: Complete data blackout. Zero sl posts. Zero sl snapshots. Zero cr tracked. Every table that carries competitive or sl intelligence for hb is empty. The vt record exists in the db (created 2026-03-22, status "active", operating in Canada) but has no an instrumentation whatsoever.
+T|Hour|1|
+T|Hour|2|Diagnosis: hb was created in the sy as a vt entity but never wired into the an layer. This is consistent w/ a B2B SaaS go-to-mk motion — sl media metrics may be less relevant than for a DTC br — but the absence of any cr tracking or mk intelligence means we have no quantitative basis for st decisions. The gap is structural, not temporary.
+T|Hour|3|
+T|Hour|4|Action: Define hb's minimum an footprint. Before building pipelines, decide what matters: for a fintech SaaS targeting Canada, the signals are likely LinkedIn engagement, GitHub stars/pd metrics, funding rounds in the competitive set, and maybe Twitter/X fintech discourse. Define 3–5 key metrics and the data sources to feed them. Then im the smallest possible pipeline (one cr, one data source) to prove the loop.
+T|Hour|5|
+T|Hour|6|Confidence: md. The diagnosis is clear from the data vacuum, but the correct instrumentation depends on pd stage and GTM st — variables this brief cannot resolve from db queries alone.
+T|Hour|7|
+T|Hour|8|---
+T|Hour|9|
+T|Cros|0|Both vt share the same root problem: the an stack exists structurally (tables defined, sb connected) but is not operational. This is not a vt-specific fl — it's an infrastructure gap. The yv OS has a dashboard layer (app/screens/an/) and db tables but no active data ingestion btw them. For mc: this means all dashboards showing zeros are accurate — the data literally isn't there — not a rendering bug. The fix is pipeline engineering, not dashboard fixes.
+T|Cros|1|
+T|Cros|2|The most efficient path is to fix both vt w/ a single ingestion architecture: one cron-triggered script that collects sl + cr data per vt, writes to the canonical sb tables, and has the social_snapshots table serve as the historical record for anomaly detection. Get one vt working and the other follows w/ minimal adaptation.
+T|Cros|3|
+T|Cros|4|---
+T|Cros|5|
+T|Cros|6|ka out. Brief delivered to mc.

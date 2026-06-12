@@ -1,0 +1,55 @@
+#MEM id=panning-for-gold source=/root/yvon/agent-department/Marketing/kai/skills/marketplace/panning-for-gold/SKILL.md savings=4%
+M||tx|---
+M||name|panning-for-gold
+M||vers|1.0.0
+M||md|claude-sonnet-4-6
+M||desc|"Triage raw unstructured input (transcripts, brain dumps) into evaluated thread inventories and a synthesized gold-found file across three phases."
+M||lice|MIT
+M||tx|---
+M|Pann|Turn|Extract, Evaluate, Synthesize.
+M|Trig|tx|\| Trigger Phrase \| Operation \|
+M|Trig|tx|\|----------------\|-----------\|
+M|Trig|tx|\| `pan for gold` \| Run the full extract -> evaluate -> synthesize procedure \|
+M|Trig|tx|\| `triage transcript` \| bd inventory of threads from a raw transcript \|
+M|Trig|tx|\| `synthesize gold-found` \| gn the final gold-found file from evaluations \|
+M|When|Use |
+M|When|it|You have a voice transcript, stream-of-consciousness note, or brain dump that contains many ideas mixed w/ noise.
+M|When|it|You need a deterministic procedure to triage which ideas merit deeper al.
+M|When|it|You want a permanent, structured artifact that downstream ag (analyst, spec-generator) can consume.
+M|When|Use |
+M|When|it|The input is already structured (specs, ADRs, code). Use the analyst or spec-generator ag instead.
+M|When|it|You only need a one-off summary. Use a generic summarizer.
+M|Work|tx|The skill operates inside a workspace root. The default is `./.panning/` in the current working directory; override via `--workspace <path>` or the `PANNING_WORKSPACE` environment variable.
+M|Work|tx|```text
+M|Work|tx|<workspace>/
+M|Work|tx|\|-- transcripts/          # Raw input (read-only after capture)
+M|Work|tx|\|-- inventories/          # Pass1 + final inventories
+M|Work|tx|\|-- evaluations/          # Per-thread evaluation files
+M|Work|tx|`-- gold-found/           # Synthesized gold-found files
+M|Work|tx|```
+M|Work|tx|The script creates missing subdirectories on demand. It never overwrites an existing file unless `--force` is passed.
+M|Phas|tx|bd a pass1 inventory from a transcript w/o filtering. Every thread that surfaces is recorded.
+M|Phas|Each|
+M|Phas|tx|```markdown
+M|Thre|- **|hi \| md \| lo
+M|Thre|- **|"<verbatim quote that surfaced this thread>"
+M|Thre|- **|<one sentence on where this came from>
+M|Thre|- **|<one sentence on why this might matter>
+M|Thre|tx|```
+M|Thre|tx|The pass1 inventory is provisional. A second pass refines and merges into a final inventory.
+M|Phas|For |what evidence supports the thread, what wld falsify it, what action it implies.
+M|Phas|tx|Evaluations are independent. They can be authored serially or in parallel.
+M|Phas|tx|Combine the final inventory and the evaluation files into a gold-found markdown file. The gold-found file groups threads by signal level (hi, md, lo) and includes a metadata block at the top.
+M|CLI|tx|```text
+M|CLI|tx|pan.py init      --workspace <path>
+M|CLI|tx|pan.py validate  --inventory <file>
+M|CLI|tx|pan.py merge     --pass1 <file> --final <file> --output <file>
+M|CLI|tx|pan.py synth     --inventory <file> --evaluations <dir> --output <file>
+M|CLI|tx|```
+M|CLI|tx|The script delegates to `inventory.py` for parsing and merging, and `synthesis.py` for gold-found generation.
+M|Acce|it|[ ] Inventory thread blocks contain `Signal`, `Quote`, `Context`, `Initial take` fields.
+M|Acce|it|[ ] Final inventory deduplicates threads from pass1 by title.
+M|Acce|it|[ ] Gold-found file has a metadata block plus hi-Signal, md-Signal, and lo-Signal sections in that order.
+M|Acce|it|[ ] No threads from the inventory are silently dropped.
+M|Refe|it|`references/inventory-template.md` - thread inventory skeleton.
+M|Refe|it|`references/gold-found-template.md` - gold-found skeleton.

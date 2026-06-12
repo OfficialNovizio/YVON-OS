@@ -1,0 +1,60 @@
+#MEM id=session-protocol source=/root/yvon/agent-department/shared/skills/operating-system/session-protocol/SKILL.md savings=19%
+M||tx|---
+M||name|sn-protocol
+M||desc|Universal sn start and end protocol for all yv ag. Defines file load order, memory write obligations, ADJOURNING checklist, and self-improvement logging. Every ag runs this — no exceptions.
+M||vers|1.0.0
+M||appl|all-ag
+M||tx|---
+M|Sess|tx|> This is the shared standard. ag-specific sn notes live in each ag's `MEMORY.md`.
+M|Sess|> So|`shared/skills/operating-sy/sn-protocol/SKILL.md`
+M|Sess|tx|---
+M|Sess|tx|```
+M|Sess|tx|1. Read this ag's MEMORY.md                ← permanent patterns, Never Again rules
+M|Sess|tx|2. Read doc/os/sn.md                     ← global in-flight state
+M|Sess|tx|3. Read doc/memory/feedback.md               ← 🔴 ct ds/routing rules
+M|Sess|tx|4. Check Last Clean Exit timestamp in sn.md
+M|Sess|→ If|flag abrupt exit before proceeding
+M|Sess|5. I|load doc/vt/[active]/sn.md
+M|Sess|6. I|load doc/vt/[active]/ds.md
+M|Sess|7. I|load doc/vt/[active]/FEEDBACK.md
+M|Sess|tx|```
+M|Sess|tx|**Never load all files at once. Load only what the current task requires.**
+M|Sess|tx|---
+M|Sess|tx|```
+M|Sess|1. B|npx tsc --noEmit → MUST pass before ADJOURNING
+M|Sess|2. A|
+M|Sess|tx|[date] — [task] — [outcome] — [what I'd do differently]
+M|Sess|tx|3. Append one row to doc/os/sn.md (global log, no duplicates)
+M|Sess|4. I|append to doc/vt/[active]/sn.md
+M|Sess|5. P|
+M|Sess|tx|{ agentId, vt, summary, learnings[], corrections[], filesChanged[], toolCallsCount }
+M|Sess|6. W|YYYY-MM-DD HH:MM" to doc/os/sn.md
+M|Sess|tx|```
+M|Sess|tx|---
+M|Self|Afte|
+M|Self|1. E|**what went wrong → rule that prevents it**
+M|Self|2. C|
+M|Self|it|vt-specific → `doc/vt/[name]/FEEDBACK.md`
+M|Self|it|ag-specific → this ag's `MEMORY.md` Never Again section
+M|Self|it|Universal → `doc/memory/feedback.md`
+M|Self|tx|3. **Never save the same rule in two places** (Memory Sync Rule from WORKFLOW.md)
+M|Self|4. I|the rule MUST already exist — if it doesn't, add it now
+M|Self|tx|---
+M|Memo|tx|```
+M|Memo|tx|[YYYY-MM-DD] [vt-tag or universal] — task — outcome — rule going forward
+M|Memo|tx|```
+M|Memo|Exam|
+M|Memo|tx|```
+M|Memo|[202|always segment hb churn by acquisition cohort, never flat average
+M|Memo|[202|triple-pass before any delivery, no exceptions even for "simple" changes
+M|Memo|tx|```
+M|Memo|tx|---
+M|Erro|When|
+M|Erro|tx|1. Log the er pattern to `MEMORY.md` Never Again section
+M|Erro|tx|2. Note the fix that resolved it
+M|Erro|tx|3. Flag to qn for `er-log-audit` if it was a production rt er
+M|Erro|tx|---
+M|Anti|it|Starting work before checking sn.md for in-flight context
+M|Anti|it|Ending a sn w/o writing to MEMORY.md (even "No gap found" is a valid entry)
+M|Anti|it|Writing the same rule to multiple files (pick one location, per Memory Sync Rule)
+M|Anti|it|Skipping the bd check and going straight to ADJOURNING on broken code

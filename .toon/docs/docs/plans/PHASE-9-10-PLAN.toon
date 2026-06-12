@@ -1,0 +1,50 @@
+#DOC source=/root/yvon/docs/plans/PHASE-9-10-PLAN.md strip=3% toon=7% net=10%
+T|Phas|0|ce mc: Close the last 5 gaps from the Phase 7 audit, harden auth, add unit tests. Then Phase 10 for the nice-to-haves.
+T|Phas|1|
+T|Phas|2|---
+T|Phas|3|
+T|9A. |0|Add workspace selector to Sidebar top (matching LifeOS spec)
+T|9A. |1|Shows nz/hb w/ chevron to switch
+T|9A. |2|Duplicates TopBar functionality (both work, synced)
+T|9A. |3|Uses existing WorkspaceContext + vt cookie
+T|9A. |4|
+M|9B. |0|Add BACKLOG column btw PLANNING and IN PROGRESS
+M|9B. |1|Tasks flow: TRIAGE → PLANNING → BACKLOG → IN PROGRESS → STEVE QA → NEEDS rv → DONE
+M|9B. |2|Merge gate: NEEDS rv items cr Decision Queue cards
+M|9B. |3|Already partially wired via Phase 8 ag crons
+M|9B. |4|
+T|9C. |0|cr mw.ts auth check for /ap/* rt
+T|9C. |1|CRON_SECRET bypass for ag cron rt
+T|9C. |2|Simple tk auth for dashboard access
+T|9C. |3|Rate limiting on sensitive rt (/ap/claude, /ap/settings)
+T|9C. |4|
+T|9D. |0|Vitest setup w/ rc Testing Library
+T|9D. |1|Tests for: Card, StatusBadge, Chip, PageHeader cp
+T|9D. |2|Tests for: ag-personalities.ts, WorkspaceContext
+T|9D. |3|Add to CI pipeline
+T|9D. |4|
+T|9E. |0|Decision Queue cards show hy avatar/name
+T|9E. |1|hy tracks: decisions approved, rejected, deferred
+T|9E. |2|Simple learning: if owner approves same tp 3x, auto-ap
+T|9E. |3|Stats: "hy handled X today, escalated Y"
+T|9E. |4|
+T|9E. |5|---
+T|9E. |6|
+T|10A.|0|Advisory Council gets voice synthesis option
+T|10A.|1|Per-ag voice selection (HeyGen voices)
+T|10A.|2|Audio player in War Room
+T|10A.|3|Mock/fallback when no HeyGen ap key
+T|10A.|4|
+T|10B.|0|Asset Lab gn tab wires to real im generation
+T|10B.|1|Per-post 8-im generation for sl Approvals
+T|10B.|2|br kit adherence in pm
+T|10B.|3|Fallback to mock when no ap key
+T|10B.|4|
+T|10C.|0|tn Radar wires to real data sources
+T|10C.|1|Scrapes Twitter/GitHub/arXiv for tn
+T|10C.|2|Tags by workspace relevance
+T|10C.|3|Feeds into cn Pipeline + Advisory Council
+T|10C.|4|
+T|10D.|0|sl Approvals auto-generates A/B cp
+T|10D.|1|Uses ag personality + vt br voice
+T|10D.|2|Tracks which variant wins → feeds back to William

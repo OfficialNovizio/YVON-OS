@@ -1,0 +1,359 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/references/email-types.md savings=4%
+M|Emai|tx|A comprehensive guide to lifecycle and cg emails. Use this as an audit checklist and implementation reference.
+M|Cont|it|Onboarding Emails (new us series, new cs series, key onboarding step reminder, new us invite)
+M|Cont|it|Retention Emails (upgrade to paid, upgrade to higher plan, ask for rv, offer support proactively, pd usage rp, NPS survey, referral program)
+M|Cont|it|Billing Emails (switch to annual, failed payment recovery, cancellation survey, upcoming renewal reminder)
+M|Cont|it|Usage Emails (daily/weekly/monthly summary, key event or milestone notifications)
+M|Cont|it|Win-Back Emails (expired trials, can cs)
+M|Cont|it|cg Emails (monthly roundup/nl, seasonal promotions, pd updates, industry news roundup, pricing up)
+M|Cont|it|em Audit Checklist (onboarding, retention, billing, usage, win-back, cg)
+M|New |**Tr|us signs up (free or trial)
+M|New |**Go|Activate us, drive to aha moment
+M|New |**Ty|5-7 emails over 14 days
+M|New |- Em|Welcome + single nx step (immediate)
+M|New |- Em|Quick win / getting started (day 1)
+M|New |- Em|Key feature highlight (day 3)
+M|New |- Em|sc story / sl proof (day 5)
+M|New |- Em|Check-in + offer help (day 7)
+M|New |- Em|Advanced tip (day 10)
+M|New |- Em|Upgrade pm or nx milestone (day 14)
+M|New |**Ke|Activation rate, feature adoption
+M|New |tx|---
+M|New |**Tr|us converts to paid
+M|New |**Go|Reinforce purchase decision, drive adoption, reduce early churn
+M|New |**Ty|3-5 emails over 14 days
+M|New |- Em|Thank you + what's nx (immediate)
+M|New |- Em|Getting full value — setup checklist (day 2)
+M|New |- Em|Pro tips for paid features (day 5)
+M|New |- Em|sc story from similar cs (day 7)
+M|New |- Em|Check-in + introduce support resources (day 14)
+M|New |**Ke|Different from new us series—they've committed. Focus on reinforcement and expansion, not conversion.
+M|New |tx|---
+M|Key |**Tr|us hasn't done ct setup step after X time
+M|Key |**Go|Nudge completion of hi-value action
+M|Key |**Fo|Single em or 2-3 em mini-sequence
+M|Key |**Ex|
+M|Key |it|Hasn't connected integration after 48 hours
+M|Key |it|Hasn't invited team member after 3 days
+M|Key |it|Hasn't done profile after 24 hours
+M|Key |**Co|
+M|Key |it|Remind them what they started
+M|Key |it|Explain why this step matters
+M|Key |it|Make it easy (direct link to complete)
+M|Key |it|Offer help if stuck
+M|Key |tx|---
+M|New |**Tr|Existing us invites teammate
+M|New |**Go|Activate the invited us
+M|New |**Re|The person being invited
+M|New |- Em|You've been invited (immediate)
+M|New |- Em|Reminder if not accepted (day 2)
+M|New |- Em|Final reminder (day 5)
+M|New |**Co|
+M|New |it|Personalize w/ inviter's name
+M|New |it|Explain what they're joining
+M|New |it|Single CTA to accept invite
+M|New |it|sl proof optional
+M|New |tx|---
+M|Upgr|**Tr|Free us shows engagement, or trial ending
+M|Upgr|**Go|Convert free to paid
+M|Upgr|**Ty|3-5 emails
+M|Upgr|**Tr|
+M|Upgr|it|Time-based (trial day 10, 12, 14)
+M|Upgr|it|Behavior-based (hit usage limit, used premium feature)
+M|Upgr|it|Engagement-based (highly active free us)
+M|Upgr|**Se|
+M|Upgr|- Va|What they've accomplished
+M|Upgr|- Fe|What they're missing
+M|Upgr|- So|Who else upgraded
+M|Upgr|- Ur|Trial ending, limited offer
+M|Upgr|- Fi|Last chance + easy path
+M|Upgr|tx|---
+M|Upgr|**Tr|us approaching plan limits or using features available on higher tier
+M|Upgr|**Go|Upsell to nx tier
+M|Upgr|**Fo|Single em or 2-3 em sequence
+M|Upgr|**Tr|
+M|Upgr|it|80% of seat limit reached
+M|Upgr|it|90% of storage/usage limit
+M|Upgr|it|Tried to use higher-tier feature
+M|Upgr|it|Power us behavior patterns
+M|Upgr|**Co|
+M|Upgr|it|Acknowledge their growth (positive framing)
+M|Upgr|it|Show what nx tier unlocks
+M|Upgr|it|Quantify value vs. cost
+M|Upgr|it|Easy upgrade path
+M|Upgr|tx|---
+M|Ask |**Tr|cs milestone (30/60/90 days, key achievement, support resolution)
+M|Ask |**Go|gn sl proof on G2, Capterra, app stores
+M|Ask |**Fo|Single em
+M|Ask |**Be|
+M|Ask |it|After positive support interaction
+M|Ask |it|After achieving measurable result
+M|Ask |it|After renewal
+M|Ask |it|NOT after billing issues or bugs
+M|Ask |**Co|
+M|Ask |it|Thank them for being a cs
+M|Ask |it|Mention specific value/milestone if possible
+M|Ask |it|Explain why reviews matter (help others decide)
+M|Ask |it|Direct link to rv platform
+M|Ask |it|Keep it short—this is an ask
+M|Ask |tx|---
+M|Offe|**Tr|Signs of struggle (drop in usage, failed actions, er encounters)
+M|Offe|**Go|Save at-risk us, improve exp
+M|Offe|**Fo|Single em
+M|Offe|**Tr|
+M|Offe|it|Usage dropped significantly week-over-week
+M|Offe|it|Multiple failed attempts at action
+M|Offe|it|Viewed help doc repeatedly
+M|Offe|it|Stuck at same onboarding step
+M|Offe|**Co|
+M|Offe|it|Genuine concern tone
+M|Offe|- Sp|"I noticed you..." (if data allows)
+M|Offe|it|Offer direct help (not just link to doc)
+M|Offe|it|Personal from support or CSM
+M|Offe|it|No sales pitch—pure help
+M|Offe|tx|---
+M|Prod|**Tr|Time-based (weekly, monthly, quarterly)
+M|Prod|**Go|Demonstrate value, drive engagement, reduce churn
+M|Prod|**Fo|Single em, recurring
+M|Prod|**Wh|
+M|Prod|it|Key metrics/activity summary
+M|Prod|it|Comparison to previous period
+M|Prod|it|Achievements/milestones
+M|Prod|it|Suggestions for improvement
+M|Prod|it|Light CTA to explore more
+M|Prod|**Ex|
+M|Prod|it|"You saved X hours this month"
+M|Prod|it|"Your team done X projects"
+M|Prod|it|"You're in the top X% of us"
+M|Prod|**Ke|Make them feel good and remind them of value delivered.
+M|Prod|tx|---
+M|NPS |**Tr|Time-based (quarterly) or event-based (post-milestone)
+M|NPS |**Go|Measure satisfaction, identify promoters and detractors
+M|NPS |**Fo|Single em
+M|NPS |**Be|
+M|NPS |- Ke|Just the NPS question initially
+M|NPS |it|Follow-up form for "why" based on score
+M|NPS |it|Personal sender (ce, founder, CSM)
+M|NPS |it|Tell them how you'll use feedback
+M|NPS |**Fo|
+M|NPS |- Pr|Thank + ask for rv/referral
+M|NPS |- Pa|Ask what wld make it a 10
+M|NPS |- De|Personal outreach to understand issues
+M|NPS |tx|---
+M|Refe|**Tr|cs milestone, promoter NPS score, or cg
+M|Refe|**Go|gn referrals
+M|Refe|**Fo|Single em or periodic reminders
+M|Refe|**Go|
+M|Refe|it|After positive NPS rp
+M|Refe|it|After cs achieves result
+M|Refe|it|After renewal
+M|Refe|it|Seasonal cg
+M|Refe|**Co|
+M|Refe|it|Remind them of their sc
+M|Refe|it|Explain the referral offer clearly
+M|Refe|it|Make sharing easy (unique link)
+M|Refe|it|Show what's in it for them AND referee
+M|Refe|tx|---
+M|Swit|**Tr|Monthly subscriber at renewal time or cg
+M|Swit|**Go|Convert monthly to annual (improve LTV, reduce churn)
+M|Swit|**Fo|Single em or 2-em sequence
+M|Swit|**Va|
+M|Swit|it|Calculate exact savings
+M|Swit|it|Additional benefits (if any)
+M|Swit|it|Lock in current price messaging
+M|Swit|it|Easy one-click switch
+M|Swit|**Be|
+M|Swit|it|Around monthly renewal date
+M|Swit|it|End of year / new year
+M|Swit|it|After 3-6 months of loyalty
+M|Swit|it|Price increase announcement (lock in old rate)
+M|Swit|tx|---
+M|Fail|**Tr|Payment fails
+M|Fail|**Go|Recover rv, retain cs
+M|Fail|**Ty|3-4 emails over 7-14 days
+M|Fail|**Se|
+M|Fail|- Em|Friendly notice, up payment link
+M|Fail|- Em|Reminder, service may be interrupted
+M|Fail|- Em|ur, account will be suspended
+M|Fail|- Em|Final notice, what they'll lose
+M|Fail|**Co|
+M|Fail|it|Assume it's an accident (card expired, etc.)
+M|Fail|it|Clear, direct, no guilt
+M|Fail|it|Single CTA to up payment
+M|Fail|it|Explain what happens if not resolved
+M|Fail|**Ke|Recovery rate, time to recovery
+M|Fail|tx|---
+M|Canc|**Tr|us cancels subscription
+M|Canc|**Go|Learn why, opportunity to save
+M|Canc|**Fo|Single em (immediate)
+M|Canc|**Op|
+M|Canc|it|In-app survey at cancellation (better completion)
+M|Canc|it|Follow-up em if they skip in-app
+M|Canc|it|Personal outreach for hi-value accounts
+M|Canc|**Qu|
+M|Canc|it|Primary reason for cancelling
+M|Canc|it|What cld we have done better
+M|Canc|it|wld anything change your mind
+M|Canc|it|Can we help w/ transition
+M|Canc|**Wi|Based on reason, offer targeted save (discount, pause, downgrade, training).
+M|Canc|tx|---
+M|Upco|**Tr|X days before renewal (14 or 30 days typical)
+M|Upco|**Go|No surprise charges, opportunity to expand
+M|Upco|**Fo|Single em
+M|Upco|**Wh|
+M|Upco|it|Renewal date and amount
+M|Upco|it|What's included in renewal
+M|Upco|it|How to up payment/plan
+M|Upco|it|Changes to pricing/features (if any)
+M|Upco|- Op|Upsell opportunity
+M|Upco|**Re|Annual subscriptions, hi-value contracts
+M|Upco|tx|---
+M|Dail|**Tr|Time-based
+M|Dail|**Go|Drive engagement, demonstrate value
+M|Dail|**Fo|Single em, recurring
+M|Dail|**Co|
+M|Dail|- **|Notifications, quick stats (for hi-engagement pd)
+M|Dail|- **|Activity summary, highlights, suggestions
+M|Dail|- **|Comprehensive rp, achievements, ROI if calculable
+M|Dail|**St|
+M|Dail|it|Key metrics at a glance
+M|Dail|it|Notable achievements
+M|Dail|it|Activity breakdown
+M|Dail|it|Suggestions / what to try nx
+M|Dail|it|CTA to dive deeper
+M|Dail|**Pe|Must be relevant to their actual usage. Empty reports are worse than no rp.
+M|Dail|tx|---
+M|Key |**Tr|Specific achievement or event
+M|Key |**Go|Celebrate, drive continued engagement
+M|Key |**Fo|Single em per event
+M|Key |**Mi|
+M|Key |it|First [action] done
+M|Key |it|10th/100th [thing] created
+M|Key |it|Goal achieved
+M|Key |it|Team collaboration milestone
+M|Key |it|Usage streak
+M|Key |**Co|
+M|Key |it|Celebration tone
+M|Key |it|Specific achievement
+M|Key |it|Context (compared to others, compared to before)
+M|Key |it|What's nx / nx milestone
+M|Key |tx|---
+M|Expi|**Tr|Trial ended w/o conversion
+M|Expi|**Go|Convert or re-engage
+M|Expi|**Ty|3-4 emails over 30 days
+M|Expi|**Se|
+M|Expi|- Em|Trial ended, here's what you're missing
+M|Expi|- Em|What held you back? (gather feedback)
+M|Expi|- Em|Incentive offer (discount, extended trial)
+M|Expi|- Em|Final reach-out, door is open
+M|Expi|**Se|Different approach based on trial engagement level:
+M|Expi|- Hi|Focus on removing friction to convert
+M|Expi|- Lo|Offer fresh start, more onboarding help
+M|Expi|- No|Ask what happened, offer demo/call
+M|Expi|tx|---
+M|Canc|**Tr|Time after cancellation (30, 60, 90 days)
+M|Canc|**Go|Win back churned cs
+M|Canc|**Ty|2-3 emails spread over 90 days
+M|Canc|**Se|
+M|Canc|- Em|What's new since you left
+M|Canc|- Em|We've addressed [common reason]
+M|Canc|- Em|Special offer to return
+M|Canc|**Co|
+M|Canc|it|No guilt, no desperation
+M|Canc|it|Genuine updates and improvements
+M|Canc|it|Personalize based on cancellation reason if known
+M|Canc|it|Make return easy
+M|Canc|**Ke|They're more likely to return if their reason was addressed.
+M|Canc|tx|---
+M|Mont|**Tr|Time-based (monthly)
+M|Mont|**Go|Engagement, br presence, cn distribution
+M|Mont|**Fo|Single em, recurring
+M|Mont|**Co|
+M|Mont|it|pd updates and tips
+M|Mont|it|cs stories
+M|Mont|it|Educational cn
+M|Mont|it|Company news
+M|Mont|it|Industry in
+M|Mont|**Be|
+M|Mont|it|Consistent send day/time
+M|Mont|it|Scannable format
+M|Mont|it|Mix of cn tp
+M|Mont|it|One primary CTA focus
+M|Mont|it|Unsubscribe is okay—keeps list healthy
+M|Mont|tx|---
+M|Seas|**Tr|Calendar events (Black Friday, New Year, etc.)
+M|Seas|**Go|Drive conversions w/ timely offer
+M|Seas|**Fo|cg burst (2-4 emails)
+M|Seas|**Co|
+M|Seas|it|New Year (fresh start, annual planning)
+M|Seas|it|End of fiscal year (budget spending)
+M|Seas|it|Black Friday / Cyber Monday
+M|Seas|it|Industry-specific seasons
+M|Seas|it|Back to school / work
+M|Seas|**Se|
+M|Seas|- An|Offer reveal
+M|Seas|- Re|Midway through promotion
+M|Seas|- La|Final hours
+M|Seas|tx|---
+M|Prod|**Tr|New feature release
+M|Prod|**Go|Adoption, engagement, demonstrate momentum
+M|Prod|**Fo|Single em per major release
+M|Prod|**Wh|
+M|Prod|it|What's new (clear and simple)
+M|Prod|it|Why it matters (benefit, not just feature)
+M|Prod|it|How to use it (direct link)
+M|Prod|it|Who asked for it (community acknowledgment)
+M|Prod|**Se|Consider targeting based on relevance:
+M|Prod|it|us who wld benefit most
+M|Prod|it|us who requested feature
+M|Prod|it|Power us first (for beta feel)
+M|Prod|tx|---
+M|Indu|**Tr|Time-based (weekly or monthly)
+M|Indu|**Go|Thought leadership, engagement, br value
+M|Indu|**Fo|Curated nl
+M|Indu|cn|
+M|Indu|it|Curated news and links
+M|Indu|it|Your take / commentary
+M|Indu|it|What it means for readers
+M|Indu|it|How your pd helps
+M|Indu|**Be|B2B pd where cs care abt industry tn.
+M|Indu|tx|---
+M|Pric|**Tr|Price change announcement
+M|Pric|**Go|Transparent communication, minimize churn
+M|Pric|**Fo|Single em (or sequence for major changes)
+M|Pric|**Ti|
+M|Pric|it|Announce 30-60 days before change
+M|Pric|it|Reminder 14 days before
+M|Pric|it|Final notice 7 days before
+M|Pric|**Co|
+M|Pric|it|Clear, direct, transparent
+M|Pric|it|Explain the why (value delivered, costs increased)
+M|Pric|it|Grandfather if possible (lock in old rate)
+M|Pric|it|Give options (annual lock-in, downgrade)
+M|Pric|**Im|Honesty and advance notice bd trust even when price increases.
+M|Pric|tx|---
+M|Emai|Use |
+M|Onbo|it|[ ] New us series
+M|Onbo|it|[ ] New cs series
+M|Onbo|it|[ ] Key onboarding step reminders
+M|Onbo|it|[ ] New us invite sequence
+M|Rete|it|[ ] Upgrade to paid sequence
+M|Rete|it|[ ] Upgrade to higher plan triggers
+M|Rete|it|[ ] Ask for rv (timed properly)
+M|Rete|it|[ ] Proactive support outreach
+M|Rete|it|[ ] pd usage reports
+M|Rete|it|[ ] NPS survey
+M|Rete|it|[ ] Referral program emails
+M|Bill|it|[ ] Switch to annual cg
+M|Bill|it|[ ] Failed payment recovery sequence
+M|Bill|it|[ ] Cancellation survey
+M|Bill|it|[ ] Upcoming renewal reminders
+M|Usag|it|[ ] Daily/weekly/monthly summaries
+M|Usag|it|[ ] Key event notifications
+M|Usag|it|[ ] Milestone celebrations
+M|Win-|it|[ ] Expired trial sequence
+M|Win-|it|[ ] can cs sequence
+M|cg|it|[ ] Monthly roundup / nl
+M|cg|it|[ ] Seasonal promotion calendar
+M|cg|it|[ ] pd up announcements
+M|cg|it|[ ] Pricing up communications

@@ -1,0 +1,70 @@
+SKILL|toon-format|"TOON token-optimized format + bidirectional compression. Real benchmarks: 84.5% total savings on data tasks, 29.4% on reasoning tasks. All YVON agent LLM calls must use toon.dense() or compressor. JSON banned for agent-to-model."
+STEP|1|`references/benchmarks.md` — Full benchmark data with all 4 test runs, task-type taxonomy, and Claude pricing projections
+STEP|2|`references/engine-extraction-pattern.md` — How to extract TOON+CIE+agents into a standalone npm package (yvon-engine). Config adapters, `yvon init` wizard, engine migration protocol.
+STEP|3|`references/auto-toon-architecture.md` — Full architecture of the auto-TOON engine: scanner → injector → middleware → hermes-bridge pipeline, `.toon/` store layout, injection point types
+STEP|4|`scripts/benchmark_bidirectional.py` — Reproducible benchmark script (50-item filter, 3 formats, Claude cost projection). Run with `python3 scripts/benchmark_bidirectional.py`
+STEP|5|`npx yvon integrate` now automatically:**
+STEP|6|**Scans** the project — detects project type (Next.js App/Pages/Vite), finds TypeScript interfaces, API routes, document paths, agent memory files
+STEP|7|**Generates** TOON schemas for every data shape discovered (43 on YVON2.0)
+STEP|8|**Builds** a project-specific abbreviation dictionary (50+ terms)
+STEP|9|**Creates** `.toon/` document store:
+STEP|10|**Wires** the Claude route with `autoToonMiddleware` — runtime compression on every call
+STEP|11|**Bridges** Hermes Agent — compresses MEMORY.md, skills (SKILL.md), enables session delta sync (93% on repeats)
+STEP|12|The middleware computes 6 fields but the Claude route historically only used 2 (dictionary + compressedUserMessage).** This was discovered on 2026-06-12 during a full audit — `relevantDocs`, `relevant
+STEP|13|THE FIX:** The Claude route MUST build a combined system prompt from ALL outputs:
+STEP|14|toon/
+STEP|15|**`encodeDocument(content, title)`** — Section-aware markdown → typed TOON records. Headers (#, ##, ###) are classified by keyword (decision→D, task→K, config→C, goal→G, context→X, memory→M, plan→P, r
+STEP|16|**`encodeMemory(content, agentId)`** — Agent MEMORY.md → `M\|section_key\|key\|value` records. Headers become section keys, colons split keys from values, bullets become items. All text is abbreviated
+STEP|17|**`encodePrompt(prompt)`** — Structure-detection encoding. Detects numbered lists (→L\|), bullets, key-value blocks (→K\|), tables (→T\|), and freeform text (→F\|). Falls back to `abbreviateText()` fo
+STEP|18|`ABBREV_MAP`** — 150+ abbreviation pairs covering YVON concepts, ventures, agents, departments, tech stack, business terms, content/marketing, actions, and common English phrases. `abbreviateText()` s
+STEP|19|Real compression results:** Documents 26%, Memory 37%, Prompts 41% (char-level; token-level is higher).
+STEP|20|Repo:** https://github.com/OfficialNovizio/YVON-Engine
+STEP|21|Package name:** `yvon-engine` (not `@yvon/engine` — npm scope creation failed for user's account)
+STEP|22|v1.3.2 additions:** Auto-TOON engine (scanner, injector, middleware, hermes-bridge), subpath exports for `toon/auto` and `toon/auto/middleware`, `toonifyAll()` in integrate step 3.7
+STEP|23|**Always lead with TOTAL bidirectional savings, never prompt-only.** Users say "not impressed" if you quote 61.4% prompt savings but the real total is 29.4%. Show the honest breakdown: input X% + outp
+STEP|24|**Architecture + algorithm > markdown reports.** When explaining TOON/compression/CIE, lead with the visual flow, the algorithm steps, and annotated code — not a `.md` document. The user said: "I don'
+STEP|25|**Benchmark on REAL workloads, not synthetic.** Run benchmarks on actual agent cron tasks (Henry filtering 50 real decisions), not contrived examples. The savings profiles differ dramatically per task
+STEP|26|**Never claim "80% savings" without qualifying the task type.** On reasoning tasks where the LLM writes 5,000-character memos, you'll get 25-35% total. On data extraction, you'll get 80-85%. Lead with
+STEP|27|TOON only compresses INPUT.** The LLM's response (completion) tokens are unchanged unless you also compress output. This is the single most important thing to understand — and the #1 reason users say 
+STEP|28|The brutal truth:** On reasoning tasks where the LLM's response IS the deliverable, you cannot compress the value. TOON saves on context injection, not on thinking. Tell users this upfront or they wil
+STEP|29|NEVER use compression on small datasets.** Overhead dominates below 15 items.
+STEP|30|NEVER claim 80% savings on reasoning tasks.** That's prompt-only; total tokens tell the real story.
+STEP|31|Why:** Dictionary/template definitions cost ~400 tokens in system prompt overhead. On 3-item tasks, that's MORE than the savings. Break-even is ~15 items where savings exceed overhead.
+STEP|32|Output compression:** Ask the LLM to respond in structured format (`id\|action\|reason`) instead of prose. This cuts completion tokens by 60%+ on data tasks. On reasoning tasks, do NOT compress output
+STEP|33|live API calls, 4 task types, DeepSeek API:**
+STEP|34|Key finding:** 80%+ is achievable on data-processing workloads (84.5% verified on 50-item filter with full bidirectional). On mixed workloads where reasoning tasks dominate, expect 35-50%. Very short 
+STEP|35|The architecture works.** The algorithms are verified (Bloom, MinHash, TF-IDF, PriorityQueue, BFS — all passed). CIE injected context in all 16 calls. Zero TypeScript errors. Zero API failures.
+STEP|36|Rule: Never claim 80% without qualifying task type.** Data tasks hit it. Reasoning tasks don't. Short tasks break even. Lead with the range and explain why.
+STEP|37|`
+STEP|38|⚠️ HONESTY CHECK:** These are REASONING tasks where the LLM wrote 4,000-5,000 character strategic memos. The output IS the value — you cannot compress it. The 29.4% total savings is real and valuable,
+STEP|39|NEVER send template IDs to the LLM.** The compressor must RESOLVE templates inline before sending. The LLM receives the full resolved text, not `t1` or `{p}` placeholders.
+STEP|40|WRONG:** `D\|d001\|0\|0\|t1\|C\|0` — LLM sees template ID, guesses values
+STEP|41|RIGHT:** `D\|d001\|0\|0\|Stripe raised fees 15%: 12450txns/mo\|C\|0` — LLM sees real data
+STEP|42|**Users will say "not impressed" if you quote prompt-only savings.** Always report TOTAL token savings (prompt + completion). The 61.4% prompt-only figure on the Stripe crisis was actually 29.4% total
+STEP|43|**Template IDs cause hallucinations** — NEVER send `t1`, `t2` to LLM. Always resolve templates inline first. The LLM will guess values if it sees placeholders. Proven in benchmark: LLM guessed $50 avg
+STEP|44|**Positional fragility** — if field order changes in `dense()`, all consumers break. Never reorder schema fields without updating all callers.
+STEP|45|**Compression overhead** — dictionary/template definitions cost ~400 tokens. On ≤10 item tasks, overhead > savings. Use adaptive selection.
+STEP|46|**Output compression is task-dependent** — asking for TOON output on a strategic memo destroys the value (the prose IS the answer). Only use bidirectional on structured data tasks (filtering, classifi
+STEP|47|**Pipe in text** — must be escaped as `\\|` in pipe formats. `toon.dense()` handles this automatically.
+STEP|48|**Not for external APIs** — only use TOON internally between YVON OS components and LLM prompts.
+STEP|49|**Claude vs DeepSeek** — `toon.claude()` format is designed for Claude's prose-optimized tokenizer. On DeepSeek, `toon.dense()` is better.
+STEP|50|**Always verify with real API calls** — tokenizer estimates (tiktoken) differ from actual API token counts. The live benchmarks in references/benchmarks.md are the source of truth.
+STEP|51|**Small datasets need TOON, not compression** — the break-even where compression beats plain TOON is ~15 items.
+STEP|52|**Benchmark on REAL workloads, not synthetic ones.** Run benchmarks on the actual agent cron tasks (Henry filtering 50 real decisions), not contrived 3-item examples. The savings profiles are dramatic
+STEP|53|**ALL agent data uses `toon.dense()` or compressor** — never raw JSON
+STEP|54|**Adaptive selection:** ≤10 items → toon.dense, 10-30 → +dictionary, 30+ → +templates, repeat → delta
+STEP|55|**Templates must be RESOLVED before sending to LLM** — never send template IDs
+STEP|56|**API responses default to JSON** — add `?format=toon` for agent consumers
+STEP|57|**dataBlock field** on `ClaudeRequestBody` is the injection point
+STEP|58|**System prompt auto-injects TOON parsing instruction** when dataBlock is present
+PIT|**Users will say "not impressed" if you quote prompt-only savings.** Always report TOTAL token savings (prompt + completion). The 61.4% prompt-only figure on the Stripe crisis was actually 29.4% total
+PIT|**Template IDs cause hallucinations** — NEVER send `t1`, `t2` to LLM. Always resolve templates inline first. The LLM will guess values if it sees placeholders. Proven in benchmark: LLM guessed $50 avg
+PIT|**Positional fragility** — if field order changes in `dense()`, all consumers break. Never reorder schema fields without updating all callers.
+PIT|**Compression overhead** — dictionary/template definitions cost ~400 tokens. On ≤10 item tasks, overhead > savings. Use adaptive selection.
+PIT|**Output compression is task-dependent** — asking for TOON output on a strategic memo destroys the value (the prose IS the answer). Only use bidirectional on structured data tasks (filtering, classifi
+PIT|**Pipe in text** — must be escaped as `\\|` in pipe formats. `toon.dense()` handles this automatically.
+PIT|**Not for external APIs** — only use TOON internally between YVON OS components and LLM prompts.
+PIT|**Claude vs DeepSeek** — `toon.claude()` format is designed for Claude's prose-optimized tokenizer. On DeepSeek, `toon.dense()` is better.
+PIT|**Always verify with real API calls** — tokenizer estimates (tiktoken) differ from actual API token counts. The live benchmarks in references/benchmarks.md are the source of truth.
+PIT|**Small datasets need TOON, not compression** — the break-even where compression beats plain TOON is ~15 items.
+PIT|**Benchmark on REAL workloads, not synthetic ones.** Run benchmarks on the actual agent cron tasks (Henry filtering 50 real decisions), not contrived 3-item examples. The savings profiles are dramatic

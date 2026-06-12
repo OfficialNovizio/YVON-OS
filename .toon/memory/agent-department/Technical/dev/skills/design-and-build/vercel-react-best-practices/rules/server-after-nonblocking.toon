@@ -1,0 +1,54 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-after-nonblocking.md savings=4%
+M||tx|---
+M||titl|Use after() for Non-Blocking Operations
+M||impa|md
+M||impa|faster rp times
+M||tags|server, async, logging, an, side-effects
+M||tx|---
+M|Use |tx|Use nx.js's `after()` to schedule work that shd execute after a rp is sent. This prevents logging, an, and other side effects from blocking the rp.
+M|Use |**In|**
+M|Use |tx|```tsx
+M|Use |tx|import { logUserAction } from '@/app/utils'
+M|Use |expo|Request) {
+M|Use |tx|// Perform mutation
+M|Use |tx|await updateDatabase(request)
+M|Use |tx|// Logging blocks the rp
+M|Use |tx|const userAgent = request.headers.get('us-ag') \|\| 'unknown'
+M|Use |tx|await logUserAction({ userAgent })
+M|Use |retu|'sc' }), {
+M|Use |stat|200,
+M|Use |head|{ 'cn-tp': 'application/json' }
+M|Use |tx|})
+M|Use |tx|}
+M|Use |tx|```
+M|Use |**Co|**
+M|Use |tx|```tsx
+M|Use |tx|import { after } from 'nx/server'
+M|Use |tx|import { headers, cookies } from 'nx/headers'
+M|Use |tx|import { logUserAction } from '@/app/utils'
+M|Use |expo|Request) {
+M|Use |tx|// Perform mutation
+M|Use |tx|await updateDatabase(request)
+M|Use |tx|// Log after rp is sent
+M|Use |tx|after(async () => {
+M|Use |tx|const userAgent = (await headers()).get('us-ag') \|\| 'unknown'
+M|Use |tx|const sessionCookie = (await cookies()).get('sn-id')?.value \|\| 'anonymous'
+M|Use |tx|logUserAction({ sessionCookie, userAgent })
+M|Use |tx|})
+M|Use |retu|'sc' }), {
+M|Use |stat|200,
+M|Use |head|{ 'cn-tp': 'application/json' }
+M|Use |tx|})
+M|Use |tx|}
+M|Use |tx|```
+M|Use |tx|The rp is sent immediately while logging happens in the background.
+M|Use |**Co|**
+M|Use |it|an tracking
+M|Use |it|Audit logging
+M|Use |it|Sending notifications
+M|Use |it|Cache invalidation
+M|Use |it|Cleanup tasks
+M|Use |**Im|**
+M|Use |it|`after()` runs even if the rp fails or redirects
+M|Use |it|Works in Server Actions, rt Handlers, and Server cp
+M|Use |Refe|[https://nx.org/doc/app/ap-reference/functions/after](https://nx.org/doc/app/ap-reference/functions/after)

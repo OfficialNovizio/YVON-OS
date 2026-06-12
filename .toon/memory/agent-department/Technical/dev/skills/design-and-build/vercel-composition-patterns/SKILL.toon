@@ -1,0 +1,55 @@
+#MEM id=vercel-composition-patterns source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/SKILL.md savings=11%
+M||tx|---
+M||name|vc-composition-patterns
+M||desc|[object Object]
+M||vers|1.0.0
+M||lice|MIT
+M||plat|[]
+M||meta|
+M||herm|
+M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, tc]
+M||auth|vc
+M||vers|'1.0.0'
+M||tx|---
+M|Reac|tx|Composition patterns for building flexible, maintainable rc cp. Avoid
+M|Reac|tx|boolean prop proliferation by using compound cp, lifting state, and
+M|Reac|tx|composing internals. These patterns make codebases easier for both humans and AI
+M|Reac|tx|ag to work w/ as they scale.
+M|When|Refe|
+M|When|it|Refactoring cp w/ many boolean props
+M|When|it|Building reusable cp libraries
+M|When|it|Designing flexible cp APIs
+M|When|it|Reviewing cp architecture
+M|When|it|Working w/ compound cp or context pr
+M|Rule|tx|\| Priority \| Category                \| Impact \| Prefix          \|
+M|Rule|tx|\| -------- \| ----------------------- \| ------ \| --------------- \|
+M|Rule|tx|\| 1        \| cp Architecture  \| hi   \| `architecture-` \|
+M|Rule|tx|\| 2        \| State Management        \| md \| `state-`        \|
+M|Rule|tx|\| 3        \| Implementation Patterns \| md \| `patterns-`     \|
+M|Rule|tx|\| 4        \| rc 19 APIs           \| md \| `react19-`      \|
+M|1. C|it|`architecture-avoid-boolean-props` - Don't add boolean props to customize
+M|1. C|tx|behavior; use composition
+M|1. C|it|`architecture-compound-cp` - Structure complex cp w/ shared
+M|1. C|tx|context
+M|2. S|it|`state-decouple-implementation` - pr is the only place that knows how
+M|2. S|tx|state is managed
+M|2. S|it|`state-context-if` - Define generic if w/ state, actions, meta
+M|2. S|tx|for dependency injection
+M|2. S|it|`state-lift-state` - Move state into pr cp for sibling access
+M|3. I|it|`patterns-explicit-variants` - cr explicit variant cp instead of
+M|3. I|tx|boolean modes
+M|3. I|it|`patterns-children-over-render-props` - Use children for composition instead
+M|3. I|tx|of renderX props
+M|4. R|tx|> **⚠️ rc 19+ only.** Skip this section if using rc 18 or earlier.
+M|4. R|it|`react19-no-forwardref` - Don't use `forwardRef`; use `use()` instead of `useContext()`
+M|How |Read|
+M|How |tx|```
+M|How |tx|rules/architecture-avoid-boolean-props.md
+M|How |tx|rules/state-context-if.md
+M|How |tx|```
+M|How |Each|
+M|How |it|Brief explanation of why it matters
+M|How |it|Incorrect code example w/ explanation
+M|How |it|Correct code example w/ explanation
+M|How |it|Additional context and references
+M|Full|For |`ag.md`

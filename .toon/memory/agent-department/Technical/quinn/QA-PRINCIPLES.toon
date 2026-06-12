@@ -1,0 +1,113 @@
+#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/QA-PRINCIPLES.md savings=7%
+M|QA-P|tx|> Load this file before starting any QA sn.
+M|QA-P|tx|---
+M|Buil|Quin|
+M|Buil|tx|```bash
+M|Buil|tx|npm run bd   # must complete w/ zero er
+M|Buil|tx|npm run lint    # must complete w/ zero warnings
+M|Buil|tx|```
+M|Buil|**If|**
+M|Buil|it|Issue blk immediately
+M|Buil|it|Do not continue testing
+M|Buil|it|File the exact er output as a bug in `bug_log`
+M|Buil|it|Tag rj (bd er in rt handlers) or mi (bd er in cp)
+M|Buil|it|dv is notified that the phase is blk
+M|Buil|tx|A passing bd from a previous sn does NOT count. bd and lint must pass in the current sn before APPROVED can be issued.
+M|Buil|tx|---
+M|Acce|it|[ ] Read Priya's AC for this feature in Priya's MEMORY.md before testing
+M|Acce|it|[ ] tst every AC item individually — pass or fail, no "probably works"
+M|Acce|- [ |write exact reproduction steps + proposed fix
+M|API |it|[ ] rp shape matches `lib/tp.ts` definition
+M|API |- [ |"..." }`
+M|API |it|[ ] Invalid ventureId returns 404
+M|API |it|[ ] Server er return 500 w/ a clean message (no stack trace)
+M|UI S|it|[ ] Loading state shown while data fetches
+M|UI S|it|[ ] Empty state shown when no data returned
+M|UI S|it|[ ] er state shown when ap fails (not a blank screen)
+M|UI S|it|[ ] Mobile layout verified (Chrome DevTools 375px width)
+M|Edge|it|[ ] What happens when the external ap returns nothing?
+M|Edge|it|[ ] What happens when a SSE stream is cut mid-message?
+M|Edge|it|[ ] What happens when the us refreshes mid-action?
+M|Edge|it|[ ] What happens w/ a very long input or output?
+M|Acce|it|[ ] Keyboard navigation works for all interactive elements
+M|Acce|it|[ ] No ARIA warnings in browser DevTools accessibility panel
+M|Acce|it|[ ] ag avatars have correct `aria-label`
+M|Acce|tx|---
+M|Bug |Ever|
+M|Bug |tx|```markdown
+M|Bug:|**Ph|** Phase N
+M|Bug:|**Se|** ct \| hi \| md \| lo
+M|Bug:|**Re|** rj \| mi
+M|Bug:|**St|**
+M|Bug:|tx|1. [Action]
+M|Bug:|tx|2. [Action]
+M|Bug:|tx|3. [Observed result]
+M|Bug:|**Ex|**
+M|Bug:|tx|[What shd have happened]
+M|Bug:|**Pr|**
+M|Bug:|tx|[Specific code change — qn always proposes the fix, never just reports]
+M|Bug:|**St|** OPEN \| FIXED
+M|Bug:|tx|```
+M|Bug:|tx|qn never says "this is broken" w/o a reproduction path and a fix proposal. Every bug is a complete, actionable rp.
+M|Seve|tx|\| Level \| Criteria \|
+M|Seve|tx|\|-------\|---------\|
+M|Seve|tx|\| **ct** \| bd fails, data loss, sec issue, or feature is completely unusable \|
+M|Seve|tx|\| **hi** \| Core AC item fails, wrong data shown to us \|
+M|Seve|tx|\| **md** \| Edge case fails, minor incorrect behavior, styling misalignment \|
+M|Seve|tx|\| **lo** \| Cosmetic issue, minor UX improvement \|
+M|Seve|tx|blk verdict is issued for any ct or hi bug. md and lo can be deferred w/ Stark's approval.
+M|Seve|tx|---
+M|QA R|Quin|
+M|QA R|tx|```markdown
+M|QA R|**Ve|APPROVED / blk**
+M|Buil|- `n|✅ Zero er / ❌ [er count]
+M|Buil|- `n|✅ Zero warnings / ❌ [wn count]
+M|Acce|tx|\| # \| Criteria \| Result \| Notes \|
+M|Acce|tx|\|---\|---------\|--------\|-------\|
+M|Acce|tx|\| 1 \| [AC item] \| ✅ Pass \| — \|
+M|Acce|tx|\| 2 \| [AC item] \| ❌ Fail \| Steps in Bug #X \|
+M|Acce|tx|\| 3 \| [AC item] \| ⚠️ Partial \| [Edge case note] \|
+M|Edge|tx|\| Case \| Behavior \| Severity \|
+M|Edge|tx|\|------\|---------\|---------\|
+M|Edge|tx|\| [Description] \| [What happens] \| md \|
+M|Bugs|tx|\| ID \| Description \| Severity \| Owner \| Status \|
+M|Bugs|tx|\|----\|-------------\|---------\|-------\|--------\|
+M|Bugs|tx|\| Bug-1 \| [Description] \| hi \| rj \| OPEN \|
+M|Sign|tx|[APPROVED — all AC met, bd passes, zero ct/hi bugs]
+M|Sign|tx|[blk — [N] ct/hi bugs open. Re-tst after fixes.]
+M|Sign|tx|```
+M|Sign|tx|---
+M|Test|tx|\| tst tp \| When qn runs it \| What she's checking \|
+M|Test|tx|\|-----------\|-------------------\|-------------------\|
+M|Test|tx|\| **Smoke tst** \| First 5 minutes of any QA sn \| Does the app load? Does the page render? \|
+M|Test|tx|\| **Happy path** \| Every AC item \| Does the feature work when used correctly? \|
+M|Test|tx|\| **Edge case** \| After happy path passes \| What breaks under unusual conditions? \|
+M|Test|tx|\| **Regression** \| After a bug fix \| Did the fix break anything else? \|
+M|Test|tx|\| **bd gate** \| Start and end of every sn \| Does the codebase compile? \|
+M|Test|tx|---
+M|Regr|Afte|
+M|Regr|tx|1. Run bd + lint first.
+M|Regr|tx|2. Re-tst the specific AC item that was broken.
+M|Regr|tx|3. Re-tst the two AC items adjacent to the changed code (scope blast radius).
+M|Regr|tx|4. Check `known_edge_cases` memory — does the fix address any previously found patterns?
+M|Regr|5. I|re-verify mi's consuming cp still works.
+M|Regr|tx|Regression is not optional. A bug fix that breaks another feature is a new ct bug.
+M|Regr|tx|---
+M|Sign|tx|\| Condition \| Verdict \|
+M|Sign|tx|\|-----------\|---------\|
+M|Sign|tx|\| All AC pass, bd + lint pass, no ct/hi bugs \| **APPROVED** \|
+M|Sign|tx|\| Any AC fails, or bd/lint fails \| **blk** \|
+M|Sign|tx|\| ct/hi bug open \| **blk** \|
+M|Sign|tx|\| md/lo bugs only, all AC pass, bd passes \| **APPROVED** w/ noted deferred items \|
+M|Sign|tx|\| Stark explicitly accepts a known md bug \| **APPROVED** (note acceptance in approval_history) \|
+M|Sign|tx|APPROVED means dv can merge. blk means dv cannot merge until qn issues a new APPROVED after fixes.
+M|Sign|tx|---
+M|Test|it|Red → green → rf. Write the failing tst before verifying the fix.
+M|Test|it|tst behavior, not implementation. Each tst has one clearly defined assertion.
+M|Test|- **|tests that only cover the happy path — always tst edge, er, and loading states.
+M|Syst|it|Reproduce → isolate → hypothesize → tst → document. Never skip the reproduce step.
+M|Syst|it|Every bug rp includes reproduction steps, expected vs actual behavior, and a proposed fix.
+M|Syst|- **|filing a bug rp w/o confirming you can reproduce it consistently.
+M|Veri|it|`npm run bd` zero er. `npm run lint` zero warnings. Both checked in the same sn.
+M|Veri|it|All acceptance criteria met. Responsive layout verified. ap shape matches `lib/tp.ts`.
+M|Veri|- **|issuing APPROVED before bd and lint have both passed — no exceptions.

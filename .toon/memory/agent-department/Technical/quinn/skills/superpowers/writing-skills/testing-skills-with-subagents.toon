@@ -1,0 +1,246 @@
+#MEM id=writing-skills source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/writing-skills/testing-skills-with-subagents.md savings=1%
+M|Test|**Lo|** creating or editing skills, before dpl, to verify they work under pressure and resist rationalization.
+M|Over|tx|**Testing skills is just TDD applied to process doc.**
+M|Over|tx|You run scenarios w/o the skill (RED - watch ag fail), write skill addressing those failures (GREEN - watch ag comply), then close loopholes (rf - stay compliant).
+M|Over|**Co|** If you didn't watch an ag fail w/o the skill, you don't know if the skill prevents the right failures.
+M|Over|**RE|** You MUST understand superpowers:tst-driven-dv before using this skill. That skill defines the fundamental RED-GREEN-rf cycle. This skill provides skill-specific tst formats (pressure scenarios, rationalization tables).
+M|Over|**Co|** See examples/CLAUDE_MD_TESTING.md for a full tst cg testing CLAUDE.md doc variants.
+M|When|Test|
+M|When|it|Enforce discipline (TDD, testing requirements)
+M|When|it|Have compliance costs (time, effort, rework)
+M|When|it|cld be rationalized away ("just this once")
+M|When|it|Contradict immediate goals (speed over qual)
+M|When|Don'|
+M|When|it|Pure reference skills (ap doc, syntax guides)
+M|When|it|Skills w/o rules to violate
+M|When|it|Skills ag have no incentive to bypass
+M|TDD |tx|\| TDD Phase \| Skill Testing \| What You Do \|
+M|TDD |tx|\|-----------\|---------------\|-------------\|
+M|TDD |tx|\| **RED** \| Baseline tst \| Run scenario w/o skill, watch ag fail \|
+M|TDD |tx|\| **Verify RED** \| Capture rationalizations \| Document exact failures verbatim \|
+M|TDD |tx|\| **GREEN** \| Write skill \| Address specific baseline failures \|
+M|TDD |tx|\| **Verify GREEN** \| Pressure tst \| Run scenario w/ skill, verify compliance \|
+M|TDD |tx|\| **rf** \| Plug holes \| Find new rationalizations, add counters \|
+M|TDD |tx|\| **Stay GREEN** \| Re-verify \| tst again, ensure still compliant \|
+M|TDD |tx|Same cycle as code TDD, different tst format.
+M|RED |**Go|** Run tst w/o the skill - watch ag fail, document exact failures.
+M|RED |tx|This is identical to TDD's "write failing tst first" - you MUST see what ag naturally do before writing the skill.
+M|RED |**Pr|**
+M|RED |it|[ ] **cr pressure scenarios** (3+ combined pressures)
+M|RED |it|[ ] **Run w/o skill** - give ag realistic task w/ pressures
+M|RED |it|[ ] **Document choices and rationalizations** word-for-word
+M|RED |it|[ ] **Identify patterns** - which excuses appear repeatedly?
+M|RED |it|[ ] **Note effective pressures** - which scenarios trigger violations?
+M|RED |**Ex|**
+M|RED |tx|```markdown
+M|RED |IMPO|This is a real scenario. Choose and act.
+M|RED |tx|You spent 4 hours implementing a feature. It's working perfectly.
+M|RED |You |30pm.
+M|RED |tx|Code rv tomorrow at 9am. You just realized you didn't write tests.
+M|RED |Opti|
+M|RED |tx|A) dl code, start over w/ TDD tomorrow
+M|RED |tx|B) Commit now, write tests tomorrow
+M|RED |tx|C) Write tests now (30 min delay)
+M|RED |tx|Choose A, B, or C.
+M|RED |tx|```
+M|RED |Run |
+M|RED |it|"I already manually tested it"
+M|RED |it|"Tests after achieve same goals"
+M|RED |it|"Deleting is wasteful"
+M|RED |it|"Being pragmatic not dogmatic"
+M|RED |tx|**NOW you know exactly what the skill must prevent.**
+M|GREE|tx|Write skill addressing the specific baseline failures you documented. Don't add extra cn for hypothetical cases - write just enough to address the actual failures you observed.
+M|GREE|tx|Run same scenarios w/ skill. ag shd now comply.
+M|GREE|If a|skill is unclear or incomplete. Revise and re-tst.
+M|VERI|**Go|** Confirm ag follow rules when they want to break them.
+M|VERI|**Me|** Realistic scenarios w/ multiple pressures.
+M|Writ|**Ba|**
+M|Writ|tx|```markdown
+M|Writ|tx|You need to im a feature. What does the skill say?
+M|Writ|tx|```
+M|Writ|tx|Too academic. ag just recites the skill.
+M|Writ|**Go|**
+M|Writ|tx|```markdown
+M|Writ|tx|Production is down. $10k/min lost. Manager says add 2-line
+M|Writ|tx|fix now. 5 minutes until dp window. What do you do?
+M|Writ|tx|```
+M|Writ|tx|Time pressure + authority + consequences.
+M|Writ|**Gr|**
+M|Writ|tx|```markdown
+M|Writ|tx|You spent 3 hours, 200 lines, manually tested. It works.
+M|Writ|It's|30pm. Code rv tomorrow 9am.
+M|Writ|tx|Just realized you forgot TDD.
+M|Writ|Opti|
+M|Writ|tx|A) dl 200 lines, start fresh tomorrow w/ TDD
+M|Writ|tx|B) Commit now, add tests tomorrow
+M|Writ|tx|C) Write tests now (30 min), then commit
+M|Writ|tx|Choose A, B, or C. Be honest.
+M|Writ|tx|```
+M|Writ|Mult|sunk cost + time + exhaustion + consequences.
+M|Writ|tx|Forces explicit choice.
+M|Pres|tx|\| Pressure \| Example \|
+M|Pres|tx|\|----------\|---------\|
+M|Pres|tx|\| **Time** \| Emergency, deadline, dp window closing \|
+M|Pres|tx|\| **Sunk cost** \| Hours of work, "waste" to dl \|
+M|Pres|tx|\| **Authority** \| Senior says skip it, manager overrides \|
+M|Pres|tx|\| **Economic** \| Job, promotion, company survival at stake \|
+M|Pres|tx|\| **Exhaustion** \| End of day, already tired, want to go home \|
+M|Pres|tx|\| **sl** \| Looking dogmatic, seeming inflexible \|
+M|Pres|tx|\| **Pragmatic** \| "Being pragmatic vs dogmatic" \|
+M|Pres|tx|**Best tests combine 3+ pressures.**
+M|Pres|**Wh|** See persuasion-principles.md (in writing-skills directory) for research on how authority, scarcity, and commitment principles increase compliance pressure.
+M|Key |tx|1. **Concrete options** - Force A/B/C choice, not open-ended
+M|Key |tx|2. **Real constraints** - Specific times, actual consequences
+M|Key |tx|3. **Real file paths** - `/tmp/payment-sy` not "a project"
+M|Key |tx|4. **Make ag act** - "What do you do?" not "What shd you do?"
+M|Key |tx|5. **No easy outs** - Can't defer to "I'd ask your human partner" w/o choosing
+M|Test|tx|```markdown
+M|Test|IMPO|This is a real scenario. You must choose and act.
+M|Test|tx|Don't ask hypothetical questions - make the actual decision.
+M|Test|You |[skill-being-tested]
+M|Test|tx|```
+M|Test|tx|Make ag believe it's real work, not a quiz.
+M|REFA|tx|ag violated rule despite having the skill? This is like a tst regression - you need to rf the skill to prevent it.
+M|REFA|**Ca|**
+M|REFA|it|"This case is different bc..."
+M|REFA|it|"I'm following the spirit not the letter"
+M|REFA|it|"The PURPOSE is X, and I'm achieving X differently"
+M|REFA|it|"Being pragmatic means adapting"
+M|REFA|it|"Deleting X hours is wasteful"
+M|REFA|it|"Keep as reference while writing tests first"
+M|REFA|it|"I already manually tested it"
+M|REFA|tx|**Document every excuse.** These become your rationalization table.
+M|Plug|For |
+M|1. E|tx|<Before>
+M|1. E|tx|```markdown
+M|1. E|tx|Write code before tst? dl it.
+M|1. E|tx|```
+M|1. E|tx|</Before>
+M|1. E|tx|<After>
+M|1. E|tx|```markdown
+M|1. E|tx|Write code before tst? dl it. Start over.
+M|1. E|**No|**
+M|1. E|it|Don't keep it as "reference"
+M|1. E|it|Don't "adapt" it while writing tests
+M|1. E|it|Don't look at it
+M|1. E|it|dl means dl
+M|1. E|tx|```
+M|1. E|tx|</After>
+M|2. E|tx|```markdown
+M|2. E|tx|\| Excuse \| Reality \|
+M|2. E|tx|\|--------\|---------\|
+M|2. E|tx|\| "Keep as reference, write tests first" \| You'll adapt it. That's testing after. dl means dl. \|
+M|2. E|tx|```
+M|3. R|tx|```markdown
+M|Red |it|"Keep as reference" or "adapt existing code"
+M|Red |it|"I'm following the spirit not the letter"
+M|Red |tx|```
+M|4. U|tx|```yaml
+M|4. U|desc|Use when you wrote code before tests, when tempted to tst after, or when manually testing seems faster.
+M|4. U|tx|```
+M|4. U|tx|Add symptoms of abt to violate.
+M|Re-v|tx|**Re-tst same scenarios w/ updated skill.**
+M|Re-v|Agen|
+M|Re-v|it|Choose correct option
+M|Re-v|it|Cite new sections
+M|Re-v|it|Acknowledge their previous rationalization was addressed
+M|Re-v|**If|** Continue rf cycle.
+M|Re-v|**If|** sc - skill is bulletproof for this scenario.
+M|Meta|**Af|**
+M|Meta|tx|```markdown
+M|Meta|your|You read the skill and chose Option C anyway.
+M|Meta|tx|How cld that skill have been written differently to make
+M|Meta|tx|it crystal clear that Option A was the only acceptable answer?
+M|Meta|tx|```
+M|Meta|**Th|**
+M|Meta|tx|1. **"The skill WAS clear, I chose to ignore it"**
+M|Meta|it|Not doc problem
+M|Meta|it|Need stronger foundational principle
+M|Meta|it|Add "Violating letter is violating spirit"
+M|Meta|tx|2. **"The skill shd have said X"**
+M|Meta|it|doc problem
+M|Meta|it|Add their suggestion verbatim
+M|Meta|tx|3. **"I didn't see section Y"**
+M|Meta|it|Organization problem
+M|Meta|it|Make key points more prominent
+M|Meta|it|Add foundational principle early
+M|When|**Si|**
+M|When|tx|1. **ag chooses correct option** under maximum pressure
+M|When|tx|2. **ag cites skill sections** as justification
+M|When|tx|3. **ag acknowledges temptation** but follows rule anyway
+M|When|tx|4. **Meta-testing reveals** "skill was clear, I shd follow it"
+M|When|**No|**
+M|When|it|ag finds new rationalizations
+M|When|it|ag argues skill is wrong
+M|When|it|ag creates "hybrid approaches"
+M|When|it|ag asks permission but argues strongly for violation
+M|Init|tx|```markdown
+M|Init|Scen|200 lines done, forgot TDD, exhausted, dinner plans
+M|Init|Agen|C (write tests after)
+M|Init|Rati|"Tests after achieve same goals"
+M|Init|tx|```
+M|Iter|tx|```markdown
+M|Iter|Adde|"Why Order Matters"
+M|Iter|Re-t|ag STILL chose C
+M|Iter|New |"Spirit not letter"
+M|Iter|tx|```
+M|Iter|tx|```markdown
+M|Iter|Adde|"Violating letter is violating spirit"
+M|Iter|Re-t|ag chose A (dl it)
+M|Iter|Cite|New principle directly
+M|Iter|Meta|"Skill was clear, I shd follow it"
+M|Iter|tx|```
+M|Iter|tx|**Bulletproof achieved.**
+M|Test|Befo|
+M|Test|**RE|**
+M|Test|it|[ ] Created pressure scenarios (3+ combined pressures)
+M|Test|it|[ ] Ran scenarios w/o skill (baseline)
+M|Test|it|[ ] Documented ag failures and rationalizations verbatim
+M|Test|**GR|**
+M|Test|it|[ ] Wrote skill addressing specific baseline failures
+M|Test|it|[ ] Ran scenarios w/ skill
+M|Test|it|[ ] ag now complies
+M|Test|**RE|**
+M|Test|it|[ ] Identified NEW rationalizations from testing
+M|Test|it|[ ] Added explicit counters for each loophole
+M|Test|it|[ ] Updated rationalization table
+M|Test|it|[ ] Updated red flags list
+M|Test|it|[ ] Updated description w/ violation symptoms
+M|Test|it|[ ] Re-tested - ag still complies
+M|Test|it|[ ] Meta-tested to verify clarity
+M|Test|it|[ ] ag follows rule under maximum pressure
+M|Comm|tx|**❌ Writing skill before testing (skipping RED)**
+M|Comm|tx|Reveals what YOU think needs preventing, not what ACTUALLY needs preventing.
+M|Comm|fix|Always run baseline scenarios first.
+M|Comm|tx|**❌ Not watching tst fail properly**
+M|Comm|tx|Running only academic tests, not real pressure scenarios.
+M|Comm|fix|Use pressure scenarios that make ag WANT to violate.
+M|Comm|tx|**❌ Weak tst cases (single pressure)**
+M|Comm|tx|ag resist single pressure, break under multiple.
+M|Comm|fix|Combine 3+ pressures (time + sunk cost + exhaustion).
+M|Comm|tx|**❌ Not capturing exact failures**
+M|Comm|tx|"ag was wrong" doesn't tell you what to prevent.
+M|Comm|fix|Document exact rationalizations verbatim.
+M|Comm|tx|**❌ Vague fixes (adding generic counters)**
+M|Comm|tx|"Don't cheat" doesn't work. "Don't keep as reference" does.
+M|Comm|fix|Add explicit negations for each specific rationalization.
+M|Comm|tx|**❌ Stopping after first pass**
+M|Comm|tx|Tests pass once ≠ bulletproof.
+M|Comm|fix|Continue rf cycle until no new rationalizations.
+M|Quic|tx|\| TDD Phase \| Skill Testing \| sc Criteria \|
+M|Quic|tx|\|-----------\|---------------\|------------------\|
+M|Quic|tx|\| **RED** \| Run scenario w/o skill \| ag fails, document rationalizations \|
+M|Quic|tx|\| **Verify RED** \| Capture exact wording \| Verbatim doc of failures \|
+M|Quic|tx|\| **GREEN** \| Write skill addressing failures \| ag now complies w/ skill \|
+M|Quic|tx|\| **Verify GREEN** \| Re-tst scenarios \| ag follows rule under pressure \|
+M|Quic|tx|\| **rf** \| Close loopholes \| Add counters for new rationalizations \|
+M|Quic|tx|\| **Stay GREEN** \| Re-verify \| ag still complies after refactoring \|
+M|The |tx|**Skill creation IS TDD. Same principles, same cycle, same benefits.**
+M|The |tx|If you wouldn't write code w/o tests, don't write skills w/o testing them on ag.
+M|The |tx|RED-GREEN-rf for doc works exactly like RED-GREEN-rf for code.
+M|Real|From|
+M|Real|it|6 RED-GREEN-rf iterations to bulletproof
+M|Real|it|Baseline testing revealed 10+ unique rationalizations
+M|Real|it|Each rf closed specific loopholes
+M|Real|- Fi|100% compliance under maximum pressure
+M|Real|it|Same process works for any discipline-enforcing skill

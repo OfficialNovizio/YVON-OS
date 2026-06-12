@@ -1,0 +1,26 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/bundle-dynamic-imports.md savings=4%
+M||tx|---
+M||titl|Dynamic Imports for Heavy cp
+M||impa|ct
+M||impa|directly affects TTI and LCP
+M||tags|bundle, dynamic-import, code-splitting, nx-dynamic
+M||tx|---
+M|Dyna|tx|Use `nx/dynamic` to lazy-load large cp not needed on initial render.
+M|Dyna|**In|**
+M|Dyna|tx|```tsx
+M|Dyna|tx|import { MonacoEditor } from './monaco-editor'
+M|Dyna|func|{ code: string }) {
+M|Dyna|tx|return <MonacoEditor value={code} />
+M|Dyna|tx|}
+M|Dyna|tx|```
+M|Dyna|**Co|**
+M|Dyna|tx|```tsx
+M|Dyna|tx|import dynamic from 'nx/dynamic'
+M|Dyna|tx|const MonacoEditor = dynamic(
+M|Dyna|tx|() => import('./monaco-editor').then(m => m.MonacoEditor),
+M|Dyna|{ ss|false }
+M|Dyna|tx|)
+M|Dyna|func|{ code: string }) {
+M|Dyna|tx|return <MonacoEditor value={code} />
+M|Dyna|tx|}
+M|Dyna|tx|```

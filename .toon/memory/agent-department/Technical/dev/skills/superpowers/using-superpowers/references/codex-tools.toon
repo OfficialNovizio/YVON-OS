@@ -1,0 +1,66 @@
+#MEM id=references source=/root/yvon/agent-department/Technical/dev/skills/superpowers/using-superpowers/references/codex-tools.md savings=4%
+M|Code|Skil|
+M|Code|tx|\| Skill references \| Codex equivalent \|
+M|Code|tx|\|-----------------\|------------------\|
+M|Code|tx|\| `Task` tool (dispatch subagent) \| `spawn_agent` (see [Named ag dispatch](#named-ag-dispatch)) \|
+M|Code|tx|\| Multiple `Task` calls (parallel) \| Multiple `spawn_agent` calls \|
+M|Code|tx|\| Task returns result \| `wait` \|
+M|Code|tx|\| Task completes automatically \| `close_agent` to free slot \|
+M|Code|tx|\| `TodoWrite` (task tracking) \| `update_plan` \|
+M|Code|tx|\| `Skill` tool (invoke a skill) \| Skills load natively — just follow the instructions \|
+M|Code|tx|\| `Read`, `Write`, `Edit` (files) \| Use your native file tools \|
+M|Code|tx|\| `Bash` (run commands) \| Use your native shell tools \|
+M|Suba|Add |
+M|Suba|tx|```toml
+M|Suba|tx|[features]
+M|Suba|tx|multi_agent = true
+M|Suba|tx|```
+M|Suba|tx|This enables `spawn_agent`, `wait`, and `close_agent` for skills like `dispatching-parallel-ag` and `subagent-driven-dv`.
+M|Name|Clau|code-reviewer`.
+M|Name|tx|Codex does not have a named ag registry — `spawn_agent` creates generic ag
+M|Name|tx|from built-in roles (`default`, `explorer`, `worker`).
+M|Name|When|
+M|Name|tx|1. Find the ag's pm file (e.g., `ag/code-reviewer.md` or the skill's
+M|Name|tx|local pm template like `code-qual-reviewer-pm.md`)
+M|Name|tx|2. Read the pm cn
+M|Name|tx|3. Fill any template placeholders (`{BASE_SHA}`, `{WHAT_WAS_IMPLEMENTED}`, etc.)
+M|Name|tx|4. Spawn a `worker` ag w/ the filled cn as the `message`
+M|Name|tx|\| Skill instruction \| Codex equivalent \|
+M|Name|tx|\|-------------------\|------------------\|
+M|Name|| `T|code-reviewer)` \| `spawn_agent(agent_type="worker", message=...)` w/ `code-reviewer.md` cn \|
+M|Name|tx|\| `Task tool (general-purpose)` w/ inline pm \| `spawn_agent(message=...)` w/ the same pm \|
+M|Mess|tx|The `message` parameter is us-level input, not a sy pm. Structure it
+M|Mess|for |
+M|Mess|tx|```
+M|Mess|tx|Your task is to perform the following. Follow the instructions below exactly.
+M|Mess|tx|<ag-instructions>
+M|Mess|tx|[filled pm cn from the ag's .md file]
+M|Mess|tx|</ag-instructions>
+M|Mess|tx|Execute this now. Output ONLY the structured rp following the format
+M|Mess|tx|specified in the instructions above.
+M|Mess|tx|```
+M|Mess|it|Use task-delegation framing ("Your task is...") rather than persona framing ("You are...")
+M|Mess|it|Wrap instructions in XML tags — the md treats tagged blocks as authoritative
+M|Mess|it|End w/ an explicit execution directive to prevent summarization of the instructions
+M|When|tx|This approach compensates for Codex's plugin sy not yet supporting an `ag`
+M|When|tx|field in `plugin.json`. When `RawPluginManifest` gains an `ag` field, the
+M|When|tx|plugin can symlink to `ag/` (mirroring the existing `skills/` symlink) and
+M|When|tx|skills can dispatch named ag tp directly.
+M|Envi|tx|Skills that cr worktrees or finish branches shd detect their
+M|Envi|envi|
+M|Envi|tx|```bash
+M|Envi|tx|GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dv/null && pwd -P)
+M|Envi|tx|GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dv/null && pwd -P)
+M|Envi|tx|BRANCH=$(git branch --show-current)
+M|Envi|tx|```
+M|Envi|it|`GIT_DIR != GIT_COMMON` → already in a linked worktree (skip creation)
+M|Envi|it|`BRANCH` empty → detached HEAD (cannot branch/push/PR from sandbox)
+M|Envi|tx|See `using-git-worktrees` Step 0 and `finishing-a-dv-branch`
+M|Envi|tx|Step 1 for how each skill uses these signals.
+M|Code|tx|When the sandbox blocks branch/push operations (detached HEAD in an
+M|Code|tx|externally managed worktree), the ag commits all work and informs
+M|Code|the |
+M|Code|it|**"cr branch"** — names the branch, then commit/push/PR via App UI
+M|Code|it|**"Hand off to local"** — transfers work to the us's local checkout
+M|Code|tx|The ag can still run tests, stage files, and output suggested branch
+M|Code|tx|names, commit messages, and PR descriptions for the us to cp.
