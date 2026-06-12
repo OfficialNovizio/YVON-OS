@@ -6,6 +6,8 @@ export async function GET(): Promise<Response> {
   const cookieStore = await cookies()
   const slug = getActiveVentureSlug(cookieStore)
   const config = await getVentureBySlug(slug)
-  if (!config) return Response.json({ error: 'Venture not found' }, { status: 404 })
+  if (!config) {
+    return Response.json({ error: 'Venture not found' }, { status: 404 })
+  }
   return Response.json(config)
 }

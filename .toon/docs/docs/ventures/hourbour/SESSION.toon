@@ -1,6 +1,0 @@
-#DOC id=SESSION source=/root/yvon/docs/ventures/hourbour/SESSION.md format=toon-doc compressed=2026-06-12T06:40:26.344Z
-
-S|# Hourbour — Session Memory|> SHORT-TERM only. Last 5 sessions for Hourbour specifically. // > Locked decisions → ctx.md · Rules → FEEDBACK.md · Identity → BRAND.md · Visual → DESIGN.md // ---
-S|Right Now|- **In Flight:** — // - **Active agents:** — // - **Waiting for Stark:** //   1. Pricing model rv (Felix runway analysis pending) //   2. Define primary acquisition channel // - **Next ses:** Felix runway analysis → pricing model dec // ---
-S|Last 5 Sessions|\| Date \| agt(s) \| Task \| Outcome \| Next Step \| // \|------\|---------\|------\|---------\|-----------\| // \| 2026-04-08 \| Dev, Raj \| Supabase schema setup \| Complete \| Monitor \| // ---
-S|Open Items|- [ ] Pricing model — monthly vs annual, freemium tier? (Felix + Marcus) // - [ ] Primary acquisition channel — LinkedIn ads vs SEO vs referral // - [ ] Trial-to-paid conversion flow — not yet designed

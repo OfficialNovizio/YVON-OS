@@ -1,9 +1,0 @@
-SKILL|nano-pdf|"Edit PDF text/typos/titles via nano-pdf CLI (NL prompts)."
-STEP|1|Page numbers may be 0-based or 1-based depending on version — if the edit hits the wrong page, retry with ±1
-STEP|2|Always verify the output PDF after editing (use `read_file` to check file size, or open it)
-STEP|3|The tool uses an LLM under the hood — requires an API key (check `nano-pdf --help` for config)
-STEP|4|Works well for text changes; complex layout modifications may need a different approach
-PIT|Page numbers may be 0-based or 1-based depending on version — if the edit hits the wrong page, retry with ±1
-PIT|Always verify the output PDF after editing (use `read_file` to check file size, or open it)
-PIT|The tool uses an LLM under the hood — requires an API key (check `nano-pdf --help` for config)
-PIT|Works well for text changes; complex layout modifications may need a different approach

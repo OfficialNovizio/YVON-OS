@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { toon } from 'yvon-engine/toon'
 import { getSecret } from '@/lib/secrets'
 
 const GH_API   = 'https://api.github.com'
@@ -98,7 +99,9 @@ export async function GET(): Promise<Response> {
     .gte('created_at', todayStart.toISOString())
     .order('created_at', { ascending: false })
 
-  if (error) return Response.json({ error: error.message }, { status: 500 })
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 })
+  }
 
   const rows = (data ?? []) as AgentSessionRow[]
   if (rows.length === 0) return Response.json({ sessionCount: 0, agents: [], tasks: [], markdownRow: null })

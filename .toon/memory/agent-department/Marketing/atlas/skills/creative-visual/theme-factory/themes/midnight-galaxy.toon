@@ -1,9 +1,0 @@
-#MEM id=themes source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/midnight-galaxy.md
-M|themes|A dramatic and cosmic theme with deep purples and mystical tones for impactful presentations.
-M|themes|- **Deep Purple**: `#2b1e3e` - Rich dark base
-M|themes|- **Cosmic Blue**: `#4a4e8f` - Mystical mid-tone
-M|themes|- **Lavender**: `#a490c2` - Soft accent color
-M|themes|- **Silver**: `#e6e6fa` - Light highlights and text
-M|themes|- **Headers**: FreeSans Bold
-M|themes|- **Body Text**: FreeSans
-M|themes|Entertainment industry, gaming presentations, nightlife venues, luxury brands, creative agencies.

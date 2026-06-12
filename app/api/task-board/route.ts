@@ -6,6 +6,7 @@
 // Review tasks are completed agent work awaiting CEO sign-off.
 
 import { createClient } from '@supabase/supabase-js'
+import { toon } from 'yvon-engine/toon'
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -41,6 +42,14 @@ export async function GET(request: Request): Promise<Response> {
     const { data: tasks, error } = await query
 
     if (error) {
+  // TOON response format — auto-injected by yvon-engine
+  const acceptHeader = request.headers.get('accept') || ''
+  if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {
+    const toonResult = toon.api(data, 'ts')
+    return new Response(toonResult, { headers: { 'Content-Type': 'application/toon' } })
+  }
+
+
       return Response.json({ tasks: MOCK_TASKS, total: MOCK_TASKS.length, source: 'mock' })
     }
 

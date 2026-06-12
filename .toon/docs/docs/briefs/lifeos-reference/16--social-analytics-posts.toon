@@ -1,6 +1,0 @@
-#DOC id=16--social-analytics-posts source=/root/yvon/docs/briefs/lifeos-reference/16--social-analytics-posts.md format=toon-doc compressed=2026-06-12T06:40:26.301Z
-
-S|# 16 · Social Analytics (Posts)|> Cross-platform performance for everything published through the Scheduler — what's working per platform.
-S|Purpose|Measure how soc posts perform across all connected platforms (YouTube, LinkedIn, Instagram, TikTok), closing the loop on the soc Approvals → Scheduler workflow and informing future copy/imagery choices.
-S|What it covers (inferred)|- Per-platform and aggregate metrics: impressions/reach, engagement (likes, comments, shares), follower growth, best-performing posts and formats. // - A/B outcome tracking — which of William's copy variants and which of Leonardo's images won, feeding back into soc Approvals. // - Posting-frequency vs. results, complementing the Scheduler's cadence goals.
-S|Relationship to other screens|- Downstream of **Scheduler** (`15`) and **soc Approvals** (`14`). // - The soc counterpart to **YouTube anl** (`11`, long-form) and **nl** anl (`17`). // > **Confidence:** Listed in the sidebar (POSTS section) but not shown as a dedicated screen in the captured screenshots. Contents above are *inferred* from its name and the surrounding post workflow.

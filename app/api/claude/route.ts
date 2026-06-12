@@ -6,6 +6,7 @@ import { getPersonalityExtension } from '@/lib/agent-personalities'
 import { buildCieContext } from 'yvon-engine/cie'
 
 import { autoToonMiddleware } from 'yvon-engine/toon/auto/middleware'
+import { decodeToonResponse } from 'yvon-engine/toon/auto/decoder'
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // ── Fire-and-forget token usage save ─────────────────────────────────────────
@@ -134,17 +135,34 @@ export async function POST(request: Request): Promise<Response> {
       const encoder = new TextEncoder()
 
       try {
-        // ─── TOON AUTO-COMPRESSION: prompt + dictionary ──────────────
+        // ─── TOON AUTO-COMPRESSION — dictionary + docs + memory + instructions ──
         const toonCtx = autoToonMiddleware({
           systemPrompt: effectiveSystemPrompt,
           userMessage: userMessageFinal,
           agentId,
           ventureId,
         })
+
+        // Build enhanced system prompt with ALL TOON context injected
+        const toonEnhancements = [
+          // 1. Dictionary (comprehensive abbreviation map for LLM)
+          toonCtx.dictionary ? `[TOON DICTIONARY — use these abbreviations:\n${toonCtx.dictionary}\n]` : '',
+          // 2. Relevant documents (TOON-compressed, keyword-matched)
+          toonCtx.relevantDocs ? `[RELEVANT DOCUMENTS (TOON-compressed):\n${toonCtx.relevantDocs}\n]` : '',
+          // 3. Agent memory (TOON-compressed, most recent entries)
+          toonCtx.relevantMemory ? `[AGENT MEMORY (TOON-compressed):\n${toonCtx.relevantMemory}\n]` : '',
+          // 4. Output format instruction (for data-heavy tasks)
+          toonCtx.outputInstruction || '',
+        ].filter(Boolean).join('\n\n')
+
         const compressedSystem = effectiveSystemPrompt
-          ? (toonCtx.dictionary ? toonCtx.dictionary + '\n' : '') + effectiveSystemPrompt
+          ? toonEnhancements + '\n\n' + effectiveSystemPrompt
           : effectiveSystemPrompt
+
         const compressedMessage = toonCtx.compressedUserMessage || userMessageFinal
+
+        // Store TOON stats for the usage emission
+        const toonStats = toonCtx.stats
 
         const baseParams = {
           model: resolvedModel,
@@ -199,6 +217,7 @@ export async function POST(request: Request): Promise<Response> {
             costUsd,
             model: resolvedModel,
           },
+          toon: toonStats,
         })
         controller.enqueue(encoder.encode(`data: ${usageData}\n\n`))
 

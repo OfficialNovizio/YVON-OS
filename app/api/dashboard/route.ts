@@ -8,6 +8,7 @@
 //   - Ventures table
 
 import { createClient } from '@supabase/supabase-js'
+import { toon } from 'yvon-engine/toon'
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -176,6 +177,14 @@ export async function GET(): Promise<Response> {
       !supabaseConnected ? 'down' :
       deepseekBalance != null && deepseekBalance < 0.50 ? 'degraded' :
       'healthy'
+  // TOON response format — auto-injected by yvon-engine
+  const acceptHeader = request.headers.get('accept') || ''
+  if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {
+    const toonResult = toon.api(data, 'ts')
+    return new Response(toonResult, { headers: { 'Content-Type': 'application/toon' } })
+  }
+
+
 
     return Response.json({
       greeting,
