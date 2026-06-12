@@ -12,7 +12,6 @@
 // The learning state is stored in Supabase: agent_memory table.
 
 import { createClient } from '@supabase/supabase-js'
-import { toon } from 'yvon-engine/toon'
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -226,14 +225,6 @@ export async function GET(request: Request): Promise<Response> {
     // ── Marcus filter: simulated reduction (real learning comes in Phase 2) ──
     const handled = Math.floor(filtered.length * 0.6) // ~60% auto-handled
     const needsYou = filtered.slice(0, Math.max(3, filtered.length - handled))
-  // TOON response format — auto-injected by yvon-engine
-  const acceptHeader = request.headers.get('accept') || ''
-  if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {
-    const toonResult = toon.api(data, 'ts')
-    return new Response(toonResult, { headers: { 'Content-Type': 'application/toon' } })
-  }
-
-
 
     return Response.json({
       items: needsYou,

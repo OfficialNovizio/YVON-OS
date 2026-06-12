@@ -15,7 +15,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-export async function GET(): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
   try {
     // ── Greeting ──────────────────────────────────────────────────────────
     const hour = new Date().getHours()
@@ -177,16 +177,8 @@ export async function GET(): Promise<Response> {
       !supabaseConnected ? 'down' :
       deepseekBalance != null && deepseekBalance < 0.50 ? 'degraded' :
       'healthy'
-  // TOON response format — auto-injected by yvon-engine
-  const acceptHeader = request.headers.get('accept') || ''
-  if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {
-    const toonResult = toon.api(data, 'ts')
-    return new Response(toonResult, { headers: { 'Content-Type': 'application/toon' } })
-  }
 
-
-
-    return Response.json({
+    const data = {
       greeting,
       systemHealth: {
         status: systemStatus,
@@ -198,7 +190,21 @@ export async function GET(): Promise<Response> {
       decisions,
       activity,
       ventures,
-    })
+    }
+
+    // TOON response format — auto-injected by yvon-engine v1.4.0
+    try {
+      const acceptHeader = request.headers.get('accept') || ''
+      if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {
+        const items = [data as unknown as Record<string, unknown>]
+        const toonResult = toon.api ? toon.api(items, 'dashboard') : JSON.stringify(data)
+        return new Response(toonResult, { headers: { 'Content-Type': 'application/toon' } })
+      }
+    } catch {
+      // TOON not available — fall through to JSON
+    }
+
+    return Response.json(data)
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     return Response.json({
