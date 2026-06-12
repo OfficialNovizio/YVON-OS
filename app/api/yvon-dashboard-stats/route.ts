@@ -3,12 +3,21 @@ import { existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 
 // Lightweight stats — no heavy deps, works on Vercel serverless
+let _engine: any = undefined
+async function loadEngine(): Promise<any> {
+  if (_engine === undefined) {
+    try { _engine = await import('yvon-engine') } catch { _engine = null }
+  }
+  return _engine
+}
+
 export async function GET() {
+  const engine = await loadEngine()
   const modules = getModuleStatus()
-  const agents = getAgentSummary()
-  const toonStats = getToonStats()
-  const cieStats = getCieStats()
-  const costSummary = getCostSummary()
+  const agents = getAgentSummary(engine)
+  const toonStats = getToonStats(engine)
+  const cieStats = getCieStats(engine)
+  const costSummary = getCostSummary(engine)
 
   return NextResponse.json({
     type: 'stats',
@@ -38,7 +47,7 @@ function getModuleStatus() {
   return modules
 }
 
-function getAgentSummary() {
+function getAgentSummary(engine: any) {
   const agents = [
     { agentId: 'marcus-ceo', name: 'Marcus', department: 'CEO', status: 'online' },
     { agentId: 'diana-coo', name: 'Diana', department: 'COO', status: 'online' },
@@ -56,50 +65,38 @@ function getAgentSummary() {
   ]
 
   // Try loading yvon-engine metrics if available
-  try {
-    const engine = require('yvon-engine')
-    if (engine.metrics?.getAllAgentActivities) {
-      const activities = engine.metrics.getAllAgentActivities()
-      if (activities.length > 0) {
-        return activities.map((a: any) => ({
-          agentId: a.agentId,
-          name: a.name || a.agentId,
-          department: a.department || 'Unknown',
-          status: a.status || 'idle',
-        }))
-      }
+  if (engine?.metrics?.getAllAgentActivities) {
+    const activities = engine.metrics.getAllAgentActivities()
+    if (activities.length > 0) {
+      return activities.map((a: any) => ({
+        agentId: a.agentId,
+        name: a.name || a.agentId,
+        department: a.department || 'Unknown',
+        status: a.status || 'idle',
+      }))
     }
-  } catch {}
+  }
 
   return agents
 }
 
-function getToonStats() {
-  try {
-    const engine = require('yvon-engine')
-    if (engine.metrics?.getToonStats) {
-      return engine.metrics.getToonStats()
-    }
-  } catch {}
+function getToonStats(engine: any) {
+  if (engine?.metrics?.getToonStats) {
+    return engine.metrics.getToonStats()
+  }
   return { avgSavingsPercent: 84.5, total: 0, totalCostSaved: 0 }
 }
 
-function getCieStats() {
-  try {
-    const engine = require('yvon-engine')
-    if (engine.metrics?.getCieStats) {
-      return engine.metrics.getCieStats()
-    }
-  } catch {}
+function getCieStats(engine: any) {
+  if (engine?.metrics?.getCieStats) {
+    return engine.metrics.getCieStats()
+  }
   return { totalTicks: 0, avgLatencyMs: 0, skipRate: 0 }
 }
 
-function getCostSummary() {
-  try {
-    const engine = require('yvon-engine')
-    if (engine.metrics?.getCostSummary) {
-      return engine.metrics.getCostSummary()
-    }
-  } catch {}
+function getCostSummary(engine: any) {
+  if (engine?.metrics?.getCostSummary) {
+    return engine.metrics.getCostSummary()
+  }
   return { totalSpent: 0, totalSaved: 0 }
 }

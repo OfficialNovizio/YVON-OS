@@ -6,7 +6,7 @@
 //
 // TOON format: 'G|name|cohesion|matched_node1,matched_node2'
 
-import { readFileSync, existsSync } from 'fs'
+import { readFileSync, existsSync, statSync } from 'fs'
 import { resolve } from 'path'
 
 import type { GraphifyCommunity } from '../types'
@@ -114,7 +114,7 @@ export function getGraphifyReport(): GraphifyReport {
 
   // Check cache freshness via mtime
   try {
-    const { mtimeMs } = require('fs').statSync(REPORT_PATH)
+    const { mtimeMs } = statSync(REPORT_PATH)
     if (cachedReport && cachedMtime >= mtimeMs) {
       return cachedReport
     }
