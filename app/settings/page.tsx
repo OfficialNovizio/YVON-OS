@@ -96,7 +96,7 @@ export default function SettingsPage() {
 
         {/* YVON Dashboard — moved to top for visibility */}
         <Link href="/settings/dashboard">
-          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group border-l-2" style={{ borderLeftColor: 'var(--ws-accent)' }}>
+          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group border-l-2 border-l-[var(--ws-accent)]">
             <div className="flex items-center gap-2 mb-3">
               <LayoutDashboard size={16} style={{ color: 'var(--ws-accent)' }} />
               <h3 className="text-sm font-semibold text-on-surface flex-1">Dashboard</h3>
