@@ -94,6 +94,20 @@ export default function SettingsPage() {
           </Card>
         </Link>
 
+        {/* YVON Dashboard — moved to top for visibility */}
+        <Link href="/settings/dashboard">
+          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group border-l-2" style={{ borderLeftColor: 'var(--ws-accent)' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <LayoutDashboard size={16} style={{ color: 'var(--ws-accent)' }} />
+              <h3 className="text-sm font-semibold text-on-surface flex-1">Dashboard</h3>
+              <ChevronRight size={14} className="text-on-surface-variant/30 group-hover:text-on-surface-variant transition" />
+            </div>
+            <p className="text-[13px] text-on-surface">Live metrics · Cost tracking · Agents</p>
+            <p className="text-[12px] text-on-surface-variant/60 mt-1">TOON · CIE · Knowledge Graph</p>
+            <StatusBadge tone="green">Active</StatusBadge>
+          </Card>
+        </Link>
+
         {/* Preferences */}
         <Card className="p-4">
           <div className="flex items-center gap-2 mb-3"><Bell size={16} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold text-on-surface">Preferences</h3></div>
@@ -112,20 +126,6 @@ export default function SettingsPage() {
             {s?.deepseekBalance != null ? `$${s.deepseekBalance.toFixed(2)}` : '—'}
           </StatusBadge>
         </Card>
-
-        {/* YVON Dashboard */}
-        <Link href="/settings/dashboard">
-          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group">
-            <div className="flex items-center gap-2 mb-3">
-              <LayoutDashboard size={16} style={{ color: 'var(--ws-accent)' }} />
-              <h3 className="text-sm font-semibold text-on-surface flex-1">Dashboard</h3>
-              <ChevronRight size={14} className="text-on-surface-variant/30 group-hover:text-on-surface-variant transition" />
-            </div>
-            <p className="text-[13px] text-on-surface">Live metrics · Cost tracking · Agents</p>
-            <p className="text-[12px] text-on-surface-variant/60 mt-1">TOON · CIE · Knowledge Graph</p>
-            <StatusBadge tone="green">Active</StatusBadge>
-          </Card>
-        </Link>
 
         {/* Database */}
         <Card className="p-4">
