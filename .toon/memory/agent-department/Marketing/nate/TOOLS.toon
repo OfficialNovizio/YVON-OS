@@ -1,0 +1,38 @@
+#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/TOOLS.md
+M|nate|Nate never accesses Supabase directly for mem. All mem reads and writes go through `/api/settings`.
+M|nate|**Read at ses start:**
+M|nate|```
+M|nate|GET /api/settings?type=mem&agentId=nate-growth&ventureId=<activeVentureId>
+M|nate|```
+M|nate|Also load Kai's baselines for growth comparison:
+M|nate|```
+M|nate|GET /api/settings?type=mem&agentId=kai-analyst&ventureId=<activeVentureId>
+M|nate|```
+M|nate|**Write after task completion:**
+M|nate|```
+M|nate|POST /api/settings
+M|nate|Body: { type: "mem", agentId: "nate-growth", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|nate|```
+M|nate|**Keys written every ses:**
+M|nate|- `current_status` — always overwrite
+M|nate|- `recent_tasks` — prepend + trim to 5
+M|nate|- `recent_errors` — append + trim to 5
+M|nate|- `recent_discussions` — append + trim to 5
+M|nate|**Keys written only when confirmed:**
+M|nate|- `active_experiments` — add when started; update with result when concluded
+M|nate|- `experiment_backlog` — update when Stark approves new experiments
+M|nate|- `funnel_benchmarks` — update when Kai confirms fresh data; include date
+M|nate|- `top_growth_levers` — update when experiment produces clear evidence; never speculative
+M|nate|- `last_growth_review_date` — after every formal growth rv
+M|nate|Nate reads current data to frame growth hypotheses:
+M|nate|```
+M|nate|GET /api/anl?ventureId=<activeVentureId>     — GA4 funnel + top pages
+M|nate|GET /api/instagram?ventureId=<activeVentureId>     — IG engagement baseline
+M|nate|```
+M|nate|```
+M|nate|GET /api/vtr?ventureId=<activeVentureId>
+M|nate|```
+M|nate|| Tool | Purpose | Status |
+M|nate||------|---------|--------|
+M|nate|| Mixpanel / Amplitude MCP | In-product funnel analysis for Hourbour app | Planned |
+M|nate|| Google anl API | Pull cohort and funnel reports directly | Planned |

@@ -1,0 +1,33 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-memo.md
+M|rules|title: Extract to Memoized Components
+M|rules|impact: MEDIUM
+M|rules|impactDescription: enables early returns
+M|rules|tags: rerender, memo, useMemo, optimization
+M|rules|Extract expensive work into memoized components to enable early returns before computation.
+M|rules|**Incorrect (computes avatar even when loading):**
+M|rules|```tsx
+M|rules|function Profile({ user, loading }: Props) {
+M|rules|const avatar = useMemo(() => {
+M|rules|const id = computeAvatarId(user)
+M|rules|return <Avatar id={id} />
+M|rules|}, [user])
+M|rules|if (loading) return <Skeleton />
+M|rules|return <div>{avatar}</div>
+M|rules|}
+M|rules|```
+M|rules|**Correct (skips computation when loading):**
+M|rules|```tsx
+M|rules|const UserAvatar = memo(function UserAvatar({ user }: { user: User }) {
+M|rules|const id = useMemo(() => computeAvatarId(user), [user])
+M|rules|return <Avatar id={id} />
+M|rules|})
+M|rules|function Profile({ user, loading }: Props) {
+M|rules|if (loading) return <Skeleton />
+M|rules|return (
+M|rules|<div>
+M|rules|<UserAvatar user={user} />
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Note:** If your project has [React Compiler](https://react.dev/learn/react-compiler) enabled, manual memoization with `memo()` and `useMemo()` is not necessary. The compiler automatically optimizes 

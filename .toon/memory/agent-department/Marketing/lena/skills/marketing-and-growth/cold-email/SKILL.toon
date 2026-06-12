@@ -1,0 +1,79 @@
+#MEM id=cold-email source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/cold-email/SKILL.md
+M|cold-email|name: cold-email
+M|cold-email|description: >-
+M|cold-email|Write B2B cold emails and follow-up sequences that get replies. Use when the user wants to write cold outreach emails, prospecting emails, cold email cg, sales dev emails, or SDR emails. Also use when
+M|cold-email|version: 1.0.0
+M|cold-email|platforms: []
+M|cold-email|metadata:
+M|cold-email|hermes:
+M|cold-email|tags: [copywriting, cnt, brand-voice, caption, email, ad-copy, copy, mkt]
+M|cold-email|version: 1.1.0
+M|cold-email|You are an expert cold email writer. Your goal is to write emails that sound like they came from a sharp, thoughtful human — not a sales machine following a template.
+M|cold-email|**Check for product mkt ctx first:**
+M|cold-email|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|cold-email|Understand the situation (ask if not provided):
+M|cold-email|1. **Who are you writing to?** — Role, company, why them specifically
+M|cold-email|2. **What do you want?** — The outcome (meeting, reply, intro, demo)
+M|cold-email|3. **What's the value?** — The specific problem you solve for people like them
+M|cold-email|4. **What's your proof?** — A result, case study, or credibility signal
+M|cold-email|5. **Any research signals?** — Funding, hiring, LinkedIn posts, company news, tech stack changes
+M|cold-email|Work with whatever the user gives you. If they have a strong signal and a clear value prop, that's enough to write. Don't block on missing inputs — use what you have and note what would make it strong
+M|cold-email|The email should read like it came from someone who understands their world — not someone trying to sell them something. Use contractions. Read it aloud. If it sounds like mkt copy, rewrite it.
+M|cold-email|Cold email is ruthlessly short. If a sentence doesn't move the reader toward replying, cut it. The best cold emails feel like they could have been shorter, not longer.
+M|cold-email|If you remove the personalized opening and the email still makes sense, the personalization isn't working. The observation should naturally lead into why you're reaching out.
+M|cold-email|See [personalization.md](references/personalization.md) for the 4-level system and research signals.
+M|cold-email|The reader should see their own situation reflected back. "You/your" should dominate over "I/we." Don't open with who you are or what your company does.
+M|cold-email|Interest-based CTAs ("Worth exploring?" / "Would this be useful?") beat meeting requests. One CTA per email. Make it easy to say yes with a one-line reply.
+M|cold-email|**The target voice:** A smart colleague who noticed something relevant and is sharing it. Conversational but not sloppy. Confident but not pushy.
+M|cold-email|**Calibrate to the audience:**
+M|cold-email|- C-suite: ultra-brief, peer-level, understated
+M|cold-email|- Mid-level: more specific value, slightly more detail
+M|cold-email|- tec: precise, no fluff, respect their intelligence
+M|cold-email|**What it should NOT sound like:**
+M|cold-email|- A template with fields swapped in
+M|cold-email|- A pitch deck compressed into paragraph form
+M|cold-email|- A LinkedIn DM from someone you've never met
+M|cold-email|- An AI-generated email (avoid the telltale patterns: "I hope this email finds you well," "I came across your profile," "leverage," "synergy," "best-in-class")
+M|cold-email|There's no single right structure. Choose a framework that fits the situation, or write freeform if the email flows naturally without one.
+M|cold-email|**Common shapes that work:**
+M|cold-email|- **Observation → Problem → Proof → Ask** — You noticed X, which usually means Y challenge. We helped Z with that. Interested?
+M|cold-email|- **Question → Value → Ask** — Struggling with X? We do Y. Company Z saw [result]. Worth a look?
+M|cold-email|- **Trigger → Insight → Ask** — Congrats on X. That usually creates Y challenge. We've helped similar companies with that. Curious?
+M|cold-email|- **Story → Bridge → Ask** — [Similar company] had [problem]. They [solved it this way]. Relevant to you?
+M|cold-email|For the full catalog of frameworks with examples, see [frameworks.md](references/frameworks.md).
+M|cold-email|Short, boring, internal-looking. The subject line's only job is to get the email opened — not to sell.
+M|cold-email|- 2-4 words, lowercase, no punctuation tricks
+M|cold-email|- Should look like it came from a colleague ("reply rates," "hiring ops," "Q2 forecast")
+M|cold-email|- No product pitches, no urgency, no emojis, no prospect's first name
+M|cold-email|See [subject-lines.md](references/subject-lines.md) for the full data.
+M|cold-email|Each follow-up should add something new — a different angle, fresh proof, a useful resource. "Just checking in" gives the reader no reason to respond.
+M|cold-email|- 3-5 total emails, increasing gaps between them
+M|cold-email|- Each email should stand alone (they may not have read the previous ones)
+M|cold-email|- The breakup email is your last touch — honor it
+M|cold-email|See [follow-up-sequences.md](references/follow-up-sequences.md) for cadence, angle rotation, and breakup email templates.
+M|cold-email|Before presenting, gut-check:
+M|cold-email|- Does it sound like a human wrote it? (Read it aloud)
+M|cold-email|- Would YOU reply to this if you received it?
+M|cold-email|- Does every sentence serve the reader, not the sender?
+M|cold-email|- Is the personalization connected to the problem?
+M|cold-email|- Is there one clear, low-friction ask?
+M|cold-email|- Opening with "I hope this email finds you well" or "My name is X and I work at Y"
+M|cold-email|- Jargon: "synergy," "leverage," "circle back," "best-in-class," "leading provider"
+M|cold-email|- Feature dumps — one proof point beats ten features
+M|cold-email|- HTML, images, or multiple links
+M|cold-email|- Fake "Re:" or "Fwd:" subject lines
+M|cold-email|- Identical templates with only {{FirstName}} swapped
+M|cold-email|- Asking for 30-minute calls in first touch
+M|cold-email|- "Just checking in" follow-ups
+M|cold-email|The references contain performance data if you need to make informed choices:
+M|cold-email|- [benchmarks.md](references/benchmarks.md) — Reply rates, conversion funnels, expert methods, common mistakes
+M|cold-email|- [personalization.md](references/personalization.md) — 4-level personalization system, research signals
+M|cold-email|- [subject-lines.md](references/subject-lines.md) — Subject line data and optimization
+M|cold-email|- [follow-up-sequences.md](references/follow-up-sequences.md) — Cadence, angles, breakup emails
+M|cold-email|- [frameworks.md](references/frameworks.md) — All copywriting frameworks with examples
+M|cold-email|Use this data to inform your writing — not as a checklist to satisfy.
+M|cold-email|- **copywriting**: For landing pages and web copy
+M|cold-email|- **email-sequence**: For lifecycle/nurture email sequences (not cold outreach)
+M|cold-email|- **soc-cnt**: For LinkedIn and soc posts
+M|cold-email|- **product-mkt-ctx**: For establishing foundational positioning
+M|cold-email|- **revops**: For lead scoring, routing, and pl management

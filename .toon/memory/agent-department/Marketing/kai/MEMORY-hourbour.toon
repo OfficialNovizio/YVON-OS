@@ -1,0 +1,24 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/MEMORY-hourbour.md
+M|kai|> Load alongside mem.md when active vtr is Hourbour.
+M|kai|> Hourbour-specific ctx only — universal rules live in mem.md.
+M|kai|- **Model**: Fintech SaaS subscription (B2C/B2B)
+M|kai|- **Primary channels**: LinkedIn, YouTube, website (GA4)
+M|kai|- **Primary paid**: LinkedIn Ads, YouTube Ads
+M|kai|- **North Star**: Weekly active users after install
+M|kai|| Metric | Healthy Range | Alert Threshold |
+M|kai||--------|--------------|-----------------|
+M|kai|| LinkedIn engagement rate | 2.5%–5% | < 1.5% |
+M|kai|| LinkedIn post reach | > 3× follower count | < 1× follower count |
+M|kai|| YouTube pre-roll VTR | > 30% | < 20% |
+M|kai|| Trial-to-paid conversion | > 8% | < 4% |
+M|kai|| App DAU/MAU ratio | > 0.25 | < 0.15 |
+M|kai|| Churn rate (monthly) | < 3% | > 6% |
+M|kai|- MRR growth is the primary financial signal; monitor cohort MRR, not blended MRR
+M|kai|- Trial-to-paid rate is the highest-leverage conversion metric — flag any drop immediately
+M|kai|- DAU/MAU < 0.20 signals an activation problem, not an acquisition problem — fix before scaling
+M|kai|- Tier match: early-stage fintech/budgeting apps (similar MAU range)
+M|kai|- Flag: never cite Mint, YNAB, or bank apps as direct cp without tier qualification
+M|kai|- LinkedIn organic reach peaks Tue–Thu, 8–10am local time
+M|kai|- fin cnt with specific numbers outperforms advice cnt by 2:1
+M|kai|- YouTube pre-roll works for intent targeting — only run to fin-related cnt viewers
+M|kai|> Each entry: [date] — Hourbour-specific error — rule.

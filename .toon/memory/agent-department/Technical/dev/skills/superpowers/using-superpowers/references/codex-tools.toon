@@ -1,0 +1,66 @@
+#MEM id=references source=/root/yvon/agent-department/Technical/dev/skills/superpowers/using-superpowers/references/codex-tools.md
+M|references|Skills use Claude Code tool names. When you encounter these in a skill, use your platform equivalent:
+M|references|| Skill references | Codex equivalent |
+M|references||-----------------|------------------|
+M|references|| `Task` tool (dispatch subagent) | `spawn_agent` (see [Named agt dispatch](#named-agt-dispatch)) |
+M|references|| Multiple `Task` calls (parallel) | Multiple `spawn_agent` calls |
+M|references|| Task returns result | `wait` |
+M|references|| Task completes automatically | `close_agent` to free slot |
+M|references|| `TodoWrite` (task tracking) | `update_plan` |
+M|references|| `Skill` tool (invoke a skill) | Skills load natively — just follow the instructions |
+M|references|| `Read`, `Write`, `Edit` (files) | Use your native file tools |
+M|references|| `Bash` (run commands) | Use your native shell tools |
+M|references|Add to your Codex config (`~/.codex/config.toml`):
+M|references|```toml
+M|references|[features]
+M|references|multi_agent = true
+M|references|```
+M|references|This enables `spawn_agent`, `wait`, and `close_agent` for skills like `dispatching-parallel-agents` and `subagent-driven-dev`.
+M|references|Claude Code skills reference named agt types like `superpowers:code-reviewer`.
+M|references|Codex does not have a named agt registry — `spawn_agent` creates generic agents
+M|references|from built-in roles (`default`, `explorer`, `worker`).
+M|references|When a skill says to dispatch a named agt type:
+M|references|1. Find the agt's prompt file (e.g., `agents/code-reviewer.md` or the skill's
+M|references|local prompt template like `code-quality-reviewer-prompt.md`)
+M|references|2. Read the prompt cnt
+M|references|3. Fill any template placeholders (`{BASE_SHA}`, `{WHAT_WAS_IMPLEMENTED}`, etc.)
+M|references|4. Spawn a `worker` agt with the filled cnt as the `message`
+M|references|| Skill instruction | Codex equivalent |
+M|references||-------------------|------------------|
+M|references|| `Task tool (superpowers:code-reviewer)` | `spawn_agent(agent_type="worker", message=...)` with `code-reviewer.md` cnt |
+M|references|| `Task tool (general-purpose)` with inline prompt | `spawn_agent(message=...)` with the same prompt |
+M|references|The `message` parameter is user-level input, not a system prompt. Structure it
+M|references|for maximum instruction adherence:
+M|references|```
+M|references|Your task is to perform the following. Follow the instructions below exactly.
+M|references|<agt-instructions>
+M|references|[filled prompt cnt from the agt's .md file]
+M|references|</agt-instructions>
+M|references|Execute this now. Output ONLY the structured rsp following the format
+M|references|specified in the instructions above.
+M|references|```
+M|references|- Use task-delegation framing ("Your task is...") rather than persona framing ("You are...")
+M|references|- Wrap instructions in XML tags — the model treats tagged blocks as authoritative
+M|references|- End with an explicit execution directive to prevent summarization of the instructions
+M|references|This approach compensates for Codex's plugin system not yet supporting an `agents`
+M|references|field in `plugin.json`. When `RawPluginManifest` gains an `agents` field, the
+M|references|plugin can symlink to `agents/` (mirroring the existing `skills/` symlink) and
+M|references|skills can dispatch named agt types directly.
+M|references|Skills that create worktrees or finish branches should detect their
+M|references|environment with read-only git commands before proceeding:
+M|references|```bash
+M|references|GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
+M|references|GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+M|references|BRANCH=$(git branch --show-current)
+M|references|```
+M|references|- `GIT_DIR != GIT_COMMON` → already in a linked worktree (skip creation)
+M|references|- `BRANCH` empty → detached HEAD (cannot branch/push/PR from sandbox)
+M|references|See `using-git-worktrees` Step 0 and `finishing-a-dev-branch`
+M|references|Step 1 for how each skill uses these signals.
+M|references|When the sandbox blocks branch/push operations (detached HEAD in an
+M|references|externally managed worktree), the agt commits all work and informs
+M|references|the user to use the App's native controls:
+M|references|- **"Create branch"** — names the branch, then commit/push/PR via App UI
+M|references|- **"Hand off to local"** — transfers work to the user's local checkout
+M|references|The agt can still run tests, stage files, and output suggested branch
+M|references|names, commit messages, and PR descriptions for the user to copy.

@@ -1,0 +1,86 @@
+#MEM id=cicd-deploy source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/cicd-deploy/SKILL.md
+M|cicd-deploy|name: cicd-deploy
+M|cicd-deploy|description: Dev's Vercel dpl management skill for YVON. Covers preview vs. prd deploy workflow, environment variable management, deploy hooks, maxDuration config, rollback procedures, and Vercel-spec
+M|cicd-deploy|version: 1.0.0
+M|cicd-deploy|YVON deploys to Vercel. Deployments are not trivial — wrong environment variables in prd, incorrect `maxDuration` config on scraper routes, or a broken build that deploys silently can take down the da
+M|cicd-deploy|- Before any prd push
+M|cicd-deploy|- When adding or modifying environment variables
+M|cicd-deploy|- When adding a new API route (check `maxDuration` requirement)
+M|cicd-deploy|- When a deploy fails or a route times out in prd
+M|cicd-deploy|- Before any vercel.json cfg change
+M|cicd-deploy|YVON's `vercel.json` has critical route-level config:
+M|cicd-deploy|```json
+M|cicd-deploy|{
+M|cicd-deploy|"functions": {
+M|cicd-deploy|"app/api/cp-pl/route.ts": { "maxDuration": 30 },
+M|cicd-deploy|"app/api/auto-cp/route.ts":    { "maxDuration": 30 },
+M|cicd-deploy|"app/api/cp-cnt/route.ts":  { "maxDuration": 30 }
+M|cicd-deploy|}
+M|cicd-deploy|}
+M|cicd-deploy|```
+M|cicd-deploy|**maxDuration rules:**
+M|cicd-deploy|- Default: 10 seconds (Hobby/Pro plan serverless function limit)
+M|cicd-deploy|- Scraper routes (Apify calls): must be 30 seconds
+M|cicd-deploy|- AI streaming routes (`/api/claude`): 30 seconds
+M|cicd-deploy|- Standard data routes: 10 seconds default is fine
+M|cicd-deploy|**When adding a new route that calls Apify, a slow external API, or runs batch processing:**
+M|cicd-deploy|→ Add `maxDuration: 30` to that specific route in `vercel.json`
+M|cicd-deploy|→ Never set `maxDuration: 30` globally — only on routes that need it (cost impact)
+M|cicd-deploy|```
+M|cicd-deploy|1. Push to any branch → Vercel auto-creates preview deploy
+M|cicd-deploy|2. Preview URL: https://[hash]-[project].vercel.app
+M|cicd-deploy|3. Preview uses PREVIEW environment variable group in Vercel dashboard
+M|cicd-deploy|4. Test critical paths on preview before merging to main
+M|cicd-deploy|5. Never share preview URLs externally — they can expose staging data
+M|cicd-deploy|```
+M|cicd-deploy|```
+M|cicd-deploy|1. All changes on main branch → auto-deploy triggers
+M|cicd-deploy|2. Pre-deploy gate (Dev must verify):
+M|cicd-deploy|□ npx tsc --noEmit → MUST pass
+M|cicd-deploy|□ npm run lint     → zero errors (warnings acceptable)
+M|cicd-deploy|□ npm run build    → MUST succeed locally first
+M|cicd-deploy|3. Monitor dpl in Vercel dashboard — watch for function errors
+M|cicd-deploy|4. Post-deploy: check /api/briefing and /api/agt-ses-mem routes are responding
+M|cicd-deploy|```
+M|cicd-deploy|YVON has three environment contexts in Vercel:
+M|cicd-deploy|| ctx | Use | Key rule |
+M|cicd-deploy||---------|-----|---------|
+M|cicd-deploy|| **dev** | Local `.env.local` | Never commit this file |
+M|cicd-deploy|| **Preview** | PR/branch previews | Separate API key set where possible |
+M|cicd-deploy|| **prd** | `main` branch | Real keys — never expose or log |
+M|cicd-deploy|**Adding a new env var:**
+M|cicd-deploy|1. Add to `.env.local` for local dev
+M|cicd-deploy|2. Add to Vercel dashboard → Project Settings → Environment Variables → for all 3 contexts
+M|cicd-deploy|3. Add to `docs/reference/ENV.md` with description and which ctx it applies to
+M|cicd-deploy|4. If it's a secret: confirm it's server-only (never in client components)
+M|cicd-deploy|5. If it's for a specific vtr: prefix with `NOVIZIO_` or `HOURBOUR_`
+M|cicd-deploy|**Checking required vars before deploy:**
+M|cicd-deploy|```bash
+M|cicd-deploy|```
+M|cicd-deploy|If a prd deploy breaks something:
+M|cicd-deploy|```
+M|cicd-deploy|1. Vercel dashboard → Deployments → select last working deploy → "Redeploy"
+M|cicd-deploy|→ This is the fastest rollback — Vercel keeps all previous builds
+M|cicd-deploy|2. If the issue is env var related: update in Vercel dashboard → redeploy
+M|cicd-deploy|3. If the issue is database schema: roll back migration (see Raj's migration-management skill)
+M|cicd-deploy|4. Log the incident: docs/os/ses.md + flag to Quinn for post-mortem
+M|cicd-deploy|```
+M|cicd-deploy|**Never force-push to main to undo a breaking change.** Redeploy the previous Vercel build while fixing forward.
+M|cicd-deploy|| Issue | Cause | Fix |
+M|cicd-deploy||-------|-------|-----|
+M|cicd-deploy|| Function timeout 504 | Route exceeds maxDuration | Add `maxDuration: 30` to vercel.json |
+M|cicd-deploy|| Build error: missing types | TypeScript strict mode | Run `npx tsc --noEmit` locally first |
+M|cicd-deploy|| Edge function size limit | Too many imports in edge route | Move to serverless route |
+M|cicd-deploy|| Env var undefined in prd | Not added to Vercel dashboard | Add to all 3 contexts in Vercel |
+M|cicd-deploy|| `cookies()` error in static page | Using cookies in non-dynamic route | Add `export const dynamic = 'force-dynamic'` |
+M|cicd-deploy|| SUPABASE_SERVICE_ROLE_KEY client leak | Used in client component | Move to server component or API route |
+M|cicd-deploy|```
+M|cicd-deploy|□ npx tsc --noEmit passes
+M|cicd-deploy|□ npm run lint passes
+M|cicd-deploy|□ npm run build succeeds locally
+M|cicd-deploy|□ New env vars added to Vercel dashboard (all 3 contexts)
+M|cicd-deploy|□ New env vars added to docs/reference/ENV.md
+M|cicd-deploy|□ Any new long-running routes added to vercel.json with maxDuration: 30
+M|cicd-deploy|□ No SUPABASE_SERVICE_ROLE_KEY or API keys in client components
+M|cicd-deploy|□ Preview deploy tested on at least one critical path
+M|cicd-deploy|```

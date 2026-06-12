@@ -1,0 +1,2 @@
+#MEM id=dev source=/root/yvon/agent-department/Technical/dev/CONFLICTS.md
+M|dev|> Inherits from project root CONFLICTS.md. Add agt-specific conflicts here only.

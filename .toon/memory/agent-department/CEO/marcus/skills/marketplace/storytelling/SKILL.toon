@@ -1,0 +1,21 @@
+#MEM id=storytelling source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/storytelling/SKILL.md
+M|storytelling|name: storytelling
+M|storytelling|description: Use when crafting narratives that connect product value to customer pain through clear setup-conflict-resolution arcs.
+M|storytelling|- Need cohesive narrative for cg, product launches, or decks.
+M|storytelling|- Translating tec capabilities into relatable customer stories.
+M|storytelling|- Coaching spokespeople or SDRs on better pitch storytelling.
+M|storytelling|1. **Audience & Conflict** – identify who the hero is (customer persona) and what obstacle they face.
+M|storytelling|2. **Story Arc (SCAR)** – Situation → Complication → Action → Resolution.
+M|storytelling|3. **Characterization** – give personas motives, stakes, and quotes.
+M|storytelling|4. **Sensory Detail** – use vivid language, specific metrics, and concrete examples.
+M|storytelling|5. **Moral/CTA** – tie resolution back to product value and explicit next step.
+M|storytelling|- Narrative outline (hook, scene, rising tension, turn, resolution, CTA).
+M|storytelling|- Pitch script template:
+M|storytelling|```
+M|storytelling|"Most {persona}s today face {pain}. When {trigger}, {impact}. We worked with {customer} to {action}, leading to {result}."
+M|storytelling|```
+M|storytelling|- Story inventory tracker to log customer, industry, proof points.
+M|storytelling|- Record customer interviews to capture natural phrasing for quotes.
+M|storytelling|- Swap metaphors/analogies per persona so stories feel tailored.
+M|storytelling|- Reinforce numbers with vivid imagery (e.g., "saved hours = extra sprints delivered").
+M|storytelling|- Align every story with the current positioning doc to avoid mixed messages.

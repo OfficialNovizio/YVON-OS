@@ -1,0 +1,41 @@
+#MEM id=api-security-checklist source=/root/yvon/agent-department/Technical/dev/skills/custom/api-security-checklist/SKILL.md
+M|api-security-checklist|name: api-sec-checklist
+M|api-security-checklist|description: Dev's behavioral gate before approving any new /api/ route. 8-item checklist — any failure blocks the route from shipping. Covers input validation, auth, API key exposure, CRON_SECRET, CO
+M|api-security-checklist|version: 1.0.0
+M|api-security-checklist|Dev's architecture ap role means a missed sec issue in rv becomes a prd vulnerability. This checklist runs before Dev issues ap on any new or modified `/api/` route. Not a reference doc — an active ga
+M|api-security-checklist|Run all 7 before issuing any verdict. Any failure = BLOCKED until fixed.
+M|api-security-checklist|**1. Input Validation**
+M|api-security-checklist|- Is all request body, query param, and path param input parsed through a Zod schema before any handler logic?
+M|api-security-checklist|- No `any` casting, no manual type assertions, no `as SomeType` on unvalidated data?
+M|api-security-checklist|**2. Authentication**
+M|api-security-checklist|- Does the route call `supabase.auth.getUser()` (not `auth.getSession()`)?
+M|api-security-checklist|- Does unauthenticated return `401` — not `500`, not `200`, not a redirect?
+M|api-security-checklist|- Is the user object from `auth.getUser()` used — never `body.userId` or `params.userId` as the identity source?
+M|api-security-checklist|**3. API Key Exposure**
+M|api-security-checklist|- Are ALL external API keys accessed via `process.env` server-side only?
+M|api-security-checklist|- Zero keys in `NEXT_PUBLIC_` env vars?
+M|api-security-checklist|- Zero keys in any client component, hook, or `'use client'` file?
+M|api-security-checklist|**4. CRON_SECRET**
+M|api-security-checklist|- If this is a cron route (`/api/cron/*`): does the handler validate `Authorization: Bearer ${CRON_SECRET}` as the FIRST line before ANY other code runs?
+M|api-security-checklist|- Validation failure → immediate `401` return, no side effects executed?
+M|api-security-checklist|**5. CORS**
+M|api-security-checklist|- Is `Access-Control-Allow-Origin` set appropriately for this route?
+M|api-security-checklist|- No wildcard `*` on authenticated or sensitive data endpoints?
+M|api-security-checklist|**6. Parameterized Queries**
+M|api-security-checklist|- Zero string interpolation in Supabase `.rpc()` calls or raw SQL?
+M|api-security-checklist|- All dynamic values passed as parameters — never concatenated into query strings?
+M|api-security-checklist|**7. Cookie sec**
+M|api-security-checklist|- Are ALL cookies set server-side only — never from client components?
+M|api-security-checklist|- Do all cookies have `httpOnly: true`, `secure: true`, `sameSite: 'lax'` flags set?
+M|api-security-checklist|- Is `yvon_active_venture` read from server-side `cookies()` only — never from `doc.cookie` or client-side cookie utilities?
+M|api-security-checklist|- Zero cookies without explicit `maxAge` (no indefinite sessions)?
+M|api-security-checklist|**8. Error rsp Shape**
+M|api-security-checklist|- Does every error path return `{ error: 'user-safe message' }` only?
+M|api-security-checklist|- Zero `error.message` passthrough, zero stack traces, zero internal route names or DB schema info in the rsp body?
+M|api-security-checklist|- Correct HTTP status codes used: 400, 401, 403, 404, 429, 500, 503 — never `200` on failure?
+M|api-security-checklist|```
+M|api-security-checklist|API sec Gate: PASSED / FAILED
+M|api-security-checklist|Failed items: [list]
+M|api-security-checklist|Required fix before ap: [exact correction]
+M|api-security-checklist|```
+M|api-security-checklist|Three or more failures on the same route pattern → add the pattern to Dev's mem.md "Rejected Patterns" section.

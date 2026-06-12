@@ -1,0 +1,34 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/client-passive-event-listeners.md
+M|rules|title: Use Passive Event Listeners for Scrolling Performance
+M|rules|impact: MEDIUM
+M|rules|impactDescription: eliminates scroll delay caused by event listeners
+M|rules|tags: client, event-listeners, scrolling, performance, touch, wheel
+M|rules|Add `{ passive: true }` to touch and wheel event listeners to enable immediate scrolling. Browsers normally wait for listeners to finish to check if `preventDefault()` is called, causing scroll delay.
+M|rules|**Incorrect:**
+M|rules|```typescript
+M|rules|useEffect(() => {
+M|rules|const handleTouch = (e: TouchEvent) => console.log(e.touches[0].clientX)
+M|rules|const handleWheel = (e: WheelEvent) => console.log(e.deltaY)
+M|rules|doc.addEventListener('touchstart', handleTouch)
+M|rules|doc.addEventListener('wheel', handleWheel)
+M|rules|return () => {
+M|rules|doc.removeEventListener('touchstart', handleTouch)
+M|rules|doc.removeEventListener('wheel', handleWheel)
+M|rules|}
+M|rules|}, [])
+M|rules|```
+M|rules|**Correct:**
+M|rules|```typescript
+M|rules|useEffect(() => {
+M|rules|const handleTouch = (e: TouchEvent) => console.log(e.touches[0].clientX)
+M|rules|const handleWheel = (e: WheelEvent) => console.log(e.deltaY)
+M|rules|doc.addEventListener('touchstart', handleTouch, { passive: true })
+M|rules|doc.addEventListener('wheel', handleWheel, { passive: true })
+M|rules|return () => {
+M|rules|doc.removeEventListener('touchstart', handleTouch)
+M|rules|doc.removeEventListener('wheel', handleWheel)
+M|rules|}
+M|rules|}, [])
+M|rules|```
+M|rules|**Use passive when:** tracking/anl, logging, any listener that doesn't call `preventDefault()`.
+M|rules|**Don't use passive when:** implementing custom swipe gestures, custom zoom controls, or any listener that needs `preventDefault()`.

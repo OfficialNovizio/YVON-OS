@@ -1,0 +1,120 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/lead-magnets/references/format-guide.md
+M|references|Detailed creation guidance for each lead magnet format.
+M|references|- Ebooks & Guides
+M|references|- Checklists
+M|references|- Cheat Sheets
+M|references|- Templates & Spreadsheets
+M|references|- Swipe Files
+M|references|- Mini-Courses
+M|references|- Quizzes & Assessments
+M|references|- Webinars & Workshops
+M|references|**Best for**: Building authority, deep education, awareness-stage leads
+M|references|**Structure**:
+M|references|1. Title page with professional design
+M|references|2. Table of contents
+M|references|3. Introduction — frame the problem, set expectations
+M|references|4. 3-7 chapters — one key concept per chapter
+M|references|5. Summary — recap key takeaways
+M|references|6. CTA — next step toward your product
+M|references|**Guidelines**:
+M|references|- Ideal length: 10-25 pages (shorter is fine if valuable)
+M|references|- Include visuals: charts, diagrams, screenshots
+M|references|- Use callout boxes for key stats or quotes
+M|references|- End each chapter with a quick takeaway
+M|references|- Don't pad — density beats length
+M|references|**Tools**: Canva, Google Docs → PDF, Notion export, Designrr, Beacon.by
+M|references|**Best for**: Process-oriented tasks, quick wins, implementation help
+M|references|**Structure**:
+M|references|- Title: "[Number]-Point [Topic] Checklist"
+M|references|- Numbered or checkbox items
+M|references|- Group into logical sections if 10+ items
+M|references|- Brief explanation per item (1-2 sentences)
+M|references|**Guidelines**:
+M|references|- Keep to 1-2 pages
+M|references|- Use actionable language ("Verify X", "Set up Y", "Remove Z")
+M|references|- Order by workflow sequence or priority
+M|references|- Make it printable — clean layout, generous spacing
+M|references|- Include a "done" checkbox for each item
+M|references|**What works**: Step-by-step processes, audit criteria, launch checklists, setup guides
+M|references|**Best for**: Reference material, shortcuts, quick-lookup information
+M|references|**Structure**:
+M|references|- One page (two pages max)
+M|references|- Organized by category or workflow
+M|references|- Dense but scannable
+M|references|- Visual hierarchy with headers and grouping
+M|references|**Guidelines**:
+M|references|- Optimize for quick reference, not reading
+M|references|- Use tables, grids, or columns
+M|references|- Include formulas, shortcuts, or code snippets
+M|references|- Design for printing or saving as desktop reference
+M|references|- Bold the most important items
+M|references|**What works**: Keyboard shortcuts, formula references, terminology glossaries, dec matrices
+M|references|**Best for**: Repeatable processes, planning, tracking
+M|references|- Include a "How to Use" tab with instructions
+M|references|- Pre-fill with example data
+M|references|- Use data validation for dropdown fields
+M|references|- Add conditional formatting for visual cues
+M|references|- Lock formula cells, leave input cells editable
+M|references|- Include a "Make a Copy" link (Google Sheets)
+M|references|- Provide a duplicate link
+M|references|- Include a getting-started guide
+M|references|- Pre-populate with example cnt
+M|references|- Use Notion's database features (views, filters, relations)
+M|references|- Keep it simple — don't over-engineer
+M|references|- Provide in multiple formats (Google Doc, Word, PDF)
+M|references|- Include placeholder text with [BRACKETS] for customization
+M|references|- Add inline instructions in a different color
+M|references|- Make it immediately usable with minimal editing
+M|references|**Key principle**: Templates should be usable within 5 minutes of downloading.
+M|references|**Best for**: Inspiration, examples, learning from others
+M|references|**Structure**:
+M|references|- Curated collection of 15-50 examples
+M|references|- Organized by category, type, or use case
+M|references|- Each example includes:
+M|references|- The example itself (screenshot, text, link)
+M|references|- Why it works (2-3 bullet annotations)
+M|references|- How to adapt it (1-2 sentences)
+M|references|**Guidelines**:
+M|references|- Quality over quantity — curate ruthlessly
+M|references|- Add your analysis, don't just collect
+M|references|- Organize for browsing (categories, tags)
+M|references|- Update periodically with fresh examples
+M|references|- Credit original sources
+M|references|**What works**: Email subject lines, landing pages, ad copy, CTAs, onboarding flows, pricing pages
+M|references|- 3-5 emails delivered over 5-7 days
+M|references|- One lesson per email, one concept per lesson
+M|references|- Each email: teach → example → exercise
+M|references|- Progressive difficulty (build on previous lessons)
+M|references|- Final email: summary + CTA for product or next step
+M|references|- 3-5 videos, 5-15 minutes each
+M|references|- Host on unlisted YouTube, Loom, or course platform
+M|references|- Deliver links via email drip
+M|references|- Include worksheets or exercises per lesson
+M|references|- More personal — builds stronger connection
+M|references|**Cadence**: Every 1-2 days. Don't stretch too thin or compress too tight.
+M|references|**Key principle**: Each lesson should deliver standalone value. If someone only watches lesson 2, they should still learn something useful.
+M|references|**Best for**: Engagement, segmentation, personalized results
+M|references|**Question Design**:
+M|references|- 5-10 questions (sweet spot: 7)
+M|references|- Multiple choice only — no open-ended
+M|references|- Questions should feel insightful, not obvious
+M|references|- Progress indicator ("Question 3 of 7")
+M|references|**Result Segmentation**:
+M|references|- 3-5 result categories
+M|references|- Each result: name, description, personalized recommendations
+M|references|- Tailor follow-up emails by result type
+M|references|- Share-worthy result format ("I got: Growth Stage Marketer!")
+M|references|**Implementation**: Gate results behind email capture. The quiz itself is ungated — the personalized results require an email.
+M|references|**For building interactive quizzes**: See **free-tool-str** skill for tec implementation guidance.
+M|references|- 30-45 minutes teaching + 15 minutes Q&A
+M|references|- Structure: Hook → Teach (3 key points) → Demo/example → CTA
+M|references|- Promote 1-2 weeks in advance
+M|references|- Send 3 reminder emails (confirmation, day before, 1 hour before)
+M|references|- Record for replay (extends value)
+M|references|- Pre-recorded, available on demand
+M|references|- Same structure as live but tighter editing
+M|references|- Always-on lead generation
+M|references|- Gate with email registration
+M|references|- Automated follow-up sequence
+M|references|**Follow-up**: Send replay link + summary + CTA within 24 hours. Continue with nurture sequence.
+M|references|**Key principle**: Teach something genuinely useful. A webinar that's just a sales pitch will damage trust.

@@ -1,0 +1,53 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-script-defer-async.md
+M|rules|title: Use defer or async on Script Tags
+M|rules|impact: HIGH
+M|rules|impactDescription: eliminates render-blocking
+M|rules|tags: rendering, script, defer, async, performance
+M|rules|**Impact: HIGH (eliminates render-blocking)**
+M|rules|Script tags without `defer` or `async` block HTML parsing while the script downloads and executes. This delays First Contentful Paint and Time to Interactive.
+M|rules|- **`defer`**: Downloads in parallel, executes after HTML parsing completes, maintains execution order
+M|rules|- **`async`**: Downloads in parallel, executes immediately when ready, no guaranteed order
+M|rules|Use `defer` for scripts that depend on DOM or other scripts. Use `async` for independent scripts like anl.
+M|rules|**Incorrect (blocks rendering):**
+M|rules|```tsx
+M|rules|export default function doc() {
+M|rules|return (
+M|rules|<html>
+M|rules|<head>
+M|rules|<script src="https://example.com/anl.js" />
+M|rules|<script src="/scripts/utils.js" />
+M|rules|</head>
+M|rules|<body>{/* cnt */}</body>
+M|rules|</html>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (non-blocking):**
+M|rules|```tsx
+M|rules|export default function doc() {
+M|rules|return (
+M|rules|<html>
+M|rules|<head>
+M|rules|{/* Independent script - use async */}
+M|rules|<script src="https://example.com/anl.js" async />
+M|rules|{/* DOM-dependent script - use defer */}
+M|rules|<script src="/scripts/utils.js" defer />
+M|rules|</head>
+M|rules|<body>{/* cnt */}</body>
+M|rules|</html>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Note:** In Next.js, prefer the `next/script` component with `str` prop instead of raw script tags:
+M|rules|```tsx
+M|rules|import Script from 'next/script'
+M|rules|export default function Page() {
+M|rules|return (
+M|rules|<>
+M|rules|<Script src="https://example.com/anl.js" str="afterInteractive" />
+M|rules|<Script src="/scripts/utils.js" str="beforeInteractive" />
+M|rules|</>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|Reference: [MDN - Script element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#defer)

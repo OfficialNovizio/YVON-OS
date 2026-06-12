@@ -1,0 +1,52 @@
+#MEM id=mia source=/root/yvon/agent-department/Technical/mia/TOOLS.md
+M|mia|Mia reads and writes mem via `/api/settings` — never directly to Supabase.
+M|mia|**Read:**
+M|mia|```
+M|mia|GET /api/settings?type=mem&agentId=mia-frontend&ventureId={activeVenture}
+M|mia|```
+M|mia|**Write:**
+M|mia|```json
+M|mia|POST /api/settings
+M|mia|{
+M|mia|"type": "mem",
+M|mia|"agentId": "mia-frontend",
+M|mia|"ventureId": "{activeVenture}",
+M|mia|"key": "known_gotchas",
+M|mia|"value": "SSE streams: always check event.data !== '[DONE]' before parsing JSON."
+M|mia|}
+M|mia|```
+M|mia|After every POST: edit the Live State table in `mem.md` to match.
+M|mia|Mia uses GitHub to inspect existing components for visual and structural patterns before building new ones.
+M|mia|**Use cases:**
+M|mia|- Read an existing component to understand established JSX structure before writing a similar one
+M|mia|- Check recent commits for any design system changes Dev made (new CSS variables, Tailwind config updates)
+M|mia|- Verify a component matches what was merged — not a local-only version
+M|mia|- Check Leo's spec issues for UI fidelity requirements before starting a component
+M|mia|**Key operations:**
+M|mia|```
+M|mia|get_file_contents     → read an existing component.tsx for pattern reference
+M|mia|list_commits          → check recent design system or globals.css changes
+M|mia|get_pull_request      → rv what Raj changed in a route before building the consuming component
+M|mia|```
+M|mia|Mia's primary constraint is the YVON design token system. These must be checked before writing any CSS:
+M|mia|| Token | Value | Usage |
+M|mia||-------|-------|-------|
+M|mia|| `var(--color-navy)` | `#1A1A2E` | Page and layout backgrounds |
+M|mia|| `var(--color-surface)` | `#16213E` | Card backgrounds |
+M|mia|| `var(--color-red)` | `#E94560` | Primary accents, CTAs, active states |
+M|mia|| `var(--color-blue)` | `#0F3460` | Secondary accents, hover states |
+M|mia|| `var(--color-text)` | `#E2E8F0` | Primary text |
+M|mia|| `var(--color-muted)` | `#A0AEC0` | Subtle text, labels, timestamps |
+M|mia|| `--font-inter` | Inter | All UI text |
+M|mia|> Any new token must go through Aria → Dev → `globals.css` + `tailwind.config.ts` update. Mia never adds tokens unilaterally.
+M|mia|All external data goes through server-side API routes — never called from the browser directly:
+M|mia|| Route | Method | When |
+M|mia||-------|--------|------|
+M|mia|| `/api/settings` | GET | ses start — read own mem keys |
+M|mia|| `/api/settings` | POST | After discovering a new component pattern or gotcha |
+M|mia|| `/api/vtr` | GET | To load active vtr config for vtr-aware components |
+M|mia|Mia's components call `/api/claude` for AI streaming, `/api/instagram` etc. for soc data — but always via the fetch abstraction in the component, never with raw API keys.
+M|mia|| Tool | Purpose | Status |
+M|mia||------|---------|--------|
+M|mia|| Figma MCP | Access design files for pixel-perfect implementation | Planned |
+M|mia|| Storybook | Isolated component dev and visual testing | Planned |

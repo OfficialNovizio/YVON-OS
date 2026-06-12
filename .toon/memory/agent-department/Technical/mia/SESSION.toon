@@ -1,0 +1,15 @@
+#MEM id=mia source=/root/yvon/agent-department/Technical/mia/SESSION.md
+M|mia|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|mia|> Always load this first. Load mem.md for design system rules, component rules, UX principles, and design laws.
+M|mia|- **Last active:** 2026-05-21
+M|mia|- **Current task:** idle
+M|mia|- **Waiting for Stark:** Run migration 023 to verify Studio History UI (demo cards visible per mode tab)
+M|mia|- **Next ses starts with:** Load DESIGN.md for active vtr before any UI task
+M|mia|| Date | Task | Outcome | Next Step |
+M|mia||------|------|---------|-----------|
+M|mia|| 2026-05-21 | Studio History UI — Load & Remix | Inline history section below gen button on Brief step (step 0). Horizontal scroll row, 252px cards, platform+contentType+aspect+date+mood+preview. Loa
+M|mia|| 2026-05-20 | Creative Studio Overhaul | Platform tiles (IG/TT/LI/YT/X), cnt type chips per platform, aspect ratio badge auto-derives, shoot mode 3-step flow (Brief→Mood→Shot List), script step edita
+M|mia|| 2026-05-20 | CSE Closed Loop UI | Stage banner ("Measure X posts" pill), Measure Now modal with 6 metric inputs → PATCH → outcome computed. Creative Studio reads ?pitch= param, shows outcome banner 
+M|mia|> Unresolved questions, blockers, or decisions pending Stark input.
+M|mia|- Creative Studio UX — pending Stark test of full Krea.ai flow end-to-end
+M|mia|- Verify no mobile constraint issues with platform tile grid on small screens

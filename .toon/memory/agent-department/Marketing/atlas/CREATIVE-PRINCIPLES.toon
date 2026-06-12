@@ -1,0 +1,68 @@
+#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/CREATIVE-PRINCIPLES.md
+M|atlas|> Load when: building visual systems, writing prompt architecture, or directing any image prd.
+M|atlas|Before producing any visual direction, confirm:
+M|atlas|1. Active vtr (Novizio or Hourbour) — aesthetic rules differ completely
+M|atlas|2. cg goal from Alex's brief — what is this image trying to achieve?
+M|atlas|3. Platform destination — Instagram 1:1, Stories 9:16, YouTube thumbnail 16:9, LinkedIn 1200×627?
+M|atlas|4. Any existing brand assets — logos, ap colours, past cnt to stay consistent with
+M|atlas|Never produce prompt architecture without knowing the platform and cg goal.
+M|atlas|A well-structured generation prompt has 6 components:
+M|atlas|```
+M|atlas|[SUBJECT] [ACTION/STATE], [SETTING], [LIGHTING], [COMPOSITION], [STYLE], [tec]
+M|atlas|Example (Novizio):
+M|atlas|"Minimal white linen shirt, draped on wooden chair, soft natural window light,
+M|atlas|rule of thirds, editorial fashion photography, 4k, no text overlays"
+M|atlas|Example (Hourbour):
+M|atlas|"Clean smartphone screen showing financial dashboard, desk with coffee,
+M|atlas|soft ambient light, centred composition, modern lifestyle product photography, 4k"
+M|atlas|```
+M|atlas|| Component | What to specify |
+M|atlas||-----------|----------------|
+M|atlas|| Subject | What/who is the primary visual element |
+M|atlas|| Action/State | What are they doing / how are they positioned |
+M|atlas|| Setting | Environment — be specific (not just "outdoors") |
+M|atlas|| Lighting | Type + quality: "soft natural", "golden hour", "studio softbox" |
+M|atlas|| Composition | Rule of thirds / centred / negative space / close-up |
+M|atlas|| Style | Photography style or medium: editorial, lifestyle, flat lay, illustration |
+M|atlas|| tec | Resolution, aspect ratio, "no text", "no watermark" |
+M|atlas|Always specify what to avoid:
+M|atlas|- `no text overlays, no watermarks, no harsh shadows, no blurry backgrounds`
+M|atlas|- vtr-specific avoids: see brand sections in SKILLS.md
+M|atlas|When producing a mood board doc:
+M|atlas|```
+M|atlas|[One paragraph: the feeling this visual cg should evoke]
+M|atlas|[Description of the image aesthetic — or URL if available]
+M|atlas|Why it fits: [one sentence]
+M|atlas|[Description]
+M|atlas|Why it fits: [one sentence]
+M|atlas|[Description]
+M|atlas|Why it fits: [one sentence]
+M|atlas|[2-3 specific things that would break the aesthetic]
+M|atlas|[3-5 hex values or colour names — must align to brand tokens]
+M|atlas|```
+M|atlas|For every batch Pixel produces, Atlas defines 3 binary pass/fail criteria:
+M|atlas|```
+M|atlas|✅ PASS criteria (Pixel uses these to QC each image):
+M|atlas|1. [Specific visual rule — e.g., "No busy backgrounds"]
+M|atlas|2. [Lighting rule — e.g., "Natural light only, no harsh shadows"]
+M|atlas|3. [Brand rule — e.g., "Colour palette stays within Novizio warm neutrals"]
+M|atlas|❌ AUTO-REJECT if:
+M|atlas|- Text or watermarks appear in image
+M|atlas|- Brand colours are violated
+M|atlas|- Style drifts from the brief (e.g., commercial photography instead of editorial)
+M|atlas|```
+M|atlas|Three criteria only. If QC is too complex, Pixel slows down. Keep it binary.
+M|atlas|| Platform | Format | Dimensions | Notes |
+M|atlas||----------|--------|-----------|-------|
+M|atlas|| Instagram Feed | Square | 1080×1080 | Most common |
+M|atlas|| Instagram Feed | Portrait | 1080×1350 | Better reach |
+M|atlas|| Instagram Stories | Vertical | 1080×1920 | 9:16 |
+M|atlas|| YouTube Thumbnail | Landscape | 1280×720 | 16:9, needs text room |
+M|atlas|| LinkedIn Post | Landscape | 1200×627 | Clean, professional |
+M|atlas|| LinkedIn Banner | Wide | 1584×396 | Profile header |
+M|atlas|Before handing off to Pixel, Atlas runs the AI Slop Test:
+M|atlas|- Does the image look like a stock photo? → Reject
+M|atlas|- Are there any obvious AI artefacts (extra fingers, distorted text, uncanny faces)? → Reject
+M|atlas|- Does it feel like it belongs in a cg for this brand? → If not, rewrite the prompt
+M|atlas|- Would Stark stop scrolling for this? → If not, try a different composition
+M|atlas|If 2+ tests fail: rewrite the prompt before sending to prd.

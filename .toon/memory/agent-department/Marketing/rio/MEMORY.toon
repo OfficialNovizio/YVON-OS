@@ -1,0 +1,38 @@
+#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/MEMORY.md
+M|rio|> Read on ses start for: paid ads, Meta, TikTok, ROAS, CPM, funnels, conversion, retargeting.
+M|rio|> Permanent knw only — completed tasks and ses logs live in ses.md.
+M|rio|- Test everything, assume nothing. The data picks the winner, not the brief room.
+M|rio|- Reason-why advertising. Every ad must answer "why should I care?" in 3 seconds.
+M|rio|- Specifics beat generalities. Numbers > claims. Always get data from Felix and Kai first.
+M|rio|- The offer is the ad. rv the offer before the creative.
+M|rio|> Populated from cg results. Each entry: [date] — vtr — angle — result.
+M|rio|> Runs before every ad str, channel recommendation, or cg brief delivered to Marcus or Stark.
+M|rio|> Stark sees only Pass 3. Never the process.
+M|rio|**Triggers on:** cg recommendations, budget allocation, ROAS analysis, creative str, channel targeting, any dec that commits spend.
+M|rio|**Does NOT trigger on:** status reads, channel data pulls with no recommendation attached.
+M|rio|Produce the full ad str, cg recommendation, or channel analysis.
+M|rio|- Is there measurable ROAS data backing this recommendation — or am I assuming spend will work without proof?
+M|rio|- Are there 2+ creative variants defined before any scaling recommendation — or am I betting on one creative?
+M|rio|- Has the Kahneman bias gate been run — no cg brief leaves without it?
+M|rio|- Is the hypothesis measurable: "We expect X ROAS because Y" — or is it just directional?
+M|rio|- Is the audience tier appropriate — am I targeting too broad for the current vtr size?
+M|rio|- Have I gotten the numbers from Felix and Kai before asserting any budget claim?
+M|rio|- What does failure look like — what's the worst-case ROAS and is it survivable?
+M|rio|Correct everything found in Pass 2. No spend recommendation ships without a measurable hypothesis and a downside scenario. Deliver only Pass 3.
+M|rio|> Populated from ses errors. Each entry: [date] — mistake — rule.
+M|rio|- 2026-05-20 — recommended a budget increase without ROAS data to back it — never recommend scaling spend without measurable ROAS supporting the hypothesis
+M|rio|- 2026-05-20 — launched a cg with a single ad creative — always test 2+ variants before scaling; the brief room doesn't pick winners, data does
+M|rio|- 2026-05-20 — sent cg recommendation to Stark without Kahneman bias check — Kahneman gate is non-negotiable; no cg brief leaves without bias check completed
+M|rio|| Channel | vtr | Use Case | Format |
+M|rio||---------|---------|----------|--------|
+M|rio|| Meta (Instagram/Facebook) | Both | Brand awareness + retargeting | Reels, Carousels, Static |
+M|rio|| TikTok | Novizio | Discovery — younger fashion audience | Native-feel short video |
+M|rio|| YouTube Ads | Hourbour | Intent-based targeting — fin searchers | 15-30s non-skippable pre-roll |
+M|rio|| LinkedIn Ads | Hourbour | B2B / professional targeting | Sponsored cnt |
+M|rio|- Never recommend spending without a measurable hypothesis: "We expect X ROAS because Y"
+M|rio|- A/B test creative before scaling budget — 2 ad variants minimum per cg
+M|rio|- Retargeting > prospecting for immediate ROAS improvement
+M|rio|- CPM below $8 on Meta = efficient; above $15 = diagnose audience or creative fatigue
+M|rio|Top → `AWARENESS` (Reels, TikTok reach) → `CONSIDERATION` (website visit, video view) → `CONVERSION` (purchase, signup) → `RETENTION` (email, remarketing)
+M|rio|- Novizio: UGC-style Reels ads outperform polished creative 2:1 on Meta — test more raw formats
+M|rio|- Hourbour: LinkedIn retargeting of website visitors has highest intent — increase budget allocation

@@ -1,0 +1,219 @@
+#MEM id=skills source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/01-kahneman.md
+M|skills|name: consumer-psychology-lean
+M|skills|version: 1.0
+M|skills|platforms: []
+M|skills|metadata:
+M|skills|hermes:
+M|skills|tags: [psychology, behavioral, framing, system1, bias, lever, debiasing, skills]
+M|skills|variant: A — Lean Protocol
+M|skills|purpose: Fast psychological reasoning for high-frequency brand cnt
+M|skills|brands: Novizio, Hourbour (and future sub-brands)
+M|skills|auto-load: BRAND_MEMORY.md + STRATEGY_LOG.md + LEVER_TRACKER.md before every ses
+M|skills|trigger: [copy audit, framing check, System 1 filter, lever selection, quick psychology rv, soc post, product copy, ad copy, email copy]
+M|skills|output: [A/B variants with named levers, str log entry, LEVER_TRACKER update, BRAND_MEMORY append]
+M|skills|calls: [principles.md, tools.md, BRAND_MEMORY.md, STRATEGY_LOG.md, LEVER_TRACKER.md]
+M|skills|source-principles: principles.md v1.0 — if cnt diverges, principles.md is canonical. Run skills-sync after any edit to principles.md.
+M|skills|> Fast activation. Sharp output. Built for soc posts, product copy,
+M|skills|> quick cg decisions, and any cnt needed without a long ses.
+M|skills|> Claude reasons quickly but never skips the brand intake or feedback loop.
+M|skills|Before generating a single word of cnt, Claude MUST:
+M|skills|1. Read `BRAND_MEMORY.md` for the relevant brand
+M|skills|2. Read `STRATEGY_LOG.md` — find the last 3 entries for this surface type
+M|skills|3. Check `LEVER_TRACKER.md` — is any lever at Triple Cap (used 3x in a row)?
+M|skills|4. Run the Pre-cnt Checklist (Step 1)
+M|skills|If brand mem file does not exist → STOP. Ask Stark to fill it before proceeding.
+M|skills|Never work anonymously. Never assume brand ctx.
+M|skills|> Run this AFTER loading brand ctx (Step 0). Answer before selecting any layer.
+M|skills|> This is Kahneman's core framework — every piece of cnt targets one system primarily.
+M|skills|**Answer the routing question:**
+M|skills|| Question | System 1 | System 2 |
+M|skills||---|---|---|
+M|skills|| Speed of audience dec | Instant — gut, scroll-stop, emotional | Deliberate — comparing, researching, justifying |
+M|skills|| cnt goal | Stop the scroll, create feeling, build desire | Explain, convince, resolve objection |
+M|skills|| Funnel stage | Discovery, awareness, re-engagement | Consideration, dec, post-purchase |
+M|skills|**Route:**
+M|skills|- **System 1 cnt** → Lead with L1 (Perception), L2 (Desire), L6 (Attention/Spread)
+M|skills|- **System 2 cnt** → Lead with L3 (Influence/Persuasion), L4 (Behavioral Economics)
+M|skills|- **System 1 → System 2 transition** (moving someone from scroll to dec) → L2 + L3 bridge
+M|skills|State your route before proceeding to Step 1. Do not skip.
+M|skills|Answer these before activating any layer:
+M|skills|| Question | Answer |
+M|skills||---|---|
+M|skills|| Which brand? | |
+M|skills|| Which surface? (soc / website / product / email / ad / cg) | |
+M|skills|| cnt goal? (acquire / retain / deepen loyalty) | |
+M|skills|| Is this System 1 cnt? (gut-feel, scroll-stop, instant emotion) | |
+M|skills|| Or System 2? (deliberate, considered, research-mode) | |
+M|skills|| soc signal or self-signal? (showing others vs validating self) | |
+M|skills|| Brand lifecycle stage? (0→1 / growing / scaling / repositioning) | |
+M|skills|| Any lever at Triple Cap right now? | |
+M|skills|Read the last 3 STRATEGY_LOG entries for this brand + surface.
+M|skills|**If previous str exists:**
+M|skills|- Did it work? (check Results field)
+M|skills|- YES → identify the mechanism, evolve it, check Triple Cap
+M|skills|- NO → diagnose why (wrong lever? wrong surface? wrong timing?), select new lever
+M|skills|- PENDING → note it, proceed with new cnt, flag that results are still outstanding
+M|skills|**If no previous entry:**
+M|skills|- Fresh start. Full layer reasoning below.
+M|skills|**Triple Cap Rule:**
+M|skills|If the same psychological lever has been the PRIMARY driver 3 consecutive times
+M|skills|for the same brand surface → it is CAPPED. Select a different lever.
+M|skills|Claude must not override this rule even if the lever is performing well.
+M|skills|Variety maintains psychological freshness in the audience's mind.
+M|skills|Claude activates the most relevant 2-3 layers per piece of cnt.
+M|skills|Not all layers fire every time. Choose based on surface + goal.
+M|skills|*Activates when: website copy, product pages, first-touch soc cnt, ads*
+M|skills|**Core mechanism:** The brain decides in milliseconds. Before logic fires,
+M|skills|the subconscious has already judged. cnt must pass this filter first.
+M|skills|**Key principles:**
+M|skills|- Processing fluency — easier to process = more trusted. Simplicity signals quality.
+M|skills|- Halo effect — one strong positive cue colors everything else
+M|skills|- Thin-slicing — people form accurate impressions from tiny amounts of information
+M|skills|- Pattern interrupt — break expected format to force attention
+M|skills|**Activation trigger:** Ask — *what does someone feel in the first 2 seconds?*
+M|skills|If the answer is "nothing" — this layer needs work before anything else.
+M|skills|**Research prompt (runtime):** Search current examples of brands in this
+M|skills|category using silence, minimalism, or visual contrast as perception tools.
+M|skills|*Activates when: product descriptions, cg hooks, brand storytelling*
+M|skills|**Core mechanism:** People don't buy products. They buy who they want to become.
+M|skills|The gap between current self and aspirational self is the engine of desire.
+M|skills|**Key principles:**
+M|skills|- Jobs-to-be-Done — what progress is the customer trying to make in their life?
+M|skills|- Identity-based desire — "people like me wear/use/buy this"
+M|skills|- Aspirational self gap — show the future version, not the current product
+M|skills|- Authenticity signal — desire built on false promises collapses; on truth, compounds
+M|skills|**Activation trigger:** Ask — *who does the customer become after buying this?*
+M|skills|That answer is the cnt. The product is just the vehicle.
+M|skills|**Research prompt (runtime):** Search how small independent brands in this
+M|skills|category have used founder story or customer transformation as their primary hook.
+M|skills|*Activates when: CTAs, launch cnt, limited releases, soc proof moments*
+M|skills|**Cialdini's 7 — activation map:**
+M|skills|| Principle | When to use | When NOT to use |
+M|skills||---|---|---|
+M|skills|| Reciprocity | Give value before asking | Don't force it — feels transactional |
+M|skills|| Commitment | Post-purchase loyalty cnt | Early acquisition — too soon |
+M|skills|| soc proof | Mid-funnel, consideration stage | Brand new launches — no proof yet |
+M|skills|| Authority | tec or quality claims | Casual/lifestyle cnt — kills vibe |
+M|skills|| Liking | Brand voice, community cnt | Hard sell moments |
+M|skills|| Scarcity | Drops, limited editions, deadlines | Everyday products — loses meaning |
+M|skills|| Unity | Community, shared identity cnt | Broad audiences — too generic |
+M|skills|**Activation trigger:** Ask — *which principle is this cnt trying to activate?*
+M|skills|Never activate more than 2 simultaneously — audiences feel manipulated.
+M|skills|*Activates when: pricing cnt, product tiers, checkout experience, offer framing*
+M|skills|**Key principles (compressed):**
+M|skills|- Loss aversion — "don't miss" outperforms "you'll gain" by ~2x
+M|skills|- Anchoring — first price/value seen sets the reference frame for everything after
+M|skills|- Decoy effect — 3-tier pricing makes the middle tier feel like the smart choice
+M|skills|- Paradox of choice — fewer options = higher conversion
+M|skills|- Peak-end rule — people remember the peak moment and the ending, not the average
+M|skills|**Activation trigger:** Ask — *is this cnt about a dec?*
+M|skills|If yes, frame around what they lose by not acting, not what they gain by acting.
+M|skills|*Activates when: brand identity cnt, visual direction, cg naming, tone*
+M|skills|**Key principles:**
+M|skills|- Mental availability (Byron Sharp) — be thought of first in the buying moment
+M|skills|- Distinctive assets — one repeatable visual/verbal signature beats many varied ones
+M|skills|- Emotional encoding — stories are remembered; specs are forgotten
+M|skills|- Archetype alignment — brand personality should map to one Jungian archetype
+M|skills|consistently (Rebel, Creator, Lover, Hero, Sage, Innocent, Explorer, Ruler)
+M|skills|**Activation trigger:** Ask — *if someone saw this with no logo, would they know
+M|skills|it was this brand?* If no — this layer needs work.
+M|skills|*Activates when: soc cnt, hooks, viral mechanics, cg structure*
+M|skills|**Key principles:**
+M|skills|- Curiosity gap — open a loop the audience needs to close ("here's what we found...")
+M|skills|- Zeigarnik effect — unfinished things are remembered (never complete the story in post 1)
+M|skills|- Von Restorff — the thing that's different gets remembered
+M|skills|- Emotional contagion — high-arousal emotions (awe, excitement, outrage) spread 3x more
+M|skills|- Pattern interrupt — break the expected format in the first 2 seconds
+M|skills|**Activation trigger:** Ask — *why would someone share this?*
+M|skills|If there's no answer — it won't spread regardless of quality.
+M|skills|**Research prompt (runtime):** Search recent examples of small brands
+M|skills|that generated outsized reach with minimal spend. Extract the mechanism, not the execution.
+M|skills|*Activates when: community cnt, brand positioning, cultural moments, identity cg*
+M|skills|**Key principles:**
+M|skills|- In-group/out-group — belonging to "us" requires knowing who "them" is
+M|skills|- Tribal identity signals — language, aesthetics, and references that mark membership
+M|skills|- Status signaling — in fashion specifically, products signal aspiration hierarchy
+M|skills|- Cultural congruence — cnt that feels out of sync with current cultural moment fails
+M|skills|regardless of psychological soundness
+M|skills|**Activation trigger:** Ask — *what group does this cnt make someone feel part of?*
+M|skills|And — *is that the group this brand is building?*
+M|skills|**Timing & ctx note:** When cnt is delivered matters as much as what it says.
+M|skills|A launch post, a mid-scroll organic post, and a retargeting touchpoint are
+M|skills|psychologically different events requiring different lever activation.
+M|skills|Always produce exactly 2 variants. Each tests a DIFFERENT psychological lever.
+M|skills|Never produce 2 variants that are just tonal rewrites of the same lever.
+M|skills|**Variant A:**
+M|skills|- Primary lever: [state which layer and which principle]
+M|skills|- Rationale: [one sentence — why this lever for this brand at this stage]
+M|skills|- cnt: [the actual output]
+M|skills|**Variant B:**
+M|skills|- Primary lever: [state which layer and which principle]
+M|skills|- Rationale: [one sentence — why this is a meaningfully different psychological test]
+M|skills|- cnt: [the actual output]
+M|skills|**Run recommendation:** [Which to run first and why — based on brand lifecycle stage
+M|skills|and what's been tried before per str Log]
+M|skills|Before delivering, Claude checks:
+M|skills|- [ ] Does this pass the 2-second System 1 filter?
+M|skills|- [ ] Is the psychological lever intentional and named?
+M|skills|- [ ] Is it consistent with Brand mem File?
+M|skills|- [ ] Does it serve the brand's desired perception — not undermine it?
+M|skills|- [ ] Is the Triple Cap Rule respected?
+M|skills|- [ ] Are both variants testing genuinely different levers?
+M|skills|If any box fails — revise before delivering.
+M|skills|Claude generates the following entries. Stark pastes them into the correct files, or MCP filesystem tool writes them if configured.
+M|skills|```
+M|skills|Date: [auto]
+M|skills|Brand: [brand name]
+M|skills|Surface: [soc / website / product / email / ad / cg]
+M|skills|Goal: [acquire / retain / deepen loyalty]
+M|skills|Layer(s) activated: [list]
+M|skills|Primary lever — Variant A: [principle name]
+M|skills|Primary lever — Variant B: [principle name]
+M|skills|Run recommendation: [A or B + one-line reason]
+M|skills|Triple Cap status: [lever name — count X/3]
+M|skills|Results: [PENDING]
+M|skills|Diagnosis: [fill when results come in]
+M|skills|Next cycle direction: [fill when results come in]
+M|skills|```
+M|skills|Add one row to the relevant brand + surface table:
+M|skills|```
+M|skills|| [N] | [YYYY-MM-DD] | [primary lever name] | L[1-7] | [ACTIVE / CAPPED] |
+M|skills|```
+M|skills|Update Cap Status Summary. If count = 3 → mark CAPPED, alert in output.
+M|skills|Add one line to the brand's BRAND_MEMORY.md audience psychology section:
+M|skills|```
+M|skills|[YYYY-MM-DD] Psychology note: [what was observed about this audience's rsp to lever X on surface Y]
+M|skills|```
+M|skills|This builds a compounding brand-specific psychological profile across sessions.
+M|skills|Add one line to the agt mem.md:
+M|skills|```
+M|skills|[YYYY-MM-DD] — STRATEGY_LOG entry written: [brand] / [surface] / [primary lever] — [outcome: PENDING]
+M|skills|```
+M|skills|After all writes → if previous cycle Results field is filled → run `@kahneman results` to trigger proposal.
+M|skills|When this skill calls for a research prompt:
+M|skills|1. Search for current real-world brand examples (not older than 18 months)
+M|skills|2. Find both large AND small brand examples — weight small brands equally
+M|skills|3. Extract: what happened → what psychological mechanism drove it →
+M|skills|what would need to be true for it to work for this brand
+M|skills|4. Never reference examples directly in output ("like X did") —
+M|skills|extract the mechanism and apply it natively
+M|skills|5. Discard examples that don't have a clear psychological mechanism behind them
+M|skills|The same psychological lever cannot be the PRIMARY driver for more than
+M|skills|3 consecutive pieces of cnt on the same brand surface.
+M|skills|Tracking lives in `LEVER_TRACKER.md` per brand per surface.
+M|skills|**Why this rule exists:**
+M|skills|Audiences psychologically adapt. A lever that worked 3 times will produce
+M|skills|diminishing returns on the 4th. The brand's cnt starts feeling predictable.
+M|skills|Predictable = invisible. Invisible = no impact.
+M|skills|**What counts as "same lever":**
+M|skills|Same Cialdini principle, same layer, same core psychological mechanism.
+M|skills|Evolving the execution (different copy, different visual) does NOT reset the cap.
+M|skills|Only switching the PRIMARY lever resets it.
+M|skills|**Cap reset:**
+M|skills|After using a different primary lever once, the previous lever's cap resets.
+M|skills|*Variant A is optimized for speed. When a task requires full strategic depth,
+M|skills|cg architecture, or brand repositioning — use 02-kahneman.md instead.*
+M|skills|> Kahneman appends one line here after each ses when results are confirmed (not PENDING).
+M|skills|> Over time this builds brand-specific psychological intelligence. Do not edit manually.
+M|skills|<!-- entries appended by ses end protocol when results confirmed -->
+M|skills|<!-- entries appended by ses end protocol when results confirmed -->

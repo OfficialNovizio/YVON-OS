@@ -1,0 +1,39 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/bundle-preload.md
+M|rules|title: Preload Based on User Intent
+M|rules|impact: MEDIUM
+M|rules|impactDescription: reduces perceived latency
+M|rules|tags: bundle, preload, user-intent, hover
+M|rules|Preload heavy bundles before they're needed to reduce perceived latency.
+M|rules|**Example (preload on hover/focus):**
+M|rules|```tsx
+M|rules|function EditorButton({ onClick }: { onClick: () => void }) {
+M|rules|const preload = () => {
+M|rules|if (typeof window !== 'undefined') {
+M|rules|void import('./monaco-editor')
+M|rules|}
+M|rules|}
+M|rules|return (
+M|rules|<button
+M|rules|onMouseEnter={preload}
+M|rules|onFocus={preload}
+M|rules|onClick={onClick}
+M|rules|>
+M|rules|Open Editor
+M|rules|</button>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Example (preload when feature flag is enabled):**
+M|rules|```tsx
+M|rules|function FlagsProvider({ children, flags }: Props) {
+M|rules|useEffect(() => {
+M|rules|if (flags.editorEnabled && typeof window !== 'undefined') {
+M|rules|void import('./monaco-editor').then(mod => mod.init())
+M|rules|}
+M|rules|}, [flags.editorEnabled])
+M|rules|return <FlagsContext.Provider value={flags}>
+M|rules|{children}
+M|rules|</FlagsContext.Provider>
+M|rules|}
+M|rules|```
+M|rules|The `typeof window !== 'undefined'` check prevents bundling preloaded modules for SSR, optimizing server bundle size and build speed.

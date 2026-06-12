@@ -1,0 +1,18 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-svg-precision.md
+M|rules|title: Optimize SVG Precision
+M|rules|impact: LOW
+M|rules|impactDescription: reduces file size
+M|rules|tags: rendering, svg, optimization, svgo
+M|rules|Reduce SVG coordinate precision to decrease file size. The optimal precision depends on the viewBox size, but in general reducing precision should be considered.
+M|rules|**Incorrect (excessive precision):**
+M|rules|```svg
+M|rules|<path d="M 10.293847 20.847362 L 30.938472 40.192837" />
+M|rules|```
+M|rules|**Correct (1 decimal place):**
+M|rules|```svg
+M|rules|<path d="M 10.3 20.8 L 30.9 40.2" />
+M|rules|```
+M|rules|**Automate with SVGO:**
+M|rules|```bash
+M|rules|npx svgo --precision=1 --multipass icon.svg
+M|rules|```

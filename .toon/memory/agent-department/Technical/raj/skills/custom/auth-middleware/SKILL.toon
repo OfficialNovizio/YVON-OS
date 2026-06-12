@@ -1,0 +1,142 @@
+#MEM id=auth-middleware source=/root/yvon/agent-department/Technical/raj/skills/custom/auth-middleware/SKILL.md
+M|auth-middleware|name: auth-middleware
+M|auth-middleware|description: Authentication implementation patterns for YVON's API routes. Covers createServerClient pattern, getUser vs getSession, HTTP-only cookie rule (ALL cookies server-side only), vtr-scoped au
+M|auth-middleware|version: 1.1.0
+M|auth-middleware|Auth mistakes are the most common source of sec vulnerabilities in YVON's routes. Using the wrong Supabase client, trusting client-supplied user IDs, or exposing cookies to client JavaScript are all p
+M|auth-middleware|**No cookie in YVON is ever set from a client component. No exceptions.**
+M|auth-middleware|| Cookie | Set by | Readable by client JS? |
+M|auth-middleware||--------|--------|------------------------|
+M|auth-middleware|| Supabase auth ses | `createServerClient` (Raj, server) | ❌ Never |
+M|auth-middleware|| `yvon_active_venture` | `/api/vtr/set` route (Raj, server) | ❌ Never |
+M|auth-middleware|| Any future ses cookie | Server-side API route only | ❌ Never |
+M|auth-middleware|**Why:** Client-readable cookies are vulnerable to XSS. If any script on the page can read `doc.cookie`, a single XSS injection can steal the ses token, the vtr ctx, and any other state stored there. 
+M|auth-middleware|**Implication for Mia:** Mia's components cannot read `yvon_active_venture` via `doc.cookie` or any client-side cookie utility. vtr ctx must arrive as Server Component props (passed from a Server Comp
+M|auth-middleware|```typescript
+M|auth-middleware|// CORRECT — Server Component reads cookie server-side, passes as prop
+M|auth-middleware|// app/screens/anl/page.tsx (Server Component)
+M|auth-middleware|import { cookies } from 'next/headers'
+M|auth-middleware|export default async function AnalyticsPage() {
+M|auth-middleware|const ventureSlug = cookies().get('yvon_active_venture')?.value ?? 'novizio'
+M|auth-middleware|return <AnalyticsClient ventureSlug={ventureSlug} />
+M|auth-middleware|}
+M|auth-middleware|// NEVER — client component reads cookie directly
+M|auth-middleware|// 'use client'
+M|auth-middleware|// const ventureSlug = doc.cookie  ← XSS vector
+M|auth-middleware|// const ventureSlug = Cookies.get('yvon_active_venture')  ← exposes cookie to JS
+M|auth-middleware|```
+M|auth-middleware|All cookie writes go through API routes using `NextResponse` with explicit sec flags:
+M|auth-middleware|```typescript
+M|auth-middleware|// /api/vtr/set/route.ts — vtr switcher
+M|auth-middleware|export async function POST(req: NextRequest) {
+M|auth-middleware|const { ventureSlug } = await req.json()
+M|auth-middleware|const rsp = NextResponse.json({ success: true })
+M|auth-middleware|rsp.cookies.set('yvon_active_venture', ventureSlug, {
+M|auth-middleware|httpOnly: true,        // not readable by JavaScript
+M|auth-middleware|secure: true,          // HTTPS only
+M|auth-middleware|sameSite: 'lax',       // CSRF protection
+M|auth-middleware|path: '/',
+M|auth-middleware|maxAge: 60 * 60 * 24 * 30  // 30 days
+M|auth-middleware|})
+M|auth-middleware|return rsp
+M|auth-middleware|}
+M|auth-middleware|```
+M|auth-middleware|**Required flags for every cookie Raj sets:**
+M|auth-middleware|| Flag | Value | Why |
+M|auth-middleware||------|-------|-----|
+M|auth-middleware|| `httpOnly` | `true` | Blocks JS access — XSS can't steal it |
+M|auth-middleware|| `secure` | `true` | HTTPS only — never sent over HTTP |
+M|auth-middleware|| `sameSite` | `'lax'` | CSRF protection — cookie not sent on cross-site POST |
+M|auth-middleware|| `path` | `'/'` | Scoped to whole app |
+M|auth-middleware|| `maxAge` | explicit value | No indefinite sessions |
+M|auth-middleware|```typescript
+M|auth-middleware|import { createServerClient } from '@supabase/ssr'
+M|auth-middleware|import { cookies } from 'next/headers'
+M|auth-middleware|import { NextRequest, NextResponse } from 'next/server'
+M|auth-middleware|export async function POST(req: NextRequest) {
+M|auth-middleware|// 1. Always createServerClient with cookies — never createClient()
+M|auth-middleware|const cookieStore = cookies()
+M|auth-middleware|const supabase = createServerClient(
+M|auth-middleware|process.env.NEXT_PUBLIC_SUPABASE_URL!,
+M|auth-middleware|process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+M|auth-middleware|{
+M|auth-middleware|cookies: {
+M|auth-middleware|get(name) { return cookieStore.get(name)?.value },
+M|auth-middleware|set(name, value, options) { cookieStore.set({ name, value, ...options }) },
+M|auth-middleware|remove(name, options) { cookieStore.set({ name, value: '', ...options }) },
+M|auth-middleware|},
+M|auth-middleware|}
+M|auth-middleware|)
+M|auth-middleware|// 2. Always getUser() — never getSession() (ses can be stale/forged)
+M|auth-middleware|const { data: { user }, error } = await supabase.auth.getUser()
+M|auth-middleware|if (error || !user) {
+M|auth-middleware|return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+M|auth-middleware|}
+M|auth-middleware|// 3. Use user.id from getUser() — NEVER body.userId, params.userId, or headers
+M|auth-middleware|const userId = user.id
+M|auth-middleware|// 4. Proceed with handler
+M|auth-middleware|// ...
+M|auth-middleware|}
+M|auth-middleware|```
+M|auth-middleware|| Method | What it does | Use? |
+M|auth-middleware||--------|-------------|------|
+M|auth-middleware|| `auth.getUser()` | Re-validates the JWT with Supabase Auth server | ✅ Always use this |
+M|auth-middleware|| `auth.getSession()` | Returns the ses from the cookie — does NOT re-validate | ❌ Never for auth checks |
+M|auth-middleware|`getSession()` trusts the cookie value as-is. A malformed or replayed cookie passes. `getUser()` hits the Auth server every time — correct.
+M|auth-middleware|```typescript
+M|auth-middleware|const { data: { user }, error } = await supabase.auth.getUser()
+M|auth-middleware|if (error?.status === 401) {
+M|auth-middleware|return NextResponse.json(
+M|auth-middleware|{ error: 'ses expired. Please log in again.' },
+M|auth-middleware|{ status: 401 }
+M|auth-middleware|)
+M|auth-middleware|}
+M|auth-middleware|if (error) {
+M|auth-middleware|return NextResponse.json({ error: 'Authentication failed.' }, { status: 401 })
+M|auth-middleware|}
+M|auth-middleware|```
+M|auth-middleware|**Rule:** Auth failure always returns `401`. Never `500`. Never a redirect in an API route.
+M|auth-middleware|```typescript
+M|auth-middleware|// After user is validated — read vtr from HTTP-only cookie server-side
+M|auth-middleware|const ventureSlug = cookieStore.get('yvon_active_venture')?.value
+M|auth-middleware|if (!ventureSlug) {
+M|auth-middleware|return NextResponse.json(
+M|auth-middleware|{ error: 'vtr ctx required.' },
+M|auth-middleware|{ status: 400 }
+M|auth-middleware|)
+M|auth-middleware|}
+M|auth-middleware|// Verify user has access to this vtr
+M|auth-middleware|const { data: access } = await supabase
+M|auth-middleware|.from('venture_access')
+M|auth-middleware|.select('role')
+M|auth-middleware|.eq('user_id', user.id)
+M|auth-middleware|.eq('venture_slug', ventureSlug)
+M|auth-middleware|.single()
+M|auth-middleware|if (!access) {
+M|auth-middleware|return NextResponse.json(
+M|auth-middleware|{ error: 'Access to this vtr is not permitted.' },
+M|auth-middleware|{ status: 403 }
+M|auth-middleware|)
+M|auth-middleware|}
+M|auth-middleware|```
+M|auth-middleware|**Note:** `ventureSlug` always comes from the server-side `cookieStore`, never from `req.headers.get('x-vtr-slug')` or the request body. The client cannot fake vtr ctx because the cookie is HTTP-only.
+M|auth-middleware|```typescript
+M|auth-middleware|const userRole = access.role  // 'admin' | 'viewer' | 'editor'
+M|auth-middleware|if (userRole !== 'admin' && req.method === 'DELETE') {
+M|auth-middleware|return NextResponse.json({ error: 'Insufficient permissions.' }, { status: 403 })
+M|auth-middleware|}
+M|auth-middleware|```
+M|auth-middleware|| Scenario | Status |
+M|auth-middleware||----------|--------|
+M|auth-middleware|| Not logged in | `401` |
+M|auth-middleware|| Logged in, wrong vtr | `403` |
+M|auth-middleware|| Logged in, insufficient role | `403` |
+M|auth-middleware|| vtr not found | `404` |
+M|auth-middleware|- [ ] Never use `createClient()` in API routes — always `createServerClient()` with cookie pattern
+M|auth-middleware|- [ ] Never use `auth.getSession()` — always `auth.getUser()`
+M|auth-middleware|- [ ] Never trust `body.userId` — always `user.id` from `auth.getUser()`
+M|auth-middleware|- [ ] Never set cookies from client components — always server-side API routes with full sec flags
+M|auth-middleware|- [ ] Never set a cookie without `httpOnly: true`, `secure: true`, `sameSite: 'lax'`
+M|auth-middleware|- [ ] Never read `yvon_active_venture` from `doc.cookie` — server-side `cookies()` only
+M|auth-middleware|- [ ] ses expiry → `401`, not `500`
+M|auth-middleware|- [ ] Wrong vtr → `403`, not `401`
+M|auth-middleware|- [ ] `SUPABASE_SERVICE_ROLE_KEY` server-side only — never bypasses RLS unintentionally

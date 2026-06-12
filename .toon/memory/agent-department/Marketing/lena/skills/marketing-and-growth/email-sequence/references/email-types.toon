@@ -1,0 +1,335 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/references/email-types.md
+M|references|A comprehensive guide to lifecycle and cg emails. Use this as an audit checklist and implementation reference.
+M|references|- Onboarding Emails (new users series, new customers series, key onboarding step reminder, new user invite)
+M|references|- Retention Emails (upgrade to paid, upgrade to higher plan, ask for rv, offer support proactively, product usage report, NPS survey, referral program)
+M|references|- Billing Emails (switch to annual, failed payment recovery, cancellation survey, upcoming renewal reminder)
+M|references|- Usage Emails (daily/weekly/monthly summary, key event or milestone notifications)
+M|references|- Win-Back Emails (expired trials, cancelled customers)
+M|references|- cg Emails (monthly roundup/nl, seasonal promotions, product updates, industry news roundup, pricing update)
+M|references|- Email Audit Checklist (onboarding, retention, billing, usage, win-back, cg)
+M|references|**Trigger**: User signs up (free or trial)
+M|references|**Goal**: Activate user, drive to aha moment
+M|references|**Typical sequence**: 5-7 emails over 14 days
+M|references|- Email 1: Welcome + single next step (immediate)
+M|references|- Email 2: Quick win / getting started (day 1)
+M|references|- Email 3: Key feature highlight (day 3)
+M|references|- Email 4: Success story / soc proof (day 5)
+M|references|- Email 5: Check-in + offer help (day 7)
+M|references|- Email 6: Advanced tip (day 10)
+M|references|- Email 7: Upgrade prompt or next milestone (day 14)
+M|references|**Key metrics**: Activation rate, feature adoption
+M|references|**Trigger**: User converts to paid
+M|references|**Goal**: Reinforce purchase dec, drive adoption, reduce early churn
+M|references|**Typical sequence**: 3-5 emails over 14 days
+M|references|- Email 1: Thank you + what's next (immediate)
+M|references|- Email 2: Getting full value — setup checklist (day 2)
+M|references|- Email 3: Pro tips for paid features (day 5)
+M|references|- Email 4: Success story from similar customer (day 7)
+M|references|- Email 5: Check-in + introduce support resources (day 14)
+M|references|**Key point**: Different from new user series—they've committed. Focus on reinforcement and expansion, not conversion.
+M|references|**Trigger**: User hasn't completed critical setup step after X time
+M|references|**Goal**: Nudge completion of high-value action
+M|references|**Format**: Single email or 2-3 email mini-sequence
+M|references|**Example triggers**:
+M|references|- Hasn't connected integration after 48 hours
+M|references|- Hasn't invited team member after 3 days
+M|references|- Hasn't completed profile after 24 hours
+M|references|**Copy approach**:
+M|references|- Remind them what they started
+M|references|- Explain why this step matters
+M|references|- Make it easy (direct link to complete)
+M|references|- Offer help if stuck
+M|references|**Trigger**: Existing user invites teammate
+M|references|**Goal**: Activate the invited user
+M|references|**Recipient**: The person being invited
+M|references|- Email 1: You've been invited (immediate)
+M|references|- Email 2: Reminder if not accepted (day 2)
+M|references|- Email 3: Final reminder (day 5)
+M|references|**Copy approach**:
+M|references|- Personalize with inviter's name
+M|references|- Explain what they're joining
+M|references|- Single CTA to accept invite
+M|references|- soc proof optional
+M|references|**Trigger**: Free user shows engagement, or trial ending
+M|references|**Goal**: Convert free to paid
+M|references|**Typical sequence**: 3-5 emails
+M|references|**Trigger options**:
+M|references|- Time-based (trial day 10, 12, 14)
+M|references|- Behavior-based (hit usage limit, used premium feature)
+M|references|- Engagement-based (highly active free user)
+M|references|**Sequence structure**:
+M|references|- Value summary: What they've accomplished
+M|references|- Feature comparison: What they're missing
+M|references|- soc proof: Who else upgraded
+M|references|- Urgency: Trial ending, limited offer
+M|references|- Final: Last chance + easy path
+M|references|**Trigger**: User approaching plan limits or using features available on higher tier
+M|references|**Goal**: Upsell to next tier
+M|references|**Format**: Single email or 2-3 email sequence
+M|references|**Trigger examples**:
+M|references|- 80% of seat limit reached
+M|references|- 90% of storage/usage limit
+M|references|- Tried to use higher-tier feature
+M|references|- Power user behavior patterns
+M|references|**Copy approach**:
+M|references|- Acknowledge their growth (positive framing)
+M|references|- Show what next tier unlocks
+M|references|- Quantify value vs. cost
+M|references|- Easy upgrade path
+M|references|**Trigger**: Customer milestone (30/60/90 days, key achievement, support resolution)
+M|references|**Goal**: gen soc proof on G2, Capterra, app stores
+M|references|**Format**: Single email
+M|references|**Best timing**:
+M|references|- After positive support interaction
+M|references|- After achieving measurable result
+M|references|- After renewal
+M|references|- NOT after billing issues or bugs
+M|references|**Copy approach**:
+M|references|- Thank them for being a customer
+M|references|- Mention specific value/milestone if possible
+M|references|- Explain why reviews matter (help others decide)
+M|references|- Direct link to rv platform
+M|references|- Keep it short—this is an ask
+M|references|**Trigger**: Signs of struggle (drop in usage, failed actions, error encounters)
+M|references|**Goal**: Save at-risk user, improve experience
+M|references|**Format**: Single email
+M|references|**Trigger examples**:
+M|references|- Usage dropped significantly week-over-week
+M|references|- Multiple failed attempts at action
+M|references|- Viewed help docs repeatedly
+M|references|- Stuck at same onboarding step
+M|references|**Copy approach**:
+M|references|- Genuine concern tone
+M|references|- Specific: "I noticed you..." (if data allows)
+M|references|- Offer direct help (not just link to docs)
+M|references|- Personal from support or CSM
+M|references|- No sales pitch—pure help
+M|references|**Trigger**: Time-based (weekly, monthly, quarterly)
+M|references|**Goal**: Demonstrate value, drive engagement, reduce churn
+M|references|**Format**: Single email, recurring
+M|references|**What to include**:
+M|references|- Key metrics/activity summary
+M|references|- Comparison to previous period
+M|references|- Achievements/milestones
+M|references|- Suggestions for improvement
+M|references|- Light CTA to explore more
+M|references|**Examples**:
+M|references|- "You saved X hours this month"
+M|references|- "Your team completed X projects"
+M|references|- "You're in the top X% of users"
+M|references|**Key point**: Make them feel good and remind them of value delivered.
+M|references|**Trigger**: Time-based (quarterly) or event-based (post-milestone)
+M|references|**Goal**: Measure satisfaction, identify promoters and detractors
+M|references|**Format**: Single email
+M|references|**Best practices**:
+M|references|- Keep it simple: Just the NPS question initially
+M|references|- Follow-up form for "why" based on score
+M|references|- Personal sender (CEO, founder, CSM)
+M|references|- Tell them how you'll use feedback
+M|references|**Follow-up based on score**:
+M|references|- Promoters (9-10): Thank + ask for rv/referral
+M|references|- Passives (7-8): Ask what would make it a 10
+M|references|- Detractors (0-6): Personal outreach to understand issues
+M|references|**Trigger**: Customer milestone, promoter NPS score, or cg
+M|references|**Goal**: gen referrals
+M|references|**Format**: Single email or periodic reminders
+M|references|**Good timing**:
+M|references|- After positive NPS rsp
+M|references|- After customer achieves result
+M|references|- After renewal
+M|references|- Seasonal cg
+M|references|**Copy approach**:
+M|references|- Remind them of their success
+M|references|- Explain the referral offer clearly
+M|references|- Make sharing easy (unique link)
+M|references|- Show what's in it for them AND referee
+M|references|**Trigger**: Monthly subscriber at renewal time or cg
+M|references|**Goal**: Convert monthly to annual (improve LTV, reduce churn)
+M|references|**Format**: Single email or 2-email sequence
+M|references|**Value proposition**:
+M|references|- Calculate exact savings
+M|references|- Additional benefits (if any)
+M|references|- Lock in current price messaging
+M|references|- Easy one-click switch
+M|references|**Best timing**:
+M|references|- Around monthly renewal date
+M|references|- End of year / new year
+M|references|- After 3-6 months of loyalty
+M|references|- Price increase announcement (lock in old rate)
+M|references|**Trigger**: Payment fails
+M|references|**Goal**: Recover revenue, retain customer
+M|references|**Typical sequence**: 3-4 emails over 7-14 days
+M|references|**Sequence structure**:
+M|references|- Email 1 (Day 0): Friendly notice, update payment link
+M|references|- Email 2 (Day 3): Reminder, service may be interrupted
+M|references|- Email 3 (Day 7): Urgent, account will be suspended
+M|references|- Email 4 (Day 10-14): Final notice, what they'll lose
+M|references|**Copy approach**:
+M|references|- Assume it's an accident (card expired, etc.)
+M|references|- Clear, direct, no guilt
+M|references|- Single CTA to update payment
+M|references|- Explain what happens if not resolved
+M|references|**Key metrics**: Recovery rate, time to recovery
+M|references|**Trigger**: User cancels subscription
+M|references|**Goal**: Learn why, opportunity to save
+M|references|**Format**: Single email (immediate)
+M|references|**Options**:
+M|references|- In-app survey at cancellation (better completion)
+M|references|- Follow-up email if they skip in-app
+M|references|- Personal outreach for high-value accounts
+M|references|**Questions to ask**:
+M|references|- Primary reason for cancelling
+M|references|- What could we have done better
+M|references|- Would anything change your mind
+M|references|- Can we help with transition
+M|references|**Winback opportunity**: Based on reason, offer targeted save (discount, pause, downgrade, training).
+M|references|**Trigger**: X days before renewal (14 or 30 days typical)
+M|references|**Goal**: No surprise charges, opportunity to expand
+M|references|**Format**: Single email
+M|references|**What to include**:
+M|references|- Renewal date and amount
+M|references|- What's included in renewal
+M|references|- How to update payment/plan
+M|references|- Changes to pricing/features (if any)
+M|references|- Optional: Upsell opportunity
+M|references|**Required for**: Annual subscriptions, high-value contracts
+M|references|**Trigger**: Time-based
+M|references|**Goal**: Drive engagement, demonstrate value
+M|references|**Format**: Single email, recurring
+M|references|**cnt by frequency**:
+M|references|- **Daily**: Notifications, quick stats (for high-engagement products)
+M|references|- **Weekly**: Activity summary, highlights, suggestions
+M|references|- **Monthly**: Comprehensive report, achievements, ROI if calculable
+M|references|**Structure**:
+M|references|- Key metrics at a glance
+M|references|- Notable achievements
+M|references|- Activity breakdown
+M|references|- Suggestions / what to try next
+M|references|- CTA to dive deeper
+M|references|**Personalization**: Must be relevant to their actual usage. Empty reports are worse than no report.
+M|references|**Trigger**: Specific achievement or event
+M|references|**Goal**: Celebrate, drive continued engagement
+M|references|**Format**: Single email per event
+M|references|**Milestone examples**:
+M|references|- First [action] completed
+M|references|- 10th/100th [thing] created
+M|references|- Goal achieved
+M|references|- Team collaboration milestone
+M|references|- Usage streak
+M|references|**Copy approach**:
+M|references|- Celebration tone
+M|references|- Specific achievement
+M|references|- ctx (compared to others, compared to before)
+M|references|- What's next / next milestone
+M|references|**Trigger**: Trial ended without conversion
+M|references|**Goal**: Convert or re-engage
+M|references|**Typical sequence**: 3-4 emails over 30 days
+M|references|**Sequence structure**:
+M|references|- Email 1 (Day 1 post-expiry): Trial ended, here's what you're missing
+M|references|- Email 2 (Day 7): What held you back? (gather feedback)
+M|references|- Email 3 (Day 14): Incentive offer (discount, extended trial)
+M|references|- Email 4 (Day 30): Final reach-out, door is open
+M|references|**Segmentation**: Different approach based on trial engagement level:
+M|references|- High engagement: Focus on removing friction to convert
+M|references|- Low engagement: Offer fresh start, more onboarding help
+M|references|- No engagement: Ask what happened, offer demo/call
+M|references|**Trigger**: Time after cancellation (30, 60, 90 days)
+M|references|**Goal**: Win back churned customers
+M|references|**Typical sequence**: 2-3 emails spread over 90 days
+M|references|**Sequence structure**:
+M|references|- Email 1 (Day 30): What's new since you left
+M|references|- Email 2 (Day 60): We've addressed [common reason]
+M|references|- Email 3 (Day 90): Special offer to return
+M|references|**Copy approach**:
+M|references|- No guilt, no desperation
+M|references|- Genuine updates and improvements
+M|references|- Personalize based on cancellation reason if known
+M|references|- Make return easy
+M|references|**Key point**: They're more likely to return if their reason was addressed.
+M|references|**Trigger**: Time-based (monthly)
+M|references|**Goal**: Engagement, brand presence, cnt distribution
+M|references|**Format**: Single email, recurring
+M|references|**cnt mix**:
+M|references|- Product updates and tips
+M|references|- Customer stories
+M|references|- Educational cnt
+M|references|- Company news
+M|references|- Industry insights
+M|references|**Best practices**:
+M|references|- Consistent send day/time
+M|references|- Scannable format
+M|references|- Mix of cnt types
+M|references|- One primary CTA focus
+M|references|- Unsubscribe is okay—keeps list healthy
+M|references|**Trigger**: Calendar events (Black Friday, New Year, etc.)
+M|references|**Goal**: Drive conversions with timely offer
+M|references|**Format**: cg burst (2-4 emails)
+M|references|**Common opportunities**:
+M|references|- New Year (fresh start, annual planning)
+M|references|- End of fiscal year (budget spending)
+M|references|- Black Friday / Cyber Monday
+M|references|- Industry-specific seasons
+M|references|- Back to school / work
+M|references|**Sequence structure**:
+M|references|- Announcement: Offer reveal
+M|references|- Reminder: Midway through promotion
+M|references|- Last chance: Final hours
+M|references|**Trigger**: New feature release
+M|references|**Goal**: Adoption, engagement, demonstrate momentum
+M|references|**Format**: Single email per major release
+M|references|**What to include**:
+M|references|- What's new (clear and simple)
+M|references|- Why it matters (benefit, not just feature)
+M|references|- How to use it (direct link)
+M|references|- Who asked for it (community acknowledgment)
+M|references|**Segmentation**: Consider targeting based on relevance:
+M|references|- Users who would benefit most
+M|references|- Users who requested feature
+M|references|- Power users first (for beta feel)
+M|references|**Trigger**: Time-based (weekly or monthly)
+M|references|**Goal**: Thought leadership, engagement, brand value
+M|references|**Format**: Curated nl
+M|references|**cnt**:
+M|references|- Curated news and links
+M|references|- Your take / commentary
+M|references|- What it means for readers
+M|references|- How your product helps
+M|references|**Best for**: B2B products where customers care about industry trends.
+M|references|**Trigger**: Price change announcement
+M|references|**Goal**: Transparent communication, minimize churn
+M|references|**Format**: Single email (or sequence for major changes)
+M|references|**Timeline**:
+M|references|- Announce 30-60 days before change
+M|references|- Reminder 14 days before
+M|references|- Final notice 7 days before
+M|references|**Copy approach**:
+M|references|- Clear, direct, transparent
+M|references|- Explain the why (value delivered, costs increased)
+M|references|- Grandfather if possible (lock in old rate)
+M|references|- Give options (annual lock-in, downgrade)
+M|references|**Important**: Honesty and advance notice build trust even when price increases.
+M|references|Use this to audit your current email program:
+M|references|- [ ] New users series
+M|references|- [ ] New customers series
+M|references|- [ ] Key onboarding step reminders
+M|references|- [ ] New user invite sequence
+M|references|- [ ] Upgrade to paid sequence
+M|references|- [ ] Upgrade to higher plan triggers
+M|references|- [ ] Ask for rv (timed properly)
+M|references|- [ ] Proactive support outreach
+M|references|- [ ] Product usage reports
+M|references|- [ ] NPS survey
+M|references|- [ ] Referral program emails
+M|references|- [ ] Switch to annual cg
+M|references|- [ ] Failed payment recovery sequence
+M|references|- [ ] Cancellation survey
+M|references|- [ ] Upcoming renewal reminders
+M|references|- [ ] Daily/weekly/monthly summaries
+M|references|- [ ] Key event notifications
+M|references|- [ ] Milestone celebrations
+M|references|- [ ] Expired trial sequence
+M|references|- [ ] Cancelled customer sequence
+M|references|- [ ] Monthly roundup / nl
+M|references|- [ ] Seasonal promotion calendar
+M|references|- [ ] Product update announcements
+M|references|- [ ] Pricing update communications

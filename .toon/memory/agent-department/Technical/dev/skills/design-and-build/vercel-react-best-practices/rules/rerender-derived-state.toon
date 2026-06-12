@@ -1,0 +1,21 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-derived-state.md
+M|rules|title: Subscribe to Derived State
+M|rules|impact: MEDIUM
+M|rules|impactDescription: reduces re-render frequency
+M|rules|tags: rerender, derived-state, media-query, optimization
+M|rules|Subscribe to derived boolean state instead of continuous values to reduce re-render frequency.
+M|rules|**Incorrect (re-renders on every pixel change):**
+M|rules|```tsx
+M|rules|function Sidebar() {
+M|rules|const width = useWindowWidth()  // updates continuously
+M|rules|const isMobile = width < 768
+M|rules|return <nav className={isMobile ? 'mobile' : 'desktop'} />
+M|rules|}
+M|rules|```
+M|rules|**Correct (re-renders only when boolean changes):**
+M|rules|```tsx
+M|rules|function Sidebar() {
+M|rules|const isMobile = useMediaQuery('(max-width: 767px)')
+M|rules|return <nav className={isMobile ? 'mobile' : 'desktop'} />
+M|rules|}
+M|rules|```

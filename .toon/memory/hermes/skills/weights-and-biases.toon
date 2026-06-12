@@ -1,0 +1,61 @@
+SKILL|weights-and-biases|"W&B: log ML experiments, sweeps, model registry, dashboards."
+STEP|1|**Track ML experiments** with automatic metric logging
+STEP|2|**Visualize training** in real-time dashboards
+STEP|3|**Compare runs** across hyperparameters and configurations
+STEP|4|**Optimize hyperparameters** with automated sweeps
+STEP|5|**Manage model registry** with versioning and lineage
+STEP|6|**Collaborate on ML projects** with team workspaces
+STEP|7|**Track artifacts** (datasets, models, code) with lineage
+STEP|8|Users**: 200,000+ ML practitioners \| **GitHub Stars**: 10.5k+ \| **Integrations**: 100+
+STEP|9|Project**: Collection of related experiments
+STEP|10|Run**: Single execution of your training script
+STEP|11|Combine runs, charts, and text
+STEP|12|Markdown support
+STEP|13|Embeddable visualizations
+STEP|14|Team collaboration
+STEP|15|Create team account at wandb.ai
+STEP|16|Add team members
+STEP|17|Set project visibility (private/public)
+STEP|18|Use team-level artifacts and model registry
+STEP|19|**Free**: Unlimited public projects, 100GB storage
+STEP|20|**Academic**: Free for students/researchers
+STEP|21|**Teams**: $50/seat/month, private projects, unlimited storage
+STEP|22|**Enterprise**: Custom pricing, on-prem options
+STEP|23|**Documentation**: https://docs.wandb.ai
+STEP|24|**GitHub**: https://github.com/wandb/wandb (10.5k+ stars)
+STEP|25|**Examples**: https://github.com/wandb/examples
+STEP|26|**Community**: https://wandb.ai/community
+STEP|27|**Discord**: https://wandb.me/discord
+STEP|28|`references/sweeps.md` - Comprehensive hyperparameter optimization guide
+STEP|29|`references/artifacts.md` - Data and model versioning patterns
+STEP|30|`references/integrations.md` - Framework-specific examples
+PIT|**Track ML experiments** with automatic metric logging
+PIT|**Visualize training** in real-time dashboards
+PIT|**Compare runs** across hyperparameters and configurations
+PIT|**Optimize hyperparameters** with automated sweeps
+PIT|**Manage model registry** with versioning and lineage
+PIT|**Collaborate on ML projects** with team workspaces
+PIT|**Track artifacts** (datasets, models, code) with lineage
+PIT|Users**: 200,000+ ML practitioners \| **GitHub Stars**: 10.5k+ \| **Integrations**: 100+
+PIT|Project**: Collection of related experiments
+PIT|Run**: Single execution of your training script
+PIT|Combine runs, charts, and text
+PIT|Markdown support
+PIT|Embeddable visualizations
+PIT|Team collaboration
+PIT|Create team account at wandb.ai
+PIT|Add team members
+PIT|Set project visibility (private/public)
+PIT|Use team-level artifacts and model registry
+PIT|**Free**: Unlimited public projects, 100GB storage
+PIT|**Academic**: Free for students/researchers
+PIT|**Teams**: $50/seat/month, private projects, unlimited storage
+PIT|**Enterprise**: Custom pricing, on-prem options
+PIT|**Documentation**: https://docs.wandb.ai
+PIT|**GitHub**: https://github.com/wandb/wandb (10.5k+ stars)
+PIT|**Examples**: https://github.com/wandb/examples
+PIT|**Community**: https://wandb.ai/community
+PIT|**Discord**: https://wandb.me/discord
+PIT|`references/sweeps.md` - Comprehensive hyperparameter optimization guide
+PIT|`references/artifacts.md` - Data and model versioning patterns
+PIT|`references/integrations.md` - Framework-specific examples

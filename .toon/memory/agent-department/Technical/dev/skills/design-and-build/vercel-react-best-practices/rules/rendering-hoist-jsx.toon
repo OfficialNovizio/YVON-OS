@@ -1,0 +1,34 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-hoist-jsx.md
+M|rules|title: Hoist Static JSX Elements
+M|rules|impact: LOW
+M|rules|impactDescription: avoids re-creation
+M|rules|tags: rendering, jsx, static, optimization
+M|rules|Extract static JSX outside components to avoid re-creation.
+M|rules|**Incorrect (recreates element every render):**
+M|rules|```tsx
+M|rules|function LoadingSkeleton() {
+M|rules|return <div className="animate-pulse h-20 bg-gray-200" />
+M|rules|}
+M|rules|function Container() {
+M|rules|return (
+M|rules|<div>
+M|rules|{loading && <LoadingSkeleton />}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (reuses same element):**
+M|rules|```tsx
+M|rules|const loadingSkeleton = (
+M|rules|<div className="animate-pulse h-20 bg-gray-200" />
+M|rules|)
+M|rules|function Container() {
+M|rules|return (
+M|rules|<div>
+M|rules|{loading && loadingSkeleton}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|This is especially helpful for large and static SVG nodes, which can be expensive to recreate on every render.
+M|rules|**Note:** If your project has [React Compiler](https://react.dev/learn/react-compiler) enabled, the compiler automatically hoists static JSX elements and optimizes component re-renders, making manual 

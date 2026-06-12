@@ -1,0 +1,83 @@
+#MEM id=next-browser source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/next-browser/SKILL.md
+M|next-browser|name: next-browser
+M|next-browser|description: CLI tool for inspecting a running Next.js dev app programmatically. Enables Dev/Mia/Quinn to inspect React component trees, capture errors, audit network calls, profile Core Web Vitals, a
+M|next-browser|version: 1.0.0
+M|next-browser|`@vercel/next-browser` is a CLI that exposes React DevTools and the Next.js dev overlay as shell commands. A persistent Chromium daemon runs in the background; each CLI command sends a JSON-RPC messag
+M|next-browser|**When to use:** Any time Dev, Mia, or Quinn needs to inspect what a running Next.js app is actually doing — component state, network calls, render performance, accessibility, or build errors — withou
+M|next-browser|**Preferred (integrates with Claude Code):**
+M|next-browser|```bash
+M|next-browser|npx skills add vercel-labs/next-browser
+M|next-browser|```
+M|next-browser|**Manual:**
+M|next-browser|```bash
+M|next-browser|pnpm add -g @vercel/next-browser
+M|next-browser|playwright install chromium
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser open http://localhost:3000        # launch browser + navigate
+M|next-browser|next-browser goto /anl                  # full-page reload to path
+M|next-browser|next-browser push /settings                   # client-side navigation (no reload)
+M|next-browser|next-browser back                             # previous page
+M|next-browser|next-browser reload                           # refresh
+M|next-browser|next-browser restart-server                   # reset Next.js dev server + clear cache
+M|next-browser|next-browser close                            # terminate daemon
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser snapshot                         # accessibility tree with interactive element refs
+M|next-browser|next-browser tree                             # React component hierarchy (full)
+M|next-browser|next-browser tree <component-id>              # individual component: props + hooks + state
+M|next-browser|next-browser errors                           # build + runtime errors
+M|next-browser|next-browser logs                             # dev server stdout
+M|next-browser|next-browser browser-logs                     # console.log/warn/error from browser
+M|next-browser|next-browser network                          # list all network requests
+M|next-browser|next-browser network <idx>                    # inspect specific request (headers, body, rsp)
+M|next-browser|next-browser screenshot                       # viewport capture
+M|next-browser|next-browser screenshot --full-page          # full scrollable page capture
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser click <ref|text|selector>        # click an element
+M|next-browser|next-browser fill <ref|selector> <value>      # type into an input
+M|next-browser|next-browser eval <script>                    # run JS in page ctx
+M|next-browser|next-browser eval <ref> <script>              # run JS scoped to a component
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser perf                             # Core Web Vitals + React hydration timing
+M|next-browser|next-browser renders start                    # begin component render profiling
+M|next-browser|next-browser renders stop                     # end profiling + output render counts
+M|next-browser|next-browser ppr lock                         # freeze dynamic cnt (inspect PPR shell)
+M|next-browser|next-browser ppr unlock                       # restore dynamic cnt
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser page                             # current page metadata
+M|next-browser|next-browser project                          # project structure info
+M|next-browser|next-browser routes                           # all registered routes
+M|next-browser|next-browser action <id>                      # inspect a Server Action
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser open http://localhost:3000
+M|next-browser|next-browser goto /anl
+M|next-browser|next-browser errors          # check for build/runtime errors first
+M|next-browser|next-browser tree            # inspect component hierarchy
+M|next-browser|next-browser network         # check which API calls fired and their status
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser goto /war-room
+M|next-browser|next-browser network         # list all requests made during page load
+M|next-browser|next-browser network 3       # inspect request #3 — headers, body, rsp
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser snapshot        # get accessibility tree
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser perf http://localhost:3000/anl
+M|next-browser|```
+M|next-browser|```bash
+M|next-browser|next-browser ppr lock        # freeze Suspense boundaries
+M|next-browser|next-browser screenshot      # capture static shell
+M|next-browser|next-browser tree            # inspect which components are in the shell vs dynamic
+M|next-browser|next-browser ppr unlock
+M|next-browser|```
+M|next-browser|- Next.js dev server must be running (`npm run dev`)
+M|next-browser|- Node.js >= 20
+M|next-browser|- Chromium (installed via `playwright install chromium`)
+M|next-browser|- Works only against localhost dev server — not prd builds

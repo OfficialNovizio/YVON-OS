@@ -1,0 +1,166 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/onboarding-cro/references/experiments.md
+M|references|Comprehensive list of A/B tests and experiments for user onboarding and activation.
+M|references|- Flow Simplification Experiments (reduce friction, step sequencing, progress & motivation)
+M|references|- Guided Experience Experiments (product tours, CTA optimization, UI guidance)
+M|references|- Personalization Experiments (user segmentation, dynamic cnt)
+M|references|- Quick Wins & Engagement Experiments (time-to-value, motivation mechanics, support & help)
+M|references|- Email & Multi-Channel Experiments (onboarding emails, email cnt, feedback loops)
+M|references|- Re-engagement Experiments (stalled user recovery, return experience)
+M|references|- tec & UX Experiments (performance, mobile onboarding, accessibility)
+M|references|- Metrics to Track
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Email verification timing | During vs. after onboarding |
+M|references|| Empty states vs. dummy data | Pre-populated examples |
+M|references|| Pre-filled templates | Accelerate setup with templates |
+M|references|| OAuth options | Faster account linking |
+M|references|| Required step count | Fewer required steps |
+M|references|| Optional vs. required fields | Minimize requirements |
+M|references|| Skip options | Allow bypassing non-critical steps |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Step ordering | Test different sequences |
+M|references|| Value-first ordering | Highest-value features first |
+M|references|| Friction placement | Move hard steps later |
+M|references|| Required vs. optional balance | Ratio of required steps |
+M|references|| Single vs. branching paths | One path vs. personalized |
+M|references|| Quick start vs. full setup | Minimal path to value |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Progress bars | Show completion percentage |
+M|references|| Checklist length | 3-5 items vs. 5-7 items |
+M|references|| Gamification | Badges, rewards, achievements |
+M|references|| Completion messaging | "X% complete" visibility |
+M|references|| Starting point | Begin at 20% vs. 0% |
+M|references|| Celebration moments | Acknowledge completions |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Interactive tours | Tools like Navattic, Storylane |
+M|references|| Tooltip vs. modal guidance | Subtle vs. attention-grabbing |
+M|references|| Video tutorials | For complex workflows |
+M|references|| Self-paced vs. guided | User control vs. structured |
+M|references|| Tour length | Shorter vs. comprehensive |
+M|references|| Tour triggering | Automatic vs. user-initiated |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| CTA text variations | Action-oriented copy testing |
+M|references|| CTA placement | Position within screens |
+M|references|| In-app tooltips | Feature discovery prompts |
+M|references|| Sticky CTAs | Persist during onboarding |
+M|references|| CTA contrast | Visual prominence |
+M|references|| Secondary CTAs | "Learn more" vs. primary only |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Hotspot highlights | Draw attention to key features |
+M|references|| Coachmarks | Contextual tips |
+M|references|| Feature announcements | New feature discovery |
+M|references|| Contextual help | Help where users need it |
+M|references|| Search vs. guided | Self-service vs. directed |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Role-based onboarding | Different paths by role |
+M|references|| Goal-based paths | Customize by stated goal |
+M|references|| Role-specific dashboards | Relevant default views |
+M|references|| Use-case question | Personalize based on answer |
+M|references|| Industry-specific paths | Vertical customization |
+M|references|| Experience-based | Beginner vs. expert paths |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Personalized welcome | Name, company, role |
+M|references|| Industry examples | Relevant use cases |
+M|references|| Dynamic recommendations | Based on user answers |
+M|references|| Template suggestions | Pre-filled for segment |
+M|references|| Feature highlighting | Relevant to stated goals |
+M|references|| Benchmark data | Industry-specific metrics |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| First quick win | "Complete your first X" |
+M|references|| Success messages | After key actions |
+M|references|| Progress celebrations | Milestone moments |
+M|references|| Next step suggestions | After each completion |
+M|references|| Value demonstration | Show what they achieved |
+M|references|| Outcome preview | What success looks like |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Achievement badges | Gamification elements |
+M|references|| Streaks | Consecutive day engagement |
+M|references|| Leaderboards | soc comparison (if appropriate) |
+M|references|| Rewards | Incentives for completion |
+M|references|| Unlock mechanics | Features revealed progressively |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Free onboarding calls | For complex products |
+M|references|| Contextual help | Throughout onboarding |
+M|references|| Chat support | Availability during onboarding |
+M|references|| Proactive outreach | For stuck users |
+M|references|| Self-service resources | Help docs, videos |
+M|references|| Community access | Peer support early |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Founder welcome email | Personal vs. generic |
+M|references|| Behavior-based triggers | Action/inaction based |
+M|references|| Email timing | Immediate vs. delayed |
+M|references|| Email frequency | More vs. fewer touches |
+M|references|| Quick tips format | Short actionable cnt |
+M|references|| Video in email | More engaging format |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Subject lines | Open rate optimization |
+M|references|| Personalization depth | Name vs. behavior-based |
+M|references|| CTA prominence | Single clear action |
+M|references|| soc proof inclusion | Testimonials in email |
+M|references|| Urgency messaging | Trial reminders |
+M|references|| Plain text vs. designed | Format testing |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| NPS during onboarding | When to ask |
+M|references|| Blocking question | "What's stopping you?" |
+M|references|| NPS follow-up | Actions based on score |
+M|references|| In-app feedback | Thumbs up/down on features |
+M|references|| Survey timing | When to request feedback |
+M|references|| Feedback incentives | Reward for completing |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Re-engagement email timing | When to send |
+M|references|| Personal outreach | Human vs. automated |
+M|references|| Simplified path | Reduced steps for returners |
+M|references|| Incentive offers | Discount or extended trial |
+M|references|| Problem identification | Ask what's blocking |
+M|references|| Demo offer | Live walkthrough |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Welcome back message | Acknowledge return |
+M|references|| Progress resume | Pick up where left off |
+M|references|| Changed state | What happened while away |
+M|references|| Re-onboarding | Fresh start option |
+M|references|| Urgency messaging | Trial time remaining |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Load time optimization | Faster = higher completion |
+M|references|| Progressive loading | Perceived performance |
+M|references|| Offline capability | Mobile experience |
+M|references|| Error handling | Graceful failure recovery |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Touch targets | Size and spacing |
+M|references|| Swipe navigation | Mobile-native patterns |
+M|references|| Screen count | Fewer screens needed |
+M|references|| Input optimization | Mobile-friendly forms |
+M|references|| Permission timing | When to ask |
+M|references|| Test | Hypothesis |
+M|references||------|------------|
+M|references|| Screen reader support | Accessibility impact |
+M|references|| Keyboard navigation | Non-mouse users |
+M|references|| Color contrast | Visibility |
+M|references|| Font sizing | Readability |
+M|references|For all experiments, measure:
+M|references|| Metric | Description |
+M|references||--------|-------------|
+M|references|| Activation rate | % reaching activation event |
+M|references|| Time to activation | Hours/days to first value |
+M|references|| Step completion rate | % completing each step |
+M|references|| Drop-off points | Where users abandon |
+M|references|| Return rate | Users who come back |
+M|references|| Day 1/7/30 retention | Engagement over time |
+M|references|| Feature adoption | Which features get used |
+M|references|| Support requests | Volume during onboarding |

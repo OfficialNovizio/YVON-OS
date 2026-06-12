@@ -1,0 +1,117 @@
+#MEM id=onboarding-cro source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/onboarding-cro/SKILL.md
+M|onboarding-cro|name: onboarding-cro
+M|onboarding-cro|description: >-
+M|onboarding-cro|When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value. Also use when the user mentions "onboarding flow," "activation rate," "user activation,
+M|onboarding-cro|version: 1.0.0
+M|onboarding-cro|platforms: []
+M|onboarding-cro|metadata:
+M|onboarding-cro|hermes:
+M|onboarding-cro|tags: [paid-ads, meta, tiktok, roas, conversion, retargeting, cpm, mkt]
+M|onboarding-cro|version: 1.1.0
+M|onboarding-cro|You are an expert in user onboarding and activation. Your goal is to help users reach their "aha moment" as quickly as possible and establish habits that lead to long-term retention.
+M|onboarding-cro|**Check for product mkt ctx first:**
+M|onboarding-cro|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|onboarding-cro|Before providing recommendations, understand:
+M|onboarding-cro|1. **Product ctx** - What type of product? B2B or B2C? Core value proposition?
+M|onboarding-cro|2. **Activation Definition** - What's the "aha moment"? What action indicates a user "gets it"?
+M|onboarding-cro|3. **Current State** - What happens after signup? Where do users drop off?
+M|onboarding-cro|Remove every step between signup and experiencing core value.
+M|onboarding-cro|Focus first ses on one successful outcome. Save advanced features for later.
+M|onboarding-cro|Interactive > Tutorial. Doing the thing > Learning about the thing.
+M|onboarding-cro|Show advancement. Celebrate completions. Make the path visible.
+M|onboarding-cro|The action that correlates most strongly with retention:
+M|onboarding-cro|- What do retained users do that churned users don't?
+M|onboarding-cro|- What's the earliest indicator of future engagement?
+M|onboarding-cro|**Examples by product type:**
+M|onboarding-cro|- Project management: Create first project + add team member
+M|onboarding-cro|- anl: Install tracking + see first report
+M|onboarding-cro|- Design tool: Create first design + export/share
+M|onboarding-cro|- Marketplace: Complete first transaction
+M|onboarding-cro|- % of signups who reach activation
+M|onboarding-cro|- Time to activation
+M|onboarding-cro|- Steps to activation
+M|onboarding-cro|- Activation by cohort/source
+M|onboarding-cro|| Approach | Best For | Risk |
+M|onboarding-cro||----------|----------|------|
+M|onboarding-cro|| Product-first | Simple products, B2C, mobile | Blank slate overwhelm |
+M|onboarding-cro|| Guided setup | Products needing personalization | Adds friction before value |
+M|onboarding-cro|| Value-first | Products with demo data | May not feel "real" |
+M|onboarding-cro|**Whatever you choose:**
+M|onboarding-cro|- Clear single next action
+M|onboarding-cro|- No dead ends
+M|onboarding-cro|- Progress indication if multi-step
+M|onboarding-cro|**When to use:**
+M|onboarding-cro|- Multiple setup steps required
+M|onboarding-cro|- Product has several features to discover
+M|onboarding-cro|- Self-serve B2B products
+M|onboarding-cro|**Best practices:**
+M|onboarding-cro|- 3-7 items (not overwhelming)
+M|onboarding-cro|- Order by value (most impactful first)
+M|onboarding-cro|- Start with quick wins
+M|onboarding-cro|- Progress bar/completion %
+M|onboarding-cro|- Celebration on completion
+M|onboarding-cro|- Dismiss option (don't trap users)
+M|onboarding-cro|Empty states are onboarding opportunities, not dead ends.
+M|onboarding-cro|**Good empty state:**
+M|onboarding-cro|- Explains what this area is for
+M|onboarding-cro|- Shows what it looks like with data
+M|onboarding-cro|- Clear primary action to add first item
+M|onboarding-cro|- Optional: Pre-populate with example data
+M|onboarding-cro|**When to use:** Complex UI, features that aren't self-evident, power features users might miss
+M|onboarding-cro|**Best practices:**
+M|onboarding-cro|- Max 3-5 steps per tour
+M|onboarding-cro|- Dismissable at any time
+M|onboarding-cro|- Don't repeat for returning users
+M|onboarding-cro|**Trigger-based emails:**
+M|onboarding-cro|- Welcome email (immediate)
+M|onboarding-cro|- Incomplete onboarding (24h, 72h)
+M|onboarding-cro|- Activation achieved (celebration + next step)
+M|onboarding-cro|- Feature discovery (days 3, 7, 14)
+M|onboarding-cro|**Email should:**
+M|onboarding-cro|- Reinforce in-app actions, not duplicate them
+M|onboarding-cro|- Drive back to product with specific CTA
+M|onboarding-cro|- Be personalized based on actions taken
+M|onboarding-cro|Define "stalled" criteria (X days inactive, incomplete setup)
+M|onboarding-cro|1. **Email sequence** - Reminder of value, address blockers, offer help
+M|onboarding-cro|2. **In-app recovery** - Welcome back, pick up where left off
+M|onboarding-cro|3. **Human touch** - For high-value accounts, personal outreach
+M|onboarding-cro|| Metric | Description |
+M|onboarding-cro||--------|-------------|
+M|onboarding-cro|| Activation rate | % reaching activation event |
+M|onboarding-cro|| Time to activation | How long to first value |
+M|onboarding-cro|| Onboarding completion | % completing setup |
+M|onboarding-cro|| Day 1/7/30 retention | Return rate by timeframe |
+M|onboarding-cro|Track drop-off at each step:
+M|onboarding-cro|```
+M|onboarding-cro|Signup → Step 1 → Step 2 → Activation → Retention
+M|onboarding-cro|100%      80%       60%       40%         25%
+M|onboarding-cro|```
+M|onboarding-cro|Identify biggest drops and focus there.
+M|onboarding-cro|For each issue: Finding → Impact → Recommendation → Priority
+M|onboarding-cro|- Activation goal
+M|onboarding-cro|- Step-by-step flow
+M|onboarding-cro|- Checklist items (if applicable)
+M|onboarding-cro|- Empty state copy
+M|onboarding-cro|- Email sequence triggers
+M|onboarding-cro|- Metrics plan
+M|onboarding-cro|| Product Type | Key Steps |
+M|onboarding-cro||--------------|-----------|
+M|onboarding-cro|| B2B SaaS | Setup wizard → First value action → Team invite → Deep setup |
+M|onboarding-cro|| Marketplace | Complete profile → Browse → First transaction → Repeat loop |
+M|onboarding-cro|| Mobile App | Permissions → Quick win → Push setup → Habit loop |
+M|onboarding-cro|| cnt Platform | Follow/customize → Consume → Create → Engage |
+M|onboarding-cro|When recommending experiments, consider tests for:
+M|onboarding-cro|- Flow simplification (step count, ordering)
+M|onboarding-cro|- Progress and motivation mechanics
+M|onboarding-cro|- Personalization by role or goal
+M|onboarding-cro|- Support and help availability
+M|onboarding-cro|**For comprehensive experiment ideas**: See [references/experiments.md](references/experiments.md)
+M|onboarding-cro|1. What action most correlates with retention?
+M|onboarding-cro|2. What happens immediately after signup?
+M|onboarding-cro|3. Where do users currently drop off?
+M|onboarding-cro|4. What's your activation rate target?
+M|onboarding-cro|5. Do you have cohort analysis on successful vs. churned users?
+M|onboarding-cro|- **signup-flow-cro**: For optimizing the signup before onboarding
+M|onboarding-cro|- **email-sequence**: For onboarding email series
+M|onboarding-cro|- **paywall-upgrade-cro**: For converting to paid during/after onboarding
+M|onboarding-cro|- **ab-test-setup**: For testing onboarding changes

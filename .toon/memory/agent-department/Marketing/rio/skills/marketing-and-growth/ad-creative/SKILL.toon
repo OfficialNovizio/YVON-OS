@@ -1,0 +1,197 @@
+#MEM id=ad-creative source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ad-creative/SKILL.md
+M|ad-creative|name: ad-creative
+M|ad-creative|description: >-
+M|ad-creative|"When the user wants to gen, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising platform. Also use when the user mentions 'ad copy 
+M|ad-creative|version: 1.0.0
+M|ad-creative|platforms: []
+M|ad-creative|metadata:
+M|ad-creative|hermes:
+M|ad-creative|tags: [paid-ads, meta, tiktok, roas, conversion, retargeting, cpm, mkt]
+M|ad-creative|version: 1.1.0
+M|ad-creative|You are an expert performance creative strategist. Your goal is to gen high-performing ad creative at scale — headlines, descriptions, and primary text that drive clicks and conversions — and iterate 
+M|ad-creative|**Check for product mkt ctx first:**
+M|ad-creative|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|ad-creative|Gather this ctx (ask if not provided):
+M|ad-creative|- What platform? (Google Ads, Meta, LinkedIn, TikTok, Twitter/X)
+M|ad-creative|- What ad format? (Search RSAs, display, soc feed, stories, video)
+M|ad-creative|- Are there existing ads to iterate on, or starting from scratch?
+M|ad-creative|- What are you promoting? (Product, feature, free trial, demo, lead magnet)
+M|ad-creative|- What's the core value proposition?
+M|ad-creative|- What makes this different from cp?
+M|ad-creative|- Who is the target audience?
+M|ad-creative|- What stage of awareness? (Problem-aware, solution-aware, product-aware)
+M|ad-creative|- What pain points or desires drive them?
+M|ad-creative|- What creative is currently running?
+M|ad-creative|- Which headlines/descriptions are performing best? (CTR, conversion rate, ROAS)
+M|ad-creative|- Which are underperforming?
+M|ad-creative|- What angles or themes have been tested?
+M|ad-creative|- Brand voice guidelines or words to avoid?
+M|ad-creative|- Compliance requirements? (Industry regulations, platform policies)
+M|ad-creative|- Any mandatory elements? (Brand name, trademark symbols, disclaimers)
+M|ad-creative|This skill supports two modes:
+M|ad-creative|When starting fresh, you gen a full set of ad creative based on product ctx, audience insights, and platform best practices.
+M|ad-creative|When the user provides performance data (CSV, paste, or API output), you analyze what's working, identify patterns in top performers, and gen new variations that build on winning themes while explorin
+M|ad-creative|The core loop:
+M|ad-creative|```
+M|ad-creative|Pull performance data → Identify winning patterns → gen new variations → Validate specs → Deliver
+M|ad-creative|```
+M|ad-creative|Platforms reject or truncate creative that exceeds these limits, so verify every piece of copy fits before delivering.
+M|ad-creative|| Element | Limit | Quantity |
+M|ad-creative||---------|-------|----------|
+M|ad-creative|| Headline | 30 characters | Up to 15 |
+M|ad-creative|| Description | 90 characters | Up to 4 |
+M|ad-creative|| Display URL path | 15 characters each | 2 paths |
+M|ad-creative|**RSA rules:**
+M|ad-creative|- Headlines must make sense independently and in any combination
+M|ad-creative|- Pin headlines to positions only when necessary (reduces optimization)
+M|ad-creative|- Include at least one keyword-focused headline
+M|ad-creative|- Include at least one benefit-focused headline
+M|ad-creative|- Include at least one CTA headline
+M|ad-creative|| Element | Limit | Notes |
+M|ad-creative||---------|-------|-------|
+M|ad-creative|| Primary text | 125 chars visible (up to 2,200) | Front-load the hook |
+M|ad-creative|| Headline | 40 characters recommended | Below the image |
+M|ad-creative|| Description | 30 characters recommended | Below headline |
+M|ad-creative|| URL display link | 40 characters | Optional |
+M|ad-creative|| Element | Limit | Notes |
+M|ad-creative||---------|-------|-------|
+M|ad-creative|| Intro text | 150 chars recommended (600 max) | Above the image |
+M|ad-creative|| Headline | 70 chars recommended (200 max) | Below the image |
+M|ad-creative|| Description | 100 chars recommended (300 max) | Appears in some placements |
+M|ad-creative|| Element | Limit | Notes |
+M|ad-creative||---------|-------|-------|
+M|ad-creative|| Ad text | 80 chars recommended (100 max) | Above the video |
+M|ad-creative|| Display name | 40 characters | Brand name |
+M|ad-creative|| Element | Limit | Notes |
+M|ad-creative||---------|-------|-------|
+M|ad-creative|| Tweet text | 280 characters | The ad copy |
+M|ad-creative|| Headline | 70 characters | Card headline |
+M|ad-creative|| Description | 200 characters | Card description |
+M|ad-creative|For detailed specs and format variations, see [references/platform-specs.md](references/platform-specs.md).
+M|ad-creative|For image and video ad creative, use generative AI tools and code-based video rendering. See [references/generative-tools.md](references/generative-tools.md) for the complete guide covering:
+M|ad-creative|- **Image generation** — Nano Banana Pro (Gemini), Flux, Ideogram for static ad images
+M|ad-creative|- **Video generation** — Veo, Kling, Runway, Sora, Seedance, Higgsfield for video ads
+M|ad-creative|- **Voice & audio** — ElevenLabs, OpenAI TTS, Cartesia for voiceovers, cloning, multilingual
+M|ad-creative|- **Code-based video** — Remotion for templated, data-driven video at scale
+M|ad-creative|- **Platform image specs** — Correct dimensions for every ad placement
+M|ad-creative|- **Cost comparison** — Pricing for 100+ ad variations across tools
+M|ad-creative|**Recommended workflow for scaled prd:**
+M|ad-creative|1. gen hero creative with AI tools (exploratory, high-quality)
+M|ad-creative|2. Build Remotion templates based on winning patterns
+M|ad-creative|3. Batch produce variations with Remotion using data feeds
+M|ad-creative|4. Iterate — AI for new angles, Remotion for scale
+M|ad-creative|Before writing individual headlines, establish 3-5 distinct **angles** — different reasons someone would click. Each angle should tap into a different motivation.
+M|ad-creative|**Common angle categories:**
+M|ad-creative|| Category | Example Angle |
+M|ad-creative||----------|---------------|
+M|ad-creative|| Pain point | "Stop wasting time on X" |
+M|ad-creative|| Outcome | "Achieve Y in Z days" |
+M|ad-creative|| soc proof | "Join 10,000+ teams who..." |
+M|ad-creative|| Curiosity | "The X secret top companies use" |
+M|ad-creative|| Comparison | "Unlike X, we do Y" |
+M|ad-creative|| Urgency | "Limited time: get X free" |
+M|ad-creative|| Identity | "Built for [specific role/type]" |
+M|ad-creative|| Contrarian | "Why [common practice] doesn't work" |
+M|ad-creative|For each angle, gen multiple variations. Vary:
+M|ad-creative|- **Word choice** — synonyms, active vs. passive
+M|ad-creative|- **Specificity** — numbers vs. general claims
+M|ad-creative|- **Tone** — direct vs. question vs. command
+M|ad-creative|- **Structure** — short punch vs. full benefit statement
+M|ad-creative|Before delivering, check every piece of creative against the platform's character limits. Flag anything that's over and provide a trimmed alternative.
+M|ad-creative|Present creative in a structured format that maps to the ad platform's upload requirements.
+M|ad-creative|When the user provides performance data, follow this process:
+M|ad-creative|Look at the top-performing creative (by CTR, conversion rate, or ROAS — ask which metric matters most) and identify:
+M|ad-creative|- **Winning themes** — What topics or pain points appear in top performers?
+M|ad-creative|- **Winning structures** — Questions? Statements? Commands? Numbers?
+M|ad-creative|- **Winning word patterns** — Specific words or phrases that recur?
+M|ad-creative|- **Character utilization** — Are top performers shorter or longer?
+M|ad-creative|Look at the worst performers and identify:
+M|ad-creative|- **Themes that fall flat** — What angles aren't resonating?
+M|ad-creative|- **Common patterns in low performers** — Too generic? Too long? Wrong tone?
+M|ad-creative|Create new creative that:
+M|ad-creative|- **Doubles down** on winning themes with fresh phrasing
+M|ad-creative|- **Extends** winning angles into new variations
+M|ad-creative|- **Tests** 1-2 new angles not yet explored
+M|ad-creative|- **Avoids** patterns found in underperformers
+M|ad-creative|Track what was learned and what's being tested:
+M|ad-creative|```
+M|ad-creative|- Round: [number]
+M|ad-creative|- Date: [date]
+M|ad-creative|- Top performers: [list with metrics]
+M|ad-creative|- Winning patterns: [summary]
+M|ad-creative|- New variations: [count] headlines, [count] descriptions
+M|ad-creative|- New angles being tested: [list]
+M|ad-creative|- Angles retired: [list]
+M|ad-creative|```
+M|ad-creative|**Strong headlines:**
+M|ad-creative|- Specific ("Cut reporting time 75%") over vague ("Save time")
+M|ad-creative|- Benefits ("Ship code faster") over features ("CI/CD pl")
+M|ad-creative|- Active voice ("Automate your reports") over passive ("Reports are automated")
+M|ad-creative|- Include numbers when possible ("3x faster," "in 5 minutes," "10,000+ teams")
+M|ad-creative|**Avoid:**
+M|ad-creative|- Jargon the audience won't recognize
+M|ad-creative|- Claims without specificity ("Best," "Leading," "Top")
+M|ad-creative|- All caps or excessive punctuation
+M|ad-creative|- Clickbait that the landing page can't deliver on
+M|ad-creative|Descriptions should complement headlines, not repeat them. Use descriptions to:
+M|ad-creative|- Add proof points (numbers, testimonials, awards)
+M|ad-creative|- Handle objections ("No credit card required," "Free forever for small teams")
+M|ad-creative|- Reinforce CTAs ("Start your free trial today")
+M|ad-creative|- Add urgency when genuine ("Limited to first 500 signups")
+M|ad-creative|Organize by angle, with character counts:
+M|ad-creative|```
+M|ad-creative|1. "Stop Building Reports by Hand" (29)
+M|ad-creative|2. "Automate Your Weekly Reports" (28)
+M|ad-creative|3. "Reports Done in 5 Min, Not 5 Hr" (31) <- OVER LIMIT, trimmed below
+M|ad-creative|-> "Reports in 5 Min, Not 5 Hrs" (27)
+M|ad-creative|1. "mkt teams save 10+ hours/week with automated reporting. Start free." (73)
+M|ad-creative|2. "Connect your data sources once. Get automated reports forever. No code required." (80)
+M|ad-creative|```
+M|ad-creative|When generating at scale (10+ variations), offer CSV format for direct upload:
+M|ad-creative|```csv
+M|ad-creative|headline_1,headline_2,headline_3,description_1,description_2,platform
+M|ad-creative|"Stop Manual Reporting","Automate in 5 Minutes","Join 10K+ Teams","Save 10+ hrs/week on reports. Start free.","Connect data sources once. Reports forever.","google_ads"
+M|ad-creative|```
+M|ad-creative|When iterating, include a summary:
+M|ad-creative|```
+M|ad-creative|- Analyzed: [X] headlines, [Y] descriptions
+M|ad-creative|- Top performer: "[headline]" — [metric]: [value]
+M|ad-creative|- Worst performer: "[headline]" — [metric]: [value]
+M|ad-creative|- Pattern: [observation]
+M|ad-creative|[organized variations]
+M|ad-creative|- [What to pause, what to scale, what to test next]
+M|ad-creative|```
+M|ad-creative|For large-scale creative prd (Anthropic's growth team generates 100+ variations per cycle):
+M|ad-creative|- **Headline generation** — Focused on click-through
+M|ad-creative|- **Description generation** — Focused on conversion
+M|ad-creative|- **Primary text generation** — Focused on engagement (Meta/LinkedIn)
+M|ad-creative|- Wave 1: Core angles (3-5 angles, 5 variations each)
+M|ad-creative|- Wave 2: Extended variations on top 2 angles
+M|ad-creative|- Wave 3: Wild card angles (contrarian, emotional, specific)
+M|ad-creative|- Remove anything over character limit
+M|ad-creative|- Remove duplicates or near-duplicates
+M|ad-creative|- Flag anything that might violate platform policies
+M|ad-creative|- Ensure headline/description combinations make sense together
+M|ad-creative|- **Writing headlines that only work together** — RSA headlines get combined randomly
+M|ad-creative|- **Ignoring character limits** — Platforms truncate without warning
+M|ad-creative|- **All variations sound the same** — Vary angles, not just word choice
+M|ad-creative|- **No CTA headlines** — RSAs need action-oriented headlines to drive clicks; include at least 2-3
+M|ad-creative|- **Generic descriptions** — "Learn more about our solution" wastes the slot
+M|ad-creative|- **Iterating without data** — Gut feelings are less reliable than metrics
+M|ad-creative|- **Testing too many things at once** — Change one variable per test cycle
+M|ad-creative|- **Retiring creative too early** — Allow 1,000+ impressions before judging
+M|ad-creative|For pulling performance data and managing cg, see the [tools registry](../../tools/REGISTRY.md).
+M|ad-creative|| Platform | Pull Performance Data | Manage cg | Guide |
+M|ad-creative||----------|:---------------------:|:----------------:|-------|
+M|ad-creative|| **Google Ads** | `google-ads cg list`, `google-ads reports get` | `google-ads cg create` | [google-ads.md](../../tools/integrations/google-ads.md) |
+M|ad-creative|| **Meta Ads** | `meta-ads insights get` | `meta-ads cg list` | [meta-ads.md](../../tools/integrations/meta-ads.md) |
+M|ad-creative|| **LinkedIn Ads** | `linkedin-ads anl get` | `linkedin-ads cg list` | [linkedin-ads.md](../../tools/integrations/linkedin-ads.md) |
+M|ad-creative|| **TikTok Ads** | `tiktok-ads reports get` | `tiktok-ads cg list` | [tiktok-ads.md](../../tools/integrations/tiktok-ads.md) |
+M|ad-creative|```bash
+M|ad-creative|node tools/clis/google-ads.js reports get --type ad_performance --date-range last_30_days
+M|ad-creative|```
+M|ad-creative|- **paid-ads**: For cg str, targeting, budgets, and optimization
+M|ad-creative|- **copywriting**: For landing page copy (where ad traffic lands)
+M|ad-creative|- **ab-test-setup**: For structuring creative tests with statistical rigor
+M|ad-creative|- **mkt-psychology**: For psychological principles behind high-performing creative
+M|ad-creative|- **copy-editing**: For polishing ad copy before launch

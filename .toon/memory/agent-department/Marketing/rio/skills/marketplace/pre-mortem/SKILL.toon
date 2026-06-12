@@ -1,0 +1,190 @@
+#MEM id=pre-mortem source=/root/yvon/agent-department/Marketing/rio/skills/marketplace/pre-mortem/SKILL.md
+M|pre-mortem|name: pre-mortem
+M|pre-mortem|version: 1.0.0
+M|pre-mortem|model: claude-sonnet-4-6
+M|pre-mortem|description: Guide prospective hindsight analysis to identify project risks before failure occurs. Teams imagine the project has failed spectacularly, then work backward to identify causes. Increases 
+M|pre-mortem|license: MIT
+M|pre-mortem|metadata:
+M|pre-mortem|author: SkillForge
+M|pre-mortem|academic_source: "HBR 2007 - Performing a Project Premortem by Gary Klein"
+M|pre-mortem|When this skill activates, you become a pre-mortem facilitator. Your role is to guide users through prospective hindsight analysis, helping them identify project risks by imagining failure has already
+M|pre-mortem|Activate when the user:
+M|pre-mortem|- `Run a pre-mortem on...`
+M|pre-mortem|- `What could cause this project to fail?`
+M|pre-mortem|- `Identify project risks for...`
+M|pre-mortem|- `What could go wrong with...`
+M|pre-mortem|- `Pre-mortem analysis`
+M|pre-mortem|| Phase | Duration | Output |
+M|pre-mortem||-------|----------|--------|
+M|pre-mortem|| 1. Brief | 2-3 min | Project ctx documented |
+M|pre-mortem|| 2. Failure Announcement | 30 sec | Mindset shift established |
+M|pre-mortem|| 3. Independent Analysis | 3-5 min | Individual failure reasons |
+M|pre-mortem|| 4. Round-Robin Collection | 5-10 min | Consolidated failure list |
+M|pre-mortem|| 5. rv and Mitigate | 10-15 min | Risk inventory with mitigations |
+M|pre-mortem|Use this skill when:
+M|pre-mortem|- Starting a new project or feature and want to identify risks upfront
+M|pre-mortem|- Team is overly optimistic and potential downsides need surfacing
+M|pre-mortem|- Stakeholders need to understand risk before committing resources
+M|pre-mortem|- After major scope changes to reassess risk landscape
+M|pre-mortem|Use [threat-modeling](../threat-modeling/SKILL.md) instead when:
+M|pre-mortem|- Analyzing sec threats specifically (STRIDE, attack trees)
+M|pre-mortem|- Need structured vulnerability assessment, not general project risk
+M|pre-mortem|Use [dec-critic](../dec-critic/SKILL.md) instead when:
+M|pre-mortem|- Challenging a specific dec, not brainstorming broad risks
+M|pre-mortem|Research by Gary Klein demonstrates that **prospective hindsight** (imagining an event has already occurred) increases the ability to identify reasons for outcomes by 30%.
+M|pre-mortem|**Key psychological benefits:**
+M|pre-mortem|1. **Reduces "damn-the-torpedoes" attitude** - Acknowledging failure is possible
+M|pre-mortem|2. **Creates psychological safety** - Dissenters can voice concerns as analysis, not criticism
+M|pre-mortem|3. **Surfaces hidden knw** - People share what they know but fear saying
+M|pre-mortem|4. **Catches blind spots early** - Before commitment and sunk costs
+M|pre-mortem|**Input Required:**
+M|pre-mortem|- Project name and objective
+M|pre-mortem|- Timeline and key milestones
+M|pre-mortem|- Team composition (if team ctx)
+M|pre-mortem|- Success criteria
+M|pre-mortem|**Actions:**
+M|pre-mortem|1. doc the project scope clearly
+M|pre-mortem|2. Identify key stakeholders
+M|pre-mortem|3. Note any constraints or dependencies
+M|pre-mortem|4. Confirm understanding with user
+M|pre-mortem|**Output:** Project ctx doc
+M|pre-mortem|**The critical mindset shift.**
+M|pre-mortem|Announce to the user (or team):
+M|pre-mortem|> "The project has failed. It is [timeline endpoint]. The project did not just miss its goals, it failed spectacularly. Your task now is to identify all the reasons why it failed."
+M|pre-mortem|**Important:** Use past tense. The failure has already happened. This is not speculation about what "might" happen; it "did" happen.
+M|pre-mortem|**For individual ctx:**
+M|pre-mortem|- User writes down 5-10 reasons why the project failed
+M|pre-mortem|- No filtering or evaluation yet
+M|pre-mortem|- Include both obvious and "unlikely" causes
+M|pre-mortem|- Consider tec, human, organizational, and external factors
+M|pre-mortem|**For team ctx:**
+M|pre-mortem|- Each person writes independently
+M|pre-mortem|- No discussion or sharing yet
+M|pre-mortem|- Silent reflection maximizes diversity of thought
+M|pre-mortem|**Prompt the user:**
+M|pre-mortem|> "Write down every reason you can think of for why this project failed. Include causes you consider unlikely. Do not filter yourself. You have 3-5 minutes."
+M|pre-mortem|**Output:** Raw list of failure reasons
+M|pre-mortem|**For individual ctx:**
+M|pre-mortem|- rv each failure reason
+M|pre-mortem|- Group by category (see Categories below)
+M|pre-mortem|- No evaluation yet, just collection
+M|pre-mortem|**For team ctx:**
+M|pre-mortem|- Go around the room, each person shares ONE reason
+M|pre-mortem|- Continue rounds until all reasons exhausted
+M|pre-mortem|- Record without discussion or debate
+M|pre-mortem|- No "that won't happen" or "we already thought of that"
+M|pre-mortem|**Categories for grouping:**
+M|pre-mortem|1. **tec** - Technology, architecture, implementation
+M|pre-mortem|2. **People** - Skills, availability, communication
+M|pre-mortem|3. **Process** - Methodology, workflow, coordination
+M|pre-mortem|4. **Organizational** - Politics, priorities, resources
+M|pre-mortem|5. **External** - Market, cp, regulations, dependencies
+M|pre-mortem|6. **Unknown Unknowns** - Black swan events, assumptions
+M|pre-mortem|**Output:** Categorized failure reasons
+M|pre-mortem|**For each failure reason:**
+M|pre-mortem|1. **Assess likelihood** (1-5 scale)
+M|pre-mortem|- 1: Very unlikely
+M|pre-mortem|- 2: Unlikely
+M|pre-mortem|- 3: Possible
+M|pre-mortem|- 4: Likely
+M|pre-mortem|- 5: Very likely
+M|pre-mortem|2. **Assess impact** (1-5 scale)
+M|pre-mortem|- 1: Minor inconvenience
+M|pre-mortem|- 2: Delays
+M|pre-mortem|- 3: Significant setback
+M|pre-mortem|- 4: Major failure
+M|pre-mortem|- 5: Project-killing
+M|pre-mortem|3. **Calculate risk score**: Likelihood x Impact
+M|pre-mortem|4. **Identify mitigation strategies:**
+M|pre-mortem|- Prevention: How to stop it from happening
+M|pre-mortem|- Detection: How to know early if it is happening
+M|pre-mortem|- rsp: What to do if it happens
+M|pre-mortem|5. **Assign ownership** (if team ctx)
+M|pre-mortem|**Prioritization:**
+M|pre-mortem|- Risk score 15-25: Critical, address immediately
+M|pre-mortem|- Risk score 8-14: High, plan mitigation
+M|pre-mortem|- Risk score 4-7: Medium, monitor
+M|pre-mortem|- Risk score 1-3: Low, accept or defer
+M|pre-mortem|**Output:** Complete risk inventory (see template)
+M|pre-mortem|gen the risk inventory using this structure:
+M|pre-mortem|```markdown
+M|pre-mortem|**Project:** [Name]
+M|pre-mortem|**Date:** [Date]
+M|pre-mortem|**Participants:** [Names or "Individual Analysis"]
+M|pre-mortem|- **Objective:** [What success looks like]
+M|pre-mortem|- **Timeline:** [Start to end]
+M|pre-mortem|- **Key Dependencies:** [Critical external factors]
+M|pre-mortem|| Priority | Count | Top Risk |
+M|pre-mortem||----------|-------|----------|
+M|pre-mortem|| Critical | N | [Highest scoring risk] |
+M|pre-mortem|| High | N | [Second highest category risk] |
+M|pre-mortem|| Medium | N | |
+M|pre-mortem|| Low | N | |
+M|pre-mortem|- **Category:** [tec/People/Process/Organizational/External]
+M|pre-mortem|- **Failure Scenario:** [How this causes project failure]
+M|pre-mortem|- **Likelihood:** [1-5] | **Impact:** [1-5] | **Score:** [L x I]
+M|pre-mortem|- **Root Cause:** [Why this might happen]
+M|pre-mortem|- **Mitigation:**
+M|pre-mortem|- Prevention: [How to avoid]
+M|pre-mortem|- Detection: [Early warning signs]
+M|pre-mortem|- rsp: [Contingency plan]
+M|pre-mortem|- **Owner:** [Person responsible]
+M|pre-mortem|- **Status:** [Open/Mitigating/Accepted]
+M|pre-mortem|[Repeat for each critical risk]
+M|pre-mortem|[Same structure as Critical]
+M|pre-mortem|[Abbreviated: Name, Category, Score, One-line mitigation]
+M|pre-mortem|[List only: Name and score]
+M|pre-mortem|| Action | Owner | Due Date | Risk Addressed |
+M|pre-mortem||--------|-------|----------|----------------|
+M|pre-mortem|| [Specific action] | [Name] | [Date] | R1, R3 |
+M|pre-mortem|- **Next rv:** [Date]
+M|pre-mortem|- **rv frequency:** [Weekly/Bi-weekly/Monthly]
+M|pre-mortem|```
+M|pre-mortem|Validates risk inventory completeness and calculates aggregate statistics.
+M|pre-mortem|```bash
+M|pre-mortem|python3 .claude/skills/pre-mortem/scripts/pre-mortem.py \
+M|pre-mortem|--inventory-path <path-to-risk-inventory.md> \
+M|pre-mortem|--validate
+M|pre-mortem|```
+M|pre-mortem|**Exit Codes:**
+M|pre-mortem|- 0: Valid inventory with all required fields
+M|pre-mortem|- 1: Invalid arguments
+M|pre-mortem|- 10: Validation failed (missing required sections)
+M|pre-mortem|| Avoid | Why | Instead |
+M|pre-mortem||-------|-----|---------|
+M|pre-mortem|| Skipping Phase 2 | Mindset shift is critical for effectiveness | Always announce failure explicitly |
+M|pre-mortem|| Allowing discussion during Phase 3 | Reduces diversity of thought | Enforce silent writing |
+M|pre-mortem|| Filtering "unlikely" causes | Miss black swan events | Include all causes, prioritize later |
+M|pre-mortem|| Stopping at identification | Risk without mitigation is incomplete | Always complete Phase 5 |
+M|pre-mortem|| One-time exercise | Projects evolve, new risks emerge | Schedule periodic reviews |
+M|pre-mortem|After completing a pre-mortem:
+M|pre-mortem|- [ ] All 5 phases completed (Brief, Failure Announcement, Analysis, Collection, Mitigation)
+M|pre-mortem|- [ ] Risk inventory generated with risk scores (Likelihood x Impact)
+M|pre-mortem|- [ ] All Critical/High risks have mitigation strategies
+M|pre-mortem|- [ ] Each mitigation has Prevention, Detection, and rsp
+M|pre-mortem|- [ ] Action items assigned with owners and due dates
+M|pre-mortem|- [ ] rv schedule established
+M|pre-mortem|**For team settings:**
+M|pre-mortem|- Emphasize no blame or criticism
+M|pre-mortem|- Senior members speak last in round-robin
+M|pre-mortem|- Celebrate thorough risk identification
+M|pre-mortem|- Treat skeptics as valuable, not negative
+M|pre-mortem|**For individual use:**
+M|pre-mortem|- Role-play multiple perspectives (developer, user, manager)
+M|pre-mortem|- Challenge your own assumptions explicitly
+M|pre-mortem|- Consider "what would my critics say?"
+M|pre-mortem|1. **Custom Categories:** Add domain-specific risk categories
+M|pre-mortem|2. **Risk Templates:** Pre-built risks for common project types
+M|pre-mortem|3. **Integration:** Link to issue trackers for action item follow-up
+M|pre-mortem|4. **Quantification:** Add financial impact estimation
+M|pre-mortem|| Skill | Relationship |
+M|pre-mortem||-------|--------------|
+M|pre-mortem|| dec-critic | Post-dec validation (pre-mortem is pre-dec) |
+M|pre-mortem|| milestone-planner | Use pre-mortem output to inform planning |
+M|pre-mortem|| architect | tec risks feed into ADR considerations |
+M|pre-mortem|| Reference | Purpose |
+M|pre-mortem||-----------|---------|
+M|pre-mortem|| `references/mental-models-galls-law.md` | Complexity-driven risk identification using Gall's Law |
+M|pre-mortem|| `references/str-ooda-loop.md` | Iterative risk rv cadence using OODA Loop |
+M|pre-mortem|- Klein, G. (2007). "Performing a Project Premortem." Harvard Business rv.
+M|pre-mortem|- Mitchell, D. J., et al. (1989). "Back to the Future: Temporal Perspective in the Explanation of Events." Journal of Behavioral dec Making.

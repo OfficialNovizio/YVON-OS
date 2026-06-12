@@ -1,0 +1,182 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/growth-engines.md
+M|references|Every startup that grows sustainably does so through one of three engines of growth. Each engine is a feedback loop where past customers drive the acquisition of future customers. Understanding which 
+M|references|The sticky engine grows by retaining existing customers. New customers come from a growing base of satisfied users who do not leave. Growth happens when the rate of new customer acquisition exceeds th
+M|references|```
+M|references|New customers join → They find value → They stay → Base grows
+M|references|↓
+M|references|Churn rate stays low
+M|references|↓
+M|references|Net growth = new - churned
+M|references|```
+M|references|| Metric | Formula | Target |
+M|references||--------|---------|--------|
+M|references|| Churn rate | Customers lost / Total customers per period | Below 5% monthly (B2C), below 2% monthly (B2B SaaS) |
+M|references|| Net customer growth | New customers minus churned customers | Positive and increasing |
+M|references|| Customer lifetime | 1 / Churn rate | 12+ months for subscription businesses |
+M|references|| Retention curve shape | % retained at day 1, 7, 30, 90 | Flattens (does not approach zero) |
+M|references|| DAU/MAU ratio | Daily active / Monthly active users | 20%+ indicates habit formation |
+M|references|**Onboarding optimization:**
+M|references|- Reduce time to first value (the "aha moment")
+M|references|- Guided setup flows that ensure proper cfg
+M|references|- Welcome email sequences that reinforce value
+M|references|- In-app checklists that drive activation milestones
+M|references|**Engagement deepening:**
+M|references|- Feature adoption cg for underused capabilities
+M|references|- Usage-based notifications ("You saved 3 hours this week")
+M|references|- Progressive feature unlock tied to usage milestones
+M|references|- Community building around the product
+M|references|**Churn prediction and intervention:**
+M|references|- Identify behavioral patterns that precede churn (reduced login frequency, fewer core actions)
+M|references|- Trigger automated outreach when risk signals appear
+M|references|- Offer concierge support to at-risk high-value customers
+M|references|- Exit surveys to understand and address churn reasons
+M|references|**Switching cost creation (ethical):**
+M|references|- Data accumulation that becomes more valuable over time
+M|references|- Integrations with other tools in the customer's stack
+M|references|- Customization and cfg that represents user investment
+M|references|- Network effects within teams or organizations
+M|references|| Company | Sticky Engine Mechanism | Result |
+M|references||---------|------------------------|--------|
+M|references|| Salesforce | CRM data accumulates; switching is extremely costly | 92%+ gross retention rate |
+M|references|| Notion | Workspaces, templates, and team knw build over time | High retention; expansion within organizations |
+M|references|| Slack | Message history, integrations, and team adoption create deep lock-in | 90%+ net revenue retention |
+M|references|| Spotify | Personalized playlists and listening history increase switching cost | Dominant market share through retention |
+M|references|The viral engine grows by having each customer bring in additional customers as a natural side effect of using the product. Growth is driven by person-to-person transmission, not mkt spend.
+M|references|```
+M|references|User signs up → Uses the product → Product use involves/exposes others
+M|references|↓
+M|references|Others see value → Some sign up
+M|references|↓
+M|references|Cycle repeats
+M|references|```
+M|references|The viral coefficient measures how many new customers each existing customer brings in.
+M|references|**Formula:** K = (invitations per user) x (conversion rate of invitations)
+M|references|| K Value | Meaning | Growth Pattern |
+M|references||---------|---------|----------------|
+M|references|| K < 0.5 | Weak virality | Growth requires significant paid acquisition |
+M|references|| K = 0.5-0.9 | Moderate virality | Amplifies other growth efforts |
+M|references|| K = 1.0 | Breakeven virality | Each user replaces themselves; growth is self-sustaining |
+M|references|| K > 1.0 | True virality | Exponential growth; each cycle adds more users |
+M|references|**Example calculation:**
+M|references|- Average user invites 5 people
+M|references|- 20% of invitees sign up
+M|references|- K = 5 x 0.20 = 1.0
+M|references|This means each user produces one new user, creating self-sustaining growth.
+M|references|**Types of viral loops:**
+M|references|| Loop Type | Mechanism | Example |
+M|references||-----------|-----------|---------|
+M|references|| Inherent virality | Product requires multiple users to function | Zoom (you need others to join your call) |
+M|references|| Collaboration virality | Product is better with others | Google Docs (shared editing) |
+M|references|| Word-of-mouth virality | Product is remarkable enough to discuss | ChatGPT (novel experience worth sharing) |
+M|references|| Incentivized virality | Users get rewards for bringing others | Dropbox (free storage for referrals) |
+M|references|| Embedded virality | Product output is visible to non-users | Mailchimp ("Sent with Mailchimp" badge) |
+M|references|| soc proof virality | Usage is publicly visible | Linkedin profile badges, GitHub activity |
+M|references|**Viral loop optimization checklist:**
+M|references|- [ ] Identify the natural sharing moment (when does a user most want to share?)
+M|references|- [ ] Make sharing frictionless (pre-composed messages, one-click invites)
+M|references|- [ ] Ensure the landing experience for invitees is optimized for their ctx
+M|references|- [ ] Track the full funnel: share trigger, share action, recipient view, recipient signup
+M|references|- [ ] Reduce the viral cycle time (time from user signup to their invitees signing up)
+M|references|Viral cycle time matters as much as the viral coefficient. A K of 1.5 with a 2-day cycle grows much faster than a K of 2.0 with a 30-day cycle.
+M|references|**Reducing cycle time:**
+M|references|- Trigger sharing moments earlier in the user journey
+M|references|- Use real-time channels (SMS, messaging apps) over email
+M|references|- Create urgency in invitations (time-limited offers, real-time collaboration)
+M|references|- Minimize onboarding friction for invited users
+M|references|| Company | Viral Mechanism | K Factor (estimated) |
+M|references||---------|----------------|---------------------|
+M|references|| Hotmail | "Get your free email" signature in every email | 1.0+ in early growth |
+M|references|| Dropbox | Free storage for referrals; shared folders | 0.7-1.0 |
+M|references|| WhatsApp | Messaging requires both parties on the platform | 1.0+ in growth markets |
+M|references|| Figma | Shared design files viewable by anyone with link | 0.6-0.8 |
+M|references|The paid engine grows by investing money to acquire customers profitably. Each customer generates enough revenue to fund the acquisition of more than one additional customer.
+M|references|```
+M|references|Spend money to acquire customer → Customer pays over time (LTV)
+M|references|↓
+M|references|LTV exceeds CAC → Reinvest profit
+M|references|↓
+M|references|Acquire more customers
+M|references|```
+M|references|| Metric | Formula | Healthy Target |
+M|references||--------|---------|---------------|
+M|references|| Customer Acquisition Cost (CAC) | Total acquisition spend / New customers | Varies by industry |
+M|references|| Lifetime Value (LTV) | ARPU x Customer lifetime | 3x+ CAC |
+M|references|| LTV/CAC Ratio | LTV / CAC | 3:1 to 5:1 |
+M|references|| Payback Period | CAC / Monthly revenue per customer | Under 12 months |
+M|references|| Marginal CAC | Incremental spend for one more customer | Lower than average CAC |
+M|references|**Increasing LTV:**
+M|references|- Reduce churn (longer customer lifetime)
+M|references|- Increase ARPU through upsells, cross-sells, or pricing changes
+M|references|- Expand usage within customer organizations (seat expansion)
+M|references|- Add premium tiers with higher price points
+M|references|- Increase purchase frequency for transactional models
+M|references|**Reducing CAC:**
+M|references|- Improve landing page conversion rates
+M|references|- Optimize ad targeting and creative
+M|references|- Develop organic acquisition channels (cnt, SEO, community)
+M|references|- Improve sales efficiency (better qualification, shorter sales cycles)
+M|references|- Leverage existing customers for referrals (adding viral elements)
+M|references|| Channel | Typical CAC Range | Best For | Watch Out For |
+M|references||---------|-------------------|----------|---------------|
+M|references|| Google Ads (search) | $20-200 | High-intent buyers | Rising CPCs as you scale |
+M|references|| Facebook/Instagram Ads | $10-100 | B2C, visual products | Ad fatigue, audience saturation |
+M|references|| LinkedIn Ads | $50-500 | B2B, professional tools | High CPCs, requires precise targeting |
+M|references|| cnt mkt/SEO | $10-50 (long-term) | Education-heavy products | Takes 6-12 months to mature |
+M|references|| Sales team (outbound) | $200-2000+ | Enterprise B2B | Fixed cost base regardless of results |
+M|references|| Partnerships | Variable | Products that complement others | Dependency on partner priorities |
+M|references|| Company | Paid Engine Mechanism | LTV/CAC |
+M|references||---------|----------------------|---------|
+M|references|| Dollar Shave Club | Facebook ads + viral video driving subscriptions | 4:1+ |
+M|references|| HubSpot | cnt mkt + inside sales | 5:1+ |
+M|references|| Casper | Podcast ads + soc media driving mattress purchases | 3:1+ |
+M|references|| Atlassian | Low-touch paid acquisition, product-led growth | 10:1+ |
+M|references|| Product Characteristic | Best Engine | Why |
+M|references||----------------------|-------------|-----|
+M|references|| Product involves collaboration between users | Viral | Natural sharing built into usage |
+M|references|| Product has high switching costs and repeat use | Sticky | Retention is the natural advantage |
+M|references|| Product has clear, quantifiable ROI | Paid | Easy to justify acquisition spend |
+M|references|| Product is novel and share-worthy | Viral | Word of mouth drives awareness |
+M|references|| Product has high LTV and long sales cycle | Paid | Justify high CAC with high LTV |
+M|references|| Product creates data/cnt that compounds | Sticky | Accumulated value prevents churn |
+M|references|| Product output is visible to non-users | Viral | Built-in exposure mechanism |
+M|references|| Product is in a crowded market with low differentiation | Paid | Outspend cp efficiently |
+M|references|- [ ] What is the natural behavior of your customer after using the product? (Share it, keep using it, or recommend it when asked?)
+M|references|- [ ] Does your product inherently involve other people?
+M|references|- [ ] What is your customer's lifetime value potential?
+M|references|- [ ] Can you measure and attribute acquisition sources?
+M|references|- [ ] What is the competitive landscape? (Viral markets tend toward winner-take-all)
+M|references|| Metric | Frequency | Target |
+M|references||--------|-----------|--------|
+M|references|| Monthly churn rate | Monthly | Decreasing month over month |
+M|references|| Cohort retention curves | Weekly | Newer cohorts retain better |
+M|references|| Feature adoption rates | Weekly | Core features used by 60%+ of actives |
+M|references|| Customer health score | Weekly | 80%+ of customers in "healthy" range |
+M|references|| Net customer growth | Monthly | Positive and accelerating |
+M|references|| Metric | Frequency | Target |
+M|references||--------|-----------|--------|
+M|references|| Viral coefficient (K) | Weekly | Approaching or exceeding 1.0 |
+M|references|| Viral cycle time | Weekly | Decreasing |
+M|references|| Share/invite rate | Daily | Stable or increasing |
+M|references|| Invited user conversion | Weekly | Increasing |
+M|references|| Organic traffic percentage | Monthly | Increasing |
+M|references|| Metric | Frequency | Target |
+M|references||--------|-----------|--------|
+M|references|| CAC by channel | Weekly | Stable or decreasing |
+M|references|| LTV/CAC ratio | Monthly | 3:1 or better |
+M|references|| Payback period | Monthly | Under 12 months |
+M|references|| ROAS by cg | Weekly | Positive and improving |
+M|references|| Marginal CAC | Monthly | Below average CAC |
+M|references|Startups sometimes need to transition from one engine to another as they mature.
+M|references|| From | To | Trigger | Example |
+M|references||------|-----|---------|---------|
+M|references|| Viral | Paid | Viral coefficient plateaus; need predictable growth | Instagram (viral) adding paid ads capability for businesses |
+M|references|| Paid | Sticky | CAC rising; retention more efficient than acquisition | SaaS companies shifting budget from ads to customer success |
+M|references|| Sticky | Viral | Strong retention base ready to amplify through sharing | Slack moving from sticky (enterprise adoption) to viral (team invites) |
+M|references|| Paid | Viral | Unit economics prove product works; now seeking organic scale | Dropbox reducing ad spend after referral program scaled |
+M|references|- [ ] Current engine is well-understood and optimized (you are not fleeing a broken engine)
+M|references|- [ ] The new engine has initial evidence of working (not just theory)
+M|references|- [ ] Metrics and dashboards are set up for the new engine
+M|references|- [ ] Team capabilities align with the new engine (virality needs product skills; paid needs mkt skills)
+M|references|- [ ] Budget and timeline are allocated for the transition period
+M|references|- [ ] Fallback plan exists if the new engine does not deliver within the expected timeframe
+M|references|The engine of growth is not a mkt str; it is a product str. The most effective growth comes from building the engine into the product itself, not bolting it on after launch.

@@ -1,0 +1,14 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/_sections.md
+M|rules|This file defines all sections, their ordering, impact levels, and descriptions.
+M|rules|The section ID (in parentheses) is the filename prefix used to group rules.
+M|rules|**Impact:** HIGH
+M|rules|**Description:** Fundamental patterns for structuring components to avoid prop
+M|rules|proliferation and enable flexible composition.
+M|rules|**Impact:** MEDIUM
+M|rules|**Description:** Patterns for lifting state and managing shared ctx across
+M|rules|composed components.
+M|rules|**Impact:** MEDIUM
+M|rules|**Description:** Specific techniques for implementing compound components and
+M|rules|ctx providers.
+M|rules|**Impact:** MEDIUM
+M|rules|**Description:** React 19+ only. Don't use `forwardRef`; use `use()` instead of `useContext()`.

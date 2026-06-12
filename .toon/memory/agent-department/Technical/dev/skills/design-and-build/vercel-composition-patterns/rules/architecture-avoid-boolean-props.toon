@@ -1,0 +1,89 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/architecture-avoid-boolean-props.md
+M|rules|title: Avoid Boolean Prop Proliferation
+M|rules|impact: CRITICAL
+M|rules|impactDescription: prevents unmaintainable component variants
+M|rules|tags: composition, props, architecture
+M|rules|Don't add boolean props like `isThread`, `isEditing`, `isDMThread` to customize
+M|rules|component behavior. Each boolean doubles possible states and creates
+M|rules|unmaintainable conditional logic. Use composition instead.
+M|rules|**Incorrect (boolean props create exponential complexity):**
+M|rules|```tsx
+M|rules|function Composer({
+M|rules|onSubmit,
+M|rules|isThread,
+M|rules|channelId,
+M|rules|isDMThread,
+M|rules|dmId,
+M|rules|isEditing,
+M|rules|isForwarding,
+M|rules|}: Props) {
+M|rules|return (
+M|rules|<form>
+M|rules|<Header />
+M|rules|<Input />
+M|rules|{isDMThread ? (
+M|rules|<AlsoSendToDMField id={dmId} />
+M|rules|) : isThread ? (
+M|rules|<AlsoSendToChannelField id={channelId} />
+M|rules|) : null}
+M|rules|{isEditing ? (
+M|rules|<EditActions />
+M|rules|) : isForwarding ? (
+M|rules|<ForwardActions />
+M|rules|) : (
+M|rules|<DefaultActions />
+M|rules|)}
+M|rules|<Footer onSubmit={onSubmit} />
+M|rules|</form>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (composition eliminates conditionals):**
+M|rules|```tsx
+M|rules|// Channel composer
+M|rules|function ChannelComposer() {
+M|rules|return (
+M|rules|<Composer.Frame>
+M|rules|<Composer.Header />
+M|rules|<Composer.Input />
+M|rules|<Composer.Footer>
+M|rules|<Composer.Attachments />
+M|rules|<Composer.Formatting />
+M|rules|<Composer.Emojis />
+M|rules|<Composer.Submit />
+M|rules|</Composer.Footer>
+M|rules|</Composer.Frame>
+M|rules|)
+M|rules|}
+M|rules|// Thread composer - adds "also send to channel" field
+M|rules|function ThreadComposer({ channelId }: { channelId: string }) {
+M|rules|return (
+M|rules|<Composer.Frame>
+M|rules|<Composer.Header />
+M|rules|<Composer.Input />
+M|rules|<AlsoSendToChannelField id={channelId} />
+M|rules|<Composer.Footer>
+M|rules|<Composer.Formatting />
+M|rules|<Composer.Emojis />
+M|rules|<Composer.Submit />
+M|rules|</Composer.Footer>
+M|rules|</Composer.Frame>
+M|rules|)
+M|rules|}
+M|rules|// Edit composer - different footer actions
+M|rules|function EditComposer() {
+M|rules|return (
+M|rules|<Composer.Frame>
+M|rules|<Composer.Input />
+M|rules|<Composer.Footer>
+M|rules|<Composer.Formatting />
+M|rules|<Composer.Emojis />
+M|rules|<Composer.CancelEdit />
+M|rules|<Composer.SaveEdit />
+M|rules|</Composer.Footer>
+M|rules|</Composer.Frame>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|Each variant is explicit about what it renders. We can share internals without
+M|rules|sharing a single monolithic parent.

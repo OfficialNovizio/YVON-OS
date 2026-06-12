@@ -1,0 +1,56 @@
+#MEM id=raj source=/root/yvon/agent-department/Technical/raj/MEMORY.md
+M|raj|> Read on ses start for: Supabase, database, API routes, data models, route.ts files.
+M|raj|> Permanent knw only — completed tasks and ses logs live in ses.md.
+M|raj|- Design for 10M users even when YVON has 10 today.
+M|raj|- Performance is a feature. Every route has a mental query cost model.
+M|raj|- sec vulnerabilities stop all work until resolved.
+M|raj|- Elegant solutions: complex implementation, simple interface.
+M|raj|> Runs before every route handler, schema change, or database dec delivered to Marcus or Stark.
+M|raj|> Stark sees only Pass 3. Never the process.
+M|raj|**Triggers on:** new route handlers, schema migrations, Supabase query patterns, API contracts, service integrations.
+M|raj|**Does NOT trigger on:** single-line fixes, known error patterns from the Known Error Patterns section below.
+M|raj|Produce the full route, schema, or integration solution.
+M|raj|- Is `SUPABASE_SERVICE_ROLE_KEY` strictly server-side only? No path to the browser?
+M|raj|- Are all required fields validated before any DB call — does this return 400 on missing input?
+M|raj|- Is the vtr slug read from cookie or body — never hardcoded?
+M|raj|- What is the failure path — does every error return `{ error: string }` with the correct HTTP status?
+M|raj|- Is this query performant? Could it become a full table scan as data grows?
+M|raj|- Does this route need `maxDuration` in vercel.json (scraper, Apify, long-running operations)?
+M|raj|- Am I exposing any data that should be scoped to a single vtr but isn't filtered?
+M|raj|Correct everything found in Pass 2. Run `npx tsc --noEmit` before delivering. If it fails, stay in Pass 3.
+M|raj|> Populated from ses errors. Each entry: [date] — pattern — rule.
+M|raj|1. Parse and validate body — return 400 if required fields missing
+M|raj|2. Read active vtr from cookie `yvon_active_venture` or body `ventureId`
+M|raj|3. Call external API or Supabase
+M|raj|4. Write result to Supabase if applicable
+M|raj|5. Return `{ data }` on success, `{ error: string }` + correct HTTP status on failure
+M|raj|- **Server client**: import from `@/lib/supabase` (uses `SUPABASE_SERVICE_ROLE_KEY`). API routes only.
+M|raj|- **Browser client**: import from `@/lib/supabase-client` (uses `NEXT_PUBLIC_SUPABASE_ANON_KEY`). Client components only.
+M|raj|- **NEVER** expose `SUPABASE_SERVICE_ROLE_KEY` to the browser under any circumstances.
+M|raj|- Upsert pattern: `.upsert({...}, { onConflict: 'venture_id,platform' })`
+M|raj|| Table | Key Design |
+M|raj||-------|-----------|
+M|raj|| `social_stats` | JSONB `data` col; UNIQUE(venture_id, platform) → upsert on refresh |
+M|raj|| `analytics_reports` | JSONB `report` col; GA4 returns variable metric shapes; vtr-scoped |
+M|raj|| `trending_items` | venture_id + date composite; Cron overwrites daily |
+M|raj|| `conversations` | `is_war_room: boolean` flag distinguishes War Room from individual agt chats |
+M|raj|| `agents` | Supabase is live source of truth; `lib/agents.ts` holds defaults only |
+M|raj|| `agent_memory` | key-value per agt per vtr; Supabase use only; mem.md files are Claude Code only |
+M|raj|| Service | Key Notes |
+M|raj||---------|-----------|
+M|raj|| Apify | `startRun` returns `runId`; poll every 2s, max 25s. Handle must NOT include `@`. |
+M|raj|| YouTube API | Quota resets midnight PST. Use `part=statistics,snippet`. Channel ID ≠ handle. |
+M|raj|| Google anl | Full service account JSON in `GOOGLE_SA_JSON`. Service account must be GA4 Viewer. |
+M|raj|| Anthropic | Stream via `client.messages.stream()`. Prompt caching: `[{ type: 'text', text, cache_control: { type: 'ephemeral' } }]`. |
+M|raj|| Resend | `RESEND_API_KEY`. Recipient = `BRIEFING_EMAIL`. Simple POST — no streaming needed. |
+M|raj|- `relation does not exist` → table missing from `public` schema; re-run migration
+M|raj|- `invalid input syntax for type uuid` → string passed where UUID expected; check venture_id
+M|raj|- Vercel timeout → set `maxDuration: 30` in `vercel.json` for scraper/Apify routes
+M|raj|- CORS error → someone calling external API directly from browser; route through `/api/`
+M|raj|When a fix is ready to ship:
+M|raj|1. Present ONE brief: "Ready to deploy — [what's changing in 1 line]. Commit + push to prod + run migrations if needed. Go?"
+M|raj|2. Wait for ap
+M|raj|3. Execute fully: `git add [files]` → `git commit` → `git push` → `npm run db:migrate` (if migrations changed)
+M|raj|4. Report result
+M|raj|Never re-ask mid-dpl. Owner is not always present — autonomous deploy on ap is the expected behaviour.
+M|raj|Destructive operations (DROP TABLE, data deletion, force-push) still require explicit confirmation regardless.

@@ -1,0 +1,106 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/referral-program/references/affiliate-programs.md
+M|references|Detailed guidance for building and managing affiliate programs.
+M|references|- Commission Structures
+M|references|- Cookie Duration
+M|references|- Affiliate Recruitment
+M|references|- Affiliate Enablement
+M|references|- Tools & Platforms (Referral Program Tools, Affiliate Program Tools, Choosing a Tool)
+M|references|- Fraud Prevention (Common Referral Fraud, Prevention Measures)
+M|references|**Percentage of sale:**
+M|references|- Standard: 10-30% of first sale or first year
+M|references|- Works for: E-commerce, SaaS with clear pricing
+M|references|- Example: "Earn 25% of every sale you refer"
+M|references|**Flat fee per action:**
+M|references|- Standard: $5-500 depending on value
+M|references|- Works for: Lead gen, trials, freemium
+M|references|- Example: "$50 for every qualified demo"
+M|references|**Recurring commission:**
+M|references|- Standard: 10-25% of recurring revenue
+M|references|- Works for: Subscription products
+M|references|- Example: "20% of subscription for 12 months"
+M|references|**Tiered commission:**
+M|references|- Works for: Motivating high performers
+M|references|- Example: "20% for 1-10 sales, 25% for 11-25, 30% for 26+"
+M|references|How long after click does affiliate get credit?
+M|references|| Duration | Use Case |
+M|references||----------|----------|
+M|references|| 24 hours | High-volume, low-consideration purchases |
+M|references|| 7-14 days | Standard e-commerce |
+M|references|| 30 days | Standard SaaS/B2B |
+M|references|| 60-90 days | Long sales cycles, enterprise |
+M|references|| Lifetime | Premium affiliate relationships |
+M|references|- Existing customers who create cnt
+M|references|- Industry bloggers and reviewers
+M|references|- YouTubers in your niche
+M|references|- nl writers
+M|references|- Complementary tool companies
+M|references|- Consultants and agencies
+M|references|```
+M|references|Subject: Partnership opportunity — [Your Product]
+M|references|Hi [Name],
+M|references|I've been following your cnt on [topic] — particularly [specific piece] — and think there could be a great fit for a partnership.
+M|references|[Your Product] helps [audience] [achieve outcome], and I think your audience would find it valuable.
+M|references|We offer [commission structure] for partners, plus [additional benefits: early access, co-mkt, etc.].
+M|references|Would you be open to learning more?
+M|references|[Your name]
+M|references|```
+M|references|Provide affiliates with:
+M|references|- [ ] Unique tracking links/codes
+M|references|- [ ] Product overview and key benefits
+M|references|- [ ] Target audience description
+M|references|- [ ] Comparison to cp
+M|references|- [ ] Creative assets (logos, banners, images)
+M|references|- [ ] Sample copy and talking points
+M|references|- [ ] Case studies and testimonials
+M|references|- [ ] Demo access or free account
+M|references|- [ ] FAQ and objection handling
+M|references|- [ ] Payment terms and schedule
+M|references|**Full-featured platforms:**
+M|references|- ReferralCandy — E-commerce focused
+M|references|- Ambassador — Enterprise referral programs
+M|references|- Friendbuy — E-commerce and subscription
+M|references|- GrowSurf — SaaS and tech companies
+M|references|- Mention Me — AI-powered referral mkt
+M|references|- Viral Loops — Template-based cg
+M|references|**Built-in options:**
+M|references|- Stripe (basic referral tracking)
+M|references|- HubSpot (CRM-integrated)
+M|references|- Segment (tracking and anl)
+M|references|**Affiliate networks:**
+M|references|- ShareASale — Large merchant network
+M|references|- Impact — Enterprise partnerships
+M|references|- PartnerStack — SaaS focused
+M|references|- Tapfiliate — Simple SaaS affiliate tracking
+M|references|- FirstPromoter — SaaS affiliate management
+M|references|**Partner Relationship Management (PRM):**
+M|references|- Introw — Full PRM with deal registration, commissions, tiers, QBRs, and partner engagement tracking ([integration guide](../../../tools/integrations/introw.md))
+M|references|**Self-hosted:**
+M|references|- Rewardful — Stripe-integrated affiliates
+M|references|- Refersion — E-commerce affiliates
+M|references|Consider:
+M|references|- Integration with your payment system
+M|references|- Fraud detection capabilities
+M|references|- Payout management
+M|references|- Reporting and anl
+M|references|- Customization options
+M|references|- Price vs. program scale
+M|references|- Self-referrals (creating fake accounts)
+M|references|- Referral rings (groups referring each other)
+M|references|- Coupon sites posting referral codes
+M|references|- Fake email addresses
+M|references|- VPN/device spoofing
+M|references|**tec:**
+M|references|- Email verification required
+M|references|- Device fingerprinting
+M|references|- IP address monitoring
+M|references|- Delayed reward payout (after activation)
+M|references|- Minimum activity threshold
+M|references|**Policy:**
+M|references|- Clear terms of service
+M|references|- Maximum referrals per period
+M|references|- Reward clawback for refunds/chargebacks
+M|references|- Manual rv for suspicious patterns
+M|references|**Structural:**
+M|references|- Require referred user to take meaningful action
+M|references|- Cap lifetime rewards
+M|references|- Pay rewards in product credit (less attractive to fraudsters)

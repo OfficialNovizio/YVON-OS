@@ -1,0 +1,16 @@
+#MEM id=felix source=/root/yvon/agent-department/Finance/felix/MEMORY-hourbour.md
+M|felix|> Load alongside mem.md when active vtr is Hourbour.
+M|felix|> vtr-specific learned patterns only. Universal patterns live in mem.md.
+M|felix|> Format: [date] — wrong assumption — impact — rule going forward.
+M|felix|- **Revenue model:** Subscription SaaS (recurring — MRR compounds, churn destroys compounding)
+M|felix|- **Key health metric:** NRR (Net Revenue Retention) — above 100% means growth without new customers
+M|felix|- **LTV:CAC threshold:** < 3:1 → flag to Marcus immediately, pause growth spend
+M|felix|- **Churn benchmark:** Target < 3% monthly — above 5% is a retention crisis
+M|felix|- **CAC payback target:** < 12 months — beyond this, growth spend is a cash drain
+M|felix|- MRR growth is not always linear — model as S-curve for early-stage SaaS, not linear projection
+M|felix|- Trial-to-paid conversion rate is pl signal, not revenue — never count it as MRR until converted
+M|felix|- Expansion MRR (upsell/cross-sell) has zero CAC — always surface it separately from new MRR
+M|felix|- Churn is best modeled by cohort, not as a flat average — cohort churn reveals retention curve shape
+M|felix|- Contraction MRR (downgrades) is a leading indicator of full churn — monitor separately
+M|felix|> vtr-specific errors. Mistakes about how I reason universally belong in mem.md.
+M|felix|*(Populated from sessions — entries added via reflection-protocol skill after each Hourbour task)*

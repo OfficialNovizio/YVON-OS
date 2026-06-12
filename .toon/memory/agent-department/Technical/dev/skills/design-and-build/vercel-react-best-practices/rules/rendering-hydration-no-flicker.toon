@@ -1,0 +1,65 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-hydration-no-flicker.md
+M|rules|title: Prevent Hydration Mismatch Without Flickering
+M|rules|impact: MEDIUM
+M|rules|impactDescription: avoids visual flicker and hydration errors
+M|rules|tags: rendering, ssr, hydration, localStorage, flicker
+M|rules|When rendering cnt that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before Reac
+M|rules|**Incorrect (breaks SSR):**
+M|rules|```tsx
+M|rules|function ThemeWrapper({ children }: { children: ReactNode }) {
+M|rules|// localStorage is not available on server - throws error
+M|rules|const theme = localStorage.getItem('theme') || 'light'
+M|rules|return (
+M|rules|<div className={theme}>
+M|rules|{children}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|Server-side rendering will fail because `localStorage` is undefined.
+M|rules|**Incorrect (visual flickering):**
+M|rules|```tsx
+M|rules|function ThemeWrapper({ children }: { children: ReactNode }) {
+M|rules|const [theme, setTheme] = useState('light')
+M|rules|useEffect(() => {
+M|rules|// Runs after hydration - causes visible flash
+M|rules|const stored = localStorage.getItem('theme')
+M|rules|if (stored) {
+M|rules|setTheme(stored)
+M|rules|}
+M|rules|}, [])
+M|rules|return (
+M|rules|<div className={theme}>
+M|rules|{children}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|Component first renders with default value (`light`), then updates after hydration, causing a visible flash of incorrect cnt.
+M|rules|**Correct (no flicker, no hydration mismatch):**
+M|rules|```tsx
+M|rules|function ThemeWrapper({ children }: { children: ReactNode }) {
+M|rules|return (
+M|rules|<>
+M|rules|<div id="theme-wrapper">
+M|rules|{children}
+M|rules|</div>
+M|rules|<script
+M|rules|dangerouslySetInnerHTML={{
+M|rules|__html: `
+M|rules|(function() {
+M|rules|try {
+M|rules|var theme = localStorage.getItem('theme') || 'light';
+M|rules|var el = doc.getElementById('theme-wrapper');
+M|rules|if (el) el.className = theme;
+M|rules|} catch (e) {}
+M|rules|})();
+M|rules|`,
+M|rules|}}
+M|rules|/>
+M|rules|</>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|The inline script executes synchronously before showing the element, ensuring the DOM already has the correct value. No flickering, no hydration mismatch.
+M|rules|This pattern is especially useful for theme toggles, user preferences, authentication states, and any client-only data that should render immediately without flashing default values.

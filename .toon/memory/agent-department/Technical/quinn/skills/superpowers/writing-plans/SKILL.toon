@@ -1,0 +1,90 @@
+#MEM id=writing-plans source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/writing-plans/SKILL.md
+M|writing-plans|name: writing-plans
+M|writing-plans|description: >-
+M|writing-plans|Use when you have a spec or requirements for a multi-step task, before touching code
+M|writing-plans|version: 1.0.0
+M|writing-plans|platforms: []
+M|writing-plans|metadata:
+M|writing-plans|hermes:
+M|writing-plans|tags: [qa, testing, debugging, quality, lint, code-rv, pulse, productivity]
+M|writing-plans|Write comprehensive implementation plans assuming the engineer has zero ctx for our codebase and questionable taste. doc everything they need to know: which files to touch for each task, code, testing
+M|writing-plans|Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+M|writing-plans|**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+M|writing-plans|**ctx:** This should be run in a dedicated worktree (created by brainstorming skill).
+M|writing-plans|**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+M|writing-plans|- (User preferences for plan location override this default)
+M|writing-plans|If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem.
+M|writing-plans|Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+M|writing-plans|- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+M|writing-plans|- You reason best about code you can hold in ctx at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+M|writing-plans|- Files that change together should live together. Split by responsibility, not by tec layer.
+M|writing-plans|- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the pla
+M|writing-plans|This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+M|writing-plans|**Each step is one action (2-5 minutes):**
+M|writing-plans|- "Write the failing test" - step
+M|writing-plans|- "Run it to make sure it fails" - step
+M|writing-plans|- "Implement the minimal code to make the test pass" - step
+M|writing-plans|- "Run the tests and make sure they pass" - step
+M|writing-plans|- "Commit" - step
+M|writing-plans|**Every plan MUST start with this header:**
+M|writing-plans|```markdown
+M|writing-plans|> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-dev (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax
+M|writing-plans|**Goal:** [One sentence describing what this builds]
+M|writing-plans|**Architecture:** [2-3 sentences about approach]
+M|writing-plans|**Tech Stack:** [Key technologies/libraries]
+M|writing-plans|```
+M|writing-plans|````markdown
+M|writing-plans|**Files:**
+M|writing-plans|- Create: `exact/path/to/file.py`
+M|writing-plans|- Modify: `exact/path/to/existing.py:123-145`
+M|writing-plans|- Test: `tests/exact/path/to/test.py`
+M|writing-plans|- [ ] **Step 1: Write the failing test**
+M|writing-plans|```python
+M|writing-plans|def test_specific_behavior():
+M|writing-plans|result = function(input)
+M|writing-plans|assert result == expected
+M|writing-plans|```
+M|writing-plans|- [ ] **Step 2: Run test to verify it fails**
+M|writing-plans|Run: `pytest tests/path/test.py::test_name -v`
+M|writing-plans|Expected: FAIL with "function not defined"
+M|writing-plans|- [ ] **Step 3: Write minimal implementation**
+M|writing-plans|```python
+M|writing-plans|def function(input):
+M|writing-plans|return expected
+M|writing-plans|```
+M|writing-plans|- [ ] **Step 4: Run test to verify it passes**
+M|writing-plans|Run: `pytest tests/path/test.py::test_name -v`
+M|writing-plans|Expected: PASS
+M|writing-plans|- [ ] **Step 5: Commit**
+M|writing-plans|```bash
+M|writing-plans|git add tests/path/test.py src/path/file.py
+M|writing-plans|git commit -m "feat: add specific feature"
+M|writing-plans|```
+M|writing-plans|````
+M|writing-plans|Every step must contain the actual cnt an engineer needs. These are **plan failures** — never write them:
+M|writing-plans|- "TBD", "TODO", "implement later", "fill in details"
+M|writing-plans|- "Add appropriate error handling" / "add validation" / "handle edge cases"
+M|writing-plans|- "Write tests for the above" (without actual test code)
+M|writing-plans|- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
+M|writing-plans|- Steps that describe what to do without showing how (code blocks required for code steps)
+M|writing-plans|- References to types, functions, or methods not defined in any task
+M|writing-plans|- Exact file paths always
+M|writing-plans|- Complete code in every step — if a step changes code, show the code
+M|writing-plans|- Exact commands with expected output
+M|writing-plans|- DRY, YAGNI, TDD, frequent commits
+M|writing-plans|After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
+M|writing-plans|**1. Spec coverage:** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
+M|writing-plans|**2. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
+M|writing-plans|**3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFull
+M|writing-plans|If you find issues, fix them inline. No need to re-rv — just fix and move on. If you find a spec requirement with no task, add the task.
+M|writing-plans|After saving the plan, offer execution choice:
+M|writing-plans|**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+M|writing-plans|**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, rv between tasks, fast iteration
+M|writing-plans|**2. Inline Execution** - Execute tasks in this ses using executing-plans, batch execution with checkpoints
+M|writing-plans|**Which approach?"**
+M|writing-plans|**If Subagent-Driven chosen:**
+M|writing-plans|- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-dev
+M|writing-plans|- Fresh subagent per task + two-stage rv
+M|writing-plans|**If Inline Execution chosen:**
+M|writing-plans|- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
+M|writing-plans|- Batch execution with checkpoints for rv

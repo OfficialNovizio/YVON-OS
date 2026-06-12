@@ -1,0 +1,436 @@
+#MEM id=weekly-review source=/root/yvon/agent-department/COO/diana/skills/marketplace/weekly-review/SKILL.md
+M|weekly-review|name: weekly-rv
+M|weekly-review|description: rv week's progress, meetings, learnings
+M|weekly-review|disable-model-invocation: false
+M|weekly-review|1. Run `/weekly-rv` on Friday afternoon (best time) or Monday morning
+M|weekly-review|2. I will scan your workspace: weekly plans, daily plans, PRDs, meeting notes, decisions, and launches from the past 7 days
+M|weekly-review|3. I will gen a focused rv comparing plan vs. actual, surfacing key wins, blockers, and learnings
+M|weekly-review|4. Output goes to `thoughts/shared/pm/reports/YYYY-WXX-weekly-rv.md`
+M|weekly-review|5. After the rv, I will suggest running `/weekly-plan` to plan next week
+M|weekly-review|**Default output is focused (~150 lines max).** Say "full rv" if you want the expanded version with stakeholder pulse, task-level execution metrics, and pattern analysis.
+M|weekly-review|End-of-week synthesis reviewing what you accomplished, what you learned, and what needs attention. Feeds into next week's planning and builds institutional mem.
+M|weekly-review|- `/weekly-rv` - rv current/past week
+M|weekly-review|- `/weekly-rv last-week` - rv previous week (if you forgot)
+M|weekly-review|**Check these files first:**
+M|weekly-review|1. `thoughts/shared/pm/reports/` - This week's plan (what you intended)
+M|weekly-review|2. `thoughts/shared/pm/reports/` - Daily plans from this week (what actually happened)
+M|weekly-review|3. `thoughts/shared/pm/prds/` - PRDs modified this week
+M|weekly-review|4. `thoughts/shared/product/meeting-notes/` - Meeting notes from past 7 days
+M|weekly-review|5. `thoughts/shared/pm/launches/` - Launches that happened this week
+M|weekly-review|6. `thoughts/shared/product/decisions/` - Decisions made this week
+M|weekly-review|7. `thoughts/shared/pm/analyses/` - Research conducted
+M|weekly-review|8. `thoughts/shared/pm/frameworks/` - Quarter goals (to track progress)
+M|weekly-review|**MCP Queries (if available):**
+M|weekly-review|- **Linear MCP** - Tasks completed this week
+M|weekly-review|- **anl MCP** - Metrics for features launched recently
+M|weekly-review|- **GitHub MCP** - Code activity (if relevant to your role)
+M|weekly-review|- **Slack MCP** - Key conversations and decisions
+M|weekly-review|**Fallback:** File-based analysis of PM OS workspace + manual input for completions.
+M|weekly-review|1. **Calculate week to rv:**
+M|weekly-review|- Default: Current week (if Friday or later)
+M|weekly-review|- If Monday-Thursday: Ask "rv last week or current week?"
+M|weekly-review|- If user specified: Use that week
+M|weekly-review|2. **Check if rv already exists:**
+M|weekly-review|- Look for `thoughts/shared/pm/reports/YYYY-WXX-weekly-rv.md`
+M|weekly-review|- If exists: Ask "Update existing rv or create new version?"
+M|weekly-review|**A. Weekly Plan (What Was Intended):**
+M|weekly-review|Read `thoughts/shared/pm/reports/YYYY-WXX-weekly-plan.md`:
+M|weekly-review|Extract:
+M|weekly-review|- Top 3 priorities for the week
+M|weekly-review|- Key tasks under each priority
+M|weekly-review|- Success criteria
+M|weekly-review|- Expected meeting load
+M|weekly-review|If no weekly plan exists:
+M|weekly-review|- Note: "Week wasn't planned. Reviewing what happened only."
+M|weekly-review|- Suggest: "Next week, run `/weekly-plan` on Monday for better focus."
+M|weekly-review|**B. PRD Progress:**
+M|weekly-review|Scan `thoughts/shared/pm/prds/`:
+M|weekly-review|Method 1 - File modification dates:
+M|weekly-review|```bash
+M|weekly-review|find thoughts/shared/pm/prds/ -name "*.md" -mtime -7
+M|weekly-review|```
+M|weekly-review|For each PRD touched this week:
+M|weekly-review|- Read frontmatter or first section for current stage
+M|weekly-review|- Compare to last week's stage (if weekly rv from last week exists)
+M|weekly-review|- Determine: Advanced, Stalled, or New
+M|weekly-review|Method 2 - If Git available:
+M|weekly-review|```bash
+M|weekly-review|git log --since="7 days ago" --name-only --pretty=format: | grep -E "prds/.*\.md$" | sort -u
+M|weekly-review|```
+M|weekly-review|**Categorize:**
+M|weekly-review|- **Advanced:** Moved to next stage (Team Kickoff → Planning rv)
+M|weekly-review|- **Active:** Work happened but didn't advance stage
+M|weekly-review|- **Stalled:** No activity this week
+M|weekly-review|- **New:** Started this week
+M|weekly-review|**C. Feature Launches:**
+M|weekly-review|Check `thoughts/shared/pm/launches/`:
+M|weekly-review|- Launches completed this week
+M|weekly-review|- Launch checklists finished
+M|weekly-review|- Post-launch monitoring started
+M|weekly-review|For each launch:
+M|weekly-review|If anl MCP available:
+M|weekly-review|```
+M|weekly-review|Query metrics since launch date
+M|weekly-review|Compare to success criteria from PRD
+M|weekly-review|```
+M|weekly-review|Categorize:
+M|weekly-review|- ✅ On track (meeting targets)
+M|weekly-review|- ⚠️ Needs attention (below targets)
+M|weekly-review|- ❌ Underperforming (significantly below)
+M|weekly-review|- 🚀 Exceeding (beating targets)
+M|weekly-review|**D. Meetings & Decisions:**
+M|weekly-review|Scan `thoughts/shared/product/meeting-notes/` from past 7 days:
+M|weekly-review|For each meeting:
+M|weekly-review|- Extract date, attendees, topic
+M|weekly-review|- Look for: Decisions made, action items created, blockers identified
+M|weekly-review|Check `thoughts/shared/product/decisions/`:
+M|weekly-review|- dec docs created this week
+M|weekly-review|- Link to related meetings
+M|weekly-review|**Build stakeholder pulse:**
+M|weekly-review|- Who did you meet with most? (frequency)
+M|weekly-review|- Who did you miss syncing with? (gaps)
+M|weekly-review|- What topics dominated discussions? (themes)
+M|weekly-review|**E. Tasks Completed:**
+M|weekly-review|If Linear MCP available:
+M|weekly-review|```
+M|weekly-review|Query: Tasks completed in past 7 days
+M|weekly-review|Group by: Priority, PRD/Initiative
+M|weekly-review|Calculate: Planned vs actual completion rate
+M|weekly-review|```
+M|weekly-review|If MCP not available:
+M|weekly-review|- Scan daily plans for checked-off tasks
+M|weekly-review|- Scan meeting notes for completed action items
+M|weekly-review|**Categorize by initiative:**
+M|weekly-review|```
+M|weekly-review|Initiative: [PRD Name]
+M|weekly-review|- ✅ Task 1 (from Priority 1)
+M|weekly-review|- ✅ Task 2 (from Priority 1)
+M|weekly-review|- [ ] Task 3 (carried over - why?)
+M|weekly-review|```
+M|weekly-review|**Calculate metrics:**
+M|weekly-review|- Tasks completed vs planned
+M|weekly-review|- % completion rate
+M|weekly-review|- Carry-over rate
+M|weekly-review|**F. User Research & Insights:**
+M|weekly-review|Check `thoughts/shared/pm/`:
+M|weekly-review|- New interview notes this week
+M|weekly-review|- Competitive analysis updates
+M|weekly-review|Check `thoughts/shared/pm/analyses/`:
+M|weekly-review|- Synthesis reports created
+M|weekly-review|- Themes identified
+M|weekly-review|Extract:
+M|weekly-review|- Key findings
+M|weekly-review|- Recurring themes (mentioned in multiple sources)
+M|weekly-review|- Recommendations for roadmap
+M|weekly-review|**G. Learnings & Patterns:**
+M|weekly-review|This is where weekly rv gets powerful - surfacing patterns.
+M|weekly-review|**From daily plans:**
+M|weekly-review|- What consistently took longer than expected?
+M|weekly-review|- What got deprioritized every day? (maybe not important)
+M|weekly-review|- What meeting prep was valuable vs not?
+M|weekly-review|**From outcomes:**
+M|weekly-review|- What decisions went well? (process to repeat)
+M|weekly-review|- What decisions went poorly? (what to change)
+M|weekly-review|- What blockers kept recurring? (systemic issue)
+M|weekly-review|**From stakeholder interactions:**
+M|weekly-review|- What communication worked well?
+M|weekly-review|- What caused confusion or misalignment?
+M|weekly-review|- Who needs more/less frequent updates?
+M|weekly-review|**PRD pl Analysis:**
+M|weekly-review|For each PRD:
+M|weekly-review|- Last week's stage → This week's stage
+M|weekly-review|- Movement: ✅ Advanced / → Active / ⚠️ Stalled
+M|weekly-review|**Why analysis:**
+M|weekly-review|- Advanced: What unblocked it? (repeat this)
+M|weekly-review|- Stalled: What's blocking? (action needed)
+M|weekly-review|**Strategic Alignment:**
+M|weekly-review|Read `thoughts/shared/pm/frameworks/` for quarter goals.
+M|weekly-review|For each goal:
+M|weekly-review|- Which priorities/tasks contributed to it this week?
+M|weekly-review|- Progress estimate: X% → Y% (did we move the needle?)
+M|weekly-review|- Velocity: Are we on track for quarter target?
+M|weekly-review|**Pillar balance:**
+M|weekly-review|If str has defined pillars:
+M|weekly-review|- Pillar 1: X% of time this week
+M|weekly-review|- Pillar 2: Y% of time
+M|weekly-review|- Pillar 3: Z% of time
+M|weekly-review|Compare to target allocation: Are we balanced?
+M|weekly-review|**Pattern Detection:**
+M|weekly-review|Look for:
+M|weekly-review|- **Recurring blockers:** Same dependency/person blocked multiple things
+M|weekly-review|- **Underestimated tasks:** Consistently took 2x longer than planned
+M|weekly-review|- **Overcommitted weeks:** Planned 30 hours with 25 hours of meetings
+M|weekly-review|- **Meeting value:** Which meetings led to outcomes vs were FYI only?
+M|weekly-review|- **Best working times:** When did deep work happen? (protect these blocks)
+M|weekly-review|Create file: `thoughts/shared/pm/reports/YYYY-WXX-weekly-rv.md`
+M|weekly-review|**Output Length Guidance:**
+M|weekly-review|**Default (focused rv, ~150 lines max).** Include only:
+M|weekly-review|1. TL;DR (5-6 bullet summary)
+M|weekly-review|2. Priority Completion (plan vs actual for top 3 priorities)
+M|weekly-review|3. Key Decisions Made (list with one-line rationale each)
+M|weekly-review|4. Metrics Movement (table of metrics that changed)
+M|weekly-review|5. Top 3 Learnings (what worked, what did not, what to change)
+M|weekly-review|6. Next Week Preview (draft priorities + items to unblock)
+M|weekly-review|**Full rv (when user asks for it).** Expand to also include:
+M|weekly-review|- Stakeholder pulse (engagement gaps, new relationships)
+M|weekly-review|- Task-level execution metrics (completion rate, carry-over rate, scope creep indicator)
+M|weekly-review|- PRD pl table with stage movement
+M|weekly-review|- Meeting value assessment (high/medium/low for each meeting)
+M|weekly-review|- Pattern analysis (recurring blockers, underestimated task types, best working times)
+M|weekly-review|- User research and competitive intelligence updates
+M|weekly-review|**Template:**
+M|weekly-review|```markdown
+M|weekly-review|week: YYYY-WXX
+M|weekly-review|week_start: YYYY-MM-DD
+M|weekly-review|week_end: YYYY-MM-DD
+M|weekly-review|quarter: Q[X] YYYY
+M|weekly-review|- **PRDs:** [X active], [Y advanced], [Z stalled]
+M|weekly-review|- **Launches:** [N features shipped]
+M|weekly-review|- **Meetings:** [M total], [P key decisions]
+M|weekly-review|- **Completion rate:** [X%] of planned tasks done
+M|weekly-review|- **Key win:** [Biggest accomplishment]
+M|weekly-review|- **Key challenge:** [Biggest blocker/lesson]
+M|weekly-review|**Quarter Goal:** [Primary goal for Q]
+M|weekly-review|**Progress This Week:** [What moved forward]
+M|weekly-review|| Goal     | Start of Week | End of Week | This Week | Status      |
+M|weekly-review|| -------- | ------------- | ----------- | --------- | ----------- |
+M|weekly-review|| [Goal 1] | X%            | Y%          | +Z%       | ✅ On track |
+M|weekly-review|| [Goal 2] | A%            | B%          | +C%       | ⚠️ Behind   |
+M|weekly-review|**Velocity check:**
+M|weekly-review|- [x] weeks left in quarter
+M|weekly-review|- [Y%] progress needed per week to hit goal
+M|weekly-review|- [Z%] actual progress this week
+M|weekly-review|- **Assessment:** [On track / Need to accelerate / Ahead]
+M|weekly-review|[Compare planned vs actual]
+M|weekly-review|**Planned:** [What we intended to achieve]
+M|weekly-review|**Actual:** [What we achieved]
+M|weekly-review|**Tasks:**
+M|weekly-review|- ✅ [Task 1] - Done
+M|weekly-review|- ✅ [Task 2] - Done
+M|weekly-review|- [ ] [Task 3] - Carried over because [reason]
+M|weekly-review|**Status:** ✅ Complete / 🟡 Partial / ❌ Not started
+M|weekly-review|**Key outcome:**
+M|weekly-review|- [What this unlocked or enabled]
+M|weekly-review|**Learning:**
+M|weekly-review|- [What went well or what to change]
+M|weekly-review|[Same structure]
+M|weekly-review|[Same structure]
+M|weekly-review|| PRD    | Stage (Start of Week) | Stage (End of Week) | Movement    | Next Action       |
+M|weekly-review|| ------ | --------------------- | ------------------- | ----------- | ----------------- |
+M|weekly-review|| [Name] | Team Kickoff          | Planning rv     | ✅ Advanced | Get eng estimates |
+M|weekly-review|| [Name] | Solution rv       | Solution rv     | ⚠️ Stalled  | Need legal rv |
+M|weekly-review|| [Name] | -                     | Team Kickoff        | 🆕 New      | Scope and plan    |
+M|weekly-review|**Analysis:**
+M|weekly-review|- **Advanced:** [PRD X] moved forward because [stakeholder signed off / design done / etc.]
+M|weekly-review|- **Stalled:** [PRD Y] blocked on [dependency / dec / resource]
+M|weekly-review|- **Recommendation:** [What to prioritize next week to unblock]
+M|weekly-review|[If anything launched]
+M|weekly-review|**[Feature Name]** (Launched [Day])
+M|weekly-review|**Success Criteria (from PRD):**
+M|weekly-review|- [Metric 1]: Target [X], Actual [Y] ([+/-Z%])
+M|weekly-review|- [Metric 2]: Target [A], Actual [B] ([+/-C%])
+M|weekly-review|**Early assessment:** ✅ On track / ⚠️ Needs attention / ❌ Below target / 🚀 Exceeding
+M|weekly-review|**Insights:**
+M|weekly-review|- [User feedback received]
+M|weekly-review|- [Unexpected behavior observed]
+M|weekly-review|- [Next iteration needed]
+M|weekly-review|[Features launched in past 4 weeks still being monitored]
+M|weekly-review|| Feature | Launch Date | Key Metric | Target | Actual | Trend | Status   |
+M|weekly-review|| ------- | ----------- | ---------- | ------ | ------ | ----- | -------- |
+M|weekly-review|| [Name]  | [Date]      | [Metric]   | [X]    | [Y]    | [↗↘→] | [✅⚠️❌] |
+M|weekly-review|1. **[dec]** ([Date] - [Meeting])
+M|weekly-review|- **ctx:** [Why this came up]
+M|weekly-review|- **dec:** [What was decided]
+M|weekly-review|- **Rationale:** [Why we chose this]
+M|weekly-review|- **Owner:** [Who's executing]
+M|weekly-review|- **Impact:** [What this affects]
+M|weekly-review|- **Doc:** [Link if exists]
+M|weekly-review|2. **[dec 2]**
+M|weekly-review|[Same structure]
+M|weekly-review|| Day | Meeting | Attendees | Outcome              | Value     |
+M|weekly-review|| --- | ------- | --------- | -------------------- | --------- |
+M|weekly-review|| Mon | [Topic] | [Names]   | [dec/Alignment] | 🟢 High   |
+M|weekly-review|| Tue | [Topic] | [Names]   | [Info sharing]       | 🟡 Medium |
+M|weekly-review|| Wed | [Topic] | [Names]   | [Cancelled]          | ⚫ None   |
+M|weekly-review|**Meeting load:** [X] hours / 40 = [Y%]
+M|weekly-review|**Deep work time:** [Z] hours (vs [A] hours planned)
+M|weekly-review|**Value assessment:**
+M|weekly-review|- 🟢 High value: Led to dec or unblocked work
+M|weekly-review|- 🟡 Medium value: Useful ctx but no immediate action
+M|weekly-review|- 🔴 Low value: Could have been async or skipped
+M|weekly-review|**Recommendation:** [Which meetings to keep/change/cancel]
+M|weekly-review|**High engagement this week:**
+M|weekly-review|- **[Name]** - [Why: Multiple syncs, key dec, strong collaboration]
+M|weekly-review|- Impact: [What this enabled]
+M|weekly-review|- Continue: [Keep this cadence / Increase collaboration]
+M|weekly-review|**Needs attention:**
+M|weekly-review|- **[Name]** - [Why: Haven't synced in 2+ weeks, blocking issue, misalignment suspected]
+M|weekly-review|- Impact: [What's at risk]
+M|weekly-review|- Action: [Specific next step - schedule 1:1, send update, etc.]
+M|weekly-review|**New relationships:**
+M|weekly-review|- **[Name]** - [Met for first time, ctx]
+M|weekly-review|- Follow-up: [Add to stakeholder profiles, schedule regular sync]
+M|weekly-review|[Only include if research happened]
+M|weekly-review|**New Research This Week:**
+M|weekly-review|- **[Interview/Study]** - [Date]
+M|weekly-review|- Key finding: [Insight]
+M|weekly-review|- Validates: [Which hypothesis or PRD]
+M|weekly-review|- Challenges: [What assumption or approach]
+M|weekly-review|**Recurring Themes:**
+M|weekly-review|- **[Theme 1]** - Mentioned in [X] sources
+M|weekly-review|- Evidence: [Quote or data point]
+M|weekly-review|- Implication: [What this means for roadmap]
+M|weekly-review|- **[Theme 2]** - Validates hypothesis from [PRD]
+M|weekly-review|- Evidence: [Quote or data point]
+M|weekly-review|- Recommendation: [Accelerate this PRD / Pivot approach]
+M|weekly-review|**Competitive Intelligence:**
+M|weekly-review|[If competitive analysis updated]
+M|weekly-review|- [cp] launched [Feature]
+M|weekly-review|- Implication: [How this affects our str]
+M|weekly-review|**Completion Metrics:**
+M|weekly-review|- **Completed:** [X] tasks
+M|weekly-review|- **Carried over:** [Y] tasks ([Z%] carry-over rate)
+M|weekly-review|- **Added mid-week:** [A] tasks (scope creep indicator)
+M|weekly-review|**By initiative:**
+M|weekly-review|- ✅ [Task completed]
+M|weekly-review|- ✅ [Task completed]
+M|weekly-review|- [ ] [Task carried over] - **Why:** [Blocked by X / Deprioritized for Y / Under-estimated]
+M|weekly-review|[Same structure]
+M|weekly-review|**Patterns:**
+M|weekly-review|- Tasks that took longer than expected: [Type/category]
+M|weekly-review|- Blockers that repeated: [Dependency on X person/team]
+M|weekly-review|- Tasks that got bumped repeatedly: [Maybe not actually important?]
+M|weekly-review|**What Worked Well:**
+M|weekly-review|- **[Approach/dec]** - [Why it was effective]
+M|weekly-review|- Example: [Specific instance]
+M|weekly-review|- Repeat: [How to apply this pattern again]
+M|weekly-review|**What Didn't Work:**
+M|weekly-review|- **[Mistake/Inefficiency]** - [What happened]
+M|weekly-review|- Impact: [Consequence]
+M|weekly-review|- Root cause: [Why this happened]
+M|weekly-review|- Fix: [Specific change for next time]
+M|weekly-review|**Process Improvements:**
+M|weekly-review|- [ ] [Specific improvement to implement]
+M|weekly-review|- Why: [Problem it solves]
+M|weekly-review|- How: [Concrete action]
+M|weekly-review|- Owner: You
+M|weekly-review|- By when: [Next week / Next sprint]
+M|weekly-review|**Personal dev:**
+M|weekly-review|[If applicable]
+M|weekly-review|- Skill practiced: [What you worked on]
+M|weekly-review|- Feedback received: [From whom, about what]
+M|weekly-review|- Growth area identified: [What to develop]
+M|weekly-review|[Based on this week's outcomes, suggest next week's priorities]
+M|weekly-review|1. **[Priority 1]** - [Why: Carries over from this week / New urgent item / Strategic next step]
+M|weekly-review|2. **[Priority 2]** - [Why]
+M|weekly-review|3. **[Priority 3]** - [Why]
+M|weekly-review|> Note: Run `/weekly-plan` to formalize these and add detail
+M|weekly-review|[From calendar if available]
+M|weekly-review|- **[Day]:** [Meeting] - [Goal/Outcome needed]
+M|weekly-review|- **[Day]:** [Meeting] - [Prep needed]
+M|weekly-review|| Item       | Blocked Since | Blocked By                   | Action Needed  |
+M|weekly-review|| ---------- | ------------- | ---------------------------- | -------------- |
+M|weekly-review|| [PRD/Task] | [Date/Week]   | [Person/Dependency/dec] | [Specific ask] |
+M|weekly-review|**Priority unblocks:**
+M|weekly-review|1. [Most critical blocker to address Monday]
+M|weekly-review|2. [Second priority]
+M|weekly-review|[Features to keep watching]
+M|weekly-review|- **[Feature 1]** - [Why: Early launch / Trending down / Critical metric]
+M|weekly-review|- Watch: [Specific metric]
+M|weekly-review|- Check: [Daily / Every other day]
+M|weekly-review|- Flag if: [Threshold or condition]
+M|weekly-review|_Generated: [Timestamp]_
+M|weekly-review|_Data sources: [Weekly plan, Daily plans, PRDs, Meeting notes, Linear, anl]_
+M|weekly-review|_Next: Run `/weekly-plan` to plan next week_
+M|weekly-review|```
+M|weekly-review|After generating rv, prompt user with contextual suggestions:
+M|weekly-review|**Always offer:**
+M|weekly-review|> "Week synthesized and saved! Next steps:
+M|weekly-review|>
+M|weekly-review|> 1. **Plan next week?** Run `/weekly-plan` (5-10 min) - I've drafted initial priorities above
+M|weekly-review|> 2. **Share with team?** I can format this as a stakeholder update
+M|weekly-review|>
+M|weekly-review|> What would help?"
+M|weekly-review|**If significant wins:**
+M|weekly-review|> "🎉 Nice work on [Achievement]! Worth documenting this:
+M|weekly-review|>
+M|weekly-review|> - Add to portfolio/resume
+M|weekly-review|> - Share in team update
+M|weekly-review|> - Capture as case study for future reference
+M|weekly-review|>
+M|weekly-review|> Want me to help with any of these?"
+M|weekly-review|**If patterns emerged:**
+M|weekly-review|> "📊 I noticed some patterns:
+M|weekly-review|>
+M|weekly-review|> - [Recurring blocker X] appeared [Y] times
+M|weekly-review|> - [Task type Z] consistently took 2x longer than estimated
+M|weekly-review|>
+M|weekly-review|> Want to dig into these and create process improvements?"
+M|weekly-review|**If learnings captured:**
+M|weekly-review|> "💡 This week's learnings worth remembering:
+M|weekly-review|>
+M|weekly-review|> - [Learning 1]
+M|weekly-review|> - [Learning 2]
+M|weekly-review|>
+M|weekly-review|> I'll surface these in future planning. Want me to add to `thoughts/shared/pm/ctx/lessons-learned.md`?"
+M|weekly-review|**If metrics concerning:**
+M|weekly-review|> "⚠️ [Feature] metrics need attention:
+M|weekly-review|>
+M|weekly-review|> - [Metric] is [X%] below target
+M|weekly-review|> - Trending [down/flat] since launch
+M|weekly-review|>
+M|weekly-review|> Run `/feature-results` for deeper analysis? Or schedule stakeholder rv?"
+M|weekly-review|**Before `/weekly-rv`:**
+M|weekly-review|- `/daily-plan` - Ran throughout the week (provides daily ctx)
+M|weekly-review|- `/meeting-notes` - Captured meeting outcomes
+M|weekly-review|- `/prd-draft` - Created/updated PRDs this week
+M|weekly-review|**After `/weekly-rv`:**
+M|weekly-review|- `/weekly-plan` - Plan next week based on this rv
+M|weekly-review|- `/dec-doc` - doc key decisions made
+M|weekly-review|- `/status-update` - Share with stakeholders
+M|weekly-review|- `/feature-results` - Deep dive on launched features
+M|weekly-review|**Parallel use:**
+M|weekly-review|- `/impact-sizing` - Validate completed work had expected impact
+M|weekly-review|- `/cp-analysis` - If competitive intel emerged this week
+M|weekly-review|**When to run:**
+M|weekly-review|- **Best time:** Friday afternoon (4-5pm)
+M|weekly-review|- Week is fresh in mem
+M|weekly-review|- Can plan next week immediately after
+M|weekly-review|- Creates clean mental closure for weekend
+M|weekly-review|- **Alternative:** Monday morning (reflect before planning)
+M|weekly-review|- **Avoid:** Mid-week (incomplete picture)
+M|weekly-review|**What makes a good rv:**
+M|weekly-review|- ✅ Honest about what didn't go well (not just wins)
+M|weekly-review|- ✅ Specific about patterns (not vague "work harder")
+M|weekly-review|- ✅ Actionable improvements (concrete next steps)
+M|weekly-review|- ✅ Connects to str (not just task completion)
+M|weekly-review|- ❌ Just a task list (misses the "why" and learnings)
+M|weekly-review|- ❌ All problems, no wins (demotivating)
+M|weekly-review|**How to build the habit:**
+M|weekly-review|- Week 1-2: I'll prompt you Friday afternoon
+M|weekly-review|- Week 3-4: You'll start expecting it (ritual forming)
+M|weekly-review|- Week 5+: Feels incomplete without it
+M|weekly-review|**Use the output:**
+M|weekly-review|- Reference in 1:1s with manager (shows progress)
+M|weekly-review|- Share with stakeholders (transparency)
+M|weekly-review|- Compare month-over-month (velocity trends)
+M|weekly-review|- rv quarterly (pattern detection across multiple weeks)
+M|weekly-review|**Before this:**
+M|weekly-review|- `/daily-plan` - Daily execution throughout week
+M|weekly-review|- `/weekly-plan` - Set priorities at start of week
+M|weekly-review|- `/meeting-notes` - Captured throughout week
+M|weekly-review|**After this:**
+M|weekly-review|- `/weekly-plan` - Plan next week immediately after rv
+M|weekly-review|- `/status-update` - Share summary with stakeholders
+M|weekly-review|- `/dec-doc` - Formalize key decisions made
+M|weekly-review|**Periodic use:**
+M|weekly-review|- `/feature-results` - Monthly deep dive on launched features
+M|weekly-review|- `/quarter-rv` - (If exists) Quarterly synthesis of weekly reviews
+M|weekly-review|Before delivering the weekly rv, verify:
+M|weekly-review|- [ ] **Plan vs. actual compared:** If a weekly plan existed, every planned priority is addressed with a status (complete, partial, not started) and a reason for any gap.
+M|weekly-review|- [ ] **Learnings are specific and actionable:** Each learning includes what happened, why, and a concrete change for next time. "Work harder" is not a learning.
+M|weekly-review|- [ ] **Next week priorities are drafted:** At least 3 draft priorities for next week are suggested, grounded in this week's outcomes and strategic goals.
+M|weekly-review|- [ ] **Blockers have owners:** Every unresolved blocker has a specific action and person to contact on Monday.
+M|weekly-review|- [ ] **Metrics referenced where available:** If launches happened or metrics data exists, actual numbers are cited (not just "things went well").
+M|weekly-review|- [ ] **Appropriate length:** Default rv is ~150 lines. Full rv is longer but still organized with clear section headers. Do not gen a full rv unless the user asked for one.
+M|weekly-review|- [ ] **Honest about what did not go well:** The rv includes at least one thing that did not go as planned, with root cause analysis. A rv with only wins is incomplete.

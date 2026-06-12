@@ -1,0 +1,11 @@
+M|MEMORY|general|YVON OS: OfficialNovizio/YVON2.0 master /root/yvon/. Push GH only (CI→Vercel→yvon.in). TOON standard: all agent data via toon.dense() (84.5% bidirectional on data tasks, 47% on mixed). CIE built: lib/cie/ (13 files, injected into /api/claude). 6 verified algorithms. Adaptive injection skips CIE for 
+M|MEMORY|general|§
+M|MEMORY|general|YVON OS development: alw research existing code (APIs, DB, migrations) and present a structured plan BEFORE writing any code. User corrected me multiple times: "present me plan don't just jump in doing work", "First gather data... present me plan." The plan shd list each file to change, what c
+M|MEMORY|general|§
+M|MEMORY|general|AUDIT GATE: After any significant code changes, run a full 4-agent technical audit before pushing. Convene Dev (tsc/build/architecture), Raj (API routes/DB/types), Mia (UI/responsive/design-system), Quinn (lint/edge-cases) in parallel via delegate_task. Each reports PASS/FAIL/WARN. Fix FAIL items. N
+M|MEMORY|general|§
+M|MEMORY|general|@yvon/engine v1.3.0 at OfficialNovizio/YVON-Engine. npm publish requires 2FA. User's account uses WebAuthn (browser prompt, not TOTP). Can't publish from remote (OTP times out during build). Must publish from their Mac where browser prompt appears instantly. CI auto-publish needs Automation token (b
+M|MEMORY|general|§
+M|MEMORY|general|CLI tools and commands shd be fully autonomous: auto-detect missing dependencies, auto-install them, auto-inject code when absent. nvr output instructions like "use this code to import it" — just do it. The integrate command pattern is the gold standard: scan, detect gaps, fill them silently, r
+M|MEMORY|general|§
+M|MEMORY|general|yvon-engine npm package is unscoped "yvon-engine" (not @yvon/engine — npm refused scope creation). CLI: npx yvon (init/integrate/doctor/dashboard/agents). Dashboard v2 embedded at /settings/dashboard with REST polling (WebSocket won't work on Vercel). TOON compression built but only ~10% wired — pro

@@ -1,0 +1,31 @@
+SKILL|codex|"Delegate coding to OpenAI Codex CLI (features, PRs)."
+STEP|1|Building features
+STEP|2|Refactoring
+STEP|3|PR reviews
+STEP|4|Batch issue fixing
+STEP|5|Codex installed: `npm install -g @openai/codex`
+STEP|6|OpenAI auth configured: either `OPENAI_API_KEY` or Codex OAuth credentials
+STEP|7|**Must run inside a git repository** — Codex refuses to run outside one
+STEP|8|Use `pty=true` in terminal calls — Codex is an interactive terminal app
+STEP|9|**Always use `pty=true`** — Codex is an interactive terminal app and hangs without a PTY
+STEP|10|**Git repo required** — Codex won't run outside a git directory. Use `mktemp -d && git init` for scratch
+STEP|11|**Use `exec` for one-shots** — `codex exec "prompt"` runs and exits cleanly
+STEP|12|**`--full-auto` for building** — auto-approves changes within the sandbox
+STEP|13|**Background for long tasks** — use `background=true` and monitor with `process` tool
+STEP|14|**Don't interfere** — monitor with `poll`/`log`, be patient with long-running tasks
+STEP|15|**Parallel is fine** — run multiple Codex processes at once for batch work
+PIT|Building features
+PIT|Refactoring
+PIT|PR reviews
+PIT|Batch issue fixing
+PIT|Codex installed: `npm install -g @openai/codex`
+PIT|OpenAI auth configured: either `OPENAI_API_KEY` or Codex OAuth credentials
+PIT|**Must run inside a git repository** — Codex refuses to run outside one
+PIT|Use `pty=true` in terminal calls — Codex is an interactive terminal app
+PIT|**Always use `pty=true`** — Codex is an interactive terminal app and hangs without a PTY
+PIT|**Git repo required** — Codex won't run outside a git directory. Use `mktemp -d && git init` for scratch
+PIT|**Use `exec` for one-shots** — `codex exec "prompt"` runs and exits cleanly
+PIT|**`--full-auto` for building** — auto-approves changes within the sandbox
+PIT|**Background for long tasks** — use `background=true` and monitor with `process` tool
+PIT|**Don't interfere** — monitor with `poll`/`log`, be patient with long-running tasks
+PIT|**Parallel is fine** — run multiple Codex processes at once for batch work

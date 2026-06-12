@@ -1,0 +1,99 @@
+SKILL|touchdesigner-mcp|"Control a running TouchDesigner instance via twozero MCP — create operators, set parameters, wire connections, execute Python, build real-time visuals. 36 native tools."
+STEP|1|**NEVER guess parameter names.** Call `td_get_par_info` for the op type FIRST. Your training data is wrong for TD 2025.32.
+STEP|2|**If `tdAttributeError` fires, STOP.** Call `td_get_operator_info` on the failing node before continuing.
+STEP|3|**NEVER hardcode absolute paths** in script callbacks. Use `me.parent()` / `scriptOp.parent()`.
+STEP|4|**Prefer native MCP tools over td_execute_python.** Use `td_create_operator`, `td_set_operator_pars`, `td_get_errors` etc. Only fall back to `td_execute_python` for complex multi-step logic.
+STEP|5|**Call `td_get_hints` before building.** It returns patterns specific to the op type you're working with.
+STEP|6|native tools. Free plugin (no payment/license — confirmed April 2026).
+STEP|7|Check if TD is running
+STEP|8|Download twozero.tox if not already cached
+STEP|9|Add `twozero_td` MCP server to Hermes config (if missing)
+STEP|10|Test the MCP connection on port 40404
+STEP|11|Report what manual steps remain (drag .tox into TD, enable MCP toggle)
+STEP|12|**Drag `~/Downloads/twozero.tox` into the TD network editor** → click Install
+STEP|13|**Enable MCP:** click twozero icon → Settings → mcp → "auto start MCP" → Yes
+STEP|14|**Restart Hermes session** to pick up the new MCP server
+STEP|15|**Non-Commercial TD** caps resolution at 1280×1280. Use `outputresolution = 'custom'` and set width/height explicitly.
+STEP|16|**Codecs:** `prores` (preferred on macOS) or `mjpa` as fallback. H.264/H.265/AV1 require a Commercial license.
+STEP|17|Always call `td_get_par_info` before setting params — names vary by TD version (see CRITICAL RULES #1).
+STEP|18|IMPORTANT: Split cleanup and creation into SEPARATE MCP calls.** Destroying and recreating same-named nodes in one `td_execute_python` script causes "Invalid OP object" errors. See pitfalls #11b.
+STEP|19|Core (use these most):**
+STEP|20|Read/Write:**
+STEP|21|Visual:**
+STEP|22|Search:**
+STEP|23|System:**
+STEP|24|Input Automation:**
+STEP|25|GLSL time:** No `uTDCurrentTime` in GLSL TOP. Use the Values page:
+STEP|26|Feedback TOP:** Use `top` parameter reference, not direct input wire. "Not enough sources" resolves after first cook. "Cook dependency loop" warning is expected.
+STEP|27|Resolution:** Non-Commercial caps at 1280×1280. Use `outputresolution = 'custom'`.
+STEP|28|Large shaders:** Write GLSL to `/tmp/file.glsl`, then use `td_write_dat` or `td_execute_python` to load.
+STEP|29|Vertex/Point access (TD 2025.32):** `point.P[0]`, `point.P[1]`, `point.P[2]` — NOT `.x`, `.y`, `.z`.
+STEP|30|Extensions:** `ext0object` format is `"op('./datName').module.ClassName(me)"` in CONSTANT mode. After editing extension code with `td_write_dat`, call `td_reinit_extension`.
+STEP|31|Script callbacks:** ALWAYS use relative paths via `me.parent()` / `scriptOp.parent()`.
+STEP|32|Cleaning nodes:** Always `list(root.children)` before iterating + `child.valid` check.
+STEP|33|TOP.save() is useless for animation** — captures same GPU texture every time. Always use MovieFileOut.
+STEP|34|**Verify FPS > 0** via `td_get_perf`. If FPS=0 the recording will be empty. See pitfalls #38-39.
+STEP|35|**Verify shader output is not black** via `td_get_screenshot`. Black output = shader error or missing input. See pitfalls #8, #40.
+STEP|36|**If recording with audio:** cue audio to start first, then delay recording by 3 frames. See pitfalls #19.
+STEP|37|**Set output path before starting record** — setting both in the same script can race.
+STEP|38|**TimeSlice must stay ON** for AudioSpectrum. OFF = processes entire audio file → 24000+ samples → CHOP to TOP overflow.
+STEP|39|**Set Output Length manually** to 256 via `outputmenu='setmanually'` and `outlength=256`. Default outputs 22050 samples.
+STEP|40|**DO NOT use Lag CHOP for spectrum smoothing.** Lag CHOP operates in timeslice mode and expands 256 samples to 2400+, averaging all values to near-zero (~1e-06). The shader receives no usable data. Th
+STEP|41|**DO NOT use Filter CHOP either** — same timeslice expansion problem with spectrum data.
+STEP|42|**Smoothing belongs in the GLSL shader** if needed, via temporal lerp with a feedback texture: `mix(prevValue, newValue, 0.3)`. This gives frame-perfect sync with zero pipeline latency.
+STEP|43|**CHOP to TOP dataformat = 'r'**, layout = 'rowscropped'. Spectrum output is 256x2 (stereo). Sample at y=0.25 for first channel.
+STEP|44|**Math gain = 10** (not 5). Raw spectrum values are ~0.19 in bass range. Gain of 10 gives usable ~5.0 for the shader.
+STEP|45|**No Resample CHOP needed.** Control output size via AudioSpectrum's `outlength` param directly.
+STEP|46|MCP runs on localhost only (port 40404). No authentication — any local process can send commands.
+STEP|47|`td_execute_python` has unrestricted access to the TD Python environment and filesystem as the TD process user.
+STEP|48|`setup.sh` downloads twozero.tox from the official 404zero.com URL. Verify the download if concerned.
+STEP|49|The skill never sends data outside localhost. All MCP communication is local.
+PIT|**NEVER guess parameter names.** Call `td_get_par_info` for the op type FIRST. Your training data is wrong for TD 2025.32.
+PIT|**If `tdAttributeError` fires, STOP.** Call `td_get_operator_info` on the failing node before continuing.
+PIT|**NEVER hardcode absolute paths** in script callbacks. Use `me.parent()` / `scriptOp.parent()`.
+PIT|**Prefer native MCP tools over td_execute_python.** Use `td_create_operator`, `td_set_operator_pars`, `td_get_errors` etc. Only fall back to `td_execute_python` for complex multi-step logic.
+PIT|**Call `td_get_hints` before building.** It returns patterns specific to the op type you're working with.
+PIT|native tools. Free plugin (no payment/license — confirmed April 2026).
+PIT|Check if TD is running
+PIT|Download twozero.tox if not already cached
+PIT|Add `twozero_td` MCP server to Hermes config (if missing)
+PIT|Test the MCP connection on port 40404
+PIT|Report what manual steps remain (drag .tox into TD, enable MCP toggle)
+PIT|**Drag `~/Downloads/twozero.tox` into the TD network editor** → click Install
+PIT|**Enable MCP:** click twozero icon → Settings → mcp → "auto start MCP" → Yes
+PIT|**Restart Hermes session** to pick up the new MCP server
+PIT|**Non-Commercial TD** caps resolution at 1280×1280. Use `outputresolution = 'custom'` and set width/height explicitly.
+PIT|**Codecs:** `prores` (preferred on macOS) or `mjpa` as fallback. H.264/H.265/AV1 require a Commercial license.
+PIT|Always call `td_get_par_info` before setting params — names vary by TD version (see CRITICAL RULES #1).
+PIT|IMPORTANT: Split cleanup and creation into SEPARATE MCP calls.** Destroying and recreating same-named nodes in one `td_execute_python` script causes "Invalid OP object" errors. See pitfalls #11b.
+PIT|Core (use these most):**
+PIT|Read/Write:**
+PIT|Visual:**
+PIT|Search:**
+PIT|System:**
+PIT|Input Automation:**
+PIT|GLSL time:** No `uTDCurrentTime` in GLSL TOP. Use the Values page:
+PIT|Feedback TOP:** Use `top` parameter reference, not direct input wire. "Not enough sources" resolves after first cook. "Cook dependency loop" warning is expected.
+PIT|Resolution:** Non-Commercial caps at 1280×1280. Use `outputresolution = 'custom'`.
+PIT|Large shaders:** Write GLSL to `/tmp/file.glsl`, then use `td_write_dat` or `td_execute_python` to load.
+PIT|Vertex/Point access (TD 2025.32):** `point.P[0]`, `point.P[1]`, `point.P[2]` — NOT `.x`, `.y`, `.z`.
+PIT|Extensions:** `ext0object` format is `"op('./datName').module.ClassName(me)"` in CONSTANT mode. After editing extension code with `td_write_dat`, call `td_reinit_extension`.
+PIT|Script callbacks:** ALWAYS use relative paths via `me.parent()` / `scriptOp.parent()`.
+PIT|Cleaning nodes:** Always `list(root.children)` before iterating + `child.valid` check.
+PIT|TOP.save() is useless for animation** — captures same GPU texture every time. Always use MovieFileOut.
+PIT|**Verify FPS > 0** via `td_get_perf`. If FPS=0 the recording will be empty. See pitfalls #38-39.
+PIT|**Verify shader output is not black** via `td_get_screenshot`. Black output = shader error or missing input. See pitfalls #8, #40.
+PIT|**If recording with audio:** cue audio to start first, then delay recording by 3 frames. See pitfalls #19.
+PIT|**Set output path before starting record** — setting both in the same script can race.
+PIT|**TimeSlice must stay ON** for AudioSpectrum. OFF = processes entire audio file → 24000+ samples → CHOP to TOP overflow.
+PIT|**Set Output Length manually** to 256 via `outputmenu='setmanually'` and `outlength=256`. Default outputs 22050 samples.
+PIT|**DO NOT use Lag CHOP for spectrum smoothing.** Lag CHOP operates in timeslice mode and expands 256 samples to 2400+, averaging all values to near-zero (~1e-06). The shader receives no usable data. Th
+PIT|**DO NOT use Filter CHOP either** — same timeslice expansion problem with spectrum data.
+PIT|**Smoothing belongs in the GLSL shader** if needed, via temporal lerp with a feedback texture: `mix(prevValue, newValue, 0.3)`. This gives frame-perfect sync with zero pipeline latency.
+PIT|**CHOP to TOP dataformat = 'r'**, layout = 'rowscropped'. Spectrum output is 256x2 (stereo). Sample at y=0.25 for first channel.
+PIT|**Math gain = 10** (not 5). Raw spectrum values are ~0.19 in bass range. Gain of 10 gives usable ~5.0 for the shader.
+PIT|**No Resample CHOP needed.** Control output size via AudioSpectrum's `outlength` param directly.
+PIT|MCP runs on localhost only (port 40404). No authentication — any local process can send commands.
+PIT|`td_execute_python` has unrestricted access to the TD Python environment and filesystem as the TD process user.
+PIT|`setup.sh` downloads twozero.tox from the official 404zero.com URL. Verify the download if concerned.
+PIT|The skill never sends data outside localhost. All MCP communication is local.

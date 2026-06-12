@@ -1,0 +1,41 @@
+#MEM id=theme-factory source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/SKILL.md
+M|theme-factory|name: theme-factory
+M|theme-factory|description: >-
+M|theme-factory|Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact t
+M|theme-factory|version: 1.0.0
+M|theme-factory|license: Complete terms in LICENSE.txt
+M|theme-factory|platforms: []
+M|theme-factory|metadata:
+M|theme-factory|hermes:
+M|theme-factory|tags: [art-direction, visual, mood-board, creative, brand-identity, image-prompt, design, theme-factory]
+M|theme-factory|This skill provides a curated collection of professional font and color themes themes, each with carefully selected color palettes and font pairings. Once a theme is chosen, it can be applied to any a
+M|theme-factory|To apply consistent, professional styling to presentation slide decks, use this skill. Each theme includes:
+M|theme-factory|- A cohesive color palette with hex codes
+M|theme-factory|- Complementary font pairings for headers and body text
+M|theme-factory|- A distinct visual identity suitable for different contexts and audiences
+M|theme-factory|To apply styling to a slide deck or other artifact:
+M|theme-factory|1. **Show the theme showcase**: Display the `theme-showcase.pdf` file to allow users to see all available themes visually. Do not make any modifications to it; simply show the file for viewing.
+M|theme-factory|2. **Ask for their choice**: Ask which theme to apply to the deck
+M|theme-factory|3. **Wait for selection**: Get explicit confirmation about the chosen theme
+M|theme-factory|4. **Apply the theme**: Once a theme has been chosen, apply the selected theme's colors and fonts to the deck/artifact
+M|theme-factory|The following 10 themes are available, each showcased in `theme-showcase.pdf`:
+M|theme-factory|1. **Ocean Depths** - Professional and calming maritime theme
+M|theme-factory|2. **Sunset Boulevard** - Warm and vibrant sunset colors
+M|theme-factory|3. **Forest Canopy** - Natural and grounded earth tones
+M|theme-factory|4. **Modern Minimalist** - Clean and contemporary grayscale
+M|theme-factory|5. **Golden Hour** - Rich and warm autumnal palette
+M|theme-factory|6. **Arctic Frost** - Cool and crisp winter-inspired theme
+M|theme-factory|7. **Desert Rose** - Soft and sophisticated dusty tones
+M|theme-factory|8. **Tech Innovation** - Bold and modern tech aesthetic
+M|theme-factory|9. **Botanical Garden** - Fresh and organic garden colors
+M|theme-factory|10. **Midnight Galaxy** - Dramatic and cosmic deep tones
+M|theme-factory|Each theme is defined in the `themes/` directory with complete specifications including:
+M|theme-factory|- Cohesive color palette with hex codes
+M|theme-factory|- Complementary font pairings for headers and body text
+M|theme-factory|- Distinct visual identity suitable for different contexts and audiences
+M|theme-factory|After a preferred theme is selected:
+M|theme-factory|1. Read the corresponding theme file from the `themes/` directory
+M|theme-factory|2. Apply the specified colors and fonts consistently throughout the deck
+M|theme-factory|3. Ensure proper contrast and readability
+M|theme-factory|4. Maintain the theme's visual identity across all slides
+M|theme-factory|To handle cases where none of the existing themes work for an artifact, create a custom theme. Based on provided inputs, gen a new theme similar to the ones above. Give the theme a similar name descri

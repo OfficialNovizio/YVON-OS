@@ -1,0 +1,34 @@
+#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/COMMANDS.md
+M|Daniel_Kahneman|| Command | Usage | Output |
+M|Daniel_Kahneman||---------|-------|--------|
+M|Daniel_Kahneman|| `think` | `think --bias "confirmation" --ctx "sales"` | Cognitive bias analysis of provided ctx |
+M|Daniel_Kahneman|| `debias` | `debias --dec "investment"` | Dual-system thinking evaluation |
+M|Daniel_Kahneman|| `predict` | `predict --scenario "launch"` | Intuition vs. analytic forecast |
+M|Daniel_Kahneman|| `framing` | `framing --option A --option B` | Choice framing impact analysis |
+M|Daniel_Kahneman|| `availability` | `availability --event "product failure"` | Event availability bias assessment |
+M|Daniel_Kahneman|| `representativeness` | `representativeness --pattern "trending"` | Stereotype/representativeness check |
+M|Daniel_Kahneman|| `anchoring` | `anchoring --anchor "price 500"` | Anchor effect calculation |
+M|Daniel_Kahneman|| `loss_avoidance` | `loss_avoidance --risk "5%"` | Loss aversion threshold |
+M|Daniel_Kahneman|| `results` | `@kahneman results --brand "Novizio" --surface "instagram" --date "2026-05-04"` | Reads completed STRATEGY_LOG entry → triggers proposal generation |
+M|Daniel_Kahneman|Any agt requesting a Kahneman rv appends this line to their output:
+M|Daniel_Kahneman|```
+M|Daniel_Kahneman|@kahneman lean/deep — [check type]: [cnt or dec — isolated, not full thread]
+M|Daniel_Kahneman|```
+M|Daniel_Kahneman|**Check types:** `framing` · `bias` · `system1-filter` · `anchoring` · `loss-aversion` · `calibration` · `full-audit`
+M|Daniel_Kahneman|**Examples:**
+M|Daniel_Kahneman|```
+M|Daniel_Kahneman|@kahneman lean — framing: "Don't miss our final restock — only 3 left" [Novizio Instagram]
+M|Daniel_Kahneman|@kahneman lean — system1-filter: [Lena's caption output]
+M|Daniel_Kahneman|@kahneman deep — full-audit: [Rio's cg brief for Q3 Meta launch]
+M|Daniel_Kahneman|@kahneman lean — anchoring: pricing shown as €299 before discount to €199
+M|Daniel_Kahneman|```
+M|Daniel_Kahneman|**Key rule:** Pass ONLY the cnt to validate — not the full conversation. Isolated ctx, minimum tokens.
+M|Daniel_Kahneman|1. Every command MUST show dual-system reasoning (System 1 + System 2)
+M|Daniel_Kahneman|2. Never trust intuition without calibration check
+M|Daniel_Kahneman|3. All predictions include confidence intervals
+M|Daniel_Kahneman|4. Flag when heuristics override actual probabilities
+M|Daniel_Kahneman|```
+M|Daniel_Kahneman|think --bias "availability" --ctx "viral mkt"
+M|Daniel_Kahneman|predict --scenario "holiday launch" --confidence "medium"
+M|Daniel_Kahneman|framing --option "price discount" --option "value add"
+M|Daniel_Kahneman|```

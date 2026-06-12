@@ -1,0 +1,85 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/systematic-debugging/defense-in-depth.md
+M|systematic-debugging|When you fix a bug caused by invalid data, adding validation at one place feels sufficient. But that single check can be bypassed by different code paths, refactoring, or mocks.
+M|systematic-debugging|**Core principle:** Validate at EVERY layer data passes through. Make the bug structurally impossible.
+M|systematic-debugging|Single validation: "We fixed the bug"
+M|systematic-debugging|Multiple layers: "We made the bug impossible"
+M|systematic-debugging|Different layers catch different cases:
+M|systematic-debugging|- Entry validation catches most bugs
+M|systematic-debugging|- Business logic catches edge cases
+M|systematic-debugging|- Environment guards prevent ctx-specific dangers
+M|systematic-debugging|- Debug logging helps when other layers fail
+M|systematic-debugging|**Purpose:** Reject obviously invalid input at API boundary
+M|systematic-debugging|```typescript
+M|systematic-debugging|function createProject(name: string, workingDirectory: string) {
+M|systematic-debugging|if (!workingDirectory || workingDirectory.trim() === '') {
+M|systematic-debugging|throw new Error('workingDirectory cannot be empty');
+M|systematic-debugging|}
+M|systematic-debugging|if (!existsSync(workingDirectory)) {
+M|systematic-debugging|throw new Error(`workingDirectory does not exist: ${workingDirectory}`);
+M|systematic-debugging|}
+M|systematic-debugging|if (!statSync(workingDirectory).isDirectory()) {
+M|systematic-debugging|throw new Error(`workingDirectory is not a directory: ${workingDirectory}`);
+M|systematic-debugging|}
+M|systematic-debugging|// ... proceed
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**Purpose:** Ensure data makes sense for this operation
+M|systematic-debugging|```typescript
+M|systematic-debugging|function initializeWorkspace(projectDir: string, sessionId: string) {
+M|systematic-debugging|if (!projectDir) {
+M|systematic-debugging|throw new Error('projectDir required for workspace initialization');
+M|systematic-debugging|}
+M|systematic-debugging|// ... proceed
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**Purpose:** Prevent dangerous operations in specific contexts
+M|systematic-debugging|```typescript
+M|systematic-debugging|async function gitInit(directory: string) {
+M|systematic-debugging|// In tests, refuse git init outside temp directories
+M|systematic-debugging|if (process.env.NODE_ENV === 'test') {
+M|systematic-debugging|const normalized = normalize(resolve(directory));
+M|systematic-debugging|const tmpDir = normalize(resolve(tmpdir()));
+M|systematic-debugging|if (!normalized.startsWith(tmpDir)) {
+M|systematic-debugging|throw new Error(
+M|systematic-debugging|`Refusing git init outside temp dir during tests: ${directory}`
+M|systematic-debugging|);
+M|systematic-debugging|}
+M|systematic-debugging|}
+M|systematic-debugging|// ... proceed
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**Purpose:** Capture ctx for forensics
+M|systematic-debugging|```typescript
+M|systematic-debugging|async function gitInit(directory: string) {
+M|systematic-debugging|const stack = new Error().stack;
+M|systematic-debugging|logger.debug('About to git init', {
+M|systematic-debugging|directory,
+M|systematic-debugging|cwd: process.cwd(),
+M|systematic-debugging|stack,
+M|systematic-debugging|});
+M|systematic-debugging|// ... proceed
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|When you find a bug:
+M|systematic-debugging|1. **Trace the data flow** - Where does bad value originate? Where used?
+M|systematic-debugging|2. **Map all checkpoints** - List every point data passes through
+M|systematic-debugging|3. **Add validation at each layer** - Entry, business, environment, debug
+M|systematic-debugging|4. **Test each layer** - Try to bypass layer 1, verify layer 2 catches it
+M|systematic-debugging|Bug: Empty `projectDir` caused `git init` in source code
+M|systematic-debugging|**Data flow:**
+M|systematic-debugging|1. Test setup → empty string
+M|systematic-debugging|2. `Project.create(name, '')`
+M|systematic-debugging|3. `WorkspaceManager.createWorkspace('')`
+M|systematic-debugging|4. `git init` runs in `process.cwd()`
+M|systematic-debugging|**Four layers added:**
+M|systematic-debugging|- Layer 1: `Project.create()` validates not empty/exists/writable
+M|systematic-debugging|- Layer 2: `WorkspaceManager` validates projectDir not empty
+M|systematic-debugging|- Layer 3: `WorktreeManager` refuses git init outside tmpdir in tests
+M|systematic-debugging|- Layer 4: Stack trace logging before git init
+M|systematic-debugging|**Result:** All 1847 tests passed, bug impossible to reproduce
+M|systematic-debugging|All four layers were necessary. During testing, each layer caught bugs the others missed:
+M|systematic-debugging|- Different code paths bypassed entry validation
+M|systematic-debugging|- Mocks bypassed business logic checks
+M|systematic-debugging|- Edge cases on different platforms needed environment guards
+M|systematic-debugging|- Debug logging identified structural misuse
+M|systematic-debugging|**Don't stop at one validation point.** Add checks at every layer.

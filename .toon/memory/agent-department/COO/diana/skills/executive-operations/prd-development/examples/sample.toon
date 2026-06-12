@@ -1,0 +1,28 @@
+#MEM id=examples source=/root/yvon/agent-department/COO/diana/skills/executive-operations/prd-development/examples/sample.md
+M|examples|See sections above for detailed example of a well-structured PRD covering all 10 sections.
+M|examples|**Why this works:**
+M|examples|- Clear problem statement with evidence (interviews, anl, support tickets)
+M|examples|- Personas grounded in research
+M|examples|- Solution description at right level of detail (not overly prescriptive)
+M|examples|- Success metrics with targets
+M|examples|- User stories with acceptance criteria
+M|examples|- Out of scope documented explicitly
+M|examples|**Problem Statement:**
+M|examples|> "Users want better onboarding."
+M|examples|**Solution:**
+M|examples|> "Add onboarding."
+M|examples|**Requirements:**
+M|examples|> "1. Onboarding flow
+M|examples|> 2. Tooltips
+M|examples|> 3. Help docs"
+M|examples|**Why this fails:**
+M|examples|- No evidence (who wants this? why?)
+M|examples|- No personas (who is "users"?)
+M|examples|- No success metrics (how do we measure "better"?)
+M|examples|- No acceptance criteria (what does "onboarding flow" mean?)
+M|examples|- No strategic ctx (why now?)
+M|examples|**Fix with PRD workflow:**
+M|examples|- **Phase 2:** Write problem statement with evidence from discovery interviews
+M|examples|- **Phase 3:** Define persona (Solo Entrepreneur Sam)
+M|examples|- **Phase 6:** Define success metrics (activation rate 40% → 60%)
+M|examples|- **Phase 7:** Break down "onboarding flow" into user stories with acceptance criteria

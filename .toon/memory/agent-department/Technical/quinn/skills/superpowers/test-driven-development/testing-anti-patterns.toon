@@ -1,0 +1,212 @@
+#MEM id=test-driven-development source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/test-driven-development/testing-anti-patterns.md
+M|test-driven-development|**Load this reference when:** writing or changing tests, adding mocks, or tempted to add test-only methods to prd code.
+M|test-driven-development|Tests must verify real behavior, not mock behavior. Mocks are a means to isolate, not the thing being tested.
+M|test-driven-development|**Core principle:** Test what the code does, not what the mocks do.
+M|test-driven-development|**Following strict TDD prevents these anti-patterns.**
+M|test-driven-development|```
+M|test-driven-development|1. NEVER test mock behavior
+M|test-driven-development|2. NEVER add test-only methods to prd classes
+M|test-driven-development|3. NEVER mock without understanding dependencies
+M|test-driven-development|```
+M|test-driven-development|**The violation:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ❌ BAD: Testing that the mock exists
+M|test-driven-development|test('renders sidebar', () => {
+M|test-driven-development|render(<Page />);
+M|test-driven-development|expect(screen.getByTestId('sidebar-mock')).toBeInTheDocument();
+M|test-driven-development|});
+M|test-driven-development|```
+M|test-driven-development|**Why this is wrong:**
+M|test-driven-development|- You're verifying the mock works, not that the component works
+M|test-driven-development|- Test passes when mock is present, fails when it's not
+M|test-driven-development|- Tells you nothing about real behavior
+M|test-driven-development|**your human partner's correction:** "Are we testing the behavior of a mock?"
+M|test-driven-development|**The fix:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ✅ GOOD: Test real component or don't mock it
+M|test-driven-development|test('renders sidebar', () => {
+M|test-driven-development|render(<Page />);  // Don't mock sidebar
+M|test-driven-development|expect(screen.getByRole('navigation')).toBeInTheDocument();
+M|test-driven-development|});
+M|test-driven-development|// OR if sidebar must be mocked for isolation:
+M|test-driven-development|// Don't assert on the mock - test Page's behavior with sidebar present
+M|test-driven-development|```
+M|test-driven-development|```
+M|test-driven-development|BEFORE asserting on any mock element:
+M|test-driven-development|Ask: "Am I testing real component behavior or just mock existence?"
+M|test-driven-development|IF testing mock existence:
+M|test-driven-development|STOP - Delete the assertion or unmock the component
+M|test-driven-development|Test real behavior instead
+M|test-driven-development|```
+M|test-driven-development|**The violation:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ❌ BAD: destroy() only used in tests
+M|test-driven-development|class ses {
+M|test-driven-development|async destroy() {  // Looks like prd API!
+M|test-driven-development|await this._workspaceManager?.destroyWorkspace(this.id);
+M|test-driven-development|// ... cleanup
+M|test-driven-development|}
+M|test-driven-development|}
+M|test-driven-development|// In tests
+M|test-driven-development|afterEach(() => ses.destroy());
+M|test-driven-development|```
+M|test-driven-development|**Why this is wrong:**
+M|test-driven-development|- prd class polluted with test-only code
+M|test-driven-development|- Dangerous if accidentally called in prd
+M|test-driven-development|- Violates YAGNI and separation of concerns
+M|test-driven-development|- Confuses object lifecycle with entity lifecycle
+M|test-driven-development|**The fix:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ✅ GOOD: Test utilities handle test cleanup
+M|test-driven-development|// ses has no destroy() - it's stateless in prd
+M|test-driven-development|// In test-utils/
+M|test-driven-development|export async function cleanupSession(ses: ses) {
+M|test-driven-development|const workspace = ses.getWorkspaceInfo();
+M|test-driven-development|if (workspace) {
+M|test-driven-development|await workspaceManager.destroyWorkspace(workspace.id);
+M|test-driven-development|}
+M|test-driven-development|}
+M|test-driven-development|// In tests
+M|test-driven-development|afterEach(() => cleanupSession(ses));
+M|test-driven-development|```
+M|test-driven-development|```
+M|test-driven-development|BEFORE adding any method to prd class:
+M|test-driven-development|Ask: "Is this only used by tests?"
+M|test-driven-development|IF yes:
+M|test-driven-development|STOP - Don't add it
+M|test-driven-development|Put it in test utilities instead
+M|test-driven-development|Ask: "Does this class own this resource's lifecycle?"
+M|test-driven-development|IF no:
+M|test-driven-development|STOP - Wrong class for this method
+M|test-driven-development|```
+M|test-driven-development|**The violation:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ❌ BAD: Mock breaks test logic
+M|test-driven-development|test('detects duplicate server', () => {
+M|test-driven-development|// Mock prevents config write that test depends on!
+M|test-driven-development|vi.mock('ToolCatalog', () => ({
+M|test-driven-development|discoverAndCacheTools: vi.fn().mockResolvedValue(undefined)
+M|test-driven-development|}));
+M|test-driven-development|await addServer(config);
+M|test-driven-development|await addServer(config);  // Should throw - but won't!
+M|test-driven-development|});
+M|test-driven-development|```
+M|test-driven-development|**Why this is wrong:**
+M|test-driven-development|- Mocked method had side effect test depended on (writing config)
+M|test-driven-development|- Over-mocking to "be safe" breaks actual behavior
+M|test-driven-development|- Test passes for wrong reason or fails mysteriously
+M|test-driven-development|**The fix:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ✅ GOOD: Mock at correct level
+M|test-driven-development|test('detects duplicate server', () => {
+M|test-driven-development|// Mock the slow part, preserve behavior test needs
+M|test-driven-development|vi.mock('MCPServerManager'); // Just mock slow server startup
+M|test-driven-development|await addServer(config);  // Config written
+M|test-driven-development|await addServer(config);  // Duplicate detected ✓
+M|test-driven-development|});
+M|test-driven-development|```
+M|test-driven-development|```
+M|test-driven-development|BEFORE mocking any method:
+M|test-driven-development|STOP - Don't mock yet
+M|test-driven-development|1. Ask: "What side effects does the real method have?"
+M|test-driven-development|2. Ask: "Does this test depend on any of those side effects?"
+M|test-driven-development|3. Ask: "Do I fully understand what this test needs?"
+M|test-driven-development|IF depends on side effects:
+M|test-driven-development|Mock at lower level (the actual slow/external operation)
+M|test-driven-development|OR use test doubles that preserve necessary behavior
+M|test-driven-development|NOT the high-level method the test depends on
+M|test-driven-development|IF unsure what test depends on:
+M|test-driven-development|Run test with real implementation FIRST
+M|test-driven-development|Observe what actually needs to happen
+M|test-driven-development|THEN add minimal mocking at the right level
+M|test-driven-development|Red flags:
+M|test-driven-development|- "I'll mock this to be safe"
+M|test-driven-development|- "This might be slow, better mock it"
+M|test-driven-development|- Mocking without understanding the dependency chain
+M|test-driven-development|```
+M|test-driven-development|**The violation:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ❌ BAD: Partial mock - only fields you think you need
+M|test-driven-development|const mockResponse = {
+M|test-driven-development|status: 'success',
+M|test-driven-development|data: { userId: '123', name: 'Alice' }
+M|test-driven-development|// Missing: metadata that downstream code uses
+M|test-driven-development|};
+M|test-driven-development|// Later: breaks when code accesses rsp.metadata.requestId
+M|test-driven-development|```
+M|test-driven-development|**Why this is wrong:**
+M|test-driven-development|- **Partial mocks hide structural assumptions** - You only mocked fields you know about
+M|test-driven-development|- **Downstream code may depend on fields you didn't include** - Silent failures
+M|test-driven-development|- **Tests pass but integration fails** - Mock incomplete, real API complete
+M|test-driven-development|- **False confidence** - Test proves nothing about real behavior
+M|test-driven-development|**The Iron Rule:** Mock the COMPLETE data structure as it exists in reality, not just fields your immediate test uses.
+M|test-driven-development|**The fix:**
+M|test-driven-development|```typescript
+M|test-driven-development|// ✅ GOOD: Mirror real API completeness
+M|test-driven-development|const mockResponse = {
+M|test-driven-development|status: 'success',
+M|test-driven-development|data: { userId: '123', name: 'Alice' },
+M|test-driven-development|metadata: { requestId: 'req-789', timestamp: 1234567890 }
+M|test-driven-development|// All fields real API returns
+M|test-driven-development|};
+M|test-driven-development|```
+M|test-driven-development|```
+M|test-driven-development|BEFORE creating mock responses:
+M|test-driven-development|Check: "What fields does the real API rsp contain?"
+M|test-driven-development|Actions:
+M|test-driven-development|1. Examine actual API rsp from docs/examples
+M|test-driven-development|2. Include ALL fields system might consume downstream
+M|test-driven-development|3. Verify mock matches real rsp schema completely
+M|test-driven-development|Critical:
+M|test-driven-development|If you're creating a mock, you must understand the ENTIRE structure
+M|test-driven-development|Partial mocks fail silently when code depends on omitted fields
+M|test-driven-development|If uncertain: Include all documented fields
+M|test-driven-development|```
+M|test-driven-development|**The violation:**
+M|test-driven-development|```
+M|test-driven-development|✅ Implementation complete
+M|test-driven-development|❌ No tests written
+M|test-driven-development|"Ready for testing"
+M|test-driven-development|```
+M|test-driven-development|**Why this is wrong:**
+M|test-driven-development|- Testing is part of implementation, not optional follow-up
+M|test-driven-development|- TDD would have caught this
+M|test-driven-development|- Can't claim complete without tests
+M|test-driven-development|**The fix:**
+M|test-driven-development|```
+M|test-driven-development|TDD cycle:
+M|test-driven-development|1. Write failing test
+M|test-driven-development|2. Implement to pass
+M|test-driven-development|3. Refactor
+M|test-driven-development|4. THEN claim complete
+M|test-driven-development|```
+M|test-driven-development|**Warning signs:**
+M|test-driven-development|- Mock setup longer than test logic
+M|test-driven-development|- Mocking everything to make test pass
+M|test-driven-development|- Mocks missing methods real components have
+M|test-driven-development|- Test breaks when mock changes
+M|test-driven-development|**your human partner's question:** "Do we need to be using a mock here?"
+M|test-driven-development|**Consider:** Integration tests with real components often simpler than complex mocks
+M|test-driven-development|**Why TDD helps:**
+M|test-driven-development|1. **Write test first** → Forces you to think about what you're actually testing
+M|test-driven-development|2. **Watch it fail** → Confirms test tests real behavior, not mocks
+M|test-driven-development|3. **Minimal implementation** → No test-only methods creep in
+M|test-driven-development|4. **Real dependencies** → You see what the test actually needs before mocking
+M|test-driven-development|**If you're testing mock behavior, you violated TDD** - you added mocks without watching test fail against real code first.
+M|test-driven-development|| Anti-Pattern | Fix |
+M|test-driven-development||--------------|-----|
+M|test-driven-development|| Assert on mock elements | Test real component or unmock it |
+M|test-driven-development|| Test-only methods in prd | Move to test utilities |
+M|test-driven-development|| Mock without understanding | Understand dependencies first, mock minimally |
+M|test-driven-development|| Incomplete mocks | Mirror real API completely |
+M|test-driven-development|| Tests as afterthought | TDD - tests first |
+M|test-driven-development|| Over-complex mocks | Consider integration tests |
+M|test-driven-development|- Assertion checks for `*-mock` test IDs
+M|test-driven-development|- Methods only called in test files
+M|test-driven-development|- Mock setup is >50% of test
+M|test-driven-development|- Test fails when you remove mock
+M|test-driven-development|- Can't explain why mock is needed
+M|test-driven-development|- Mocking "just to be safe"
+M|test-driven-development|**Mocks are tools to isolate, not things to test.**
+M|test-driven-development|If TDD reveals you're testing mock behavior, you've gone wrong.
+M|test-driven-development|Fix: Test real behavior or question why you're mocking at all.

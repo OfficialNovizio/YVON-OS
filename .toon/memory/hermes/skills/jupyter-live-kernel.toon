@@ -1,0 +1,25 @@
+SKILL|jupyter-live-kernel|"Iterative Python via live Jupyter kernel (hamelnb)."
+STEP|1|Rule of thumb:** If you'd want a Jupyter notebook for the task, use this skill.
+STEP|2|**uv** must be installed (check: `which uv`)
+STEP|3|**JupyterLab** must be installed: `uv tool install jupyterlab`
+STEP|4|A Jupyter server must be running (see Setup below)
+STEP|5|**First execution after server start may timeout** — the kernel needs a moment
+STEP|6|**The kernel Python is JupyterLab's Python** — packages must be installed in
+STEP|7|**--compact flag saves significant tokens** — always use it. JSON output can
+STEP|8|**For pure REPL use**, create a scratch.ipynb and don't bother with cell editing.
+STEP|9|**Argument order matters** — subcommand flags like `--path` go BEFORE the
+STEP|10|**If a session doesn't exist yet**, you need to start one via the REST API
+STEP|11|**Errors are returned as JSON** with traceback — read the `ename` and `evalue`
+STEP|12|**Occasional websocket timeouts** — some operations may timeout on first try,
+PIT|Rule of thumb:** If you'd want a Jupyter notebook for the task, use this skill.
+PIT|**uv** must be installed (check: `which uv`)
+PIT|**JupyterLab** must be installed: `uv tool install jupyterlab`
+PIT|A Jupyter server must be running (see Setup below)
+PIT|**First execution after server start may timeout** — the kernel needs a moment
+PIT|**The kernel Python is JupyterLab's Python** — packages must be installed in
+PIT|**--compact flag saves significant tokens** — always use it. JSON output can
+PIT|**For pure REPL use**, create a scratch.ipynb and don't bother with cell editing.
+PIT|**Argument order matters** — subcommand flags like `--path` go BEFORE the
+PIT|**If a session doesn't exist yet**, you need to start one via the REST API
+PIT|**Errors are returned as JSON** with traceback — read the `ename` and `evalue`
+PIT|**Occasional websocket timeouts** — some operations may timeout on first try,

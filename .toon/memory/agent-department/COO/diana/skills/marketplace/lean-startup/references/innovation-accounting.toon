@@ -1,0 +1,167 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/innovation-accounting.md
+M|references|Traditional accounting measures revenue, profit, and ROI. These metrics are meaningless for a startup operating under extreme uncertainty because the numbers are too small, too noisy, and too lagging 
+M|references|Before you can improve, you need to know where you stand. Use an MVP to establish real data on where the company is right now.
+M|references|**What to measure:**
+M|references|- Current conversion rates at each stage of the funnel
+M|references|- Current retention rates (daily, weekly, monthly)
+M|references|- Current revenue per customer (even if near zero)
+M|references|- Current acquisition cost and channels
+M|references|- Customer engagement metrics (frequency, depth of use)
+M|references|**How to establish the baseline:**
+M|references|1. Launch the MVP to a small group of target customers
+M|references|2. Measure actual behavior (not projected or estimated)
+M|references|3. Record every metric honestly, even when numbers are discouraging
+M|references|4. doc the baseline in a single dashboard visible to the entire team
+M|references|**Baseline template:**
+M|references|| Metric | Baseline Value | Date Measured | Target Value | Timeline |
+M|references||--------|---------------|---------------|-------------|----------|
+M|references|| Signup conversion rate | ___% | ___ | ___% | ___ |
+M|references|| Activation rate | ___% | ___ | ___% | ___ |
+M|references|| Week-1 retention | ___% | ___ | ___% | ___ |
+M|references|| Month-1 retention | ___% | ___ | ___% | ___ |
+M|references|| Revenue per user | $___ | ___ | $___ | ___ |
+M|references|| Referral rate | ___% | ___ | ___% | ___ |
+M|references|**Common mistake:** Teams skip the baseline and start "improving" without knowing what they are improving from. Without a baseline, you cannot distinguish signal from noise.
+M|references|With a baseline established, the startup works to improve the numbers from the baseline toward the ideal. Each experiment attempts to move one or more key metrics.
+M|references|**The tuning process:**
+M|references|1. Identify the metric most constraining growth
+M|references|2. Form a hypothesis about what will improve it
+M|references|3. Run an experiment (product change, mkt test, pricing change)
+M|references|4. Measure the impact on the target metric
+M|references|5. If improved, lock in the change and move to the next constraint
+M|references|6. If not improved, try a different approach
+M|references|**Tuning dashboard example:**
+M|references|| Experiment | Target Metric | Baseline | Result | Change | dec |
+M|references||-----------|--------------|----------|--------|--------|----------|
+M|references|| Simplified onboarding flow | Activation rate | 23% | 31% | +8% | Keep |
+M|references|| Added soc proof to landing page | Signup conversion | 3.2% | 3.5% | +0.3% | Inconclusive, need more data |
+M|references|| Email drip cg (day 1,3,7) | Week-1 retention | 18% | 26% | +8% | Keep |
+M|references|| Increased price from $9 to $19 | Revenue per user | $9 | $17.10 | +$8.10 | Keep (10% churn acceptable) |
+M|references|| Referral reward ($5 credit) | Referral rate | 2% | 3.1% | +1.1% | Keep |
+M|references|**Key principle:** Each experiment should target a specific metric. If an experiment does not move the target metric, it was not a failure of execution but a failure of the hypothesis. That is valuabl
+M|references|After multiple tuning attempts, the startup reaches a dec point. Are the metrics moving toward the target, or are they flat despite significant effort?
+M|references|**Pivot indicators:**
+M|references|- Key metrics are flat or declining despite multiple experiments
+M|references|- The rate of improvement is too slow to reach targets before runway ends
+M|references|- Customer feedback consistently points to a different problem or solution
+M|references|- Each experiment produces smaller and smaller improvements
+M|references|- The team is running out of ideas for improving current metrics
+M|references|**Persevere indicators:**
+M|references|- Key metrics show consistent upward trend
+M|references|- Each experiment teaches something actionable
+M|references|- Customer feedback aligns with the product direction
+M|references|- The rate of improvement suggests targets are reachable
+M|references|- The team has a clear backlog of experiments to run
+M|references|**dec framework:**
+M|references|```
+M|references|Are metrics improving?
+M|references|├── YES, rapidly → Persevere. Increase investment.
+M|references|├── YES, slowly → Analyze: is the rate sufficient to hit targets before runway ends?
+M|references|│   ├── YES → Persevere. Stay the course.
+M|references|│   └── NO → Consider pivot. The engine may have a ceiling.
+M|references|├── NO, flat → Pivot. The current approach has stalled.
+M|references|└── NO, declining → Pivot immediately. Something fundamental is wrong.
+M|references|```
+M|references|| Dimension | Traditional Metrics | Innovation Metrics |
+M|references||-----------|--------------------|--------------------|
+M|references|| Time horizon | Quarterly/annual | Weekly/bi-weekly |
+M|references|| Primary focus | Revenue and profit | Learning velocity |
+M|references|| Success indicator | Growth in revenue | Growth in validated learning |
+M|references|| Failure indicator | Missing revenue targets | Not running experiments |
+M|references|| Reporting audience | Board/shareholders | Team/sponsors |
+M|references|| Data source | Financial statements | Product anl, experiments |
+M|references|| dec trigger | Budget cycle | Experiment results |
+M|references|Cohort analysis is the most important tool in innovation accounting. It separates the signal of product improvement from the noise of overall growth.
+M|references|A cohort is a group of customers who share a common starting event within a defined time period. Typically: all users who signed up in a given week or month.
+M|references|Aggregate metrics lie. If you are growing, total numbers go up even if the product is getting worse. Cohort analysis isolates the behavior of each group to reveal true product performance.
+M|references|**Example of misleading aggregate data:**
+M|references|| Month | Total Users | Total Active Users | Active Rate |
+M|references||-------|------------|-------------------|-------------|
+M|references|| January | 100 | 40 | 40% |
+M|references|| February | 250 | 80 | 32% |
+M|references|| March | 500 | 130 | 26% |
+M|references|Active rate is declining, but total active users are increasing. Without cohort analysis, the team might celebrate growth while the product is actually deteriorating.
+M|references|**Same data viewed by cohort:**
+M|references|| Cohort | Month 1 | Month 2 | Month 3 |
+M|references||--------|---------|---------|---------|
+M|references|| January (100 users) | 40% | 25% | 15% |
+M|references|| February (150 users) | 35% | 20% | - |
+M|references|| March (250 users) | 30% | - | - |
+M|references|Now the story is clear: retention is dropping, and each new cohort performs worse than the last. This is a product quality problem, not a growth success.
+M|references|**Step 1:** Define the cohort event (usually signup date or first purchase date).
+M|references|**Step 2:** Define the metric to track (retention, revenue, engagement).
+M|references|**Step 3:** Create the cohort table:
+M|references|| Cohort | Week 0 | Week 1 | Week 2 | Week 3 | Week 4 |
+M|references||--------|--------|--------|--------|--------|--------|
+M|references|| Week of Jan 1 | 100% | 45% | 30% | 22% | 18% |
+M|references|| Week of Jan 8 | 100% | 48% | 33% | 25% | 20% |
+M|references|| Week of Jan 15 | 100% | 52% | 38% | 28% | - |
+M|references|| Week of Jan 22 | 100% | 55% | 40% | - | - |
+M|references|**Step 4:** Compare cohorts. Are newer cohorts performing better? If yes, product improvements are working. If no, they are not.
+M|references|Focus on learning velocity and engagement quality.
+M|references|| Section | Metrics |
+M|references||---------|---------|
+M|references|| Experiments | Loops completed this month, hypotheses tested, pivots considered |
+M|references|| Engagement | DAU/MAU ratio, ses frequency, core action completion rate |
+M|references|| Retention | Week-1, Week-4, Week-8 retention by cohort |
+M|references|| Qualitative | NPS or Sean Ellis score, top customer feedback themes |
+M|references|| Runway | Months of runway remaining, burn rate, next funding milestone |
+M|references|Focus on engine efficiency and unit economics.
+M|references|| Section | Metrics |
+M|references||---------|---------|
+M|references|| Acquisition | CAC by channel, signup conversion rate, traffic sources |
+M|references|| Activation | Onboarding completion rate, time to first value |
+M|references|| Revenue | MRR, ARPU, expansion revenue, churn rate |
+M|references|| Retention | Monthly retention by cohort, net revenue retention |
+M|references|| Unit economics | LTV, LTV/CAC ratio, payback period |
+M|references|Traditional board decks do not work for innovation. Use this structure:
+M|references|**1. Hypotheses Tested This Period**
+M|references|- List each hypothesis, the experiment run, and the result
+M|references|- Clearly state what was learned
+M|references|**2. Key Metric Progress**
+M|references|- Show the innovation dashboard with cohort trends
+M|references|- Highlight which metrics improved and which did not
+M|references|**3. dec Points**
+M|references|- State any pivot or persevere decisions made
+M|references|- Explain the reasoning
+M|references|**4. Next Period Plan**
+M|references|- List the hypotheses to test next
+M|references|- State the resources needed
+M|references|**5. Runway and Funding**
+M|references|- Current burn rate and runway
+M|references|- Metered funding milestones (see below)
+M|references|Instead of funding startups (or corporate innovation projects) with large lump sums, metered funding provides capital in stages tied to validated learning milestones.
+M|references|| Stage | Funding Amount | Milestone Required |
+M|references||-------|---------------|-------------------|
+M|references|| Exploration | $50K-100K | Complete 5 customer discovery interviews. Identify top 3 assumptions. |
+M|references|| Validation | $100K-250K | Run 3 experiments. Establish baseline metrics. Evidence of problem-solution fit. |
+M|references|| Efficiency | $250K-500K | Demonstrate improving cohort metrics. Evidence of a working growth engine. |
+M|references|| Scale | $500K+ | Unit economics are positive. Growth engine is repeatable. Clear path to profitability. |
+M|references|- **Reduces waste:** Money is only deployed after learning milestones are hit
+M|references|- **Creates accountability:** Teams must demonstrate progress, not just activity
+M|references|- **Enables fast failure:** Teams that cannot hit milestones are stopped early
+M|references|- **Aligns incentives:** Both investors and teams focus on learning, not vanity
+M|references|Corporations can apply metered funding to internal innovation projects:
+M|references|1. **Stage gate reviews** based on validated learning, not feature completion
+M|references|2. **Innovation boards** that evaluate experiment results, not business plans
+M|references|3. **Graduated budgets** that increase as evidence increases
+M|references|4. **Kill criteria** defined in advance: what results would cause the project to stop
+M|references|Corporate innovation faces unique challenges:
+M|references|| Challenge | Startup ctx | Corporate ctx | Adaptation |
+M|references||-----------|----------------|-------------------|------------|
+M|references|| Success metrics | Revenue, users | Strategic alignment + metrics | Add strategic fit scoring |
+M|references|| Timeline pressure | Runway-driven | Annual budget cycles | Align experiments to quarters |
+M|references|| Risk tolerance | High (existential) | Low (reputation) | Ring-fence innovation budgets |
+M|references|| Resource allocation | Dedicated team | Shared resources | Protect dedicated innovation time |
+M|references|| dec authority | Founder decides | Committee decides | Designate single dec maker |
+M|references|| Failure handling | Pivot quickly | Political consequences | Create safe-to-fail culture |
+M|references|| Dimension | Metric | Target |
+M|references||-----------|--------|--------|
+M|references|| Speed | Average experiment cycle time | Under 4 weeks |
+M|references|| Volume | Experiments run per quarter | 8+ per team |
+M|references|| Learning | Documented insights per quarter | 20+ |
+M|references|| Impact | Experiments leading to product changes | 30%+ |
+M|references|| Efficiency | Cost per validated learning | Decreasing quarter over quarter |
+M|references|| pl | Ideas in exploration stage | 10+ at any time |
+M|references|| Conversion | Ideas reaching scale stage | 5-10% of pl |
+M|references|Innovation accounting replaces hope with evidence. It does not guarantee success, but it ensures that failure happens quickly, cheaply, and with maximum learning.

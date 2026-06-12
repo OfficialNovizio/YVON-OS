@@ -1,0 +1,158 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-context-interface.md
+M|rules|title: Define Generic ctx Interfaces for Dependency Injection
+M|rules|impact: HIGH
+M|rules|impactDescription: enables dependency-injectable state across use-cases
+M|rules|tags: composition, ctx, state, typescript, dependency-injection
+M|rules|Define a **generic interface** for your component ctx with three parts:
+M|rules|`state`, `actions`, and `meta`. This interface is a contract that any provider
+M|rules|can implement—enabling the same UI components to work with completely different
+M|rules|state implementations.
+M|rules|**Core principle:** Lift state, compose internals, make state
+M|rules|dependency-injectable.
+M|rules|**Incorrect (UI coupled to specific state implementation):**
+M|rules|```tsx
+M|rules|function ComposerInput() {
+M|rules|// Tightly coupled to a specific hook
+M|rules|const { input, setInput } = useChannelComposerState()
+M|rules|return <TextInput value={input} onChangeText={setInput} />
+M|rules|}
+M|rules|```
+M|rules|**Correct (generic interface enables dependency injection):**
+M|rules|```tsx
+M|rules|// Define a GENERIC interface that any provider can implement
+M|rules|interface ComposerState {
+M|rules|input: string
+M|rules|attachments: Attachment[]
+M|rules|isSubmitting: boolean
+M|rules|}
+M|rules|interface ComposerActions {
+M|rules|update: (updater: (state: ComposerState) => ComposerState) => void
+M|rules|submit: () => void
+M|rules|}
+M|rules|interface ComposerMeta {
+M|rules|inputRef: React.RefObject<TextInput>
+M|rules|}
+M|rules|interface ComposerContextValue {
+M|rules|state: ComposerState
+M|rules|actions: ComposerActions
+M|rules|meta: ComposerMeta
+M|rules|}
+M|rules|const ComposerContext = createContext<ComposerContextValue | null>(null)
+M|rules|```
+M|rules|**UI components consume the interface, not the implementation:**
+M|rules|```tsx
+M|rules|function ComposerInput() {
+M|rules|const {
+M|rules|state,
+M|rules|actions: { update },
+M|rules|meta,
+M|rules|} = use(ComposerContext)
+M|rules|// This component works with ANY provider that implements the interface
+M|rules|return (
+M|rules|<TextInput
+M|rules|ref={meta.inputRef}
+M|rules|value={state.input}
+M|rules|onChangeText={(text) => update((s) => ({ ...s, input: text }))}
+M|rules|/>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Different providers implement the same interface:**
+M|rules|```tsx
+M|rules|// Provider A: Local state for ephemeral forms
+M|rules|function ForwardMessageProvider({ children }: { children: React.ReactNode }) {
+M|rules|const [state, setState] = useState(initialState)
+M|rules|const inputRef = useRef(null)
+M|rules|const submit = useForwardMessage()
+M|rules|return (
+M|rules|<ComposerContext
+M|rules|value={{
+M|rules|state,
+M|rules|actions: { update: setState, submit },
+M|rules|meta: { inputRef },
+M|rules|}}
+M|rules|>
+M|rules|{children}
+M|rules|</ComposerContext>
+M|rules|)
+M|rules|}
+M|rules|// Provider B: Global synced state for channels
+M|rules|function ChannelProvider({ channelId, children }: Props) {
+M|rules|const { state, update, submit } = useGlobalChannel(channelId)
+M|rules|const inputRef = useRef(null)
+M|rules|return (
+M|rules|<ComposerContext
+M|rules|value={{
+M|rules|state,
+M|rules|actions: { update, submit },
+M|rules|meta: { inputRef },
+M|rules|}}
+M|rules|>
+M|rules|{children}
+M|rules|</ComposerContext>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**The same composed UI works with both:**
+M|rules|```tsx
+M|rules|// Works with ForwardMessageProvider (local state)
+M|rules|<ForwardMessageProvider>
+M|rules|<Composer.Frame>
+M|rules|<Composer.Input />
+M|rules|<Composer.Submit />
+M|rules|</Composer.Frame>
+M|rules|</ForwardMessageProvider>
+M|rules|// Works with ChannelProvider (global synced state)
+M|rules|<ChannelProvider channelId="abc">
+M|rules|<Composer.Frame>
+M|rules|<Composer.Input />
+M|rules|<Composer.Submit />
+M|rules|</Composer.Frame>
+M|rules|</ChannelProvider>
+M|rules|```
+M|rules|**Custom UI outside the component can access state and actions:**
+M|rules|The provider boundary is what matters—not the visual nesting. Components that
+M|rules|need shared state don't have to be inside the `Composer.Frame`. They just need
+M|rules|to be within the provider.
+M|rules|```tsx
+M|rules|function ForwardMessageDialog() {
+M|rules|return (
+M|rules|<ForwardMessageProvider>
+M|rules|<Dialog>
+M|rules|{/* The composer UI */}
+M|rules|<Composer.Frame>
+M|rules|<Composer.Input placeholder="Add a message, if you'd like." />
+M|rules|<Composer.Footer>
+M|rules|<Composer.Formatting />
+M|rules|<Composer.Emojis />
+M|rules|</Composer.Footer>
+M|rules|</Composer.Frame>
+M|rules|{/* Custom UI OUTSIDE the composer, but INSIDE the provider */}
+M|rules|<MessagePreview />
+M|rules|{/* Actions at the bottom of the dialog */}
+M|rules|<DialogActions>
+M|rules|<CancelButton />
+M|rules|<ForwardButton />
+M|rules|</DialogActions>
+M|rules|</Dialog>
+M|rules|</ForwardMessageProvider>
+M|rules|)
+M|rules|}
+M|rules|// This button lives OUTSIDE Composer.Frame but can still submit based on its ctx!
+M|rules|function ForwardButton() {
+M|rules|const {
+M|rules|actions: { submit },
+M|rules|} = use(ComposerContext)
+M|rules|return <Button onPress={submit}>Forward</Button>
+M|rules|}
+M|rules|// This preview lives OUTSIDE Composer.Frame but can read composer's state!
+M|rules|function MessagePreview() {
+M|rules|const { state } = use(ComposerContext)
+M|rules|return <Preview message={state.input} attachments={state.attachments} />
+M|rules|}
+M|rules|```
+M|rules|The `ForwardButton` and `MessagePreview` are not visually inside the composer
+M|rules|box, but they can still access its state and actions. This is the power of
+M|rules|lifting state into providers.
+M|rules|The UI is reusable bits you compose together. The state is dependency-injected
+M|rules|by the provider. Swap the provider, keep the UI.

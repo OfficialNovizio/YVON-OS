@@ -1,0 +1,58 @@
+#MEM id=yvon-qa-pulse source=/root/yvon/agent-department/Technical/quinn/skills/custom/yvon-qa-pulse/SKILL.md
+M|yvon-qa-pulse|name: yvon-qa-pulse
+M|yvon-qa-pulse|description: >-
+M|yvon-qa-pulse|YVON QA Checklist + Pulse Protocol for Quinn. Structured QA gates for Next.js/Supabase stack plus Friday Pulse weekly quality check across all 3 layers (COMMAND, BUILD, GROW).
+M|yvon-qa-pulse|version: 1.0.0
+M|yvon-qa-pulse|platforms: []
+M|yvon-qa-pulse|metadata:
+M|yvon-qa-pulse|hermes:
+M|yvon-qa-pulse|tags: [qa, testing, debugging, quality, lint, code-rv, pulse, yvon]
+M|yvon-qa-pulse|Quinn's structured QA gate and weekly Pulse quality report.
+M|yvon-qa-pulse|Run these checks in order. If any gate FAILS, the PR is BLOCKED.
+M|yvon-qa-pulse|```bash
+M|yvon-qa-pulse|npx tsc --noEmit
+M|yvon-qa-pulse|```
+M|yvon-qa-pulse|- PASS: No errors
+M|yvon-qa-pulse|- FAIL: Type errors listed with file:line — must be fixed before proceeding
+M|yvon-qa-pulse|```bash
+M|yvon-qa-pulse|npm run lint
+M|yvon-qa-pulse|```
+M|yvon-qa-pulse|- PASS: No errors, warnings acceptable but noted
+M|yvon-qa-pulse|- FAIL: Lint errors — must be fixed
+M|yvon-qa-pulse|```bash
+M|yvon-qa-pulse|npm run build
+M|yvon-qa-pulse|```
+M|yvon-qa-pulse|- PASS: Build succeeds
+M|yvon-qa-pulse|- FAIL: Build errors — must be fixed
+M|yvon-qa-pulse|- Check for any `any` types in changed files. If present, require justification comment explaining why a specific type is impossible.
+M|yvon-qa-pulse|- Check `lib/types.ts` — new types or changed types documented.
+M|yvon-qa-pulse|- Test each changed route handler with: valid input (200), invalid input (400), no auth (401), unauthorized (403)
+M|yvon-qa-pulse|- If the route returns data: verify the rsp shape matches the expected type.
+M|yvon-qa-pulse|- If the route writes data: verify the write succeeds and is queryable.
+M|yvon-qa-pulse|- If UI changed: verify component renders in default state, loading state, error state, and empty state.
+M|yvon-qa-pulse|- Check responsive: does it break on mobile viewport?
+M|yvon-qa-pulse|Every Friday, Quinn spot-checks ONE random output from each layer.
+M|yvon-qa-pulse|- Pick one output from Marcus or Diana this week (a brief, a plan, a dec recommendation)
+M|yvon-qa-pulse|- Score: Does it meet the agt's quality bar? Would I ship it?
+M|yvon-qa-pulse|- Green: Yes, ready. Yellow: Minor issues fixable but acceptable. Red: Would not ship.
+M|yvon-qa-pulse|- Pick one component or API route shipped this week
+M|yvon-qa-pulse|- Run the full 6-gate checklist on it
+M|yvon-qa-pulse|- Score: Green = All pass. Yellow = Minor warnings but no errors. Red = Failures found.
+M|yvon-qa-pulse|- Pick one anl report, ad str, or cnt output
+M|yvon-qa-pulse|- Verify: data accuracy, methodology soundness, recommendations actionable
+M|yvon-qa-pulse|- Score: Green = Solid. Yellow = Minor gaps. Red = Flawed.
+M|yvon-qa-pulse|Deliver Pulse Report in format:
+M|yvon-qa-pulse|```
+M|yvon-qa-pulse|| Layer | Sample | Score | Notes |
+M|yvon-qa-pulse||-------|--------|-------|-------|
+M|yvon-qa-pulse|**Overall:** [Green / Yellow / Red based on lowest layer score]
+M|yvon-qa-pulse|**Key Finding:** [One sentence on what was found]
+M|yvon-qa-pulse|**Action Item:** [If Red or Yellow -- what needs fixing]
+M|yvon-qa-pulse|```
+M|yvon-qa-pulse|| Pattern | Why It Fails | How to Test |
+M|yvon-qa-pulse||---------|-------------|-------------|
+M|yvon-qa-pulse|| RLS blocking legitimate queries | Overly restrictive policy | Query as different user roles |
+M|yvon-qa-pulse|| Server/Client component boundary | Missing `use client` | Check for hooks in server components |
+M|yvon-qa-pulse|| API route error not caught | Try/catch missing | Send malformed input |
+M|yvon-qa-pulse|| Stale data from revalidation | Next.js caching | Check revalidate config |
+M|yvon-qa-pulse|| Hardcoded brand ctx | Not reading from vtr cookie | Test with both ventures |

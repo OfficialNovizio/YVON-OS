@@ -1,0 +1,257 @@
+SKILL|systematic-debugging|"4-phase root cause debugging: understand bugs before fixing."
+STEP|1|Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
+STEP|2|Violating the letter of this process is violating the spirit of debugging.**
+STEP|3|Test failures
+STEP|4|Bugs in production
+STEP|5|Unexpected behavior
+STEP|6|Performance problems
+STEP|7|Build failures
+STEP|8|Integration issues
+STEP|9|Use this ESPECIALLY when:**
+STEP|10|Under time pressure (emergencies make guessing tempting)
+STEP|11|"Just one quick fix" seems obvious
+STEP|12|You've already tried multiple fixes
+STEP|13|Previous fix didn't work
+STEP|14|You don't fully understand the issue
+STEP|15|Don't skip when:**
+STEP|16|Issue seems simple (simple bugs have root causes too)
+STEP|17|You're in a hurry (rushing guarantees rework)
+STEP|18|Someone wants it fixed NOW (systematic is faster than thrashing)
+STEP|19|BEFORE attempting ANY fix:**
+STEP|20|Don't skip past errors or warnings
+STEP|21|They often contain the exact solution
+STEP|22|Read stack traces completely
+STEP|23|Note line numbers, file paths, error codes
+STEP|24|Action:** Use `read_file` on the relevant source files. Use `search_files` to find the error string in the codebase.
+STEP|25|Can you trigger it reliably?
+STEP|26|What are the exact steps?
+STEP|27|Does it happen every time?
+STEP|28|If not reproducible → gather more data, don't guess
+STEP|29|Action:** Use the `terminal` tool to run the failing test or trigger the bug:
+STEP|30|What changed that could cause this?
+STEP|31|Git diff, recent commits
+STEP|32|New dependencies, config changes
+STEP|33|Action:**
+STEP|34|WHEN system has multiple components (API → service → database, CI → build → deploy):**
+STEP|35|BEFORE proposing fixes, add diagnostic instrumentation:**
+STEP|36|Log what data enters the component
+STEP|37|Log what data exits the component
+STEP|38|Verify environment/config propagation
+STEP|39|Check state at each layer
+STEP|40|WHEN error is deep in the call stack:**
+STEP|41|Where does the bad value originate?
+STEP|42|What called this function with the bad value?
+STEP|43|Keep tracing upstream until you find the source
+STEP|44|Fix at the source, not at the symptom
+STEP|45|Action:** Use `search_files` to trace references:
+STEP|46|[ ] Error messages fully read and understood
+STEP|47|[ ] Issue reproduced consistently
+STEP|48|[ ] Recent changes identified and reviewed
+STEP|49|[ ] Evidence gathered (logs, state, data flow)
+STEP|50|[ ] Problem isolated to specific component/code
+STEP|51|[ ] Root cause hypothesis formed
+STEP|52|STOP:** Do not proceed to Phase 2 until you understand WHY it's happening.
+STEP|53|Find the pattern before fixing:**
+STEP|54|Locate similar working code in the same codebase
+STEP|55|What works that's similar to what's broken?
+STEP|56|Action:** Use `search_files` to find comparable patterns:
+STEP|57|If implementing a pattern, read the reference implementation COMPLETELY
+STEP|58|Don't skim — read every line
+STEP|59|Understand the pattern fully before applying
+STEP|60|What's different between working and broken?
+STEP|61|List every difference, however small
+STEP|62|Don't assume "that can't matter"
+STEP|63|What other components does this need?
+STEP|64|What settings, config, environment?
+STEP|65|What assumptions does it make?
+STEP|66|Scientific method:**
+STEP|67|State clearly: "I think X is the root cause because Y"
+STEP|68|Write it down
+STEP|69|Be specific, not vague
+STEP|70|Make the SMALLEST possible change to test the hypothesis
+STEP|71|One variable at a time
+STEP|72|Don't fix multiple things at once
+STEP|73|Did it work? → Phase 4
+STEP|74|Didn't work? → Form NEW hypothesis
+STEP|75|DON'T add more fixes on top
+STEP|76|Say "I don't understand X"
+STEP|77|Don't pretend to know
+STEP|78|Ask the user for help
+STEP|79|Research more
+STEP|80|Fix the root cause, not the symptom:**
+STEP|81|Simplest possible reproduction
+STEP|82|Automated test if possible
+STEP|83|MUST have before fixing
+STEP|84|Use the `test-driven-development` skill
+STEP|85|Address the root cause identified
+STEP|86|ONE change at a time
+STEP|87|No "while I'm here" improvements
+STEP|88|No bundled refactoring
+STEP|89|**STOP.**
+STEP|90|Count: How many fixes have you tried?
+STEP|91|If < 3: Return to Phase 1, re-analyze with new information
+STEP|92|**If ≥ 3: STOP and question the architecture (step 5 below)**
+STEP|93|DON'T attempt Fix #4 without architectural discussion
+STEP|94|Pattern indicating an architectural problem:**
+STEP|95|Each fix reveals new shared state/coupling in a different place
+STEP|96|Fixes require "massive refactoring" to implement
+STEP|97|Each fix creates new symptoms elsewhere
+STEP|98|STOP and question fundamentals:**
+STEP|99|Is this pattern fundamentally sound?
+STEP|100|Are we "sticking with it through sheer inertia"?
+STEP|101|Should we refactor the architecture vs. continue fixing symptoms?
+STEP|102|Discuss with the user before attempting more fixes.**
+STEP|103|"Quick fix for now, investigate later"
+STEP|104|"Just try changing X and see if it works"
+STEP|105|"Add multiple changes, run tests"
+STEP|106|"Skip the test, I'll manually verify"
+STEP|107|"It's probably X, let me fix that"
+STEP|108|"I don't fully understand but this might work"
+STEP|109|"Pattern says X but I'll adapt it differently"
+STEP|110|"Here are the main problems: [lists fixes without investigation]"
+STEP|111|Proposing solutions before tracing data flow
+STEP|112|**"One more fix attempt" (when already tried 2+)**
+STEP|113|**Each fix reveals a new problem in a different place**
+STEP|114|ALL of these mean: STOP. Return to Phase 1.**
+STEP|115|If 3+ fixes failed:** Question the architecture (Phase 4 step 5).
+STEP|116|**`search_files`** — Find error strings, trace function calls, locate patterns
+STEP|117|**`read_file`** — Read source code with line numbers for precise analysis
+STEP|118|**`terminal`** — Run tests, check git history, reproduce bugs
+STEP|119|**`web_search`/`web_extract`** — Research error messages, library docs
+STEP|120|Write a test that reproduces the bug (RED)
+STEP|121|Debug systematically to find root cause
+STEP|122|Fix the root cause (GREEN)
+STEP|123|The test proves the fix and prevents regression
+STEP|124|Systematic approach: 15-30 minutes to fix
+STEP|125|Random fixes approach: 2-3 hours of thrashing
+STEP|126|First-time fix rate: 95% vs 40%
+STEP|127|New bugs introduced: Near zero vs common
+STEP|128|No shortcuts. No guessing. Systematic always wins.**
+PIT|Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
+PIT|Violating the letter of this process is violating the spirit of debugging.**
+PIT|Test failures
+PIT|Bugs in production
+PIT|Unexpected behavior
+PIT|Performance problems
+PIT|Build failures
+PIT|Integration issues
+PIT|Use this ESPECIALLY when:**
+PIT|Under time pressure (emergencies make guessing tempting)
+PIT|"Just one quick fix" seems obvious
+PIT|You've already tried multiple fixes
+PIT|Previous fix didn't work
+PIT|You don't fully understand the issue
+PIT|Don't skip when:**
+PIT|Issue seems simple (simple bugs have root causes too)
+PIT|You're in a hurry (rushing guarantees rework)
+PIT|Someone wants it fixed NOW (systematic is faster than thrashing)
+PIT|BEFORE attempting ANY fix:**
+PIT|Don't skip past errors or warnings
+PIT|They often contain the exact solution
+PIT|Read stack traces completely
+PIT|Note line numbers, file paths, error codes
+PIT|Action:** Use `read_file` on the relevant source files. Use `search_files` to find the error string in the codebase.
+PIT|Can you trigger it reliably?
+PIT|What are the exact steps?
+PIT|Does it happen every time?
+PIT|If not reproducible → gather more data, don't guess
+PIT|Action:** Use the `terminal` tool to run the failing test or trigger the bug:
+PIT|What changed that could cause this?
+PIT|Git diff, recent commits
+PIT|New dependencies, config changes
+PIT|Action:**
+PIT|WHEN system has multiple components (API → service → database, CI → build → deploy):**
+PIT|BEFORE proposing fixes, add diagnostic instrumentation:**
+PIT|Log what data enters the component
+PIT|Log what data exits the component
+PIT|Verify environment/config propagation
+PIT|Check state at each layer
+PIT|WHEN error is deep in the call stack:**
+PIT|Where does the bad value originate?
+PIT|What called this function with the bad value?
+PIT|Keep tracing upstream until you find the source
+PIT|Fix at the source, not at the symptom
+PIT|Action:** Use `search_files` to trace references:
+PIT|[ ] Error messages fully read and understood
+PIT|[ ] Issue reproduced consistently
+PIT|[ ] Recent changes identified and reviewed
+PIT|[ ] Evidence gathered (logs, state, data flow)
+PIT|[ ] Problem isolated to specific component/code
+PIT|[ ] Root cause hypothesis formed
+PIT|STOP:** Do not proceed to Phase 2 until you understand WHY it's happening.
+PIT|Find the pattern before fixing:**
+PIT|Locate similar working code in the same codebase
+PIT|What works that's similar to what's broken?
+PIT|Action:** Use `search_files` to find comparable patterns:
+PIT|If implementing a pattern, read the reference implementation COMPLETELY
+PIT|Don't skim — read every line
+PIT|Understand the pattern fully before applying
+PIT|What's different between working and broken?
+PIT|List every difference, however small
+PIT|Don't assume "that can't matter"
+PIT|What other components does this need?
+PIT|What settings, config, environment?
+PIT|What assumptions does it make?
+PIT|Scientific method:**
+PIT|State clearly: "I think X is the root cause because Y"
+PIT|Write it down
+PIT|Be specific, not vague
+PIT|Make the SMALLEST possible change to test the hypothesis
+PIT|One variable at a time
+PIT|Don't fix multiple things at once
+PIT|Did it work? → Phase 4
+PIT|Didn't work? → Form NEW hypothesis
+PIT|DON'T add more fixes on top
+PIT|Say "I don't understand X"
+PIT|Don't pretend to know
+PIT|Ask the user for help
+PIT|Research more
+PIT|Fix the root cause, not the symptom:**
+PIT|Simplest possible reproduction
+PIT|Automated test if possible
+PIT|MUST have before fixing
+PIT|Use the `test-driven-development` skill
+PIT|Address the root cause identified
+PIT|ONE change at a time
+PIT|No "while I'm here" improvements
+PIT|No bundled refactoring
+PIT|**STOP.**
+PIT|Count: How many fixes have you tried?
+PIT|If < 3: Return to Phase 1, re-analyze with new information
+PIT|**If ≥ 3: STOP and question the architecture (step 5 below)**
+PIT|DON'T attempt Fix #4 without architectural discussion
+PIT|Pattern indicating an architectural problem:**
+PIT|Each fix reveals new shared state/coupling in a different place
+PIT|Fixes require "massive refactoring" to implement
+PIT|Each fix creates new symptoms elsewhere
+PIT|STOP and question fundamentals:**
+PIT|Is this pattern fundamentally sound?
+PIT|Are we "sticking with it through sheer inertia"?
+PIT|Should we refactor the architecture vs. continue fixing symptoms?
+PIT|Discuss with the user before attempting more fixes.**
+PIT|"Quick fix for now, investigate later"
+PIT|"Just try changing X and see if it works"
+PIT|"Add multiple changes, run tests"
+PIT|"Skip the test, I'll manually verify"
+PIT|"It's probably X, let me fix that"
+PIT|"I don't fully understand but this might work"
+PIT|"Pattern says X but I'll adapt it differently"
+PIT|"Here are the main problems: [lists fixes without investigation]"
+PIT|Proposing solutions before tracing data flow
+PIT|**"One more fix attempt" (when already tried 2+)**
+PIT|**Each fix reveals a new problem in a different place**
+PIT|ALL of these mean: STOP. Return to Phase 1.**
+PIT|If 3+ fixes failed:** Question the architecture (Phase 4 step 5).
+PIT|**`search_files`** — Find error strings, trace function calls, locate patterns
+PIT|**`read_file`** — Read source code with line numbers for precise analysis
+PIT|**`terminal`** — Run tests, check git history, reproduce bugs
+PIT|**`web_search`/`web_extract`** — Research error messages, library docs
+PIT|Write a test that reproduces the bug (RED)
+PIT|Debug systematically to find root cause
+PIT|Fix the root cause (GREEN)
+PIT|The test proves the fix and prevents regression
+PIT|Systematic approach: 15-30 minutes to fix
+PIT|Random fixes approach: 2-3 hours of thrashing
+PIT|First-time fix rate: 95% vs 40%
+PIT|New bugs introduced: Near zero vs common
+PIT|No shortcuts. No guessing. Systematic always wins.**

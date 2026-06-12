@@ -1,0 +1,124 @@
+#MEM id=saas-revenue-growth-metrics source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-revenue-growth-metrics/template.md
+M|saas-revenue-growth-metrics|Use this template to calculate your revenue and retention metrics. Fill in your numbers and calculate each metric.
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Period: [Month/Quarter/Year]
+M|saas-revenue-growth-metrics|Total Customer Payments: $__________
+M|saas-revenue-growth-metrics|Revenue = $__________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Total Revenue: $__________
+M|saas-revenue-growth-metrics|Total Users: __________
+M|saas-revenue-growth-metrics|ARPU = Total Revenue / Total Users = $__________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|MRR: $__________
+M|saas-revenue-growth-metrics|Active Accounts: __________
+M|saas-revenue-growth-metrics|ARPA = MRR / Active Accounts = $__________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|ARPA: $__________
+M|saas-revenue-growth-metrics|ARPU: $__________
+M|saas-revenue-growth-metrics|Average Seats per Account = ARPA / ARPU = __________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Annual Recurring Revenue per Contract: $__________
+M|saas-revenue-growth-metrics|(Exclude one-time fees like setup, professional services)
+M|saas-revenue-growth-metrics|ACV = $__________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Starting MRR: $__________
+M|saas-revenue-growth-metrics|MRR Components:
+M|saas-revenue-growth-metrics|+ New MRR (new customers): $__________
+M|saas-revenue-growth-metrics|+ Expansion MRR (upsells/cross-sells): $__________
+M|saas-revenue-growth-metrics|- Churned MRR (lost customers): $__________
+M|saas-revenue-growth-metrics|- Contraction MRR (downgrades): $__________
+M|saas-revenue-growth-metrics|Ending MRR: $__________
+M|saas-revenue-growth-metrics|ARR = MRR × 12 = $__________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Gross Revenue: $__________
+M|saas-revenue-growth-metrics|- Discounts: $__________
+M|saas-revenue-growth-metrics|- Refunds: $__________
+M|saas-revenue-growth-metrics|- Credits: $__________
+M|saas-revenue-growth-metrics|Net Revenue = $__________
+M|saas-revenue-growth-metrics|Discount Rate = Discounts / Gross Revenue = __________%
+M|saas-revenue-growth-metrics|Refund Rate = Refunds / Gross Revenue = __________%
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Logo Churn:
+M|saas-revenue-growth-metrics|Starting Customers: __________
+M|saas-revenue-growth-metrics|Customers Lost: __________
+M|saas-revenue-growth-metrics|Logo Churn Rate = Customers Lost / Starting Customers = __________%
+M|saas-revenue-growth-metrics|Revenue Churn:
+M|saas-revenue-growth-metrics|Starting MRR: $__________
+M|saas-revenue-growth-metrics|MRR Lost: $__________
+M|saas-revenue-growth-metrics|Revenue Churn Rate = MRR Lost / Starting MRR = __________%
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|**Convert to Annual Churn:**
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Monthly Churn Rate: __________%
+M|saas-revenue-growth-metrics|Annual Churn Rate = 1 - (1 - Monthly Churn)^12 = __________%
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Starting ARR: $__________
+M|saas-revenue-growth-metrics|+ Expansion Revenue: $__________
+M|saas-revenue-growth-metrics|- Churned Revenue: $__________
+M|saas-revenue-growth-metrics|- Contraction Revenue: $__________
+M|saas-revenue-growth-metrics|Ending ARR (from cohort): $__________
+M|saas-revenue-growth-metrics|NRR = Ending ARR / Starting ARR × 100 = __________%
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Upsells (tier upgrades): $__________
+M|saas-revenue-growth-metrics|Cross-sells (add-ons): $__________
+M|saas-revenue-growth-metrics|Usage growth: $__________
+M|saas-revenue-growth-metrics|Total Expansion Revenue: $__________
+M|saas-revenue-growth-metrics|Expansion as % of MRR = Expansion / Total MRR = __________%
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|New MRR: $__________
+M|saas-revenue-growth-metrics|Expansion MRR: $__________
+M|saas-revenue-growth-metrics|Churned MRR: $__________
+M|saas-revenue-growth-metrics|Contraction MRR: $__________
+M|saas-revenue-growth-metrics|Quick Ratio = (New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)
+M|saas-revenue-growth-metrics|Quick Ratio = __________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Product/Segment A Revenue: $__________
+M|saas-revenue-growth-metrics|Product/Segment B Revenue: $__________
+M|saas-revenue-growth-metrics|Product/Segment C Revenue: $__________
+M|saas-revenue-growth-metrics|Total Revenue: $__________
+M|saas-revenue-growth-metrics|Product A % = __________
+M|saas-revenue-growth-metrics|Product B % = __________
+M|saas-revenue-growth-metrics|Product C % = __________
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|Cohort: [Month/Quarter]
+M|saas-revenue-growth-metrics|Starting Customers: __________
+M|saas-revenue-growth-metrics|Month 0: 100%
+M|saas-revenue-growth-metrics|Month 1: __________%
+M|saas-revenue-growth-metrics|Month 2: __________%
+M|saas-revenue-growth-metrics|Month 3: __________%
+M|saas-revenue-growth-metrics|Month 6: __________%
+M|saas-revenue-growth-metrics|Month 12: __________%
+M|saas-revenue-growth-metrics|```
+M|saas-revenue-growth-metrics|- [ ] Gross vs. net revenue clearly labeled
+M|saas-revenue-growth-metrics|- [ ] Revenue growth rate > cost growth rate
+M|saas-revenue-growth-metrics|- [ ] ARPU/ARPA tracked by cohort (not just blended)
+M|saas-revenue-growth-metrics|- [ ] Revenue concentration: Top customer <10%, Top 10 <40%
+M|saas-revenue-growth-metrics|- [ ] Monthly churn <5% (ideally <2%)
+M|saas-revenue-growth-metrics|- [ ] Revenue churn vs. logo churn compared
+M|saas-revenue-growth-metrics|- [ ] NRR >100% (ideally >120%)
+M|saas-revenue-growth-metrics|- [ ] Quick Ratio >2 (ideally >4)
+M|saas-revenue-growth-metrics|- [ ] Recent cohorts perform same or better than older cohorts
+M|saas-revenue-growth-metrics|- [ ] Revenue retention tracked, not just logo retention
+M|saas-revenue-growth-metrics|- [ ] Expansion analyzed by cohort
+M|saas-revenue-growth-metrics|Check if any of these apply:
+M|saas-revenue-growth-metrics|- [ ] Revenue churn > logo churn (losing big customers)
+M|saas-revenue-growth-metrics|- [ ] ARPU growing but customer count shrinking (mix shift, not improvement)
+M|saas-revenue-growth-metrics|- [ ] Newer cohorts churn faster than older cohorts (PMF degradation)
+M|saas-revenue-growth-metrics|- [ ] NRR <100% (contracting, not expanding)
+M|saas-revenue-growth-metrics|- [ ] Quick Ratio <2 (leaky bucket)
+M|saas-revenue-growth-metrics|- [ ] Discounts >20% or refunds >10% (pricing/product problems)
+M|saas-revenue-growth-metrics|- [ ] Revenue concentration >50% in top 10 customers (risk)
+M|saas-revenue-growth-metrics|- [ ] Expansion revenue <10% of total MRR (monetization problem)
+M|saas-revenue-growth-metrics|**If you checked any red flags, see SKILL.md Common Pitfalls section for fixes.**

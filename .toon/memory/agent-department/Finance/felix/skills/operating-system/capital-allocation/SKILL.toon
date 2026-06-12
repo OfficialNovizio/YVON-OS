@@ -1,0 +1,35 @@
+#MEM id=capital-allocation source=/root/yvon/agent-department/Finance/felix/skills/operating-system/capital-allocation/SKILL.md
+M|capital-allocation|name: capital-allocation
+M|capital-allocation|description: Buffett's concentration doctrine for YVON's budget. When to double down on one vtr vs. split resources. Prevents default equal allocation when ROI data points clearly in one direction.
+M|capital-allocation|version: 1.0.0
+M|capital-allocation|Buffett doesn't diversify by default — he concentrates capital on the highest-conviction opportunity. Equal budget allocation between two ventures with unequal ROI is not neutral. It is a choice to un
+M|capital-allocation|Felix applies this doctrine every time budget is discussed across ventures or channels.
+M|capital-allocation|- Any cross-vtr budget discussion
+M|capital-allocation|- Quarterly budget reviews
+M|capital-allocation|- When Marcus asks how to split budget between Novizio and Hourbour
+M|capital-allocation|- When one vtr is significantly outperforming the other on ROI signals
+M|capital-allocation|- When a channel is clearly outperforming others within a single vtr
+M|capital-allocation|Compare ventures on the five core signals:
+M|capital-allocation|| Signal | Novizio | Hourbour |
+M|capital-allocation||--------|---------|----------|
+M|capital-allocation|| ROAS / LTV:CAC | | |
+M|capital-allocation|| CAC payback period | | |
+M|capital-allocation|| MoM growth rate | | |
+M|capital-allocation|| Gross margin | | |
+M|capital-allocation|| Runway consumption per dollar | | |
+M|capital-allocation|**Is one vtr clearly outperforming on ≥ 3 of 5 signals?**
+M|capital-allocation|- **YES → Recommend concentration.** State explicitly: "The data supports increasing [vtr] budget by $X and reducing [vtr] budget by $X. Rationale: [which signals and by how much]."
+M|capital-allocation|- **NO → Both ventures are competitive.** State explicitly: "Equal or proportional split is defensible. Rerun this test in [timeframe] as signals develop."
+M|capital-allocation|What specific metric change would cause the current allocation to shift? Pre-name it before Marcus acts on the recommendation.
+M|capital-allocation|Examples:
+M|capital-allocation|- "If Hourbour's LTV:CAC drops below 3:1 for 2 consecutive months → reallocate to Novizio."
+M|capital-allocation|- "If Novizio ROAS exceeds 4x for a full quarter → increase paid acquisition budget by 30%."
+M|capital-allocation|Pre-named triggers prevent reactive allocation decisions made under pressure.
+M|capital-allocation|Felix recommends. Marcus decides. Felix never makes the cross-vtr priority call unilaterally.
+M|capital-allocation|```
+M|capital-allocation|Concentration signal: [vtr] outperforms on [N] of 5 signals
+M|capital-allocation|Recommendation: Increase [vtr] budget $X / Reduce [vtr] budget $X
+M|capital-allocation|What we sacrifice: [what the underinvested vtr loses]
+M|capital-allocation|Reallocation trigger: [metric + threshold + timeframe that reverses this]
+M|capital-allocation|dec required from: Marcus
+M|capital-allocation|```

@@ -1,0 +1,58 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-min-max-loop.md
+M|rules|title: Use Loop for Min/Max Instead of Sort
+M|rules|impact: LOW
+M|rules|impactDescription: O(n) instead of O(n log n)
+M|rules|tags: javascript, arrays, performance, sorting, algorithms
+M|rules|Finding the smallest or largest element only requires a single pass through the array. Sorting is wasteful and slower.
+M|rules|**Incorrect (O(n log n) - sort to find latest):**
+M|rules|```typescript
+M|rules|interface Project {
+M|rules|id: string
+M|rules|name: string
+M|rules|updatedAt: number
+M|rules|}
+M|rules|function getLatestProject(projects: Project[]) {
+M|rules|const sorted = [...projects].sort((a, b) => b.updatedAt - a.updatedAt)
+M|rules|return sorted[0]
+M|rules|}
+M|rules|```
+M|rules|Sorts the entire array just to find the maximum value.
+M|rules|**Incorrect (O(n log n) - sort for oldest and newest):**
+M|rules|```typescript
+M|rules|function getOldestAndNewest(projects: Project[]) {
+M|rules|const sorted = [...projects].sort((a, b) => a.updatedAt - b.updatedAt)
+M|rules|return { oldest: sorted[0], newest: sorted[sorted.length - 1] }
+M|rules|}
+M|rules|```
+M|rules|Still sorts unnecessarily when only min/max are needed.
+M|rules|**Correct (O(n) - single loop):**
+M|rules|```typescript
+M|rules|function getLatestProject(projects: Project[]) {
+M|rules|if (projects.length === 0) return null
+M|rules|let latest = projects[0]
+M|rules|for (let i = 1; i < projects.length; i++) {
+M|rules|if (projects[i].updatedAt > latest.updatedAt) {
+M|rules|latest = projects[i]
+M|rules|}
+M|rules|}
+M|rules|return latest
+M|rules|}
+M|rules|function getOldestAndNewest(projects: Project[]) {
+M|rules|if (projects.length === 0) return { oldest: null, newest: null }
+M|rules|let oldest = projects[0]
+M|rules|let newest = projects[0]
+M|rules|for (let i = 1; i < projects.length; i++) {
+M|rules|if (projects[i].updatedAt < oldest.updatedAt) oldest = projects[i]
+M|rules|if (projects[i].updatedAt > newest.updatedAt) newest = projects[i]
+M|rules|}
+M|rules|return { oldest, newest }
+M|rules|}
+M|rules|```
+M|rules|Single pass through the array, no copying, no sorting.
+M|rules|**Alternative (Math.min/Math.max for small arrays):**
+M|rules|```typescript
+M|rules|const numbers = [5, 2, 8, 1, 9]
+M|rules|const min = Math.min(...numbers)
+M|rules|const max = Math.max(...numbers)
+M|rules|```
+M|rules|This works for small arrays, but can be slower or just throw an error for very large arrays due to spread operator limitations. Maximal array length is approximately 124000 in Chrome 143 and 638000 in

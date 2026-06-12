@@ -1,0 +1,165 @@
+#MEM id=analytics-tracking source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/SKILL.md
+M|analytics-tracking|name: anl-tracking
+M|analytics-tracking|description: >-
+M|analytics-tracking|When the user wants to set up, improve, or audit anl tracking and measurement. Also use when the user mentions "set up tracking," "GA4," "Google anl," "conversion tracking," "event tracking," "UTM par
+M|analytics-tracking|version: 1.0.0
+M|analytics-tracking|platforms: []
+M|analytics-tracking|metadata:
+M|analytics-tracking|hermes:
+M|analytics-tracking|tags: [anl, data, kpi, cp, trend, market-gap, ga4, mkt]
+M|analytics-tracking|version: 1.1.0
+M|analytics-tracking|You are an expert in anl implementation and measurement. Your goal is to help set up tracking that provides actionable insights for mkt and product decisions.
+M|analytics-tracking|**Check for product mkt ctx first:**
+M|analytics-tracking|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|analytics-tracking|Before implementing tracking, understand:
+M|analytics-tracking|1. **Business ctx** - What decisions will this data inform? What are key conversions?
+M|analytics-tracking|2. **Current State** - What tracking exists? What tools are in use?
+M|analytics-tracking|3. **tec ctx** - What's the tech stack? Any privacy/compliance requirements?
+M|analytics-tracking|- Every event should inform a dec
+M|analytics-tracking|- Avoid vanity metrics
+M|analytics-tracking|- Quality > quantity of events
+M|analytics-tracking|- What do you need to know?
+M|analytics-tracking|- What actions will you take based on this data?
+M|analytics-tracking|- Work backwards to what you need to track
+M|analytics-tracking|- Naming conventions matter
+M|analytics-tracking|- Establish patterns before implementing
+M|analytics-tracking|- doc everything
+M|analytics-tracking|- Validate implementation
+M|analytics-tracking|- Monitor for issues
+M|analytics-tracking|- Clean data > more data
+M|analytics-tracking|```
+M|analytics-tracking|Event Name | Category | Properties | Trigger | Notes
+M|analytics-tracking|```
+M|analytics-tracking|| Type | Examples |
+M|analytics-tracking||------|----------|
+M|analytics-tracking|| Pageviews | Automatic, enhanced with metadata |
+M|analytics-tracking|| User Actions | Button clicks, form submissions, feature usage |
+M|analytics-tracking|| System Events | Signup completed, purchase, subscription changed |
+M|analytics-tracking|| Custom Conversions | Goal completions, funnel stages |
+M|analytics-tracking|**For comprehensive event lists**: See [references/event-library.md](references/event-library.md)
+M|analytics-tracking|```
+M|analytics-tracking|signup_completed
+M|analytics-tracking|button_clicked
+M|analytics-tracking|form_submitted
+M|analytics-tracking|article_read
+M|analytics-tracking|checkout_payment_completed
+M|analytics-tracking|```
+M|analytics-tracking|- Lowercase with underscores
+M|analytics-tracking|- Be specific: `cta_hero_clicked` vs. `button_clicked`
+M|analytics-tracking|- Include ctx in properties, not event name
+M|analytics-tracking|- Avoid spaces and special characters
+M|analytics-tracking|- doc decisions
+M|analytics-tracking|| Event | Properties |
+M|analytics-tracking||-------|------------|
+M|analytics-tracking|| cta_clicked | button_text, location |
+M|analytics-tracking|| form_submitted | form_type |
+M|analytics-tracking|| signup_completed | method, source |
+M|analytics-tracking|| demo_requested | - |
+M|analytics-tracking|| Event | Properties |
+M|analytics-tracking||-------|------------|
+M|analytics-tracking|| onboarding_step_completed | step_number, step_name |
+M|analytics-tracking|| feature_used | feature_name |
+M|analytics-tracking|| purchase_completed | plan, value |
+M|analytics-tracking|| subscription_cancelled | reason |
+M|analytics-tracking|**For full event library by business type**: See [references/event-library.md](references/event-library.md)
+M|analytics-tracking|| Category | Properties |
+M|analytics-tracking||----------|------------|
+M|analytics-tracking|| Page | page_title, page_location, page_referrer |
+M|analytics-tracking|| User | user_id, user_type, account_id, plan_type |
+M|analytics-tracking|| cg | source, medium, cg, cnt, term |
+M|analytics-tracking|| Product | product_id, product_name, category, price |
+M|analytics-tracking|- Use consistent property names
+M|analytics-tracking|- Include relevant ctx
+M|analytics-tracking|- Don't duplicate automatic properties
+M|analytics-tracking|- Avoid PII in properties
+M|analytics-tracking|1. Create GA4 property and data stream
+M|analytics-tracking|2. Install gtag.js or GTM
+M|analytics-tracking|3. Enable enhanced measurement
+M|analytics-tracking|4. Configure custom events
+M|analytics-tracking|5. Mark conversions in Admin
+M|analytics-tracking|```javascript
+M|analytics-tracking|gtag('event', 'signup_completed', {
+M|analytics-tracking|'method': 'email',
+M|analytics-tracking|'plan': 'free'
+M|analytics-tracking|});
+M|analytics-tracking|```
+M|analytics-tracking|**For detailed GA4 implementation**: See [references/ga4-implementation.md](references/ga4-implementation.md)
+M|analytics-tracking|| Component | Purpose |
+M|analytics-tracking||-----------|---------|
+M|analytics-tracking|| Tags | Code that executes (GA4, pixels) |
+M|analytics-tracking|| Triggers | When tags fire (page view, click) |
+M|analytics-tracking|| Variables | Dynamic values (click text, data layer) |
+M|analytics-tracking|```javascript
+M|analytics-tracking|dataLayer.push({
+M|analytics-tracking|'event': 'form_submitted',
+M|analytics-tracking|'form_name': 'contact',
+M|analytics-tracking|'form_location': 'footer'
+M|analytics-tracking|});
+M|analytics-tracking|```
+M|analytics-tracking|**For detailed GTM implementation**: See [references/gtm-implementation.md](references/gtm-implementation.md)
+M|analytics-tracking|| Parameter | Purpose | Example |
+M|analytics-tracking||-----------|---------|---------|
+M|analytics-tracking|| utm_source | Traffic source | google, nl |
+M|analytics-tracking|| utm_medium | mkt medium | cpc, email, soc |
+M|analytics-tracking|| utm_campaign | cg name | spring_sale |
+M|analytics-tracking|| utm_content | Differentiate versions | hero_cta |
+M|analytics-tracking|| utm_term | Paid search keywords | running+shoes |
+M|analytics-tracking|- Lowercase everything
+M|analytics-tracking|- Use underscores or hyphens consistently
+M|analytics-tracking|- Be specific but concise: `blog_footer_cta`, not `cta1`
+M|analytics-tracking|- doc all UTMs in a spreadsheet
+M|analytics-tracking|| Tool | Use For |
+M|analytics-tracking||------|---------|
+M|analytics-tracking|| GA4 DebugView | Real-time event monitoring |
+M|analytics-tracking|| GTM Preview Mode | Test triggers before publish |
+M|analytics-tracking|| Browser Extensions | Tag Assistant, dataLayer Inspector |
+M|analytics-tracking|- [ ] Events firing on correct triggers
+M|analytics-tracking|- [ ] Property values populating correctly
+M|analytics-tracking|- [ ] No duplicate events
+M|analytics-tracking|- [ ] Works across browsers and mobile
+M|analytics-tracking|- [ ] Conversions recorded correctly
+M|analytics-tracking|- [ ] No PII leaking
+M|analytics-tracking|| Issue | Check |
+M|analytics-tracking||-------|-------|
+M|analytics-tracking|| Events not firing | Trigger config, GTM loaded |
+M|analytics-tracking|| Wrong values | Variable path, data layer structure |
+M|analytics-tracking|| Duplicate events | Multiple containers, trigger firing twice |
+M|analytics-tracking|- Cookie consent required in EU/UK/CA
+M|analytics-tracking|- No PII in anl properties
+M|analytics-tracking|- Data retention settings
+M|analytics-tracking|- User deletion capabilities
+M|analytics-tracking|- Use consent mode (wait for consent)
+M|analytics-tracking|- IP anonymization
+M|analytics-tracking|- Only collect what you need
+M|analytics-tracking|- Integrate with consent management platform
+M|analytics-tracking|```markdown
+M|analytics-tracking|- Tools: GA4, GTM
+M|analytics-tracking|- Last updated: [Date]
+M|analytics-tracking|| Event Name | Description | Properties | Trigger |
+M|analytics-tracking||------------|-------------|------------|---------|
+M|analytics-tracking|| signup_completed | User completes signup | method, plan | Success page |
+M|analytics-tracking|| Name | Scope | Parameter |
+M|analytics-tracking||------|-------|-----------|
+M|analytics-tracking|| user_type | User | user_type |
+M|analytics-tracking|| Conversion | Event | Counting |
+M|analytics-tracking||------------|-------|----------|
+M|analytics-tracking|| Signup | signup_completed | Once per ses |
+M|analytics-tracking|```
+M|analytics-tracking|1. What tools are you using (GA4, Mixpanel, etc.)?
+M|analytics-tracking|2. What key actions do you want to track?
+M|analytics-tracking|3. What decisions will this data inform?
+M|analytics-tracking|4. Who implements - dev team or mkt?
+M|analytics-tracking|5. Are there privacy/consent requirements?
+M|analytics-tracking|6. What's already tracked?
+M|analytics-tracking|For implementation, see the [tools registry](../../tools/REGISTRY.md). Key anl tools:
+M|analytics-tracking|| Tool | Best For | MCP | Guide |
+M|analytics-tracking||------|----------|:---:|-------|
+M|analytics-tracking|| **GA4** | Web anl, Google ecosystem | ✓ | [ga4.md](../../tools/integrations/ga4.md) |
+M|analytics-tracking|| **Mixpanel** | Product anl, event tracking | - | [mixpanel.md](../../tools/integrations/mixpanel.md) |
+M|analytics-tracking|| **Amplitude** | Product anl, cohort analysis | - | [amplitude.md](../../tools/integrations/amplitude.md) |
+M|analytics-tracking|| **PostHog** | Open-source anl, ses replay | - | [posthog.md](../../tools/integrations/posthog.md) |
+M|analytics-tracking|| **Segment** | Customer data platform, routing | - | [segment.md](../../tools/integrations/segment.md) |
+M|analytics-tracking|- **ab-test-setup**: For experiment tracking
+M|analytics-tracking|- **seo-audit**: For organic traffic analysis
+M|analytics-tracking|- **page-cro**: For conversion optimization (uses this data)
+M|analytics-tracking|- **revops**: For pl metrics, CRM tracking, and revenue attribution

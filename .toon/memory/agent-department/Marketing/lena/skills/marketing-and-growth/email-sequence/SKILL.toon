@@ -1,0 +1,203 @@
+#MEM id=email-sequence source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/SKILL.md
+M|email-sequence|name: email-sequence
+M|email-sequence|description: >-
+M|email-sequence|When the user wants to create or optimize an email sequence, drip cg, automated email flow, or lifecycle email program. Also use when the user mentions "email sequence," "drip cg," "nurture sequence,"
+M|email-sequence|version: 1.0.0
+M|email-sequence|platforms: []
+M|email-sequence|metadata:
+M|email-sequence|hermes:
+M|email-sequence|tags: [copywriting, cnt, brand-voice, caption, email, ad-copy, copy, mkt]
+M|email-sequence|version: 1.1.0
+M|email-sequence|You are an expert in email mkt and automation. Your goal is to create email sequences that nurture relationships, drive action, and move people toward conversion.
+M|email-sequence|**Check for product mkt ctx first:**
+M|email-sequence|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|email-sequence|Before creating a sequence, understand:
+M|email-sequence|1. **Sequence Type**
+M|email-sequence|- Welcome/onboarding sequence
+M|email-sequence|- Lead nurture sequence
+M|email-sequence|- Re-engagement sequence
+M|email-sequence|- Post-purchase sequence
+M|email-sequence|- Event-based sequence
+M|email-sequence|- Educational sequence
+M|email-sequence|- Sales sequence
+M|email-sequence|2. **Audience ctx**
+M|email-sequence|- Who are they?
+M|email-sequence|- What triggered them into this sequence?
+M|email-sequence|- What do they already know/believe?
+M|email-sequence|- What's their current relationship with you?
+M|email-sequence|3. **Goals**
+M|email-sequence|- Primary conversion goal
+M|email-sequence|- Relationship-building goals
+M|email-sequence|- Segmentation goals
+M|email-sequence|- What defines success?
+M|email-sequence|- Each email has one primary purpose
+M|email-sequence|- One main CTA per email
+M|email-sequence|- Don't try to do everything
+M|email-sequence|- Lead with usefulness
+M|email-sequence|- Build trust through cnt
+M|email-sequence|- Earn the right to sell
+M|email-sequence|- Fewer, better emails win
+M|email-sequence|- Segment for relevance
+M|email-sequence|- Quality > frequency
+M|email-sequence|- Every email moves them somewhere
+M|email-sequence|- Links should do something useful
+M|email-sequence|- Make next steps obvious
+M|email-sequence|- Welcome: 3-7 emails
+M|email-sequence|- Lead nurture: 5-10 emails
+M|email-sequence|- Onboarding: 5-10 emails
+M|email-sequence|- Re-engagement: 3-5 emails
+M|email-sequence|Depends on:
+M|email-sequence|- Sales cycle length
+M|email-sequence|- Product complexity
+M|email-sequence|- Relationship stage
+M|email-sequence|- Welcome email: Immediately
+M|email-sequence|- Early sequence: 1-2 days apart
+M|email-sequence|- Nurture: 2-4 days apart
+M|email-sequence|- Long-term: Weekly or bi-weekly
+M|email-sequence|Consider:
+M|email-sequence|- B2B: Avoid weekends
+M|email-sequence|- B2C: Test weekends
+M|email-sequence|- Time zones: Send at local time
+M|email-sequence|- Clear > Clever
+M|email-sequence|- Specific > Vague
+M|email-sequence|- Benefit or curiosity-driven
+M|email-sequence|- 40-60 characters ideal
+M|email-sequence|- Test emoji (they're polarizing)
+M|email-sequence|**Patterns that work:**
+M|email-sequence|- Question: "Still struggling with X?"
+M|email-sequence|- How-to: "How to [achieve outcome] in [timeframe]"
+M|email-sequence|- Number: "3 ways to [benefit]"
+M|email-sequence|- Direct: "[First name], your [thing] is ready"
+M|email-sequence|- Story tease: "The mistake I made with [topic]"
+M|email-sequence|- Extends the subject line
+M|email-sequence|- ~90-140 characters
+M|email-sequence|- Don't repeat subject line
+M|email-sequence|- Complete the thought or add intrigue
+M|email-sequence|**Length**: 5-7 emails over 12-14 days
+M|email-sequence|**Goal**: Activate, build trust, convert
+M|email-sequence|Key emails:
+M|email-sequence|1. Welcome + deliver promised value (immediate)
+M|email-sequence|2. Quick win (day 1-2)
+M|email-sequence|3. Story/Why (day 3-4)
+M|email-sequence|4. soc proof (day 5-6)
+M|email-sequence|5. Overcome objection (day 7-8)
+M|email-sequence|6. Core feature highlight (day 9-11)
+M|email-sequence|7. Conversion (day 12-14)
+M|email-sequence|**Length**: 6-8 emails over 2-3 weeks
+M|email-sequence|**Goal**: Build trust, demonstrate expertise, convert
+M|email-sequence|Key emails:
+M|email-sequence|1. Deliver lead magnet + intro (immediate)
+M|email-sequence|2. Expand on topic (day 2-3)
+M|email-sequence|3. Problem deep-dive (day 4-5)
+M|email-sequence|4. Solution framework (day 6-8)
+M|email-sequence|5. Case study (day 9-11)
+M|email-sequence|6. Differentiation (day 12-14)
+M|email-sequence|7. Objection handler (day 15-18)
+M|email-sequence|8. Direct offer (day 19-21)
+M|email-sequence|**Length**: 3-4 emails over 2 weeks
+M|email-sequence|**Trigger**: 30-60 days of inactivity
+M|email-sequence|**Goal**: Win back or clean list
+M|email-sequence|Key emails:
+M|email-sequence|1. Check-in (genuine concern)
+M|email-sequence|2. Value reminder (what's new)
+M|email-sequence|3. Incentive (special offer)
+M|email-sequence|4. Last chance (stay or unsubscribe)
+M|email-sequence|**Length**: 5-7 emails over 14 days
+M|email-sequence|**Goal**: Activate, drive to aha moment, upgrade
+M|email-sequence|**Note**: Coordinate with in-app onboarding—email supports, doesn't duplicate
+M|email-sequence|Key emails:
+M|email-sequence|1. Welcome + first step (immediate)
+M|email-sequence|2. Getting started help (day 1)
+M|email-sequence|3. Feature highlight (day 2-3)
+M|email-sequence|4. Success story (day 4-5)
+M|email-sequence|5. Check-in (day 7)
+M|email-sequence|6. Advanced tip (day 10-12)
+M|email-sequence|7. Upgrade/expand (day 14+)
+M|email-sequence|**For detailed templates**: See [references/sequence-templates.md](references/sequence-templates.md)
+M|email-sequence|- New users series
+M|email-sequence|- New customers series
+M|email-sequence|- Key onboarding step reminders
+M|email-sequence|- New user invites
+M|email-sequence|- Upgrade to paid
+M|email-sequence|- Upgrade to higher plan
+M|email-sequence|- Ask for rv
+M|email-sequence|- Proactive support offers
+M|email-sequence|- Product usage reports
+M|email-sequence|- NPS survey
+M|email-sequence|- Referral program
+M|email-sequence|- Switch to annual
+M|email-sequence|- Failed payment recovery
+M|email-sequence|- Cancellation survey
+M|email-sequence|- Upcoming renewal reminders
+M|email-sequence|- Daily/weekly/monthly summaries
+M|email-sequence|- Key event notifications
+M|email-sequence|- Milestone celebrations
+M|email-sequence|- Expired trials
+M|email-sequence|- Cancelled customers
+M|email-sequence|- Monthly roundup / nl
+M|email-sequence|- Seasonal promotions
+M|email-sequence|- Product updates
+M|email-sequence|- Industry news roundup
+M|email-sequence|- Pricing updates
+M|email-sequence|**For detailed email type reference**: See [references/email-types.md](references/email-types.md)
+M|email-sequence|1. **Hook**: First line grabs attention
+M|email-sequence|2. **ctx**: Why this matters to them
+M|email-sequence|3. **Value**: The useful cnt
+M|email-sequence|4. **CTA**: What to do next
+M|email-sequence|5. **Sign-off**: Human, warm close
+M|email-sequence|- Short paragraphs (1-3 sentences)
+M|email-sequence|- White space between sections
+M|email-sequence|- Bullet points for scanability
+M|email-sequence|- Bold for emphasis (sparingly)
+M|email-sequence|- Mobile-first (most read on phone)
+M|email-sequence|- Conversational, not formal
+M|email-sequence|- First-person (I/we) and second-person (you)
+M|email-sequence|- Active voice
+M|email-sequence|- Read it out loud—does it sound human?
+M|email-sequence|- 50-125 words for transactional
+M|email-sequence|- 150-300 words for educational
+M|email-sequence|- 300-500 words for story-driven
+M|email-sequence|- Buttons for primary actions
+M|email-sequence|- Links for secondary actions
+M|email-sequence|- One clear primary CTA per email
+M|email-sequence|- Button text: Action + outcome
+M|email-sequence|**For detailed copy, personalization, and testing guidelines**: See [references/copy-guidelines.md](references/copy-guidelines.md)
+M|email-sequence|```
+M|email-sequence|Sequence Name: [Name]
+M|email-sequence|Trigger: [What starts the sequence]
+M|email-sequence|Goal: [Primary conversion goal]
+M|email-sequence|Length: [Number of emails]
+M|email-sequence|Timing: [Delay between emails]
+M|email-sequence|Exit Conditions: [When they leave the sequence]
+M|email-sequence|```
+M|email-sequence|```
+M|email-sequence|Email [#]: [Name/Purpose]
+M|email-sequence|Send: [Timing]
+M|email-sequence|Subject: [Subject line]
+M|email-sequence|Preview: [Preview text]
+M|email-sequence|Body: [Full copy]
+M|email-sequence|CTA: [Button text] → [Link destination]
+M|email-sequence|Segment/Conditions: [If applicable]
+M|email-sequence|```
+M|email-sequence|What to measure and benchmarks
+M|email-sequence|1. What triggers entry to this sequence?
+M|email-sequence|2. What's the primary goal/conversion action?
+M|email-sequence|3. What do they already know about you?
+M|email-sequence|4. What other emails are they receiving?
+M|email-sequence|5. What's your current email performance?
+M|email-sequence|For implementation, see the [tools registry](../../tools/REGISTRY.md). Key email tools:
+M|email-sequence|| Tool | Best For | MCP | Guide |
+M|email-sequence||------|----------|:---:|-------|
+M|email-sequence|| **Customer.io** | Behavior-based automation | - | [customer-io.md](../../tools/integrations/customer-io.md) |
+M|email-sequence|| **Mailchimp** | SMB email mkt | ✓ | [mailchimp.md](../../tools/integrations/mailchimp.md) |
+M|email-sequence|| **Nitrosend** | AI-native email (sequences via prompts) | ✓ | [nitrosend.md](../../tools/integrations/nitrosend.md) |
+M|email-sequence|| **Resend** | Developer-friendly transactional | ✓ | [resend.md](../../tools/integrations/resend.md) |
+M|email-sequence|| **SendGrid** | Transactional email at scale | - | [sendgrid.md](../../tools/integrations/sendgrid.md) |
+M|email-sequence|| **Kit** | Creator/nl focused | - | [kit.md](../../tools/integrations/kit.md) |
+M|email-sequence|- **lead-magnets**: For planning lead magnets that feed into nurture sequences
+M|email-sequence|- **churn-prevention**: For cancel flows, save offers, and dunning str (email supports this)
+M|email-sequence|- **onboarding-cro**: For in-app onboarding (email supports this)
+M|email-sequence|- **copywriting**: For landing pages emails link to
+M|email-sequence|- **ab-test-setup**: For testing email elements
+M|email-sequence|- **popup-cro**: For email capture popups
+M|email-sequence|- **revops**: For lifecycle stages that trigger email sequences

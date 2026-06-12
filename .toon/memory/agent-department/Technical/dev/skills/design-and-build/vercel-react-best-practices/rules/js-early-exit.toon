@@ -1,0 +1,39 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-early-exit.md
+M|rules|title: Early Return from Functions
+M|rules|impact: LOW-MEDIUM
+M|rules|impactDescription: avoids unnecessary computation
+M|rules|tags: javascript, functions, optimization, early-return
+M|rules|Return early when result is determined to skip unnecessary processing.
+M|rules|**Incorrect (processes all items even after finding answer):**
+M|rules|```typescript
+M|rules|function validateUsers(users: User[]) {
+M|rules|let hasError = false
+M|rules|let errorMessage = ''
+M|rules|for (const user of users) {
+M|rules|if (!user.email) {
+M|rules|hasError = true
+M|rules|errorMessage = 'Email required'
+M|rules|}
+M|rules|if (!user.name) {
+M|rules|hasError = true
+M|rules|errorMessage = 'Name required'
+M|rules|}
+M|rules|// Continues checking all users even after error found
+M|rules|}
+M|rules|return hasError ? { valid: false, error: errorMessage } : { valid: true }
+M|rules|}
+M|rules|```
+M|rules|**Correct (returns immediately on first error):**
+M|rules|```typescript
+M|rules|function validateUsers(users: User[]) {
+M|rules|for (const user of users) {
+M|rules|if (!user.email) {
+M|rules|return { valid: false, error: 'Email required' }
+M|rules|}
+M|rules|if (!user.name) {
+M|rules|return { valid: false, error: 'Name required' }
+M|rules|}
+M|rules|}
+M|rules|return { valid: true }
+M|rules|}
+M|rules|```

@@ -1,0 +1,9 @@
+#MEM id=themes source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/ocean-depths.md
+M|themes|A professional and calming maritime theme that evokes the serenity of deep ocean waters.
+M|themes|- **Deep Navy**: `#1a2332` - Primary background color
+M|themes|- **Teal**: `#2d8b8b` - Accent color for highlights and emphasis
+M|themes|- **Seafoam**: `#a8dadc` - Secondary accent for lighter elements
+M|themes|- **Cream**: `#f1faee` - Text and light backgrounds
+M|themes|- **Headers**: DejaVu Sans Bold
+M|themes|- **Body Text**: DejaVu Sans
+M|themes|Corporate presentations, financial reports, professional consulting decks, trust-building cnt.

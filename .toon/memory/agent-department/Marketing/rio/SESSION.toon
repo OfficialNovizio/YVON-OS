@@ -1,0 +1,20 @@
+#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/SESSION.md
+M|rio|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|rio|> Always load this first. Load mem.md for channel str, proven angles, and standing rules.
+M|rio|- **Last active:** 2026-06-11
+M|rio|- **Current task:** Daily ad brief delivered
+M|rio|- **Waiting for Stark:** `.env.local` Supabase credentials on prd — blocks entire mkt anl pl (Day 4)
+M|rio|- **Kai's June 11 shift:** Diagnosis hardened from "credentials hypothesis" to "confirmed ingestion architecture gap." Kai recommends unified ingestion pl for both ventures.
+M|rio|- **Next ses starts with:** Rio pivot on June 12 if no movement — shift from "waiting for data" to "planning without data."
+M|rio|- **SS26 window:** ~9-19 days to late June launch. Pre-mortem required this week with Kahneman.
+M|rio|| Date | Task | Outcome | Next Step |
+M|rio||------|------|---------|-----------|
+M|rio|| 2026-06-11 | Kai morning brief analysis → ad brief | Day 4 of pl stall. Kai confirms ingestion architecture offline, not just credentials. Unified pl recommended. SS26 window: 9-19 days. Pre-mortem 
+M|rio|| 2026-06-10 | Kai morning brief analysis → ad brief | Both ventures: no signal (day 3 of pl stall). SS26 blind launch risk escalated to pre-mortem requirement. Hourbour instrumentation window warning
+M|rio|| 2026-06-09 | Kai morning brief analysis → ad brief | Both ventures: no signal (day 2 of pl stall). Recommended HOLD on all spend. Flagged SS26 blind launch risk. | — |
+M|rio|> Unresolved questions, blockers, or decisions pending Stark input.
+M|rio|- **BLOCKING:** Supabase `.env.local` credentials on prd — 10-min fix that unblocks Kai, Rio, Nate, Felix for Novizio
+M|rio|- **ESCALATED:** SS26 pre-mortem with Kahneman — was advisory, now required before any budget commitment
+M|rio|- Novizio UGC Reels test — needs Stark green light on budget before scaling
+M|rio|- Hourbour LinkedIn retargeting budget increase — pending Felix margin check
+M|rio|- Hourbour event tracking spec — Kai recommends writing before product build outpaces instrumentation

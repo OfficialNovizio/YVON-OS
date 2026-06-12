@@ -1,0 +1,15 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/SESSION.md
+M|lena|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|lena|> Always load this first. Load mem.md for brand voice rules, swipe file, cnt rules, and templates.
+M|lena|- **Last active:** 2026-05-19
+M|lena|- **Current task:** idle
+M|lena|- **Waiting for Stark:** Novizio SS26 cg brief before any copy or caption work begins
+M|lena|- **Next ses starts with:** Confirm active vtr + load FEEDBACK.md for that vtr before any copy work
+M|lena|| Date | Task | Outcome | Next Step |
+M|lena||------|------|---------|-----------|
+M|lena|| 2026-05-19 | cnt Suggestion Engine — copy rv | Hook A/B toggle copy for 5-pitch CSE card UI. rv growth hypothesis language for clarity and brand alignment. Confirmed no discount/urgency language in 
+M|lena|| 2026-05-16 | Creative Studio ses 3 — caption draft | Brand voice validation for storyline captionDraft output. Confirmed gen-storyline route produces on-brand captions + hashtags. | Test end-to-end 
+M|lena|| 2026-03-23 | mem system initialised | File seeded with YVON brand voice ctx | — |
+M|lena|> Unresolved questions, blockers, or decisions pending Stark input.
+M|lena|- Novizio SS26 cg brief — Lena cannot write cg copy without it
+M|lena|- Hourbour brand voice distinction from Novizio — doc before any Hourbour copy ses

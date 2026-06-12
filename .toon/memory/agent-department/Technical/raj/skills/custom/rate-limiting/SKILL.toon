@@ -1,0 +1,105 @@
+#MEM id=rate-limiting source=/root/yvon/agent-department/Technical/raj/skills/custom/rate-limiting/SKILL.md
+M|rate-limiting|name: rate-limiting
+M|rate-limiting|description: Rate limiting implementation for YVON using Vercel Edge Middleware. Covers per-route limits, sliding window pattern, 429 rsp format, and Supabase-based fallback. No Upstash — not in YVON'
+M|rate-limiting|version: 1.0.0
+M|rate-limiting|Without rate limiting, YVON's AI routes (`/api/team-chat`, `/api/*-agt`) can be exhausted by a single client making rapid requests — burning Anthropic API credits and degrading rsp quality for all use
+M|rate-limiting|| Route category | Limit | Window |
+M|rate-limiting||---------------|-------|--------|
+M|rate-limiting|| AI routes (`/api/team-chat`, `/api/*-agt`, `/api/creative-engine`) | 20 req/min | per IP |
+M|rate-limiting|| Data routes (`/api/anl`, `/api/cp`, `/api/soc`) | 60 req/min | per IP |
+M|rate-limiting|| Auth routes | 10 req/min | per IP |
+M|rate-limiting|| Cron routes | 1 req/min | enforced by Vercel schedule, not middleware |
+M|rate-limiting|```typescript
+M|rate-limiting|return NextResponse.json(
+M|rate-limiting|{ error: 'Rate limit exceeded. Please wait before retrying.' },
+M|rate-limiting|{
+M|rate-limiting|status: 429,
+M|rate-limiting|headers: {
+M|rate-limiting|'Retry-After': '60',
+M|rate-limiting|'X-RateLimit-Limit': String(limit),
+M|rate-limiting|'X-RateLimit-Remaining': '0',
+M|rate-limiting|'X-RateLimit-Reset': String(Math.ceil(Date.now() / 1000) + 60)
+M|rate-limiting|}
+M|rate-limiting|}
+M|rate-limiting|)
+M|rate-limiting|```
+M|rate-limiting|Never return `200` or `500` for a rate limit. Always `429` with `Retry-After`.
+M|rate-limiting|`middleware.ts` at project root — runs on Edge before the route handler:
+M|rate-limiting|```typescript
+M|rate-limiting|import { NextRequest, NextResponse } from 'next/server'
+M|rate-limiting|const RATE_LIMITS: Record<string, { limit: number; window: number }> = {
+M|rate-limiting|'/api/team-chat': { limit: 20, window: 60 },
+M|rate-limiting|'/api/creative-engine': { limit: 20, window: 60 },
+M|rate-limiting|'/api/anl': { limit: 60, window: 60 },
+M|rate-limiting|}
+M|rate-limiting|// Sliding window using Edge runtime — in-mem per Edge instance
+M|rate-limiting|// Resets on cold start (acceptable — degrades gracefully, doesn't block)
+M|rate-limiting|const requestCounts = new Map<string, { count: number; resetAt: number }>()
+M|rate-limiting|export function middleware(req: NextRequest) {
+M|rate-limiting|const pathname = req.nextUrl.pathname
+M|rate-limiting|const config = Object.entries(RATE_LIMITS).find(([route]) => pathname.startsWith(route))
+M|rate-limiting|if (!config) return NextResponse.next()
+M|rate-limiting|const [, { limit, window: windowSec }] = config
+M|rate-limiting|const ip = req.ip ?? req.headers.get('x-forwarded-for') ?? 'unknown'
+M|rate-limiting|const key = `${ip}:${pathname}`
+M|rate-limiting|const now = Date.now()
+M|rate-limiting|const entry = requestCounts.get(key)
+M|rate-limiting|if (!entry || now > entry.resetAt) {
+M|rate-limiting|requestCounts.set(key, { count: 1, resetAt: now + windowSec * 1000 })
+M|rate-limiting|return NextResponse.next()
+M|rate-limiting|}
+M|rate-limiting|if (entry.count >= limit) {
+M|rate-limiting|return NextResponse.json(
+M|rate-limiting|{ error: 'Rate limit exceeded. Please wait before retrying.' },
+M|rate-limiting|{ status: 429, headers: { 'Retry-After': String(windowSec) } }
+M|rate-limiting|)
+M|rate-limiting|}
+M|rate-limiting|entry.count++
+M|rate-limiting|return NextResponse.next()
+M|rate-limiting|}
+M|rate-limiting|export const config = {
+M|rate-limiting|matcher: ['/api/team-chat', '/api/creative-engine', '/api/anl/:path*']
+M|rate-limiting|}
+M|rate-limiting|```
+M|rate-limiting|For persistent rate limiting across Edge instances, use a Supabase `rate_limits` table:
+M|rate-limiting|```sql
+M|rate-limiting|CREATE TABLE rate_limits (
+M|rate-limiting|id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+M|rate-limiting|ip TEXT NOT NULL,
+M|rate-limiting|route TEXT NOT NULL,
+M|rate-limiting|venture_slug TEXT NOT NULL,
+M|rate-limiting|window_start TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+M|rate-limiting|request_count INTEGER NOT NULL DEFAULT 1,
+M|rate-limiting|UNIQUE(ip, route, venture_slug, window_start)
+M|rate-limiting|);
+M|rate-limiting|```
+M|rate-limiting|```typescript
+M|rate-limiting|// In route handler — check before processing
+M|rate-limiting|const windowStart = new Date(Math.floor(Date.now() / 60000) * 60000) // 1-minute bucket
+M|rate-limiting|const { data: rateEntry } = await supabase
+M|rate-limiting|.from('rate_limits')
+M|rate-limiting|.upsert({
+M|rate-limiting|ip: clientIp,
+M|rate-limiting|route: '/api/team-chat',
+M|rate-limiting|venture_slug: ventureSlug,
+M|rate-limiting|window_start: windowStart.toISOString(),
+M|rate-limiting|request_count: 1
+M|rate-limiting|}, {
+M|rate-limiting|onConflict: 'ip,route,venture_slug,window_start',
+M|rate-limiting|ignoreDuplicates: false
+M|rate-limiting|})
+M|rate-limiting|.select('request_count')
+M|rate-limiting|.single()
+M|rate-limiting|if (rateEntry && rateEntry.request_count > 20) {
+M|rate-limiting|return NextResponse.json(
+M|rate-limiting|{ error: 'Rate limit exceeded. Please wait before retrying.' },
+M|rate-limiting|{ status: 429, headers: { 'Retry-After': '60' } }
+M|rate-limiting|)
+M|rate-limiting|}
+M|rate-limiting|```
+M|rate-limiting|Before submitting a rate-limited route for Dev rv:
+M|rate-limiting|- [ ] Route is in the middleware matcher config
+M|rate-limiting|- [ ] 429 rsp includes `Retry-After` header
+M|rate-limiting|- [ ] IP extraction handles `x-forwarded-for` (Vercel header)
+M|rate-limiting|- [ ] Venture_slug is included in the rate limit key (Novizio and Hourbour have separate quotas)
+M|rate-limiting|- [ ] Cron routes are NOT in middleware (they're protected by CRON_SECRET, not IP limits)

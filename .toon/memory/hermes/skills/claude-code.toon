@@ -1,0 +1,211 @@
+SKILL|claude-code|"Delegate coding to Claude Code CLI (features, PRs)."
+STEP|1|**Install:** `npm install -g @anthropic-ai/claude-code`
+STEP|2|**Auth:** run `claude` once to log in (browser OAuth for Pro/Max, or set `ANTHROPIC_API_KEY`)
+STEP|3|**Console auth:** `claude auth login --console` for API key billing
+STEP|4|**SSO auth:** `claude auth login --sso` for Enterprise
+STEP|5|**Check status:** `claude auth status` (JSON) or `claude auth status --text` (human-readable)
+STEP|6|**Health check:** `claude doctor` — checks auto-updater and installation health
+STEP|7|**Version check:** `claude --version` (requires v2.x+)
+STEP|8|**Update:** `claude update` or `claude upgrade`
+STEP|9|When to use print mode:**
+STEP|10|One-shot coding tasks (fix a bug, add a feature, refactor)
+STEP|11|CI/CD automation and scripting
+STEP|12|Structured data extraction with `--json-schema`
+STEP|13|Piped input processing (`cat file \| claude -p "analyze this"`)
+STEP|14|Any task where you don't need multi-turn conversation
+STEP|15|Print mode skips ALL interactive dialogs** — no workspace trust prompt, no permission confirmations. This makes it ideal for automation.
+STEP|16|When to use interactive mode:**
+STEP|17|Multi-turn iterative work (refactor → review → fix → test cycle)
+STEP|18|Tasks requiring human-in-the-loop decisions
+STEP|19|Exploratory coding sessions
+STEP|20|When you need to use Claude's slash commands (`/compact`, `/review`, `/model`)
+STEP|21|Handling:** `tmux send-keys -t <session> Enter` — default selection is correct.
+STEP|22|Handling:** Must navigate DOWN first, then Enter:
+STEP|23|Note:** After the first trust acceptance for a directory, the trust dialog won't appear again. Only the permissions dialog recurs each time you use `--dangerously-skip-permissions`.
+STEP|24|Key fields:** `session_id` for resumption, `num_turns` for agentic loop count, `total_cost_usd` for spend tracking, `subtype` for success/error detection (`success`, `error_max_turns`, `error_budget`)
+STEP|25|**CLI flags** — override everything
+STEP|26|**Local project:** `.claude/settings.local.json` (personal, gitignored)
+STEP|27|**Project:** `.claude/settings.json` (shared, git-tracked)
+STEP|28|**User:** `~/.claude/settings.json` (global)
+STEP|29|**Global:** `~/.claude/CLAUDE.md` — applies to all projects
+STEP|30|**Project:** `./CLAUDE.md` — project-specific context (git-tracked)
+STEP|31|**Local:** `.claude/CLAUDE.local.md` — personal project overrides (gitignored)
+STEP|32|Run all tests
+STEP|33|Build the Docker image
+STEP|34|Push to registry
+STEP|35|Update the $ARGUMENTS environment (default: staging)
+STEP|36|Use Alembic for migration generation
+STEP|37|Always create a rollback function
+STEP|38|Test migrations against a local database copy
+STEP|39|FastAPI backend with SQLAlchemy ORM
+STEP|40|PostgreSQL database, Redis cache
+STEP|41|pytest for testing with 90% coverage target
+STEP|42|`make test` — run full test suite
+STEP|43|`make lint` — ruff + mypy
+STEP|44|`make dev` — start dev server on :8000
+STEP|45|Type hints on all public functions
+STEP|46|Docstrings in Google style
+STEP|47|2-space indentation for YAML, 4-space for Python
+STEP|48|No wildcard imports
+STEP|49|Be specific.** Instead of "Write good code", use "Use 2-space indentation for JS" or "Name test files with `.test.ts` suffix." Specific instructions save correction cycles.
+STEP|50|**Project rules:** `.claude/rules/*.md` — team-shared, git-tracked
+STEP|51|**User rules:** `~/.claude/rules/*.md` — personal, global
+STEP|52|**Limit:** 25KB or 200 lines per project
+STEP|53|This is separate from CLAUDE.md — it's Claude's own notes about the project, accumulated across sessions
+STEP|54|`.claude/agents/` — project-level, team-shared
+STEP|55|`--agents` CLI flag — session-specific, dynamic
+STEP|56|`~/.claude/agents/` — user-level, personal
+STEP|57|Injection vulnerabilities (SQL, XSS, command injection)
+STEP|58|Authentication/authorization flaws
+STEP|59|Secrets in code
+STEP|60|Unsafe deserialization
+STEP|61|**Tool descriptions:** 2KB cap per server for tool descriptions and server instructions
+STEP|62|**Result size:** Default capped; use `maxResultSizeChars` annotation to allow up to **500K** characters for large outputs
+STEP|63|**Output tokens:** `export MAX_MCP_OUTPUT_TOKENS=50000` — cap output from MCP servers to prevent context flooding
+STEP|64|**Transports:** `stdio` (local process), `http` (remote), `sse` (server-sent events)
+STEP|65|`❯` at bottom = waiting for your input (Claude is done or asking a question)
+STEP|66|`●` lines = Claude is actively using tools (reading, writing, running commands)
+STEP|67|`⏵⏵ bypass permissions on` = status bar showing permissions mode
+STEP|68|`◐ medium · /effort` = current effort level in status bar
+STEP|69|`ctrl+o to expand` = tool output was truncated (can be expanded interactively)
+STEP|70|**< 70%** — Normal operation, full precision
+STEP|71|**70-85%** — Precision starts dropping, consider `/compact`
+STEP|72|**> 85%** — Hallucination risk spikes significantly, use `/compact` or `/clear`
+STEP|73|**Use `--max-turns`** in print mode to prevent runaway loops. Start with 5-10 for most tasks.
+STEP|74|**Use `--max-budget-usd`** for cost caps. Note: minimum ~$0.05 for system prompt cache creation.
+STEP|75|**Use `--effort low`** for simple tasks (faster, cheaper). `high` or `max` for complex reasoning.
+STEP|76|**Use `--bare`** for CI/scripting to skip plugin/hook discovery overhead.
+STEP|77|**Use `--allowedTools`** to restrict to only what's needed (e.g., `Read` only for reviews).
+STEP|78|**Use `/compact`** in interactive sessions when context gets large.
+STEP|79|**Pipe input** instead of having Claude read files when you just need analysis of known content.
+STEP|80|**Use `--model haiku`** for simple tasks (cheaper) and `--model opus` for complex multi-step work.
+STEP|81|**Use `--fallback-model haiku`** in print mode to gracefully handle model overload.
+STEP|82|**Start new sessions for distinct tasks** — sessions last 5 hours; fresh context is more efficient.
+STEP|83|**Use `--no-session-persistence`** in CI to avoid accumulating saved sessions on disk.
+STEP|84|**Interactive mode REQUIRES tmux** — Claude Code is a full TUI app. Using `pty=true` alone in Hermes terminal works but tmux gives you `capture-pane` for monitoring and `send-keys` for input, which is
+STEP|85|**`--dangerously-skip-permissions` dialog defaults to "No, exit"** — you must send Down then Enter to accept. Print mode (`-p`) skips this entirely.
+STEP|86|**`--max-budget-usd` minimum is ~$0.05** — system prompt cache creation alone costs this much. Setting lower will error immediately.
+STEP|87|**`--max-turns` is print-mode only** — ignored in interactive sessions.
+STEP|88|**Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
+STEP|89|**Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
+STEP|90|**`--json-schema` needs enough `--max-turns`** — Claude must read files before producing structured output, which takes multiple turns.
+STEP|91|**Trust dialog only appears once per directory** — first-time only, then cached.
+STEP|92|**Background tmux sessions persist** — always clean up with `tmux kill-session -t <name>` when done.
+STEP|93|**Slash commands (like `/commit`) only work in interactive mode** — in `-p` mode, describe the task in natural language instead.
+STEP|94|**`--bare` skips OAuth** — requires `ANTHROPIC_API_KEY` env var or an `apiKeyHelper` in settings.
+STEP|95|**Context degradation is real** — AI output quality measurably degrades above 70% context window usage. Monitor with `/context` and proactively `/compact`.
+STEP|96|**Prefer print mode (`-p`) for single tasks** — cleaner, no dialog handling, structured output
+STEP|97|**Use tmux for multi-turn interactive work** — the only reliable way to orchestrate the TUI
+STEP|98|**Always set `workdir`** — keep Claude focused on the right project directory
+STEP|99|**Set `--max-turns` in print mode** — prevents infinite loops and runaway costs
+STEP|100|**Monitor tmux sessions** — use `tmux capture-pane -t <session> -p -S -50` to check progress
+STEP|101|**Look for the `❯` prompt** — indicates Claude is waiting for input (done or asking a question)
+STEP|102|**Clean up tmux sessions** — kill them when done to avoid resource leaks
+STEP|103|**Report results to user** — after completion, summarize what Claude did and what changed
+STEP|104|**Don't kill slow sessions** — Claude may be doing multi-step work; check progress instead
+STEP|105|**Use `--allowedTools`** — restrict capabilities to what the task actually needs
+PIT|**Install:** `npm install -g @anthropic-ai/claude-code`
+PIT|**Auth:** run `claude` once to log in (browser OAuth for Pro/Max, or set `ANTHROPIC_API_KEY`)
+PIT|**Console auth:** `claude auth login --console` for API key billing
+PIT|**SSO auth:** `claude auth login --sso` for Enterprise
+PIT|**Check status:** `claude auth status` (JSON) or `claude auth status --text` (human-readable)
+PIT|**Health check:** `claude doctor` — checks auto-updater and installation health
+PIT|**Version check:** `claude --version` (requires v2.x+)
+PIT|**Update:** `claude update` or `claude upgrade`
+PIT|When to use print mode:**
+PIT|One-shot coding tasks (fix a bug, add a feature, refactor)
+PIT|CI/CD automation and scripting
+PIT|Structured data extraction with `--json-schema`
+PIT|Piped input processing (`cat file \| claude -p "analyze this"`)
+PIT|Any task where you don't need multi-turn conversation
+PIT|Print mode skips ALL interactive dialogs** — no workspace trust prompt, no permission confirmations. This makes it ideal for automation.
+PIT|When to use interactive mode:**
+PIT|Multi-turn iterative work (refactor → review → fix → test cycle)
+PIT|Tasks requiring human-in-the-loop decisions
+PIT|Exploratory coding sessions
+PIT|When you need to use Claude's slash commands (`/compact`, `/review`, `/model`)
+PIT|Handling:** `tmux send-keys -t <session> Enter` — default selection is correct.
+PIT|Handling:** Must navigate DOWN first, then Enter:
+PIT|Note:** After the first trust acceptance for a directory, the trust dialog won't appear again. Only the permissions dialog recurs each time you use `--dangerously-skip-permissions`.
+PIT|Key fields:** `session_id` for resumption, `num_turns` for agentic loop count, `total_cost_usd` for spend tracking, `subtype` for success/error detection (`success`, `error_max_turns`, `error_budget`)
+PIT|**CLI flags** — override everything
+PIT|**Local project:** `.claude/settings.local.json` (personal, gitignored)
+PIT|**Project:** `.claude/settings.json` (shared, git-tracked)
+PIT|**User:** `~/.claude/settings.json` (global)
+PIT|**Global:** `~/.claude/CLAUDE.md` — applies to all projects
+PIT|**Project:** `./CLAUDE.md` — project-specific context (git-tracked)
+PIT|**Local:** `.claude/CLAUDE.local.md` — personal project overrides (gitignored)
+PIT|Run all tests
+PIT|Build the Docker image
+PIT|Push to registry
+PIT|Update the $ARGUMENTS environment (default: staging)
+PIT|Use Alembic for migration generation
+PIT|Always create a rollback function
+PIT|Test migrations against a local database copy
+PIT|FastAPI backend with SQLAlchemy ORM
+PIT|PostgreSQL database, Redis cache
+PIT|pytest for testing with 90% coverage target
+PIT|`make test` — run full test suite
+PIT|`make lint` — ruff + mypy
+PIT|`make dev` — start dev server on :8000
+PIT|Type hints on all public functions
+PIT|Docstrings in Google style
+PIT|2-space indentation for YAML, 4-space for Python
+PIT|No wildcard imports
+PIT|Be specific.** Instead of "Write good code", use "Use 2-space indentation for JS" or "Name test files with `.test.ts` suffix." Specific instructions save correction cycles.
+PIT|**Project rules:** `.claude/rules/*.md` — team-shared, git-tracked
+PIT|**User rules:** `~/.claude/rules/*.md` — personal, global
+PIT|**Limit:** 25KB or 200 lines per project
+PIT|This is separate from CLAUDE.md — it's Claude's own notes about the project, accumulated across sessions
+PIT|`.claude/agents/` — project-level, team-shared
+PIT|`--agents` CLI flag — session-specific, dynamic
+PIT|`~/.claude/agents/` — user-level, personal
+PIT|Injection vulnerabilities (SQL, XSS, command injection)
+PIT|Authentication/authorization flaws
+PIT|Secrets in code
+PIT|Unsafe deserialization
+PIT|**Tool descriptions:** 2KB cap per server for tool descriptions and server instructions
+PIT|**Result size:** Default capped; use `maxResultSizeChars` annotation to allow up to **500K** characters for large outputs
+PIT|**Output tokens:** `export MAX_MCP_OUTPUT_TOKENS=50000` — cap output from MCP servers to prevent context flooding
+PIT|**Transports:** `stdio` (local process), `http` (remote), `sse` (server-sent events)
+PIT|`❯` at bottom = waiting for your input (Claude is done or asking a question)
+PIT|`●` lines = Claude is actively using tools (reading, writing, running commands)
+PIT|`⏵⏵ bypass permissions on` = status bar showing permissions mode
+PIT|`◐ medium · /effort` = current effort level in status bar
+PIT|`ctrl+o to expand` = tool output was truncated (can be expanded interactively)
+PIT|**< 70%** — Normal operation, full precision
+PIT|**70-85%** — Precision starts dropping, consider `/compact`
+PIT|**> 85%** — Hallucination risk spikes significantly, use `/compact` or `/clear`
+PIT|**Use `--max-turns`** in print mode to prevent runaway loops. Start with 5-10 for most tasks.
+PIT|**Use `--max-budget-usd`** for cost caps. Note: minimum ~$0.05 for system prompt cache creation.
+PIT|**Use `--effort low`** for simple tasks (faster, cheaper). `high` or `max` for complex reasoning.
+PIT|**Use `--bare`** for CI/scripting to skip plugin/hook discovery overhead.
+PIT|**Use `--allowedTools`** to restrict to only what's needed (e.g., `Read` only for reviews).
+PIT|**Use `/compact`** in interactive sessions when context gets large.
+PIT|**Pipe input** instead of having Claude read files when you just need analysis of known content.
+PIT|**Use `--model haiku`** for simple tasks (cheaper) and `--model opus` for complex multi-step work.
+PIT|**Use `--fallback-model haiku`** in print mode to gracefully handle model overload.
+PIT|**Start new sessions for distinct tasks** — sessions last 5 hours; fresh context is more efficient.
+PIT|**Use `--no-session-persistence`** in CI to avoid accumulating saved sessions on disk.
+PIT|**Interactive mode REQUIRES tmux** — Claude Code is a full TUI app. Using `pty=true` alone in Hermes terminal works but tmux gives you `capture-pane` for monitoring and `send-keys` for input, which is
+PIT|**`--dangerously-skip-permissions` dialog defaults to "No, exit"** — you must send Down then Enter to accept. Print mode (`-p`) skips this entirely.
+PIT|**`--max-budget-usd` minimum is ~$0.05** — system prompt cache creation alone costs this much. Setting lower will error immediately.
+PIT|**`--max-turns` is print-mode only** — ignored in interactive sessions.
+PIT|**Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
+PIT|**Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
+PIT|**`--json-schema` needs enough `--max-turns`** — Claude must read files before producing structured output, which takes multiple turns.
+PIT|**Trust dialog only appears once per directory** — first-time only, then cached.
+PIT|**Background tmux sessions persist** — always clean up with `tmux kill-session -t <name>` when done.
+PIT|**Slash commands (like `/commit`) only work in interactive mode** — in `-p` mode, describe the task in natural language instead.
+PIT|**`--bare` skips OAuth** — requires `ANTHROPIC_API_KEY` env var or an `apiKeyHelper` in settings.
+PIT|**Context degradation is real** — AI output quality measurably degrades above 70% context window usage. Monitor with `/context` and proactively `/compact`.
+PIT|**Prefer print mode (`-p`) for single tasks** — cleaner, no dialog handling, structured output
+PIT|**Use tmux for multi-turn interactive work** — the only reliable way to orchestrate the TUI
+PIT|**Always set `workdir`** — keep Claude focused on the right project directory
+PIT|**Set `--max-turns` in print mode** — prevents infinite loops and runaway costs
+PIT|**Monitor tmux sessions** — use `tmux capture-pane -t <session> -p -S -50` to check progress
+PIT|**Look for the `❯` prompt** — indicates Claude is waiting for input (done or asking a question)
+PIT|**Clean up tmux sessions** — kill them when done to avoid resource leaks
+PIT|**Report results to user** — after completion, summarize what Claude did and what changed
+PIT|**Don't kill slow sessions** — Claude may be doing multi-step work; check progress instead
+PIT|**Use `--allowedTools`** — restrict capabilities to what the task actually needs

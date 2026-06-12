@@ -1,0 +1,31 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-transitions.md
+M|rules|title: Use Transitions for Non-Urgent Updates
+M|rules|impact: MEDIUM
+M|rules|impactDescription: maintains UI responsiveness
+M|rules|tags: rerender, transitions, startTransition, performance
+M|rules|Mark frequent, non-urgent state updates as transitions to maintain UI responsiveness.
+M|rules|**Incorrect (blocks UI on every scroll):**
+M|rules|```tsx
+M|rules|function ScrollTracker() {
+M|rules|const [scrollY, setScrollY] = useState(0)
+M|rules|useEffect(() => {
+M|rules|const handler = () => setScrollY(window.scrollY)
+M|rules|window.addEventListener('scroll', handler, { passive: true })
+M|rules|return () => window.removeEventListener('scroll', handler)
+M|rules|}, [])
+M|rules|}
+M|rules|```
+M|rules|**Correct (non-blocking updates):**
+M|rules|```tsx
+M|rules|import { startTransition } from 'react'
+M|rules|function ScrollTracker() {
+M|rules|const [scrollY, setScrollY] = useState(0)
+M|rules|useEffect(() => {
+M|rules|const handler = () => {
+M|rules|startTransition(() => setScrollY(window.scrollY))
+M|rules|}
+M|rules|window.addEventListener('scroll', handler, { passive: true })
+M|rules|return () => window.removeEventListener('scroll', handler)
+M|rules|}, [])
+M|rules|}
+M|rules|```

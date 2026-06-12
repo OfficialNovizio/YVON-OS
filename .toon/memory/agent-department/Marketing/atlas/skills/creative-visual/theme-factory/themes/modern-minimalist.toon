@@ -1,0 +1,9 @@
+#MEM id=themes source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/modern-minimalist.md
+M|themes|A clean and contemporary theme with a sophisticated grayscale palette for maximum versatility.
+M|themes|- **Charcoal**: `#36454f` - Primary dark color
+M|themes|- **Slate Gray**: `#708090` - Medium gray for accents
+M|themes|- **Light Gray**: `#d3d3d3` - Backgrounds and dividers
+M|themes|- **White**: `#ffffff` - Text and clean backgrounds
+M|themes|- **Headers**: DejaVu Sans Bold
+M|themes|- **Body Text**: DejaVu Sans
+M|themes|Tech presentations, architecture portfolios, design showcases, modern business proposals, data visualization.

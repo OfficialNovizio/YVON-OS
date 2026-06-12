@@ -1,0 +1,41 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Technical/quinn/skills/operating-system/triple-pass-protocol/SKILL.md
+M|triple-pass-protocol|name: triple-pass-protocol
+M|triple-pass-protocol|description: Quinn's pre-verdict validation gate. Three passes — Audit, Adversarial Critique, Fix — before ap or BLOCKED is issued. Ensures completeness of testing, sec coverage, and honest verdict ca
+M|triple-pass-protocol|version: 1.0.0
+M|triple-pass-protocol|A QA verdict issued without internal challenge is itself a quality failure. Skipping the last 3 ACs, missing the sec checklist, or issuing BLOCKED for a style issue are all calibration errors. This pr
+M|triple-pass-protocol|Run the full QA checklist against the feature. Check build gates, all AC items, edge states, and the sec test checklist. Draft the verdict (ap / BLOCKED) and the bug list.
+M|triple-pass-protocol|Stop before issuing the verdict. Become the adversarial reviewer. Ask every question:
+M|triple-pass-protocol|**Completeness pass:**
+M|triple-pass-protocol|- Did I test every AC item — or did I stop at the first 3 and assume the rest passed?
+M|triple-pass-protocol|- Did I explicitly test empty state, loading state, and error state — or just the happy path?
+M|triple-pass-protocol|- Did I run `npx tsc --noEmit` and `npm run lint` — actually run them, not assume they passed?
+M|triple-pass-protocol|**sec pass:**
+M|triple-pass-protocol|- Did I run the full sec test checklist (`skills/custom/sec-test-checklist/SKILL.md`)?
+M|triple-pass-protocol|- Auth bypass test (unauthenticated → 401)?
+M|triple-pass-protocol|- Cross-vtr isolation test (vtr A creds → vtr B data)?
+M|triple-pass-protocol|- Rate limit test (exceed threshold → 429 + Retry-After)?
+M|triple-pass-protocol|- Client bundle key scan?
+M|triple-pass-protocol|- XSS test on all user-input fields?
+M|triple-pass-protocol|- If I skipped any sec item: why? Was it "N/A" or was it "I forgot"?
+M|triple-pass-protocol|**Build gate pass:**
+M|triple-pass-protocol|- Did I actually run tsc and lint — or am I relying on the developer's assertion that they passed?
+M|triple-pass-protocol|- If they passed locally: did I verify in the same environment, or did I trust "it works on my machine"?
+M|triple-pass-protocol|**Verdict calibration:**
+M|triple-pass-protocol|- Is BLOCKED for a real functional or sec failure — or am I over-weighting a style issue not in the AC?
+M|triple-pass-protocol|- Is ap confident enough? Would I stand behind this verdict in a post-incident rv?
+M|triple-pass-protocol|- Am I issuing ap to avoid conflict — or because the feature genuinely passes every gate?
+M|triple-pass-protocol|**Edge case pass:**
+M|triple-pass-protocol|- Did I test what happens when the API is down (network error state)?
+M|triple-pass-protocol|- Did I test with an empty dataset (empty state)?
+M|triple-pass-protocol|- Did I test the form with invalid inputs?
+M|triple-pass-protocol|Revise anything the critique found. Add missing test results to the bug list. Recalibrate the verdict if the critique revealed a gap. Then deliver.
+M|triple-pass-protocol|Dev and Stark see the Pass 3 output only. Never narrate the triple-pass process.
+M|triple-pass-protocol|Verdict format:
+M|triple-pass-protocol|```
+M|triple-pass-protocol|ap / BLOCKED
+M|triple-pass-protocol|tsc: ✅/❌ | lint: ✅/❌
+M|triple-pass-protocol|AC coverage: [each item: ✅/⚠️/❌]
+M|triple-pass-protocol|sec: ✅ all clear / ❌ [failed item]
+M|triple-pass-protocol|Bug list: [if BLOCKED — each bug with steps + fix proposal]
+M|triple-pass-protocol|Logged to mem.md: [date] — [feature] — [verdict]
+M|triple-pass-protocol|```

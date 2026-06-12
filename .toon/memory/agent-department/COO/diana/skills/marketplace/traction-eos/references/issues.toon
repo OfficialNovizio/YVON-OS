@@ -1,0 +1,194 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/references/issues.md
+M|references|Every organization has issues. The difference between great companies and mediocre ones is how quickly and permanently they solve them. The Issues Component provides a disciplined process called IDS -
+M|references|1. [The IDS Framework](#the-ids-framework)
+M|references|2. [Step 1: Identify the Real Issue](#step-1-identify-the-real-issue)
+M|references|3. [Step 2: Discuss](#step-2-discuss)
+M|references|4. [Step 3: Solve](#step-3-solve)
+M|references|5. [Three Types of Issues](#three-types-of-issues)
+M|references|6. [Issues List Management](#issues-list-management)
+M|references|7. [Common IDS Facilitation Mistakes](#common-ids-facilitation-mistakes)
+M|references|8. [Practice Scenarios for IDS Training](#practice-scenarios-for-ids-training)
+M|references|IDS stands for Identify, Discuss, Solve. It is the core problem-solving methodology in EOS, used in every Level 10 meeting and every quarterly ses. The framework is deliberately simple because simplic
+M|references|```
+M|references|IDENTIFY the real issue
+M|references|↓
+M|references|DISCUSS openly and efficiently
+M|references|↓
+M|references|SOLVE with clear action items
+M|references|```
+M|references|| Traditional Problem Solving | IDS |
+M|references||---------------------------|-----|
+M|references|| Discusses symptoms endlessly | Forces identification of root cause first |
+M|references|| Everyone gets equal airtime | Everyone gets input, not equal time |
+M|references|| Conversations meander | Tangents are stopped immediately |
+M|references|| Decisions deferred | dec made before moving on |
+M|references|| Vague next steps | Specific who/what/when action items |
+M|references|| Same issue returns next week | Solved permanently or escalated |
+M|references|This is the most critical and most frequently skipped step. Teams jump to discussion before they agree on what the actual issue is.
+M|references|**The symptom is not the issue.** The issue is the root cause underneath the symptom. Use these techniques to dig deeper:
+M|references|**The Five Whys:**
+M|references|1. Revenue is down this quarter. Why?
+M|references|2. We closed fewer deals. Why?
+M|references|3. We gave fewer demos. Why?
+M|references|4. We had fewer qualified leads. Why?
+M|references|5. Our main lead source (paid ads) stopped converting after the algorithm change.
+M|references|**Root cause:** Overdependence on a single lead source. The fix is not "close more deals." The fix is "diversify lead generation channels."
+M|references|**The One-Sentence Test:**
+M|references|After identifying the issue, state it in one sentence. If you cannot state it in one sentence, you have not identified it clearly enough.
+M|references|| Vague | Clear |
+M|references||-------|-------|
+M|references|| "We have a mkt problem" | "Our paid ad CAC increased 40% after the platform algorithm change and we have no alternative lead channels" |
+M|references|| "The team isn't performing" | "Three of five reps are below 80% quota because they are not following the demo script" |
+M|references|| "Customer complaints are up" | "Onboarding takes 3 weeks instead of 1, causing 60% of complaints" |
+M|references|- [ ] State the symptom that surfaced the issue
+M|references|- [ ] Ask "Why?" at least three times to find the root cause
+M|references|- [ ] State the root cause in one clear sentence
+M|references|- [ ] Confirm with the group: "Is this the real issue, or is there something deeper?"
+M|references|- [ ] If the group disagrees on the root cause, spend more time on Identify before moving to Discuss
+M|references|Discussion is where the team adds perspective, data, and experience. The goal is not consensus. The goal is to hear all relevant input so the best dec can be made.
+M|references|**The Round-Robin Open:**
+M|references|Go around the table. Each person gets 60 seconds of uninterrupted input. No rebuttals during the round. This ensures quieter voices are heard before dominant personalities take over.
+M|references|**The Data Check:**
+M|references|Before opinions fly, ask: "What data do we have on this?" Opinions without data are just guesses. If no data exists, note it as an action item to gather data before the next meeting.
+M|references|**The Tangent Stop:**
+M|references|When the discussion drifts off topic, the facilitator says: "That's a separate issue. I'm adding it to the Issues List. Let's get back to [original issue]." No apology needed. This is not rude -- it i
+M|references|**The Devil's Advocate:**
+M|references|If the group is quickly converging on a solution, pause and ask: "What could go wrong with this approach?" or "If we're wrong, what would that look like?" This prevents groupthink.
+M|references|**Time-Boxing:**
+M|references|Most issues should take 5-15 minutes to IDS. If an issue is taking longer than 15 minutes:
+M|references|- The issue may be too big for a Level 10 meeting (move to a separate meeting)
+M|references|- The team may not have enough information (create a to-do to gather data)
+M|references|- The facilitator may be allowing tangents (tighten the discussion)
+M|references|| Rule | Rationale |
+M|references||------|-----------|
+M|references|| One conversation at a time | Side conversations split attention |
+M|references|| No devices | Full presence required |
+M|references|| Attack the issue, not the person | Psychological safety enables honest input |
+M|references|| Share your perspective, then let go | Once you've said it, trust the process |
+M|references|| Facilitator controls the floor | Prevents dominant personalities from hijacking |
+M|references|| Silence is agreement | If you don't speak up, you support the outcome |
+M|references|Solving means making a dec and assigning action items. A discussion without a clear dec and next steps is wasted time.
+M|references|1. **State the dec.** The facilitator summarizes: "Here is what we've decided."
+M|references|2. **Confirm agreement.** Quick fist-to-five: 0 = block, 3 = can live with it, 5 = love it. Anything 3+ moves forward.
+M|references|3. **Assign action items.** Every action item has three elements:
+M|references|| Element | Example |
+M|references||---------|---------|
+M|references|| **Who** | Sarah |
+M|references|| **What** | Research three alternative lead gen channels and present options |
+M|references|| **When** | By next Tuesday's Level 10 |
+M|references|4. **Record it.** The action item goes on the To-Do List (7-day items) or becomes a Rock (if it is a 90-day initiative).
+M|references|5. **Move on.** Do not revisit. Do not second-guess. The dec is made.
+M|references|Not every issue results in an action item. There are several possible outcomes:
+M|references|| Outcome | When to Use | Example |
+M|references||---------|------------|---------|
+M|references|| **Action item (To-Do)** | Issue can be resolved in 7 days | "Jordan will update the pricing page by Friday" |
+M|references|| **Rock** | Issue requires 90 days of effort | "Launch customer success program" becomes a Q2 rock |
+M|references|| **Kill it** | Issue is not worth pursuing | "We decided the new feature request doesn't align with our Core Focus" |
+M|references|| **Information needed** | Cannot decide without data | "Alex will pull churn data by cohort and present next week" |
+M|references|| **Escalate** | Beyond the team's authority | "This requires board ap; Integrator will present at next board meeting" |
+M|references|| **Combine** | Issue is a duplicate | "This is the same root cause as issue #3; we'll solve them together" |
+M|references|**Definition:** Something that is broken, underperforming, or causing pain.
+M|references|**Examples:**
+M|references|- Customer churn increased from 3% to 7% this quarter
+M|references|- Two team members are in open conflict and it is affecting the department
+M|references|- Our main vendor raised prices 25% and our margins are squeezed
+M|references|**IDS approach:** Focus on root cause. The fix should prevent recurrence, not just patch the symptom.
+M|references|**Definition:** A new opportunity, initiative, or approach that someone wants to propose.
+M|references|**Examples:**
+M|references|- "What if we added a freemium tier to our product?"
+M|references|- "I think we should open a second office in Austin."
+M|references|- "Should we sponsor the industry conference this year?"
+M|references|**IDS approach:** The dec is yes, no, or not now. If yes, it becomes a to-do or rock. If not now, it stays on the long-term Issues List.
+M|references|**Definition:** Something blocking a Rock or key initiative from moving forward.
+M|references|**Examples:**
+M|references|- Engineering capacity is blocking the product launch rock
+M|references|- Legal rv is delaying the partnership agreement
+M|references|- Budget constraints prevent hiring the needed role
+M|references|**IDS approach:** Remove the obstacle or find a workaround. If the obstacle is outside the team's control, escalate it.
+M|references|EOS maintains two Issues Lists:
+M|references|| List | Contents | rv |
+M|references||------|----------|----------|
+M|references|| **Short-Term (Level 10)** | Tactical issues for this week | Every Level 10 meeting |
+M|references|| **Long-Term (V/TO)** | Strategic issues for quarterly sessions | Every quarterly ses |
+M|references|Anyone in the organization can add issues to either list. The format is simple: a short phrase that captures the issue. Details are discussed live during IDS.
+M|references|**Good issue entries:**
+M|references|- "Sales demo no-show rate is 40%"
+M|references|- "Need to decide on CRM migration"
+M|references|- "Conflict between engineering and product on roadmap priorities"
+M|references|**Poor issue entries:**
+M|references|- "mkt" (too vague)
+M|references|- "Everything" (not an issue)
+M|references|- Three paragraphs of background (save it for discussion)
+M|references|At the start of IDS in every Level 10 meeting:
+M|references|1. **rv the list.** Read each issue title aloud.
+M|references|2. **Identify the top 3.** Ask: "Which three issues, if solved today, would have the biggest impact?"
+M|references|3. **Number them 1, 2, 3.** Start with number 1.
+M|references|4. **Re-prioritize after each solve.** The top 3 may shift as issues are resolved.
+M|references|**Critical rule:** Not all issues get solved every meeting. That is expected. Unsolved issues carry forward to next week. What matters is that you always work on the most important issues first.
+M|references|Every quarter, rv the long-term Issues List:
+M|references|- Remove issues that are no longer relevant
+M|references|- Promote issues that have become urgent to the short-term list
+M|references|- Merge duplicate issues
+M|references|- Clarify vague entries
+M|references|| Mistake | Impact | Fix |
+M|references||---------|--------|-----|
+M|references|| **Skipping Identify** | Team solves the wrong problem | Require the one-sentence root cause statement before any discussion |
+M|references|| **Discussion without structure** | Conversation goes in circles | Use round-robin, then open discussion, then time-box |
+M|references|| **Allowing tangents** | Meeting goes long, real issues not addressed | Facilitator immediately names tangent and redirects |
+M|references|| **Seeking consensus** | Decisions watered down to please everyone | Integrator makes the call if team cannot agree in 15 minutes |
+M|references|| **No action items** | "Great discussion" but nothing changes | Facilitator does not close an issue without who/what/when |
+M|references|| **Rehashing solved issues** | Undermines the process, wastes time | Once solved, it is done. If the solution did not work, it is a new issue |
+M|references|| **One person dominates** | Other perspectives are lost | Facilitator actively invites input: "We haven't heard from you, what's your take?" |
+M|references|| **Too polite** | Real issues avoided to maintain comfort | Establish that healthy conflict is expected and valued |
+M|references|| **Solving symptoms** | Root cause persists, issue returns | Ask "Why?" at least three times before moving to Discuss |
+M|references|Use these scenarios to practice IDS with your leadership team. Each scenario should take 10-15 minutes.
+M|references|**Symptom:** Q2 revenue is 20% below target.
+M|references|**Information revealed during Identify:**
+M|references|- One of four reps is at 30% of quota
+M|references|- That rep was a top performer last year
+M|references|- They recently took on a new territory
+M|references|- Their pl is full but close rate dropped from 30% to 8%
+M|references|**Practice questions:**
+M|references|- What is the real issue? (Symptom vs. root cause)
+M|references|- What data would you want before discussing solutions?
+M|references|- What are three possible root causes?
+M|references|**Symptom:** Engineering team missed their Rock deadline by four weeks.
+M|references|**Information revealed during Identify:**
+M|references|- The VP of Sales requested "urgent" feature changes mid-quarter
+M|references|- Engineering spent 3 weeks on unplanned work
+M|references|- No one in leadership ap the scope change
+M|references|- This is the third quarter in a row this has happened
+M|references|**Practice questions:**
+M|references|- Who owns the dec about engineering priorities?
+M|references|- Is this a people issue, a process issue, or both?
+M|references|- What structural change would prevent recurrence?
+M|references|**Symptom:** Three employees resigned in the past month, all citing "culture."
+M|references|**Information revealed during Identify:**
+M|references|- Exit interviews mention a specific manager who "rules by fear"
+M|references|- That manager's team has the highest performance metrics in the company
+M|references|- Two of the departing employees were identified as high-potential
+M|references|- The manager has been with the company for seven years
+M|references|**Practice questions:**
+M|references|- Is this a right person or right seat issue?
+M|references|- How do you weigh performance metrics against culture impact?
+M|references|- What is the root cause: the manager's behavior, or the system that enabled it?
+M|references|**Symptom:** A major cp just went out of business, freeing up 200 potential customers.
+M|references|**Information revealed during Identify:**
+M|references|- Your team is already at capacity
+M|references|- Hiring 5 new reps would take 3-4 months
+M|references|- A partner firm could handle overflow but at lower margins
+M|references|- The window of opportunity is 60-90 days before other cp move in
+M|references|**Practice questions:**
+M|references|- Is this a problem, an idea, or an obstacle?
+M|references|- What is the core dec that needs to be made?
+M|references|- What are the trade-offs of each option?
+M|references|**Symptom:** Customer onboarding satisfaction dropped from 4.5 to 3.2 out of 5.
+M|references|**Information revealed during Identify:**
+M|references|- The onboarding team grew from 2 to 6 people in the past quarter
+M|references|- The four new hires were trained informally by the two original team members
+M|references|- There is no documented onboarding process
+M|references|- The two original team members each do onboarding differently
+M|references|**Practice questions:**
+M|references|- Which EOS component is this really about? (Process? People? Both?)
+M|references|- What is the fastest fix? What is the permanent fix?
+M|references|- How would you prevent this from recurring as the team continues to grow?

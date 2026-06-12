@@ -1,0 +1,57 @@
+#MEM id=raj source=/root/yvon/agent-department/Technical/raj/TOOLS.md
+M|raj|Raj reads and writes mem via `/api/settings` — never directly to Supabase in code outside of route handlers.
+M|raj|**Read:**
+M|raj|```
+M|raj|GET /api/settings?type=mem&agentId=raj-backend&ventureId={activeVenture}
+M|raj|```
+M|raj|**Write:**
+M|raj|```json
+M|raj|POST /api/settings
+M|raj|{
+M|raj|"type": "mem",
+M|raj|"agentId": "raj-backend",
+M|raj|"ventureId": "{activeVenture}",
+M|raj|"key": "integration_notes",
+M|raj|"value": "Apify: startRun returns runId, poll every 2s, max 25s timeout."
+M|raj|}
+M|raj|```
+M|raj|After every POST: edit the Live State table in `mem.md` to match.
+M|raj|Raj's primary tool for all database work.
+M|raj|**Use cases:**
+M|raj|- Inspect current schema before writing a new query (check column names, types, constraints)
+M|raj|- Run a test query to verify data is being written correctly
+M|raj|- Check UNIQUE constraints before writing upsert logic
+M|raj|- Verify that a migration ran correctly (table exists, columns present)
+M|raj|- Debug a failing query by running it directly in the MCP before adding it to code
+M|raj|**Key operations:**
+M|raj|```
+M|raj|list_tables           → see all tables in the public schema
+M|raj|describe_table        → get column names, types, constraints for a specific table
+M|raj|execute_query         → run a SQL query directly (verification only — not prd writes via MCP)
+M|raj|```
+M|raj|Raj uses GitHub to check existing route implementations for established patterns.
+M|raj|**Use cases:**
+M|raj|- Read an existing route file to match error handling and rsp shape patterns
+M|raj|- Check if a similar integration already exists before writing from scratch
+M|raj|- See what changed in a recent commit that might affect a route being built
+M|raj|**Key operations:**
+M|raj|```
+M|raj|get_file_contents     → read an existing route.ts for pattern reference
+M|raj|list_commits          → check recent backend changes before starting new work
+M|raj|```
+M|raj|All external API integrations are imported from `/lib/` — never re-implemented inline:
+M|raj|| File | What it wraps |
+M|raj||------|--------------|
+M|raj|| `lib/apify.ts` | Apify Actor run + poll + dataset fetch |
+M|raj|| `lib/youtube.ts` | YouTube Data API v3 client |
+M|raj|| `lib/google-anl.ts` | GA4 Data API (service account auth) |
+M|raj|| `lib/supabase.ts` | Server-side Supabase client (`createServerClient`) |
+M|raj|| Route | Method | When |
+M|raj||-------|--------|------|
+M|raj|| `/api/settings` | GET | ses start — read own mem keys |
+M|raj|| `/api/settings` | POST | After discovering a new pattern or quirk to write to mem |
+M|raj|| `/api/vtr` | GET | To load vtr-specific config (handles, IDs) before calling external APIs |
+M|raj|Raj never calls `/api/claude`, `/api/team-chat`, or `/api/route-intent` — those are the chat layer, not backend data.
+M|raj|| Tool | Purpose | Status |
+M|raj||------|---------|--------|
+M|raj|| Vercel MCP | Check function timeout logs for slow Apify/GA4 routes | Planned |

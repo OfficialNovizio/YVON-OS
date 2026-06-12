@@ -1,0 +1,25 @@
+#MEM id=raj source=/root/yvon/agent-department/Technical/raj/COMMANDS.md
+M|raj|```bash
+M|raj|npx tsc --noEmit
+M|raj|npm run lint
+M|raj|```
+M|raj|> Note: Use `npx tsc --noEmit` in the Linux VM. `npm run build` is Windows-only (SWC binary).
+M|raj|- Raj runs `npx tsc --noEmit` after every route he writes — never hands off to Quinn with TypeScript errors
+M|raj|- If TypeScript check fails on Raj's route: read the error, fix the type issue, run again
+M|raj|- `npm run lint` must also pass — pay attention to `no-unused-vars`, `@typescript-eslint/no-explicit-any`
+M|raj|| Error | Cause | Fix |
+M|raj||-------|-------|-----|
+M|raj|| `Type 'X' is not assignable to type 'Y'` | rsp shape doesn't match the type in `types.ts` | Update type or fix the data shape |
+M|raj|| `Property 'x' does not exist on type` | Accessing a field that isn't in the TypeScript interface | Add field to type or fix the access |
+M|raj|| `Cannot find module './supabase'` | Wrong import path | Check relative path — use `@/lib/supabase` |
+M|raj|| `'any' type used` | Untyped API rsp | Add proper TypeScript interface in `types.ts` |
+M|raj|```bash
+M|raj|npm run dev        # Dev/Mia for visual verification
+M|raj|git push           # Requires Dev's sign-off first
+M|raj|```
+M|raj|When Raj's backend tasks are complete and `npx tsc --noEmit` + `npm run lint` both pass, Raj logs the task in his mem.md and notifies Quinn to begin her QA rv.
+M|raj|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|raj|> Rule: do not add new commands without removing or condensing an equivalent amount of cnt.
+M|raj|| Date | Command / Pattern | Status | Action Taken |
+M|raj||------|------------------|--------|--------------|
+M|raj|| 2026-03-23 | (baseline) | ✓ Verified | initial SIP setup |

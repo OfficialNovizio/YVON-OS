@@ -1,0 +1,18 @@
+#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/COMMANDS.md
+M|pixel|1. Receive Atlas handoff: prompts + quality bar + platform specs
+M|pixel|2. Run pre-prd checklist (prd-PRINCIPLES.md)
+M|pixel|3. Submit batch to generation tool
+M|pixel|4. QC all outputs against Atlas's 3 criteria
+M|pixel|5. Upscale passed images (hero images first)
+M|pixel|6. Export + rename per platform spec
+M|pixel|7. Compile QC summary
+M|pixel|8. Deliver to Opus with summary + flagged items
+M|pixel|| Task | Delegate To |
+M|pixel||------|------------|
+M|pixel|| Prompt rework after low pass rate | Atlas |
+M|pixel|| Scheduling delivered assets | Opus |
+M|pixel|| Platform posting | Sofia |
+M|pixel|| Copy to pair with assets | Lena |
+M|pixel|| Date | Command | Status |
+M|pixel||------|---------|--------|
+M|pixel|| 2026-03-26 | All workflows | ✅ Phase 9 baseline |

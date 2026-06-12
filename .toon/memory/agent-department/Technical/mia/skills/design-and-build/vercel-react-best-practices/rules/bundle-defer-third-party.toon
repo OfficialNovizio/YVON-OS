@@ -1,0 +1,38 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/bundle-defer-third-party.md
+M|rules|title: Defer Non-Critical Third-Party Libraries
+M|rules|impact: MEDIUM
+M|rules|impactDescription: loads after hydration
+M|rules|tags: bundle, third-party, anl, defer
+M|rules|anl, logging, and error tracking don't block user interaction. Load them after hydration.
+M|rules|**Incorrect (blocks initial bundle):**
+M|rules|```tsx
+M|rules|import { anl } from '@vercel/anl/react'
+M|rules|export default function RootLayout({ children }) {
+M|rules|return (
+M|rules|<html>
+M|rules|<body>
+M|rules|{children}
+M|rules|<anl />
+M|rules|</body>
+M|rules|</html>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (loads after hydration):**
+M|rules|```tsx
+M|rules|import dynamic from 'next/dynamic'
+M|rules|const anl = dynamic(
+M|rules|() => import('@vercel/anl/react').then(m => m.anl),
+M|rules|{ ssr: false }
+M|rules|)
+M|rules|export default function RootLayout({ children }) {
+M|rules|return (
+M|rules|<html>
+M|rules|<body>
+M|rules|{children}
+M|rules|<anl />
+M|rules|</body>
+M|rules|</html>
+M|rules|)
+M|rules|}
+M|rules|```

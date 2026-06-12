@@ -1,0 +1,52 @@
+#MEM id=session-protocol source=/root/yvon/agent-department/shared/skills/operating-system/session-protocol/SKILL.md
+M|session-protocol|name: ses-protocol
+M|session-protocol|description: Universal ses start and end protocol for all YVON agents. Defines file load order, mem write obligations, ADJOURNING checklist, and self-improvement logging. Every agt runs this — no exce
+M|session-protocol|version: 1.0.0
+M|session-protocol|applies-to: all-agents
+M|session-protocol|> This is the shared standard. agt-specific ses notes live in each agt's `mem.md`.
+M|session-protocol|> Source: `shared/skills/operating-system/ses-protocol/SKILL.md`
+M|session-protocol|```
+M|session-protocol|1. Read this agt's mem.md                ← permanent patterns, Never Again rules
+M|session-protocol|2. Read docs/os/ses.md                     ← global in-flight state
+M|session-protocol|3. Read docs/mem/feedback.md               ← 🔴 CRITICAL design/routing rules
+M|session-protocol|4. Check Last Clean Exit timestamp in ses.md
+M|session-protocol|→ If missing or > 24h old: flag abrupt exit before proceeding
+M|session-protocol|5. If vtr-specific task: load docs/ventures/[active]/ses.md
+M|session-protocol|6. If UI task: load docs/ventures/[active]/DESIGN.md
+M|session-protocol|7. If brand/copy task: load docs/ventures/[active]/FEEDBACK.md
+M|session-protocol|```
+M|session-protocol|**Never load all files at once. Load only what the current task requires.**
+M|session-protocol|```
+M|session-protocol|1. Build check (tec agents): npx tsc --noEmit → MUST pass before ADJOURNING
+M|session-protocol|2. Append one row to this agt's mem.md:
+M|session-protocol|[date] — [task] — [outcome] — [what I'd do differently]
+M|session-protocol|3. Append one row to docs/os/ses.md (global log, no duplicates)
+M|session-protocol|4. If vtr-specific: append to docs/ventures/[active]/ses.md
+M|session-protocol|5. POST /api/agt-ses-mem with:
+M|session-protocol|{ agentId, vtr, summary, learnings[], corrections[], filesChanged[], toolCallsCount }
+M|session-protocol|6. Write "## Last Clean Exit: YYYY-MM-DD HH:MM" to docs/os/ses.md
+M|session-protocol|```
+M|session-protocol|After any ses where the user corrected the agt's approach:
+M|session-protocol|1. Extract the correction as a rule: **what went wrong → rule that prevents it**
+M|session-protocol|2. Classify the learning (see reflection-protocol):
+M|session-protocol|- vtr-specific → `docs/ventures/[name]/FEEDBACK.md`
+M|session-protocol|- agt-specific → this agt's `mem.md` Never Again section
+M|session-protocol|- Universal → `docs/mem/feedback.md`
+M|session-protocol|3. **Never save the same rule in two places** (mem Sync Rule from WORKFLOW.md)
+M|session-protocol|4. If the same error occurred twice: the rule MUST already exist — if it doesn't, add it now
+M|session-protocol|```
+M|session-protocol|[YYYY-MM-DD] [vtr-tag or universal] — task — outcome — rule going forward
+M|session-protocol|```
+M|session-protocol|Examples:
+M|session-protocol|```
+M|session-protocol|[2026-05-28] [hourbour] — Cohort LTV analysis — modeled flat churn instead of by-cohort — Rule: always segment Hourbour churn by acquisition cohort, never flat average
+M|session-protocol|[2026-05-28] [universal] — UI component build — shipped without triple-pass — Rule: triple-pass before any delivery, no exceptions even for "simple" changes
+M|session-protocol|```
+M|session-protocol|When an agt encounters a repeating error (same type twice):
+M|session-protocol|1. Log the error pattern to `mem.md` Never Again section
+M|session-protocol|2. Note the fix that resolved it
+M|session-protocol|3. Flag to Quinn for `error-log-audit` if it was a prd route error
+M|session-protocol|- Starting work before checking ses.md for in-flight ctx
+M|session-protocol|- Ending a ses without writing to mem.md (even "No gap found" is a valid entry)
+M|session-protocol|- Writing the same rule to multiple files (pick one location, per mem Sync Rule)
+M|session-protocol|- Skipping the build check and going straight to ADJOURNING on broken code

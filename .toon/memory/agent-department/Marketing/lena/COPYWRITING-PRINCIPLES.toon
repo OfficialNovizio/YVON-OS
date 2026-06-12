@@ -1,0 +1,85 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/COPYWRITING-PRINCIPLES.md
+M|lena|> Load this file only when: writing any copy from scratch, reviewing existing copy for brand fit, or producing a new brand voice guide.
+M|lena|Before writing any copy, confirm:
+M|lena|1. Active vtr (Novizio or Hourbour) — load the correct voice immediately
+M|lena|2. `approved_voice_*` from mem — the confirmed tone rules
+M|lena|3. `banned_phrases` from mem — apply before writing a single word
+M|lena|4. Platform format from Sofia — length, hook style, character count, CTA type
+M|lena|5. cg brief from Alex — what's the goal of this piece?
+M|lena|Never start writing without knowing: vtr, platform, and goal.
+M|lena|**Character:** A fashion editor who dresses for herself, not for trends. Confident, selective, never loud.
+M|lena|| Element | Rule |
+M|lena||---------|------|
+M|lena|| Tone | Editorial, self-assured, slightly minimal |
+M|lena|| Sentence length | Short. One idea per sentence. No run-ons. |
+M|lena|| Punctuation | Minimal. Dashes over parentheses. No exclamation points. |
+M|lena|| Vocabulary | curated, elevated, intentional, drop, season, worn, considered |
+M|lena|| Never use | affordable, budget, cheap, sale, hurry, limited time, don't miss |
+M|lena|| Reader address | "you" — direct, not "our customers" or "everyone" |
+M|lena|**Character:** A smart friend who happens to understand money. Honest, clear, calm.
+M|lena|| Element | Rule |
+M|lena||---------|------|
+M|lena|| Tone | Trustworthy, modern, approachable. Never condescending. |
+M|lena|| Sentence length | Short and clear. Plain English always. |
+M|lena|| Punctuation | Normal. Light use of em dashes for rhythm. |
+M|lena|| Vocabulary | simple, smart, yours, earn, grow, track, clear, control |
+M|lena|| Never use | complicated, risky, complex, confusing, overwhelming, don't worry |
+M|lena|| Reader address | "you" and "your money" — personal, direct |
+M|lena|The hook is the first line before "more" on IG, the subject line in email, or the headline in an ad. It must:
+M|lena|1. **Stop the scroll** — create a pattern interrupt
+M|lena|2. **Address the reader** — make it about them, not the product
+M|lena|3. **Tease the payoff** — what will they get if they keep reading?
+M|lena|Three formulas:
+M|lena|| Formula | Pattern | Example (Novizio) |
+M|lena||---------|---------|-------------------|
+M|lena|| Tension + resolution | [problem statement]. Here's what changed. | "You don't need more clothes. You need better ones." |
+M|lena|| Bold claim | [strong opinion stated as fact]. | "Most wardrobes are full of the wrong things." |
+M|lena|| Question | [question that makes them think]. | "What would you wear if you only kept 10 pieces?" |
+M|lena|For Hourbour, anchor hooks in a financial insight or relatable moment:
+M|lena|- "Most people check Instagram more than their bank account."
+M|lena|- "The most boring habit that builds wealth."
+M|lena|```
+M|lena|[Hook — 1 line, under 125 chars, before "more"]
+M|lena|[Body — 2–4 lines expanding on the hook. Each line a separate thought.]
+M|lena|[CTA — 1 line. Direct. Never "click the link in bio" alone — tell them WHY.]
+M|lena|[Hashtags — 7–10, on a new line or after a line break]
+M|lena|```
+M|lena|```
+M|lena|[Hook — bold opening claim or question]
+M|lena|[Line break]
+M|lena|[Body — 3–6 short paragraphs or bullet points]
+M|lena|[Line break]
+M|lena|[Takeaway or CTA — 1 line]
+M|lena|```
+M|lena|- Under 50 characters — most clients truncate at 50
+M|lena|- Personalise where possible: "Your [vtr] drop is here"
+M|lena|- No clickbait — the email must deliver on the subject
+M|lena|- A/B test: curiosity vs direct benefit subject lines
+M|lena|ap calls to action by vtr:
+M|lena|**Novizio**
+M|lena|- "Shop the drop →"
+M|lena|- "Explore the collection"
+M|lena|- "Read the edit"
+M|lena|- "See how it's worn"
+M|lena|**Hourbour**
+M|lena|- "Start for free"
+M|lena|- "See how it works"
+M|lena|- "Try it in 2 minutes"
+M|lena|- "Your money, simplified"
+M|lena|Never: "Click here", "Learn more" (too generic), "Buy now" (too transactional for Novizio)
+M|lena|1. **Voice fit** — does it sound like the vtr's brand, not like generic AI copy?
+M|lena|2. **Banned phrases** — scan against `banned_phrases` in mem
+M|lena|3. **Hook strength** — would you keep reading after the first line?
+M|lena|4. **CTA clarity** — is it obvious what the reader should do next?
+M|lena|5. **No placeholders** — zero "[insert X]" — all fields must be filled
+M|lena|6. **Platform fit** — is the length and format right for where it will be posted?
+M|lena|**AI slop test:** If it could be a caption for any fashion brand or any fintech app — it's not specific enough. Make it Novizio. Make it Hourbour. Not generic.
+M|lena|- Headline does the work. Lead with the reader's situation, not the product.
+M|lena|- One idea per piece. Every word earns its place.
+M|lena|- **Avoid**: opening with "We" — the reader doesn't care about the brand until they care about themselves.
+M|lena|- Cut 30% on first pass — most first drafts are 30% padding.
+M|lena|- Replace passive voice. Flag vague qualifiers (very, really, quite, amazing).
+M|lena|- **Avoid**: editing for style before editing for clarity.
+M|lena|- Subject line determines open rate. Test it before anything else.
+M|lena|- First email delivers value — no selling. Selling starts email 2 or 3.
+M|lena|- **Avoid**: sequences longer than 5 emails without a behavior-based trigger.

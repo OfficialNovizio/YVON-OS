@@ -1,0 +1,38 @@
+#MEM id=margin-of-safety source=/root/yvon/agent-department/Finance/felix/skills/operating-system/margin-of-safety/SKILL.md
+M|margin-of-safety|name: margin-of-safety
+M|margin-of-safety|description: Buffett's margin of safety applied to every YVON financial recommendation. Every model must survive the bear case. Pessimistic scenario is mandatory, not optional.
+M|margin-of-safety|version: 1.0.0
+M|margin-of-safety|Buffett never invests when the only way to win is if everything goes right. Felix never recommends a spend when the only path to success is the optimistic scenario. The margin of safety is the gap bet
+M|margin-of-safety|Before any financial recommendation involving:
+M|margin-of-safety|- Spend ap (new budget, cg, hire, tool)
+M|margin-of-safety|- Runway projections
+M|margin-of-safety|- LTV:CAC decisions
+M|margin-of-safety|- Pricing changes
+M|margin-of-safety|- Any scenario model presented to Marcus or Stark
+M|margin-of-safety|What single assumption, if wrong, most changes the outcome? Name it explicitly before modeling anything.
+M|margin-of-safety|Examples:
+M|margin-of-safety|- "This model assumes 3% monthly churn. If churn is 6%, runway drops by 4 months."
+M|margin-of-safety|- "This assumes ROAS of 3x. At 1.5x, the cg burns cash instead of generating it."
+M|margin-of-safety|The bear case is not "slightly less optimistic than base." It is: what happens if the key variable moves against us by the realistic worst-case amount?
+M|margin-of-safety|Sources for bear case inputs (in priority order):
+M|margin-of-safety|1. YVON historical performance at its worst
+M|margin-of-safety|2. Industry lower quartile benchmarks (not median)
+M|margin-of-safety|3. cp-level outcomes during downturns
+M|margin-of-safety|Does the recommendation still make sense in the bear case?
+M|margin-of-safety|**YES → ship with bear case explicitly disclosed**
+M|margin-of-safety|**NO → choose one:**
+M|margin-of-safety|- A: Restructure the recommendation so it survives bear case (smaller initial bet, staged rollout, defined exit trigger)
+M|margin-of-safety|- B: Flag to Marcus with explicit risk disclosure: "This recommendation requires the base case to hold. Here is the downside exposure."
+M|margin-of-safety|At what point does the scenario become structurally dangerous?
+M|margin-of-safety|- Runway drops below 3 months
+M|margin-of-safety|- LTV:CAC falls below 2:1
+M|margin-of-safety|- Monthly churn exceeds X% for Y consecutive months
+M|margin-of-safety|The cliff is not a prediction — it's a tripwire. Name it so Marcus knows when to act, not just that risk exists.
+M|margin-of-safety|Every recommendation that ran through margin-of-safety includes:
+M|margin-of-safety|```
+M|margin-of-safety|Bear case assumption: [what could go wrong and by how much]
+M|margin-of-safety|Bear case outcome: [metric at risk, delta from base]
+M|margin-of-safety|Cliff condition: [when this becomes structurally dangerous]
+M|margin-of-safety|Recommendation survives bear case: YES / NO
+M|margin-of-safety|If NO: [restructured approach OR explicit risk disclosure for Marcus]
+M|margin-of-safety|```

@@ -1,0 +1,115 @@
+#MEM id=finishing-a-development-branch source=/root/yvon/agent-department/Technical/raj/skills/superpowers/finishing-a-development-branch/SKILL.md
+M|finishing-a-development-branch|name: finishing-a-dev-branch
+M|finishing-a-development-branch|description: >-
+M|finishing-a-development-branch|Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of dev work by presenting structured options for merge, PR, or cleanup
+M|finishing-a-development-branch|version: 1.0.0
+M|finishing-a-development-branch|platforms: []
+M|finishing-a-development-branch|metadata:
+M|finishing-a-development-branch|hermes:
+M|finishing-a-development-branch|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, productivity]
+M|finishing-a-development-branch|Guide completion of dev work by presenting clear options and handling chosen workflow.
+M|finishing-a-development-branch|**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+M|finishing-a-development-branch|**Announce at start:** "I'm using the finishing-a-dev-branch skill to complete this work."
+M|finishing-a-development-branch|**Before presenting options, verify tests pass:**
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|npm test / cargo test / pytest / go test ./...
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|**If tests fail:**
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Tests failing (<N> failures). Must fix before completing:
+M|finishing-a-development-branch|[Show failures]
+M|finishing-a-development-branch|Cannot proceed with merge/PR until tests pass.
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Stop. Don't proceed to Step 2.
+M|finishing-a-development-branch|**If tests pass:** Continue to Step 2.
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Or ask: "This branch split from main - is that correct?"
+M|finishing-a-development-branch|Present exactly these 4 options:
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Implementation complete. What would you like to do?
+M|finishing-a-development-branch|1. Merge back to <base-branch> locally
+M|finishing-a-development-branch|2. Push and create a Pull Request
+M|finishing-a-development-branch|3. Keep the branch as-is (I'll handle it later)
+M|finishing-a-development-branch|4. Discard this work
+M|finishing-a-development-branch|Which option?
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|**Don't add explanation** - keep options concise.
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|git checkout <base-branch>
+M|finishing-a-development-branch|git pull
+M|finishing-a-development-branch|git merge <feature-branch>
+M|finishing-a-development-branch|<test command>
+M|finishing-a-development-branch|git branch -d <feature-branch>
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Then: Cleanup worktree (Step 5)
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|git push -u origin <feature-branch>
+M|finishing-a-development-branch|gh pr create --title "<title>" --body "$(cat <<'EOF'
+M|finishing-a-development-branch|<2-3 bullets of what changed>
+M|finishing-a-development-branch|- [ ] <verification steps>
+M|finishing-a-development-branch|EOF
+M|finishing-a-development-branch|)"
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Then: Cleanup worktree (Step 5)
+M|finishing-a-development-branch|Report: "Keeping branch <name>. Worktree preserved at <path>."
+M|finishing-a-development-branch|**Don't cleanup worktree.**
+M|finishing-a-development-branch|**Confirm first:**
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|This will permanently delete:
+M|finishing-a-development-branch|- Branch <name>
+M|finishing-a-development-branch|- All commits: <commit-list>
+M|finishing-a-development-branch|- Worktree at <path>
+M|finishing-a-development-branch|Type 'discard' to confirm.
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Wait for exact confirmation.
+M|finishing-a-development-branch|If confirmed:
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|git checkout <base-branch>
+M|finishing-a-development-branch|git branch -D <feature-branch>
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|Then: Cleanup worktree (Step 5)
+M|finishing-a-development-branch|**For Options 1, 2, 4:**
+M|finishing-a-development-branch|Check if in worktree:
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|git worktree list | grep $(git branch --show-current)
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|If yes:
+M|finishing-a-development-branch|```bash
+M|finishing-a-development-branch|git worktree remove <worktree-path>
+M|finishing-a-development-branch|```
+M|finishing-a-development-branch|**For Option 3:** Keep worktree.
+M|finishing-a-development-branch|| Option | Merge | Push | Keep Worktree | Cleanup Branch |
+M|finishing-a-development-branch||--------|-------|------|---------------|----------------|
+M|finishing-a-development-branch|| 1. Merge locally | ✓ | - | - | ✓ |
+M|finishing-a-development-branch|| 2. Create PR | - | ✓ | ✓ | - |
+M|finishing-a-development-branch|| 3. Keep as-is | - | - | ✓ | - |
+M|finishing-a-development-branch|| 4. Discard | - | - | - | ✓ (force) |
+M|finishing-a-development-branch|**Skipping test verification**
+M|finishing-a-development-branch|- **Problem:** Merge broken code, create failing PR
+M|finishing-a-development-branch|- **Fix:** Always verify tests before offering options
+M|finishing-a-development-branch|**Open-ended questions**
+M|finishing-a-development-branch|- **Problem:** "What should I do next?" → ambiguous
+M|finishing-a-development-branch|- **Fix:** Present exactly 4 structured options
+M|finishing-a-development-branch|**Automatic worktree cleanup**
+M|finishing-a-development-branch|- **Problem:** Remove worktree when might need it (Option 2, 3)
+M|finishing-a-development-branch|- **Fix:** Only cleanup for Options 1 and 4
+M|finishing-a-development-branch|**No confirmation for discard**
+M|finishing-a-development-branch|- **Problem:** Accidentally delete work
+M|finishing-a-development-branch|- **Fix:** Require typed "discard" confirmation
+M|finishing-a-development-branch|**Never:**
+M|finishing-a-development-branch|- Proceed with failing tests
+M|finishing-a-development-branch|- Merge without verifying tests on result
+M|finishing-a-development-branch|- Delete work without confirmation
+M|finishing-a-development-branch|- Force-push without explicit request
+M|finishing-a-development-branch|**Always:**
+M|finishing-a-development-branch|- Verify tests before offering options
+M|finishing-a-development-branch|- Present exactly 4 options
+M|finishing-a-development-branch|- Get typed confirmation for Option 4
+M|finishing-a-development-branch|- Clean up worktree for Options 1 & 4 only
+M|finishing-a-development-branch|**Called by:**
+M|finishing-a-development-branch|- **subagent-driven-dev** (Step 7) - After all tasks complete
+M|finishing-a-development-branch|- **executing-plans** (Step 5) - After all batches complete
+M|finishing-a-development-branch|**Pairs with:**
+M|finishing-a-development-branch|- **using-git-worktrees** - Cleans up worktree created by that skill

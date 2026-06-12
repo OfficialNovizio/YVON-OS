@@ -1,0 +1,42 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-tosorted-immutable.md
+M|rules|title: Use toSorted() Instead of sort() for Immutability
+M|rules|impact: MEDIUM-HIGH
+M|rules|impactDescription: prevents mutation bugs in React state
+M|rules|tags: javascript, arrays, immutability, react, state, mutation
+M|rules|`.sort()` mutates the array in place, which can cause bugs with React state and props. Use `.toSorted()` to create a new sorted array without mutation.
+M|rules|**Incorrect (mutates original array):**
+M|rules|```typescript
+M|rules|function UserList({ users }: { users: User[] }) {
+M|rules|// Mutates the users prop array!
+M|rules|const sorted = useMemo(
+M|rules|() => users.sort((a, b) => a.name.localeCompare(b.name)),
+M|rules|[users]
+M|rules|)
+M|rules|return <div>{sorted.map(renderUser)}</div>
+M|rules|}
+M|rules|```
+M|rules|**Correct (creates new array):**
+M|rules|```typescript
+M|rules|function UserList({ users }: { users: User[] }) {
+M|rules|// Creates new sorted array, original unchanged
+M|rules|const sorted = useMemo(
+M|rules|() => users.toSorted((a, b) => a.name.localeCompare(b.name)),
+M|rules|[users]
+M|rules|)
+M|rules|return <div>{sorted.map(renderUser)}</div>
+M|rules|}
+M|rules|```
+M|rules|**Why this matters in React:**
+M|rules|1. Props/state mutations break React's immutability model - React expects props and state to be treated as read-only
+M|rules|2. Causes stale closure bugs - Mutating arrays inside closures (callbacks, effects) can lead to unexpected behavior
+M|rules|**Browser support (fallback for older browsers):**
+M|rules|`.toSorted()` is available in all modern browsers (Chrome 110+, Safari 16+, Firefox 115+, Node.js 20+). For older environments, use spread operator:
+M|rules|```typescript
+M|rules|// Fallback for older browsers
+M|rules|const sorted = [...items].sort((a, b) => a.value - b.value)
+M|rules|```
+M|rules|**Other immutable array methods:**
+M|rules|- `.toSorted()` - immutable sort
+M|rules|- `.toReversed()` - immutable reverse
+M|rules|- `.toSpliced()` - immutable splice
+M|rules|- `.with()` - immutable element replacement

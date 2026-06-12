@@ -1,0 +1,28 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-defer-reads.md
+M|rules|title: Defer State Reads to Usage Point
+M|rules|impact: MEDIUM
+M|rules|impactDescription: avoids unnecessary subscriptions
+M|rules|tags: rerender, searchParams, localStorage, optimization
+M|rules|Don't subscribe to dynamic state (searchParams, localStorage) if you only read it inside callbacks.
+M|rules|**Incorrect (subscribes to all searchParams changes):**
+M|rules|```tsx
+M|rules|function ShareButton({ chatId }: { chatId: string }) {
+M|rules|const searchParams = useSearchParams()
+M|rules|const handleShare = () => {
+M|rules|const ref = searchParams.get('ref')
+M|rules|shareChat(chatId, { ref })
+M|rules|}
+M|rules|return <button onClick={handleShare}>Share</button>
+M|rules|}
+M|rules|```
+M|rules|**Correct (reads on demand, no subscription):**
+M|rules|```tsx
+M|rules|function ShareButton({ chatId }: { chatId: string }) {
+M|rules|const handleShare = () => {
+M|rules|const params = new URLSearchParams(window.location.search)
+M|rules|const ref = params.get('ref')
+M|rules|shareChat(chatId, { ref })
+M|rules|}
+M|rules|return <button onClick={handleShare}>Share</button>
+M|rules|}
+M|rules|```

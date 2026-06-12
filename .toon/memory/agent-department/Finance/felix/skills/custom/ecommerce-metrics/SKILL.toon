@@ -1,0 +1,70 @@
+#MEM id=ecommerce-metrics source=/root/yvon/agent-department/Finance/felix/skills/custom/ecommerce-metrics/SKILL.md
+M|ecommerce-metrics|name: ecommerce-metrics
+M|ecommerce-metrics|description: Felix's financial framework for Novizio (DTC fashion e-commerce). Covers AOV, return rate, contribution margin per SKU, inventory turn, e-commerce CAC:LTV, sell-through rate, and SS26 cg 
+M|ecommerce-metrics|version: 1.0.0
+M|ecommerce-metrics|Felix's core skills are SaaS-optimized. Novizio is DTC fashion — a fundamentally different financial model. MRR, ARR, and SaaS LTV:CAC do not apply. This skill defines the metrics framework Felix uses
+M|ecommerce-metrics|```
+M|ecommerce-metrics|AOV = Total Revenue ÷ Total Orders
+M|ecommerce-metrics|Target: £80–£120 for contemporary fashion DTC
+M|ecommerce-metrics|Red flag: AOV declining WoW for 3+ consecutive weeks
+M|ecommerce-metrics|```
+M|ecommerce-metrics|```
+M|ecommerce-metrics|Return Rate = Returned Orders ÷ Total Orders × 100
+M|ecommerce-metrics|Industry benchmark: 20–30% for online fashion
+M|ecommerce-metrics|YVON flag: > 35% = sizing/quality issue · < 15% = potential friction in return process
+M|ecommerce-metrics|Impact: every 1% return rate increase reduces net revenue by AOV × (1% of orders)
+M|ecommerce-metrics|```
+M|ecommerce-metrics|```
+M|ecommerce-metrics|Sell-Through Rate = Units Sold ÷ (Units Sold + Units Remaining) × 100
+M|ecommerce-metrics|Good: ≥ 70% within 90 days of season launch
+M|ecommerce-metrics|At 50%: discount pressure begins
+M|ecommerce-metrics|At < 40%: markdown risk — flag to Marcus before SS26 inventory decisions
+M|ecommerce-metrics|```
+M|ecommerce-metrics|```
+M|ecommerce-metrics|Contribution Margin = (Selling Price − COGS − Shipping − Returns Cost − Payment Fees) ÷ Selling Price
+M|ecommerce-metrics|Target: ≥ 45% to support profitable paid acquisition
+M|ecommerce-metrics|Below 35%: SKU cannot support Meta ads — organic only
+M|ecommerce-metrics|```
+M|ecommerce-metrics|```
+M|ecommerce-metrics|GMV = Total order value before returns
+M|ecommerce-metrics|Net Revenue = GMV − Returns − Refunds − Discounts
+M|ecommerce-metrics|Always report both. A strong GMV with high returns is a false signal.
+M|ecommerce-metrics|```
+M|ecommerce-metrics|LTV for Novizio is **not** a subscription metric. Use purchase frequency model:
+M|ecommerce-metrics|```
+M|ecommerce-metrics|Novizio LTV = AOV × Avg. Purchase Frequency × Avg. Customer Lifespan (years) × Gross Margin %
+M|ecommerce-metrics|Example:
+M|ecommerce-metrics|AOV £95 × 2.1 orders/year × 2.5 years × 48% margin = £239 LTV
+M|ecommerce-metrics|CAC:LTV target: 3:1 minimum (spend £1 to earn £3 lifetime)
+M|ecommerce-metrics|Current CAC from Kai's channel data → Felix models LTV from above formula
+M|ecommerce-metrics|```
+M|ecommerce-metrics|**Never use SaaS LTV:CAC ratios for Novizio.** Fashion DTC benchmarks are structurally different.
+M|ecommerce-metrics|Before any SS26 cg budget is ap:
+M|ecommerce-metrics|```
+M|ecommerce-metrics|1. INVENTORY VALUE:   Total cost of SS26 units × expected sell-through rate = expected net COGs
+M|ecommerce-metrics|2. REVENUE TARGET:    Inventory value ÷ target contribution margin
+M|ecommerce-metrics|3. CAC BUDGET:        Revenue target × (1 ÷ LTV multiplier) = max total acquisition spend
+M|ecommerce-metrics|4. ROAS FLOOR:        CAC Budget ÷ expected paid revenue = minimum ROAS to break even
+M|ecommerce-metrics|5. MARKDOWN RESERVE:  Flag % of inventory likely to hit 40%+ markdown (sell-through < 50% at week 8)
+M|ecommerce-metrics|```
+M|ecommerce-metrics|Output for Marcus ap:
+M|ecommerce-metrics|```
+M|ecommerce-metrics|SS26 FINANCIAL MODEL
+M|ecommerce-metrics|Inventory cost:     £[X]
+M|ecommerce-metrics|Revenue target:     £[X] (at [Y]% sell-through, [Z]% margin)
+M|ecommerce-metrics|Max CAC spend:      £[X]
+M|ecommerce-metrics|ROAS floor:         [X.Xx]
+M|ecommerce-metrics|Markdown risk:      £[X] reserve if sell-through < 50% at week 8
+M|ecommerce-metrics|Felix verdict:      PROCEED / REDUCE INVENTORY / DELAY
+M|ecommerce-metrics|```
+M|ecommerce-metrics|Felix monitors these weekly (not monthly):
+M|ecommerce-metrics|| Metric | Green | Amber | Red |
+M|ecommerce-metrics||--------|-------|-------|-----|
+M|ecommerce-metrics|| AOV | > £90 | £70–£90 | < £70 |
+M|ecommerce-metrics|| Return rate | < 22% | 22–32% | > 32% |
+M|ecommerce-metrics|| Sell-through (SS) | > 65% | 50–65% | < 50% |
+M|ecommerce-metrics|| Contribution margin | > 45% | 35–45% | < 35% |
+M|ecommerce-metrics|- Never apply SaaS MRR/ARR/NRR framework to Novizio analysis
+M|ecommerce-metrics|- Never report GMV as revenue without netting out returns
+M|ecommerce-metrics|- Never recommend a paid cg budget for Novizio without calculating contribution margin first
+M|ecommerce-metrics|- Never project Novizio LTV using a subscription formula — use purchase frequency model above

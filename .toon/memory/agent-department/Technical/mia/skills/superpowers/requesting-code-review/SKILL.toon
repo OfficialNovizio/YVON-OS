@@ -1,0 +1,77 @@
+#MEM id=requesting-code-review source=/root/yvon/agent-department/Technical/mia/skills/superpowers/requesting-code-review/SKILL.md
+M|requesting-code-review|name: requesting-code-rv
+M|requesting-code-review|description: >-
+M|requesting-code-review|Use when completing tasks, implementing major features, or before merging to verify work meets requirements
+M|requesting-code-review|version: 1.0.0
+M|requesting-code-review|platforms: []
+M|requesting-code-review|metadata:
+M|requesting-code-review|hermes:
+M|requesting-code-review|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, productivity]
+M|requesting-code-review|Dispatch superpowers:code-reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted ctx for evaluation — never your ses's history. This keeps the reviewer focused on t
+M|requesting-code-review|**Core principle:** rv early, rv often.
+M|requesting-code-review|**Mandatory:**
+M|requesting-code-review|- After each task in subagent-driven dev
+M|requesting-code-review|- After completing major feature
+M|requesting-code-review|- Before merge to main
+M|requesting-code-review|**Optional but valuable:**
+M|requesting-code-review|- When stuck (fresh perspective)
+M|requesting-code-review|- Before refactoring (baseline check)
+M|requesting-code-review|- After fixing complex bug
+M|requesting-code-review|**1. Get git SHAs:**
+M|requesting-code-review|```bash
+M|requesting-code-review|BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
+M|requesting-code-review|HEAD_SHA=$(git rev-parse HEAD)
+M|requesting-code-review|```
+M|requesting-code-review|**2. Dispatch code-reviewer subagent:**
+M|requesting-code-review|Use Task tool with superpowers:code-reviewer type, fill template at `code-reviewer.md`
+M|requesting-code-review|**Placeholders:**
+M|requesting-code-review|- `{WHAT_WAS_IMPLEMENTED}` - What you just built
+M|requesting-code-review|- `{PLAN_OR_REQUIREMENTS}` - What it should do
+M|requesting-code-review|- `{BASE_SHA}` - Starting commit
+M|requesting-code-review|- `{HEAD_SHA}` - Ending commit
+M|requesting-code-review|- `{DESCRIPTION}` - Brief summary
+M|requesting-code-review|**3. Act on feedback:**
+M|requesting-code-review|- Fix Critical issues immediately
+M|requesting-code-review|- Fix Important issues before proceeding
+M|requesting-code-review|- Note Minor issues for later
+M|requesting-code-review|- Push back if reviewer is wrong (with reasoning)
+M|requesting-code-review|```
+M|requesting-code-review|[Just completed Task 2: Add verification function]
+M|requesting-code-review|You: Let me request code rv before proceeding.
+M|requesting-code-review|BASE_SHA=$(git log --oneline | grep "Task 1" | head -1 | awk '{print $1}')
+M|requesting-code-review|HEAD_SHA=$(git rev-parse HEAD)
+M|requesting-code-review|[Dispatch superpowers:code-reviewer subagent]
+M|requesting-code-review|WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
+M|requesting-code-review|PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/dpl-plan.md
+M|requesting-code-review|BASE_SHA: a7981ec
+M|requesting-code-review|HEAD_SHA: 3df7661
+M|requesting-code-review|DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
+M|requesting-code-review|[Subagent returns]:
+M|requesting-code-review|Strengths: Clean architecture, real tests
+M|requesting-code-review|Issues:
+M|requesting-code-review|Important: Missing progress indicators
+M|requesting-code-review|Minor: Magic number (100) for reporting interval
+M|requesting-code-review|Assessment: Ready to proceed
+M|requesting-code-review|You: [Fix progress indicators]
+M|requesting-code-review|[Continue to Task 3]
+M|requesting-code-review|```
+M|requesting-code-review|**Subagent-Driven dev:**
+M|requesting-code-review|- rv after EACH task
+M|requesting-code-review|- Catch issues before they compound
+M|requesting-code-review|- Fix before moving to next task
+M|requesting-code-review|**Executing Plans:**
+M|requesting-code-review|- rv after each batch (3 tasks)
+M|requesting-code-review|- Get feedback, apply, continue
+M|requesting-code-review|**Ad-Hoc dev:**
+M|requesting-code-review|- rv before merge
+M|requesting-code-review|- rv when stuck
+M|requesting-code-review|**Never:**
+M|requesting-code-review|- Skip rv because "it's simple"
+M|requesting-code-review|- Ignore Critical issues
+M|requesting-code-review|- Proceed with unfixed Important issues
+M|requesting-code-review|- Argue with valid tec feedback
+M|requesting-code-review|**If reviewer wrong:**
+M|requesting-code-review|- Push back with tec reasoning
+M|requesting-code-review|- Show code/tests that prove it works
+M|requesting-code-review|- Request clarification
+M|requesting-code-review|See template at: requesting-code-rv/code-reviewer.md

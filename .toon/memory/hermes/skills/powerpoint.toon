@@ -1,0 +1,129 @@
+SKILL|powerpoint|"Create, read, edit .pptx decks, slides, notes, templates."
+STEP|1|Read [editing.md](editing.md) for full details.**
+STEP|2|Analyze template with `thumbnail.py`
+STEP|3|Unpack → manipulate slides → edit content → clean → pack
+STEP|4|Read [pptxgenjs.md](pptxgenjs.md) for full details.**
+STEP|5|Don't create boring slides.** Plain bullets on a white background won't impress anyone. Consider ideas from this list for each slide.
+STEP|6|**Pick a bold, content-informed color palette**: The palette should feel designed for THIS topic. If swapping your colors into a completely different presentation would still "work," you haven't made 
+STEP|7|**Dominance over equality**: One color should dominate (60-70% visual weight), with 1-2 supporting tones and one sharp accent. Never give all colors equal weight.
+STEP|8|**Dark/light contrast**: Dark backgrounds for title + conclusion slides, light for content ("sandwich" structure). Or commit to dark throughout for a premium feel.
+STEP|9|**Commit to a visual motif**: Pick ONE distinctive element and repeat it — rounded image frames, icons in colored circles, thick single-side borders. Carry it across every slide.
+STEP|10|Every slide needs a visual element** — image, chart, icon, or shape. Text-only slides are forgettable.
+STEP|11|Layout options:**
+STEP|12|Two-column (text left, illustration on right)
+STEP|13|Icon + text rows (icon in colored circle, bold header, description below)
+STEP|14|2x2 or 2x3 grid (image on one side, grid of content blocks on other)
+STEP|15|Half-bleed image (full left or right side) with content overlay
+STEP|16|Data display:**
+STEP|17|Large stat callouts (big numbers 60-72pt with small labels below)
+STEP|18|Comparison columns (before/after, pros/cons, side-by-side options)
+STEP|19|Timeline or process flow (numbered steps, arrows)
+STEP|20|Visual polish:**
+STEP|21|Icons in small colored circles next to section headers
+STEP|22|Italic accent text for key stats or taglines
+STEP|23|Choose an interesting font pairing** — don't default to Arial. Pick a header font with personality and pair it with a clean body font.
+STEP|24|0.5" minimum margins
+STEP|25|0.3-0.5" between content blocks
+STEP|26|Leave breathing room—don't fill every inch
+STEP|27|**Don't repeat the same layout** — vary columns, cards, and callouts across slides
+STEP|28|**Don't center body text** — left-align paragraphs and lists; center only titles
+STEP|29|**Don't skimp on size contrast** — titles need 36pt+ to stand out from 14-16pt body
+STEP|30|**Don't default to blue** — pick colors that reflect the specific topic
+STEP|31|**Don't mix spacing randomly** — choose 0.3" or 0.5" gaps and use consistently
+STEP|32|**Don't style one slide and leave the rest plain** — commit fully or keep it simple throughout
+STEP|33|**Don't create text-only slides** — add images, icons, charts, or visual elements; avoid plain title + bullets
+STEP|34|**Don't forget text box padding** — when aligning lines or shapes with text edges, set `margin: 0` on the text box or offset the shape to account for padding
+STEP|35|**Don't use low-contrast elements** — icons AND text need strong contrast against the background; avoid light text on light backgrounds or dark text on dark backgrounds
+STEP|36|**NEVER use accent lines under titles** — these are a hallmark of AI-generated slides; use whitespace or background color instead
+STEP|37|Assume there are problems. Your job is to find them.**
+STEP|38|When using templates, check for leftover placeholder text:**
+STEP|39|⚠️ USE SUBAGENTS** — even for 2-3 slides. You've been staring at the code and will see what you expect, not what's there. Subagents have fresh eyes.
+STEP|40|Overlapping elements (text through shapes, lines through words, stacked elements)
+STEP|41|Text overflow or cut off at edges/box boundaries
+STEP|42|Decorative lines positioned for single-line text but title wrapped to two lines
+STEP|43|Source citations or footers colliding with content above
+STEP|44|Elements too close (< 0.3" gaps) or cards/sections nearly touching
+STEP|45|Uneven gaps (large empty area in one place, cramped in another)
+STEP|46|Insufficient margin from slide edges (< 0.5")
+STEP|47|Columns or similar elements not aligned consistently
+STEP|48|Low-contrast text (e.g., light gray text on cream-colored background)
+STEP|49|Low-contrast icons (e.g., dark icons on dark backgrounds without a contrasting circle)
+STEP|50|Text boxes too narrow causing excessive wrapping
+STEP|51|Leftover placeholder content
+STEP|52|/path/to/slide-01.jpg (Expected: [brief description])
+STEP|53|/path/to/slide-02.jpg (Expected: [brief description])
+STEP|54|Generate slides → Convert to images → Inspect
+STEP|55|**List issues found** (if none found, look again more critically)
+STEP|56|Fix issues
+STEP|57|**Re-verify affected slides** — one fix often creates another problem
+STEP|58|Repeat until a full pass reveals no new issues
+STEP|59|Do not declare success until you've completed at least one fix-and-verify cycle.**
+STEP|60|`pip install "markitdown[pptx]"` - text extraction
+STEP|61|`pip install Pillow` - thumbnail grids
+STEP|62|`npm install -g pptxgenjs` - creating from scratch
+STEP|63|LibreOffice (`soffice`) - PDF conversion (auto-configured for sandboxed environments via `scripts/office/soffice.py`)
+STEP|64|Poppler (`pdftoppm`) - PDF to images
+PIT|Read [editing.md](editing.md) for full details.**
+PIT|Analyze template with `thumbnail.py`
+PIT|Unpack → manipulate slides → edit content → clean → pack
+PIT|Read [pptxgenjs.md](pptxgenjs.md) for full details.**
+PIT|Don't create boring slides.** Plain bullets on a white background won't impress anyone. Consider ideas from this list for each slide.
+PIT|**Pick a bold, content-informed color palette**: The palette should feel designed for THIS topic. If swapping your colors into a completely different presentation would still "work," you haven't made 
+PIT|**Dominance over equality**: One color should dominate (60-70% visual weight), with 1-2 supporting tones and one sharp accent. Never give all colors equal weight.
+PIT|**Dark/light contrast**: Dark backgrounds for title + conclusion slides, light for content ("sandwich" structure). Or commit to dark throughout for a premium feel.
+PIT|**Commit to a visual motif**: Pick ONE distinctive element and repeat it — rounded image frames, icons in colored circles, thick single-side borders. Carry it across every slide.
+PIT|Every slide needs a visual element** — image, chart, icon, or shape. Text-only slides are forgettable.
+PIT|Layout options:**
+PIT|Two-column (text left, illustration on right)
+PIT|Icon + text rows (icon in colored circle, bold header, description below)
+PIT|2x2 or 2x3 grid (image on one side, grid of content blocks on other)
+PIT|Half-bleed image (full left or right side) with content overlay
+PIT|Data display:**
+PIT|Large stat callouts (big numbers 60-72pt with small labels below)
+PIT|Comparison columns (before/after, pros/cons, side-by-side options)
+PIT|Timeline or process flow (numbered steps, arrows)
+PIT|Visual polish:**
+PIT|Icons in small colored circles next to section headers
+PIT|Italic accent text for key stats or taglines
+PIT|Choose an interesting font pairing** — don't default to Arial. Pick a header font with personality and pair it with a clean body font.
+PIT|0.5" minimum margins
+PIT|0.3-0.5" between content blocks
+PIT|Leave breathing room—don't fill every inch
+PIT|**Don't repeat the same layout** — vary columns, cards, and callouts across slides
+PIT|**Don't center body text** — left-align paragraphs and lists; center only titles
+PIT|**Don't skimp on size contrast** — titles need 36pt+ to stand out from 14-16pt body
+PIT|**Don't default to blue** — pick colors that reflect the specific topic
+PIT|**Don't mix spacing randomly** — choose 0.3" or 0.5" gaps and use consistently
+PIT|**Don't style one slide and leave the rest plain** — commit fully or keep it simple throughout
+PIT|**Don't create text-only slides** — add images, icons, charts, or visual elements; avoid plain title + bullets
+PIT|**Don't forget text box padding** — when aligning lines or shapes with text edges, set `margin: 0` on the text box or offset the shape to account for padding
+PIT|**Don't use low-contrast elements** — icons AND text need strong contrast against the background; avoid light text on light backgrounds or dark text on dark backgrounds
+PIT|**NEVER use accent lines under titles** — these are a hallmark of AI-generated slides; use whitespace or background color instead
+PIT|Assume there are problems. Your job is to find them.**
+PIT|When using templates, check for leftover placeholder text:**
+PIT|⚠️ USE SUBAGENTS** — even for 2-3 slides. You've been staring at the code and will see what you expect, not what's there. Subagents have fresh eyes.
+PIT|Overlapping elements (text through shapes, lines through words, stacked elements)
+PIT|Text overflow or cut off at edges/box boundaries
+PIT|Decorative lines positioned for single-line text but title wrapped to two lines
+PIT|Source citations or footers colliding with content above
+PIT|Elements too close (< 0.3" gaps) or cards/sections nearly touching
+PIT|Uneven gaps (large empty area in one place, cramped in another)
+PIT|Insufficient margin from slide edges (< 0.5")
+PIT|Columns or similar elements not aligned consistently
+PIT|Low-contrast text (e.g., light gray text on cream-colored background)
+PIT|Low-contrast icons (e.g., dark icons on dark backgrounds without a contrasting circle)
+PIT|Text boxes too narrow causing excessive wrapping
+PIT|Leftover placeholder content
+PIT|/path/to/slide-01.jpg (Expected: [brief description])
+PIT|/path/to/slide-02.jpg (Expected: [brief description])
+PIT|Generate slides → Convert to images → Inspect
+PIT|**List issues found** (if none found, look again more critically)
+PIT|Fix issues
+PIT|**Re-verify affected slides** — one fix often creates another problem
+PIT|Repeat until a full pass reveals no new issues
+PIT|Do not declare success until you've completed at least one fix-and-verify cycle.**
+PIT|`pip install "markitdown[pptx]"` - text extraction
+PIT|`pip install Pillow` - thumbnail grids
+PIT|`npm install -g pptxgenjs` - creating from scratch
+PIT|LibreOffice (`soffice`) - PDF conversion (auto-configured for sandboxed environments via `scripts/office/soffice.py`)
+PIT|Poppler (`pdftoppm`) - PDF to images

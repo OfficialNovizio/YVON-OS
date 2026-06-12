@@ -1,0 +1,109 @@
+#MEM id=prompt-variation-engine source=/root/yvon/agent-department/Marketing/pixel/skills/custom/prompt-variation-engine/SKILL.md
+M|prompt-variation-engine|name: prompt-variation-engine
+M|prompt-variation-engine|description: Systematic recovery when QC fails. Variation hierarchy for image and video prompts — what to change first, what to change last. Stops Pixel from guessing. Covers negative prompts, seed, s
+M|prompt-variation-engine|version: 1.0.0
+M|prompt-variation-engine|When an image fails QC, the wrong rsp is to regenerate with the same prompt and hope for a different result. The right rsp is to change one variable at a time, in a known order, and read the result be
+M|prompt-variation-engine|**Rule:** Change the lowest-cost variable first. Work down the hierarchy only when the higher level doesn't fix it.
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Level 1 — Negative prompt (fastest, no quality cost)
+M|prompt-variation-engine|Level 2 — Seed (next fastest)
+M|prompt-variation-engine|Level 3 — Steps / CFG scale (affects generation cost)
+M|prompt-variation-engine|Level 4 — Sampler (affects generation style)
+M|prompt-variation-engine|Level 5 — Prompt rewrite (consult Atlas if > 3 words change)
+M|prompt-variation-engine|Level 6 — Return to Atlas (direction is broken, not the execution)
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Never skip levels unless the failure reason clearly maps to a deeper level (e.g., anatomy errors almost always start at Level 1; style direction failures often indicate Level 6).
+M|prompt-variation-engine|The fastest fix. Add to the negative prompt before touching anything else.
+M|prompt-variation-engine|```
+M|prompt-variation-engine|extra fingers, fused fingers, extra limbs, deformed hands, malformed hands,
+M|prompt-variation-engine|mutated hands, bad anatomy, distorted face, asymmetrical face, floating limbs,
+M|prompt-variation-engine|disconnected limbs, extra head, cloned face, ugly, deformed
+M|prompt-variation-engine|```
+M|prompt-variation-engine|```
+M|prompt-variation-engine|text, watermark, signature, logo, label, letters, numbers, words, typography,
+M|prompt-variation-engine|blurry text, illegible text, copyright
+M|prompt-variation-engine|```
+M|prompt-variation-engine|```
+M|prompt-variation-engine|busy background, cluttered background, pattern background, tiling, repetitive pattern,
+M|prompt-variation-engine|extra people, extra figures, crowded, messy environment
+M|prompt-variation-engine|```
+M|prompt-variation-engine|```
+M|prompt-variation-engine|white background, plain background, catalogue, stock photo, commercial, posed,
+M|prompt-variation-engine|fake smile, perfect symmetry, product shot, flat lay on white
+M|prompt-variation-engine|```
+M|prompt-variation-engine|```
+M|prompt-variation-engine|coins, cash, money, piggy bank, dollar sign, graph lines, upward arrow,
+M|prompt-variation-engine|boardroom, suits, handshake, floating phone, sterile, clinical
+M|prompt-variation-engine|```
+M|prompt-variation-engine|When Level 1 doesn't fix it: change the seed. Same prompt + same negative prompt + new seed = different image composition with the same style direction.
+M|prompt-variation-engine|| Situation | Action |
+M|prompt-variation-engine||-----------|--------|
+M|prompt-variation-engine|| Anatomy error persists after negative prompt | gen 3 new seeds before escalating |
+M|prompt-variation-engine|| Background composition is wrong but style is right | Try 2 new seeds |
+M|prompt-variation-engine|| Subject pose is off | Try 2 new seeds before rewriting prompt |
+M|prompt-variation-engine|| Batch inconsistency (one outlier image) | Regenerate the outlier with a new seed |
+M|prompt-variation-engine|**Rule:** Try at least 2 different seeds before moving to Level 3.
+M|prompt-variation-engine|When subject detail or prompt adherence is the issue (not anatomy or background).
+M|prompt-variation-engine|| Problem | Adjustment |
+M|prompt-variation-engine||---------|-----------|
+M|prompt-variation-engine|| Image looks soft or undetailed | Increase steps: +5 to +10 |
+M|prompt-variation-engine|| Subject doesn't match prompt description closely | Increase CFG scale: +0.5 to +1.0 |
+M|prompt-variation-engine|| Image looks over-processed or plastic | Decrease CFG scale: -0.5 to -1.0 |
+M|prompt-variation-engine|| Too much noise in output | Decrease steps: -5 |
+M|prompt-variation-engine|**Typical ranges:**
+M|prompt-variation-engine|- Steps: 20–50 (start at 30 for standard prd)
+M|prompt-variation-engine|- CFG scale: 5.0–9.0 (start at 7.0 for standard)
+M|prompt-variation-engine|**Rule:** Change one at a time. Steps first if detail is the issue. CFG if prompt adherence is the issue.
+M|prompt-variation-engine|When style register is wrong (the image looks different in texture or rendering quality from what the style spec intends).
+M|prompt-variation-engine|| Current sampler | Try instead | When |
+M|prompt-variation-engine||----------------|-------------|------|
+M|prompt-variation-engine|| Euler a | DPM++ 2M Karras | More detail, smoother result |
+M|prompt-variation-engine|| DPM++ 2M Karras | Euler a | Softer, more painterly |
+M|prompt-variation-engine|| DDIM | DPM++ SDE Karras | Better prompt adherence |
+M|prompt-variation-engine|**Rule:** Only change sampler when style register is wrong, not when subject or anatomy is wrong. Sampler does not fix anatomy.
+M|prompt-variation-engine|When the failure is not in execution but in what the prompt is asking for.
+M|prompt-variation-engine|**Pixel can rewrite independently (< 3 words changed):**
+M|prompt-variation-engine|- Swapping a vague adjective for a specific one (e.g., `beautiful` → `soft editorial`)
+M|prompt-variation-engine|- Removing a descriptor that conflicts with QC result
+M|prompt-variation-engine|- Adding a specific composition instruction (e.g., `rule of thirds`, `subject left-aligned`)
+M|prompt-variation-engine|**Pixel must flag Atlas before rewriting (> 3 words changed):**
+M|prompt-variation-engine|- Changing the subject description
+M|prompt-variation-engine|- Changing the setting or environment
+M|prompt-variation-engine|- Changing any mood adjective that was explicit in Atlas's brief
+M|prompt-variation-engine|- Removing any element that Atlas included deliberately
+M|prompt-variation-engine|**Format for flagging Atlas:**
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Variation flag → Atlas:
+M|prompt-variation-engine|Batch: [name]
+M|prompt-variation-engine|Images failed: [N] / [total]
+M|prompt-variation-engine|Rejection reason: [specific]
+M|prompt-variation-engine|Proposed change: [exact text to change] → [proposed replacement]
+M|prompt-variation-engine|Reason: [why this variation targets the failure pattern]
+M|prompt-variation-engine|Awaiting: ap to run variation batch
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Return to Atlas (do not attempt further variation) when:
+M|prompt-variation-engine|- Rejection rate > 20% after Levels 1–4 applied
+M|prompt-variation-engine|- The failure pattern is structural (every image fails the same check)
+M|prompt-variation-engine|- Prompt contains a fundamental contradiction that variations cannot resolve
+M|prompt-variation-engine|- The style spec direction is producing images that are technically correct but off-brand
+M|prompt-variation-engine|**Format for returning to Atlas:**
+M|prompt-variation-engine|```
+M|prompt-variation-engine|prd block → Atlas:
+M|prompt-variation-engine|Batch: [name] — [vtr] — [cg]
+M|prompt-variation-engine|Rejection rate: [%] after [N] variation attempts
+M|prompt-variation-engine|Root failure: [specific pattern — not "images look bad"]
+M|prompt-variation-engine|Variations attempted: [list what was tried at each level]
+M|prompt-variation-engine|Assessment: prompt architecture needs revision before batch can proceed
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Video prompts have fewer levers than image prompts. Variation hierarchy is shorter:
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Level 1 — Negative prompt additions (same as image)
+M|prompt-variation-engine|Level 2 — Motion prompt adjustment (reduce motion descriptors if output is unstable)
+M|prompt-variation-engine|Level 3 — Duration / frame count reduction (shorter clips are more stable)
+M|prompt-variation-engine|Level 4 — Return to Atlas (video direction is broken)
+M|prompt-variation-engine|```
+M|prompt-variation-engine|Video-specific negative prompt additions for common failures:
+M|prompt-variation-engine|```
+M|prompt-variation-engine|flickering, jittery motion, morphing face, distorted movement, teleporting subject,
+M|prompt-variation-engine|background morphing, inconsistent lighting, color flicker
+M|prompt-variation-engine|```

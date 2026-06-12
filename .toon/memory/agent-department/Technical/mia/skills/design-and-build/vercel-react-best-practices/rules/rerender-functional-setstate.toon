@@ -1,0 +1,52 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-functional-setstate.md
+M|rules|title: Use Functional setState Updates
+M|rules|impact: MEDIUM
+M|rules|impactDescription: prevents stale closures and unnecessary callback recreations
+M|rules|tags: react, hooks, useState, useCallback, callbacks, closures
+M|rules|When updating state based on the current state value, use the functional update form of setState instead of directly referencing the state variable. This prevents stale closures, eliminates unnecessar
+M|rules|**Incorrect (requires state as dependency):**
+M|rules|```tsx
+M|rules|function TodoList() {
+M|rules|const [items, setItems] = useState(initialItems)
+M|rules|// Callback must depend on items, recreated on every items change
+M|rules|const addItems = useCallback((newItems: Item[]) => {
+M|rules|setItems([...items, ...newItems])
+M|rules|}, [items])  // ❌ items dependency causes recreations
+M|rules|// Risk of stale closure if dependency is forgotten
+M|rules|const removeItem = useCallback((id: string) => {
+M|rules|setItems(items.filter(item => item.id !== id))
+M|rules|}, [])  // ❌ Missing items dependency - will use stale items!
+M|rules|return <ItemsEditor items={items} onAdd={addItems} onRemove={removeItem} />
+M|rules|}
+M|rules|```
+M|rules|The first callback is recreated every time `items` changes, which can cause child components to re-render unnecessarily. The second callback has a stale closure bug—it will always reference the initia
+M|rules|**Correct (stable callbacks, no stale closures):**
+M|rules|```tsx
+M|rules|function TodoList() {
+M|rules|const [items, setItems] = useState(initialItems)
+M|rules|// Stable callback, never recreated
+M|rules|const addItems = useCallback((newItems: Item[]) => {
+M|rules|setItems(curr => [...curr, ...newItems])
+M|rules|}, [])  // ✅ No dependencies needed
+M|rules|// Always uses latest state, no stale closure risk
+M|rules|const removeItem = useCallback((id: string) => {
+M|rules|setItems(curr => curr.filter(item => item.id !== id))
+M|rules|}, [])  // ✅ Safe and stable
+M|rules|return <ItemsEditor items={items} onAdd={addItems} onRemove={removeItem} />
+M|rules|}
+M|rules|```
+M|rules|**Benefits:**
+M|rules|1. **Stable callback references** - Callbacks don't need to be recreated when state changes
+M|rules|2. **No stale closures** - Always operates on the latest state value
+M|rules|3. **Fewer dependencies** - Simplifies dependency arrays and reduces mem leaks
+M|rules|4. **Prevents bugs** - Eliminates the most common source of React closure bugs
+M|rules|**When to use functional updates:**
+M|rules|- Any setState that depends on the current state value
+M|rules|- Inside useCallback/useMemo when state is needed
+M|rules|- Event handlers that reference state
+M|rules|- Async operations that update state
+M|rules|**When direct updates are fine:**
+M|rules|- Setting state to a static value: `setCount(0)`
+M|rules|- Setting state from props/arguments only: `setName(newName)`
+M|rules|- State doesn't depend on previous value
+M|rules|**Note:** If your project has [React Compiler](https://react.dev/learn/react-compiler) enabled, the compiler can automatically optimize some cases, but functional updates are still recommended for cor

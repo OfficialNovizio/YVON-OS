@@ -1,0 +1,73 @@
+SKILL|ascii-art|"ASCII art: pyfiglet, cowsay, boxes, image-to-ascii."
+STEP|1|Preview 2-3 fonts and let the user pick their favorite
+STEP|2|Short text (1-8 chars) works best with detailed fonts like `doom` or `block`
+STEP|3|Long text works better with compact fonts like `small` or `mini`
+STEP|4|URL-encode spaces as `+` in the text parameter
+STEP|5|The response is plain text ASCII art — no JSON wrapping, ready to display
+STEP|6|Font names are case-sensitive; use the fonts endpoint to get exact names
+STEP|7|Works from any terminal with curl — no Python or pip needed
+STEP|8|Note**: toilet outputs ANSI escape codes for colors — works in terminals but may not render in all contexts (e.g., plain text files, some chat platforms).
+STEP|9|URL pattern:** `https://ascii.co.uk/art/{subject}`
+STEP|10|Step 1 — Fetch the page:**
+STEP|11|Step 2 — Extract art from pre tags:**
+STEP|12|Available subjects** (use as URL path):
+STEP|13|Animals: `cat`, `dog`, `horse`, `bird`, `fish`, `dragon`, `snake`, `rabbit`, `elephant`, `dolphin`, `butterfly`, `owl`, `wolf`, `bear`, `penguin`, `turtle`
+STEP|14|Objects: `car`, `ship`, `airplane`, `rocket`, `guitar`, `computer`, `coffee`, `beer`, `cake`, `house`, `castle`, `sword`, `crown`, `key`
+STEP|15|Nature: `tree`, `flower`, `sun`, `moon`, `star`, `mountain`, `ocean`, `rainbow`
+STEP|16|Characters: `skull`, `robot`, `angel`, `wizard`, `pirate`, `ninja`, `alien`
+STEP|17|Holidays: `christmas`, `halloween`, `valentine`
+STEP|18|Tips:**
+STEP|19|Preserve artist signatures/initials — important etiquette
+STEP|20|Multiple art pieces per page — pick the best one for the user
+STEP|21|Works reliably via curl, no JavaScript needed
+STEP|22|Box Drawing:** `╔ ╗ ╚ ╝ ║ ═ ╠ ╣ ╦ ╩ ╬ ┌ ┐ └ ┘ │ ─ ├ ┤ ┬ ┴ ┼ ╭ ╮ ╰ ╯`
+STEP|23|Block Elements:** `░ ▒ ▓ █ ▄ ▀ ▌ ▐ ▖ ▗ ▘ ▝ ▚ ▞`
+STEP|24|Geometric & Symbols:** `◆ ◇ ◈ ● ○ ◉ ■ □ ▲ △ ▼ ▽ ★ ☆ ✦ ✧ ◀ ▶ ◁ ▷ ⬡ ⬢ ⌂`
+STEP|25|Max width: 60 characters per line (terminal-safe)
+STEP|26|Max height: 15 lines for banners, 25 for scenes
+STEP|27|Monospace only: output must render correctly in fixed-width fonts
+STEP|28|**Text as a banner** → pyfiglet if installed, otherwise asciified API via curl
+STEP|29|**Wrap a message in fun character art** → cowsay
+STEP|30|**Add decorative border/frame** → boxes (can combine with pyfiglet/asciified)
+STEP|31|**Art of a specific thing** (cat, rocket, dragon) → ascii.co.uk via curl + parsing
+STEP|32|**Convert an image to ASCII** → ascii-image-converter or jp2a
+STEP|33|**QR code** → qrenco.de via curl
+STEP|34|**Weather/moon art** → wttr.in via curl
+STEP|35|**Something custom/creative** → LLM generation with Unicode palette
+STEP|36|**Any tool not installed** → install it, or fall back to next option
+PIT|Preview 2-3 fonts and let the user pick their favorite
+PIT|Short text (1-8 chars) works best with detailed fonts like `doom` or `block`
+PIT|Long text works better with compact fonts like `small` or `mini`
+PIT|URL-encode spaces as `+` in the text parameter
+PIT|The response is plain text ASCII art — no JSON wrapping, ready to display
+PIT|Font names are case-sensitive; use the fonts endpoint to get exact names
+PIT|Works from any terminal with curl — no Python or pip needed
+PIT|Note**: toilet outputs ANSI escape codes for colors — works in terminals but may not render in all contexts (e.g., plain text files, some chat platforms).
+PIT|URL pattern:** `https://ascii.co.uk/art/{subject}`
+PIT|Step 1 — Fetch the page:**
+PIT|Step 2 — Extract art from pre tags:**
+PIT|Available subjects** (use as URL path):
+PIT|Animals: `cat`, `dog`, `horse`, `bird`, `fish`, `dragon`, `snake`, `rabbit`, `elephant`, `dolphin`, `butterfly`, `owl`, `wolf`, `bear`, `penguin`, `turtle`
+PIT|Objects: `car`, `ship`, `airplane`, `rocket`, `guitar`, `computer`, `coffee`, `beer`, `cake`, `house`, `castle`, `sword`, `crown`, `key`
+PIT|Nature: `tree`, `flower`, `sun`, `moon`, `star`, `mountain`, `ocean`, `rainbow`
+PIT|Characters: `skull`, `robot`, `angel`, `wizard`, `pirate`, `ninja`, `alien`
+PIT|Holidays: `christmas`, `halloween`, `valentine`
+PIT|Tips:**
+PIT|Preserve artist signatures/initials — important etiquette
+PIT|Multiple art pieces per page — pick the best one for the user
+PIT|Works reliably via curl, no JavaScript needed
+PIT|Box Drawing:** `╔ ╗ ╚ ╝ ║ ═ ╠ ╣ ╦ ╩ ╬ ┌ ┐ └ ┘ │ ─ ├ ┤ ┬ ┴ ┼ ╭ ╮ ╰ ╯`
+PIT|Block Elements:** `░ ▒ ▓ █ ▄ ▀ ▌ ▐ ▖ ▗ ▘ ▝ ▚ ▞`
+PIT|Geometric & Symbols:** `◆ ◇ ◈ ● ○ ◉ ■ □ ▲ △ ▼ ▽ ★ ☆ ✦ ✧ ◀ ▶ ◁ ▷ ⬡ ⬢ ⌂`
+PIT|Max width: 60 characters per line (terminal-safe)
+PIT|Max height: 15 lines for banners, 25 for scenes
+PIT|Monospace only: output must render correctly in fixed-width fonts
+PIT|**Text as a banner** → pyfiglet if installed, otherwise asciified API via curl
+PIT|**Wrap a message in fun character art** → cowsay
+PIT|**Add decorative border/frame** → boxes (can combine with pyfiglet/asciified)
+PIT|**Art of a specific thing** (cat, rocket, dragon) → ascii.co.uk via curl + parsing
+PIT|**Convert an image to ASCII** → ascii-image-converter or jp2a
+PIT|**QR code** → qrenco.de via curl
+PIT|**Weather/moon art** → wttr.in via curl
+PIT|**Something custom/creative** → LLM generation with Unicode palette
+PIT|**Any tool not installed** → install it, or fall back to next option

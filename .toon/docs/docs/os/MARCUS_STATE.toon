@@ -1,0 +1,9 @@
+#DOC id=MARCUS_STATE source=/root/yvon/docs/os/MARCUS_STATE.md format=toon-doc compressed=2026-06-12T06:40:26.317Z
+
+S|# MARCUS_STATE.md — Persistent Cross-Session State|> Marcus reads this at every ses start, before ses.md. // > Marcus writes this at every ses end. // > This is NOT a log — it is a snapshot. Overwrite, do not append. // ---
+S|Active Venture|``` // last_venture: yvon-dashboard // switched_at: 2026-06-09 // ```
+S|Last Agent Activated|``` // novizio:        none — no vtr-specific sessions in recent history // hourbour:       none — no vtr-specific sessions in recent history // yvon-dashboard: Marcus (CEO audit) + Dev + Raj + Mia + Quinn — Full agt/system audit + react-doctor integration — 2026-06-09 // ```
+S|In-Flight Work|``` // yvon-dashboard \| Phase 1-3 dashboard fixes \| Squad: Dev+Raj+Mia+Quinn \| Awaiting Stark go-ahead //   - Phase 1: Fix ses.md, delete dead code, fix NavBar //   - Phase 2: Create Opportunities tab, extract components //   - Phase 3: Quinn QA hardening // ``` // ```
+S|Waiting|> Tasks that are queued but not started. Marcus reviews before accepting new requests. // ``` // yvon-dashboard \| Run migration 023 (studio_sessions table) \| Stark to run in Supabase SQL Editor // yvon-dashboard \| Run migration 022 (content_suggestion_engine — 4 tables) \| Stark to run in Supabase SQL Editor // yvon-dashboard \| Run migration 021 (clothing_items table) \| Stark to run in Supabase SQL Editor // ```
+S|Cross-Venture Insights [global]|> Only entries that are genuinely transferable across both ventures. Tag each with [novizio→hourbour] or [hourbour→novizio]. // ``` // none logged yet // ``` // ---
+S|Update Protocol|At every ses end, Marcus overwrites all sections above with current state. // At every ses start, Marcus reads this file first — before ses.md, before any agt is activated. // If this file shows in-flight work, Marcus acknowledges it to Stark before taking a new task.

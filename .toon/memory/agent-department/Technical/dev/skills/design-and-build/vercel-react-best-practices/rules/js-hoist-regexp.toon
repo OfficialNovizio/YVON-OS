@@ -1,0 +1,33 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-hoist-regexp.md
+M|rules|title: Hoist RegExp Creation
+M|rules|impact: LOW-MEDIUM
+M|rules|impactDescription: avoids recreation
+M|rules|tags: javascript, regexp, optimization, memoization
+M|rules|Don't create RegExp inside render. Hoist to module scope or memoize with `useMemo()`.
+M|rules|**Incorrect (new RegExp every render):**
+M|rules|```tsx
+M|rules|function Highlighter({ text, query }: Props) {
+M|rules|const regex = new RegExp(`(${query})`, 'gi')
+M|rules|const parts = text.split(regex)
+M|rules|return <>{parts.map((part, i) => ...)}</>
+M|rules|}
+M|rules|```
+M|rules|**Correct (memoize or hoist):**
+M|rules|```tsx
+M|rules|const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+M|rules|function Highlighter({ text, query }: Props) {
+M|rules|const regex = useMemo(
+M|rules|() => new RegExp(`(${escapeRegex(query)})`, 'gi'),
+M|rules|[query]
+M|rules|)
+M|rules|const parts = text.split(regex)
+M|rules|return <>{parts.map((part, i) => ...)}</>
+M|rules|}
+M|rules|```
+M|rules|**Warning (global regex has mutable state):**
+M|rules|Global regex (`/g`) has mutable `lastIndex` state:
+M|rules|```typescript
+M|rules|const regex = /foo/g
+M|rules|regex.test('foo')  // true, lastIndex = 3
+M|rules|regex.test('foo')  // false, lastIndex = 0
+M|rules|```

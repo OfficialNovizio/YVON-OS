@@ -1,0 +1,84 @@
+#MEM id=accessibility source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/accessibility/SKILL.md
+M|accessibility|name: accessibility
+M|accessibility|description: Mia's WCAG 2.1 AA compliance framework for YVON. Covers contrast ratios for the glass system, semantic HTML patterns, focus management, keyboard navigation, and screen reader support. Run
+M|accessibility|version: 1.0.0
+M|accessibility|YVON's glass morphism system creates accessibility risk by default — semi-transparent backgrounds make contrast unpredictable, and layered visual effects can obscure focus indicators. This skill ensur
+M|accessibility|**The standard:** WCAG 2.1 AA minimum. Not optional — legal standard in most markets.
+M|accessibility|- Any new screen or component build
+M|accessibility|- Any change to the glass system (opacity, color, blur)
+M|accessibility|- Before any screen is marked complete
+M|accessibility|- When Quinn raises an accessibility finding in QA Pulse
+M|accessibility|The glass system uses semi-transparent backgrounds. Contrast must be calculated against the **rendered background**, not the CSS value.
+M|accessibility|| Container | Background (rendered) | Text color | Min ratio | Status |
+M|accessibility||-----------|----------------------|------------|-----------|--------|
+M|accessibility|| V1 Clear Ice | ~#f2f5f8 (white frosted) | `#000000` | 4.5:1 | ✅ Black on near-white passes |
+M|accessibility|| V2 Azure Tint | ~#1a3a6b (blue gradient) | `#ffffff` | 4.5:1 | ✅ White on navy passes |
+M|accessibility|| V3 Obsidian | ~#1a1f2e (dark smoke) | `#f1f5fb` | 4.5:1 | ✅ Light on dark passes |
+M|accessibility|| V4 Prism | ~#e8e0f0 (iridescent light) | `#2a1240` (plum) | 4.5:1 | ⚠️ Verify — iridescent shifts with viewport |
+M|accessibility|**Tool:** Use browser DevTools → Accessibility panel to check computed contrast on rendered elements.
+M|accessibility|**Rule from feedback.md:** Light containers (V1, V4) → PURE BLACK text. Dark containers (V2, V3) → PURE WHITE. No muted variants.
+M|accessibility|Buttons, links, and focus rings require 3:1 contrast against their adjacent background (WCAG 1.4.11).
+M|accessibility|YVON uses React + Next.js App Router. Semantic HTML is mandatory — glass cards are `<div>` visually but must use the correct semantic element:
+M|accessibility|```tsx
+M|accessibility|// ✅ Correct — semantic landmark regions
+M|accessibility|<main>
+M|accessibility|<section aria-labelledby="anl-heading">
+M|accessibility|<h2 id="anl-heading">anl Overview</h2>
+M|accessibility|</section>
+M|accessibility|</main>
+M|accessibility|// ✅ Correct — interactive elements
+M|accessibility|<button onClick={handleTab} aria-selected={isActive} role="tab">Overview</button>
+M|accessibility|<a href="/anl">View report</a>  // navigation = anchor, not button
+M|accessibility|// ❌ Wrong — clickable div
+M|accessibility|<div onClick={handleTab}>Overview</div>  // not keyboard accessible
+M|accessibility|```
+M|accessibility|| Component | ARIA pattern |
+M|accessibility||-----------|-------------|
+M|accessibility|| Tab system (CEO dashboard) | `role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected` |
+M|accessibility|| KPI cards | `<article>` or `<section>` with `aria-label="[metric name] KPI"` |
+M|accessibility|| Status badges | `aria-label="Status: [value]"` or `<span role="status">` |
+M|accessibility|| Loading states | `aria-busy="true"` on loading container |
+M|accessibility|| War Room messages | `role="log"` on message list, `aria-live="polite"` |
+M|accessibility|| Modal / overlay | `role="dialog"`, `aria-modal="true"`, focus trap |
+M|accessibility|Every interactive element must have a visible focus indicator. YVON's glass system often removes or obscures default focus rings.
+M|accessibility|```css
+M|accessibility|/* globals.css — add to focus rule */
+M|accessibility|:focus-visible {
+M|accessibility|outline: 2px solid var(--color-accent-primary);
+M|accessibility|outline-offset: 2px;
+M|accessibility|border-radius: 4px;
+M|accessibility|}
+M|accessibility|/* Never use outline: none without a custom focus style */
+M|accessibility|```
+M|accessibility|**Focus trap** is required for modals, drawers, and dropdown menus. Use the `focus-trap-react` pattern or implement manually:
+M|accessibility|```tsx
+M|accessibility|// Trap focus inside modal on open, return to trigger on close
+M|accessibility|useEffect(() => { if (isOpen) modalRef.current?.focus() }, [isOpen])
+M|accessibility|```
+M|accessibility|All screens must be fully navigable by keyboard:
+M|accessibility|```
+M|accessibility|Tab / Shift+Tab   → navigate interactive elements in DOM order
+M|accessibility|Enter / Space     → activate buttons, checkboxes
+M|accessibility|Arrow keys        → navigate within tab lists, dropdowns, menus
+M|accessibility|Escape            → close modals, dropdowns, overlays
+M|accessibility|```
+M|accessibility|**DOM order = visual order.** If glass card layout uses CSS Grid with visual reordering, DOM order must still be logical for screen readers.
+M|accessibility|```
+M|accessibility|□ Every image has alt text (decorative images: alt="")
+M|accessibility|□ Icons without text labels have aria-label
+M|accessibility|□ Dynamic cnt updates use aria-live="polite"
+M|accessibility|□ Error messages are associated with their input via aria-describedby
+M|accessibility|□ Page title updates on route change (Next.js: update <title> per page)
+M|accessibility|```
+M|accessibility|Before marking any screen complete:
+M|accessibility|```
+M|accessibility|□ All text meets 4.5:1 contrast on rendered glass background
+M|accessibility|□ All interactive elements are reachable and operable by keyboard
+M|accessibility|□ No click-only interactions (divs, spans with onClick without role/tabindex)
+M|accessibility|□ Focus indicators visible on all focusable elements
+M|accessibility|□ Images have meaningful alt text
+M|accessibility|□ Semantic landmarks present: main, nav, header, section with labels
+M|accessibility|□ Dynamic updates announced via aria-live
+M|accessibility|□ Tested at 200% zoom — no cnt lost or clipped
+M|accessibility|□ Tab order matches visual reading order
+M|accessibility|```

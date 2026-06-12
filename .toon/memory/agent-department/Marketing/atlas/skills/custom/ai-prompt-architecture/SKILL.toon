@@ -1,0 +1,58 @@
+#MEM id=ai-prompt-architecture source=/root/yvon/agent-department/Marketing/atlas/skills/custom/ai-prompt-architecture/SKILL.md
+M|ai-prompt-architecture|name: ai-prompt-architecture
+M|ai-prompt-architecture|description: >-
+M|ai-prompt-architecture|AI Image Prompt Architecture for Pixel. Model-specific parameter optimization, consistency across batches, seed management, rejection pattern analysis.
+M|ai-prompt-architecture|version: 1.0.0
+M|ai-prompt-architecture|platforms: []
+M|ai-prompt-architecture|metadata:
+M|ai-prompt-architecture|hermes:
+M|ai-prompt-architecture|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, yvon]
+M|ai-prompt-architecture|tec framework for generating consistent, high-quality image batches across AI models.
+M|ai-prompt-architecture|Build every prompt from these components in order:
+M|ai-prompt-architecture|[Subject], [Setting], [Lighting]. [Style descriptor], [Composition]. [Mood adjectives]
+M|ai-prompt-architecture|- Subject: Who/what is the focus. "A woman in a cream linen blazer"
+M|ai-prompt-architecture|- Setting: Environment, background. "standing against a textured plaster wall"
+M|ai-prompt-architecture|- Lighting: Light quality and direction. "soft north-facing morning light"
+M|ai-prompt-architecture|- Style: Genre, visual tradition. "editorial fashion photography"
+M|ai-prompt-architecture|- Composition: Framing, camera angle. "medium shot, rule of thirds"
+M|ai-prompt-architecture|- Mood: Emotional tone. "effortless, quiet confidence"
+M|ai-prompt-architecture|- `--ar` for aspect ratio (1:1, 16:9, 9:16)
+M|ai-prompt-architecture|- `--style raw` for less AI interpretation
+M|ai-prompt-architecture|- `--s 100-250` for less stylization (tighter to prompt)
+M|ai-prompt-architecture|- `--v 6` for latest model version
+M|ai-prompt-architecture|- Include style keywords directly in the prompt
+M|ai-prompt-architecture|- Specify "photorealistic" for photo-like output
+M|ai-prompt-architecture|- Use "no text, no watermark" in negative guidance
+M|ai-prompt-architecture|- Use clear subject descriptions
+M|ai-prompt-architecture|- Add camera/lens terms for photographic quality
+M|ai-prompt-architecture|- Specify lighting conditions for mood control
+M|ai-prompt-architecture|- Same seed produces similar composition
+M|ai-prompt-architecture|- Different seed, same prompt: tests model variation range
+M|ai-prompt-architecture|- Lock seed for variations of a single concept (change one component, keep seed)
+M|ai-prompt-architecture|- doc every seed: record seed, output quality, usable yes/no
+M|ai-prompt-architecture|**Seed Log Format:**
+M|ai-prompt-architecture|```
+M|ai-prompt-architecture|Batch: {id} | Model: {name} | Prompts: {n}
+M|ai-prompt-architecture|Seed -> Quality -> Verdict
+M|ai-prompt-architecture|1234567 -> Sharp, natural -> PASS
+M|ai-prompt-architecture|2345678 -> Slight artifact on hand -> FAIL
+M|ai-prompt-architecture|3456789 -> Background too busy -> FAIL
+M|ai-prompt-architecture|```
+M|ai-prompt-architecture|1. **Style anchor**: Include the same style phrase in every prompt ("editorial minimalism, natural lighting, clean backgrounds")
+M|ai-prompt-architecture|2. **Color lock**: Specify exact colors ("warm cream tones, sage green accent, charcoal shadows")
+M|ai-prompt-architecture|3. **Reference image**: When possible, use image prompting with a brand-coherent reference
+M|ai-prompt-architecture|4. **Avoid list**: Lock the avoid list across all prompts for a vtr
+M|ai-prompt-architecture|Track which prompt elements correlate with low-quality outputs:
+M|ai-prompt-architecture|- If specific hand poses fail repeatedly (>30% rejection rate), avoid hands in prompts; crop or reframe
+M|ai-prompt-architecture|- If complex backgrounds fail (>25%), simplify background description
+M|ai-prompt-architecture|- If multiple subjects fail (>40%), gen single subject, composite later
+M|ai-prompt-architecture|- If specific text in image fails (>60%), add text in post-prd, not generation
+M|ai-prompt-architecture|Update the Style Spec based on rejection data. If a pattern exceeds 25% rejection rate, it should be added to the Avoid list.
+M|ai-prompt-architecture|- Style terms: editorial, fashion photography, natural light, textured
+M|ai-prompt-architecture|- Colors: warm neutrals, muted tones, brand palette accents
+M|ai-prompt-architecture|- Mood: confident, effortless, editorial
+M|ai-prompt-architecture|- Lighting: soft, natural, directional
+M|ai-prompt-architecture|- Style terms: clean, modern, tech-forward, professional
+M|ai-prompt-architecture|- Colors: white space, brand palette, light backgrounds
+M|ai-prompt-architecture|- Mood: trustworthy, confident, approachable
+M|ai-prompt-architecture|- Lighting: bright, clean, evenly lit

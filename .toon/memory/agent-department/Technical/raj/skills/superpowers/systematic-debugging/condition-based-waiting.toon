@@ -1,0 +1,79 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/raj/skills/superpowers/systematic-debugging/condition-based-waiting.md
+M|systematic-debugging|Flaky tests often guess at timing with arbitrary delays. This creates race conditions where tests pass on fast machines but fail under load or in CI.
+M|systematic-debugging|**Core principle:** Wait for the actual condition you care about, not a guess about how long it takes.
+M|systematic-debugging|```dot
+M|systematic-debugging|digraph when_to_use {
+M|systematic-debugging|"Test uses setTimeout/sleep?" [shape=diamond];
+M|systematic-debugging|"Testing timing behavior?" [shape=diamond];
+M|systematic-debugging|"doc WHY timeout needed" [shape=box];
+M|systematic-debugging|"Use condition-based waiting" [shape=box];
+M|systematic-debugging|"Test uses setTimeout/sleep?" -> "Testing timing behavior?" [label="yes"];
+M|systematic-debugging|"Testing timing behavior?" -> "doc WHY timeout needed" [label="yes"];
+M|systematic-debugging|"Testing timing behavior?" -> "Use condition-based waiting" [label="no"];
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**Use when:**
+M|systematic-debugging|- Tests have arbitrary delays (`setTimeout`, `sleep`, `time.sleep()`)
+M|systematic-debugging|- Tests are flaky (pass sometimes, fail under load)
+M|systematic-debugging|- Tests timeout when run in parallel
+M|systematic-debugging|- Waiting for async operations to complete
+M|systematic-debugging|**Don't use when:**
+M|systematic-debugging|- Testing actual timing behavior (debounce, throttle intervals)
+M|systematic-debugging|- Always doc WHY if using arbitrary timeout
+M|systematic-debugging|```typescript
+M|systematic-debugging|// ❌ BEFORE: Guessing at timing
+M|systematic-debugging|await new Promise(r => setTimeout(r, 50));
+M|systematic-debugging|const result = getResult();
+M|systematic-debugging|expect(result).toBeDefined();
+M|systematic-debugging|// ✅ AFTER: Waiting for condition
+M|systematic-debugging|await waitFor(() => getResult() !== undefined);
+M|systematic-debugging|const result = getResult();
+M|systematic-debugging|expect(result).toBeDefined();
+M|systematic-debugging|```
+M|systematic-debugging|| Scenario | Pattern |
+M|systematic-debugging||----------|---------|
+M|systematic-debugging|| Wait for event | `waitFor(() => events.find(e => e.type === 'DONE'))` |
+M|systematic-debugging|| Wait for state | `waitFor(() => machine.state === 'ready')` |
+M|systematic-debugging|| Wait for count | `waitFor(() => items.length >= 5)` |
+M|systematic-debugging|| Wait for file | `waitFor(() => fs.existsSync(path))` |
+M|systematic-debugging|| Complex condition | `waitFor(() => obj.ready && obj.value > 10)` |
+M|systematic-debugging|Generic polling function:
+M|systematic-debugging|```typescript
+M|systematic-debugging|async function waitFor<T>(
+M|systematic-debugging|condition: () => T | undefined | null | false,
+M|systematic-debugging|description: string,
+M|systematic-debugging|timeoutMs = 5000
+M|systematic-debugging|): Promise<T> {
+M|systematic-debugging|const startTime = Date.now();
+M|systematic-debugging|while (true) {
+M|systematic-debugging|const result = condition();
+M|systematic-debugging|if (result) return result;
+M|systematic-debugging|if (Date.now() - startTime > timeoutMs) {
+M|systematic-debugging|throw new Error(`Timeout waiting for ${description} after ${timeoutMs}ms`);
+M|systematic-debugging|}
+M|systematic-debugging|await new Promise(r => setTimeout(r, 10)); // Poll every 10ms
+M|systematic-debugging|}
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|See `condition-based-waiting-example.ts` in this directory for complete implementation with domain-specific helpers (`waitForEvent`, `waitForEventCount`, `waitForEventMatch`) from actual debugging ses
+M|systematic-debugging|**❌ Polling too fast:** `setTimeout(check, 1)` - wastes CPU
+M|systematic-debugging|**✅ Fix:** Poll every 10ms
+M|systematic-debugging|**❌ No timeout:** Loop forever if condition never met
+M|systematic-debugging|**✅ Fix:** Always include timeout with clear error
+M|systematic-debugging|**❌ Stale data:** Cache state before loop
+M|systematic-debugging|**✅ Fix:** Call getter inside loop for fresh data
+M|systematic-debugging|```typescript
+M|systematic-debugging|// Tool ticks every 100ms - need 2 ticks to verify partial output
+M|systematic-debugging|await waitForEvent(manager, 'TOOL_STARTED'); // First: wait for condition
+M|systematic-debugging|await new Promise(r => setTimeout(r, 200));   // Then: wait for timed behavior
+M|systematic-debugging|// 200ms = 2 ticks at 100ms intervals - documented and justified
+M|systematic-debugging|```
+M|systematic-debugging|**Requirements:**
+M|systematic-debugging|1. First wait for triggering condition
+M|systematic-debugging|2. Based on known timing (not guessing)
+M|systematic-debugging|3. Comment explaining WHY
+M|systematic-debugging|From debugging ses (2025-10-03):
+M|systematic-debugging|- Fixed 15 flaky tests across 3 files
+M|systematic-debugging|- Pass rate: 60% → 100%
+M|systematic-debugging|- Execution time: 40% faster
+M|systematic-debugging|- No more race conditions

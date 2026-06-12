@@ -1,0 +1,62 @@
+#MEM id=production-pipeline source=/root/yvon/agent-department/Marketing/pixel/skills/custom/production-pipeline/SKILL.md
+M|production-pipeline|name: prd-pl
+M|production-pipeline|description: >-
+M|production-pipeline|YVON prd pl for Pixel. 5-stage pl: gen plus QC plus Upscale plus Format plus Deliver. Batch management, platform export specs, and rejection handling.
+M|production-pipeline|version: 1.0.0
+M|production-pipeline|platforms: []
+M|production-pipeline|metadata:
+M|production-pipeline|hermes:
+M|production-pipeline|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, yvon]
+M|production-pipeline|Pixel's 5-stage image prd pl. Execute in order. Never skip a stage.
+M|production-pipeline|**Input:** ap prompt from Atlas's Prompt Architecture
+M|production-pipeline|**Process:** Run generation with model-specific parameters. gen 4-8 variants per prompt.
+M|production-pipeline|**Output:** Raw image set with seed metadata
+M|production-pipeline|**Batch Table Entry:**
+M|production-pipeline|```
+M|production-pipeline|| Batch ID | vtr | cg | Prompt Count | Model | Date |
+M|production-pipeline|```
+M|production-pipeline|**Input:** Generated image set + Atlas's 3 Quality Criteria
+M|production-pipeline|**Process:** Evaluate each variant against Atlas's quality bar
+M|production-pipeline|**Output:** Pass list (images ap) / Reject list (images + reason)
+M|production-pipeline|**QC Checklist:**
+M|production-pipeline|- Face/hand quality: no AI artifacts (blur, extra fingers, warped features)
+M|production-pipeline|- Background consistency: matches Style Spec setting?
+M|production-pipeline|- Color harmony: aligns with brand palette?
+M|production-pipeline|- Composition rule followed: as specified in prompt?
+M|production-pipeline|- No unexpected elements: nothing in "Avoid" list present?
+M|production-pipeline|**If all variants fail:** Flag to Atlas with specific failure reasons. Do not proceed.
+M|production-pipeline|**Input:** QC-passed images at original resolution
+M|production-pipeline|**Process:** Apply AI upscaling to target resolution
+M|production-pipeline|**Output:** High-resolution images (see Platform Specs below)
+M|production-pipeline|**Rules:**
+M|production-pipeline|- Upscale before any other processing
+M|production-pipeline|- Check upscaled output at 100% to verify quality is acceptable
+M|production-pipeline|- If upscaling introduces artifacts: revert and try different upscale method
+M|production-pipeline|**Input:** Upscaled images
+M|production-pipeline|**Process:** Resize + compress per platform specs
+M|production-pipeline|**Platform Export Specs:**
+M|production-pipeline|| Platform | Format | Dimensions | Ratio | Max Size | Filename Pattern |
+M|production-pipeline||----------|--------|------------|-------|----------|-----------------|
+M|production-pipeline|| Instagram Post | JPEG | 1080x1080 | 1:1 | less than 30MB | `{vtr}_{cg}_{seq}_ig.jpg` |
+M|production-pipeline|| Instagram Story/Reel | JPEG | 1080x1920 | 9:16 | less than 30MB | `{vtr}_{cg}_{seq}_igr.jpg` |
+M|production-pipeline|| LinkedIn Post | JPEG | 1200x627 | 1.91:1 | less than 8MB | `{vtr}_{cg}_{seq}_li.jpg` |
+M|production-pipeline|| TikTok Cover | JPEG | 1080x1920 | 9:16 | less than 287MB | `{vtr}_{cg}_{seq}_tt.jpg` |
+M|production-pipeline|| Website Hero | WebP | 1920x1080 | 16:9 | less than 500KB | `{vtr}_{cg}_{seq}_web.webp` |
+M|production-pipeline|| Product Photo | WebP | 1200x1200 | 1:1 | less than 1MB | `{vtr}_{cg}_{seq}_prod.webp` |
+M|production-pipeline|**Input:** Formatted, named files
+M|production-pipeline|**Process:** Deliver assets to the destination (Opus for scheduling, Lena for copy pairing, etc.)
+M|production-pipeline|**Output:** Delivery confirmation with file count and format summary
+M|production-pipeline|**Delivery Report:**
+M|production-pipeline|```
+M|production-pipeline|| Format | Count | Status |
+M|production-pipeline||--------|-------|--------|
+M|production-pipeline|**Total:** [X] files
+M|production-pipeline|**Destination:** [Where delivered]
+M|production-pipeline|**Rejections:** [N] with reasons if any
+M|production-pipeline|**Feedback to Atlas:** [Prompt architecture revision notes if quality was low]
+M|production-pipeline|```
+M|production-pipeline|When images are rejected:
+M|production-pipeline|1. Log rejection reason with specific image reference
+M|production-pipeline|2. Categorize: prompt issue (Atlas's problem) vs model limitation (switch model) vs quality bar mismatch (clarify with Atlas)
+M|production-pipeline|3. If more than 20% rejection rate on a batch: Atlas must revise prompt architecture before next generation
+M|production-pipeline|4. Track rejection patterns: if "hands" appears 3+ times, add hand-specific guidance to all future prompts

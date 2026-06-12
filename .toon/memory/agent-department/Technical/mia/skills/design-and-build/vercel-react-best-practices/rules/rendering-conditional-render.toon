@@ -1,0 +1,30 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-conditional-render.md
+M|rules|title: Use Explicit Conditional Rendering
+M|rules|impact: LOW
+M|rules|impactDescription: prevents rendering 0 or NaN
+M|rules|tags: rendering, conditional, jsx, falsy-values
+M|rules|Use explicit ternary operators (`? :`) instead of `&&` for conditional rendering when the condition can be `0`, `NaN`, or other falsy values that render.
+M|rules|**Incorrect (renders "0" when count is 0):**
+M|rules|```tsx
+M|rules|function Badge({ count }: { count: number }) {
+M|rules|return (
+M|rules|<div>
+M|rules|{count && <span className="badge">{count}</span>}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|// When count = 0, renders: <div>0</div>
+M|rules|// When count = 5, renders: <div><span class="badge">5</span></div>
+M|rules|```
+M|rules|**Correct (renders nothing when count is 0):**
+M|rules|```tsx
+M|rules|function Badge({ count }: { count: number }) {
+M|rules|return (
+M|rules|<div>
+M|rules|{count > 0 ? <span className="badge">{count}</span> : null}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|// When count = 0, renders: <div></div>
+M|rules|// When count = 5, renders: <div><span class="badge">5</span></div>
+M|rules|```

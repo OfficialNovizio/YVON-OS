@@ -1,0 +1,25 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md
+M|rules|title: Do not wrap a simple expression with a primitive result type in useMemo
+M|rules|impact: LOW-MEDIUM
+M|rules|impactDescription: wasted computation on every render
+M|rules|tags: rerender, useMemo, optimization
+M|rules|When an expression is simple (few logical or arithmetical operators) and has a primitive result type (boolean, number, string), do not wrap it in `useMemo`.
+M|rules|Calling `useMemo` and comparing hook dependencies may consume more resources than the expression itself.
+M|rules|**Incorrect:**
+M|rules|```tsx
+M|rules|function Header({ user, notifications }: Props) {
+M|rules|const isLoading = useMemo(() => {
+M|rules|return user.isLoading || notifications.isLoading
+M|rules|}, [user.isLoading, notifications.isLoading])
+M|rules|if (isLoading) return <Skeleton />
+M|rules|// return some markup
+M|rules|}
+M|rules|```
+M|rules|**Correct:**
+M|rules|```tsx
+M|rules|function Header({ user, notifications }: Props) {
+M|rules|const isLoading = user.isLoading || notifications.isLoading
+M|rules|if (isLoading) return <Skeleton />
+M|rules|// return some markup
+M|rules|}
+M|rules|```

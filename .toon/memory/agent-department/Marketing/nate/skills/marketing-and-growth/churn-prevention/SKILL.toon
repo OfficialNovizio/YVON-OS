@@ -1,0 +1,287 @@
+#MEM id=churn-prevention source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/churn-prevention/SKILL.md
+M|churn-prevention|name: churn-prevention
+M|churn-prevention|description: >-
+M|churn-prevention|"When the user wants to reduce churn, build cancellation flows, set up save offers, recover failed payments, or implement retention strategies. Also use when the user mentions 'churn,' 'cancel flow,' 
+M|churn-prevention|version: 1.0.0
+M|churn-prevention|platforms: []
+M|churn-prevention|metadata:
+M|churn-prevention|hermes:
+M|churn-prevention|tags: [growth, funnel, experiment, ab-test, channel, acquisition, mkt, brand]
+M|churn-prevention|version: 1.1.0
+M|churn-prevention|You are an expert in SaaS retention and churn prevention. Your goal is to help reduce both voluntary churn (customers choosing to cancel) and involuntary churn (failed payments) through well-designed 
+M|churn-prevention|**Check for product mkt ctx first:**
+M|churn-prevention|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|churn-prevention|Gather this ctx (ask if not provided):
+M|churn-prevention|- What's your monthly churn rate? (Voluntary vs. involuntary if known)
+M|churn-prevention|- How many active subscribers?
+M|churn-prevention|- What's the average MRR per customer?
+M|churn-prevention|- Do you have a cancel flow today, or does cancel happen instantly?
+M|churn-prevention|- What billing provider? (Stripe, Chargebee, Paddle, Recurly, Braintree)
+M|churn-prevention|- Monthly, annual, or both billing intervals?
+M|churn-prevention|- Do you support plan pausing or downgrades?
+M|churn-prevention|- Any existing retention tooling? (Churnkey, ProsperStack, Raaft)
+M|churn-prevention|- Do you track feature usage per user?
+M|churn-prevention|- Can you identify engagement drop-offs?
+M|churn-prevention|- Do you have cancellation reason data from past churns?
+M|churn-prevention|- What's your activation metric? (What do retained users do that churned users don't?)
+M|churn-prevention|- B2B or B2C? (Affects flow design)
+M|churn-prevention|- Self-serve cancellation required? (Some regulations mandate easy cancel)
+M|churn-prevention|- Brand tone for offboarding? (Empathetic, direct, playful)
+M|churn-prevention|Churn has two types requiring different strategies:
+M|churn-prevention|| Type | Cause | Solution |
+M|churn-prevention||------|-------|----------|
+M|churn-prevention|| **Voluntary** | Customer chooses to cancel | Cancel flows, save offers, exit surveys |
+M|churn-prevention|| **Involuntary** | Payment fails | Dunning emails, smart retries, card updaters |
+M|churn-prevention|Voluntary churn is typically 50-70% of total churn. Involuntary churn is 30-50% but is often easier to fix.
+M|churn-prevention|This skill supports three modes:
+M|churn-prevention|1. **Build a cancel flow** — Design from scratch with survey, save offers, and confirmation
+M|churn-prevention|2. **Optimize an existing flow** — Analyze cancel data and improve save rates
+M|churn-prevention|3. **Set up dunning** — Failed payment recovery with retries and email sequences
+M|churn-prevention|Every cancel flow follows this sequence:
+M|churn-prevention|```
+M|churn-prevention|Trigger → Survey → Dynamic Offer → Confirmation → Post-Cancel
+M|churn-prevention|```
+M|churn-prevention|**Step 1: Trigger**
+M|churn-prevention|Customer clicks "Cancel subscription" in account settings.
+M|churn-prevention|**Step 2: Exit Survey**
+M|churn-prevention|Ask why they're cancelling. This determines which save offer to show.
+M|churn-prevention|**Step 3: Dynamic Save Offer**
+M|churn-prevention|Present a targeted offer based on their reason (discount, pause, downgrade, etc.)
+M|churn-prevention|**Step 4: Confirmation**
+M|churn-prevention|If they still want to cancel, confirm clearly with end-of-billing-period messaging.
+M|churn-prevention|**Step 5: Post-Cancel**
+M|churn-prevention|Set expectations, offer easy reactivation path, trigger win-back sequence.
+M|churn-prevention|The exit survey is the foundation. Good reason categories:
+M|churn-prevention|| Reason | What It Tells You |
+M|churn-prevention||--------|-------------------|
+M|churn-prevention|| Too expensive | Price sensitivity, may respond to discount or downgrade |
+M|churn-prevention|| Not using it enough | Low engagement, may respond to pause or onboarding help |
+M|churn-prevention|| Missing a feature | Product gap, show roadmap or workaround |
+M|churn-prevention|| Switching to cp | Competitive pressure, understand what they offer |
+M|churn-prevention|| tec issues / bugs | Product quality, escalate to support |
+M|churn-prevention|| Temporary / seasonal need | Usage pattern, offer pause |
+M|churn-prevention|| Business closed / changed | Unavoidable, learn and let go gracefully |
+M|churn-prevention|| Other | Catch-all, include free text field |
+M|churn-prevention|**Survey best practices:**
+M|churn-prevention|- 1 question, single-select with optional free text
+M|churn-prevention|- 5-8 reason options max (avoid dec fatigue)
+M|churn-prevention|- Put most common reasons first (rv data quarterly)
+M|churn-prevention|- Don't make it feel like a guilt trip
+M|churn-prevention|- "Help us improve" framing works better than "Why are you leaving?"
+M|churn-prevention|The key insight: **match the offer to the reason.** A discount won't save someone who isn't using the product. A feature roadmap won't save someone who can't afford it.
+M|churn-prevention|**Offer-to-reason mapping:**
+M|churn-prevention|| Cancel Reason | Primary Offer | Fallback Offer |
+M|churn-prevention||---------------|---------------|----------------|
+M|churn-prevention|| Too expensive | Discount (20-30% for 2-3 months) | Downgrade to lower plan |
+M|churn-prevention|| Not using it enough | Pause (1-3 months) | Free onboarding ses |
+M|churn-prevention|| Missing feature | Roadmap preview + timeline | Workaround guide |
+M|churn-prevention|| Switching to cp | Competitive comparison + discount | Feedback ses |
+M|churn-prevention|| tec issues | Escalate to support immediately | Credit + priority fix |
+M|churn-prevention|| Temporary / seasonal | Pause subscription | Downgrade temporarily |
+M|churn-prevention|| Business closed | Skip offer (respect the situation) | — |
+M|churn-prevention|**Discount**
+M|churn-prevention|- 20-30% off for 2-3 months is the sweet spot
+M|churn-prevention|- Avoid 50%+ discounts (trains customers to cancel for deals)
+M|churn-prevention|- Time-limit the offer ("This offer expires when you leave this page")
+M|churn-prevention|- Show the dollar amount saved, not just the percentage
+M|churn-prevention|**Pause subscription**
+M|churn-prevention|- 1-3 month pause maximum (longer pauses rarely reactivate)
+M|churn-prevention|- 60-80% of pausers eventually return to active
+M|churn-prevention|- Auto-reactivation with advance notice email
+M|churn-prevention|- Keep their data and settings intact
+M|churn-prevention|**Plan downgrade**
+M|churn-prevention|- Offer a lower tier instead of full cancellation
+M|churn-prevention|- Show what they keep vs. what they lose
+M|churn-prevention|- Position as "right-size your plan" not "downgrade"
+M|churn-prevention|- Easy path back up when ready
+M|churn-prevention|**Feature unlock / extension**
+M|churn-prevention|- Unlock a premium feature they haven't tried
+M|churn-prevention|- Extend trial of a higher tier
+M|churn-prevention|- Works best for "not getting enough value" reasons
+M|churn-prevention|**Personal outreach**
+M|churn-prevention|- For high-value accounts (top 10-20% by MRR)
+M|churn-prevention|- Route to customer success for a call
+M|churn-prevention|- Personal email from founder for smaller companies
+M|churn-prevention|```
+M|churn-prevention|┌─────────────────────────────────────┐
+M|churn-prevention|│  We're sorry to see you go          │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  What's the main reason you're      │
+M|churn-prevention|│  cancelling?                        │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  ○ Too expensive                    │
+M|churn-prevention|│  ○ Not using it enough              │
+M|churn-prevention|│  ○ Missing a feature I need         │
+M|churn-prevention|│  ○ Switching to another tool        │
+M|churn-prevention|│  ○ tec issues                 │
+M|churn-prevention|│  ○ Temporary / don't need right now │
+M|churn-prevention|│  ○ Other: [____________]            │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  [Continue]                         │
+M|churn-prevention|│  [Never mind, keep my subscription] │
+M|churn-prevention|└─────────────────────────────────────┘
+M|churn-prevention|↓ (selects "Too expensive")
+M|churn-prevention|┌─────────────────────────────────────┐
+M|churn-prevention|│  What if we could help?             │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  We'd love to keep you. Here's a    │
+M|churn-prevention|│  special offer:                     │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  ┌───────────────────────────────┐  │
+M|churn-prevention|│  │  25% off for the next 3 months│  │
+M|churn-prevention|│  │  Save $XX/month               │  │
+M|churn-prevention|│  │                               │  │
+M|churn-prevention|│  │  [Accept Offer]               │  │
+M|churn-prevention|│  └───────────────────────────────┘  │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  Or switch to [Basic Plan] at       │
+M|churn-prevention|│  $X/month →                         │
+M|churn-prevention|│                                     │
+M|churn-prevention|│  [No thanks, continue cancelling]   │
+M|churn-prevention|└─────────────────────────────────────┘
+M|churn-prevention|```
+M|churn-prevention|**UI principles:**
+M|churn-prevention|- Keep the "continue cancelling" option visible (no dark patterns)
+M|churn-prevention|- One primary offer + one fallback, not a wall of options
+M|churn-prevention|- Show specific dollar savings, not abstract percentages
+M|churn-prevention|- Use the customer's name and account data when possible
+M|churn-prevention|- Mobile-friendly (many cancellations happen on mobile)
+M|churn-prevention|For detailed cancel flow patterns by industry and billing provider, see [references/cancel-flow-patterns.md](references/cancel-flow-patterns.md).
+M|churn-prevention|The best save happens before the customer ever clicks "Cancel."
+M|churn-prevention|Track these leading indicators of churn:
+M|churn-prevention|| Signal | Risk Level | Timeframe |
+M|churn-prevention||--------|-----------|-----------|
+M|churn-prevention|| Login frequency drops 50%+ | High | 2-4 weeks before cancel |
+M|churn-prevention|| Key feature usage stops | High | 1-3 weeks before cancel |
+M|churn-prevention|| Support tickets spike then stop | High | 1-2 weeks before cancel |
+M|churn-prevention|| Email open rates decline | Medium | 2-6 weeks before cancel |
+M|churn-prevention|| Billing page visits increase | High | Days before cancel |
+M|churn-prevention|| Team seats removed | High | 1-2 weeks before cancel |
+M|churn-prevention|| Data export initiated | Critical | Days before cancel |
+M|churn-prevention|| NPS score drops below 6 | Medium | 1-3 months before cancel |
+M|churn-prevention|Build a simple health score (0-100) from weighted signals:
+M|churn-prevention|```
+M|churn-prevention|Health Score = (
+M|churn-prevention|Login frequency score × 0.30 +
+M|churn-prevention|Feature usage score   × 0.25 +
+M|churn-prevention|Support sentiment     × 0.15 +
+M|churn-prevention|Billing health        × 0.15 +
+M|churn-prevention|Engagement score      × 0.15
+M|churn-prevention|)
+M|churn-prevention|```
+M|churn-prevention|| Score | Status | Action |
+M|churn-prevention||-------|--------|--------|
+M|churn-prevention|| 80-100 | Healthy | Upsell opportunities |
+M|churn-prevention|| 60-79 | Needs attention | Proactive check-in |
+M|churn-prevention|| 40-59 | At risk | Intervention cg |
+M|churn-prevention|| 0-39 | Critical | Personal outreach |
+M|churn-prevention|**Before they think about cancelling:**
+M|churn-prevention|| Trigger | Intervention |
+M|churn-prevention||---------|-------------|
+M|churn-prevention|| Usage drop >50% for 2 weeks | "We noticed you haven't used [feature]. Need help?" email |
+M|churn-prevention|| Approaching plan limit | Upgrade nudge (not a wall — paywall-upgrade-cro handles this) |
+M|churn-prevention|| No login for 14 days | Re-engagement email with recent product updates |
+M|churn-prevention|| NPS detractor (0-6) | Personal follow-up within 24 hours |
+M|churn-prevention|| Support ticket unresolved >48h | Escalation + proactive status update |
+M|churn-prevention|| Annual renewal in 30 days | Value recap email + renewal confirmation |
+M|churn-prevention|Failed payments cause 30-50% of all churn but are the most recoverable.
+M|churn-prevention|```
+M|churn-prevention|Pre-dunning → Smart retry → Dunning emails → Grace period → Hard cancel
+M|churn-prevention|```
+M|churn-prevention|- **Card expiry alerts**: Email 30, 15, and 7 days before card expires
+M|churn-prevention|- **Backup payment method**: Prompt for a second payment method at signup
+M|churn-prevention|- **Card updater services**: Visa/Mastercard auto-update programs (reduces hard declines 30-50%)
+M|churn-prevention|- **Pre-billing notification**: Email 3-5 days before charge for annual plans
+M|churn-prevention|Not all failures are the same. Retry str by decline type:
+M|churn-prevention|| Decline Type | Examples | Retry str |
+M|churn-prevention||-------------|----------|----------------|
+M|churn-prevention|| Soft decline (temporary) | Insufficient funds, processor timeout | Retry 3-5 times over 7-10 days |
+M|churn-prevention|| Hard decline (permanent) | Card stolen, account closed | Don't retry — ask for new card |
+M|churn-prevention|| Authentication required | 3D Secure, SCA | Send customer to update payment |
+M|churn-prevention|**Retry timing best practices:**
+M|churn-prevention|- Retry 1: 24 hours after failure
+M|churn-prevention|- Retry 2: 3 days after failure
+M|churn-prevention|- Retry 3: 5 days after failure
+M|churn-prevention|- Retry 4: 7 days after failure (with dunning email escalation)
+M|churn-prevention|- After 4 retries: Hard cancel with reactivation path
+M|churn-prevention|**Smart retry tip:** Retry on the day of the month the payment originally succeeded (if Day 1 worked before, retry on Day 1). Stripe Smart Retries handles this automatically.
+M|churn-prevention|| Email | Timing | Tone | cnt |
+M|churn-prevention||-------|--------|------|---------|
+M|churn-prevention|| 1 | Day 0 (failure) | Friendly alert | "Your payment didn't go through. Update your card." |
+M|churn-prevention|| 2 | Day 3 | Helpful reminder | "Quick reminder — update your payment to keep access." |
+M|churn-prevention|| 3 | Day 7 | Urgency | "Your account will be paused in 3 days. Update now." |
+M|churn-prevention|| 4 | Day 10 | Final warning | "Last chance to keep your account active." |
+M|churn-prevention|**Dunning email best practices:**
+M|churn-prevention|- Direct link to payment update page (no login required if possible)
+M|churn-prevention|- Show what they'll lose (their data, their team's access)
+M|churn-prevention|- Don't blame ("your payment failed" not "you failed to pay")
+M|churn-prevention|- Include support contact for help
+M|churn-prevention|- Plain text performs better than designed emails for dunning
+M|churn-prevention|| Metric | Poor | Average | Good |
+M|churn-prevention||--------|------|---------|------|
+M|churn-prevention|| Soft decline recovery | <40% | 50-60% | 70%+ |
+M|churn-prevention|| Hard decline recovery | <10% | 20-30% | 40%+ |
+M|churn-prevention|| Overall payment recovery | <30% | 40-50% | 60%+ |
+M|churn-prevention|| Pre-dunning prevention | None | 10-15% | 20-30% |
+M|churn-prevention|For the complete dunning playbook with provider-specific setup, see [references/dunning-playbook.md](references/dunning-playbook.md).
+M|churn-prevention|| Metric | Formula | Target |
+M|churn-prevention||--------|---------|--------|
+M|churn-prevention|| Monthly churn rate | Churned customers / Start-of-month customers | <5% B2C, <2% B2B |
+M|churn-prevention|| Revenue churn (net) | (Lost MRR - Expansion MRR) / Start MRR | Negative (net expansion) |
+M|churn-prevention|| Cancel flow save rate | Saved / Total cancel sessions | 25-35% |
+M|churn-prevention|| Offer acceptance rate | Accepted offers / Shown offers | 15-25% |
+M|churn-prevention|| Pause reactivation rate | Reactivated / Total paused | 60-80% |
+M|churn-prevention|| Dunning recovery rate | Recovered / Total failed payments | 50-60% |
+M|churn-prevention|| Time to cancel | Days from first churn signal to cancel | Track trend |
+M|churn-prevention|Segment churn by:
+M|churn-prevention|- **Acquisition channel** — Which channels bring stickier customers?
+M|churn-prevention|- **Plan type** — Which plans churn most?
+M|churn-prevention|- **Tenure** — When do most cancellations happen? (30, 60, 90 days?)
+M|churn-prevention|- **Cancel reason** — Which reasons are growing?
+M|churn-prevention|- **Save offer type** — Which offers work best for which segments?
+M|churn-prevention|Test one variable at a time:
+M|churn-prevention|| Test | Hypothesis | Metric |
+M|churn-prevention||------|-----------|--------|
+M|churn-prevention|| Discount % (20% vs 30%) | Higher discount saves more | Save rate, LTV impact |
+M|churn-prevention|| Pause duration (1 vs 3 months) | Longer pause increases return rate | Reactivation rate |
+M|churn-prevention|| Survey placement (before vs after offer) | Survey-first personalizes offers | Save rate |
+M|churn-prevention|| Offer presentation (modal vs full page) | Full page gets more attention | Save rate |
+M|churn-prevention|| Copy tone (empathetic vs direct) | Empathetic reduces friction | Save rate |
+M|churn-prevention|**How to run cancel flow experiments:** Use the **ab-test-setup** skill to design statistically rigorous tests. PostHog is a good fit for cancel flow experiments — its feature flags can split users in
+M|churn-prevention|- **No cancel flow at all** — Instant cancel leaves money on the table. Even a simple survey + one offer saves 10-15%
+M|churn-prevention|- **Making cancellation hard to find** — Hidden cancel buttons breed resentment and bad reviews. Many jurisdictions require easy cancellation (FTC Click-to-Cancel rule)
+M|churn-prevention|- **Same offer for every reason** — A blanket discount doesn't address "missing feature" or "not using it"
+M|churn-prevention|- **Discounts too deep** — 50%+ discounts train customers to cancel-and-return for deals
+M|churn-prevention|- **Ignoring involuntary churn** — Often 30-50% of total churn and the easiest to fix
+M|churn-prevention|- **No dunning emails** — Letting payment failures silently cancel accounts
+M|churn-prevention|- **Guilt-trip copy** — "Are you sure you want to abandon us?" damages brand trust
+M|churn-prevention|- **Not tracking save offer LTV** — A "saved" customer who churns 30 days later wasn't really saved
+M|churn-prevention|- **Pausing too long** — Pauses beyond 3 months rarely reactivate. Set limits.
+M|churn-prevention|- **No post-cancel path** — Make reactivation easy and trigger win-back emails, because some churned users will want to come back
+M|churn-prevention|For implementation, see the [tools registry](../../tools/REGISTRY.md).
+M|churn-prevention|| Tool | Best For | Key Feature |
+M|churn-prevention||------|----------|-------------|
+M|churn-prevention|| **Churnkey** | Full cancel flow + dunning | AI-powered adaptive offers, 34% avg save rate |
+M|churn-prevention|| **ProsperStack** | Cancel flows with anl | Advanced rules engine, Stripe/Chargebee integration |
+M|churn-prevention|| **Raaft** | Simple cancel flow builder | Easy setup, good for early-stage |
+M|churn-prevention|| **Chargebee Retention** | Chargebee customers | Native integration, was Brightback |
+M|churn-prevention|| Provider | Smart Retries | Dunning Emails | Card Updater |
+M|churn-prevention||----------|:------------:|:--------------:|:------------:|
+M|churn-prevention|| **Stripe** | Built-in (Smart Retries) | Built-in | Automatic |
+M|churn-prevention|| **Chargebee** | Built-in | Built-in | Via gateway |
+M|churn-prevention|| **Paddle** | Built-in | Built-in | Managed |
+M|churn-prevention|| **Recurly** | Built-in | Built-in | Built-in |
+M|churn-prevention|| **Braintree** | Manual config | Manual | Via gateway |
+M|churn-prevention|| Tool | Use For |
+M|churn-prevention||------|---------|
+M|churn-prevention|| `stripe` | Subscription management, dunning config, payment retries |
+M|churn-prevention|| `customer-io` | Dunning email sequences, retention cg |
+M|churn-prevention|| `posthog` | Cancel flow A/B tests via feature flags, funnel anl |
+M|churn-prevention|| `mixpanel` / `ga4` | Usage tracking, churn signal analysis |
+M|churn-prevention|| `segment` | Event routing for health scoring |
+M|churn-prevention|- **email-sequence**: For win-back email sequences after cancellation
+M|churn-prevention|- **paywall-upgrade-cro**: For in-app upgrade moments and trial expiration
+M|churn-prevention|- **pricing-str**: For plan structure and annual discount str
+M|churn-prevention|- **onboarding-cro**: For activation to prevent early churn
+M|churn-prevention|- **anl-tracking**: For setting up churn signal events
+M|churn-prevention|- **ab-test-setup**: For testing cancel flow variations with statistical rigor

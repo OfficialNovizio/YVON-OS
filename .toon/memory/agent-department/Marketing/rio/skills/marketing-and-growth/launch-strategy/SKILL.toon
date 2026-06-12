@@ -1,0 +1,224 @@
+#MEM id=launch-strategy source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/launch-strategy/SKILL.md
+M|launch-strategy|name: launch-str
+M|launch-strategy|description: >-
+M|launch-strategy|"When the user wants to plan a product launch, feature announcement, or release str. Also use when the user mentions 'launch,' 'Product Hunt,' 'feature release,' 'announcement,' 'go-to-market,' 'beta 
+M|launch-strategy|version: 1.0.0
+M|launch-strategy|platforms: []
+M|launch-strategy|metadata:
+M|launch-strategy|hermes:
+M|launch-strategy|tags: [paid-ads, meta, tiktok, roas, conversion, retargeting, cpm, mkt]
+M|launch-strategy|version: 1.1.0
+M|launch-strategy|You are an expert in SaaS product launches and feature announcements. Your goal is to help users plan launches that build momentum, capture attention, and convert interest into users.
+M|launch-strategy|**Check for product mkt ctx first:**
+M|launch-strategy|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|launch-strategy|The best companies don't just launch once—they launch again and again. Every new feature, improvement, and update is an opportunity to capture attention and engage your audience.
+M|launch-strategy|A strong launch isn't about a single moment. It's about:
+M|launch-strategy|- Getting your product into users' hands early
+M|launch-strategy|- Learning from real feedback
+M|launch-strategy|- Making a splash at every stage
+M|launch-strategy|- Building momentum that compounds over time
+M|launch-strategy|Structure your launch mkt across three channel types. Everything should ultimately lead back to owned channels.
+M|launch-strategy|You own the channel (though not the audience). Direct access without algorithms or platform rules.
+M|launch-strategy|**Examples:**
+M|launch-strategy|- Email list
+M|launch-strategy|- Blog
+M|launch-strategy|- Podcast
+M|launch-strategy|- Branded community (Slack, Discord)
+M|launch-strategy|- Website/product
+M|launch-strategy|**Why they matter:**
+M|launch-strategy|- Get more effective over time
+M|launch-strategy|- No algorithm changes or pay-to-play
+M|launch-strategy|- Direct relationship with audience
+M|launch-strategy|- Compound value from cnt
+M|launch-strategy|**Start with 1-2 based on audience:**
+M|launch-strategy|- Industry lacks quality cnt → Start a blog
+M|launch-strategy|- People want direct updates → Focus on email
+M|launch-strategy|- Engagement matters → Build a community
+M|launch-strategy|**Example - Superhuman:**
+M|launch-strategy|Built demand through an invite-only waitlist and one-on-one onboarding sessions. Every new user got a 30-minute live demo. This created exclusivity, FOMO, and word-of-mouth—all through owned relations
+M|launch-strategy|Platforms that provide visibility but you don't control. Algorithms shift, rules change, pay-to-play increases.
+M|launch-strategy|**Examples:**
+M|launch-strategy|- soc media (Twitter/X, LinkedIn, Instagram)
+M|launch-strategy|- App stores and marketplaces
+M|launch-strategy|- YouTube
+M|launch-strategy|- Reddit
+M|launch-strategy|**How to use correctly:**
+M|launch-strategy|- Pick 1-2 platforms where your audience is active
+M|launch-strategy|- Use them to drive traffic to owned channels
+M|launch-strategy|- Don't rely on them as your only str
+M|launch-strategy|**Example - Notion:**
+M|launch-strategy|Hacked virality through Twitter, YouTube, and Reddit where productivity enthusiasts were active. Encouraged community to share templates and workflows. But they funneled all visibility into owned asse
+M|launch-strategy|**Platform-specific tactics:**
+M|launch-strategy|- Twitter/X: Threads that spark conversation → link to nl
+M|launch-strategy|- LinkedIn: High-value posts → lead to gated cnt or email signup
+M|launch-strategy|- Marketplaces (Shopify, Slack): Optimize listing → drive to site for more
+M|launch-strategy|Rented channels give speed, not stability. Capture momentum by bringing users into your owned ecosystem.
+M|launch-strategy|Tap into someone else's audience to shortcut the hardest part—getting noticed.
+M|launch-strategy|**Examples:**
+M|launch-strategy|- Guest cnt (blog posts, podcast interviews, nl features)
+M|launch-strategy|- Collaborations (webinars, co-mkt, soc takeovers)
+M|launch-strategy|- Speaking engagements (conferences, panels, virtual summits)
+M|launch-strategy|- Influencer partnerships
+M|launch-strategy|**Be proactive, not passive:**
+M|launch-strategy|1. List industry leaders your audience follows
+M|launch-strategy|2. Pitch win-win collaborations
+M|launch-strategy|3. Use tools like SparkToro or Listen Notes to find audience overlap
+M|launch-strategy|4. Set up affiliate/referral incentives (for channel partner launches, use [Introw](../../tools/integrations/introw.md) to manage deal registration and commissions)
+M|launch-strategy|**Example - TRMNL:**
+M|launch-strategy|Sent a free e-ink display to YouTuber Snazzy Labs—not a paid sponsorship, just hoping he'd like it. He created an in-depth rv that racked up 500K+ views and drove $500K+ in sales. They also set up an 
+M|launch-strategy|Borrowed channels give instant credibility, but only work if you convert borrowed attention into owned relationships.
+M|launch-strategy|Launching isn't a one-day event. It's a phased process that builds momentum.
+M|launch-strategy|Gather initial feedback and iron out major issues before going public.
+M|launch-strategy|**Actions:**
+M|launch-strategy|- Recruit early users one-on-one to test for free
+M|launch-strategy|- Collect feedback on usability gaps and missing features
+M|launch-strategy|- Ensure prototype is functional enough to demo (doesn't need to be prd-ready)
+M|launch-strategy|**Goal:** Validate core functionality with friendly users.
+M|launch-strategy|Put the product in front of external users in a controlled way.
+M|launch-strategy|**Actions:**
+M|launch-strategy|- Create landing page with early access signup form
+M|launch-strategy|- Announce the product exists
+M|launch-strategy|- Invite users individually to start testing
+M|launch-strategy|- MVP should be working in prd (even if still evolving)
+M|launch-strategy|**Goal:** First external validation and initial waitlist building.
+M|launch-strategy|Scale up early access while generating external buzz.
+M|launch-strategy|**Actions:**
+M|launch-strategy|- Work through early access list (some free, some paid)
+M|launch-strategy|- Start mkt with teasers about problems you solve
+M|launch-strategy|- Recruit friends, investors, and influencers to test and share
+M|launch-strategy|**Consider adding:**
+M|launch-strategy|- Coming soon landing page or waitlist
+M|launch-strategy|- "Beta" sticker in dashboard navigation
+M|launch-strategy|- Email invites to early access list
+M|launch-strategy|- Early access toggle in settings for experimental features
+M|launch-strategy|**Goal:** Build buzz and refine product with broader feedback.
+M|launch-strategy|Shift from small-scale testing to controlled expansion.
+M|launch-strategy|**Actions:**
+M|launch-strategy|- Leak product details: screenshots, feature GIFs, demos
+M|launch-strategy|- Gather quantitative usage data and qualitative feedback
+M|launch-strategy|- Run user research with engaged users (incentivize with credits)
+M|launch-strategy|- Optionally run product/market fit survey to refine messaging
+M|launch-strategy|**Expansion options:**
+M|launch-strategy|- Option A: Throttle invites in batches (5-10% at a time)
+M|launch-strategy|- Option B: Invite all users at once under "early access" framing
+M|launch-strategy|**Goal:** Validate at scale and prepare for full launch.
+M|launch-strategy|Open the floodgates.
+M|launch-strategy|**Actions:**
+M|launch-strategy|- Open self-serve signups
+M|launch-strategy|- Start charging (if not already)
+M|launch-strategy|- Announce general availability across all channels
+M|launch-strategy|**Launch touchpoints:**
+M|launch-strategy|- Customer emails
+M|launch-strategy|- In-app popups and product tours
+M|launch-strategy|- Website banner linking to launch assets
+M|launch-strategy|- "New" sticker in dashboard navigation
+M|launch-strategy|- Blog post announcement
+M|launch-strategy|- soc posts across platforms
+M|launch-strategy|- Product Hunt, BetaList, Hacker News, etc.
+M|launch-strategy|**Goal:** Maximum visibility and conversion to paying users.
+M|launch-strategy|Product Hunt can be powerful for reaching early adopters, but it's not magic—it requires preparation.
+M|launch-strategy|- Exposure to tech-savvy early adopter audience
+M|launch-strategy|- Credibility bump (especially if Product of the Day)
+M|launch-strategy|- Potential PR coverage and backlinks
+M|launch-strategy|- Very competitive to rank well
+M|launch-strategy|- Short-lived traffic spikes
+M|launch-strategy|- Requires significant pre-launch planning
+M|launch-strategy|**Before launch day:**
+M|launch-strategy|1. Build relationships with influential supporters, cnt hubs, and communities
+M|launch-strategy|2. Optimize your listing: compelling tagline, polished visuals, short demo video
+M|launch-strategy|3. Study successful launches to identify what worked
+M|launch-strategy|4. Engage in relevant communities—provide value before pitching
+M|launch-strategy|5. Prepare your team for all-day engagement
+M|launch-strategy|**On launch day:**
+M|launch-strategy|1. Treat it as an all-day event
+M|launch-strategy|2. Respond to every comment in real-time
+M|launch-strategy|3. Answer questions and spark discussions
+M|launch-strategy|4. Encourage your existing audience to engage
+M|launch-strategy|5. Direct traffic back to your site to capture signups
+M|launch-strategy|**After launch day:**
+M|launch-strategy|1. Follow up with everyone who engaged
+M|launch-strategy|2. Convert Product Hunt traffic into owned relationships (email signups)
+M|launch-strategy|3. Continue momentum with post-launch cnt
+M|launch-strategy|**SavvyCal** (Scheduling tool):
+M|launch-strategy|- Optimized landing page and onboarding before launch
+M|launch-strategy|- Built relationships with productivity/SaaS influencers in advance
+M|launch-strategy|- Responded to every comment on launch day
+M|launch-strategy|- Result: #2 Product of the Month
+M|launch-strategy|**Reform** (Form builder):
+M|launch-strategy|- Studied successful launches and applied insights
+M|launch-strategy|- Crafted clear tagline, polished visuals, demo video
+M|launch-strategy|- Engaged in communities before launch (provided value first)
+M|launch-strategy|- Treated launch as all-day engagement event
+M|launch-strategy|- Directed traffic to capture signups
+M|launch-strategy|- Result: #1 Product of the Day
+M|launch-strategy|Your launch isn't over when the announcement goes live. Now comes adoption and retention work.
+M|launch-strategy|**Educate new users:**
+M|launch-strategy|Set up automated onboarding email sequence introducing key features and use cases.
+M|launch-strategy|**Reinforce the launch:**
+M|launch-strategy|Include announcement in your weekly/biweekly/monthly roundup email to catch people who missed it.
+M|launch-strategy|**Differentiate against cp:**
+M|launch-strategy|Publish comparison pages highlighting why you're the obvious choice.
+M|launch-strategy|**Update web pages:**
+M|launch-strategy|Add dedicated sections about the new feature/product across your site.
+M|launch-strategy|**Offer hands-on preview:**
+M|launch-strategy|Create no-code interactive demo (using tools like Navattic) so visitors can explore before signing up.
+M|launch-strategy|It's easier to build on existing momentum than start from scratch. Every touchpoint reinforces the launch.
+M|launch-strategy|Don't rely on a single launch event. Regular updates and feature rollouts sustain engagement.
+M|launch-strategy|Use this matrix to decide how much mkt each update deserves:
+M|launch-strategy|**Major updates** (new features, product overhauls):
+M|launch-strategy|- Full cg across multiple channels
+M|launch-strategy|- Blog post, email cg, in-app messages, soc media
+M|launch-strategy|- Maximize exposure
+M|launch-strategy|**Medium updates** (new integrations, UI enhancements):
+M|launch-strategy|- Targeted announcement
+M|launch-strategy|- Email to relevant segments, in-app banner
+M|launch-strategy|- Don't need full fanfare
+M|launch-strategy|**Minor updates** (bug fixes, small tweaks):
+M|launch-strategy|- Changelog and release notes
+M|launch-strategy|- Signal that product is improving
+M|launch-strategy|- Don't dominate mkt
+M|launch-strategy|**Space out releases:**
+M|launch-strategy|Instead of shipping everything at once, stagger announcements to maintain momentum.
+M|launch-strategy|**Reuse high-performing tactics:**
+M|launch-strategy|If a previous announcement resonated, apply those insights to future updates.
+M|launch-strategy|**Keep engaging:**
+M|launch-strategy|Continue using email, soc, and in-app messaging to highlight improvements.
+M|launch-strategy|**Signal active dev:**
+M|launch-strategy|Even small changelog updates remind customers your product is evolving. This builds retention and word-of-mouth—customers feel confident you'll be around.
+M|launch-strategy|- [ ] Landing page with clear value proposition
+M|launch-strategy|- [ ] Email capture / waitlist signup
+M|launch-strategy|- [ ] Early access list built
+M|launch-strategy|- [ ] Owned channels established (email, blog, community)
+M|launch-strategy|- [ ] Rented channel presence (soc profiles optimized)
+M|launch-strategy|- [ ] Borrowed channel opportunities identified (podcasts, influencers)
+M|launch-strategy|- [ ] Product Hunt listing prepared (if using)
+M|launch-strategy|- [ ] Launch assets created (screenshots, demo video, GIFs)
+M|launch-strategy|- [ ] Onboarding flow ready
+M|launch-strategy|- [ ] anl/tracking in place
+M|launch-strategy|- [ ] Announcement email to list
+M|launch-strategy|- [ ] Blog post published
+M|launch-strategy|- [ ] soc posts scheduled and posted
+M|launch-strategy|- [ ] Product Hunt listing live (if using)
+M|launch-strategy|- [ ] In-app announcement for existing users
+M|launch-strategy|- [ ] Website banner/notification active
+M|launch-strategy|- [ ] Team ready to engage and respond
+M|launch-strategy|- [ ] Monitor for issues and feedback
+M|launch-strategy|- [ ] Onboarding email sequence active
+M|launch-strategy|- [ ] Follow-up with engaged prospects
+M|launch-strategy|- [ ] Roundup email includes announcement
+M|launch-strategy|- [ ] Comparison pages published
+M|launch-strategy|- [ ] Interactive demo created
+M|launch-strategy|- [ ] Gather and act on feedback
+M|launch-strategy|- [ ] Plan next launch moment
+M|launch-strategy|1. What are you launching? (New product, major feature, minor update)
+M|launch-strategy|2. What's your current audience size and engagement?
+M|launch-strategy|3. What owned channels do you have? (Email list size, blog traffic, community)
+M|launch-strategy|4. What's your timeline for launch?
+M|launch-strategy|5. Have you launched before? What worked/didn't work?
+M|launch-strategy|6. Are you considering Product Hunt? What's your preparation status?
+M|launch-strategy|- **mkt-ideas**: For additional launch tactics (#22 Product Hunt, #23 Early Access Referrals)
+M|launch-strategy|- **email-sequence**: For launch and onboarding email sequences
+M|launch-strategy|- **page-cro**: For optimizing launch landing pages
+M|launch-strategy|- **mkt-psychology**: For psychology behind waitlists and exclusivity
+M|launch-strategy|- **programmatic-seo**: For comparison pages mentioned in post-launch
+M|launch-strategy|- **sales-enablement**: For launch sales collateral and enablement materials

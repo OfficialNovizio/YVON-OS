@@ -1,0 +1,141 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/seo-audit/references/ai-writing-detection.md
+M|references|Words, phrases, and punctuation patterns commonly associated with AI-generated text. Avoid these to ensure writing sounds natural and human.
+M|references|Sources: Grammarly (2025), Microsoft 365 Life Hacks (2025), GPTHuman (2025), Walter Writes (2025), Textero (2025), Plagiarism Today (2025), Rolling Stone (2025), MDPI Blog (2025)
+M|references|- Em Dashes: The Primary AI Tell
+M|references|- Overused Verbs
+M|references|- Overused Adjectives
+M|references|- Overused Transitions and Connectors
+M|references|- Phrases That Signal AI Writing (Opening Phrases, Transitional Phrases, Concluding Phrases, Structural Patterns)
+M|references|- Filler Words and Empty Intensifiers
+M|references|- Academic-Specific AI Tells
+M|references|- How to Self-Check
+M|references|**The em dash (—) has become one of the most reliable markers of AI-generated cnt.**
+M|references|Em dashes are longer than hyphens (-) and are used for emphasis, interruptions, or parenthetical information. While they have legitimate uses in writing, AI models drastically overuse them.
+M|references|- AI models were trained on edited books, academic papers, and style guides where em dashes appear frequently
+M|references|- AI uses em dashes as a shortcut for sentence variety instead of commas, colons, or parentheses
+M|references|- Most human writers rarely use em dashes because they don't exist as a standard keyboard key
+M|references|- The overuse is so consistent that it has become the unofficial signature of ChatGPT writing
+M|references|| Instead of | Use |
+M|references||------------|-----|
+M|references|| The results—which were surprising—showed... | The results, which were surprising, showed... |
+M|references|| This approach—unlike traditional methods—allows... | This approach, unlike traditional methods, allows... |
+M|references|| The study found—as expected—that... | The study found, as expected, that... |
+M|references|| Communication skills—both written and verbal—are essential | Communication skills (both written and verbal) are essential |
+M|references|- Use commas for most parenthetical information
+M|references|- Use colons to introduce explanations or lists
+M|references|- Use parentheses for supplementary information
+M|references|- Reserve em dashes for rare, deliberate emphasis only
+M|references|- If you find yourself using more than one em dash per page, revise
+M|references|| Avoid | Use Instead |
+M|references||-------|-------------|
+M|references|| delve (into) | explore, examine, investigate, look at |
+M|references|| leverage | use, apply, draw on |
+M|references|| optimise | improve, refine, enhance |
+M|references|| utilise | use |
+M|references|| facilitate | help, enable, support |
+M|references|| foster | encourage, support, develop, nurture |
+M|references|| bolster | strengthen, support, reinforce |
+M|references|| underscore | emphasise, highlight, stress |
+M|references|| unveil | reveal, show, introduce, present |
+M|references|| navigate | manage, handle, work through |
+M|references|| streamline | simplify, make more efficient |
+M|references|| enhance | improve, strengthen |
+M|references|| endeavour | try, attempt, effort |
+M|references|| ascertain | find out, determine, establish |
+M|references|| elucidate | explain, clarify, make clear |
+M|references|| Avoid | Use Instead |
+M|references||-------|-------------|
+M|references|| robust | strong, reliable, thorough, solid |
+M|references|| comprehensive | complete, thorough, full, detailed |
+M|references|| pivotal | key, critical, central, important |
+M|references|| crucial | important, key, essential, critical |
+M|references|| vital | important, essential, necessary |
+M|references|| transformative | significant, important, major |
+M|references|| cutting-edge | new, advanced, recent, modern |
+M|references|| groundbreaking | new, original, significant |
+M|references|| innovative | new, original, creative |
+M|references|| seamless | smooth, easy, effortless |
+M|references|| intricate | complex, detailed, complicated |
+M|references|| nuanced | subtle, complex, detailed |
+M|references|| multifaceted | complex, varied, diverse |
+M|references|| holistic | complete, whole, comprehensive |
+M|references|| Avoid | Use Instead |
+M|references||-------|-------------|
+M|references|| furthermore | also, in addition, and |
+M|references|| moreover | also, and, besides |
+M|references|| notwithstanding | despite, even so, still |
+M|references|| that being said | however, but, still |
+M|references|| at its core | essentially, fundamentally, basically |
+M|references|| to put it simply | in short, simply put |
+M|references|| it is worth noting that | note that, importantly |
+M|references|| in the realm of | in, within, regarding |
+M|references|| in the landscape of | in, within |
+M|references|| in today's [anything] | currently, now, today |
+M|references|- "In today's fast-paced world..."
+M|references|- "In today's digital age..."
+M|references|- "In an era of..."
+M|references|- "In the ever-evolving landscape of..."
+M|references|- "In the realm of..."
+M|references|- "It's important to note that..."
+M|references|- "Let's delve into..."
+M|references|- "Imagine a world where..."
+M|references|- "That being said..."
+M|references|- "With that in mind..."
+M|references|- "It's worth mentioning that..."
+M|references|- "At its core..."
+M|references|- "To put it simply..."
+M|references|- "In essence..."
+M|references|- "This begs the question..."
+M|references|- "In conclusion..."
+M|references|- "To sum up..."
+M|references|- "By [doing X], you can [achieve Y]..."
+M|references|- "In the final analysis..."
+M|references|- "All things considered..."
+M|references|- "At the end of the day..."
+M|references|- "Whether you're a [X], [Y], or [Z]..." (listing three examples after "whether")
+M|references|- "It's not just [X], it's also [Y]..."
+M|references|- "Think of [X] as [elaborate metaphor]..."
+M|references|- Starting sentences with "By" followed by a gerund: "By understanding X, you can Y..."
+M|references|These words often add nothing to meaning. Remove them or find specific alternatives:
+M|references|- absolutely
+M|references|- actually
+M|references|- basically
+M|references|- certainly
+M|references|- clearly
+M|references|- definitely
+M|references|- essentially
+M|references|- extremely
+M|references|- fundamentally
+M|references|- incredibly
+M|references|- interestingly
+M|references|- naturally
+M|references|- obviously
+M|references|- quite
+M|references|- really
+M|references|- significantly
+M|references|- simply
+M|references|- surely
+M|references|- truly
+M|references|- ultimately
+M|references|- undoubtedly
+M|references|- very
+M|references|| Avoid | Use Instead |
+M|references||-------|-------------|
+M|references|| shed light on | clarify, explain, reveal |
+M|references|| pave the way for | enable, allow, make possible |
+M|references|| a myriad of | many, numerous, various |
+M|references|| a plethora of | many, numerous, several |
+M|references|| paramount | very important, essential, critical |
+M|references|| pertaining to | about, regarding, concerning |
+M|references|| prior to | before |
+M|references|| subsequent to | after |
+M|references|| in light of | because of, given, considering |
+M|references|| with respect to | about, regarding, for |
+M|references|| in terms of | regarding, for, about |
+M|references|| the fact that | that (or rewrite sentence) |
+M|references|1. Read your text aloud. If phrases sound unnatural in speech, revise them
+M|references|2. Ask: "Would I say this in a conversation with a colleague?"
+M|references|3. Check for repetitive sentence structures
+M|references|4. Look for clusters of the words listed above
+M|references|5. Ensure varied sentence lengths (not all similar length)
+M|references|6. Verify each intensifier adds genuine meaning

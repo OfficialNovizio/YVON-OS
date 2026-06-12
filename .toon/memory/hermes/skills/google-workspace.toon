@@ -1,0 +1,46 @@
+SKILL|google-workspace|"Gmail, Calendar, Drive, Docs, Sheets via gws CLI or Python."
+STEP|1|`references/gmail-search-syntax.md` — Gmail search operators (is:unread, from:, newer_than:, etc.)
+STEP|2|`scripts/setup.py` — OAuth2 setup (run once to authorize)
+STEP|3|`scripts/google_api.py` — compatibility wrapper CLI. It prefers `gws` for operations when available, while preserving Hermes' existing JSON output contract.
+STEP|4|Question 1: "What Google services do you need? Just email, or also
+STEP|5|**Email only** → They don't need this skill at all. Use the `himalaya` skill
+STEP|6|**Email + Calendar** → Continue with this skill, but use
+STEP|7|**Calendar/Drive/Sheets/Docs only** → Continue with this skill and use a
+STEP|8|**Full Workspace access** → Continue with this skill and use the default
+STEP|9|Question 2: "Does your Google account use Advanced Protection (hardware
+STEP|10|**No / Not sure** → Normal setup. Continue below.
+STEP|11|**Yes** → Their Workspace admin must add the OAuth client ID to the org's
+STEP|12|Extract the `auth_url` field and send that exact URL to the user as a single line.
+STEP|13|Tell the user that the browser will likely fail on `http://localhost:1` after approval, and that this is expected.
+STEP|14|Tell them to copy the ENTIRE redirected URL from the browser address bar.
+STEP|15|If the user gets `Error 403: access_denied`, send them directly to `https://console.cloud.google.com/auth/audience` to add themselves as a test user.
+STEP|16|Token is stored at `~/.hermes/google_token.json` and auto-refreshes.
+STEP|17|Pending OAuth session state/verifier are stored temporarily at `~/.hermes/google_oauth_pending.json` until exchange completes.
+STEP|18|If `gws` is installed, `google_api.py` points it at the same `~/.hermes/google_token.json` credentials file. Users do not need to run a separate `gws auth login` flow.
+STEP|19|To revoke: `$GSETUP --revoke`
+STEP|20|**Gmail search**: `[{id, threadId, from, to, subject, date, snippet, labels}]`
+STEP|21|**Gmail get**: `{id, threadId, from, to, subject, date, labels, body}`
+STEP|22|**Gmail send/reply**: `{status: "sent", id, threadId}`
+STEP|23|**Calendar list**: `[{id, summary, start, end, location, description, htmlLink}]`
+STEP|24|**Calendar create**: `{status: "created", id, summary, htmlLink}`
+STEP|25|**Drive search**: `[{id, name, mimeType, modifiedTime, webViewLink}]`
+STEP|26|**Drive get**: `{id, name, mimeType, modifiedTime, size, webViewLink, parents, owners}`
+STEP|27|**Drive upload**: `{status: "uploaded", id, name, mimeType, webViewLink}`
+STEP|28|**Drive download**: `{status: "downloaded", id, name, path, mimeType}`
+STEP|29|**Drive create-folder**: `{status: "created", id, name, webViewLink}`
+STEP|30|**Drive share**: `{status: "shared", permissionId, fileId, role, type}`
+STEP|31|**Drive delete**: `{status: "trashed" \| "deleted", fileId, permanent}`
+STEP|32|**Contacts list**: `[{name, emails: [...], phones: [...]}]`
+STEP|33|**Sheets get**: `[[cell, cell, ...], ...]`
+STEP|34|**Sheets create**: `{status: "created", spreadsheetId, title, spreadsheetUrl}`
+STEP|35|**Docs create**: `{status: "created", documentId, title, url}`
+STEP|36|**Docs append**: `{status: "appended", documentId, inserted_at, characters}`
+STEP|37|**Never send email, create/delete calendar events, delete Drive files, share files, or modify Docs/Sheets without confirming with the user first.** Show what will be done (recipients, file IDs, conten
+STEP|38|**Check auth before first use** — run `setup.py --check`. If it fails, guide the user through setup.
+STEP|39|**Use the Gmail search syntax reference** for complex queries — load it with `skill_view("google-workspace", file_path="references/gmail-search-syntax.md")`.
+STEP|40|**Calendar times must include timezone** — always use ISO 8601 with offset (e.g., `2026-03-01T10:00:00-06:00`) or UTC (`Z`).
+STEP|41|**Respect rate limits** — avoid rapid-fire sequential API calls. Batch reads when possible.
+PIT|Token is stored at `~/.hermes/google_token.json` and auto-refreshes.
+PIT|Pending OAuth session state/verifier are stored temporarily at `~/.hermes/google_oauth_pending.json` until exchange completes.
+PIT|If `gws` is installed, `google_api.py` points it at the same `~/.hermes/google_token.json` credentials file. Users do not need to run a separate `gws auth login` flow.
+PIT|To revoke: `$GSETUP --revoke`

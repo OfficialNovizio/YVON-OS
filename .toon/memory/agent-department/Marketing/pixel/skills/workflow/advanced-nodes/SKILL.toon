@@ -1,0 +1,210 @@
+#MEM id=advanced-nodes source=/root/yvon/agent-department/Marketing/pixel/skills/workflow/advanced-nodes/SKILL.md
+M|advanced-nodes|name: pletor-advanced-nodes
+M|advanced-nodes|description: >-
+M|advanced-nodes|Use this skill when a workflow requires advanced capabilities beyond basic generation: Composer for layout/composition, Logic nodes for automation and branching, Brand nodes for identity consistency, 
+M|advanced-nodes|version: 1.0.0
+M|advanced-nodes|platforms: []
+M|advanced-nodes|metadata:
+M|advanced-nodes|hermes:
+M|advanced-nodes|tags: [prd, images, assets, upscaling, batch, generation, workflow, process]
+M|advanced-nodes|A basic workflow is: Input → gen → Output.
+M|advanced-nodes|You need advanced nodes when:
+M|advanced-nodes|- You want **brand consistency** across all outputs
+M|advanced-nodes|- You're building **ad creatives** that combine multiple elements
+M|advanced-nodes|- You need **text processing / prompt engineering** in the workflow
+M|advanced-nodes|- You want **localization or A/B variants** without manual rebuilding
+M|advanced-nodes|- You need **QA checkpoints** before publishing
+M|advanced-nodes|- You want to **animate characters** or add **speech to images**
+M|advanced-nodes|- You're **distributing outputs** to soc/ad platforms
+M|advanced-nodes|The Composer layers multiple elements (images, text, logos, video) into a single composed visual. It is a design canvas inside your workflow — not an AI generation model.
+M|advanced-nodes|Use Composer whenever your workflow generates multiple elements that need to be **assembled into a final asset**:
+M|advanced-nodes|- Ad creatives combining product shot + headline + logo + CTA
+M|advanced-nodes|- soc posts with text overlay on generated background
+M|advanced-nodes|- Localized variants (same layout, different text)
+M|advanced-nodes|- A/B test variants (same layout, swapped elements)
+M|advanced-nodes|Connect each element as a separate input layer:
+M|advanced-nodes|```
+M|advanced-nodes|[gen Image (background)] → Composer (layer 1)
+M|advanced-nodes|[Upload Image (logo)]         → Composer (layer 2)
+M|advanced-nodes|[Text Assistant (headline)]   → Composer (layer 3: text overlay)
+M|advanced-nodes|[Text Prompt (CTA text)]      → Composer (layer 4: text overlay)
+M|advanced-nodes|```
+M|advanced-nodes|Inside Composer, set layer positions, sizes, and z-ordering.
+M|advanced-nodes|**Pattern: Localization at scale**
+M|advanced-nodes|```
+M|advanced-nodes|[Base Composition] → Composer
+M|advanced-nodes|[Text Assistant (translate to FR/DE/ES...)] → Composer (text layer)
+M|advanced-nodes|```
+M|advanced-nodes|Run the agt N times with different language inputs — same layout, localized text.
+M|advanced-nodes|**Pattern: A/B headline testing**
+M|advanced-nodes|```
+M|advanced-nodes|[Split Text (from list of headlines)] → [List Selector (pick #N)] → Composer
+M|advanced-nodes|[Base Image]                                                      → Composer
+M|advanced-nodes|```
+M|advanced-nodes|Each run picks a different headline variant.
+M|advanced-nodes|**Pattern: Static ad prd**
+M|advanced-nodes|1. gen background/lifestyle image
+M|advanced-nodes|2. Upload product shot → Remove Background
+M|advanced-nodes|3. gen headline text via Text Assistant
+M|advanced-nodes|4. Feed all three + brand logo into Composer
+M|advanced-nodes|5. Output: cg-ready ad creative
+M|advanced-nodes|Any workflow producing **public-facing creative cnt** should include brand nodes.
+M|advanced-nodes|| Scenario | Add these brand nodes |
+M|advanced-nodes||---|---|
+M|advanced-nodes|| Image/video generation needs to look on-brand | Visual References (upload style examples) |
+M|advanced-nodes|| AI model needs to know who the brand is | Brand ctx |
+M|advanced-nodes|| Need to enforce specific creative rules | Brand Guidelines |
+M|advanced-nodes|| Generating copy / captions / scripts | Brand Voice |
+M|advanced-nodes|| Complex brand with full documentation | Brand Docs (PDF) |
+M|advanced-nodes|Connect brand nodes **directly into AI generation nodes**, not into input nodes:
+M|advanced-nodes|```
+M|advanced-nodes|[Visual References] → GenerateImage
+M|advanced-nodes|[Brand Guidelines] → GenerateImage
+M|advanced-nodes|[Brand ctx]    → TextAssistant
+M|advanced-nodes|[Brand Voice]      → TextAssistant
+M|advanced-nodes|```
+M|advanced-nodes|Upload real examples (Visual References, Brand Voice) rather than describing your brand in text. The AI models learn faster from examples than from abstract descriptions.
+M|advanced-nodes|Runs an LLM with a custom system instruction. It's the most versatile node in Pletor.
+M|advanced-nodes|| Task | Use |
+M|advanced-nodes||---|---|
+M|advanced-nodes|| Mechanically join two text strings | Prompt Concatenator (free, predictable) |
+M|advanced-nodes|| Enhance a vague user prompt into a detailed generation prompt | Text Assistant |
+M|advanced-nodes|| Combine user prompt + brand ctx intelligently | Text Assistant |
+M|advanced-nodes|| Translate or localize copy | Text Assistant |
+M|advanced-nodes|| Analyze an uploaded image or doc | Text Assistant |
+M|advanced-nodes|| gen multiple ad headlines | Text Assistant |
+M|advanced-nodes|| Extract structured data from a doc | Text Assistant |
+M|advanced-nodes|Always write system instructions with:
+M|advanced-nodes|1. **Role**: What the LLM is (e.g., "You are a creative director at a luxury fashion brand")
+M|advanced-nodes|2. **Task**: Exactly what to do with the inputs
+M|advanced-nodes|3. **Output format**: How to structure the output (important when output feeds another node)
+M|advanced-nodes|4. **Constraints**: Brand rules, word count limits, tone requirements
+M|advanced-nodes|**Example — Prompt enhancer:**
+M|advanced-nodes|```
+M|advanced-nodes|You are an expert creative director specializing in luxury fashion photography.
+M|advanced-nodes|Your task: Take the user's input prompt and rewrite it as a detailed, vivid image generation prompt.
+M|advanced-nodes|Rules:
+M|advanced-nodes|- Include lighting style, camera angle, background description, and mood
+M|advanced-nodes|- Maintain the brand's editorial and sophisticated aesthetic
+M|advanced-nodes|- Keep output under 150 words
+M|advanced-nodes|- Output ONLY the enhanced prompt, no preamble
+M|advanced-nodes|```
+M|advanced-nodes|**Example — Ad copy generator:**
+M|advanced-nodes|```
+M|advanced-nodes|You are a performance mkt copywriter.
+M|advanced-nodes|Your task: gen 5 short ad headlines based on the product description and brand voice provided.
+M|advanced-nodes|Format: Output as a numbered list, one headline per line.
+M|advanced-nodes|Each headline: max 8 words, action-oriented, benefit-focused.
+M|advanced-nodes|```
+M|advanced-nodes|**Use case:** Process multiple items from a single text input.
+M|advanced-nodes|```
+M|advanced-nodes|Text Assistant (generates "headline1\nheadline2\nheadline3")
+M|advanced-nodes|→ Split Text (delimiter: \n)
+M|advanced-nodes|→ [output_1] → GenerateImage (variation 1)
+M|advanced-nodes|→ [output_2] → GenerateImage (variation 2)
+M|advanced-nodes|→ [output_3] → GenerateImage (variation 3)
+M|advanced-nodes|```
+M|advanced-nodes|Or to pick one specific item:
+M|advanced-nodes|```
+M|advanced-nodes|Split Text → List Selector (index: 2) → GenerateImage
+M|advanced-nodes|```
+M|advanced-nodes|**Use case:** Join multiple text inputs before a generation node when no LLM processing is needed.
+M|advanced-nodes|```
+M|advanced-nodes|[TextPrompt]     → PromptConcatenator → GenerateImage
+M|advanced-nodes|[BrandGuidelines]→
+M|advanced-nodes|```
+M|advanced-nodes|- Faster than Text Assistant, no credits consumed
+M|advanced-nodes|- Use only when you want a mechanical join, not intelligent processing
+M|advanced-nodes|**Use case:** Any prd pl where quality matters before output is published.
+M|advanced-nodes|Insert after any generation node that produces cnt for rv:
+M|advanced-nodes|```
+M|advanced-nodes|GenerateImage → HumanReview → Composer → MetaAds
+M|advanced-nodes|```
+M|advanced-nodes|The workflow pauses, a human approves or rejects the asset, then execution continues.
+M|advanced-nodes|**Use case:** Send one node's output to multiple downstream nodes without duplicating or re-running.
+M|advanced-nodes|```
+M|advanced-nodes|GenerateImage → Router → RemoveBackground
+M|advanced-nodes|→ ChangeAspectRatio (1:1 for Instagram)
+M|advanced-nodes|→ ChangeAspectRatio (9:16 for TikTok)
+M|advanced-nodes|→ UpscaleImage
+M|advanced-nodes|```
+M|advanced-nodes|The image is generated once; Router distributes it to all four paths.
+M|advanced-nodes|**Use case:** Organized file naming, especially before Google Drive export.
+M|advanced-nodes|```
+M|advanced-nodes|GenerateImage → RenameAsset (pattern: "{brand}_{format}_{date}") → GoogleDrive
+M|advanced-nodes|```
+M|advanced-nodes|- Turn a still portrait into a speaking character for video ads
+M|advanced-nodes|- Animate a brand mascot speaking a script
+M|advanced-nodes|- Create UGC-style testimonial videos
+M|advanced-nodes|```
+M|advanced-nodes|[Upload Image (portrait/character)]  →  [GenerateLipsync]  →  [AddSubtitles]
+M|advanced-nodes|[GenerateAudio (voiceover script)]   →
+M|advanced-nodes|```
+M|advanced-nodes|```
+M|advanced-nodes|[TextPrompt (script)]     → [GenerateAudio]        →  [GenerateLipsync]
+M|advanced-nodes|[UploadImage (character)] →                         →  [AddSubtitles]
+M|advanced-nodes|[TextAssistant (enhance)] → [GenerateImage (scene)] →  [MergeVideos]
+M|advanced-nodes|```
+M|advanced-nodes|- Use a clean, front-facing portrait with neutral expression for best results
+M|advanced-nodes|- Lipsync works with both real photos and AI-generated character images
+M|advanced-nodes|- After lipsync, add Subtitles for soc media accessibility
+M|advanced-nodes|Combine multiple clips sequentially:
+M|advanced-nodes|```
+M|advanced-nodes|[GenerateVideo (intro)] → MergeVideos
+M|advanced-nodes|[GenerateVideo (product demo)] →
+M|advanced-nodes|[GenerateVideo (outro)] →
+M|advanced-nodes|↓
+M|advanced-nodes|[Final combined video]
+M|advanced-nodes|```
+M|advanced-nodes|Use as a bridge between video and image workflows:
+M|advanced-nodes|```
+M|advanced-nodes|UploadVideo → ExtractVideoFrame → GenerateImage (reference)
+M|advanced-nodes|→ EditImage
+M|advanced-nodes|```
+M|advanced-nodes|Best practice for any workflow producing assets at scale:
+M|advanced-nodes|```
+M|advanced-nodes|Composer → RenameAsset → GoogleDrive (target folder)
+M|advanced-nodes|```
+M|advanced-nodes|Supports dynamic folder paths. Connect before ending any batch workflow.
+M|advanced-nodes|Push creative outputs directly to ad libraries or soc accounts:
+M|advanced-nodes|```
+M|advanced-nodes|Composer → MetaAds (cg + ad set config)
+M|advanced-nodes|→ TikTok (post settings)
+M|advanced-nodes|```
+M|advanced-nodes|**Rule:** Always add a Human rv node before any integration node that publishes externally.
+M|advanced-nodes|```
+M|advanced-nodes|[TextPrompt: cg brief]
+M|advanced-nodes|[UploadImage: product photo]
+M|advanced-nodes|[BrandContext]
+M|advanced-nodes|[VisualReferences]
+M|advanced-nodes|[BrandGuidelines]
+M|advanced-nodes|↓
+M|advanced-nodes|[TextAssistant: enhance prompt + write headline]
+M|advanced-nodes|↓
+M|advanced-nodes|[Split Text: separate image prompt from headline]
+M|advanced-nodes|↓
+M|advanced-nodes|├──[GenerateImage (background/lifestyle)] ──────────────────────┐
+M|advanced-nodes|├──[Router → product] → [RemoveBackground] ───────────────────── [Composer]
+M|advanced-nodes|├──[ListSelector (headline)] ──────────────────────────────────── [Composer]
+M|advanced-nodes|└──[UploadImage (logo)] ────────────────────────────────────────── [Composer]
+M|advanced-nodes|↓
+M|advanced-nodes|[HumanReview]
+M|advanced-nodes|↓
+M|advanced-nodes|[RenameAsset]
+M|advanced-nodes|↓
+M|advanced-nodes|[GoogleDrive] + [MetaAds]
+M|advanced-nodes|```
+M|advanced-nodes|| Goal | Use |
+M|advanced-nodes||---|---|
+M|advanced-nodes|| Combine visual elements into final layout | Composer |
+M|advanced-nodes|| Keep outputs on-brand visually | Visual References + Brand Guidelines |
+M|advanced-nodes|| Keep copy/text on-brand | Brand Voice + Brand ctx |
+M|advanced-nodes|| Enhance a vague prompt | Text Assistant |
+M|advanced-nodes|| Join two text inputs without LLM | Prompt Concatenator |
+M|advanced-nodes|| Split one text into multiple items | Split Text |
+M|advanced-nodes|| Add QA gate before publishing | Human rv |
+M|advanced-nodes|| Route one output to multiple nodes | Router |
+M|advanced-nodes|| Animate character or portrait to speak | Lipsync node + gen Audio |
+M|advanced-nodes|| Create video from multiple clips | Merge Videos |
+M|advanced-nodes|| Export to ad platforms | MetaAds / TikTok integration nodes |
+M|advanced-nodes|| Organized file export | Rename Asset + Google Drive |

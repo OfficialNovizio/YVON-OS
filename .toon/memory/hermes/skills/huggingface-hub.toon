@@ -1,0 +1,69 @@
+SKILL|huggingface-hub|"HuggingFace hf CLI: search/download/upload models, datasets."
+STEP|1|**Installation:** `curl -LsSf https://hf.co/cli/install.sh \| bash -s`
+STEP|2|**Help:** Use `hf --help` to view all available functions and real-world examples.
+STEP|3|**Authentication:** Recommended via `HF_TOKEN` environment variable or the `--token` flag.
+STEP|4|`hf download REPO_ID`: Download files from the Hub.
+STEP|5|`hf upload REPO_ID`: Upload files/folders (recommended for single-commit).
+STEP|6|`hf upload-large-folder REPO_ID LOCAL_PATH`: Recommended for resumable uploads of large directories.
+STEP|7|`hf sync`: Sync files between a local directory and a bucket.
+STEP|8|`hf env` / `hf version`: View environment and version details.
+STEP|9|`login` / `logout`: Manage sessions using tokens from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+STEP|10|`list` / `switch`: Manage and toggle between multiple stored access tokens.
+STEP|11|`whoami`: Identify the currently logged-in account.
+STEP|12|`create` / `delete`: Create or permanently remove repositories.
+STEP|13|`duplicate`: Clone a model, dataset, or Space to a new ID.
+STEP|14|`move`: Transfer a repository between namespaces.
+STEP|15|`branch` / `tag`: Manage Git-like references.
+STEP|16|`delete-files`: Remove specific files using patterns.
+STEP|17|**Datasets:** `hf datasets list`, `info`, and `parquet` (list parquet URLs).
+STEP|18|**SQL Queries:** `hf datasets sql SQL` — Execute raw SQL via DuckDB against dataset parquet URLs.
+STEP|19|**Models:** `hf models list` and `info`.
+STEP|20|**Papers:** `hf papers list` — View daily papers.
+STEP|21|Manage the lifecycle of Hub contributions: `list`, `create`, `info`, `comment`, `close`, `reopen`, and `rename`.
+STEP|22|`diff`: View changes in a PR.
+STEP|23|`merge`: Finalize pull requests.
+STEP|24|**Endpoints:** Deploy and manage Inference Endpoints (`deploy`, `pause`, `resume`, `scale-to-zero`, `catalog`).
+STEP|25|**Jobs:** Run compute tasks on HF infrastructure. Includes `hf jobs uv` for running Python scripts with inline dependencies and `stats` for resource monitoring.
+STEP|26|**Spaces:** Manage interactive apps. Includes `dev-mode` and `hot-reload` for Python files without full restarts.
+STEP|27|**Buckets:** Full S3-like bucket management (`create`, `cp`, `mv`, `rm`, `sync`).
+STEP|28|**Cache:** Manage local storage with `list`, `prune` (remove detached revisions), and `verify` (checksum checks).
+STEP|29|**Webhooks:** Automate workflows by managing Hub webhooks (`create`, `watch`, `enable`/`disable`).
+STEP|30|**Collections:** Organize Hub items into collections (`add-item`, `update`, `list`).
+STEP|31|`--format json`: Produces machine-readable output for automation.
+STEP|32|`-q` / `--quiet`: Limits output to IDs only.
+STEP|33|**Extensions:** Extend CLI functionality via GitHub repositories using `hf extensions install REPO_ID`.
+STEP|34|**Skills:** Manage AI assistant skills with `hf skills add`.
+PIT|**Installation:** `curl -LsSf https://hf.co/cli/install.sh \| bash -s`
+PIT|**Help:** Use `hf --help` to view all available functions and real-world examples.
+PIT|**Authentication:** Recommended via `HF_TOKEN` environment variable or the `--token` flag.
+PIT|`hf download REPO_ID`: Download files from the Hub.
+PIT|`hf upload REPO_ID`: Upload files/folders (recommended for single-commit).
+PIT|`hf upload-large-folder REPO_ID LOCAL_PATH`: Recommended for resumable uploads of large directories.
+PIT|`hf sync`: Sync files between a local directory and a bucket.
+PIT|`hf env` / `hf version`: View environment and version details.
+PIT|`login` / `logout`: Manage sessions using tokens from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
+PIT|`list` / `switch`: Manage and toggle between multiple stored access tokens.
+PIT|`whoami`: Identify the currently logged-in account.
+PIT|`create` / `delete`: Create or permanently remove repositories.
+PIT|`duplicate`: Clone a model, dataset, or Space to a new ID.
+PIT|`move`: Transfer a repository between namespaces.
+PIT|`branch` / `tag`: Manage Git-like references.
+PIT|`delete-files`: Remove specific files using patterns.
+PIT|**Datasets:** `hf datasets list`, `info`, and `parquet` (list parquet URLs).
+PIT|**SQL Queries:** `hf datasets sql SQL` — Execute raw SQL via DuckDB against dataset parquet URLs.
+PIT|**Models:** `hf models list` and `info`.
+PIT|**Papers:** `hf papers list` — View daily papers.
+PIT|Manage the lifecycle of Hub contributions: `list`, `create`, `info`, `comment`, `close`, `reopen`, and `rename`.
+PIT|`diff`: View changes in a PR.
+PIT|`merge`: Finalize pull requests.
+PIT|**Endpoints:** Deploy and manage Inference Endpoints (`deploy`, `pause`, `resume`, `scale-to-zero`, `catalog`).
+PIT|**Jobs:** Run compute tasks on HF infrastructure. Includes `hf jobs uv` for running Python scripts with inline dependencies and `stats` for resource monitoring.
+PIT|**Spaces:** Manage interactive apps. Includes `dev-mode` and `hot-reload` for Python files without full restarts.
+PIT|**Buckets:** Full S3-like bucket management (`create`, `cp`, `mv`, `rm`, `sync`).
+PIT|**Cache:** Manage local storage with `list`, `prune` (remove detached revisions), and `verify` (checksum checks).
+PIT|**Webhooks:** Automate workflows by managing Hub webhooks (`create`, `watch`, `enable`/`disable`).
+PIT|**Collections:** Organize Hub items into collections (`add-item`, `update`, `list`).
+PIT|`--format json`: Produces machine-readable output for automation.
+PIT|`-q` / `--quiet`: Limits output to IDs only.
+PIT|**Extensions:** Extend CLI functionality via GitHub repositories using `hf extensions install REPO_ID`.
+PIT|**Skills:** Manage AI assistant skills with `hf skills add`.

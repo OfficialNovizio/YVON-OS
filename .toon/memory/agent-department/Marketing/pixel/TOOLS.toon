@@ -1,0 +1,14 @@
+#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/TOOLS.md
+M|pixel|```
+M|pixel|GET /api/settings?type=mem&agentId=pixel-prd&ventureId=<activeVentureId>
+M|pixel|POST /api/settings — keys: current_status, recent_tasks, production_log
+M|pixel|```
+M|pixel|```
+M|pixel|GET /api/vtr?ventureId=<activeVentureId>
+M|pixel|```
+M|pixel|| Tool | Purpose | Status |
+M|pixel||------|---------|--------|
+M|pixel|| Midjourney MCP | Primary batch generation pl | Planned |
+M|pixel|| DALL-E API (`/api/image-gen`) | Alternative / fallback generation | Planned |
+M|pixel|| Replicate MCP | Upscaling pl (Real-ESRGAN) | Planned |
+M|pixel|| Stable Diffusion MCP | Local generation for large batches | Planned |

@@ -1,0 +1,205 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/SKILL.md
+M|systematic-debugging|name: systematic-debugging
+M|systematic-debugging|description: >-
+M|systematic-debugging|Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+M|systematic-debugging|version: 1.0.0
+M|systematic-debugging|platforms: []
+M|systematic-debugging|metadata:
+M|systematic-debugging|hermes:
+M|systematic-debugging|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, productivity]
+M|systematic-debugging|Random fixes waste time and create new bugs. Quick patches mask underlying issues.
+M|systematic-debugging|**Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
+M|systematic-debugging|**Violating the letter of this process is violating the spirit of debugging.**
+M|systematic-debugging|```
+M|systematic-debugging|NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+M|systematic-debugging|```
+M|systematic-debugging|If you haven't completed Phase 1, you cannot propose fixes.
+M|systematic-debugging|Use for ANY tec issue:
+M|systematic-debugging|- Test failures
+M|systematic-debugging|- Bugs in prd
+M|systematic-debugging|- Unexpected behavior
+M|systematic-debugging|- Performance problems
+M|systematic-debugging|- Build failures
+M|systematic-debugging|- Integration issues
+M|systematic-debugging|**Use this ESPECIALLY when:**
+M|systematic-debugging|- Under time pressure (emergencies make guessing tempting)
+M|systematic-debugging|- "Just one quick fix" seems obvious
+M|systematic-debugging|- You've already tried multiple fixes
+M|systematic-debugging|- Previous fix didn't work
+M|systematic-debugging|- You don't fully understand the issue
+M|systematic-debugging|**Don't skip when:**
+M|systematic-debugging|- Issue seems simple (simple bugs have root causes too)
+M|systematic-debugging|- You're in a hurry (rushing guarantees rework)
+M|systematic-debugging|- Manager wants it fixed NOW (systematic is faster than thrashing)
+M|systematic-debugging|You MUST complete each phase before proceeding to the next.
+M|systematic-debugging|**BEFORE attempting ANY fix:**
+M|systematic-debugging|1. **Read Error Messages Carefully**
+M|systematic-debugging|- Don't skip past errors or warnings
+M|systematic-debugging|- They often contain the exact solution
+M|systematic-debugging|- Read stack traces completely
+M|systematic-debugging|- Note line numbers, file paths, error codes
+M|systematic-debugging|2. **Reproduce Consistently**
+M|systematic-debugging|- Can you trigger it reliably?
+M|systematic-debugging|- What are the exact steps?
+M|systematic-debugging|- Does it happen every time?
+M|systematic-debugging|- If not reproducible → gather more data, don't guess
+M|systematic-debugging|3. **Check Recent Changes**
+M|systematic-debugging|- What changed that could cause this?
+M|systematic-debugging|- Git diff, recent commits
+M|systematic-debugging|- New dependencies, config changes
+M|systematic-debugging|- Environmental differences
+M|systematic-debugging|4. **Gather Evidence in Multi-Component Systems**
+M|systematic-debugging|**WHEN system has multiple components (CI → build → signing, API → service → database):**
+M|systematic-debugging|**BEFORE proposing fixes, add diagnostic instrumentation:**
+M|systematic-debugging|```
+M|systematic-debugging|For EACH component boundary:
+M|systematic-debugging|- Log what data enters component
+M|systematic-debugging|- Log what data exits component
+M|systematic-debugging|- Verify environment/config propagation
+M|systematic-debugging|- Check state at each layer
+M|systematic-debugging|Run once to gather evidence showing WHERE it breaks
+M|systematic-debugging|THEN analyze evidence to identify failing component
+M|systematic-debugging|THEN investigate that specific component
+M|systematic-debugging|```
+M|systematic-debugging|**Example (multi-layer system):**
+M|systematic-debugging|```bash
+M|systematic-debugging|echo "=== Secrets available in workflow: ==="
+M|systematic-debugging|echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+M|systematic-debugging|echo "=== Env vars in build script: ==="
+M|systematic-debugging|env | grep IDENTITY || echo "IDENTITY not in environment"
+M|systematic-debugging|echo "=== Keychain state: ==="
+M|systematic-debugging|sec list-keychains
+M|systematic-debugging|sec find-identity -v
+M|systematic-debugging|codesign --sign "$IDENTITY" --verbose=4 "$APP"
+M|systematic-debugging|```
+M|systematic-debugging|**This reveals:** Which layer fails (secrets → workflow ✓, workflow → build ✗)
+M|systematic-debugging|5. **Trace Data Flow**
+M|systematic-debugging|**WHEN error is deep in call stack:**
+M|systematic-debugging|See `root-cause-tracing.md` in this directory for the complete backward tracing technique.
+M|systematic-debugging|**Quick version:**
+M|systematic-debugging|- Where does bad value originate?
+M|systematic-debugging|- What called this with bad value?
+M|systematic-debugging|- Keep tracing up until you find the source
+M|systematic-debugging|- Fix at source, not at symptom
+M|systematic-debugging|**Find the pattern before fixing:**
+M|systematic-debugging|1. **Find Working Examples**
+M|systematic-debugging|- Locate similar working code in same codebase
+M|systematic-debugging|- What works that's similar to what's broken?
+M|systematic-debugging|2. **Compare Against References**
+M|systematic-debugging|- If implementing pattern, read reference implementation COMPLETELY
+M|systematic-debugging|- Don't skim - read every line
+M|systematic-debugging|- Understand the pattern fully before applying
+M|systematic-debugging|3. **Identify Differences**
+M|systematic-debugging|- What's different between working and broken?
+M|systematic-debugging|- List every difference, however small
+M|systematic-debugging|- Don't assume "that can't matter"
+M|systematic-debugging|4. **Understand Dependencies**
+M|systematic-debugging|- What other components does this need?
+M|systematic-debugging|- What settings, config, environment?
+M|systematic-debugging|- What assumptions does it make?
+M|systematic-debugging|**Scientific method:**
+M|systematic-debugging|1. **Form Single Hypothesis**
+M|systematic-debugging|- State clearly: "I think X is the root cause because Y"
+M|systematic-debugging|- Write it down
+M|systematic-debugging|- Be specific, not vague
+M|systematic-debugging|2. **Test Minimally**
+M|systematic-debugging|- Make the SMALLEST possible change to test hypothesis
+M|systematic-debugging|- One variable at a time
+M|systematic-debugging|- Don't fix multiple things at once
+M|systematic-debugging|3. **Verify Before Continuing**
+M|systematic-debugging|- Did it work? Yes → Phase 4
+M|systematic-debugging|- Didn't work? Form NEW hypothesis
+M|systematic-debugging|- DON'T add more fixes on top
+M|systematic-debugging|4. **When You Don't Know**
+M|systematic-debugging|- Say "I don't understand X"
+M|systematic-debugging|- Don't pretend to know
+M|systematic-debugging|- Ask for help
+M|systematic-debugging|- Research more
+M|systematic-debugging|**Fix the root cause, not the symptom:**
+M|systematic-debugging|1. **Create Failing Test Case**
+M|systematic-debugging|- Simplest possible reproduction
+M|systematic-debugging|- Automated test if possible
+M|systematic-debugging|- One-off test script if no framework
+M|systematic-debugging|- MUST have before fixing
+M|systematic-debugging|- Use the `superpowers:test-driven-dev` skill for writing proper failing tests
+M|systematic-debugging|2. **Implement Single Fix**
+M|systematic-debugging|- Address the root cause identified
+M|systematic-debugging|- ONE change at a time
+M|systematic-debugging|- No "while I'm here" improvements
+M|systematic-debugging|- No bundled refactoring
+M|systematic-debugging|3. **Verify Fix**
+M|systematic-debugging|- Test passes now?
+M|systematic-debugging|- No other tests broken?
+M|systematic-debugging|- Issue actually resolved?
+M|systematic-debugging|4. **If Fix Doesn't Work**
+M|systematic-debugging|- STOP
+M|systematic-debugging|- Count: How many fixes have you tried?
+M|systematic-debugging|- If < 3: Return to Phase 1, re-analyze with new information
+M|systematic-debugging|- **If ≥ 3: STOP and question the architecture (step 5 below)**
+M|systematic-debugging|- DON'T attempt Fix #4 without architectural discussion
+M|systematic-debugging|5. **If 3+ Fixes Failed: Question Architecture**
+M|systematic-debugging|**Pattern indicating architectural problem:**
+M|systematic-debugging|- Each fix reveals new shared state/coupling/problem in different place
+M|systematic-debugging|- Fixes require "massive refactoring" to implement
+M|systematic-debugging|- Each fix creates new symptoms elsewhere
+M|systematic-debugging|**STOP and question fundamentals:**
+M|systematic-debugging|- Is this pattern fundamentally sound?
+M|systematic-debugging|- Are we "sticking with it through sheer inertia"?
+M|systematic-debugging|- Should we refactor architecture vs. continue fixing symptoms?
+M|systematic-debugging|**Discuss with your human partner before attempting more fixes**
+M|systematic-debugging|This is NOT a failed hypothesis - this is a wrong architecture.
+M|systematic-debugging|If you catch yourself thinking:
+M|systematic-debugging|- "Quick fix for now, investigate later"
+M|systematic-debugging|- "Just try changing X and see if it works"
+M|systematic-debugging|- "Add multiple changes, run tests"
+M|systematic-debugging|- "Skip the test, I'll manually verify"
+M|systematic-debugging|- "It's probably X, let me fix that"
+M|systematic-debugging|- "I don't fully understand but this might work"
+M|systematic-debugging|- "Pattern says X but I'll adapt it differently"
+M|systematic-debugging|- "Here are the main problems: [lists fixes without investigation]"
+M|systematic-debugging|- Proposing solutions before tracing data flow
+M|systematic-debugging|- **"One more fix attempt" (when already tried 2+)**
+M|systematic-debugging|- **Each fix reveals new problem in different place**
+M|systematic-debugging|**ALL of these mean: STOP. Return to Phase 1.**
+M|systematic-debugging|**If 3+ fixes failed:** Question the architecture (see Phase 4.5)
+M|systematic-debugging|**Watch for these redirections:**
+M|systematic-debugging|- "Is that not happening?" - You assumed without verifying
+M|systematic-debugging|- "Will it show us...?" - You should have added evidence gathering
+M|systematic-debugging|- "Stop guessing" - You're proposing fixes without understanding
+M|systematic-debugging|- "Ultrathink this" - Question fundamentals, not just symptoms
+M|systematic-debugging|- "We're stuck?" (frustrated) - Your approach isn't working
+M|systematic-debugging|**When you see these:** STOP. Return to Phase 1.
+M|systematic-debugging|| Excuse | Reality |
+M|systematic-debugging||--------|---------|
+M|systematic-debugging|| "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |
+M|systematic-debugging|| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |
+M|systematic-debugging|| "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |
+M|systematic-debugging|| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |
+M|systematic-debugging|| "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |
+M|systematic-debugging|| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |
+M|systematic-debugging|| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
+M|systematic-debugging|| "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
+M|systematic-debugging|| Phase | Key Activities | Success Criteria |
+M|systematic-debugging||-------|---------------|------------------|
+M|systematic-debugging|| **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
+M|systematic-debugging|| **2. Pattern** | Find working examples, compare | Identify differences |
+M|systematic-debugging|| **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
+M|systematic-debugging|| **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
+M|systematic-debugging|If systematic investigation reveals issue is truly environmental, timing-dependent, or external:
+M|systematic-debugging|1. You've completed the process
+M|systematic-debugging|2. doc what you investigated
+M|systematic-debugging|3. Implement appropriate handling (retry, timeout, error message)
+M|systematic-debugging|4. Add monitoring/logging for future investigation
+M|systematic-debugging|**But:** 95% of "no root cause" cases are incomplete investigation.
+M|systematic-debugging|These techniques are part of systematic debugging and available in this directory:
+M|systematic-debugging|- **`root-cause-tracing.md`** - Trace bugs backward through call stack to find original trigger
+M|systematic-debugging|- **`defense-in-depth.md`** - Add validation at multiple layers after finding root cause
+M|systematic-debugging|- **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling
+M|systematic-debugging|**Related skills:**
+M|systematic-debugging|- **superpowers:test-driven-dev** - For creating failing test case (Phase 4, Step 1)
+M|systematic-debugging|- **superpowers:verification-before-completion** - Verify fix worked before claiming success
+M|systematic-debugging|From debugging sessions:
+M|systematic-debugging|- Systematic approach: 15-30 minutes to fix
+M|systematic-debugging|- Random fixes approach: 2-3 hours of thrashing
+M|systematic-debugging|- First-time fix rate: 95% vs 40%
+M|systematic-debugging|- New bugs introduced: Near zero vs common

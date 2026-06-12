@@ -1,0 +1,83 @@
+#MEM id=migration-management source=/root/yvon/agent-department/Technical/raj/skills/custom/migration-management/SKILL.md
+M|migration-management|name: migration-management
+M|migration-management|description: Raj's safe Supabase migration protocol for YVON. Covers migration naming, RLS verification, rollback scripts, dev-to-prd workflow, and the 33-migration audit pattern. Run before creating 
+M|migration-management|version: 1.0.0
+M|migration-management|YVON has 33 applied migrations with no structured rollback protocol. As the schema grows with P3-B (`daily_logs`), P6-A (cost tracking), and new vtr tables, unmanaged migrations create irreversible st
+M|migration-management|- Before writing any new `.sql` migration file
+M|migration-management|- Before running `npm run db:migrate` on any environment
+M|migration-management|- After any schema change — RLS verification step is always required
+M|migration-management|- When a migration contains a destructive operation (DROP, ALTER, TRUNCATE)
+M|migration-management|```
+M|migration-management|[timestamp]_[action]_[table]_[detail].sql
+M|migration-management|Examples:
+M|migration-management|20260528_create_daily_logs_table.sql
+M|migration-management|20260528_add_rls_daily_logs_per_venture.sql
+M|migration-management|20260528_alter_decisions_add_venture_slug.sql
+M|migration-management|20260601_drop_deprecated_agent_sessions_v1.sql
+M|migration-management|```
+M|migration-management|**Rules:**
+M|migration-management|- Timestamp = YYYYMMDD (date only — not time, to avoid ordering conflicts on the same day)
+M|migration-management|- If two migrations run same day: add `_01`, `_02` suffix
+M|migration-management|- Never use generic names like `schema_update.sql`
+M|migration-management|Before writing any migration:
+M|migration-management|```
+M|migration-management|□ Is this additive (new table, new column) → LOW RISK — proceed
+M|migration-management|□ Is this altering a column type or removing a column → HIGH RISK — write rollback first
+M|migration-management|□ Is this dropping a table → CRITICAL RISK — get Marcus ap before proceeding
+M|migration-management|□ Does this touch a table used by both ventures? → Add RLS per vtr BEFORE data is written
+M|migration-management|□ Does this table need a venture_slug column? → YES for any multi-vtr table
+M|migration-management|□ Is there existing data that will be affected? → Test on dev first
+M|migration-management|```
+M|migration-management|Every table that can contain data from both Novizio and Hourbour MUST have Row Level sec enabled before any data is written to it.
+M|migration-management|```sql
+M|migration-management|-- Enable RLS on the table
+M|migration-management|ALTER TABLE [table_name] ENABLE ROW LEVEL sec;
+M|migration-management|-- Novizio access policy
+M|migration-management|CREATE POLICY "[table]_novizio_isolation"
+M|migration-management|ON [table_name]
+M|migration-management|USING (venture_slug = 'novizio');
+M|migration-management|-- Hourbour access policy
+M|migration-management|CREATE POLICY "[table]_hourbour_isolation"
+M|migration-management|ON [table_name]
+M|migration-management|USING (venture_slug = 'hourbour');
+M|migration-management|-- Service role bypass (for admin operations only)
+M|migration-management|CREATE POLICY "[table]_service_role_bypass"
+M|migration-management|ON [table_name]
+M|migration-management|TO service_role
+M|migration-management|USING (true);
+M|migration-management|```
+M|migration-management|**Non-negotiable:** If a table has no RLS and contains data from both ventures, Novizio data is visible in Hourbour ctx and vice versa. This is a data leak — not a future concern, a current risk.
+M|migration-management|Every destructive or ALTER migration MUST have a paired rollback:
+M|migration-management|```sql
+M|migration-management|-- Migration: 20260528_alter_decisions_add_venture_slug.sql
+M|migration-management|ALTER TABLE decisions ADD COLUMN venture_slug text NOT NULL DEFAULT 'novizio';
+M|migration-management|-- Rollback: 20260528_rollback_alter_decisions_add_venture_slug.sql
+M|migration-management|ALTER TABLE decisions DROP COLUMN IF EXISTS venture_slug;
+M|migration-management|```
+M|migration-management|Store rollback scripts in `scripts/migrations/rollbacks/` alongside the main migration.
+M|migration-management|After every migration runs:
+M|migration-management|```
+M|migration-management|1. Confirm row count unchanged (for ALTER) or table created (for CREATE)
+M|migration-management|2. Run RLS policy check:
+M|migration-management|SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public';
+M|migration-management|→ Verify rowsecurity = true for all multi-vtr tables
+M|migration-management|3. Test read from each vtr ctx:
+M|migration-management|→ Novizio ctx should not see Hourbour rows
+M|migration-management|→ Hourbour ctx should not see Novizio rows
+M|migration-management|4. Run npx tsc --noEmit — confirm no TypeScript type errors from schema change
+M|migration-management|5. Log the migration: scripts/migrate.mjs confirms applied migrations
+M|migration-management|```
+M|migration-management|For any migration with DROP, TRUNCATE, or column removal:
+M|migration-management|```
+M|migration-management|1. Get explicit ap from Marcus (or Stark) in ses.md
+M|migration-management|→ Record: "ap by [who] on [date]: [what was ap]"
+M|migration-management|2. Back up affected table data before running:
+M|migration-management|INSERT INTO [table_backup] SELECT * FROM [table];
+M|migration-management|3. Run on dev environment first and verify
+M|migration-management|4. Run on prd only after dev verification
+M|migration-management|5. Keep backup table for 7 days before dropping
+M|migration-management|```
+M|migration-management|33 migrations applied as of 2026-05-27. Before creating migration #34+:
+M|migration-management|- Run `npm run db:migrate` to confirm no pending migrations
+M|migration-management|- Check `scripts/migrate.mjs` for the applied migration list
+M|migration-management|- New table for P3-B (`daily_logs`) requires RLS from day one

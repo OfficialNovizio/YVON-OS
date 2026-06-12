@@ -1,0 +1,12 @@
+#MEM id=diana source=/root/yvon/agent-department/COO/diana/SESSION.md
+M|diana|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|diana|> Always load this first. Load mem.md for operational KPIs, workflow rules, and process decisions.
+M|diana|- **Last active:** 2026-03-23
+M|diana|- **Current task:** idle
+M|diana|- **Waiting for Stark:** none
+M|diana|- **Next ses starts with:** Cross-vtr resource check — flag any allocation conflicts between Novizio and Hourbour
+M|diana|| Date | Task | Outcome | Next Step |
+M|diana||------|------|---------|-----------|
+M|diana|| 2026-03-23 | mem system initialised | File seeded with YVON ops ctx | — |
+M|diana|> Unresolved questions, blockers, or decisions pending Stark input.
+M|diana|- None currently

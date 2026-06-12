@@ -1,0 +1,33 @@
+SKILL|apple-notes|"Manage Apple Notes via memo CLI: create, search, edit."
+STEP|1|**macOS** with Notes.app
+STEP|2|Install: `brew tap antoniorodr/memo && brew install antoniorodr/memo/memo`
+STEP|3|Grant Automation access to Notes.app when prompted (System Settings → Privacy → Automation)
+STEP|4|User asks to create, view, or search Apple Notes
+STEP|5|Saving information to Notes.app for cross-device access
+STEP|6|Organizing notes into folders
+STEP|7|Exporting notes to Markdown/HTML
+STEP|8|Obsidian vault management → use the `obsidian` skill
+STEP|9|Bear Notes → separate app (not supported here)
+STEP|10|Quick agent-only notes → use the `memory` tool instead
+STEP|11|Cannot edit notes containing images or attachments
+STEP|12|Interactive prompts require terminal access (use pty=true if needed)
+STEP|13|macOS only — requires Apple Notes.app
+STEP|14|Prefer Apple Notes when user wants cross-device sync (iPhone/iPad/Mac)
+STEP|15|Use the `memory` tool for agent-internal notes that don't need to sync
+STEP|16|Use the `obsidian` skill for Markdown-native knowledge management
+PIT|**macOS** with Notes.app
+PIT|Install: `brew tap antoniorodr/memo && brew install antoniorodr/memo/memo`
+PIT|Grant Automation access to Notes.app when prompted (System Settings → Privacy → Automation)
+PIT|User asks to create, view, or search Apple Notes
+PIT|Saving information to Notes.app for cross-device access
+PIT|Organizing notes into folders
+PIT|Exporting notes to Markdown/HTML
+PIT|Obsidian vault management → use the `obsidian` skill
+PIT|Bear Notes → separate app (not supported here)
+PIT|Quick agent-only notes → use the `memory` tool instead
+PIT|Cannot edit notes containing images or attachments
+PIT|Interactive prompts require terminal access (use pty=true if needed)
+PIT|macOS only — requires Apple Notes.app
+PIT|Prefer Apple Notes when user wants cross-device sync (iPhone/iPad/Mac)
+PIT|Use the `memory` tool for agent-internal notes that don't need to sync
+PIT|Use the `obsidian` skill for Markdown-native knowledge management

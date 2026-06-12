@@ -1,0 +1,666 @@
+#MEM id=writing-skills source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/writing-skills/anthropic-best-practices.md
+M|writing-skills|> Learn how to write effective Skills that Claude can discover and use successfully.
+M|writing-skills|Good Skills are concise, well-structured, and tested with real usage. This guide provides practical authoring decisions to help you write Skills that Claude can discover and use effectively.
+M|writing-skills|For conceptual background on how Skills work, see the [Skills overview](/en/docs/agents-and-tools/agt-skills/overview).
+M|writing-skills|The [ctx window](https://platform.claude.com/docs/en/build-with-claude/ctx-windows) is a public good. Your Skill shares the ctx window with everything else Claude needs to know, including:
+M|writing-skills|* The system prompt
+M|writing-skills|* Conversation history
+M|writing-skills|* Other Skills' metadata
+M|writing-skills|* Your actual request
+M|writing-skills|Not every token in your Skill has an immediate cost. At startup, only the metadata (name and description) from all Skills is pre-loaded. Claude reads SKILL.md only when the Skill becomes relevant, and
+M|writing-skills|**Default assumption**: Claude is already very smart
+M|writing-skills|Only add ctx Claude doesn't already have. Challenge each piece of information:
+M|writing-skills|* "Does Claude really need this explanation?"
+M|writing-skills|* "Can I assume Claude knows this?"
+M|writing-skills|* "Does this paragraph justify its token cost?"
+M|writing-skills|**Good example: Concise** (approximately 50 tokens):
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|Use pdfplumber for text extraction:
+M|writing-skills|```python
+M|writing-skills|import pdfplumber
+M|writing-skills|with pdfplumber.open("file.pdf") as pdf:
+M|writing-skills|text = pdf.pages[0].extract_text()
+M|writing-skills|```
+M|writing-skills|````
+M|writing-skills|**Bad example: Too verbose** (approximately 150 tokens):
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|PDF (Portable doc Format) files are a common file format that contains
+M|writing-skills|text, images, and other cnt. To extract text from a PDF, you'll need to
+M|writing-skills|use a library. There are many libraries available for PDF processing, but we
+M|writing-skills|recommend pdfplumber because it's easy to use and handles most cases well.
+M|writing-skills|First, you'll need to install it using pip. Then you can use the code below...
+M|writing-skills|```
+M|writing-skills|The concise version assumes Claude knows what PDFs are and how libraries work.
+M|writing-skills|Match the level of specificity to the task's fragility and variability.
+M|writing-skills|**High freedom** (text-based instructions):
+M|writing-skills|Use when:
+M|writing-skills|* Multiple approaches are valid
+M|writing-skills|* Decisions depend on ctx
+M|writing-skills|* Heuristics guide the approach
+M|writing-skills|Example:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|1. Analyze the code structure and organization
+M|writing-skills|2. Check for potential bugs or edge cases
+M|writing-skills|3. Suggest improvements for readability and maintainability
+M|writing-skills|4. Verify adherence to project conventions
+M|writing-skills|```
+M|writing-skills|**Medium freedom** (pseudocode or scripts with parameters):
+M|writing-skills|Use when:
+M|writing-skills|* A preferred pattern exists
+M|writing-skills|* Some variation is acceptable
+M|writing-skills|* cfg affects behavior
+M|writing-skills|Example:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|Use this template and customize as needed:
+M|writing-skills|```python
+M|writing-skills|def generate_report(data, format="markdown", include_charts=True):
+M|writing-skills|```
+M|writing-skills|````
+M|writing-skills|**Low freedom** (specific scripts, few or no parameters):
+M|writing-skills|Use when:
+M|writing-skills|* Operations are fragile and error-prone
+M|writing-skills|* Consistency is critical
+M|writing-skills|* A specific sequence must be followed
+M|writing-skills|Example:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|Run exactly this script:
+M|writing-skills|```bash
+M|writing-skills|python scripts/migrate.py --verify --backup
+M|writing-skills|```
+M|writing-skills|Do not modify the command or add additional flags.
+M|writing-skills|````
+M|writing-skills|**Analogy**: Think of Claude as a robot exploring a path:
+M|writing-skills|* **Narrow bridge with cliffs on both sides**: There's only one safe way forward. Provide specific guardrails and exact instructions (low freedom). Example: database migrations that must run in exact 
+M|writing-skills|* **Open field with no hazards**: Many paths lead to success. Give general direction and trust Claude to find the best route (high freedom). Example: code reviews where ctx determines the best approac
+M|writing-skills|Skills act as additions to models, so effectiveness depends on the underlying model. Test your Skill with all the models you plan to use it with.
+M|writing-skills|**Testing considerations by model**:
+M|writing-skills|* **Claude Haiku** (fast, economical): Does the Skill provide enough guidance?
+M|writing-skills|* **Claude Sonnet** (balanced): Is the Skill clear and efficient?
+M|writing-skills|* **Claude Opus** (powerful reasoning): Does the Skill avoid over-explaining?
+M|writing-skills|What works perfectly for Opus might need more detail for Haiku. If you plan to use your Skill across multiple models, aim for instructions that work well with all of them.
+M|writing-skills|<Note>
+M|writing-skills|**YAML Frontmatter**: The SKILL.md frontmatter requires two fields:
+M|writing-skills|* `name` - Human-readable name of the Skill (64 characters maximum)
+M|writing-skills|* `description` - One-line description of what the Skill does and when to use it (1024 characters maximum)
+M|writing-skills|For complete Skill structure details, see the [Skills overview](/en/docs/agents-and-tools/agt-skills/overview#skill-structure).
+M|writing-skills|</Note>
+M|writing-skills|Use consistent naming patterns to make Skills easier to reference and discuss. We recommend using **gerund form** (verb + -ing) for Skill names, as this clearly describes the activity or capability th
+M|writing-skills|**Good naming examples (gerund form)**:
+M|writing-skills|* "Processing PDFs"
+M|writing-skills|* "Analyzing spreadsheets"
+M|writing-skills|* "Managing databases"
+M|writing-skills|* "Testing code"
+M|writing-skills|* "Writing documentation"
+M|writing-skills|**Acceptable alternatives**:
+M|writing-skills|* Noun phrases: "PDF Processing", "Spreadsheet Analysis"
+M|writing-skills|* Action-oriented: "Process PDFs", "Analyze Spreadsheets"
+M|writing-skills|**Avoid**:
+M|writing-skills|* Vague names: "Helper", "Utils", "Tools"
+M|writing-skills|* Overly generic: "Documents", "Data", "Files"
+M|writing-skills|* Inconsistent patterns within your skill collection
+M|writing-skills|Consistent naming makes it easier to:
+M|writing-skills|* Reference Skills in documentation and conversations
+M|writing-skills|* Understand what a Skill does at a glance
+M|writing-skills|* Organize and search through multiple Skills
+M|writing-skills|* Maintain a professional, cohesive skill library
+M|writing-skills|The `description` field enables Skill discovery and should include both what the Skill does and when to use it.
+M|writing-skills|<Warning>
+M|writing-skills|**Always write in third person**. The description is injected into the system prompt, and inconsistent point-of-view can cause discovery problems.
+M|writing-skills|* **Good:** "Processes Excel files and generates reports"
+M|writing-skills|* **Avoid:** "I can help you process Excel files"
+M|writing-skills|* **Avoid:** "You can use this to process Excel files"
+M|writing-skills|</Warning>
+M|writing-skills|**Be specific and include key terms**. Include both what the Skill does and specific triggers/contexts for when to use it.
+M|writing-skills|Each Skill has exactly one description field. The description is critical for skill selection: Claude uses it to choose the right Skill from potentially 100+ available Skills. Your description must pr
+M|writing-skills|Effective examples:
+M|writing-skills|**PDF Processing skill:**
+M|writing-skills|```yaml  theme={null}
+M|writing-skills|description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or doc extraction.
+M|writing-skills|```
+M|writing-skills|**Excel Analysis skill:**
+M|writing-skills|```yaml  theme={null}
+M|writing-skills|description: Analyze Excel spreadsheets, create pivot tables, gen charts. Use when analyzing Excel files, spreadsheets, tabular data, or .xlsx files.
+M|writing-skills|```
+M|writing-skills|**Git Commit Helper skill:**
+M|writing-skills|```yaml  theme={null}
+M|writing-skills|description: gen descriptive commit messages by analyzing git diffs. Use when the user asks for help writing commit messages or reviewing staged changes.
+M|writing-skills|```
+M|writing-skills|Avoid vague descriptions like these:
+M|writing-skills|```yaml  theme={null}
+M|writing-skills|description: Helps with documents
+M|writing-skills|```
+M|writing-skills|```yaml  theme={null}
+M|writing-skills|description: Processes data
+M|writing-skills|```
+M|writing-skills|```yaml  theme={null}
+M|writing-skills|description: Does stuff with files
+M|writing-skills|```
+M|writing-skills|SKILL.md serves as an overview that points Claude to detailed materials as needed, like a table of contents in an onboarding guide. For an explanation of how progressive disclosure works, see [How Ski
+M|writing-skills|**Practical guidance:**
+M|writing-skills|* Keep SKILL.md body under 500 lines for optimal performance
+M|writing-skills|* Split cnt into separate files when approaching this limit
+M|writing-skills|* Use the patterns below to organize instructions, code, and resources effectively
+M|writing-skills|A basic Skill starts with just a SKILL.md file containing metadata and instructions:
+M|writing-skills|<img src="https://mintcdn.com/anthropic-claude-docs/4Bny2bjzuGBK7o00/images/agt-skills-simple-file.png?fit=max&auto=format&n=4Bny2bjzuGBK7o00&q=85&s=87782ff239b297d9a9e8e1b72ed72db9" alt="Simple SKILL
+M|writing-skills|As your Skill grows, you can bundle additional cnt that Claude loads only when needed:
+M|writing-skills|<img src="https://mintcdn.com/anthropic-claude-docs/4Bny2bjzuGBK7o00/images/agt-skills-bundling-cnt.png?fit=max&auto=format&n=4Bny2bjzuGBK7o00&q=85&s=a5e0aa41e3d53985a7e3e43668a33ea3" alt="Bundling ad
+M|writing-skills|The complete Skill directory structure might look like this:
+M|writing-skills|```
+M|writing-skills|pdf/
+M|writing-skills|├── SKILL.md              # Main instructions (loaded when triggered)
+M|writing-skills|├── FORMS.md              # Form-filling guide (loaded as needed)
+M|writing-skills|├── reference.md          # API reference (loaded as needed)
+M|writing-skills|├── examples.md           # Usage examples (loaded as needed)
+M|writing-skills|└── scripts/
+M|writing-skills|├── analyze_form.py   # Utility script (executed, not loaded)
+M|writing-skills|├── fill_form.py      # Form filling script
+M|writing-skills|└── validate.py       # Validation script
+M|writing-skills|```
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|name: PDF Processing
+M|writing-skills|description: Extracts text and tables from PDF files, fills forms, and merges documents. Use when working with PDF files or when the user mentions PDFs, forms, or doc extraction.
+M|writing-skills|Extract text with pdfplumber:
+M|writing-skills|```python
+M|writing-skills|import pdfplumber
+M|writing-skills|with pdfplumber.open("file.pdf") as pdf:
+M|writing-skills|text = pdf.pages[0].extract_text()
+M|writing-skills|```
+M|writing-skills|**Form filling**: See [FORMS.md](FORMS.md) for complete guide
+M|writing-skills|**API reference**: See [REFERENCE.md](REFERENCE.md) for all methods
+M|writing-skills|**Examples**: See [EXAMPLES.md](EXAMPLES.md) for common patterns
+M|writing-skills|````
+M|writing-skills|Claude loads FORMS.md, REFERENCE.md, or EXAMPLES.md only when needed.
+M|writing-skills|For Skills with multiple domains, organize cnt by domain to avoid loading irrelevant ctx. When a user asks about sales metrics, Claude only needs to read sales-related schemas, not fin or mkt data. Th
+M|writing-skills|```
+M|writing-skills|bigquery-skill/
+M|writing-skills|├── SKILL.md (overview and navigation)
+M|writing-skills|└── reference/
+M|writing-skills|├── fin.md (revenue, billing metrics)
+M|writing-skills|├── sales.md (opportunities, pl)
+M|writing-skills|├── product.md (API usage, features)
+M|writing-skills|└── mkt.md (cg, attribution)
+M|writing-skills|```
+M|writing-skills|````markdown SKILL.md theme={null}
+M|writing-skills|**fin**: Revenue, ARR, billing → See [reference/fin.md](reference/fin.md)
+M|writing-skills|**Sales**: Opportunities, pl, accounts → See [reference/sales.md](reference/sales.md)
+M|writing-skills|**Product**: API usage, features, adoption → See [reference/product.md](reference/product.md)
+M|writing-skills|**mkt**: cg, attribution, email → See [reference/mkt.md](reference/mkt.md)
+M|writing-skills|Find specific metrics using grep:
+M|writing-skills|```bash
+M|writing-skills|grep -i "revenue" reference/fin.md
+M|writing-skills|grep -i "pl" reference/sales.md
+M|writing-skills|grep -i "api usage" reference/product.md
+M|writing-skills|```
+M|writing-skills|````
+M|writing-skills|Show basic cnt, link to advanced cnt:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|Use docx-js for new documents. See [DOCX-JS.md](DOCX-JS.md).
+M|writing-skills|For simple edits, modify the XML directly.
+M|writing-skills|**For tracked changes**: See [REDLINING.md](REDLINING.md)
+M|writing-skills|**For OOXML details**: See [OOXML.md](OOXML.md)
+M|writing-skills|```
+M|writing-skills|Claude reads REDLINING.md or OOXML.md only when the user needs those features.
+M|writing-skills|Claude may partially read files when they're referenced from other referenced files. When encountering nested references, Claude might use commands like `head -100` to preview cnt rather than reading 
+M|writing-skills|**Keep references one level deep from SKILL.md**. All reference files should link directly from SKILL.md to ensure Claude reads complete files when needed.
+M|writing-skills|**Bad example: Too deep**:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|See [advanced.md](advanced.md)...
+M|writing-skills|See [details.md](details.md)...
+M|writing-skills|Here's the actual information...
+M|writing-skills|```
+M|writing-skills|**Good example: One level deep**:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|**Basic usage**: [instructions in SKILL.md]
+M|writing-skills|**Advanced features**: See [advanced.md](advanced.md)
+M|writing-skills|**API reference**: See [reference.md](reference.md)
+M|writing-skills|**Examples**: See [examples.md](examples.md)
+M|writing-skills|```
+M|writing-skills|For reference files longer than 100 lines, include a table of contents at the top. This ensures Claude can see the full scope of available information even when previewing with partial reads.
+M|writing-skills|**Example**:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|- Authentication and setup
+M|writing-skills|- Core methods (create, read, update, delete)
+M|writing-skills|- Advanced features (batch operations, webhooks)
+M|writing-skills|- Error handling patterns
+M|writing-skills|- Code examples
+M|writing-skills|...
+M|writing-skills|...
+M|writing-skills|```
+M|writing-skills|Claude can then read the complete file or jump to specific sections as needed.
+M|writing-skills|For details on how this filesystem-based architecture enables progressive disclosure, see the [Runtime environment](#runtime-environment) section in the Advanced section below.
+M|writing-skills|Break complex operations into clear, sequential steps. For particularly complex workflows, provide a checklist that Claude can copy into its rsp and check off as it progresses.
+M|writing-skills|**Example 1: Research synthesis workflow** (for Skills without code):
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|Copy this checklist and track your progress:
+M|writing-skills|```
+M|writing-skills|Research Progress:
+M|writing-skills|- [ ] Step 1: Read all source documents
+M|writing-skills|- [ ] Step 2: Identify key themes
+M|writing-skills|- [ ] Step 3: Cross-reference claims
+M|writing-skills|- [ ] Step 4: Create structured summary
+M|writing-skills|- [ ] Step 5: Verify citations
+M|writing-skills|```
+M|writing-skills|**Step 1: Read all source documents**
+M|writing-skills|rv each doc in the `sources/` directory. Note the main arguments and supporting evidence.
+M|writing-skills|**Step 2: Identify key themes**
+M|writing-skills|Look for patterns across sources. What themes appear repeatedly? Where do sources agree or disagree?
+M|writing-skills|**Step 3: Cross-reference claims**
+M|writing-skills|For each major claim, verify it appears in the source material. Note which source supports each point.
+M|writing-skills|**Step 4: Create structured summary**
+M|writing-skills|Organize findings by theme. Include:
+M|writing-skills|- Main claim
+M|writing-skills|- Supporting evidence from sources
+M|writing-skills|- Conflicting viewpoints (if any)
+M|writing-skills|**Step 5: Verify citations**
+M|writing-skills|Check that every claim references the correct source doc. If citations are incomplete, return to Step 3.
+M|writing-skills|````
+M|writing-skills|This example shows how workflows apply to analysis tasks that don't require code. The checklist pattern works for any complex, multi-step process.
+M|writing-skills|**Example 2: PDF form filling workflow** (for Skills with code):
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|Copy this checklist and check off items as you complete them:
+M|writing-skills|```
+M|writing-skills|Task Progress:
+M|writing-skills|- [ ] Step 1: Analyze the form (run analyze_form.py)
+M|writing-skills|- [ ] Step 2: Create field mapping (edit fields.json)
+M|writing-skills|- [ ] Step 3: Validate mapping (run validate_fields.py)
+M|writing-skills|- [ ] Step 4: Fill the form (run fill_form.py)
+M|writing-skills|- [ ] Step 5: Verify output (run verify_output.py)
+M|writing-skills|```
+M|writing-skills|**Step 1: Analyze the form**
+M|writing-skills|Run: `python scripts/analyze_form.py input.pdf`
+M|writing-skills|This extracts form fields and their locations, saving to `fields.json`.
+M|writing-skills|**Step 2: Create field mapping**
+M|writing-skills|Edit `fields.json` to add values for each field.
+M|writing-skills|**Step 3: Validate mapping**
+M|writing-skills|Run: `python scripts/validate_fields.py fields.json`
+M|writing-skills|Fix any validation errors before continuing.
+M|writing-skills|**Step 4: Fill the form**
+M|writing-skills|Run: `python scripts/fill_form.py input.pdf fields.json output.pdf`
+M|writing-skills|**Step 5: Verify output**
+M|writing-skills|Run: `python scripts/verify_output.py output.pdf`
+M|writing-skills|If verification fails, return to Step 2.
+M|writing-skills|````
+M|writing-skills|Clear steps prevent Claude from skipping critical validation. The checklist helps both Claude and you track progress through multi-step workflows.
+M|writing-skills|**Common pattern**: Run validator → fix errors → repeat
+M|writing-skills|This pattern greatly improves output quality.
+M|writing-skills|**Example 1: Style guide compliance** (for Skills without code):
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|1. Draft your cnt following the guidelines in STYLE_GUIDE.md
+M|writing-skills|2. rv against the checklist:
+M|writing-skills|- Check terminology consistency
+M|writing-skills|- Verify examples follow the standard format
+M|writing-skills|- Confirm all required sections are present
+M|writing-skills|3. If issues found:
+M|writing-skills|- Note each issue with specific section reference
+M|writing-skills|- Revise the cnt
+M|writing-skills|- rv the checklist again
+M|writing-skills|4. Only proceed when all requirements are met
+M|writing-skills|5. Finalize and save the doc
+M|writing-skills|```
+M|writing-skills|This shows the validation loop pattern using reference documents instead of scripts. The "validator" is STYLE\_GUIDE.md, and Claude performs the check by reading and comparing.
+M|writing-skills|**Example 2: doc editing process** (for Skills with code):
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|1. Make your edits to `word/doc.xml`
+M|writing-skills|2. **Validate immediately**: `python ooxml/scripts/validate.py unpacked_dir/`
+M|writing-skills|3. If validation fails:
+M|writing-skills|- rv the error message carefully
+M|writing-skills|- Fix the issues in the XML
+M|writing-skills|- Run validation again
+M|writing-skills|4. **Only proceed when validation passes**
+M|writing-skills|5. Rebuild: `python ooxml/scripts/pack.py unpacked_dir/ output.docx`
+M|writing-skills|6. Test the output doc
+M|writing-skills|```
+M|writing-skills|The validation loop catches errors early.
+M|writing-skills|Don't include information that will become outdated:
+M|writing-skills|**Bad example: Time-sensitive** (will become wrong):
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|If you're doing this before August 2025, use the old API.
+M|writing-skills|After August 2025, use the new API.
+M|writing-skills|```
+M|writing-skills|**Good example** (use "old patterns" section):
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|Use the v2 API endpoint: `api.example.com/v2/messages`
+M|writing-skills|<details>
+M|writing-skills|<summary>Legacy v1 API (deprecated 2025-08)</summary>
+M|writing-skills|The v1 API used: `api.example.com/v1/messages`
+M|writing-skills|This endpoint is no longer supported.
+M|writing-skills|</details>
+M|writing-skills|```
+M|writing-skills|The old patterns section provides historical ctx without cluttering the main cnt.
+M|writing-skills|Choose one term and use it throughout the Skill:
+M|writing-skills|**Good - Consistent**:
+M|writing-skills|* Always "API endpoint"
+M|writing-skills|* Always "field"
+M|writing-skills|* Always "extract"
+M|writing-skills|**Bad - Inconsistent**:
+M|writing-skills|* Mix "API endpoint", "URL", "API route", "path"
+M|writing-skills|* Mix "field", "box", "element", "control"
+M|writing-skills|* Mix "extract", "pull", "get", "retrieve"
+M|writing-skills|Consistency helps Claude understand and follow instructions.
+M|writing-skills|Provide templates for output format. Match the level of strictness to your needs.
+M|writing-skills|**For strict requirements** (like API responses or data formats):
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|ALWAYS use this exact template structure:
+M|writing-skills|```markdown
+M|writing-skills|[One-paragraph overview of key findings]
+M|writing-skills|- Finding 1 with supporting data
+M|writing-skills|- Finding 2 with supporting data
+M|writing-skills|- Finding 3 with supporting data
+M|writing-skills|1. Specific actionable recommendation
+M|writing-skills|2. Specific actionable recommendation
+M|writing-skills|```
+M|writing-skills|````
+M|writing-skills|**For flexible guidance** (when adaptation is useful):
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|Here is a sensible default format, but use your best judgment based on the analysis:
+M|writing-skills|```markdown
+M|writing-skills|[Overview]
+M|writing-skills|[Adapt sections based on what you discover]
+M|writing-skills|[Tailor to the specific ctx]
+M|writing-skills|```
+M|writing-skills|Adjust sections as needed for the specific analysis type.
+M|writing-skills|````
+M|writing-skills|For Skills where output quality depends on seeing examples, provide input/output pairs just like in regular prompting:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|gen commit messages following these examples:
+M|writing-skills|**Example 1:**
+M|writing-skills|Input: Added user authentication with JWT tokens
+M|writing-skills|Output:
+M|writing-skills|```
+M|writing-skills|feat(auth): implement JWT-based authentication
+M|writing-skills|Add login endpoint and token validation middleware
+M|writing-skills|```
+M|writing-skills|**Example 2:**
+M|writing-skills|Input: Fixed bug where dates displayed incorrectly in reports
+M|writing-skills|Output:
+M|writing-skills|```
+M|writing-skills|fix(reports): correct date formatting in timezone conversion
+M|writing-skills|Use UTC timestamps consistently across report generation
+M|writing-skills|```
+M|writing-skills|**Example 3:**
+M|writing-skills|Input: Updated dependencies and refactored error handling
+M|writing-skills|Output:
+M|writing-skills|```
+M|writing-skills|chore: update dependencies and refactor error handling
+M|writing-skills|- Upgrade lodash to 4.17.21
+M|writing-skills|- Standardize error rsp format across endpoints
+M|writing-skills|```
+M|writing-skills|Follow this style: type(scope): brief description, then detailed explanation.
+M|writing-skills|````
+M|writing-skills|Examples help Claude understand the desired style and level of detail more clearly than descriptions alone.
+M|writing-skills|Guide Claude through dec points:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|1. Determine the modification type:
+M|writing-skills|**Creating new cnt?** → Follow "Creation workflow" below
+M|writing-skills|**Editing existing cnt?** → Follow "Editing workflow" below
+M|writing-skills|2. Creation workflow:
+M|writing-skills|- Use docx-js library
+M|writing-skills|- Build doc from scratch
+M|writing-skills|- Export to .docx format
+M|writing-skills|3. Editing workflow:
+M|writing-skills|- Unpack existing doc
+M|writing-skills|- Modify XML directly
+M|writing-skills|- Validate after each change
+M|writing-skills|- Repack when complete
+M|writing-skills|```
+M|writing-skills|<Tip>
+M|writing-skills|If workflows become large or complicated with many steps, consider pushing them into separate files and tell Claude to read the appropriate file based on the task at hand.
+M|writing-skills|</Tip>
+M|writing-skills|**Create evaluations BEFORE writing extensive documentation.** This ensures your Skill solves real problems rather than documenting imagined ones.
+M|writing-skills|**Evaluation-driven dev:**
+M|writing-skills|1. **Identify gaps**: Run Claude on representative tasks without a Skill. doc specific failures or missing ctx
+M|writing-skills|2. **Create evaluations**: Build three scenarios that test these gaps
+M|writing-skills|3. **Establish baseline**: Measure Claude's performance without the Skill
+M|writing-skills|4. **Write minimal instructions**: Create just enough cnt to address the gaps and pass evaluations
+M|writing-skills|5. **Iterate**: Execute evaluations, compare against baseline, and refine
+M|writing-skills|This approach ensures you're solving actual problems rather than anticipating requirements that may never materialize.
+M|writing-skills|**Evaluation structure**:
+M|writing-skills|```json  theme={null}
+M|writing-skills|{
+M|writing-skills|"skills": ["pdf-processing"],
+M|writing-skills|"query": "Extract all text from this PDF file and save it to output.txt",
+M|writing-skills|"files": ["test-files/doc.pdf"],
+M|writing-skills|"expected_behavior": [
+M|writing-skills|"Successfully reads the PDF file using an appropriate PDF processing library or command-line tool",
+M|writing-skills|"Extracts text cnt from all pages in the doc without missing any pages",
+M|writing-skills|"Saves the extracted text to a file named output.txt in a clear, readable format"
+M|writing-skills|]
+M|writing-skills|}
+M|writing-skills|```
+M|writing-skills|<Note>
+M|writing-skills|This example demonstrates a data-driven evaluation with a simple testing rubric. We do not currently provide a built-in way to run these evaluations. Users can create their own evaluation system. Eval
+M|writing-skills|</Note>
+M|writing-skills|The most effective Skill dev process involves Claude itself. Work with one instance of Claude ("Claude A") to create a Skill that will be used by other instances ("Claude B"). Claude A helps you desig
+M|writing-skills|**Creating a new Skill:**
+M|writing-skills|1. **Complete a task without a Skill**: Work through a problem with Claude A using normal prompting. As you work, you'll naturally provide ctx, explain preferences, and share procedural knw. Notice wh
+M|writing-skills|2. **Identify the reusable pattern**: After completing the task, identify what ctx you provided that would be useful for similar future tasks.
+M|writing-skills|**Example**: If you worked through a BigQuery analysis, you might have provided table names, field definitions, filtering rules (like "always exclude test accounts"), and common query patterns.
+M|writing-skills|3. **Ask Claude A to create a Skill**: "Create a Skill that captures this BigQuery analysis pattern we just used. Include the table schemas, naming conventions, and the rule about filtering test accou
+M|writing-skills|<Tip>
+M|writing-skills|Claude models understand the Skill format and structure natively. You don't need special system prompts or a "writing skills" skill to get Claude to help create Skills. Simply ask Claude to create a S
+M|writing-skills|</Tip>
+M|writing-skills|4. **rv for conciseness**: Check that Claude A hasn't added unnecessary explanations. Ask: "Remove the explanation about what win rate means - Claude already knows that."
+M|writing-skills|5. **Improve information architecture**: Ask Claude A to organize the cnt more effectively. For example: "Organize this so the table schema is in a separate reference file. We might add more tables la
+M|writing-skills|6. **Test on similar tasks**: Use the Skill with Claude B (a fresh instance with the Skill loaded) on related use cases. Observe whether Claude B finds the right information, applies rules correctly, 
+M|writing-skills|7. **Iterate based on observation**: If Claude B struggles or misses something, return to Claude A with specifics: "When Claude used this Skill, it forgot to filter by date for Q4. Should we add a sec
+M|writing-skills|**Iterating on existing Skills:**
+M|writing-skills|The same hierarchical pattern continues when improving Skills. You alternate between:
+M|writing-skills|* **Working with Claude A** (the expert who helps refine the Skill)
+M|writing-skills|* **Testing with Claude B** (the agt using the Skill to perform real work)
+M|writing-skills|* **Observing Claude B's behavior** and bringing insights back to Claude A
+M|writing-skills|1. **Use the Skill in real workflows**: Give Claude B (with the Skill loaded) actual tasks, not test scenarios
+M|writing-skills|2. **Observe Claude B's behavior**: Note where it struggles, succeeds, or makes unexpected choices
+M|writing-skills|**Example observation**: "When I asked Claude B for a regional sales report, it wrote the query but forgot to filter out test accounts, even though the Skill mentions this rule."
+M|writing-skills|3. **Return to Claude A for improvements**: Share the current SKILL.md and describe what you observed. Ask: "I noticed Claude B forgot to filter test accounts when I asked for a regional report. The S
+M|writing-skills|4. **rv Claude A's suggestions**: Claude A might suggest reorganizing to make rules more prominent, using stronger language like "MUST filter" instead of "always filter", or restructuring the workflow
+M|writing-skills|5. **Apply and test changes**: Update the Skill with Claude A's refinements, then test again with Claude B on similar requests
+M|writing-skills|6. **Repeat based on usage**: Continue this observe-refine-test cycle as you encounter new scenarios. Each iteration improves the Skill based on real agt behavior, not assumptions.
+M|writing-skills|**Gathering team feedback:**
+M|writing-skills|1. Share Skills with teammates and observe their usage
+M|writing-skills|2. Ask: Does the Skill activate when expected? Are instructions clear? What's missing?
+M|writing-skills|3. Incorporate feedback to address blind spots in your own usage patterns
+M|writing-skills|**Why this approach works**: Claude A understands agt needs, you provide domain expertise, Claude B reveals gaps through real usage, and iterative refinement improves Skills based on observed behavior
+M|writing-skills|As you iterate on Skills, pay attention to how Claude actually uses them in practice. Watch for:
+M|writing-skills|* **Unexpected exploration paths**: Does Claude read files in an order you didn't anticipate? This might indicate your structure isn't as intuitive as you thought
+M|writing-skills|* **Missed connections**: Does Claude fail to follow references to important files? Your links might need to be more explicit or prominent
+M|writing-skills|* **Overreliance on certain sections**: If Claude repeatedly reads the same file, consider whether that cnt should be in the main SKILL.md instead
+M|writing-skills|* **Ignored cnt**: If Claude never accesses a bundled file, it might be unnecessary or poorly signaled in the main instructions
+M|writing-skills|Iterate based on these observations rather than assumptions. The 'name' and 'description' in your Skill's metadata are particularly critical. Claude uses these when deciding whether to trigger the Ski
+M|writing-skills|Always use forward slashes in file paths, even on Windows:
+M|writing-skills|* ✓ **Good**: `scripts/helper.py`, `reference/guide.md`
+M|writing-skills|* ✗ **Avoid**: `scripts\helper.py`, `reference\guide.md`
+M|writing-skills|Unix-style paths work across all platforms, while Windows-style paths cause errors on Unix systems.
+M|writing-skills|Don't present multiple approaches unless necessary:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|**Bad example: Too many choices** (confusing):
+M|writing-skills|"You can use pypdf, or pdfplumber, or PyMuPDF, or pdf2image, or..."
+M|writing-skills|**Good example: Provide a default** (with escape hatch):
+M|writing-skills|"Use pdfplumber for text extraction:
+M|writing-skills|```python
+M|writing-skills|import pdfplumber
+M|writing-skills|```
+M|writing-skills|For scanned PDFs requiring OCR, use pdf2image with pytesseract instead."
+M|writing-skills|````
+M|writing-skills|The sections below focus on Skills that include executable scripts. If your Skill uses only markdown instructions, skip to [Checklist for effective Skills](#checklist-for-effective-skills).
+M|writing-skills|When writing scripts for Skills, handle error conditions rather than punting to Claude.
+M|writing-skills|**Good example: Handle errors explicitly**:
+M|writing-skills|```python  theme={null}
+M|writing-skills|def process_file(path):
+M|writing-skills|"""Process a file, creating it if it doesn't exist."""
+M|writing-skills|try:
+M|writing-skills|with open(path) as f:
+M|writing-skills|return f.read()
+M|writing-skills|except FileNotFoundError:
+M|writing-skills|print(f"File {path} not found, creating default")
+M|writing-skills|with open(path, 'w') as f:
+M|writing-skills|f.write('')
+M|writing-skills|return ''
+M|writing-skills|except PermissionError:
+M|writing-skills|print(f"Cannot access {path}, using default")
+M|writing-skills|return ''
+M|writing-skills|```
+M|writing-skills|**Bad example: Punt to Claude**:
+M|writing-skills|```python  theme={null}
+M|writing-skills|def process_file(path):
+M|writing-skills|return open(path).read()
+M|writing-skills|```
+M|writing-skills|cfg parameters should also be justified and documented to avoid "voodoo constants" (Ousterhout's law). If you don't know the right value, how will Claude determine it?
+M|writing-skills|**Good example: Self-documenting**:
+M|writing-skills|```python  theme={null}
+M|writing-skills|REQUEST_TIMEOUT = 30
+M|writing-skills|MAX_RETRIES = 3
+M|writing-skills|```
+M|writing-skills|**Bad example: Magic numbers**:
+M|writing-skills|```python  theme={null}
+M|writing-skills|TIMEOUT = 47  # Why 47?
+M|writing-skills|RETRIES = 5   # Why 5?
+M|writing-skills|```
+M|writing-skills|Even if Claude could write a script, pre-made scripts offer advantages:
+M|writing-skills|**Benefits of utility scripts**:
+M|writing-skills|* More reliable than generated code
+M|writing-skills|* Save tokens (no need to include code in ctx)
+M|writing-skills|* Save time (no code generation required)
+M|writing-skills|* Ensure consistency across uses
+M|writing-skills|<img src="https://mintcdn.com/anthropic-claude-docs/4Bny2bjzuGBK7o00/images/agt-skills-executable-scripts.png?fit=max&auto=format&n=4Bny2bjzuGBK7o00&q=85&s=4bbc45f2c2e0bee9f2f0d5da669bad00" alt="Bundl
+M|writing-skills|The diagram above shows how executable scripts work alongside instruction files. The instruction file (forms.md) references the script, and Claude can execute it without loading its contents into ctx.
+M|writing-skills|**Important distinction**: Make clear in your instructions whether Claude should:
+M|writing-skills|* **Execute the script** (most common): "Run `analyze_form.py` to extract fields"
+M|writing-skills|* **Read it as reference** (for complex logic): "See `analyze_form.py` for the field extraction algorithm"
+M|writing-skills|For most utility scripts, execution is preferred because it's more reliable and efficient. See the [Runtime environment](#runtime-environment) section below for details on how script execution works.
+M|writing-skills|**Example**:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|**analyze_form.py**: Extract all form fields from PDF
+M|writing-skills|```bash
+M|writing-skills|python scripts/analyze_form.py input.pdf > fields.json
+M|writing-skills|```
+M|writing-skills|Output format:
+M|writing-skills|```json
+M|writing-skills|{
+M|writing-skills|"field_name": {"type": "text", "x": 100, "y": 200},
+M|writing-skills|"signature": {"type": "sig", "x": 150, "y": 500}
+M|writing-skills|}
+M|writing-skills|```
+M|writing-skills|**validate_boxes.py**: Check for overlapping bounding boxes
+M|writing-skills|```bash
+M|writing-skills|python scripts/validate_boxes.py fields.json
+M|writing-skills|```
+M|writing-skills|**fill_form.py**: Apply field values to PDF
+M|writing-skills|```bash
+M|writing-skills|python scripts/fill_form.py input.pdf fields.json output.pdf
+M|writing-skills|```
+M|writing-skills|````
+M|writing-skills|When inputs can be rendered as images, have Claude analyze them:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|1. Convert PDF to images:
+M|writing-skills|```bash
+M|writing-skills|python scripts/pdf_to_images.py form.pdf
+M|writing-skills|```
+M|writing-skills|2. Analyze each page image to identify form fields
+M|writing-skills|3. Claude can see field locations and types visually
+M|writing-skills|````
+M|writing-skills|<Note>
+M|writing-skills|In this example, you'd need to write the `pdf_to_images.py` script.
+M|writing-skills|</Note>
+M|writing-skills|Claude's vision capabilities help understand layouts and structures.
+M|writing-skills|When Claude performs complex, open-ended tasks, it can make mistakes. The "plan-validate-execute" pattern catches errors early by having Claude first create a plan in a structured format, then validat
+M|writing-skills|**Example**: Imagine asking Claude to update 50 form fields in a PDF based on a spreadsheet. Without validation, Claude might reference non-existent fields, create conflicting values, miss required fi
+M|writing-skills|**Solution**: Use the workflow pattern shown above (PDF form filling), but add an intermediate `changes.json` file that gets validated before applying changes. The workflow becomes: analyze → **create
+M|writing-skills|**Why this pattern works:**
+M|writing-skills|* **Catches errors early**: Validation finds problems before changes are applied
+M|writing-skills|* **Machine-verifiable**: Scripts provide objective verification
+M|writing-skills|* **Reversible planning**: Claude can iterate on the plan without touching originals
+M|writing-skills|* **Clear debugging**: Error messages point to specific problems
+M|writing-skills|**When to use**: Batch operations, destructive changes, complex validation rules, high-stakes operations.
+M|writing-skills|**Implementation tip**: Make validation scripts verbose with specific error messages like "Field 'signature\_date' not found. Available fields: customer\_name, order\_total, signature\_date\_signed" t
+M|writing-skills|Skills run in the code execution environment with platform-specific limitations:
+M|writing-skills|* **claude.ai**: Can install packages from npm and PyPI and pull from GitHub repositories
+M|writing-skills|* **Anthropic API**: Has no network access and no runtime package installation
+M|writing-skills|List required packages in your SKILL.md and verify they're available in the [code execution tool documentation](/en/docs/agents-and-tools/tool-use/code-execution-tool).
+M|writing-skills|Skills run in a code execution environment with filesystem access, bash commands, and code execution capabilities. For the conceptual explanation of this architecture, see [The Skills architecture](/e
+M|writing-skills|**How this affects your authoring:**
+M|writing-skills|**How Claude accesses Skills:**
+M|writing-skills|1. **Metadata pre-loaded**: At startup, the name and description from all Skills' YAML frontmatter are loaded into the system prompt
+M|writing-skills|2. **Files read on-demand**: Claude uses bash Read tools to access SKILL.md and other files from the filesystem when needed
+M|writing-skills|3. **Scripts executed efficiently**: Utility scripts can be executed via bash without loading their full contents into ctx. Only the script's output consumes tokens
+M|writing-skills|4. **No ctx penalty for large files**: Reference files, data, or documentation don't consume ctx tokens until actually read
+M|writing-skills|* **File paths matter**: Claude navigates your skill directory like a filesystem. Use forward slashes (`reference/guide.md`), not backslashes
+M|writing-skills|* **Name files descriptively**: Use names that indicate cnt: `form_validation_rules.md`, not `doc2.md`
+M|writing-skills|* **Organize for discovery**: Structure directories by domain or feature
+M|writing-skills|* Good: `reference/fin.md`, `reference/sales.md`
+M|writing-skills|* Bad: `docs/file1.md`, `docs/file2.md`
+M|writing-skills|* **Bundle comprehensive resources**: Include complete API docs, extensive examples, large datasets; no ctx penalty until accessed
+M|writing-skills|* **Prefer scripts for deterministic operations**: Write `validate_form.py` rather than asking Claude to gen validation code
+M|writing-skills|* **Make execution intent clear**:
+M|writing-skills|* "Run `analyze_form.py` to extract fields" (execute)
+M|writing-skills|* "See `analyze_form.py` for the extraction algorithm" (read as reference)
+M|writing-skills|* **Test file access patterns**: Verify Claude can navigate your directory structure by testing with real requests
+M|writing-skills|**Example:**
+M|writing-skills|```
+M|writing-skills|bigquery-skill/
+M|writing-skills|├── SKILL.md (overview, points to reference files)
+M|writing-skills|└── reference/
+M|writing-skills|├── fin.md (revenue metrics)
+M|writing-skills|├── sales.md (pl data)
+M|writing-skills|└── product.md (usage anl)
+M|writing-skills|```
+M|writing-skills|When the user asks about revenue, Claude reads SKILL.md, sees the reference to `reference/fin.md`, and invokes bash to read just that file. The sales.md and product.md files remain on the filesystem, 
+M|writing-skills|For complete details on the tec architecture, see [How Skills work](/en/docs/agents-and-tools/agt-skills/overview#how-skills-work) in the Skills overview.
+M|writing-skills|If your Skill uses MCP (Model ctx Protocol) tools, always use fully qualified tool names to avoid "tool not found" errors.
+M|writing-skills|**Format**: `ServerName:tool_name`
+M|writing-skills|**Example**:
+M|writing-skills|```markdown  theme={null}
+M|writing-skills|Use the BigQuery:bigquery_schema tool to retrieve table schemas.
+M|writing-skills|Use the GitHub:create_issue tool to create issues.
+M|writing-skills|```
+M|writing-skills|Where:
+M|writing-skills|* `BigQuery` and `GitHub` are MCP server names
+M|writing-skills|* `bigquery_schema` and `create_issue` are the tool names within those servers
+M|writing-skills|Without the server prefix, Claude may fail to locate the tool, especially when multiple MCP servers are available.
+M|writing-skills|Don't assume packages are available:
+M|writing-skills|````markdown  theme={null}
+M|writing-skills|**Bad example: Assumes installation**:
+M|writing-skills|"Use the pdf library to process the file."
+M|writing-skills|**Good example: Explicit about dependencies**:
+M|writing-skills|"Install required package: `pip install pypdf`
+M|writing-skills|Then use it:
+M|writing-skills|```python
+M|writing-skills|from pypdf import PdfReader
+M|writing-skills|reader = PdfReader("file.pdf")
+M|writing-skills|```"
+M|writing-skills|````
+M|writing-skills|The SKILL.md frontmatter requires `name` (64 characters max) and `description` (1024 characters max) fields. See the [Skills overview](/en/docs/agents-and-tools/agt-skills/overview#skill-structure) fo
+M|writing-skills|Keep SKILL.md body under 500 lines for optimal performance. If your cnt exceeds this, split it into separate files using the progressive disclosure patterns described earlier. For architectural detail
+M|writing-skills|Before sharing a Skill, verify:
+M|writing-skills|* [ ] Description is specific and includes key terms
+M|writing-skills|* [ ] Description includes both what the Skill does and when to use it
+M|writing-skills|* [ ] SKILL.md body is under 500 lines
+M|writing-skills|* [ ] Additional details are in separate files (if needed)
+M|writing-skills|* [ ] No time-sensitive information (or in "old patterns" section)
+M|writing-skills|* [ ] Consistent terminology throughout
+M|writing-skills|* [ ] Examples are concrete, not abstract
+M|writing-skills|* [ ] File references are one level deep
+M|writing-skills|* [ ] Progressive disclosure used appropriately
+M|writing-skills|* [ ] Workflows have clear steps
+M|writing-skills|* [ ] Scripts solve problems rather than punt to Claude
+M|writing-skills|* [ ] Error handling is explicit and helpful
+M|writing-skills|* [ ] No "voodoo constants" (all values justified)
+M|writing-skills|* [ ] Required packages listed in instructions and verified as available
+M|writing-skills|* [ ] Scripts have clear documentation
+M|writing-skills|* [ ] No Windows-style paths (all forward slashes)
+M|writing-skills|* [ ] Validation/verification steps for critical operations
+M|writing-skills|* [ ] Feedback loops included for quality-critical tasks
+M|writing-skills|* [ ] At least three evaluations created
+M|writing-skills|* [ ] Tested with Haiku, Sonnet, and Opus
+M|writing-skills|* [ ] Tested with real usage scenarios
+M|writing-skills|* [ ] Team feedback incorporated (if applicable)
+M|writing-skills|<CardGroup cols={2}>
+M|writing-skills|<Card title="Get started with agt Skills" icon="rocket" href="/en/docs/agents-and-tools/agt-skills/quickstart">
+M|writing-skills|Create your first Skill
+M|writing-skills|</Card>
+M|writing-skills|<Card title="Use Skills in Claude Code" icon="terminal" href="/en/docs/claude-code/skills">
+M|writing-skills|Create and manage Skills in Claude Code
+M|writing-skills|</Card>
+M|writing-skills|<Card title="Use Skills with the API" icon="code" href="/en/api/skills-guide">
+M|writing-skills|Upload and use Skills programmatically
+M|writing-skills|</Card>
+M|writing-skills|</CardGroup>

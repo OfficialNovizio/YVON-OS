@@ -1,0 +1,9 @@
+#MEM id=themes source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/tech-innovation.md
+M|themes|A bold and modern theme with high-contrast colors perfect for cutting-edge technology presentations.
+M|themes|- **Electric Blue**: `#0066ff` - Vibrant primary accent
+M|themes|- **Neon Cyan**: `#00ffff` - Bright highlight color
+M|themes|- **Dark Gray**: `#1e1e1e` - Deep backgrounds
+M|themes|- **White**: `#ffffff` - Clean text and contrast
+M|themes|- **Headers**: DejaVu Sans Bold
+M|themes|- **Body Text**: DejaVu Sans
+M|themes|Tech startups, software launches, innovation showcases, AI/ML presentations, digital transformation cnt.

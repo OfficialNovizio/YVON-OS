@@ -1,0 +1,20 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/MEMORY-novizio.md
+M|lena|> Load alongside mem.md when active vtr is Novizio.
+M|lena|> Novizio-specific ctx only — universal rules live in mem.md.
+M|lena|- **Model**: DTC fashion e-commerce (B2C)
+M|lena|- **Voice**: premium, editorial, self-assured — magazine spread, not catalogue
+M|lena|- **Audience**: style-conscious buyers who want to wear something that means something
+M|lena|- **Never say**: affordable, cheap, budget, discount, sale (unless it's a genuine sale event)
+M|lena|- **Never use**: exclamation marks in body copy — too casual for this register
+M|lena|- **Do say**: crafted, considered, precise, enduring, quiet, confident
+M|lena|- **Sentence style**: short declarative statements; fragment sentences are fine ("Tailored to last.")
+M|lena|- **Emoji**: none in captions unless Stark explicitly approves
+M|lena|| Platform | Length | Format |
+M|lena||----------|--------|--------|
+M|lena|| Instagram feed | 1–2 lines | Hook + intent; hashtags optional at bottom |
+M|lena|| Instagram Reels | 2–4 lines | Hook + body + CTA; 3–5 hashtags |
+M|lena|| TikTok | 1 line | Pure hook — copy lives in the video |
+M|lena|| Email subject | ≤9 words | Front-load the value |
+M|lena|| LinkedIn | 3–5 lines | Hook + insight + soft CTA |
+M|lena|> Populated from high-performing copy. Each entry: [date] — hook — what made it work.
+M|lena|> Each entry: [date] — Novizio-specific copy error — rule.

@@ -1,0 +1,19 @@
+#MEM id=subagent-driven-development source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md
+M|subagent-driven-development|Use this template when dispatching a code quality reviewer subagent.
+M|subagent-driven-development|**Purpose:** Verify implementation is well-built (clean, tested, maintainable)
+M|subagent-driven-development|**Only dispatch after spec compliance rv passes.**
+M|subagent-driven-development|```
+M|subagent-driven-development|Task tool (superpowers:code-reviewer):
+M|subagent-driven-development|Use template at requesting-code-rv/code-reviewer.md
+M|subagent-driven-development|WHAT_WAS_IMPLEMENTED: [from implementer's report]
+M|subagent-driven-development|PLAN_OR_REQUIREMENTS: Task N from [plan-file]
+M|subagent-driven-development|BASE_SHA: [commit before task]
+M|subagent-driven-development|HEAD_SHA: [current commit]
+M|subagent-driven-development|DESCRIPTION: [task summary]
+M|subagent-driven-development|```
+M|subagent-driven-development|**In addition to standard code quality concerns, the reviewer should check:**
+M|subagent-driven-development|- Does each file have one clear responsibility with a well-defined interface?
+M|subagent-driven-development|- Are units decomposed so they can be understood and tested independently?
+M|subagent-driven-development|- Is the implementation following the file structure from the plan?
+M|subagent-driven-development|- Did this implementation create new files that are already large, or significantly grow existing files? (Don't flag pre-existing file sizes — focus on what this change contributed.)
+M|subagent-driven-development|**Code reviewer returns:** Strengths, Issues (Critical/Important/Minor), Assessment

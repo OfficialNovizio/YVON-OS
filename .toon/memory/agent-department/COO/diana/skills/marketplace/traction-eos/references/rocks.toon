@@ -1,0 +1,156 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/references/rocks.md
+M|references|Rocks are the 3-7 most important priorities for the next 90 days. They are the bridge between your annual plan and daily execution. Without rocks, teams default to urgency-driven work, reacting to wha
+M|references|The 90-day cycle is the heartbeat of EOS. It works because of human psychology and business reality:
+M|references|- **Long enough** to accomplish something meaningful (launch a product, hire a key role, build a process)
+M|references|- **Short enough** to maintain urgency (the deadline is always visible)
+M|references|- **Natural rhythm** that aligns with quarterly business cycles
+M|references|- **Frequent reset** that prevents stale priorities and allows course correction
+M|references|Research on goal-setting consistently shows that shorter time horizons with clear deadlines produce higher completion rates than annual goals.
+M|references|Every rock must pass the SMART test. If it fails any criterion, rewrite it before committing.
+M|references|| Criterion | Question | Bad Example | Good Example |
+M|references||-----------|----------|-------------|-------------|
+M|references|| **Specific** | What exactly will be accomplished? | "Improve mkt" | "Launch LinkedIn cnt program with 3 posts per week" |
+M|references|| **Measurable** | How will you know it is done? | "Get more leads" | "gen 200 MQLs from LinkedIn by end of quarter" |
+M|references|| **Achievable** | Can it be done in 90 days? | "Build and launch a new product line" | "Complete MVP and run beta with 10 customers" |
+M|references|| **Realistic** | Given current resources and constraints? | "Double revenue" (from $5M to $10M in one quarter) | "Increase revenue 15% through upsell program" |
+M|references|| **Time-bound** | Clear deadline? | "Sometime this quarter" | "Complete by March 31" |
+M|references|A rock is either done or not done at the end of the quarter. No partial credit. No percentages. This binary nature forces clarity in how the rock is written.
+M|references|**Ask:** "On the last day of the quarter, could someone who is not on my team look at this rock and definitively say it is done or not done?" If the answer is no, rewrite it.
+M|references|Company rocks are the 3-7 most important priorities for the entire organization. They are set by the leadership team and represent the strategic priorities that will move the company toward its 1-Year
+M|references|**Characteristics:**
+M|references|- Owned by one leadership team member (but may involve cross-functional effort)
+M|references|- Directly tied to 1-Year Plan goals
+M|references|- Visible to the entire organization
+M|references|- rv weekly in the Level 10 meeting
+M|references|Each leadership team member also has 3-7 personal rocks. These include:
+M|references|- Their company rock(s) if they own any
+M|references|- Department-specific priorities
+M|references|- Personal dev goals (if applicable)
+M|references|**The total should not exceed 7.** If someone owns 2 company rocks and has 5 individual rocks, they have 7 total. That is the maximum.
+M|references|```
+M|references|COMPANY ROCKS (3-7)
+M|references|Set by leadership team
+M|references|Example: "Launch customer success program"
+M|references|↓
+M|references|DEPARTMENT ROCKS (3-7 per department)
+M|references|Set by department head, aligned to company rocks
+M|references|Example: "Hire 2 customer success managers and onboard them"
+M|references|↓
+M|references|INDIVIDUAL ROCKS (3-7 per person)
+M|references|Set by individual with manager, aligned to department rocks
+M|references|Example: "Complete CS manager interview process and extend 2 offers by March 15"
+M|references|```
+M|references|Each level should clearly support the level above it. If an individual rock does not connect to a department or company rock, question whether it belongs.
+M|references|- [ ] Schedule 2 hours for the leadership team (off-site or distraction-free)
+M|references|- [ ] Distribute the current V/TO, especially the 1-Year Plan and previous quarter's rocks
+M|references|- [ ] Ask each leader to come with 5-10 potential rock ideas
+M|references|- [ ] rv previous quarter's rock completion (what got done, what did not)
+M|references|- [ ] Prepare a whiteboard or shared digital space for brainstorming
+M|references|| Time | Activity | Details |
+M|references||------|----------|---------|
+M|references|| 0:00-0:15 | **rv V/TO** | Re-read the 1-Year Plan goals. Remind everyone what the company is working toward. |
+M|references|| 0:15-0:30 | **rv Last Quarter** | Score each rock: Done or Not Done. Discuss what worked and what did not. Calculate completion rate. |
+M|references|| 0:30-1:00 | **Brainstorm** | Each leader shares their rock ideas. Write all ideas on the board. No editing yet. Aim for 15-25 ideas. |
+M|references|| 1:00-1:30 | **Narrow and Prioritize** | Group similar ideas. Eliminate duplicates. Vote on the top 7. Each leader gets 5 votes (dot voting). |
+M|references|| 1:30-1:50 | **SMART Check** | For each selected rock, apply the SMART criteria. Rewrite until each rock passes the binary test. |
+M|references|| 1:50-2:00 | **Assign Owners** | One owner per rock. Confirm capacity. Ensure no one has more than 7 total rocks. |
+M|references|- **The Integrator facilitates.** They keep the ses moving and break ties.
+M|references|- **Visionary contributes ideas but does not dominate.** Their voice carries weight, so the facilitator must actively draw out others.
+M|references|- **Force trade-offs.** If the team wants 10 rocks, ask: "Which 3 would you drop?" This is more productive than arguing for additions.
+M|references|- **Avoid business-as-usual rocks.** If it would happen anyway without being a rock, it is not a rock. Rocks are the extras -- the initiatives that move the needle.
+M|references|| Department | Rock Example |
+M|references||-----------|-------------|
+M|references|| Sales | Close 3 enterprise accounts at $50K+ ACV each |
+M|references|| mkt | Launch cnt mkt engine: blog + nl + LinkedIn (3x/week) |
+M|references|| Product | Ship v2.0 with top 5 customer-requested features |
+M|references|| Operations | doc and train team on 3 core processes |
+M|references|| fin | Implement monthly financial reporting package |
+M|references|| People | Hire VP of Sales and complete 90-day onboarding |
+M|references|| Department | Rock Example |
+M|references||-----------|-------------|
+M|references|| Sales | Build and launch partner channel generating 20% of pl |
+M|references|| mkt | Achieve 500 MQLs/month through paid and organic channels |
+M|references|| Product | Launch self-serve onboarding reducing implementation time by 60% |
+M|references|| Operations | Achieve 95% on-time delivery rate (currently 82%) |
+M|references|| fin | Complete Series A preparation: data room, financial model, pitch deck |
+M|references|| People | Implement quarterly performance conversation process for all managers |
+M|references|| Department | Rock Example |
+M|references||-----------|-------------|
+M|references|| Sales | Open Southeast region: hire regional manager, 3 reps, achieve $500K pl |
+M|references|| mkt | Launch account-based mkt program targeting top 50 enterprise prospects |
+M|references|| Product | Complete platform migration to new infrastructure (Phase 1 of 3) |
+M|references|| Operations | Implement quality management system achieving ISO 9001 readiness |
+M|references|| fin | Deploy new ERP system and migrate all financial data |
+M|references|| People | Launch leadership dev program for 15 emerging leaders |
+M|references|Rocks are rv every week in the Level 10 meeting. The rv takes 5 minutes and follows a simple protocol.
+M|references|1. **Display the rock sheet** showing all company and individual rocks
+M|references|2. **Go person by person.** Each leader states each rock and one word: "On track" or "Off track."
+M|references|3. **No discussion during rv.** Off-track rocks are noted.
+M|references|4. **Off-track rocks drop to Issues List.** They will be IDS'd during the 60-minute IDS portion of the meeting.
+M|references|5. **Total time: 5 minutes.** This is a status scan, not a progress report.
+M|references|| Rock | Owner | Status W1 | W2 | W3 | W4 | W5 | W6 | W7 | W8 | W9 | W10 | W11 | W12 | W13 | Done? |
+M|references||------|-------|-----------|----|----|----|----|----|----|----|----|-----|-----|-----|-----|-----|-------|
+M|references|| Launch partner channel | Sarah | On | On | On | Off | On | On | On | On | On | On | On | On | On | Yes |
+M|references|| Hire VP Sales | James | On | On | Off | Off | On | On | On | On | On | On | On | On | On | Yes |
+M|references|| Ship v2.0 | Priya | On | On | On | On | On | On | Off | Off | Off | On | On | On | On | No |
+M|references|The goal is to complete 80% or more of rocks each quarter. This is a team metric, not an individual one.
+M|references|| Rate | Interpretation | Action |
+M|references||------|---------------|--------|
+M|references|| **90-100%** | Rocks may be too easy | Set more ambitious rocks next quarter |
+M|references|| **80-89%** | Healthy execution | Maintain the bar and celebrate |
+M|references|| **60-79%** | Execution issues | IDS the root causes: too many rocks? Wrong rocks? Resource constraints? |
+M|references|| **Below 60%** | Systemic problem | Leadership team needs to address fundamental issues: capacity, commitment, or rock quality |
+M|references|If the rate is below 80%, diagnose the problem:
+M|references|- [ ] Were rocks written clearly (SMART)? If not, improve rock-writing discipline
+M|references|- [ ] Were there too many rocks? If yes, reduce to 3-5 next quarter
+M|references|- [ ] Did priorities shift mid-quarter? If yes, the team needs better discipline around saying no to new priorities
+M|references|- [ ] Did one person miss all their rocks? If yes, it is a people issue (capacity or commitment)
+M|references|- [ ] Did the whole team miss? If yes, it may be an organizational capacity issue
+M|references|| Mistake | Why It Fails | Fix |
+M|references||---------|-------------|-----|
+M|references|| **Too many rocks (>7)** | Diluted focus, everything moves slowly | Force the team to choose. Fewer rocks, more done. |
+M|references|| **Too vague** | Cannot tell if it is done at quarter end | Apply the binary test. Rewrite until it passes. |
+M|references|| **Business-as-usual** | Not moving the needle, would happen anyway | Ask: "Would this happen even if it were not a rock?" If yes, it is not a rock. |
+M|references|| **No owner** | Shared accountability is no accountability | One name per rock. Period. |
+M|references|| **Rock is really a to-do** | Too small for a 90-day priority | If it can be done in a week, put it on the to-do list, not the rock sheet. |
+M|references|| **Rock is really a goal** | "Increase revenue 20%" is a goal, not a project | Rewrite as the project that achieves the goal: "Launch upsell program targeting top 50 accounts" |
+M|references|| **Changing rocks mid-quarter** | Destroys the 90-day discipline | Rocks are locked once set. New urgent items become to-dos or wait for next quarter. |
+M|references|| **Not tracking weekly** | Out of sight, out of mind | rv every rock in every Level 10 meeting |
+M|references|| **No consequences for missed rocks** | Team learns that rocks are optional | IDS missed rocks. Identify why. Address the pattern. |
+M|references|At the halfway point of each quarter (around week 6-7), conduct a focused rock check-in:
+M|references|1. **Status rv (10 min):** Each owner rates their rocks as on track, at risk, or off track
+M|references|2. **At-risk rocks (15 min):** For each at-risk rock, discuss:
+M|references|- What is blocking progress?
+M|references|- What support is needed?
+M|references|- Is the rock still achievable by end of quarter?
+M|references|- If not, should we adjust scope or accept the miss?
+M|references|3. **Commitments (5 min):** Each person states what they will do in the next 6 weeks to complete their rocks
+M|references|```
+M|references|Rock status at mid-quarter:
+M|references|├── On track → Continue, no action needed
+M|references|├── At risk → IDS the obstacle, get support, recommit
+M|references|└── Off track → Three options:
+M|references|├── 1. Recommit with adjusted approach (still achievable)
+M|references|├── 2. Reduce scope to core deliverable (partial but meaningful)
+M|references|└── 3. Accept the miss and learn from it (do not carry forward automatically)
+M|references|```
+M|references|**Important:** Do not add new rocks mid-quarter. The 90-day discipline requires that priorities stay locked. If something truly urgent arises, it becomes a to-do, not a rock.
+M|references|Use this worksheet for each rock before finalizing:
+M|references|```
+M|references|Rock Statement: ________________________________
+M|references|SMART Check:
+M|references|[ ] Specific: Exactly what will be accomplished?
+M|references|[ ] Measurable: How will completion be verified?
+M|references|[ ] Achievable: Can it be done in 90 days?
+M|references|[ ] Realistic: Given current resources?
+M|references|[ ] Time-bound: Due by end of quarter?
+M|references|Binary Test: On April 1, can someone definitively say this is DONE or NOT DONE?
+M|references|[ ] Yes → Rock is ready
+M|references|[ ] No → Rewrite
+M|references|Owner: ________________________________
+M|references|Supports which 1-Year Goal: ________________________________
+M|references|Key milestones:
+M|references|Week 4: ________________________________
+M|references|Week 8: ________________________________
+M|references|Week 13: ________________________________
+M|references|```

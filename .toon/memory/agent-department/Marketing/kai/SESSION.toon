@@ -1,0 +1,15 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/SESSION.md
+M|kai|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|kai|> Always load this first. Load mem.md for data sources, anl rules, cp intel scope, and GA4 notes.
+M|kai|- **Last active:** 2026-05-20
+M|kai|- **Current task:** idle
+M|kai|- **Waiting for Stark:** Run migration 022 to activate CSE tables — required before any signal reliability or scoring reads
+M|kai|- **Next ses starts with:** Confirm migration 022 is live, then run first signal reliability read to seed baseline
+M|kai|| Date | Task | Outcome | Next Step |
+M|kai||------|------|---------|-----------|
+M|kai|| 2026-05-20 | CSE Closed Loop — Gap 5 | Created Kai CSE SKILL.md at agt-department/mkt/kai/skills/custom/cnt-suggestion-engine/SKILL.md. Updated Kai mem.md with CSE rules. | Run migration 022, verify
+M|kai|| 2026-05-19 | cnt Suggestion Engine (CSE) | Migration 022 (4 tables). Routes: /api/cnt-performance, /api/signal-reliability, /api/weight-proposal, /api/cnt-performance/measure (cron), /api/cse-reflec
+M|kai|| 2026-05-16 | mkt Suggestion System — Sessions 1+2 | Migration 020. Big Idea API + UI. cnt Series (FAN goals, platformFocus). Live pitch board (gen→ap→calendar, send-to-studio, dismiss). Slug→UUID fi
+M|kai|> Unresolved questions, blockers, or decisions pending Stark input.
+M|kai|- GA4 property IDs — confirm NOVIZIO_GA4_PROPERTY_ID and HOURBOUR_GA4_PROPERTY_ID are set in env
+M|kai|- CSE Phase 2: auto-populate actual metrics via Apify — awaiting migration 022 live confirmation

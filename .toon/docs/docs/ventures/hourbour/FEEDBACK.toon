@@ -1,0 +1,7 @@
+#DOC id=FEEDBACK source=/root/yvon/docs/ventures/hourbour/FEEDBACK.md format=toon-doc compressed=2026-06-12T06:40:26.344Z
+
+S|# Hourbour — Rules & Never-Again Patterns|> LONG-TERM. Hourbour-specific only. System-wide rules → docs/mem/feedback.md // > Schema: each rule must have [added: YYYY-MM-DD] · Rules without dates are invalid. // > 🔴 CRITICAL · 🟡 IMPORTANT · 🟢 GUIDANCE // ---
+S|🔴 CRITICAL|- [added: 2026-03-26] Never use financial jargon: "leverage", "yield", "portfolio rebalancing" — plain English only // - [added: 2026-03-26] Never sound like a bank, a fin professor, or a sales pitch — ever // - [added: 2026-03-26] Copy tone: trustworthy, clear, approachable. One idea per sentence. // ---
+S|🟡 IMPORTANT|- [added: 2026-03-26] Lena: plain English always. Short paragraphs. "Your money" not "one's finances". // - [added: 2026-03-26] Rio: LinkedIn Ads primary. Exclude high-net-worth and wealth management interest segments. // - [added: 2026-03-26] Felix: track expansion MRR and contraction MRR separately — not just net MRR // - [added: 2026-03-26] Kai: watch for drop in ses frequency per user — early churn signal, flag before MRR drops // ---
+S|🟢 GUIDANCE|- [added: 2026-03-26] LinkedIn CTA: "Try Hourbour free" primary · "See the demo" secondary // - [added: 2026-03-26] cnt: helpful financial tips + product demos. Not salesy. Not preachy. // - [added: 2026-03-26] soc proof cnt performs well — user outcomes, testimonials // ---
+S|Never Again|_No entries yet. Populated from Adjourning after any Hourbour error._

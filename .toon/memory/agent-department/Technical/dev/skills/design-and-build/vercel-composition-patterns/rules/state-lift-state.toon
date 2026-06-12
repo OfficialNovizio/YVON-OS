@@ -1,0 +1,105 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-lift-state.md
+M|rules|title: Lift State into Provider Components
+M|rules|impact: HIGH
+M|rules|impactDescription: enables state sharing outside component boundaries
+M|rules|tags: composition, state, ctx, providers
+M|rules|Move state management into dedicated provider components. This allows sibling
+M|rules|components outside the main UI to access and modify state without prop drilling
+M|rules|or awkward refs.
+M|rules|**Incorrect (state trapped inside component):**
+M|rules|```tsx
+M|rules|function ForwardMessageComposer() {
+M|rules|const [state, setState] = useState(initialState)
+M|rules|const forwardMessage = useForwardMessage()
+M|rules|return (
+M|rules|<Composer.Frame>
+M|rules|<Composer.Input />
+M|rules|<Composer.Footer />
+M|rules|</Composer.Frame>
+M|rules|)
+M|rules|}
+M|rules|// Problem: How does this button access composer state?
+M|rules|function ForwardMessageDialog() {
+M|rules|return (
+M|rules|<Dialog>
+M|rules|<ForwardMessageComposer />
+M|rules|<MessagePreview /> {/* Needs composer state */}
+M|rules|<DialogActions>
+M|rules|<CancelButton />
+M|rules|<ForwardButton /> {/* Needs to call submit */}
+M|rules|</DialogActions>
+M|rules|</Dialog>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Incorrect (useEffect to sync state up):**
+M|rules|```tsx
+M|rules|function ForwardMessageDialog() {
+M|rules|const [input, setInput] = useState('')
+M|rules|return (
+M|rules|<Dialog>
+M|rules|<ForwardMessageComposer onInputChange={setInput} />
+M|rules|<MessagePreview input={input} />
+M|rules|</Dialog>
+M|rules|)
+M|rules|}
+M|rules|function ForwardMessageComposer({ onInputChange }) {
+M|rules|const [state, setState] = useState(initialState)
+M|rules|useEffect(() => {
+M|rules|onInputChange(state.input) // Sync on every change 😬
+M|rules|}, [state.input])
+M|rules|}
+M|rules|```
+M|rules|**Incorrect (reading state from ref on submit):**
+M|rules|```tsx
+M|rules|function ForwardMessageDialog() {
+M|rules|const stateRef = useRef(null)
+M|rules|return (
+M|rules|<Dialog>
+M|rules|<ForwardMessageComposer stateRef={stateRef} />
+M|rules|<ForwardButton onPress={() => submit(stateRef.current)} />
+M|rules|</Dialog>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (state lifted to provider):**
+M|rules|```tsx
+M|rules|function ForwardMessageProvider({ children }: { children: React.ReactNode }) {
+M|rules|const [state, setState] = useState(initialState)
+M|rules|const forwardMessage = useForwardMessage()
+M|rules|const inputRef = useRef(null)
+M|rules|return (
+M|rules|<Composer.Provider
+M|rules|state={state}
+M|rules|actions={{ update: setState, submit: forwardMessage }}
+M|rules|meta={{ inputRef }}
+M|rules|>
+M|rules|{children}
+M|rules|</Composer.Provider>
+M|rules|)
+M|rules|}
+M|rules|function ForwardMessageDialog() {
+M|rules|return (
+M|rules|<ForwardMessageProvider>
+M|rules|<Dialog>
+M|rules|<ForwardMessageComposer />
+M|rules|<MessagePreview /> {/* Custom components can access state and actions */}
+M|rules|<DialogActions>
+M|rules|<CancelButton />
+M|rules|<ForwardButton /> {/* Custom components can access state and actions */}
+M|rules|</DialogActions>
+M|rules|</Dialog>
+M|rules|</ForwardMessageProvider>
+M|rules|)
+M|rules|}
+M|rules|function ForwardButton() {
+M|rules|const { actions } = use(Composer.ctx)
+M|rules|return <Button onPress={actions.submit}>Forward</Button>
+M|rules|}
+M|rules|```
+M|rules|The ForwardButton lives outside the Composer.Frame but still has access to the
+M|rules|submit action because it's within the provider. Even though it's a one-off
+M|rules|component, it can still access the composer's state and actions from outside the
+M|rules|UI itself.
+M|rules|**Key insight:** Components that need shared state don't have to be visually
+M|rules|nested inside each other—they just need to be within the same provider.

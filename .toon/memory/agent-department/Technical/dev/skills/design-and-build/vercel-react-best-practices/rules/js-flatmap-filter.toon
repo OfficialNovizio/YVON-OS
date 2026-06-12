@@ -1,0 +1,45 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-flatmap-filter.md
+M|rules|title: Use flatMap to Map and Filter in One Pass
+M|rules|impact: LOW-MEDIUM
+M|rules|impactDescription: eliminates intermediate array
+M|rules|tags: javascript, arrays, flatMap, filter, performance
+M|rules|**Impact: LOW-MEDIUM (eliminates intermediate array)**
+M|rules|Chaining `.map().filter(Boolean)` creates an intermediate array and iterates twice. Use `.flatMap()` to transform and filter in a single pass.
+M|rules|**Incorrect (2 iterations, intermediate array):**
+M|rules|```typescript
+M|rules|const userNames = users
+M|rules|.map(user => user.isActive ? user.name : null)
+M|rules|.filter(Boolean)
+M|rules|```
+M|rules|**Correct (1 iteration, no intermediate array):**
+M|rules|```typescript
+M|rules|const userNames = users.flatMap(user =>
+M|rules|user.isActive ? [user.name] : []
+M|rules|)
+M|rules|```
+M|rules|**More examples:**
+M|rules|```typescript
+M|rules|// Extract valid emails from responses
+M|rules|// Before
+M|rules|const emails = responses
+M|rules|.map(r => r.success ? r.data.email : null)
+M|rules|.filter(Boolean)
+M|rules|// After
+M|rules|const emails = responses.flatMap(r =>
+M|rules|r.success ? [r.data.email] : []
+M|rules|)
+M|rules|// Parse and filter valid numbers
+M|rules|// Before
+M|rules|const numbers = strings
+M|rules|.map(s => parseInt(s, 10))
+M|rules|.filter(n => !isNaN(n))
+M|rules|// After
+M|rules|const numbers = strings.flatMap(s => {
+M|rules|const n = parseInt(s, 10)
+M|rules|return isNaN(n) ? [] : [n]
+M|rules|})
+M|rules|```
+M|rules|**When to use:**
+M|rules|- Transforming items while filtering some out
+M|rules|- Conditional mapping where some inputs produce no output
+M|rules|- Parsing/validating where invalid inputs should be skipped

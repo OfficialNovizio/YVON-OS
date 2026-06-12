@@ -1,0 +1,71 @@
+#MEM id=webapp-testing source=/root/yvon/agent-department/Technical/quinn/skills/design-and-build/webapp-testing/SKILL.md
+M|webapp-testing|name: webapp-testing
+M|webapp-testing|description: >-
+M|webapp-testing|Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser l
+M|webapp-testing|version: 1.0.0
+M|webapp-testing|license: Complete terms in LICENSE.txt
+M|webapp-testing|platforms: []
+M|webapp-testing|metadata:
+M|webapp-testing|hermes:
+M|webapp-testing|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, tec]
+M|webapp-testing|To test local web applications, write native Python Playwright scripts.
+M|webapp-testing|**Helper Scripts Available**:
+M|webapp-testing|- `scripts/with_server.py` - Manages server lifecycle (supports multiple servers)
+M|webapp-testing|**Always run scripts with `--help` first** to see usage. DO NOT read the source until you try running the script first and find that a customized solution is abslutely necessary. These scripts can be 
+M|webapp-testing|```
+M|webapp-testing|User task → Is it static HTML?
+M|webapp-testing|├─ Yes → Read HTML file directly to identify selectors
+M|webapp-testing|│         ├─ Success → Write Playwright script using selectors
+M|webapp-testing|│         └─ Fails/Incomplete → Treat as dynamic (below)
+M|webapp-testing|│
+M|webapp-testing|└─ No (dynamic webapp) → Is the server already running?
+M|webapp-testing|├─ No → Run: python scripts/with_server.py --help
+M|webapp-testing|│        Then use the helper + write simplified Playwright script
+M|webapp-testing|│
+M|webapp-testing|└─ Yes → Reconnaissance-then-action:
+M|webapp-testing|1. Navigate and wait for networkidle
+M|webapp-testing|2. Take screenshot or inspect DOM
+M|webapp-testing|3. Identify selectors from rendered state
+M|webapp-testing|4. Execute actions with discovered selectors
+M|webapp-testing|```
+M|webapp-testing|To start a server, run `--help` first, then use the helper:
+M|webapp-testing|**Single server:**
+M|webapp-testing|```bash
+M|webapp-testing|python scripts/with_server.py --server "npm run dev" --port 5173 -- python your_automation.py
+M|webapp-testing|```
+M|webapp-testing|**Multiple servers (e.g., backend + frontend):**
+M|webapp-testing|```bash
+M|webapp-testing|python scripts/with_server.py \
+M|webapp-testing|--server "cd backend && python server.py" --port 3000 \
+M|webapp-testing|--server "cd frontend && npm run dev" --port 5173 \
+M|webapp-testing|-- python your_automation.py
+M|webapp-testing|```
+M|webapp-testing|To create an automation script, include only Playwright logic (servers are managed automatically):
+M|webapp-testing|```python
+M|webapp-testing|from playwright.sync_api import sync_playwright
+M|webapp-testing|with sync_playwright() as p:
+M|webapp-testing|browser = p.chromium.launch(headless=True) # Always launch chromium in headless mode
+M|webapp-testing|page = browser.new_page()
+M|webapp-testing|page.goto('http://localhost:5173') # Server already running and ready
+M|webapp-testing|page.wait_for_load_state('networkidle') # CRITICAL: Wait for JS to execute
+M|webapp-testing|browser.close()
+M|webapp-testing|```
+M|webapp-testing|1. **Inspect rendered DOM**:
+M|webapp-testing|```python
+M|webapp-testing|page.screenshot(path='/tmp/inspect.png', full_page=True)
+M|webapp-testing|cnt = page.cnt()
+M|webapp-testing|page.locator('button').all()
+M|webapp-testing|```
+M|webapp-testing|2. **Identify selectors** from inspection results
+M|webapp-testing|3. **Execute actions** using discovered selectors
+M|webapp-testing|❌ **Don't** inspect the DOM before waiting for `networkidle` on dynamic apps
+M|webapp-testing|✅ **Do** wait for `page.wait_for_load_state('networkidle')` before inspection
+M|webapp-testing|- **Use bundled scripts as black boxes** - To accomplish a task, consider whether one of the scripts available in `scripts/` can help. These scripts handle common, complex workflows reliably without c
+M|webapp-testing|- Use `sync_playwright()` for synchronous scripts
+M|webapp-testing|- Always close the browser when done
+M|webapp-testing|- Use descriptive selectors: `text=`, `role=`, CSS selectors, or IDs
+M|webapp-testing|- Add appropriate waits: `page.wait_for_selector()` or `page.wait_for_timeout()`
+M|webapp-testing|- **examples/** - Examples showing common patterns:
+M|webapp-testing|- `element_discovery.py` - Discovering buttons, links, and inputs on a page
+M|webapp-testing|- `static_html_automation.py` - Using file:// URLs for local HTML
+M|webapp-testing|- `console_logging.py` - Capturing console logs during automation

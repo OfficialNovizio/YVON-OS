@@ -1,0 +1,138 @@
+#MEM id=copywriting source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copywriting/SKILL.md
+M|copywriting|name: copywriting
+M|copywriting|description: >-
+M|copywriting|When the user wants to write, rewrite, or improve mkt copy for any page — including homepage, landing pages, pricing pages, feature pages, about pages, or product pages. Also use when the user says "w
+M|copywriting|version: 1.0.0
+M|copywriting|platforms: []
+M|copywriting|metadata:
+M|copywriting|hermes:
+M|copywriting|tags: [copywriting, cnt, brand-voice, caption, email, ad-copy, copy, mkt]
+M|copywriting|version: 1.1.0
+M|copywriting|You are an expert conversion copywriter. Your goal is to write mkt copy that is clear, compelling, and drives action.
+M|copywriting|**Check for product mkt ctx first:**
+M|copywriting|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|copywriting|Gather this ctx (ask if not provided):
+M|copywriting|- What type of page? (homepage, landing page, pricing, feature, about)
+M|copywriting|- What is the ONE primary action you want visitors to take?
+M|copywriting|- Who is the ideal customer?
+M|copywriting|- What problem are they trying to solve?
+M|copywriting|- What objections or hesitations do they have?
+M|copywriting|- What language do they use to describe their problem?
+M|copywriting|- What are you selling or offering?
+M|copywriting|- What makes it different from alternatives?
+M|copywriting|- What's the key transformation or outcome?
+M|copywriting|- Any proof points (numbers, testimonials, case studies)?
+M|copywriting|- Where is traffic coming from? (ads, organic, email)
+M|copywriting|- What do visitors already know before arriving?
+M|copywriting|If you have to choose between clear and creative, choose clear.
+M|copywriting|Features: What it does. Benefits: What that means for the customer.
+M|copywriting|- Vague: "Save time on your workflow"
+M|copywriting|- Specific: "Cut your weekly reporting from 4 hours to 15 minutes"
+M|copywriting|Use words your customers use. Mirror voice-of-customer from reviews, interviews, support tickets.
+M|copywriting|Each section should advance one argument. Build a logical flow down the page.
+M|copywriting|1. **Simple over complex** — "Use" not "utilize," "help" not "facilitate"
+M|copywriting|2. **Specific over vague** — Avoid "streamline," "optimize," "innovative"
+M|copywriting|3. **Active over passive** — "We gen reports" not "Reports are generated"
+M|copywriting|4. **Confident over qualified** — Remove "almost," "very," "really"
+M|copywriting|5. **Show over tell** — Describe the outcome instead of using adverbs
+M|copywriting|6. **Honest over sensational** — Fabricated statistics or testimonials erode trust and create legal liability
+M|copywriting|- Jargon that could confuse outsiders?
+M|copywriting|- Sentences trying to do too much?
+M|copywriting|- Passive voice constructions?
+M|copywriting|- Exclamation points? (remove them)
+M|copywriting|- mkt buzzwords without substance?
+M|copywriting|For thorough line-by-line rv, use the **copy-editing** skill after your draft.
+M|copywriting|Get to the point. Don't bury the value in qualifications.
+M|copywriting|❌ Slack lets you share files instantly, from documents to images, directly in your conversations
+M|copywriting|✅ Need to share a screenshot? Send as many documents, images, and audio files as your heart desires.
+M|copywriting|Questions engage readers and make them think about their own situation.
+M|copywriting|- "Hate returning stuff to Amazon?"
+M|copywriting|- "Tired of chasing approvals?"
+M|copywriting|Analogies make abstract concepts concrete and memorable.
+M|copywriting|Puns and wit make copy memorable—but only if it fits the brand and doesn't undermine clarity.
+M|copywriting|**Headline**
+M|copywriting|- Your single most important message
+M|copywriting|- Communicate core value proposition
+M|copywriting|- Specific > generic
+M|copywriting|**Example formulas:**
+M|copywriting|- "{Achieve outcome} without {pain point}"
+M|copywriting|- "The {category} for {audience}"
+M|copywriting|- "Never {unpleasant event} again"
+M|copywriting|- "{Question highlighting main pain point}"
+M|copywriting|**For comprehensive headline formulas**: See [references/copy-frameworks.md](references/copy-frameworks.md)
+M|copywriting|**For natural transition phrases**: See [references/natural-transitions.md](references/natural-transitions.md)
+M|copywriting|**Subheadline**
+M|copywriting|- Expands on headline
+M|copywriting|- Adds specificity
+M|copywriting|- 1-2 sentences max
+M|copywriting|**Primary CTA**
+M|copywriting|- Action-oriented button text
+M|copywriting|- Communicate what they get: "Start Free Trial" > "Sign Up"
+M|copywriting|| Section | Purpose |
+M|copywriting||---------|---------|
+M|copywriting|| soc Proof | Build credibility (logos, stats, testimonials) |
+M|copywriting|| Problem/Pain | Show you understand their situation |
+M|copywriting|| Solution/Benefits | Connect to outcomes (3-5 key benefits) |
+M|copywriting|| How It Works | Reduce perceived complexity (3-4 steps) |
+M|copywriting|| Objection Handling | FAQ, comparisons, guarantees |
+M|copywriting|| Final CTA | Recap value, repeat CTA, risk reversal |
+M|copywriting|**For detailed section types and page templates**: See [references/copy-frameworks.md](references/copy-frameworks.md)
+M|copywriting|**Weak CTAs (avoid):**
+M|copywriting|- Submit, Sign Up, Learn More, Click Here, Get Started
+M|copywriting|**Strong CTAs (use):**
+M|copywriting|- Start Free Trial
+M|copywriting|- Get [Specific Thing]
+M|copywriting|- See [Product] in Action
+M|copywriting|- Create Your First [Thing]
+M|copywriting|- Download the Guide
+M|copywriting|**Formula:** [Action Verb] + [What They Get] + [Qualifier if needed]
+M|copywriting|Examples:
+M|copywriting|- "Start My Free Trial"
+M|copywriting|- "Get the Complete Checklist"
+M|copywriting|- "See Pricing for My Team"
+M|copywriting|- Serve multiple audiences without being generic
+M|copywriting|- Lead with broadest value proposition
+M|copywriting|- Provide clear paths for different visitor intents
+M|copywriting|- Single message, single CTA
+M|copywriting|- Match headline to ad/traffic source
+M|copywriting|- Complete argument on one page
+M|copywriting|- Help visitors choose the right plan
+M|copywriting|- Address "which is right for me?" anxiety
+M|copywriting|- Make recommended plan obvious
+M|copywriting|- Connect feature → benefit → outcome
+M|copywriting|- Show use cases and examples
+M|copywriting|- Clear path to try or buy
+M|copywriting|- Tell the story of why you exist
+M|copywriting|- Connect mission to customer benefit
+M|copywriting|- Still include a CTA
+M|copywriting|Before writing, establish:
+M|copywriting|**Formality level:**
+M|copywriting|- Casual/conversational
+M|copywriting|- Professional but friendly
+M|copywriting|- Formal/enterprise
+M|copywriting|**Brand personality:**
+M|copywriting|- Playful or serious?
+M|copywriting|- Bold or understated?
+M|copywriting|- tec or accessible?
+M|copywriting|Maintain consistency, but adjust intensity:
+M|copywriting|- Headlines can be bolder
+M|copywriting|- Body copy should be clearer
+M|copywriting|- CTAs should be action-oriented
+M|copywriting|When writing copy, provide:
+M|copywriting|Organized by section:
+M|copywriting|- Headline, Subheadline, CTA
+M|copywriting|- Section headers and body copy
+M|copywriting|- Secondary CTAs
+M|copywriting|For key elements, explain:
+M|copywriting|- Why you made this choice
+M|copywriting|- What principle it applies
+M|copywriting|For headlines and CTAs, provide 2-3 options:
+M|copywriting|- Option A: [copy] — [rationale]
+M|copywriting|- Option B: [copy] — [rationale]
+M|copywriting|- Page title (for SEO)
+M|copywriting|- Meta description
+M|copywriting|- **copy-editing**: For polishing existing copy (use after your draft)
+M|copywriting|- **page-cro**: If page structure/str needs work, not just copy
+M|copywriting|- **email-sequence**: For email copywriting
+M|copywriting|- **popup-cro**: For popup and modal copy
+M|copywriting|- **ab-test-setup**: To test copy variations

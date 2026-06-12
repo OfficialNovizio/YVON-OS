@@ -1,0 +1,13 @@
+#MEM id=brands source=/root/yvon/agent-department/shared/brands/DEPRECATED.md
+M|brands|This folder (`agt-department/shared/brands/`) is no longer the source of truth for brand ctx.
+M|brands|**Migration completed: 2026-05-15**
+M|brands|Brand cnt has been moved to vtr-specific files in `docs/ventures/`:
+M|brands|| Old file | Replaced by |
+M|brands||----------|------------|
+M|brands|| `brands/novizio.md` | `docs/ventures/novizio/BRAND.md` + `ctx.md` + `FEEDBACK.md` + `DESIGN.md` |
+M|brands|| `brands/hourbour.md` | `docs/ventures/hourbour/BRAND.md` + `ctx.md` + `FEEDBACK.md` + `DESIGN.md` |
+M|brands|The old brand stubs mixed short-term state (cg, open decisions) with long-term identity in a single file. When sessions switched ventures, stale ctx from the previous vtr persisted in agt mem.
+M|brands|The new structure uses isolated, per-vtr folders. Marcus reads the correct vtr files fresh at ses start and injects scoped ctx using `[NOVIZIO-*]` / `[HOURBOUR-*]` prefixes.
+M|brands|**If you are an agt reading this:** Stop here. Load `docs/ventures/[active]/` instead.
+M|brands|**If you are editing brand cnt:** Edit `docs/ventures/[name]/BRAND.md` — not this folder.
+M|brands|**Delete these files?** Keep them as tombstones until next curator run confirms all references are updated.

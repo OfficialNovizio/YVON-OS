@@ -1,0 +1,145 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/raj/skills/superpowers/systematic-debugging/condition-based-waiting-example.md
+M|systematic-debugging|// Complete implementation of condition-based waiting utilities
+M|systematic-debugging|// From: Lace test infrastructure improvements (2025-10-03)
+M|systematic-debugging|// ctx: Fixed 15 flaky tests by replacing arbitrary timeouts
+M|systematic-debugging|import type { ThreadManager } from '~/threads/thread-manager';
+M|systematic-debugging|import type { LaceEvent, LaceEventType } from '~/threads/types';
+M|systematic-debugging|/**
+M|systematic-debugging|* Wait for a specific event type to appear in thread
+M|systematic-debugging|*
+M|systematic-debugging|* @param threadManager - The thread manager to query
+M|systematic-debugging|* @param threadId - Thread to check for events
+M|systematic-debugging|* @param eventType - Type of event to wait for
+M|systematic-debugging|* @param timeoutMs - Maximum time to wait (default 5000ms)
+M|systematic-debugging|* @returns Promise resolving to the first matching event
+M|systematic-debugging|*
+M|systematic-debugging|* Example:
+M|systematic-debugging|*   await waitForEvent(threadManager, agentThreadId, 'TOOL_RESULT');
+M|systematic-debugging|*/
+M|systematic-debugging|export function waitForEvent(
+M|systematic-debugging|threadManager: ThreadManager,
+M|systematic-debugging|threadId: string,
+M|systematic-debugging|eventType: LaceEventType,
+M|systematic-debugging|timeoutMs = 5000
+M|systematic-debugging|): Promise<LaceEvent> {
+M|systematic-debugging|return new Promise((resolve, reject) => {
+M|systematic-debugging|const startTime = Date.now();
+M|systematic-debugging|const check = () => {
+M|systematic-debugging|const events = threadManager.getEvents(threadId);
+M|systematic-debugging|const event = events.find((e) => e.type === eventType);
+M|systematic-debugging|if (event) {
+M|systematic-debugging|resolve(event);
+M|systematic-debugging|} else if (Date.now() - startTime > timeoutMs) {
+M|systematic-debugging|reject(new Error(`Timeout waiting for ${eventType} event after ${timeoutMs}ms`));
+M|systematic-debugging|} else {
+M|systematic-debugging|setTimeout(check, 10); // Poll every 10ms for efficiency
+M|systematic-debugging|}
+M|systematic-debugging|};
+M|systematic-debugging|check();
+M|systematic-debugging|});
+M|systematic-debugging|}
+M|systematic-debugging|/**
+M|systematic-debugging|* Wait for a specific number of events of a given type
+M|systematic-debugging|*
+M|systematic-debugging|* @param threadManager - The thread manager to query
+M|systematic-debugging|* @param threadId - Thread to check for events
+M|systematic-debugging|* @param eventType - Type of event to wait for
+M|systematic-debugging|* @param count - Number of events to wait for
+M|systematic-debugging|* @param timeoutMs - Maximum time to wait (default 5000ms)
+M|systematic-debugging|* @returns Promise resolving to all matching events once count is reached
+M|systematic-debugging|*
+M|systematic-debugging|* Example:
+M|systematic-debugging|*   // Wait for 2 AGENT_MESSAGE events (initial rsp + continuation)
+M|systematic-debugging|*   await waitForEventCount(threadManager, agentThreadId, 'AGENT_MESSAGE', 2);
+M|systematic-debugging|*/
+M|systematic-debugging|export function waitForEventCount(
+M|systematic-debugging|threadManager: ThreadManager,
+M|systematic-debugging|threadId: string,
+M|systematic-debugging|eventType: LaceEventType,
+M|systematic-debugging|count: number,
+M|systematic-debugging|timeoutMs = 5000
+M|systematic-debugging|): Promise<LaceEvent[]> {
+M|systematic-debugging|return new Promise((resolve, reject) => {
+M|systematic-debugging|const startTime = Date.now();
+M|systematic-debugging|const check = () => {
+M|systematic-debugging|const events = threadManager.getEvents(threadId);
+M|systematic-debugging|const matchingEvents = events.filter((e) => e.type === eventType);
+M|systematic-debugging|if (matchingEvents.length >= count) {
+M|systematic-debugging|resolve(matchingEvents);
+M|systematic-debugging|} else if (Date.now() - startTime > timeoutMs) {
+M|systematic-debugging|reject(
+M|systematic-debugging|new Error(
+M|systematic-debugging|`Timeout waiting for ${count} ${eventType} events after ${timeoutMs}ms (got ${matchingEvents.length})`
+M|systematic-debugging|)
+M|systematic-debugging|);
+M|systematic-debugging|} else {
+M|systematic-debugging|setTimeout(check, 10);
+M|systematic-debugging|}
+M|systematic-debugging|};
+M|systematic-debugging|check();
+M|systematic-debugging|});
+M|systematic-debugging|}
+M|systematic-debugging|/**
+M|systematic-debugging|* Wait for an event matching a custom predicate
+M|systematic-debugging|* Useful when you need to check event data, not just type
+M|systematic-debugging|*
+M|systematic-debugging|* @param threadManager - The thread manager to query
+M|systematic-debugging|* @param threadId - Thread to check for events
+M|systematic-debugging|* @param predicate - Function that returns true when event matches
+M|systematic-debugging|* @param description - Human-readable description for error messages
+M|systematic-debugging|* @param timeoutMs - Maximum time to wait (default 5000ms)
+M|systematic-debugging|* @returns Promise resolving to the first matching event
+M|systematic-debugging|*
+M|systematic-debugging|* Example:
+M|systematic-debugging|*   // Wait for TOOL_RESULT with specific ID
+M|systematic-debugging|*   await waitForEventMatch(
+M|systematic-debugging|*     threadManager,
+M|systematic-debugging|*     agentThreadId,
+M|systematic-debugging|*     (e) => e.type === 'TOOL_RESULT' && e.data.id === 'call_123',
+M|systematic-debugging|*     'TOOL_RESULT with id=call_123'
+M|systematic-debugging|*   );
+M|systematic-debugging|*/
+M|systematic-debugging|export function waitForEventMatch(
+M|systematic-debugging|threadManager: ThreadManager,
+M|systematic-debugging|threadId: string,
+M|systematic-debugging|predicate: (event: LaceEvent) => boolean,
+M|systematic-debugging|description: string,
+M|systematic-debugging|timeoutMs = 5000
+M|systematic-debugging|): Promise<LaceEvent> {
+M|systematic-debugging|return new Promise((resolve, reject) => {
+M|systematic-debugging|const startTime = Date.now();
+M|systematic-debugging|const check = () => {
+M|systematic-debugging|const events = threadManager.getEvents(threadId);
+M|systematic-debugging|const event = events.find(predicate);
+M|systematic-debugging|if (event) {
+M|systematic-debugging|resolve(event);
+M|systematic-debugging|} else if (Date.now() - startTime > timeoutMs) {
+M|systematic-debugging|reject(new Error(`Timeout waiting for ${description} after ${timeoutMs}ms`));
+M|systematic-debugging|} else {
+M|systematic-debugging|setTimeout(check, 10);
+M|systematic-debugging|}
+M|systematic-debugging|};
+M|systematic-debugging|check();
+M|systematic-debugging|});
+M|systematic-debugging|}
+M|systematic-debugging|// Usage example from actual debugging ses:
+M|systematic-debugging|//
+M|systematic-debugging|// BEFORE (flaky):
+M|systematic-debugging|// ---------------
+M|systematic-debugging|// const messagePromise = agt.sendMessage('Execute tools');
+M|systematic-debugging|// await new Promise(r => setTimeout(r, 300)); // Hope tools start in 300ms
+M|systematic-debugging|// agt.abort();
+M|systematic-debugging|// await messagePromise;
+M|systematic-debugging|// await new Promise(r => setTimeout(r, 50));  // Hope results arrive in 50ms
+M|systematic-debugging|// expect(toolResults.length).toBe(2);         // Fails randomly
+M|systematic-debugging|//
+M|systematic-debugging|// AFTER (reliable):
+M|systematic-debugging|// ----------------
+M|systematic-debugging|// const messagePromise = agt.sendMessage('Execute tools');
+M|systematic-debugging|// await waitForEventCount(threadManager, threadId, 'TOOL_CALL', 2); // Wait for tools to start
+M|systematic-debugging|// agt.abort();
+M|systematic-debugging|// await messagePromise;
+M|systematic-debugging|// await waitForEventCount(threadManager, threadId, 'TOOL_RESULT', 2); // Wait for results
+M|systematic-debugging|// expect(toolResults.length).toBe(2); // Always succeeds
+M|systematic-debugging|//
+M|systematic-debugging|// Result: 60% pass rate → 100%, 40% faster execution

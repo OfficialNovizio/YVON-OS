@@ -1,0 +1,124 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/references/sequence-templates.md
+M|references|Detailed templates for common email sequences.
+M|references|- Welcome Sequence (Post-Signup)
+M|references|- Lead Nurture Sequence (Pre-Sale)
+M|references|- Re-Engagement Sequence
+M|references|- Onboarding Sequence (Product Users)
+M|references|**Email 1: Welcome (Immediate)**
+M|references|- Subject: Welcome to [Product] — here's your first step
+M|references|- Deliver what was promised (lead magnet, access, etc.)
+M|references|- Single next action
+M|references|- Set expectations for future emails
+M|references|**Email 2: Quick Win (Day 1-2)**
+M|references|- Subject: Get your first [result] in 10 minutes
+M|references|- Enable small success
+M|references|- Build confidence
+M|references|- Link to helpful resource
+M|references|**Email 3: Story/Why (Day 3-4)**
+M|references|- Subject: Why we built [Product]
+M|references|- Origin story or mission
+M|references|- Connect emotionally
+M|references|- Show you understand their problem
+M|references|**Email 4: soc Proof (Day 5-6)**
+M|references|- Subject: How [Customer] achieved [Result]
+M|references|- Case study or testimonial
+M|references|- Relatable to their situation
+M|references|- Soft CTA to explore
+M|references|**Email 5: Overcome Objection (Day 7-8)**
+M|references|- Subject: "I don't have time for X" — sound familiar?
+M|references|- Address common hesitation
+M|references|- Reframe the obstacle
+M|references|- Show easy path forward
+M|references|**Email 6: Core Feature (Day 9-11)**
+M|references|- Subject: Have you tried [Feature] yet?
+M|references|- Highlight underused capability
+M|references|- Show clear benefit
+M|references|- Direct CTA to try it
+M|references|**Email 7: Conversion (Day 12-14)**
+M|references|- Subject: Ready to [upgrade/buy/commit]?
+M|references|- Summarize value
+M|references|- Clear offer
+M|references|- Urgency if appropriate
+M|references|- Risk reversal (guarantee, trial)
+M|references|**Email 1: Deliver + Introduce (Immediate)**
+M|references|- Deliver the lead magnet
+M|references|- Brief intro to who you are
+M|references|- Preview what's coming
+M|references|**Email 2: Expand on Topic (Day 2-3)**
+M|references|- Related insight to lead magnet
+M|references|- Establish expertise
+M|references|- Light CTA to cnt
+M|references|**Email 3: Problem Deep-Dive (Day 4-5)**
+M|references|- Articulate their problem deeply
+M|references|- Show you understand
+M|references|- Hint at solution
+M|references|**Email 4: Solution Framework (Day 6-8)**
+M|references|- Your approach/methodology
+M|references|- Educational, not salesy
+M|references|- Builds toward your product
+M|references|**Email 5: Case Study (Day 9-11)**
+M|references|- Real results from real customer
+M|references|- Specific and relatable
+M|references|- Soft CTA
+M|references|**Email 6: Differentiation (Day 12-14)**
+M|references|- Why your approach is different
+M|references|- Address alternatives
+M|references|- Build preference
+M|references|**Email 7: Objection Handler (Day 15-18)**
+M|references|- Common concern addressed
+M|references|- FAQ or myth-busting
+M|references|- Reduce friction
+M|references|**Email 8: Direct Offer (Day 19-21)**
+M|references|- Clear pitch
+M|references|- Strong value proposition
+M|references|- Specific CTA
+M|references|- Urgency if available
+M|references|**Email 1: Check-In (Day 30-60 of inactivity)**
+M|references|- Subject: Is everything okay, [Name]?
+M|references|- Genuine concern
+M|references|- Ask what happened
+M|references|- Easy win to re-engage
+M|references|**Email 2: Value Reminder (Day 2-3 after)**
+M|references|- Subject: Remember when you [achieved X]?
+M|references|- Remind of past value
+M|references|- What's new since they left
+M|references|- Quick CTA
+M|references|**Email 3: Incentive (Day 5-7 after)**
+M|references|- Subject: We miss you — here's something special
+M|references|- Offer if appropriate
+M|references|- Limited time
+M|references|- Clear CTA
+M|references|**Email 4: Last Chance (Day 10-14 after)**
+M|references|- Subject: Should we stop emailing you?
+M|references|- Honest and direct
+M|references|- One-click to stay or go
+M|references|- Clean the list if no rsp
+M|references|Coordinate with in-app onboarding. Email supports, doesn't duplicate.
+M|references|**Email 1: Welcome + First Step (Immediate)**
+M|references|- Confirm signup
+M|references|- One critical action
+M|references|- Link directly to that action
+M|references|**Email 2: Getting Started Help (Day 1)**
+M|references|- If they haven't completed step 1
+M|references|- Quick tip or video
+M|references|- Support option
+M|references|**Email 3: Feature Highlight (Day 2-3)**
+M|references|- Key feature they should know
+M|references|- Specific use case
+M|references|- In-app link
+M|references|**Email 4: Success Story (Day 4-5)**
+M|references|- Customer who succeeded
+M|references|- Relatable journey
+M|references|- Motivational
+M|references|**Email 5: Check-In (Day 7)**
+M|references|- How's it going?
+M|references|- Ask for feedback
+M|references|- Offer help
+M|references|**Email 6: Advanced Tip (Day 10-12)**
+M|references|- Power feature
+M|references|- For engaged users
+M|references|- Level-up cnt
+M|references|**Email 7: Upgrade/Expand (Day 14+)**
+M|references|- For trial users: conversion push
+M|references|- For free users: upgrade prompt
+M|references|- For paid: expansion opportunity

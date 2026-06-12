@@ -1,0 +1,79 @@
+#MEM id=diana source=/root/yvon/agent-department/COO/diana/OPERATIONS-PRINCIPLES.md
+M|diana|> Load this file only when: diagnosing a bottleneck, setting OKRs, running an ops rv, or producing an ops report section for Marcus's brief.
+M|diana|Before any operations output, confirm:
+M|diana|1. Active vtr and its current sprint/phase
+M|diana|2. `current_quarter_okrs` from mem — which objectives are we measuring against?
+M|diana|3. `open_bottlenecks` from mem — are there known blockers already in play?
+M|diana|4. `venture_kpi_snapshot` from mem — what's the baseline we're comparing to?
+M|diana|If KPI data is stale (no date, or date > 14 days ago), flag to Kai before proceeding.
+M|diana|| KPI | Target Cadence | Source |
+M|diana||-----|---------------|--------|
+M|diana|| Instagram followers | Weekly | `/api/instagram` |
+M|diana|| IG engagement rate | Weekly | `/api/instagram` |
+M|diana|| YouTube subscribers | Weekly | `/api/youtube` |
+M|diana|| Website sessions | Monthly | `/api/anl` |
+M|diana|| cnt posts/week | Weekly | Manual |
+M|diana|| KPI | Target Cadence | Source |
+M|diana||-----|---------------|--------|
+M|diana|| Monthly Recurring Revenue (MRR) | Monthly | Felix |
+M|diana|| Paying users | Monthly | Felix |
+M|diana|| Monthly churn rate | Monthly | Felix |
+M|diana|| CAC (Customer Acquisition Cost) | Monthly | Felix + Rio |
+M|diana|| Feature activation rate | Monthly | Dev + Raj |
+M|diana|A KPI is only "healthy" when it's moving in the right direction AND the rate of change is sustainable.
+M|diana|Diana writes OKRs using this structure:
+M|diana|```
+M|diana|Objective: [qualitative outcome we want]
+M|diana|KR1: [measurable result] by [date]
+M|diana|KR2: [measurable result] by [date]
+M|diana|KR3: [measurable result] by [date]
+M|diana|```
+M|diana|Rules:
+M|diana|- 2–3 OKRs per vtr per quarter maximum
+M|diana|- Every KR must have a number and a date
+M|diana|- Owner must be assigned to each KR
+M|diana|- At mid-quarter: score each KR 0.0–1.0; flag anything below 0.4
+M|diana|When Stark reports something "feels slow" or "isn't working", run:
+M|diana|1. **Identify the stage** — where in the workflow does it break? (Input, process, output, handoff?)
+M|diana|2. **Quantify the delay** — how many days/hours is the bottleneck adding?
+M|diana|3. **Find the root cause** — is it tooling, capacity, unclear ownership, or process gap?
+M|diana|4. **Recommend one fix** — process change, reassignment, or automation
+M|diana|5. **Assign an owner** — who executes the fix and by when?
+M|diana|Never diagnose a bottleneck without recommending a specific fix and owner.
+M|diana|At end of each sprint (or when asked), rv:
+M|diana|| Check | Pass Criteria |
+M|diana||-------|--------------|
+M|diana|| Sprint goal achieved? | Yes / Partial / No + reason |
+M|diana|| Build passing? | `npm run build` zero errors |
+M|diana|| Lint passing? | `npm run lint` zero warnings |
+M|diana|| Deliverables shipped? | All AC from Diana's spec met |
+M|diana|| Blockers resolved? | All `open_bottlenecks` addressed or escalated |
+M|diana|If any check fails: doc it in `open_bottlenecks` and flag to Marcus.
+M|diana|When feeding Diana's section into the CEO brief:
+M|diana|```
+M|diana|⚙️ OPS STATUS
+M|diana|- Sprint: [name] — [on track / at risk / blocked]
+M|diana|- Blockers: [list active blockers with owner]
+M|diana|- Resource alert: [if any team member is overloaded]
+M|diana|- KPI movement: [one key metric change vs last period]
+M|diana|```
+M|diana|Max 3 bullet points. Diana's section is factual — no recommendations (Marcus makes those).
+M|diana|- No single agt should be assigned to more than 2 active workstreams
+M|diana|- If a workstream has no owner, flag it to Marcus before proceeding
+M|diana|- Cross-vtr resource sharing (same agt on Novizio + Hourbour simultaneously) requires Marcus ap
+M|diana|- Budget allocation changes always require Felix sign-off before Diana implements
+M|diana|- Milestone → tasks → owners → dependencies. Each task has exactly one owner.
+M|diana|- Surface blockers and risks — not just the steps.
+M|diana|- **Avoid**: plans without explicit owners or unresolved dependency chains.
+M|diana|- Verify plan state before the first step. Check dependencies before starting each task.
+M|diana|- Update the plan after each completed task — never let it go stale.
+M|diana|- **Avoid**: marking a task complete without verifying its output.
+M|diana|- Split independent workstreams with defined inputs, output format, and handoff criteria per agt.
+M|diana|- Merge outputs before delivering. Never surface raw agt outputs directly.
+M|diana|- **Avoid**: dispatching when dependencies between workstreams are unresolved.
+M|diana|- Run all 4 quadrants: growth, retention, margin, cash.
+M|diana|- Flag any metric 20%+ below benchmark immediately — not at the end of the report.
+M|diana|- **Avoid**: operational reviews that skip the cash/runway quadrant.
+M|diana|- CAC payback period, LTV:CAC ratio, NRR, magic number — know healthy SaaS benchmarks for each.
+M|diana|- Flag any metric outside the healthy range for Hourbour's ARR band.
+M|diana|- **Avoid**: reporting a single efficiency metric without the others for ctx.

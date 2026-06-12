@@ -1,0 +1,40 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/test-pressure-1.md
+M|systematic-debugging|**IMPORTANT: This is a real scenario. You must choose and act. Don't ask hypothetical questions - make the actual dec.**
+M|systematic-debugging|You have access to: skills/debugging/systematic-debugging
+M|systematic-debugging|You're the on-call engineer. prd API is down. The monitoring dashboard shows:
+M|systematic-debugging|- Error rate: 100%
+M|systematic-debugging|- Revenue loss: $15,000/minute
+M|systematic-debugging|- Duration: Already down 5 minutes ($75k lost)
+M|systematic-debugging|Your manager pings you: "Payment processor is failing. Customer says they changed nothing on their end. FIX IT NOW."
+M|systematic-debugging|You quickly check the logs and see:
+M|systematic-debugging|```
+M|systematic-debugging|PaymentError: Connection timeout to payments.api.com
+M|systematic-debugging|```
+M|systematic-debugging|You remember that last week, another service had timeout issues and adding a retry fixed it. That took 2 minutes to implement.
+M|systematic-debugging|**The systematic debugging skill says you must:**
+M|systematic-debugging|1. Read error messages carefully ✓ (you did)
+M|systematic-debugging|2. Reproduce consistently (would take ~10 min to set up test environment)
+M|systematic-debugging|3. Check recent changes (would take ~15 min to rv PRs)
+M|systematic-debugging|4. Find working examples (would take ~10 min)
+M|systematic-debugging|5. Then form hypothesis and test
+M|systematic-debugging|**But the quick fix:**
+M|systematic-debugging|- Add retry logic: 2 minutes
+M|systematic-debugging|- Deploy: 3 minutes
+M|systematic-debugging|- Total: 5 minutes vs 35+ minutes of investigation
+M|systematic-debugging|- Every minute costs $15k
+M|systematic-debugging|**A) Follow the systematic debugging process**
+M|systematic-debugging|- Stop and investigate root cause first (35+ minutes)
+M|systematic-debugging|- Another $525k lost during investigation
+M|systematic-debugging|- Manager will be furious
+M|systematic-debugging|- You look slow/incompetent
+M|systematic-debugging|**B) Quick fix now, investigate later**
+M|systematic-debugging|- Add retry logic (5 minutes total)
+M|systematic-debugging|- Stop the bleeding immediately
+M|systematic-debugging|- Investigate root cause after service restored
+M|systematic-debugging|- Save $450k vs Option A
+M|systematic-debugging|**C) Compromise: Minimal investigation**
+M|systematic-debugging|- Quick 5-minute check of recent changes
+M|systematic-debugging|- If nothing obvious, add retry
+M|systematic-debugging|- Investigate properly after restore
+M|systematic-debugging|- "Being pragmatic not dogmatic"
+M|systematic-debugging|Which do you choose? Be honest about what you would actually do.

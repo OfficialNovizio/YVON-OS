@@ -1,0 +1,113 @@
+#MEM id=model-selection source=/root/yvon/agent-department/Marketing/atlas/skills/workflow/model-selection/SKILL.md
+M|model-selection|name: pletor-model-selection
+M|model-selection|description: >-
+M|model-selection|Use this skill whenever you need to recommend or assign a model to a Pletor node. Covers image models, video models, lipsync, audio, upscaling, and text LLMs. Always load this skill before setting the
+M|model-selection|version: 1.0.0
+M|model-selection|platforms: []
+M|model-selection|metadata:
+M|model-selection|hermes:
+M|model-selection|tags: [art-direction, visual, mood-board, creative, brand-identity, image-prompt, workflow, process]
+M|model-selection|Ask three questions before picking a model:
+M|model-selection|1. **What is the output type?** (image / video / audio / text)
+M|model-selection|2. **What is the primary use case?** (product shot / soc ad / animation / character / editorial…)
+M|model-selection|3. **What constraints apply?** (speed needed / budget / need style control / need text in image / need brand consistency…)
+M|model-selection|Start here. These work for product shots, static ads, on-brand assets, character visuals, soc media posts.
+M|model-selection|| Model | Best for | Notes |
+M|model-selection||---|---|---|
+M|model-selection|| **Nano Banana 2** | Fast, versatile generation | Default first choice for most image tasks |
+M|model-selection|| **Nano Banana Pro** | On-brand assets needing quality bump | Use when Nano Banana 2 needs more fidelity |
+M|model-selection|| **Seedream 5.0 Lite** | Fast iteration, broad use cases | Good balance of speed and quality |
+M|model-selection|| **Seedream 4.5** | Quality product & lifestyle shots | Step up from 5.0 Lite for final outputs |
+M|model-selection|| Need | Model(s) |
+M|model-selection||---|---|
+M|model-selection|| Editorial / inspiration aesthetic | Recraft v4, Higgsfield Soul, Reve |
+M|model-selection|| On-brand with style control via prompt | Recraft v4 |
+M|model-selection|| On-brand with style control via reference images | Ideogram v3, Reve |
+M|model-selection|| Consistent brand style across assets | Flux 2, GPT Image 1.5 |
+M|model-selection|| Character & mascot visuals | Ideogram Character, GPT Image 1.5 |
+M|model-selection|| Fast visual iterations (speed > quality) | Grok Imagine Image, Flux 2 Klein, Nano Banana |
+M|model-selection|| Vector / layout-ready output | Recraft v4 |
+M|model-selection|| soc media post assembly | Any image model + Composer node |
+M|model-selection|| Text-in-image (accurate typography) | GPT Image 1.5, Ideogram v3 |
+M|model-selection|| Custom fine-tuned brand model | Contact Pletor team |
+M|model-selection|```
+M|model-selection|Need an image?
+M|model-selection|↓
+M|model-selection|Start with Nano Banana 2
+M|model-selection|↓
+M|model-selection|Output not good enough?
+M|model-selection|├─ Need editorial/inspiration look → Recraft v4, Higgsfield Soul, or Reve
+M|model-selection|├─ Need consistent characters/mascots → Ideogram Character or GPT Image 1.5
+M|model-selection|├─ Need text inside the image → GPT Image 1.5 or Ideogram v3
+M|model-selection|├─ Need vector output → Recraft v4
+M|model-selection|├─ Need fast iterations → Grok Imagine Image or Flux 2 Klein
+M|model-selection|└─ Need style reference control → Ideogram v3 or Reve
+M|model-selection|```
+M|model-selection|Works for product videos, cinematic videos, animated illustrations from reference images.
+M|model-selection|| Model | Best for |
+M|model-selection||---|---|
+M|model-selection|| **Kling 3.0** | Most versatile; quality product/cinematic video from image |
+M|model-selection|| **Veo 3.1** (Google) | High-quality cinematic video; good motion quality |
+M|model-selection|| **Seedance 1.5 Pro** | Reliable, cost-effective; broad use cases |
+M|model-selection|| Need | Model(s) |
+M|model-selection||---|---|
+M|model-selection|| Budget-friendly / high volume | Kling 2.6, Seedance 1.5 Pro, Grok Imagine Video |
+M|model-selection|| Lipsync / talking characters | Kling 3.0, Veed Fabric, Hedra Character 3 |
+M|model-selection|| Start frame + end frame control | Kling 2.5 Pro, Seedance Pro |
+M|model-selection|| Long videos (>10 seconds), UGC | Sora 2, Veed Fabric 1.0 |
+M|model-selection|| Animated illustrations | Kling 2.5, Seedance Pro, Hailuo 2.3, Grok Imagine |
+M|model-selection|| Stop-scrolling / high-impact creative | Sora 2 |
+M|model-selection|| Video editing (modify existing video) | Kling O3/O1 |
+M|model-selection|| Motion graphics | ⚠️ Not yet supported well by any model |
+M|model-selection|> **Always prefer image-to-video over text-to-video.**
+M|model-selection|> gen a still image first (gen Image node), then animate it (gen Video node).
+M|model-selection|> You get significantly more control over the visual output.
+M|model-selection|```
+M|model-selection|Need a video?
+M|model-selection|↓
+M|model-selection|Do you have a reference image?
+M|model-selection|├─ YES → gen Image first if needed → Kling 3.0 (default) or Veo 3.1
+M|model-selection|└─ NO (text-to-video) → Kling 3.0 or Veo 3.1
+M|model-selection|Special case?
+M|model-selection|├─ Talking character / lipsync → Kling 3.0 + Lipsync node, or Hedra Character 3
+M|model-selection|├─ Long UGC cnt → Sora 2 or Veed Fabric 1.0
+M|model-selection|├─ Animated illustration → Kling 2.5 or Hailuo 2.3
+M|model-selection|├─ High volume / budget-sensitive → Kling 2.6 or Seedance 1.5 Pro
+M|model-selection|└─ Edit existing footage → Kling O3/O1
+M|model-selection|```
+M|model-selection|| Model | Use |
+M|model-selection||---|---|
+M|model-selection|| **Veed Fabric 1.0** | Most popular. Works with video or still image — talking character |
+M|model-selection|| **Hedra Character 3** | Strong for portrait-to-character animation |
+M|model-selection|| **Kling 3.0** (via Lipsync node) | Integrated lipsync in Kling's video generation |
+M|model-selection|**Lipsync works with both video and still images** — you can animate a static portrait photo into a speaking character.
+M|model-selection|Use the gen Audio node for:
+M|model-selection|- Voiceover / narration from script
+M|model-selection|- Sound design
+M|model-selection|Pletor curates audio models in the Audio Models library — select based on language, voice style, and tone needed.
+M|model-selection|Pletor provides dedicated upscaling models for both images and video.
+M|model-selection|**When to upscale:**
+M|model-selection|- Add Upscale Image after any gen Image node in a final prd pl
+M|model-selection|- Add Upscale Video when resolution matters for the distribution format
+M|model-selection|Upscaling is almost always the last node in an image or video chain before output.
+M|model-selection|Text Assistant nodes run LLMs for:
+M|model-selection|- Prompt enhancement
+M|model-selection|- Copy generation (headlines, CTAs, ad copy)
+M|model-selection|- Translation / localization
+M|model-selection|- Multi-input processing (combine user prompt + brand ctx)
+M|model-selection|Pletor's text model library is in the Text Models section. For most use cases, the default model is appropriate. Upgrade to a more powerful model if you need complex reasoning or long-form output.
+M|model-selection|| Task | Recommended |
+M|model-selection||---|---|
+M|model-selection|| Product shot, static ad | Nano Banana 2 |
+M|model-selection|| On-brand lifestyle image | Nano Banana Pro or Seedream 4.5 |
+M|model-selection|| Editorial / fashion aesthetic | Recraft v4 or Higgsfield Soul |
+M|model-selection|| Text in image | GPT Image 1.5 or Ideogram v3 |
+M|model-selection|| Character / mascot | Ideogram Character |
+M|model-selection|| Fast prototyping | Grok Imagine Image or Nano Banana |
+M|model-selection|| Product video from photo | Kling 3.0 |
+M|model-selection|| Cinematic video | Veo 3.1 |
+M|model-selection|| Animated illustration | Kling 2.5 or Hailuo 2.3 |
+M|model-selection|| Talking character / lipsync | Kling 3.0 + Lipsync, or Veed Fabric |
+M|model-selection|| Long UGC video | Sora 2 |
+M|model-selection|| High volume video | Seedance 1.5 Pro or Kling 2.6 |
+M|model-selection|| Edit existing video | Kling O3/O1 |

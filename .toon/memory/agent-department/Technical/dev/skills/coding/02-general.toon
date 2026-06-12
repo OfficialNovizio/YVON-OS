@@ -1,0 +1,25 @@
+#MEM id=coding source=/root/yvon/agent-department/Technical/dev/skills/coding/02-general.md
+M|coding|priority: high
+M|coding|applies-to: dev
+M|coding|load: always
+M|coding|model: qwen3.5-4b
+M|coding|conflicts: []
+M|coding|- TypeScript strict mode where applicable
+M|coding|- No `any` types unless absolutely necessary — add a comment explaining why
+M|coding|- Prefer explicit return types on all functions
+M|coding|- Use `const` by default; `let` only when reassignment is required
+M|coding|- Keep functions small and single-purpose
+M|coding|- Max 30 lines per function; extract if longer
+M|coding|- Name functions after what they return, not what they do internally
+M|coding|- No side effects in pure functions
+M|coding|- Never swallow errors silently
+M|coding|- Always log error ctx, not just the error message
+M|coding|- Use typed errors where possible
+M|coding|- Comment the why, not the what
+M|coding|- If code needs a comment to be understood, consider simplifying it first
+M|coding|- Never leave TODO comments without a ticket reference
+M|coding|- One concern per file
+M|coding|- Keep files under 200 lines; split if larger
+M|coding|- Co-locate tests with implementation files
+M|coding|- All brand changes go to `dev` branch — never commit directly to `main`
+M|coding|- Commit messages: `type(scope): short description` (feat, fix, chore, docs)

@@ -1,0 +1,56 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/client-localstorage-schema.md
+M|rules|title: Version and Minimize localStorage Data
+M|rules|impact: MEDIUM
+M|rules|impactDescription: prevents schema conflicts, reduces storage size
+M|rules|tags: client, localStorage, storage, versioning, data-minimization
+M|rules|Add version prefix to keys and store only needed fields. Prevents schema conflicts and accidental storage of sensitive data.
+M|rules|**Incorrect:**
+M|rules|```typescript
+M|rules|// No version, stores everything, no error handling
+M|rules|localStorage.setItem('userConfig', JSON.stringify(fullUserObject))
+M|rules|const data = localStorage.getItem('userConfig')
+M|rules|```
+M|rules|**Correct:**
+M|rules|```typescript
+M|rules|const VERSION = 'v2'
+M|rules|function saveConfig(config: { theme: string; language: string }) {
+M|rules|try {
+M|rules|localStorage.setItem(`userConfig:${VERSION}`, JSON.stringify(config))
+M|rules|} catch {
+M|rules|// Throws in incognito/private browsing, quota exceeded, or disabled
+M|rules|}
+M|rules|}
+M|rules|function loadConfig() {
+M|rules|try {
+M|rules|const data = localStorage.getItem(`userConfig:${VERSION}`)
+M|rules|return data ? JSON.parse(data) : null
+M|rules|} catch {
+M|rules|return null
+M|rules|}
+M|rules|}
+M|rules|// Migration from v1 to v2
+M|rules|function migrate() {
+M|rules|try {
+M|rules|const v1 = localStorage.getItem('userConfig:v1')
+M|rules|if (v1) {
+M|rules|const old = JSON.parse(v1)
+M|rules|saveConfig({ theme: old.darkMode ? 'dark' : 'light', language: old.lang })
+M|rules|localStorage.removeItem('userConfig:v1')
+M|rules|}
+M|rules|} catch {}
+M|rules|}
+M|rules|```
+M|rules|**Store minimal fields from server responses:**
+M|rules|```typescript
+M|rules|// User object has 20+ fields, only store what UI needs
+M|rules|function cachePrefs(user: FullUser) {
+M|rules|try {
+M|rules|localStorage.setItem('prefs:v1', JSON.stringify({
+M|rules|theme: user.preferences.theme,
+M|rules|notifications: user.preferences.notifications
+M|rules|}))
+M|rules|} catch {}
+M|rules|}
+M|rules|```
+M|rules|**Always wrap in try-catch:** `getItem()` and `setItem()` throw in incognito/private browsing (Safari, Firefox), when quota exceeded, or when disabled.
+M|rules|**Benefits:** Schema evolution via versioning, reduced storage size, prevents storing tokens/PII/internal flags.

@@ -1,0 +1,7 @@
+SKILL|songsee|"Audio spectrograms/features (mel, chroma, MFCC) via CLI."
+STEP|1|WAV and MP3 are decoded natively; other formats require `ffmpeg`
+STEP|2|Output images can be inspected with `vision_analyze` for automated audio analysis
+STEP|3|Useful for comparing audio outputs, debugging synthesis, or documenting audio processing pipelines
+PIT|WAV and MP3 are decoded natively; other formats require `ffmpeg`
+PIT|Output images can be inspected with `vision_analyze` for automated audio analysis
+PIT|Useful for comparing audio outputs, debugging synthesis, or documenting audio processing pipelines

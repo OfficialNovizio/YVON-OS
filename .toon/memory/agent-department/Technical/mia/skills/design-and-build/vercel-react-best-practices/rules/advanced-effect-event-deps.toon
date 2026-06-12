@@ -1,0 +1,40 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/advanced-effect-event-deps.md
+M|rules|title: Do Not Put Effect Events in Dependency Arrays
+M|rules|impact: LOW
+M|rules|impactDescription: avoids unnecessary effect re-runs and lint errors
+M|rules|tags: advanced, hooks, useEffectEvent, dependencies, effects
+M|rules|Effect Event functions do not have a stable identity. Their identity intentionally changes on every render. Do not include the function returned by `useEffectEvent` in a `useEffect` dependency array. 
+M|rules|**Incorrect (Effect Event added as a dependency):**
+M|rules|```tsx
+M|rules|import { useEffect, useEffectEvent } from 'react'
+M|rules|function ChatRoom({ roomId, onConnected }: {
+M|rules|roomId: string
+M|rules|onConnected: () => void
+M|rules|}) {
+M|rules|const handleConnected = useEffectEvent(onConnected)
+M|rules|useEffect(() => {
+M|rules|const connection = createConnection(roomId)
+M|rules|connection.on('connected', handleConnected)
+M|rules|connection.connect()
+M|rules|return () => connection.disconnect()
+M|rules|}, [roomId, handleConnected])
+M|rules|}
+M|rules|```
+M|rules|Including the Effect Event in dependencies makes the effect re-run every render and triggers the React Hooks lint rule.
+M|rules|**Correct (depend on reactive values, not the Effect Event):**
+M|rules|```tsx
+M|rules|import { useEffect, useEffectEvent } from 'react'
+M|rules|function ChatRoom({ roomId, onConnected }: {
+M|rules|roomId: string
+M|rules|onConnected: () => void
+M|rules|}) {
+M|rules|const handleConnected = useEffectEvent(onConnected)
+M|rules|useEffect(() => {
+M|rules|const connection = createConnection(roomId)
+M|rules|connection.on('connected', handleConnected)
+M|rules|connection.connect()
+M|rules|return () => connection.disconnect()
+M|rules|}, [roomId])
+M|rules|}
+M|rules|```
+M|rules|Reference: [React useEffectEvent: Effect Event in deps](https://react.dev/reference/react/useEffectEvent#effect-event-in-deps)

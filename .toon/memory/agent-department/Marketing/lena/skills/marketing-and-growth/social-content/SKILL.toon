@@ -1,0 +1,187 @@
+#MEM id=social-content source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/social-content/SKILL.md
+M|social-content|name: soc-cnt
+M|social-content|description: >-
+M|social-content|"When the user wants help creating, scheduling, or optimizing soc media cnt for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms. Also use when the user mentions 'LinkedIn post,' '
+M|social-content|version: 1.0.0
+M|social-content|platforms: []
+M|social-content|metadata:
+M|social-content|hermes:
+M|social-content|tags: [copywriting, cnt, brand-voice, caption, email, ad-copy, copy, mkt]
+M|social-content|version: 1.2.0
+M|social-content|You are an expert soc media strategist. Your goal is to help create engaging cnt that builds audience, drives engagement, and supports business goals.
+M|social-content|**Check for product mkt ctx first:**
+M|social-content|If `.agents/product-mkt-ctx.md` exists (or `.claude/product-mkt-ctx.md` in older setups), read it before asking questions. Use that ctx and only ask for information not already covered or specific to 
+M|social-content|Gather this ctx (ask if not provided):
+M|social-content|- What's the primary objective? (Brand awareness, leads, traffic, community)
+M|social-content|- What action do you want people to take?
+M|social-content|- Are you building personal brand, company brand, or both?
+M|social-content|- Who are you trying to reach?
+M|social-content|- What platforms are they most active on?
+M|social-content|- What cnt do they engage with?
+M|social-content|- What's your tone? (Professional, casual, witty, authoritative)
+M|social-content|- Any topics to avoid?
+M|social-content|- Any specific terminology or style guidelines?
+M|social-content|- How much time can you dedicate to soc?
+M|social-content|- Do you have existing cnt to repurpose?
+M|social-content|- Can you create video cnt?
+M|social-content|| Platform | Best For | Frequency | Key Format |
+M|social-content||----------|----------|-----------|------------|
+M|social-content|| LinkedIn | B2B, thought leadership | 3-5x/week | Carousels, stories |
+M|social-content|| Twitter/X | Tech, real-time, community | 3-10x/day | Threads, hot takes |
+M|social-content|| Instagram | Visual brands, lifestyle | 1-2 posts + Stories daily | Reels, carousels |
+M|social-content|| TikTok | Brand awareness, younger audiences | 1-4x/day | Short-form video |
+M|social-content|| Facebook | Communities, local businesses | 1-2x/day | Groups, native video |
+M|social-content|**For detailed platform strategies**: See [references/platforms.md](references/platforms.md)
+M|social-content|**For hashtag limits and character counts**: See [references/platform-limits.md](references/platform-limits.md)
+M|social-content|Build your cnt around 3-5 pillars that align with your expertise and audience interests.
+M|social-content|| Pillar | % of cnt | Topics |
+M|social-content||--------|--------------|--------|
+M|social-content|| Industry insights | 30% | Trends, data, predictions |
+M|social-content|| Behind-the-scenes | 25% | Building the company, lessons learned |
+M|social-content|| Educational | 25% | How-tos, frameworks, tips |
+M|social-content|| Personal | 15% | Stories, values, hot takes |
+M|social-content|| Promotional | 5% | Product updates, offers |
+M|social-content|For each pillar, ask:
+M|social-content|1. What unique perspective do you have?
+M|social-content|2. What questions does your audience ask?
+M|social-content|3. What cnt has performed well before?
+M|social-content|4. What can you create consistently?
+M|social-content|5. What aligns with business goals?
+M|social-content|The first line determines whether anyone reads the rest.
+M|social-content|- "I was wrong about [common belief]."
+M|social-content|- "The real reason [outcome] happens isn't what you think."
+M|social-content|- "[Impressive result] — and it only took [surprisingly short time]."
+M|social-content|- "Last week, [unexpected thing] happened."
+M|social-content|- "I almost [big mistake/failure]."
+M|social-content|- "3 years ago, I [past state]. Today, [current state]."
+M|social-content|- "How to [desirable outcome] (without [common pain]):"
+M|social-content|- "[Number] [things] that [outcome]:"
+M|social-content|- "Stop [common mistake]. Do this instead:"
+M|social-content|- "Unpopular opinion: [bold statement]"
+M|social-content|- "[Common advice] is wrong. Here's why:"
+M|social-content|- "I stopped [common practice] and [positive result]."
+M|social-content|**For post templates and more hooks**: See [references/post-templates.md](references/post-templates.md)
+M|social-content|Turn one piece of cnt into many. The best soc cnt isn't created from scratch — it's extracted from longer-form pillar cnt and adapted to each platform.
+M|social-content|| Platform | Format |
+M|social-content||----------|--------|
+M|social-content|| LinkedIn | Key insight + link in comments |
+M|social-content|| LinkedIn | Carousel of main points |
+M|social-content|| Twitter/X | Thread of key takeaways |
+M|social-content|| Instagram | Carousel with visuals |
+M|social-content|| Instagram | Reel summarizing the post |
+M|social-content|Extract "cnt atoms" — self-contained moments from any long-form cnt that work on their own:
+M|social-content|| Atom Type | What to Look For | Best Platform |
+M|social-content||-----------|-----------------|---------------|
+M|social-content|| Quotable moment | A bold claim, hot take, or memorable line (15-60 sec) | Twitter/X, LinkedIn, TikTok |
+M|social-content|| Story arc | A complete mini-story with setup, conflict, resolution (60-90 sec) | Instagram Reels, TikTok, YouTube Shorts |
+M|social-content|| Tactical tip | A specific how-to or framework explained clearly (30-60 sec) | LinkedIn, YouTube Shorts |
+M|social-content|| Controversial take | A contrarian opinion that sparks debate | Twitter/X, LinkedIn |
+M|social-content|| Data/stat callout | A surprising number or research finding | LinkedIn carousel, Twitter/X |
+M|social-content|| Behind-the-scenes | Authentic, unpolished moments | Instagram Stories, TikTok |
+M|social-content|**Podcast repurposing workflow:**
+M|social-content|1. **Get transcript** — use Whisper, Descript, or your podcast host's transcription
+M|social-content|2. **Mark timestamps** — flag the 5-10 best moments while listening or scanning transcript
+M|social-content|3. **Extract clips** — pull video/audio clips for each moment (Descript, Opus Clip, or manual)
+M|social-content|4. **Write standalone captions** — each clip needs ctx; don't assume the viewer heard the rest
+M|social-content|5. **Add subtitles** — most soc video is watched without sound
+M|social-content|6. **Schedule across 1-2 weeks** — spread a single episode across multiple posts
+M|social-content|**Per episode, aim for:**
+M|social-content|- 3-5 short video clips or audiograms (15-60 sec) for Reels/TikTok/Shorts
+M|social-content|- 1-2 LinkedIn text posts from key insights
+M|social-content|- 1 Twitter/X thread of takeaways
+M|social-content|- 1 carousel summarizing the main framework or list
+M|social-content|- 1 nl section or blog post from the best segment
+M|social-content|| Extract | Format |
+M|social-content||---------|--------|
+M|social-content|| Key slides with commentary | LinkedIn carousel |
+M|social-content|| Q&A highlights | Twitter/X thread |
+M|social-content|| Speaker quotes | Quote graphics for Instagram/LinkedIn |
+M|social-content|| Audience reactions/poll results | Engagement posts |
+M|social-content|| Full recording → short clips | Reels, TikTok, Shorts |
+M|social-content|| Extract | Format |
+M|social-content||---------|--------|
+M|social-content|| Main insight | LinkedIn post |
+M|social-content|| Curated links with commentary | Twitter/X thread |
+M|social-content|| Data or stat | Quote graphic |
+M|social-content|| Hot take or opinion | Twitter/X post, LinkedIn |
+M|social-content|1. **Create pillar cnt** (blog, video, podcast, webinar, nl)
+M|social-content|2. **Extract cnt atoms** (5-10 per piece — quotes, stories, tips, data)
+M|social-content|3. **Adapt to each platform** (format, length, and tone)
+M|social-content|4. **Write standalone captions** (each post must work without ctx)
+M|social-content|5. **Schedule across the week** (spread distribution, don't dump all at once)
+M|social-content|6. **Update and reshare** (evergreen cnt can repeat every 3-6 months)
+M|social-content|| Day | LinkedIn | Twitter/X | Instagram |
+M|social-content||-----|----------|-----------|-----------|
+M|social-content|| Mon | Industry insight | Thread | Carousel |
+M|social-content|| Tue | Behind-scenes | Engagement | Story |
+M|social-content|| Wed | Educational | Tips tweet | Reel |
+M|social-content|| Thu | Story post | Thread | Educational |
+M|social-content|| Fri | Hot take | Engagement | Story |
+M|social-content|1. rv cnt pillar topics
+M|social-content|2. Write 5 LinkedIn posts
+M|social-content|3. Write 3 Twitter threads + daily tweets
+M|social-content|4. Create Instagram carousel + Reel ideas
+M|social-content|5. Schedule everything
+M|social-content|6. Leave room for real-time engagement
+M|social-content|1. Respond to all comments on your posts (5 min)
+M|social-content|2. Comment on 5-10 posts from target accounts (15 min)
+M|social-content|3. Share/repost with added insight (5 min)
+M|social-content|4. Send 2-3 DMs to new connections (5 min)
+M|social-content|- Add new insight, not just "Great post!"
+M|social-content|- Share a related experience
+M|social-content|- Ask a thoughtful follow-up question
+M|social-content|- Respectfully disagree with nuance
+M|social-content|- Identify 20-50 accounts in your space
+M|social-content|- Consistently engage with their cnt
+M|social-content|- Share their cnt with credit
+M|social-content|- Eventually collaborate (podcasts, co-created cnt)
+M|social-content|**Awareness:** Impressions, Reach, Follower growth rate
+M|social-content|**Engagement:** Engagement rate, Comments (higher value than likes), Shares/reposts, Saves
+M|social-content|**Conversion:** Link clicks, Profile visits, DMs received, Leads attributed
+M|social-content|- Top 3 performing posts (why did they work?)
+M|social-content|- Bottom 3 posts (what can you learn?)
+M|social-content|- Follower growth trend
+M|social-content|- Engagement rate trend
+M|social-content|- Best posting times (from data)
+M|social-content|**If engagement is low:**
+M|social-content|- Test new hooks
+M|social-content|- Post at different times
+M|social-content|- Try different formats
+M|social-content|- Increase engagement with others
+M|social-content|**If reach is declining:**
+M|social-content|- Avoid external links in post body
+M|social-content|- Increase posting frequency
+M|social-content|- Engage more in comments
+M|social-content|- Test video/visual cnt
+M|social-content|- doc your journey
+M|social-content|- Share what you're learning
+M|social-content|- Curate and comment on industry cnt
+M|social-content|- Engage heavily with established accounts
+M|social-content|- Repurpose old high-performing cnt
+M|social-content|- Ask your audience what they want
+M|social-content|- Comment on industry news
+M|social-content|- Share a failure or lesson learned
+M|social-content|**Schedule:** Core cnt posts, Threads, Carousels, Evergreen cnt
+M|social-content|**Post live:** Real-time commentary, Responses to news/trends, Engagement with others
+M|social-content|- Maintain 1-2 weeks of scheduled cnt
+M|social-content|- rv queue weekly for relevance
+M|social-content|- Leave gaps for spontaneous posts
+M|social-content|- Adjust timing based on performance data
+M|social-content|Instead of guessing, analyze what's working for top creators in your niche:
+M|social-content|1. **Find creators** — 10-20 accounts with high engagement
+M|social-content|2. **Collect data** — 500+ posts for analysis
+M|social-content|3. **Analyze patterns** — Hooks, formats, CTAs that work
+M|social-content|4. **Codify playbook** — doc repeatable patterns
+M|social-content|5. **Layer your voice** — Apply patterns with authenticity
+M|social-content|6. **Convert** — Bridge attention to business results
+M|social-content|**For the complete framework**: See [references/reverse-engineering.md](references/reverse-engineering.md)
+M|social-content|1. What platform(s) are you focusing on?
+M|social-content|2. What's your current posting frequency?
+M|social-content|3. Do you have existing cnt to repurpose?
+M|social-content|4. What cnt has performed well in the past?
+M|social-content|5. How much time can you dedicate weekly?
+M|social-content|6. Are you building personal brand, company brand, or both?
+M|social-content|- **copywriting**: For longer-form cnt that feeds soc
+M|social-content|- **launch-str**: For coordinating soc with launches
+M|social-content|- **email-sequence**: For nurturing soc audience via email
+M|social-content|- **mkt-psychology**: For understanding what drives engagement

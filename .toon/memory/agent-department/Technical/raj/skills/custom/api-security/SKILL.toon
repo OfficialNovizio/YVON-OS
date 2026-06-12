@@ -1,0 +1,84 @@
+#MEM id=api-security source=/root/yvon/agent-department/Technical/raj/skills/custom/api-security/SKILL.md
+M|api-security|name: api-sec
+M|api-security|description: Raj's implementation-level API sec checklist. Runs at build time — before any route is submitted for Dev rv. 8 items covering Zod validation, auth, API keys, CRON_SECRET, CORS, parameteri
+M|api-security|version: 1.0.0
+M|api-security|Dev's `api-sec-checklist` is the ap gate. This skill is the build-time equivalent — what Raj self-audits before the route reaches Dev. Running this internally means Dev's rv catches architectural issu
+M|api-security|Run before submitting any route for Dev rv. All 8 must pass.
+M|api-security|**1. Zod Validation**
+M|api-security|```typescript
+M|api-security|// Every route that accepts a body
+M|api-security|const schema = z.object({
+M|api-security|venture_slug: z.string().min(1),
+M|api-security|// ...
+M|api-security|})
+M|api-security|const parsed = schema.safeParse(await req.json())
+M|api-security|if (!parsed.success) {
+M|api-security|return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+M|api-security|}
+M|api-security|const { venture_slug } = parsed.data  // typed, safe
+M|api-security|```
+M|api-security|- No `any` casting anywhere in the route
+M|api-security|- No `as SomeType` on unvalidated data
+M|api-security|**2. Authentication**
+M|api-security|```typescript
+M|api-security|const supabase = createServerClient(...)  // with cookie pattern, not createClient
+M|api-security|const { data: { user }, error } = await supabase.auth.getUser()
+M|api-security|// NOT auth.getSession() — ses can be stale
+M|api-security|if (error || !user) {
+M|api-security|return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+M|api-security|}
+M|api-security|// Use user.id from here — NEVER body.userId or params.userId
+M|api-security|```
+M|api-security|**3. API Key Exposure**
+M|api-security|- All keys: `process.env.APIFY_KEY`, `process.env.ANTHROPIC_API_KEY`, etc.
+M|api-security|- Zero keys in `NEXT_PUBLIC_*` env vars
+M|api-security|- Zero keys referenced in any client component or `'use client'` file
+M|api-security|**4. CRON_SECRET Validation**
+M|api-security|```typescript
+M|api-security|// Must be FIRST in cron route body — before any other code
+M|api-security|const authHeader = req.headers.get('authorization')
+M|api-security|if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+M|api-security|return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+M|api-security|}
+M|api-security|// Only now proceed with handler logic
+M|api-security|```
+M|api-security|**5. CORS Headers**
+M|api-security|```typescript
+M|api-security|// On routes that need CORS — scope to specific origins
+M|api-security|headers.set('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || 'https://yvon.app')
+M|api-security|// NEVER: headers.set('Access-Control-Allow-Origin', '*') on authenticated routes
+M|api-security|```
+M|api-security|**6. Parameterized Queries**
+M|api-security|```typescript
+M|api-security|// Correct
+M|api-security|const { data } = await supabase
+M|api-security|.from('anl')
+M|api-security|.select('*')
+M|api-security|.eq('venture_slug', ventureSlug)  // parameterized
+M|api-security|// NEVER — SQL injection vector
+M|api-security|const { data } = await supabase.rpc(`SELECT * FROM anl WHERE slug = '${ventureSlug}'`)
+M|api-security|```
+M|api-security|**7. Error rsp Shape**
+M|api-security|```typescript
+M|api-security|// Correct
+M|api-security|return NextResponse.json({ error: 'Service unavailable. Please try again.' }, { status: 503 })
+M|api-security|// NEVER — exposes internals
+M|api-security|return NextResponse.json({ error: err.message, stack: err.stack }, { status: 500 })
+M|api-security|```
+M|api-security|**8. HTTP Status Codes**
+M|api-security|| Scenario | Status |
+M|api-security||----------|--------|
+M|api-security|| Invalid input (Zod fail) | `400` |
+M|api-security|| Missing/invalid auth | `401` |
+M|api-security|| Authenticated, wrong vtr | `403` |
+M|api-security|| Resource not found | `404` |
+M|api-security|| Rate limit exceeded | `429` + `Retry-After` header |
+M|api-security|| Server error | `500` |
+M|api-security|| Dependency down (Supabase, external API) | `503` + `Retry-After` header |
+M|api-security|| **Never** | `200` on failure |
+M|api-security|Before submitting for Dev rv, state:
+M|api-security|```
+M|api-security|sec self-audit: PASSED / FAILED
+M|api-security|Failed items: [list]
+M|api-security|```
+M|api-security|Any failure → fix before submitting. Don't submit and hope Dev catches it.

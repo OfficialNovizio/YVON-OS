@@ -1,0 +1,36 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/cold-email/references/personalization.md
+M|references|Personalization drives **50–250% more replies** (Lavender). The key insight: **if your personalization has nothing to do with the problem you solve, it's just an attention hack** (Clay).
+M|references|First name, company name, job title. Table stakes, no longer differentiating. ~5% lift.
+M|references|Industry-specific pain points, trends, regulatory challenges. Scalable via micro-segmentation.
+M|references|> Most {{industry}} teams struggle with {{lead gen problem}}, which often leads to wasted effort.
+M|references|Challenges specific to their role and seniority.
+M|references|> As Head of Sales, keeping pl steady is probably your biggest headache. Your RevOps team is small, so you're likely wearing multiple hats during scaling.
+M|references|Specific, timely observations about that person connected to the problem you solve.
+M|references|> Noticed you're hiring 3 SDRs — sounds like you're scaling outbound fast. Most teams hit follow-up fatigue during onboarding.
+M|references|| Signal            | Where to find it                   | How to use it                                                                |
+M|references|| ----------------- | ---------------------------------- | ---------------------------------------------------------------------------- |
+M|references|| Recent funding    | Crunchbase, LinkedIn, press        | "Congrats on Series B — scaling teams fast usually creates X challenge"      |
+M|references|| Job postings      | LinkedIn Jobs, careers page        | "Noticed you're hiring 3 SDRs — sounds like you're scaling outbound"         |
+M|references|| Tech stack        | BuiltWith, Wappalyzer, HG Insights | "I see you're using HubSpot — most teams at your stage hit a ceiling with X" |
+M|references|| LinkedIn activity | Posts, comments, job changes       | "Really enjoyed your post about X"                                           |
+M|references|| Company news      | Google News, press releases        | "Congrats on acquiring X — integrating teams usually creates Y challenge"    |
+M|references|| Podcast/talks     | Google, YouTube, podcasts          | "Caught your talk at SaaStr on X — really insightful"                        |
+M|references|| Website changes   | Manual rv                      | "Your new pricing page caught my eye — curious how it's converting"          |
+M|references|From "30 Minutes to President's Club":
+M|references|**Step 1:** Build a research stack of top 10 buying signals — 5 company triggers, 5 person triggers. Stack-rank by relevance.
+M|references|**Step 2:** Build a 3x3 template: (1) personalization attached to a problem, (2) problem you solve, (3) one-sentence solution + low-friction CTA.
+M|references|**Step 3:** Create 5 "trigger templates" — pre-written personalization paragraphs for each trigger, with a smooth segue into the problem.
+M|references|The personalization must logically connect to the problem. This creates 5 reusable triggers with the rest of the email constant. A top SDR writes a personalized email in **under 3 minutes**.
+M|references|- **Demographic** — Age, profession, background
+M|references|- **Technographic** — Tech stack, tools used
+M|references|- **Firmographic** — Company size, funding, industry, growth stage
+M|references|- **Psychographic** — Values, passions, beliefs (highest-impact dimension)
+M|references|Tapping into what prospects are passionate about drives significantly higher rsp rates.
+M|references|**Trigger-event:** "Congrats on the recent funding round — scaling the team from here is exciting, and I imagine [challenge] is top of mind."
+M|references|**Observation:** "Your recent post about [topic] resonated — especially the part about [detail]. Got me thinking about how that applies to [challenge]."
+M|references|**Industry insight:** "Most [role titles] I talk to spend [X hours/week] on [problem] — curious if that matches your experience at [Company]."
+M|references|- AI-generated emails with similar phrasing ("I hope this email finds you well")
+M|references|- Generic attention hacks disconnected from problem ("Cool that you went to UCLA!" → pitch)
+M|references|- Over-personalizing to creepiness
+M|references|- "I saw your LinkedIn profile and wanted to reach out" — signals mass automation
+M|references|After writing any opening line, read from prospect's perspective: "So what? Why would I care?" If the answer is nothing, rewrite.

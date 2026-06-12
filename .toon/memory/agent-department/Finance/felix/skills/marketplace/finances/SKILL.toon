@@ -1,0 +1,199 @@
+#MEM id=finances source=/root/yvon/agent-department/Finance/felix/skills/marketplace/finances/SKILL.md
+M|finances|name: finances
+M|finances|description: "Use this skill when the user needs to build a financial model, calculate unit economics, understand MRR/ARR/churn, or figure out their quit number. Covers SaaS metrics, CAC/LTV, burn rat
+M|finances|A SaaS business is a math machine. If you don't know your numbers, you're guessing. This skill makes unit economics legible — MRR, CAC, LTV, churn, burn rate — clear enough to make decisions, rigorous
+M|finances|- A SaaS business is a math machine. If you don't know your numbers, you're guessing.
+M|finances|- Unit economics tell the truth about your business long before your bank account does.
+M|finances|- The only financial model that matters for a solo founder is one that fits on a single spreadsheet and gets updated monthly.
+M|finances|- Revenue is vanity. Margin is sanity. Cash flow is reality.
+M|finances|- Every metric should answer a specific question: "Should I spend more here?" or "Is this working?"
+M|finances|Before building anything, calculate what it takes to replace your income:
+M|finances|```
+M|finances|Monthly personal burn (after taxes):
+M|finances|Rent/mortgage:         $______
+M|finances|Insurance:             $______
+M|finances|Food/living:           $______
+M|finances|Debt payments:         $______
+M|finances|Everything else:       $______
+M|finances|Safety buffer (20%):   $______
+M|finances|= Monthly nut:         $______
+M|finances|Required MRR to quit:
+M|finances|Monthly nut ÷ 0.70 = $______
+M|finances|(0.70 accounts for taxes, SaaS costs, and variance)
+M|finances|At your target price point ($X/mo):
+M|finances|Required MRR ÷ Price = customers needed
+M|finances|Timeline:
+M|finances|Customers needed ÷ realistic monthly growth rate = months to quit
+M|finances|```
+M|finances|**Reality check**: If you need 500+ customers at $29/mo to quit, that's an 18-36 month journey. Plan accordingly.
+M|finances|```
+M|finances|Runway calculation:
+M|finances|Current savings available for this vtr: $______
+M|finances|Monthly burn while building (no revenue):  $______
+M|finances|Savings ÷ Monthly burn = months of runway: ______
+M|finances|Hard deadline: Date you MUST have revenue or go back to employment.
+M|finances|Startup costs (one-time):
+M|finances|Domain + hosting (year 1):  $100-500
+M|finances|LLC formation:              $50-500
+M|finances|Tools (anl, email):   $0-200/mo
+M|finances|Paid acquisition test:      $500-1,000
+M|finances|Legal (if needed):          $500-2,000
+M|finances|= Total launch cost:        $______
+M|finances|Monthly operating costs (once live):
+M|finances|Hosting/infra:    $______
+M|finances|SaaS tools:       $______
+M|finances|Email service:    $______
+M|finances|Payment fees:     $______
+M|finances|= Monthly opex:   $______
+M|finances|```
+M|finances|**Monthly Recurring Revenue (MRR)**
+M|finances|```
+M|finances|MRR = Sum of all active monthly subscription amounts
+M|finances|MRR breakdown:
+M|finances|New MRR:        Revenue from new customers this month
+M|finances|Expansion MRR:  Revenue from upgrades/seat additions
+M|finances|Contraction MRR: Revenue lost from downgrades
+M|finances|Churned MRR:    Revenue lost from cancellations
+M|finances|Net New MRR:    New + Expansion - Contraction - Churned
+M|finances|```
+M|finances|**Annual Recurring Revenue (ARR)**
+M|finances|```
+M|finances|ARR = MRR × 12
+M|finances|(Only use this once MRR is relatively stable. Don't annualize your first month.)
+M|finances|```
+M|finances|**Customer Acquisition Cost (CAC)**
+M|finances|```
+M|finances|CAC = Total acquisition spend ÷ New customers acquired (in same period)
+M|finances|Include: Ad spend, outreach tools, cnt costs, your time (value it at $0
+M|finances|for solo founder or at your opportunity cost — be consistent).
+M|finances|By channel:
+M|finances|SEO CAC:      cnt costs ÷ SEO-attributed signups
+M|finances|Paid CAC:     Ad spend ÷ Paid-attributed signups
+M|finances|Outreach CAC: Tool costs ÷ Outreach-attributed signups
+M|finances|```
+M|finances|**Lifetime Value (LTV)**
+M|finances|```
+M|finances|Simple LTV:
+M|finances|LTV = ARPU ÷ Monthly churn rate
+M|finances|Example:
+M|finances|ARPU = $49/mo, Monthly churn = 5%
+M|finances|LTV = $49 ÷ 0.05 = $980
+M|finances|With gross margin:
+M|finances|LTV = (ARPU × Gross margin %) ÷ Monthly churn rate
+M|finances|```
+M|finances|**LTV:CAC Ratio**
+M|finances|```
+M|finances|LTV:CAC = LTV ÷ CAC
+M|finances|Benchmarks:
+M|finances|< 1:1   You lose money on every customer. Stop spending.
+M|finances|1-3:1   Unsustainable. Improve retention or reduce CAC.
+M|finances|3:1     Healthy target for most SaaS.
+M|finances|> 5:1   You're probably underinvesting in growth.
+M|finances|```
+M|finances|**CAC Payback Period**
+M|finances|```
+M|finances|Payback = CAC ÷ (ARPU × Gross margin %)
+M|finances|Example:
+M|finances|CAC = $150, ARPU = $49/mo, Gross margin = 85%
+M|finances|Payback = $150 ÷ ($49 × 0.85) = 3.6 months
+M|finances|Benchmarks:
+M|finances|< 6 months:  Excellent for solo founder
+M|finances|6-12 months: Acceptable
+M|finances|> 12 months: Dangerous without funding
+M|finances|```
+M|finances|**Churn Rate**
+M|finances|```
+M|finances|Logo churn (customer count):
+M|finances|Customers lost this month ÷ Customers at start of month
+M|finances|Revenue churn (MRR):
+M|finances|MRR lost this month ÷ MRR at start of month
+M|finances|Net revenue retention (NRR):
+M|finances|(MRR at start + Expansion - Contraction - Churn) ÷ MRR at start
+M|finances|NRR > 100% means existing customers grow faster than they churn.
+M|finances|Benchmarks:
+M|finances|Logo churn < 5%/mo:   Acceptable early stage
+M|finances|Logo churn < 3%/mo:   Good
+M|finances|Revenue churn < 2%/mo: Target
+M|finances|NRR > 100%:           Excellent (expansion revenue working)
+M|finances|```
+M|finances|Build this table monthly:
+M|finances|```
+M|finances|| Metric                    | Month 1 | Month 2 | Month 3 | ... |
+M|finances||---------------------------|---------|---------|---------|-----|
+M|finances|| New customers             |         |         |         |     |
+M|finances|| Churned customers         |         |         |         |     |
+M|finances|| Total customers (end)     |         |         |         |     |
+M|finances|| MRR                       |         |         |         |     |
+M|finances|| Net new MRR               |         |         |         |     |
+M|finances|| Revenue (collected)       |         |         |         |     |
+M|finances|| COGS (hosting, APIs, etc) |         |         |         |     |
+M|finances|| Gross profit              |         |         |         |     |
+M|finances|| Gross margin %            |         |         |         |     |
+M|finances|| Total acquisition spend   |         |         |         |     |
+M|finances|| CAC                       |         |         |         |     |
+M|finances|| LTV                       |         |         |         |     |
+M|finances|| LTV:CAC                   |         |         |         |     |
+M|finances|| Payback (months)          |         |         |         |     |
+M|finances|| Operating expenses        |         |         |         |     |
+M|finances|| Net profit/loss           |         |         |         |     |
+M|finances|| Cash balance              |         |         |         |     |
+M|finances|| Runway (months)           |         |         |         |     |
+M|finances|```
+M|finances|Map your revenue sources:
+M|finances|```
+M|finances|Primary revenue:
+M|finances|Monthly subscriptions: $X/mo × estimated customers = $______
+M|finances|Annual subscriptions:  $Y/yr × estimated customers = $______
+M|finances|Secondary revenue (if applicable):
+M|finances|Usage-based overage:   Estimated average overage/customer = $______
+M|finances|One-time setup fees:   $Z × new customers/month = $______
+M|finances|Consulting/services:   Hours/month × rate = $______
+M|finances|Revenue mix target:
+M|finances|Recurring %:    ____% (target >80%)
+M|finances|One-time %:     ____% (keep <20%)
+M|finances|Services %:     ____% (keep <10% — doesn't scale)
+M|finances|```
+M|finances|Track weekly, rv monthly:
+M|finances|**Growth metrics:**
+M|finances|- MRR (absolute and growth rate)
+M|finances|- New signups this week
+M|finances|- Activation rate (signups → activated)
+M|finances|- Conversion rate (activated → paying)
+M|finances|**Retention metrics:**
+M|finances|- Monthly logo churn rate
+M|finances|- Monthly revenue churn rate
+M|finances|- Net revenue retention
+M|finances|**Economics metrics:**
+M|finances|- CAC by channel
+M|finances|- LTV:CAC ratio
+M|finances|- Gross margin %
+M|finances|- Cash runway (months)
+M|finances|**Leading indicators (predict future revenue):**
+M|finances|- Traffic to mkt site
+M|finances|- Trial starts
+M|finances|- Feature adoption rates
+M|finances|- Support ticket volume (rising = problems ahead)
+M|finances|Don't build a complex model. Use this:
+M|finances|```
+M|finances|Conservative monthly growth rates by stage:
+M|finances|Pre-revenue to $1K MRR:     add 5-15 customers/month
+M|finances|$1K-$5K MRR:                10-20% MRR growth/month
+M|finances|$5K-$20K MRR:               5-15% MRR growth/month
+M|finances|$20K+ MRR:                  3-8% MRR growth/month
+M|finances|3-month forecast:
+M|finances|Current MRR × (1 + monthly growth rate)^3 = projected MRR
+M|finances|Break-even forecast:
+M|finances|Monthly opex ÷ ARPU = customers needed to break even
+M|finances|Customers needed ÷ monthly new customers = months to break even
+M|finances|```
+M|finances|Red flags that mean pivot or stop:
+M|finances|- LTV:CAC < 1 after 3+ months of trying to improve it
+M|finances|- Monthly churn > 10% with no clear fix
+M|finances|- CAC increasing month over month despite optimizations
+M|finances|- Activation rate < 20% (product-market fit problem)
+M|finances|- Revenue plateaus for 3+ months despite active effort
+M|finances|- Cash runway < 3 months with no path to profitability
+M|finances|- **accounting** — Bookkeeping, tax prep, and financial operations
+M|finances|- **pricing** — Set prices that support healthy unit economics
+M|finances|- **anl** — Track the product metrics that feed financial models
+M|finances|- **ads** — CAC tracking and paid acquisition budgeting

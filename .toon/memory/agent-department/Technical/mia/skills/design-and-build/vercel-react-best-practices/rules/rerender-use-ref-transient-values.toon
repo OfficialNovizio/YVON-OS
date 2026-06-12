@@ -1,0 +1,61 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-use-ref-transient-values.md
+M|rules|title: Use useRef for Transient Values
+M|rules|impact: MEDIUM
+M|rules|impactDescription: avoids unnecessary re-renders on frequent updates
+M|rules|tags: rerender, useref, state, performance
+M|rules|When a value changes frequently and you don't want a re-render on every update (e.g., mouse trackers, intervals, transient flags), store it in `useRef` instead of `useState`. Keep component state for 
+M|rules|**Incorrect (renders every update):**
+M|rules|```tsx
+M|rules|function Tracker() {
+M|rules|const [lastX, setLastX] = useState(0)
+M|rules|useEffect(() => {
+M|rules|const onMove = (e: MouseEvent) => setLastX(e.clientX)
+M|rules|window.addEventListener('mousemove', onMove)
+M|rules|return () => window.removeEventListener('mousemove', onMove)
+M|rules|}, [])
+M|rules|return (
+M|rules|<div
+M|rules|style={{
+M|rules|position: 'fixed',
+M|rules|top: 0,
+M|rules|left: lastX,
+M|rules|width: 8,
+M|rules|height: 8,
+M|rules|background: 'black',
+M|rules|}}
+M|rules|/>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (no re-render for tracking):**
+M|rules|```tsx
+M|rules|function Tracker() {
+M|rules|const lastXRef = useRef(0)
+M|rules|const dotRef = useRef<HTMLDivElement>(null)
+M|rules|useEffect(() => {
+M|rules|const onMove = (e: MouseEvent) => {
+M|rules|lastXRef.current = e.clientX
+M|rules|const node = dotRef.current
+M|rules|if (node) {
+M|rules|node.style.transform = `translateX(${e.clientX}px)`
+M|rules|}
+M|rules|}
+M|rules|window.addEventListener('mousemove', onMove)
+M|rules|return () => window.removeEventListener('mousemove', onMove)
+M|rules|}, [])
+M|rules|return (
+M|rules|<div
+M|rules|ref={dotRef}
+M|rules|style={{
+M|rules|position: 'fixed',
+M|rules|top: 0,
+M|rules|left: 0,
+M|rules|width: 8,
+M|rules|height: 8,
+M|rules|background: 'black',
+M|rules|transform: 'translateX(0px)',
+M|rules|}}
+M|rules|/>
+M|rules|)
+M|rules|}
+M|rules|```

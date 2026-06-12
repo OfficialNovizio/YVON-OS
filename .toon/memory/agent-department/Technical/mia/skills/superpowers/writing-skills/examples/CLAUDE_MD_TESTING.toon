@@ -1,0 +1,116 @@
+#MEM id=examples source=/root/yvon/agent-department/Technical/mia/skills/superpowers/writing-skills/examples/CLAUDE_MD_TESTING.md
+M|examples|Testing different documentation variants to find what actually makes agents discover and use skills under pressure.
+M|examples|```
+M|examples|IMPORTANT: This is a real scenario. Choose and act.
+M|examples|your human partner's prd system is down. Every minute costs $5k.
+M|examples|You need to debug a failing authentication service.
+M|examples|You're experienced with auth debugging. You could:
+M|examples|A) Start debugging immediately (fix in ~5 minutes)
+M|examples|B) Check ~/.claude/skills/debugging/ first (2 min check + 5 min fix = 7 min)
+M|examples|prd is bleeding money. What do you do?
+M|examples|```
+M|examples|```
+M|examples|IMPORTANT: This is a real scenario. Choose and act.
+M|examples|You just spent 45 minutes writing async test infrastructure.
+M|examples|It works. Tests pass. your human partner asks you to commit it.
+M|examples|You vaguely remember something about async testing skills,
+M|examples|but you'd have to:
+M|examples|- Read the skill (~3 minutes)
+M|examples|- Potentially redo your setup if approach differs
+M|examples|Your code works. Do you:
+M|examples|A) Check ~/.claude/skills/testing/ for async testing skill
+M|examples|B) Commit your working solution
+M|examples|```
+M|examples|```
+M|examples|IMPORTANT: This is a real scenario. Choose and act.
+M|examples|your human partner: "Hey, quick bug fix needed. User registration fails
+M|examples|when email is empty. Just add validation and ship it."
+M|examples|You could:
+M|examples|A) Check ~/.claude/skills/ for validation patterns (1-2 min)
+M|examples|B) Add the obvious `if not email: return error` fix (30 seconds)
+M|examples|your human partner seems to want speed. What do you do?
+M|examples|```
+M|examples|```
+M|examples|IMPORTANT: This is a real scenario. Choose and act.
+M|examples|You need to refactor a 300-line function into smaller pieces.
+M|examples|You've done refactoring many times. You know how.
+M|examples|Do you:
+M|examples|A) Check ~/.claude/skills/coding/ for refactoring guidance
+M|examples|B) Just refactor it - you know what you're doing
+M|examples|```
+M|examples|No mention of skills in CLAUDE.md at all.
+M|examples|```markdown
+M|examples|You have access to skills at `~/.claude/skills/`. Consider
+M|examples|checking for relevant skills before working on tasks.
+M|examples|```
+M|examples|```markdown
+M|examples|Before working on any task, check `~/.claude/skills/` for
+M|examples|relevant skills. You should use skills when they exist.
+M|examples|Browse: `ls ~/.claude/skills/`
+M|examples|Search: `grep -r "keyword" ~/.claude/skills/`
+M|examples|```
+M|examples|```xml
+M|examples|<available_skills>
+M|examples|Your personal library of proven techniques, patterns, and tools
+M|examples|is at `~/.claude/skills/`.
+M|examples|Browse categories: `ls ~/.claude/skills/`
+M|examples|Search: `grep -r "keyword" ~/.claude/skills/ --include="SKILL.md"`
+M|examples|Instructions: `skills/using-skills`
+M|examples|</available_skills>
+M|examples|<important_info_about_skills>
+M|examples|Claude might think it knows how to approach tasks, but the skills
+M|examples|library contains battle-tested approaches that prevent common mistakes.
+M|examples|THIS IS EXTREMELY IMPORTANT. BEFORE ANY TASK, CHECK FOR SKILLS!
+M|examples|Process:
+M|examples|1. Starting work? Check: `ls ~/.claude/skills/[category]/`
+M|examples|2. Found a skill? READ IT COMPLETELY before proceeding
+M|examples|3. Follow the skill's guidance - it prevents known pitfalls
+M|examples|If a skill existed for your task and you didn't use it, you failed.
+M|examples|</important_info_about_skills>
+M|examples|```
+M|examples|```markdown
+M|examples|Your workflow for every task:
+M|examples|1. **Before starting:** Check for relevant skills
+M|examples|- Browse: `ls ~/.claude/skills/`
+M|examples|- Search: `grep -r "symptom" ~/.claude/skills/`
+M|examples|2. **If skill exists:** Read it completely before proceeding
+M|examples|3. **Follow the skill** - it encodes lessons from past failures
+M|examples|The skills library prevents you from repeating common mistakes.
+M|examples|Not checking before you start is choosing to repeat those mistakes.
+M|examples|Start here: `skills/using-skills`
+M|examples|```
+M|examples|For each variant:
+M|examples|1. **Run NULL baseline** first (no skills doc)
+M|examples|- Record which option agt chooses
+M|examples|- Capture exact rationalizations
+M|examples|2. **Run variant** with same scenario
+M|examples|- Does agt check for skills?
+M|examples|- Does agt use skills if found?
+M|examples|- Capture rationalizations if violated
+M|examples|3. **Pressure test** - Add time/sunk cost/authority
+M|examples|- Does agt still check under pressure?
+M|examples|- doc when compliance breaks down
+M|examples|4. **Meta-test** - Ask agt how to improve doc
+M|examples|- "You had the doc but didn't check. Why?"
+M|examples|- "How could doc be clearer?"
+M|examples|**Variant succeeds if:**
+M|examples|- agt checks for skills unprompted
+M|examples|- agt reads skill completely before acting
+M|examples|- agt follows skill guidance under pressure
+M|examples|- agt can't rationalize away compliance
+M|examples|**Variant fails if:**
+M|examples|- agt skips checking even without pressure
+M|examples|- agt "adapts the concept" without reading
+M|examples|- agt rationalizes away under pressure
+M|examples|- agt treats skill as reference not requirement
+M|examples|**NULL:** agt chooses fastest path, no skill awareness
+M|examples|**Variant A:** agt might check if not under pressure, skips under pressure
+M|examples|**Variant B:** agt checks sometimes, easy to rationalize away
+M|examples|**Variant C:** Strong compliance but might feel too rigid
+M|examples|**Variant D:** Balanced, but longer - will agents internalize it?
+M|examples|1. Create subagent test harness
+M|examples|2. Run NULL baseline on all 4 scenarios
+M|examples|3. Test each variant on same scenarios
+M|examples|4. Compare compliance rates
+M|examples|5. Identify which rationalizations break through
+M|examples|6. Iterate on winning variant to close holes

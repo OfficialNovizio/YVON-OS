@@ -1,0 +1,510 @@
+#MEM id=milestone source=/root/yvon/agent-department/COO/diana/skills/marketplace/milestone/SKILL.md
+M|milestone|name: milestone
+M|milestone|description: Drive implementation forward incrementally with automatic progress tracking, LOC monitoring, and milestone checkpoint creation
+M|milestone|This skill is a core component for implementing large features incrementally, providing transparent ctx through LOC tracking, test execution, and milestone checkpoint creation when the 800 LOC thresho
+M|milestone|The milestone skill enables AI agents to implement large features step-by-step in manageable increments. It:
+M|milestone|- **Implements incrementally**: Works in chunks of 100-200 LOC per iteration
+M|milestone|- **Tracks progress**: Monitors total LOC count across the ses
+M|milestone|- **Runs tests continuously**: Executes tests after each implementation chunk
+M|milestone|- **Creates checkpoints**: Generates milestone documents at 800 LOC threshold
+M|milestone|- **Signals completion**: Returns success when all tests pass
+M|milestone|This skill is the core implementation driver used by `/issue-to-impl` and `/miles2miles` commands.
+M|milestone|- **Incremental progress over big bang**: Small, testable chunks beat large rewrites
+M|milestone|- Provide unobvious tec insights and design decisions you made during this chunk of implementation
+M|milestone|- **Transparent checkpoints**: Milestone documents provide clear progress visibility
+M|milestone|- **LOC-based pacing**: Use lines of code (not time) to determine when to checkpoint
+M|milestone|- **Partially complete work:** You are allowed to have some test failures at milestones, which particularly means you **are REQUIRED** to run a thorough test suite after each chunk of implementation, 
+M|milestone|- The milestone doc will record the status of all the tests, including passed and failed tests.
+M|milestone|- **Example**
+M|milestone|- **Before:** 5/8 tests Passed
+M|milestone|- **After:** 6/8 tests Passed
+M|milestone|- **Next Steps:** Fix remaining 2 tests in next milestone
+M|milestone|- You should dynamically adjust our plan with the whole plan and the current status of milestone.
+M|milestone|- Did you incrementally finish some tests that were failing in the previous milestone?
+M|milestone|- Did you find some new edge cases that require new tests to be written?
+M|milestone|- Did you unexpectedly break some test cases that were passing before? Is it related or unrelated to the current implementation plan?
+M|milestone|The milestone skill takes the following inputs (extracted from ctx):
+M|milestone|1. **Current branch ctx**
+M|milestone|- Branch name (extracted from: `git branch --show-current`)
+M|milestone|- Must be a dev branch matching pattern: `issue-{N}` or `issue-{N}-*` (wildcard for backward compatibility)
+M|milestone|- Issue number extracted from branch name
+M|milestone|2. **Plan reference**
+M|milestone|- **First invocation**: Read plan from GitHub issue using `gh issue view {N}`
+M|milestone|- **Resume invocation**: Read from latest milestone doc in `.tmp/milestones/issue-{N}-milestone-*.md`
+M|milestone|- Plan contains: implementation steps, file changes, LOC estimates, test str
+M|milestone|3. **Starting LOC count** (optional, for resume scenarios)
+M|milestone|- When resuming from a milestone, start from the LOC count in that milestone
+M|milestone|- When starting fresh (first milestone), start from 0
+M|milestone|4. **Current test status** (determined by running tests)
+M|milestone|- You do not need to pass all the tests before creating a milestone, but you **MUST** run the tests after each implementation chunk to determine current status.
+M|milestone|- You should provide a summary of the test results in the milestone doc, including:
+M|milestone|- Test passed as expected by this chunk of implementation
+M|milestone|- Test failed as expected by this chunk of implementation
+M|milestone|- Test unexpectedly broken by this chunk of implementation
+M|milestone|- What is planned to be worked on in the immediately next milestone
+M|milestone|The AI agt **MUST** track LOC count accurately to determine when to create milestones.
+M|milestone|Use `git diff --stat` to measure code changes:
+M|milestone|```bash
+M|milestone|git diff --stat
+M|milestone|```
+M|milestone|Extract the total LOC count from the summary line:
+M|milestone|- Pattern: `X files changed, Y insertions(+), Z deletions(-)`
+M|milestone|- **Total LOC = Y (insertions) + Z (deletions)**
+M|milestone|- Example: `343 insertions(+), 25 deletions(-)` → **Total LOC = 368**
+M|milestone|**CRITICAL**: Track cumulative LOC across multiple implementation chunks:
+M|milestone|```python
+M|milestone|cumulative_loc = starting_loc  # From milestone or 0
+M|milestone|while not all_tests_pass:
+M|milestone|implement_next_chunk()  # Implement 100-200 LOC
+M|milestone|current_chunk_loc = get_git_diff_stat()
+M|milestone|cumulative_loc += current_chunk_loc
+M|milestone|run_tests()
+M|milestone|test_status = parse_test_results()
+M|milestone|if cumulative_loc >= 800 and not all_tests_pass:
+M|milestone|create_milestone(cumulative_loc, test_status)
+M|milestone|stop_and_inform_user()
+M|milestone|break
+M|milestone|if all_tests_pass:
+M|milestone|signal_completion()
+M|milestone|break
+M|milestone|```
+M|milestone|- **Stop when**: `cumulative_loc >= 800` AND tests are not all passing
+M|milestone|- **Continue if**: `cumulative_loc < 800` OR all tests pass (nearing completion)
+M|milestone|- **Exception**: If very close to completion (> 750 LOC and > 90% tests pass), continue to finish
+M|milestone|The AI agt **MUST** follow this implementation loop:
+M|milestone|**First invocation** (from issue):
+M|milestone|```bash
+M|milestone|gh issue view {issue-number} --json body --jq '.body'
+M|milestone|```
+M|milestone|- Extract "Proposed Solution" section (contains the plan)
+M|milestone|- Identify implementation steps from the plan
+M|milestone|- Note files to modify/create with LOC estimates
+M|milestone|**Resume invocation** (from milestone):
+M|milestone|```bash
+M|milestone|ls -1 .tmp/milestones/issue-{N}-milestone-*.md | sort -V | tail -n 1
+M|milestone|```
+M|milestone|- Read the latest milestone file
+M|milestone|- Extract "Work Remaining" section
+M|milestone|- Extract "Next File Changes" section
+M|milestone|- Extract "Test Status" to understand current state
+M|milestone|From the plan or milestone:
+M|milestone|- Identify the next incomplete implementation step
+M|milestone|- Determine which files need changes
+M|milestone|- Understand what to implement in the next chunk
+M|milestone|- Provide unobvious tec insights and design decisions you made for this chunk of implementation
+M|milestone|**Chunk size guideline**: Aim for 100-200 LOC per chunk
+M|milestone|- If a step is > 200 LOC, break it into substeps
+M|milestone|- Implement one substep per iteration
+M|milestone|Implement the next logical piece of functionality:
+M|milestone|```
+M|milestone|agt: Implementing [description of what's being implemented]
+M|milestone|[Uses Edit/Write tools to modify code]
+M|milestone|agt: Changes made:
+M|milestone|- path/to/file1.py: Added feature X logic (~120 LOC)
+M|milestone|- path/to/file2.py: Updated helper functions (~45 LOC)
+M|milestone|```
+M|milestone|**Best practices:**
+M|milestone|- Focus on one logical unit per chunk
+M|milestone|- Write clean, readable code
+M|milestone|- Follow existing code patterns and conventions
+M|milestone|- Add comments where logic is not self-evident
+M|milestone|After implementing the chunk:
+M|milestone|```bash
+M|milestone|git diff --stat
+M|milestone|```
+M|milestone|Parse the output and add to cumulative count:
+M|milestone|```
+M|milestone|agt: Chunk complete: ~165 LOC added
+M|milestone|agt: Cumulative LOC: 615 (starting from 450)
+M|milestone|```
+M|milestone|Execute the test suite after each chunk:
+M|milestone|```bash
+M|milestone|make test
+M|milestone|bash tests/test-feature.sh
+M|milestone|bash tests/test-all.sh
+M|milestone|```
+M|milestone|**Capture test output** for parsing:
+M|milestone|```
+M|milestone|agt: Running tests...
+M|milestone|[test output]
+M|milestone|agt: Test results: 5/8 tests passed
+M|milestone|```
+M|milestone|Extract test status from output:
+M|milestone|**Passed tests** (look for success markers):
+M|milestone|- `✓` symbol
+M|milestone|- "passed" keyword
+M|milestone|- "OK" status
+M|milestone|- Exit code 0 for individual tests
+M|milestone|**Failed tests** (look for failure markers):
+M|milestone|- `✗` symbol
+M|milestone|- "failed" keyword
+M|milestone|- "ERROR" or "FAILED" status
+M|milestone|- Exit code non-zero
+M|milestone|**Example parsing:**
+M|milestone|```
+M|milestone|Test output:
+M|milestone|✓ Test 1: Feature initialization
+M|milestone|✓ Test 2: Config loading
+M|milestone|✗ Test 3: Edge case handling
+M|milestone|✓ Test 4: Error recovery
+M|milestone|✗ Test 5: Integration test
+M|milestone|✓ Test 6: Cleanup
+M|milestone|Parsed status:
+M|milestone|Passed: Tests 1, 2, 4, 6 (4 tests)
+M|milestone|Failed: Tests 3, 5 (2 tests)
+M|milestone|Total: 6 tests
+M|milestone|Percentage: 67% (4/6)
+M|milestone|```
+M|milestone|After running tests, evaluate:
+M|milestone|**Condition A: All tests pass**
+M|milestone|```
+M|milestone|if test_pass_percentage == 100%:
+M|milestone|signal_completion()
+M|milestone|return SUCCESS
+M|milestone|```
+M|milestone|→ Implementation is complete, ready for PR
+M|milestone|**Condition B: LOC threshold reached without completion**
+M|milestone|```
+M|milestone|if cumulative_loc >= 800 and test_pass_percentage < 100%:
+M|milestone|create_milestone()
+M|milestone|inform_user_to_run_miles2miles()
+M|milestone|return MILESTONE_CREATED
+M|milestone|```
+M|milestone|→ Checkpoint needed, stop for user intervention
+M|milestone|**Condition C: Continue implementation**
+M|milestone|```
+M|milestone|if cumulative_loc < 800 and test_pass_percentage < 100%:
+M|milestone|continue_loop()  # Go back to step 2
+M|milestone|```
+M|milestone|→ Keep implementing next chunk
+M|milestone|**Condition D: Near completion exception**
+M|milestone|```
+M|milestone|if cumulative_loc >= 750 and cumulative_loc < 850 and test_pass_percentage >= 90%:
+M|milestone|continue_loop()  # Push to finish
+M|milestone|```
+M|milestone|→ Close enough to completion, don't create milestone
+M|milestone|When the stop threshold is reached (Condition B), create a milestone doc.
+M|milestone|```bash
+M|milestone|ls -1 .tmp/milestones/issue-{N}-milestone-*.md 2>/dev/null | wc -l
+M|milestone|```
+M|milestone|Milestone number = count + 1
+M|milestone|From the original plan (in issue), identify which steps are not yet complete:
+M|milestone|**Original plan:**
+M|milestone|```
+M|milestone|Step 1: Update documentation (150 LOC) ✓ DONE
+M|milestone|Step 2: Create tests (100 LOC) ✓ DONE
+M|milestone|Step 3: Implement core logic (250 LOC) ← IN PROGRESS (partial)
+M|milestone|Step 4: Add edge case handling (150 LOC) ← NOT STARTED
+M|milestone|Step 5: Integration (100 LOC) ← NOT STARTED
+M|milestone|```
+M|milestone|**Work Remaining section:**
+M|milestone|```markdown
+M|milestone|- Step 3: Implement core logic (Estimated: ~100 LOC remaining)
+M|milestone|- File: src/core.py - Complete validation logic
+M|milestone|- File: src/utils.py - Add helper methods
+M|milestone|- Step 4: Add edge case handling (Estimated: 150 LOC)
+M|milestone|- File: src/core.py - Handle edge cases
+M|milestone|- File: tests/test_edge_cases.sh - Verify edge case handling
+M|milestone|- Step 5: Integration (Estimated: 100 LOC)
+M|milestone|- File: src/main.py - Integrate with existing system
+M|milestone|```
+M|milestone|Based on current implementation state and remaining work:
+M|milestone|```markdown
+M|milestone|- `src/core.py`: Complete validation logic and add edge case handling (~180 LOC)
+M|milestone|- `src/utils.py`: Add helper methods for validation (~45 LOC)
+M|milestone|- `tests/test_edge_cases.sh`: Verify edge case handling (~60 LOC)
+M|milestone|**Total estimated for next milestone:** ~285 LOC
+M|milestone|```
+M|milestone|List all tests with their current status:
+M|milestone|```markdown
+M|milestone|**Passed Tests:**
+M|milestone|- test-agentize-modes.sh: All 6 tests passed
+M|milestone|- test-c-sdk.sh: All tests passed
+M|milestone|- test-feature.sh: 4/6 tests passed
+M|milestone|- Test 1: Feature initialization
+M|milestone|- Test 2: Config loading
+M|milestone|- Test 4: Error recovery
+M|milestone|- Test 6: Cleanup
+M|milestone|**Not Passed Tests:**
+M|milestone|- test-feature.sh: 2/6 tests failing
+M|milestone|- Test 3: Edge case handling (FAILED)
+M|milestone|- Error: Validation logic incomplete
+M|milestone|- Test 5: Integration test (FAILED)
+M|milestone|- Error: Integration code not yet implemented
+M|milestone|```
+M|milestone|Create the file `.tmp/milestones/issue-{N}-milestone-{M}.md`:
+M|milestone|```markdown
+M|milestone|**Branch:** issue-{N}
+M|milestone|**Created:** {current-datetime}
+M|milestone|**LOC Implemented:** ~{cumulative_loc} lines
+M|milestone|**Test Status:** {passed}/{total} tests passed
+M|milestone|[Work Remaining section from Step 2]
+M|milestone|[Next File Changes section from Step 3]
+M|milestone|[Test Status section from Step 4]
+M|milestone|```
+M|milestone|**CRITICAL: Local-Only Checkpoint Files**
+M|milestone|Milestone documents in `.tmp/milestones/` are LOCAL CHECKPOINT FILES ONLY:
+M|milestone|- **DO NOT** stage these files: `git add .tmp/milestones/` is FORBIDDEN
+M|milestone|- **DO NOT** force-add these files: `git add -f .tmp/milestones/*` is FORBIDDEN
+M|milestone|- **DO NOT** commit these files under any circumstances
+M|milestone|- These files are automatically excluded by `.gitignore` when using `git add .`
+M|milestone|**Why `.tmp/milestones/` files must remain local:**
+M|milestone|1. They are working notes for resuming implementation between sessions
+M|milestone|2. They contain partial progress states not suitable for repository history
+M|milestone|3. `.gitignore` already excludes them to prevent accidental staging
+M|milestone|4. Only completed implementation code/tests/docs should be committed
+M|milestone|**Verification:** Before creating any commit, verify staged files:
+M|milestone|```bash
+M|milestone|git diff --cached --name-only
+M|milestone|```
+M|milestone|If you see any `.tmp/milestones/` files listed, **STOP** and unstage them:
+M|milestone|```bash
+M|milestone|git restore --staged .tmp/milestones/
+M|milestone|```
+M|milestone|Use the `commit-msg` skill with milestone flag:
+M|milestone|**CRITICAL - Pre-Commit Verification:**
+M|milestone|Before invoking `commit-msg`, verify what will be staged:
+M|milestone|```bash
+M|milestone|git add .
+M|milestone|git diff --cached --name-only
+M|milestone|```
+M|milestone|**Requirements:**
+M|milestone|- **MUST stage**: Implementation code, tests, documentation
+M|milestone|- **MUST NOT stage**: `.tmp/milestones/issue-{N}-milestone-{M}.md` (local checkpoint only)
+M|milestone|- If `.tmp/milestones/` files appear in `git diff --cached`, unstage them immediately:
+M|milestone|```bash
+M|milestone|git restore --staged .tmp/milestones/
+M|milestone|```
+M|milestone|**Invoke commit-msg skill with:**
+M|milestone|- Purpose: milestone
+M|milestone|- Staged files: all implementation changes (code, tests, documentation)
+M|milestone|- EXCLUDE: `.tmp/milestones/issue-{N}-milestone-{M}.md` (keep this local only)
+M|milestone|- Issue number: {N}
+M|milestone|- Test status: "{passed}/{total} tests passed"
+M|milestone|The commit-msg skill will:
+M|milestone|- Create commit message with `[milestone][tag]` prefix
+M|milestone|- Include test status in message
+M|milestone|- Use `git commit --no-verify` to bypass pre-commit hooks
+M|milestone|- Reference the issue number
+M|milestone|**Example commit message:**
+M|milestone|```
+M|milestone|[milestone][agt.skill]: Milestone 2 for issue #42
+M|milestone|.claude/skills/milestone/SKILL.md: Implement LOC tracking and test parsing logic
+M|milestone|docs/milestone-workflow.md: Add workflow documentation
+M|milestone|Milestone progress: 820 LOC implemented, 5/8 tests passed.
+M|milestone|Tests failing: edge case handling, integration tests.
+M|milestone|NOTE: Milestone doc (.tmp/milestones/issue-42-milestone-2.md) is NOT committed - it remains local for resumption.
+M|milestone|```
+M|milestone|Display message to user:
+M|milestone|```
+M|milestone|Milestone {M} created at {cumulative_loc} LOC ({passed}/{total} tests passed).
+M|milestone|Work remaining: ~{estimated_remaining_loc} LOC
+M|milestone|```
+M|milestone|**Next Steps:**
+M|milestone|To resume implementation from this checkpoint, use natural language:
+M|milestone|```
+M|milestone|User: Resume from the latest milestone
+M|milestone|User: Continue implementation
+M|milestone|User: Continue from .tmp/milestones/issue-{N}-milestone-{M}.md
+M|milestone|```
+M|milestone|The system will auto-detect the latest milestone on the current branch.
+M|milestone|When all tests pass (Condition A), signal completion:
+M|milestone|```
+M|milestone|All tests passed ({total}/{total})!
+M|milestone|Implementation complete:
+M|milestone|- Total LOC: ~{cumulative_loc}
+M|milestone|- All {total} tests passing
+M|milestone|Next steps:
+M|milestone|1. Create a delivery commit (without [milestone] tag):
+M|milestone|- Stage all changes: git add .
+M|milestone|- Create commit with purpose=delivery (runs pre-commit hooks)
+M|milestone|- All tests must pass for commit to succeed
+M|milestone|2. rv and create PR with /pull-request --open
+M|milestone|- Or use /code-rv then /open-pr for manual workflow
+M|milestone|```
+M|milestone|**CRITICAL - Completion requires a delivery commit:**
+M|milestone|When all tests pass, **DO NOT create a milestone**. Instead:
+M|milestone|1. **Stage changes for delivery commit:**
+M|milestone|```bash
+M|milestone|git add .
+M|milestone|git diff --cached --name-only  # Verify staged files
+M|milestone|```
+M|milestone|2. **Create delivery commit using commit-msg skill:**
+M|milestone|- Purpose: `delivery` (NOT milestone)
+M|milestone|- No `--no-verify` flag (normal pre-commit hooks run)
+M|milestone|- All tests must pass for commit to succeed
+M|milestone|- Commit message has NO `[milestone]` tag
+M|milestone|3. **Delivery commit distinguishes completed work from checkpoints:**
+M|milestone|- Milestone commits = intermediate checkpoints with incomplete tests
+M|milestone|- Delivery commits = completed work with all tests passing
+M|milestone|- Only delivery commits should be merged to main branch
+M|milestone|**Example delivery commit message:**
+M|milestone|```
+M|milestone|[feat][agt.command]: Add TypeScript support to build system
+M|milestone|src/build.ts: Implement TypeScript compilation pl
+M|milestone|tests/test-typescript.sh: Add TypeScript validation tests
+M|milestone|All 8 tests passing. Ready for code rv.
+M|milestone|```
+M|milestone|```bash
+M|milestone|git branch --show-current
+M|milestone|```
+M|milestone|If branch does not match pattern `issue-{N}` or `issue-{N}-*`:
+M|milestone|```
+M|milestone|Error: Not on a dev branch.
+M|milestone|Current branch: {branch-name}
+M|milestone|You must be on a dev branch (issue-{N}) to use the milestone skill.
+M|milestone|Please run /issue-to-impl to start implementation on a proper dev branch.
+M|milestone|```
+M|milestone|Stop execution.
+M|milestone|If unable to find plan in issue or milestone:
+M|milestone|```
+M|milestone|Error: No implementation plan found.
+M|milestone|Checked:
+M|milestone|- GitHub issue #{N}: No "Proposed Solution" section
+M|milestone|- Milestone files: No .tmp/milestones/issue-{N}-milestone-*.md found
+M|milestone|Please ensure:
+M|milestone|1. The issue has a plan
+M|milestone|2. You're running /issue-to-impl to start implementation
+M|milestone|Cannot proceed without a plan.
+M|milestone|```
+M|milestone|Stop execution.
+M|milestone|If tests fail to run due to syntax errors or import errors:
+M|milestone|```bash
+M|milestone|make test
+M|milestone|```
+M|milestone|Create milestone with error notes:
+M|milestone|```markdown
+M|milestone|**Critical Errors:**
+M|milestone|- Syntax error in src/core.py:45
+M|milestone|- Import error: module 'utils' not found
+M|milestone|**Test Execution:** Failed to run tests due to critical errors.
+M|milestone|**Next Steps:**
+M|milestone|1. Fix syntax errors
+M|milestone|2. Resolve import issues
+M|milestone|3. Resume with /miles2miles
+M|milestone|```
+M|milestone|Then stop and inform user:
+M|milestone|```
+M|milestone|Critical errors detected. Milestone {M} created with error notes.
+M|milestone|Errors:
+M|milestone|- Syntax error in src/core.py:45
+M|milestone|- Import error: module 'utils' not found
+M|milestone|Please fix these errors and resume with: "Continue from the latest milestone"
+M|milestone|```
+M|milestone|If unable to create milestone file:
+M|milestone|```
+M|milestone|Error: Failed to create milestone file at .tmp/milestones/issue-{N}-milestone-{M}.md
+M|milestone|Possible causes:
+M|milestone|- .tmp/milestones/ directory does not exist
+M|milestone|- Permission issues
+M|milestone|Please ensure .tmp/milestones/ directory exists and is writable.
+M|milestone|```
+M|milestone|Try to create the directory:
+M|milestone|```bash
+M|milestone|mkdir -p .milestones
+M|milestone|```
+M|milestone|Then retry creating the milestone file.
+M|milestone|If still fails, stop and report error to user.
+M|milestone|**ctx:** User runs `/issue-to-impl 42` for a feature with 8 test cases.
+M|milestone|**agt behavior:**
+M|milestone|```
+M|milestone|agt: Starting implementation for issue #42...
+M|milestone|agt: Reading plan from issue...
+M|milestone|agt: Plan loaded: 5 implementation steps, estimated 950 LOC total
+M|milestone|agt: Step 1 complete: Documentation updated
+M|milestone|agt: Step 2 complete: Test cases created (8 tests)
+M|milestone|agt: Creating Milestone 1...
+M|milestone|agt: Milestone 1 created (0/8 tests passed)
+M|milestone|agt: Starting implementation loop...
+M|milestone|agt: Implementing Step 3: Core logic...
+M|milestone|[implements chunk 1: ~180 LOC]
+M|milestone|agt: Cumulative LOC: 180
+M|milestone|agt: Running tests... 2/8 tests passed
+M|milestone|agt: Implementing Step 3: Validation logic...
+M|milestone|[implements chunk 2: ~150 LOC]
+M|milestone|agt: Cumulative LOC: 330
+M|milestone|agt: Running tests... 3/8 tests passed
+M|milestone|agt: Implementing Step 4: Edge cases...
+M|milestone|[implements chunk 3: ~200 LOC]
+M|milestone|agt: Cumulative LOC: 530
+M|milestone|agt: Running tests... 5/8 tests passed
+M|milestone|agt: Implementing Step 4: Error handling...
+M|milestone|[implements chunk 4: ~180 LOC]
+M|milestone|agt: Cumulative LOC: 710
+M|milestone|agt: Running tests... 6/8 tests passed
+M|milestone|agt: Implementing Step 5: Integration...
+M|milestone|[implements chunk 5: ~140 LOC]
+M|milestone|agt: Cumulative LOC: 850
+M|milestone|agt: Running tests... 6/8 tests passed
+M|milestone|agt: LOC threshold reached (850 >= 800), creating Milestone 2...
+M|milestone|Milestone 2 created at 850 LOC (6/8 tests passed).
+M|milestone|Work remaining: ~100 LOC (Step 5 partial completion)
+M|milestone|Tests failing: Integration test, Performance test
+M|milestone|Resume with: "Continue from the latest milestone"
+M|milestone|```
+M|milestone|**ctx:** User resumes after Milestone 2 was created.
+M|milestone|**agt behavior:**
+M|milestone|```
+M|milestone|agt: Finding latest milestone for current branch...
+M|milestone|agt: Found: .tmp/milestones/issue-42-milestone-2.md
+M|milestone|agt: Loading ctx...
+M|milestone|Resuming from Milestone 2 for Issue #42:
+M|milestone|- LOC implemented: 850
+M|milestone|- Test status: 6/8 tests passed
+M|milestone|- Work remaining: ~100 LOC
+M|milestone|agt: Reading work remaining from milestone...
+M|milestone|agt: Next work: Complete Step 5 integration
+M|milestone|agt: Implementing integration logic...
+M|milestone|[implements chunk: ~85 LOC]
+M|milestone|agt: Cumulative LOC: 935 (850 + 85)
+M|milestone|agt: Running tests... 7/8 tests passed
+M|milestone|agt: Implementing performance optimization...
+M|milestone|[implements chunk: ~45 LOC]
+M|milestone|agt: Cumulative LOC: 980 (935 + 45)
+M|milestone|agt: Running tests... 8/8 tests passed!
+M|milestone|All tests passed (8/8)!
+M|milestone|Implementation complete:
+M|milestone|- Total LOC: ~980
+M|milestone|- All 8 tests passing
+M|milestone|- Ready for PR creation
+M|milestone|Next steps:
+M|milestone|1. rv the changes
+M|milestone|2. Use /open-pr to create a pull request
+M|milestone|```
+M|milestone|**ctx:** At 780 LOC with 7/8 tests passing (87.5%).
+M|milestone|**agt behavior:**
+M|milestone|```
+M|milestone|agt: Cumulative LOC: 780
+M|milestone|agt: Running tests... 7/8 tests passed (87.5%)
+M|milestone|agt: Near completion detected:
+M|milestone|- LOC: 780 (close to threshold)
+M|milestone|- Tests: 87.5% passing
+M|milestone|- Estimated remaining: ~50 LOC
+M|milestone|agt: Continuing to push for completion instead of creating milestone...
+M|milestone|agt: Implementing final test fix...
+M|milestone|[implements chunk: ~35 LOC]
+M|milestone|agt: Cumulative LOC: 815
+M|milestone|agt: Running tests... 8/8 tests passed!
+M|milestone|All tests passed (8/8)!
+M|milestone|Implementation complete:
+M|milestone|- Total LOC: ~815
+M|milestone|- All 8 tests passing
+M|milestone|- Ready for PR creation
+M|milestone|```
+M|milestone|**Note:** Even though cumulative LOC exceeded 800, the agt continued because:
+M|milestone|- Started at 780 (close to threshold)
+M|milestone|- Test pass percentage was high (87.5%)
+M|milestone|- Estimated remaining work was minimal (~50 LOC)
+M|milestone|- Better to complete than create another milestone for trivial remaining work
+M|milestone|If milestone checkpoint is created it should hint the user to resume later:
+M|milestone|```
+M|milestone|Resume with: "Continue from the latest milestone"
+M|milestone|```
+M|milestone|If milestone successfully delivers its goal, it should direct user to opening a PR:
+M|milestone|```
+M|milestone|Next step: /pull-request --open
+M|milestone|```
+M|milestone|where `\pull-request` already have `/code-rv` hooked, and will finally open the PR after rv ap.
+M|milestone|If milestone fails due to errors that cannot be fixed by AI alone, it should inform the user
+M|milestone|the phenomenon and suggest manual intervention to fix the issues before resuming, by creating
+M|milestone|a comment right below the Github issue.

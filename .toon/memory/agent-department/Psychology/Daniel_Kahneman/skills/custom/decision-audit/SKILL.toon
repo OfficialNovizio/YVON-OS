@@ -1,0 +1,81 @@
+#MEM id=decision-audit source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/custom/decision-audit/SKILL.md
+M|decision-audit|name: dec-audit
+M|decision-audit|description: Per-agt bias failure patterns for YVON. Each agt has a distinct cognitive failure signature. Load when Kahneman is auditing a specific agt's output to know where to look hardest.
+M|decision-audit|version: 1.0.0
+M|decision-audit|Not all agents fail in the same way. Lena's most common bias is not the same as Felix's. This skill maps the characteristic cognitive failure pattern of each YVON agt so Kahneman looks in the right pl
+M|decision-audit|**Rule:** Use this as a starting lens, not a replacement for the full bias checklist. Every bias on the checklist still runs. This skill tells Kahneman which biases to weight more heavily for each agt
+M|decision-audit|**Characteristic failure:** Availability bias + Survivorship bias
+M|decision-audit|**Where it appears:**
+M|decision-audit|- "This format is trending" → trend data usually comes from accounts 10–50× larger than YVON's ventures. The available example is not representative of what works at this scale.
+M|decision-audit|- "This hook worked for [cp]" → cites the hit post, ignores the miss rate. Survivorship bias: the examples Lena sees are the ones that worked.
+M|decision-audit|- Loss aversion CTAs ("Don't miss out", "Last chance") applied when scarcity is not real — emotional lever activated on false premise.
+M|decision-audit|**Priority checks when auditing Lena:**
+M|decision-audit|- [ ] Is the trend evidence scale-matched to Novizio/Hourbour's actual audience size?
+M|decision-audit|- [ ] Is the soc proof cited (engagement rate, conversion) from a comparable account, not a 500K+ brand?
+M|decision-audit|- [ ] Is any loss aversion CTA anchored to a real scarcity condition?
+M|decision-audit|- [ ] Is the lever selection based on what the brand needs at this lifecycle stage, or what just performed well somewhere else?
+M|decision-audit|**Common correction:** Replace trend reference with a mechanism — not "this format is trending" but "this format activates [specific psychological lever] because [mechanism]."
+M|decision-audit|**Characteristic failure:** Overconfidence + Anchoring
+M|decision-audit|**Where it appears:**
+M|decision-audit|- ROAS projections stated as point estimates ("we'll hit 3.5× ROAS") without confidence intervals or base rate comparison.
+M|decision-audit|- Anchoring on cp benchmark ROAS (often from brands with established audiences and optimized funnels) — sets a reference frame that is unrealistic for cold audience cg.
+M|decision-audit|- "The cg failed" diagnosis that attributes failure to a single variable when multiple variables changed simultaneously — attribution overconfidence.
+M|decision-audit|**Priority checks when auditing Rio:**
+M|decision-audit|- [ ] Is the ROAS projection a range with a stated base rate, or a single number asserted as likely?
+M|decision-audit|- [ ] Is the benchmark being used drawn from an account at YVON's scale and funnel maturity?
+M|decision-audit|- [ ] If diagnosing a cg failure — has Rio isolated the variable, or are multiple changes confounded?
+M|decision-audit|- [ ] Is audience size large enough for statistical confidence before calling a winning creative?
+M|decision-audit|**Common correction:** Replace point predictions with ranges: "ROAS target 2.5–3.5×, based on [comparable cg] at [comparable stage]."
+M|decision-audit|**Characteristic failure:** Planning fallacy + Overconfidence in ICE scores
+M|decision-audit|**Where it appears:**
+M|decision-audit|- Experiment timelines of "14 days" stated without acknowledging that 14 days may produce insufficient sample at YVON's current traffic volume.
+M|decision-audit|- ICE scores presented as numbers without stating the assumptions behind each dimension — Impact 8 means nothing without knowing what it assumes.
+M|decision-audit|- "This worked for [high-growth SaaS]" → reference company is at 100× YVON's scale. Mechanism may not transfer.
+M|decision-audit|**Priority checks when auditing Nate:**
+M|decision-audit|- [ ] Is the 14-day read window feasible at current traffic volume? What sample size is achievable?
+M|decision-audit|- [ ] Does each ICE dimension have a named assumption? If Impact = 8, what does that assume?
+M|decision-audit|- [ ] Is the benchmark being referenced from a comparable-stage company, not a scaled-up success story?
+M|decision-audit|- [ ] Is the experiment testing one variable — or are multiple changes confounded?
+M|decision-audit|**Common correction:** Force assumption naming: "Impact 8 assumes [X]. If [X] is wrong, score drops to [N]."
+M|decision-audit|**Characteristic failure:** Overconfidence in projections + Sunk cost
+M|decision-audit|**Where it appears:**
+M|decision-audit|- Revenue forecasts built on best-case scenario inputs without a base-case or worst-case range.
+M|decision-audit|- "We've already spent X on this channel" used as a reason to continue spend — sunk cost framing.
+M|decision-audit|- Runway calculations that assume current burn rate is fixed when it is actually discretionary.
+M|decision-audit|- LTV projections that model linear growth without acknowledging early cohort data is insufficient for long-term extrapolation.
+M|decision-audit|**Priority checks when auditing Felix:**
+M|decision-audit|- [ ] Are projections presented as ranges (base/worst/best) or as single-point forecasts?
+M|decision-audit|- [ ] Is any recommendation influenced by money already spent rather than future expected value?
+M|decision-audit|- [ ] Does the runway model show sensitivity to burn rate changes — or is burn treated as fixed?
+M|decision-audit|- [ ] Is the LTV projection based on enough cohort data to be statistically meaningful?
+M|decision-audit|**Common correction:** Three-scenario modeling: "Base case [X], worst case [Y], best case [Z]. dec holds under [base/worst]."
+M|decision-audit|**Characteristic failure:** Narrative fallacy + Confirmation bias
+M|decision-audit|**Where it appears:**
+M|decision-audit|- str brief constructs a compelling story connecting a trend → insight → strategic move. The story feels coherent, but coherence is not causality. The data may only support one part of the narrative.
+M|decision-audit|- Evidence selected to support the strategic direction already decided — confirmation bias in which data gets cited.
+M|decision-audit|- "The market is moving toward X" stated as fact when it is an interpretation with genuine uncertainty.
+M|decision-audit|**Priority checks when auditing Marcus:**
+M|decision-audit|- [ ] Is the strategic narrative supported by data at each logical step, or does the data only support the conclusion?
+M|decision-audit|- [ ] Is contradictory evidence acknowledged and addressed — or absent from the brief?
+M|decision-audit|- [ ] Are market direction claims stated with appropriate uncertainty, or as fact?
+M|decision-audit|- [ ] What would have to be true for this str to be wrong? Is that condition discussed?
+M|decision-audit|**Common correction:** Separate the narrative from the evidence: "Here is what the data shows [X]. Here is the interpretation [Y]. Here is the assumption required to connect them [Z]."
+M|decision-audit|**Characteristic failure:** Recency bias + Availability bias
+M|decision-audit|**Where it appears:**
+M|decision-audit|- A single spike in data treated as a durable trend rather than a one-period event.
+M|decision-audit|- cp analysis citing the cp's most visible recent moves rather than a systematic rv of their str.
+M|decision-audit|- "Users are responding to X" based on 1–2 weeks of data without checking if the pattern holds over a longer window.
+M|decision-audit|**Priority checks when auditing Kai:**
+M|decision-audit|- [ ] Is the trend conclusion based on a single period or a consistent pattern across ≥3 comparable periods?
+M|decision-audit|- [ ] Is the cp analysis based on a systematic rv or the most recently visible examples?
+M|decision-audit|- [ ] Has the signal passed the WebSearch elimination test — is this a platform-wide effect, not vtr-specific?
+M|decision-audit|- [ ] Is the sample size large enough to support the confidence level of the claim?
+M|decision-audit|**Common correction:** Time-extend the data window: "Pattern holds over [N] periods — not just the most recent spike."
+M|decision-audit|Before issuing a verdict on any agt's output, Kahneman states:
+M|decision-audit|```
+M|decision-audit|agt audited: [name]
+M|decision-audit|Characteristic failure mode: [bias name from profile above]
+M|decision-audit|Priority check applied: [which checklist items weighted most heavily]
+M|decision-audit|Finding: [what was found, or "profile bias not present — standard checklist applied"]
+M|decision-audit|```
+M|decision-audit|Then continue to full verdict in standard Communication DNA format.

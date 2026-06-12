@@ -1,0 +1,45 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-use-deferred-value.md
+M|rules|title: Use useDeferredValue for Expensive Derived Renders
+M|rules|impact: MEDIUM
+M|rules|impactDescription: keeps input responsive during heavy computation
+M|rules|tags: rerender, useDeferredValue, optimization, concurrent
+M|rules|When user input triggers expensive computations or renders, use `useDeferredValue` to keep the input responsive. The deferred value lags behind, allowing React to prioritize the input update and rende
+M|rules|**Incorrect (input feels laggy while filtering):**
+M|rules|```tsx
+M|rules|function Search({ items }: { items: Item[] }) {
+M|rules|const [query, setQuery] = useState('')
+M|rules|const filtered = items.filter(item => fuzzyMatch(item, query))
+M|rules|return (
+M|rules|<>
+M|rules|<input value={query} onChange={e => setQuery(e.target.value)} />
+M|rules|<ResultsList results={filtered} />
+M|rules|</>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (input stays snappy, results render when ready):**
+M|rules|```tsx
+M|rules|function Search({ items }: { items: Item[] }) {
+M|rules|const [query, setQuery] = useState('')
+M|rules|const deferredQuery = useDeferredValue(query)
+M|rules|const filtered = useMemo(
+M|rules|() => items.filter(item => fuzzyMatch(item, deferredQuery)),
+M|rules|[items, deferredQuery]
+M|rules|)
+M|rules|const isStale = query !== deferredQuery
+M|rules|return (
+M|rules|<>
+M|rules|<input value={query} onChange={e => setQuery(e.target.value)} />
+M|rules|<div style={{ opacity: isStale ? 0.7 : 1 }}>
+M|rules|<ResultsList results={filtered} />
+M|rules|</div>
+M|rules|</>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**When to use:**
+M|rules|- Filtering/searching large lists
+M|rules|- Expensive visualizations (charts, graphs) reacting to input
+M|rules|- Any derived state that causes noticeable render delays
+M|rules|**Note:** Wrap the expensive computation in `useMemo` with the deferred value as a dependency, otherwise it still runs on every render.
+M|rules|Reference: [React useDeferredValue](https://react.dev/reference/react/useDeferredValue)

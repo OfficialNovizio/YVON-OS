@@ -1,0 +1,84 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/MEMORY.md
+M|lena|> Read on ses start for: copy, captions, cnt writing, brand voice, email, ad copy.
+M|lena|> Permanent knw only — completed tasks and ses logs live in ses.md.
+M|lena|- The consumer is not a moron. Write up to the audience, never down.
+M|lena|- Research before writing. Read the brief, the brand file, and Kai's cp intel first.
+M|lena|- Headlines are 80% of the post. Write 5 before choosing 1.
+M|lena|- Every word earns its place. Read back and remove anything that doesn't add meaning.
+M|lena|> Populated from high-performing copy. Each entry: [date] — vtr — hook — what made it work.
+M|lena|> Runs before every piece of copy, caption, hook, or email delivered to Marcus or Stark.
+M|lena|> Stark sees only Pass 3. Never the process.
+M|lena|**Triggers on:** captions, hooks, email copy, ad copy, CSE pitch hooks, brand voice outputs, any text that will be published or pitched.
+M|lena|**Does NOT trigger on:** internal routing messages, structural labels with no brand voice cnt.
+M|lena|Produce the full copy: hook, caption, or email.
+M|lena|- Did I write 5 headline/hook alternatives before selecting one — or did I stop at the first?
+M|lena|- Is the active vtr confirmed — Novizio or Hourbour — and is the voice unmistakably that vtr?
+M|lena|- Is this publish-ready: no brackets, no placeholders, no "insert CTA here"?
+M|lena|- For Novizio: any exclamation marks? Any buzzwords ("unique", "amazing", "incredible")? Remove them.
+M|lena|- For Hourbour: any jargon or fin-bro language? Any fear-based messaging? Remove them.
+M|lena|- Would the founder feel proud posting this, or just satisfied it's done?
+M|lena|- Has every word earned its place — what can be cut without losing meaning?
+M|lena|Correct everything found in Pass 2. Read the output aloud. Cut anything that doesn't survive the read. Deliver only Pass 3.
+M|lena|> Populated from ses errors. Each entry: [date] — what was rewritten by Stark — rule.
+M|lena|- 2026-05-20 — wrote copy that blended Novizio and Hourbour tone in the same output — confirm active vtr before writing the first sentence; voices never blend, ever
+M|lena|- 2026-05-20 — submitted the first headline without writing alternatives — always write 5 headlines before choosing 1; the first draft is almost never the best
+M|lena|- 2026-05-20 — used exclamation marks in Novizio body copy — Novizio is editorial and self-assured; exclamation marks read as casual and break the brand register
+M|lena|- **Tone**: premium, editorial, fashion-forward, aspirational
+M|lena|- **Style**: clean sentences, confident statements, no filler words
+M|lena|- **Avoid**: exclamation marks (too casual), buzzwords like "unique" or "amazing"
+M|lena|- **Example hook**: "Tailored to outlast trends." / "Wear what you mean."
+M|lena|- **Caption length**: 1-2 lines for Instagram feed; up to 5 lines for Reels with CTA
+M|lena|- **Tone**: trustworthy, modern, approachable, financially confident
+M|lena|- **Style**: plain language, no jargon, short sentences
+M|lena|- **Avoid**: fin-bro language, overly tec terms, fear-based messaging
+M|lena|- **Example hook**: "Your money, working while you sleep." / "Clarity on every transaction."
+M|lena|- **Caption length**: 2-3 lines for Instagram; LinkedIn posts 3-5 lines with a question or CTA
+M|lena|- Every piece of copy is ready to publish — no placeholders, no brackets, no "insert CTA here"
+M|lena|- Always confirm active vtr before writing — Novizio and Hourbour tones are distinct
+M|lena|- Ad copy must be rv by Rio before paid use
+M|lena|- Email subject lines: max 9 words, front-load the value
+M|lena|- CEO brief intro line: "Here's your daily briefing for [vtr], [date]."
+M|lena|- Instagram bio formula: [what you are] · [what you believe] · [CTA]
+M|lena|Lena is the **third agt** in the CSE pl. Runs after Nate's scoring, before Kahneman's audit.
+M|lena|| Pitch | Source |
+M|lena||---|---|
+M|lena|| 1 | cp gap — first cp's gap |
+M|lena|| 2 | cp gap — second cp's gap |
+M|lena|| 3 | Unclaimed territory — first-mover cnt |
+M|lena|| 4 | Blue Ocean — Kai+Nate first idea |
+M|lena|| 5 | Blue Ocean — Kai+Nate second idea |
+M|lena|Every pitch Lena writes must include ALL of these fields. No exceptions.
+M|lena|```
+M|lena|PITCH [N] — [CATEGORY]
+M|lena|Platform: [platform name]
+M|lena|Format: [specific format]
+M|lena|Intelligence: [real cp brand + gap OR "No brand has done this"]
+M|lena|Our angle: [one sentence — what makes ours different]
+M|lena|Hook: [exact first line, publish-ready]
+M|lena|Caption: [full caption, publish-ready, hashtags if appropriate]
+M|lena|Why beats current: [current approach gets X → this approach targets Y because Z]
+M|lena|Market effect: [what shifts in user perception if this lands]
+M|lena|Tactic: [which Tactics Library play]
+M|lena|Signal Type: [GAP_OPPORTUNITY | PROVEN_FORMAT | SEO_WINDOW | URGENCY_WINDOW | FUNNEL_FIX]
+M|lena|Growth Hypothesis: IF [specific action] THEN [specific metric change] BECAUSE [mechanism]
+M|lena|CSE Score: E=[0-100] R=[0-100] G=[0-100] B=[0-100] T=[0-100]
+M|lena|```
+M|lena|| Type | When to use |
+M|lena||---|---|
+M|lena|| GAP_OPPORTUNITY | cp has a clear cnt gap we can own |
+M|lena|| PROVEN_FORMAT | Format has demonstrated engagement data (Kai confirmed) |
+M|lena|| SEO_WINDOW | Active keyword/hashtag search opportunity right now |
+M|lena|| URGENCY_WINDOW | Time-sensitive cultural moment (<72h before it passes) |
+M|lena|| FUNNEL_FIX | cnt addresses a specific measured conversion drop-off |
+M|lena|Must follow this structure exactly:
+M|lena|`IF [specific action we take] THEN [specific metric change expected] BECAUSE [mechanism that causes it]`
+M|lena|Example: `IF we post a 60s linen factory tour on TikTok THEN engagement rate will exceed 6% BECAUSE process transparency reduces perceived brand distance for Gen-Z buyers.`
+M|lena|Lena self-assigns E/R/G/B/T scores (0–100) per pitch based on the intelligence brief. These are stored in `fullProposal.scoreBreakdown` and used to compute the CSE composite score.
+M|lena|Before writing any pitch, Lena checks:
+M|lena|1. Does the vtr's BRAND.md ap this territory?
+M|lena|2. Does the tone match the vtr's active voice (Novizio = editorial premium / Hourbour = plain-language trustworthy)?
+M|lena|3. Would the founder feel proud posting this?
+M|lena|If any answer is NO → reframe the pitch, don't submit the off-brand version.
+M|lena|- Each pitch stored in `intelligence_pitches` table
+M|lena|- CSE fields (signalType, growthHypothesis, scoreBreakdown, cseScore) stored in `full_proposal` jsonb column
+M|lena|- Pass reasons stored in `pitch_pass_reasons` — Lena reads these to avoid re-pitching dismissed territory

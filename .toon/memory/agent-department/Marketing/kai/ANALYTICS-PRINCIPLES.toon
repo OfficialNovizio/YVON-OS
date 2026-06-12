@@ -1,0 +1,75 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/ANALYTICS-PRINCIPLES.md
+M|kai|> Load this file only when: producing any data analysis, writing the CEO brief data section, diagnosing a metric anomaly, or establishing baselines.
+M|kai|Before any analysis output, confirm:
+M|kai|1. Active vtr (Novizio or Hourbour)
+M|kai|2. `last_data_pull_date` from mem — if > 14 days ago, flag data may be stale
+M|kai|3. `baseline_*` keys from mem — what are we comparing against?
+M|kai|4. `tracked_anomalies` from mem — are there known issues to account for?
+M|kai|If data is stale, flag it before producing analysis. Never present stale data as current.
+M|kai|| Metric | Definition | Measured By |
+M|kai||--------|-----------|------------|
+M|kai|| Followers | Total follower count at time of pull | `/api/instagram`, `/api/youtube`, `/api/linkedin` |
+M|kai|| Follower growth (%) | (current - baseline) / baseline × 100 | Kai calculates from mem baseline |
+M|kai|| Engagement rate (IG) | (likes + comments + saves) / reach × 100 | Use **reach**, not followers as denominator |
+M|kai|| Views (YT) | Total views in period | `/api/youtube` |
+M|kai|| Subscriber growth (%) | Same formula as follower growth | Kai calculates |
+M|kai|| Metric | Definition |
+M|kai||--------|-----------|
+M|kai|| Sessions | Unique visit sessions in period |
+M|kai|| Bounce rate | Sessions where user left without interaction |
+M|kai|| Top pages | Pages with highest ses count |
+M|kai|| Traffic sources | Direct / organic / soc / paid breakdown |
+M|kai|| New users % | Sessions from first-time visitors |
+M|kai|An anomaly is a metric change > 20% in either direction within a single week.
+M|kai|When an anomaly is detected:
+M|kai|1. **Confirm it's real** — check if the data pull was clean (no API error, no caching issue)
+M|kai|2. **Time it** — when exactly did the spike/drop occur?
+M|kai|3. **Hypothesize** — what happened on that date? (Viral post? Algorithm change? cg start?)
+M|kai|4. **Classify**: Good anomaly (viral, cg success) / Bad anomaly (bot followers, algorithm penalty) / Unexplained
+M|kai|5. **Flag to**: Marcus + Alex if significant (> 20%); Diana for ops ctx
+M|kai|6. **Track it** — add to `tracked_anomalies` in mem; resolve when explained
+M|kai|A trend is meaningful when it persists for 3+ consecutive data pulls.
+M|kai|Kai's trend analysis always includes:
+M|kai|1. **Direction** — up / down / flat
+M|kai|2. **Rate** — percentage change per period
+M|kai|3. **Duration** — how many periods has this been true?
+M|kai|4. **Comparison** — above or below industry benchmark?
+M|kai|5. **Interpretation** — what does this mean in plain language?
+M|kai|Example: "IG followers up 2.1% week-over-week for 4 consecutive weeks. Above fashion benchmark (1.5% WoW). Likely driven by Reel series that started on March 1."
+M|kai|Kai's data section in Marcus's morning brief follows this exact structure:
+M|kai|```
+M|kai|📊 DATA SNAPSHOT — [vtr] — [Date]
+M|kai|soc
+M|kai|• IG: [followers] ([+/-X%] WoW) | ER: [X%]
+M|kai|• YT: [subscribers] ([+/-X%] WoW) | Views: [X]
+M|kai|• LI: [followers] ([+/-X%] WoW)
+M|kai|WEB
+M|kai|• Sessions: [X] ([+/-X%] vs last month)
+M|kai|• Bounce rate: [X%]
+M|kai|• Top page: [page name] ([X] sessions)
+M|kai|NOTABLE
+M|kai|• [One key trend or anomaly, 1 sentence]
+M|kai|• [One platform comparison or concern, 1 sentence]
+M|kai|```
+M|kai|Max 10 lines. No analysis in this section — just facts. Marcus adds the interpretation.
+M|kai|| Platform | Metric | Industry Benchmark |
+M|kai||----------|--------|--------------------|
+M|kai|| Instagram (Fashion) | Engagement rate | 1.5–3.0% |
+M|kai|| Instagram (Fintech) | Engagement rate | 1.0–2.0% |
+M|kai|| YouTube | Avg view duration | > 40% of video length |
+M|kai|| LinkedIn | Post engagement rate | 1–5% |
+M|kai|| Website (SaaS) | Bounce rate | < 55% |
+M|kai|| Website (E-commerce) | Bounce rate | < 45% |
+M|kai|Flag to Marcus/Alex when YVON is below benchmark for 2+ consecutive periods.
+M|kai|- Event naming: noun + verb (e.g., `button_clicked`, `form_submitted`). Consistent across ventures.
+M|kai|- GA4 custom dimensions per vtr. UTM all external links — no untagged traffic.
+M|kai|- **Avoid**: tracking events without a dec attached — only instrument what will inform a choice.
+M|kai|- One variable per test. Define the success metric before the test starts — no post-hoc interpretation.
+M|kai|- Minimum 2-week run or 500 conversions per variant — whichever comes first.
+M|kai|- **Avoid**: stopping a test early when results look promising — significance requires the full window.
+M|kai|- Track: MRR, ARR, MoM growth rate, NRR, churn rate, expansion MRR, contraction MRR.
+M|kai|- Cohort-based retention is more actionable than aggregate churn.
+M|kai|- **Avoid**: reporting MRR growth without separating new, expansion, contraction, and churn components.
+M|kai|- Run all 4 quadrants: growth, retention, margin, cash.
+M|kai|- Flag any metric 20%+ below benchmark immediately — not at the end of the ses.
+M|kai|- **Avoid**: presenting data without period-over-period ctx or benchmark comparison.

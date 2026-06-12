@@ -1,0 +1,160 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/paid-ads/references/audience-targeting.md
+M|references|Detailed targeting strategies for each major ad platform.
+M|references|- Google Ads Audiences (Search cg Targeting, Display/YouTube Targeting)
+M|references|- Meta Audiences (Core Audiences, Custom Audiences, Lookalike Audiences)
+M|references|- LinkedIn Audiences (Job-Based Targeting, Company-Based Targeting, High-Performing Combinations)
+M|references|- Twitter/X Audiences
+M|references|- TikTok Audiences
+M|references|- Audience Size Guidelines
+M|references|- Exclusion str
+M|references|**Keywords:**
+M|references|- Exact match: [keyword] — most precise, lower volume
+M|references|- Phrase match: "keyword" — moderate precision and volume
+M|references|- Broad match: keyword — highest volume, use with smart bidding
+M|references|**Audience layering:**
+M|references|- Add audiences in "observation" mode first
+M|references|- Analyze performance by audience
+M|references|- Switch to "targeting" mode for high performers
+M|references|**RLSA (Remarketing Lists for Search Ads):**
+M|references|- Bid higher on past visitors searching your terms
+M|references|- Show different ads to returning searchers
+M|references|- Exclude converters from prospecting cg
+M|references|**Custom intent audiences:**
+M|references|- Based on recent search behavior
+M|references|- Create from your converting keywords
+M|references|- High intent, good for prospecting
+M|references|**In-market audiences:**
+M|references|- People actively researching solutions
+M|references|- Pre-built by Google
+M|references|- Layer with demographics for precision
+M|references|**Affinity audiences:**
+M|references|- Based on interests and habits
+M|references|- Better for awareness
+M|references|- Broad but can exclude irrelevant
+M|references|**Customer match:**
+M|references|- Upload email lists
+M|references|- Retarget existing customers
+M|references|- Create lookalikes from best customers
+M|references|**Similar/lookalike audiences:**
+M|references|- Based on your customer match lists
+M|references|- Expand reach while maintaining relevance
+M|references|- Best when source list is high-quality customers
+M|references|**Interest targeting tips:**
+M|references|- Layer interests with AND logic for precision
+M|references|- Use Audience Insights to research interests
+M|references|- Start broad, let algorithm optimize
+M|references|- Exclude existing customers always
+M|references|**Demographic targeting:**
+M|references|- Age and gender (if product-specific)
+M|references|- Location (down to zip/postal code)
+M|references|- Language
+M|references|- Education and work (limited data now)
+M|references|**Behavior targeting:**
+M|references|- Purchase behavior
+M|references|- Device usage
+M|references|- Travel patterns
+M|references|- Life events
+M|references|**Website visitors:**
+M|references|- All visitors (last 180 days max)
+M|references|- Specific page visitors
+M|references|- Time on site thresholds
+M|references|- Frequency (visited X times)
+M|references|**Customer list:**
+M|references|- Upload emails/phone numbers
+M|references|- Match rate typically 30-70%
+M|references|- Refresh regularly for accuracy
+M|references|**Engagement audiences:**
+M|references|- Video viewers (25%, 50%, 75%, 95%)
+M|references|- Page/profile engagers
+M|references|- Form openers
+M|references|- Instagram engagers
+M|references|**App activity:**
+M|references|- App installers
+M|references|- In-app events
+M|references|- Purchase events
+M|references|**Source audience quality matters:**
+M|references|- Use high-LTV customers, not all customers
+M|references|- Purchasers > leads > all visitors
+M|references|- Minimum 100 source users, ideally 1,000+
+M|references|**Size recommendations:**
+M|references|- 1% — most similar, smallest reach
+M|references|- 1-3% — good balance for most
+M|references|- 3-5% — broader, good for scale
+M|references|- 5-10% — very broad, awareness only
+M|references|**Layering strategies:**
+M|references|- Lookalike + interest = more precision early
+M|references|- Test lookalike-only as you scale
+M|references|- Exclude the source audience
+M|references|**Job titles:**
+M|references|- Be specific (CMO vs. "mkt")
+M|references|- LinkedIn normalizes titles, but verify
+M|references|- Stack related titles
+M|references|- Exclude irrelevant titles
+M|references|**Job functions:**
+M|references|- Broader than titles
+M|references|- Combine with seniority level
+M|references|- Good for awareness cg
+M|references|**Seniority levels:**
+M|references|- Entry, Senior, Manager, Director, VP, CXO, Partner
+M|references|- Layer with function for precision
+M|references|**Skills:**
+M|references|- Self-reported, less reliable
+M|references|- Good for tec roles
+M|references|- Use as expansion layer
+M|references|**Company size:**
+M|references|- 1-10, 11-50, 51-200, 201-500, 501-1000, 1001-5000, 5000+
+M|references|- Key filter for B2B
+M|references|**Industry:**
+M|references|- Based on company classification
+M|references|- Can be broad, layer with other criteria
+M|references|**Company names (ABM):**
+M|references|- Upload target account list
+M|references|- Minimum 300 companies recommended
+M|references|- Match rate varies
+M|references|**Company growth rate:**
+M|references|- Hiring rapidly = budget available
+M|references|- Good signal for timing
+M|references|| Use Case | Targeting Combination |
+M|references||----------|----------------------|
+M|references|| Enterprise sales | Company size 1000+ + VP/CXO + Industry |
+M|references|| SMB sales | Company size 11-200 + Manager/Director + Function |
+M|references|| Developer tools | Skills + Job function + Company type |
+M|references|| ABM cg | Company list + dec-maker titles |
+M|references|| Broad awareness | Industry + Seniority + Geography |
+M|references|- Follower lookalikes (accounts similar to followers of X)
+M|references|- Interest categories
+M|references|- Keywords (in tweets)
+M|references|- Conversation topics
+M|references|- Events
+M|references|- Tailored audiences (your lists)
+M|references|- Follower lookalikes of relevant accounts work well
+M|references|- Keyword targeting catches active conversations
+M|references|- Lower CPMs than LinkedIn/Meta
+M|references|- Less precise, better for awareness
+M|references|- Demographics (age, gender, location)
+M|references|- Interests (TikTok's categories)
+M|references|- Behaviors (video interactions)
+M|references|- Device (iOS/Android, connection type)
+M|references|- Custom audiences (pixel, customer file)
+M|references|- Lookalike audiences
+M|references|- Younger skew (18-34 primarily)
+M|references|- Interest targeting is broad
+M|references|- Creative matters more than targeting
+M|references|- Let algorithm optimize with broad targeting
+M|references|| Platform | Minimum Recommended | Ideal Range |
+M|references||----------|-------------------|-------------|
+M|references|| Google Search | 1,000+ searches/mo | 5,000-50,000 |
+M|references|| Google Display | 100,000+ | 500K-5M |
+M|references|| Meta | 100,000+ | 500K-10M |
+M|references|| LinkedIn | 50,000+ | 100K-500K |
+M|references|| Twitter/X | 50,000+ | 100K-1M |
+M|references|| TikTok | 100,000+ | 1M+ |
+M|references|Too narrow = expensive, slow learning
+M|references|Too broad = wasted spend, poor relevance
+M|references|Always exclude:
+M|references|- Existing customers (unless upsell)
+M|references|- Recent converters (7-14 days)
+M|references|- Bounced visitors (<10 sec)
+M|references|- Employees (by company or email list)
+M|references|- Irrelevant page visitors (careers, support)
+M|references|- cp (if identifiable)

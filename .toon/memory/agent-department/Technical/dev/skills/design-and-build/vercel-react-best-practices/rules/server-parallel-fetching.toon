@@ -1,0 +1,67 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-parallel-fetching.md
+M|rules|title: Parallel Data Fetching with Component Composition
+M|rules|impact: CRITICAL
+M|rules|impactDescription: eliminates server-side waterfalls
+M|rules|tags: server, rsc, parallel-fetching, composition
+M|rules|React Server Components execute sequentially within a tree. Restructure with composition to parallelize data fetching.
+M|rules|**Incorrect (Sidebar waits for Page's fetch to complete):**
+M|rules|```tsx
+M|rules|export default async function Page() {
+M|rules|const header = await fetchHeader()
+M|rules|return (
+M|rules|<div>
+M|rules|<div>{header}</div>
+M|rules|<Sidebar />
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|async function Sidebar() {
+M|rules|const items = await fetchSidebarItems()
+M|rules|return <nav>{items.map(renderItem)}</nav>
+M|rules|}
+M|rules|```
+M|rules|**Correct (both fetch simultaneously):**
+M|rules|```tsx
+M|rules|async function Header() {
+M|rules|const data = await fetchHeader()
+M|rules|return <div>{data}</div>
+M|rules|}
+M|rules|async function Sidebar() {
+M|rules|const items = await fetchSidebarItems()
+M|rules|return <nav>{items.map(renderItem)}</nav>
+M|rules|}
+M|rules|export default function Page() {
+M|rules|return (
+M|rules|<div>
+M|rules|<Header />
+M|rules|<Sidebar />
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Alternative with children prop:**
+M|rules|```tsx
+M|rules|async function Header() {
+M|rules|const data = await fetchHeader()
+M|rules|return <div>{data}</div>
+M|rules|}
+M|rules|async function Sidebar() {
+M|rules|const items = await fetchSidebarItems()
+M|rules|return <nav>{items.map(renderItem)}</nav>
+M|rules|}
+M|rules|function Layout({ children }: { children: ReactNode }) {
+M|rules|return (
+M|rules|<div>
+M|rules|<Header />
+M|rules|{children}
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|export default function Page() {
+M|rules|return (
+M|rules|<Layout>
+M|rules|<Sidebar />
+M|rules|</Layout>
+M|rules|)
+M|rules|}
+M|rules|```

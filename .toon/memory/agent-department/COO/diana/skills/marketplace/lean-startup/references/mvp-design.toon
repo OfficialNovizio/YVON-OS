@@ -1,0 +1,130 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/mvp-design.md
+M|references|A Minimum Viable Product is not a minimal product. It is the smallest experiment that lets you collect the maximum amount of validated learning about customers with the least effort. The purpose of an
+M|references|Deliver the product experience entirely by hand to a small number of customers. No technology. No automation. Just humans doing the work the software would eventually do.
+M|references|**How it works:** Find 5-10 target customers. Manually deliver the service your product would automate. Charge for it (or at least get commitment). Observe what customers actually value.
+M|references|**Real example:** Food on the Table founder Manuel Rosso personally created grocery lists and meal plans for one family by visiting their home, learning their preferences, and checking local store sal
+M|references|**Best for:** Service-based products, marketplace supply/demand validation, understanding workflows.
+M|references|**Strengths:** Deep customer insight, immediate feedback, zero tec risk.
+M|references|**Limitations:** Does not scale. Cannot test tec feasibility. Labor-intensive.
+M|references|The customer sees what appears to be a working product, but behind the scenes, humans perform the work manually.
+M|references|**How it works:** Build the front-end experience (website, app, chatbot). When the customer interacts, a human fulfills the request instead of software.
+M|references|**Real example:** Zappos founder Nick Swinmurn posted photos of shoes from local stores on a website. When someone ordered, he went to the store, bought the shoes, and shipped them. Customers thought 
+M|references|**Best for:** Testing demand and user experience before building the back-end. Products where the interface matters but the engine is complex.
+M|references|**Strengths:** Tests real purchasing behavior. Feels like a real product. Can validate pricing.
+M|references|**Limitations:** Requires front-end build. Hard to sustain for high-volume use cases.
+M|references|A mkt page that describes the product and captures a commitment signal (email, pre-order, click) before the product exists.
+M|references|**How it works:** Create a landing page with a clear value proposition, feature descriptions, and a call-to-action. Drive targeted traffic. Measure conversion rate.
+M|references|**Real example:** Buffer's Joel Gascoigne created a landing page describing a soc media scheduling tool with a pricing page. When visitors clicked a plan, they saw "we're not quite ready yet" and an e
+M|references|**Best for:** Validating demand and value proposition. Testing messaging and positioning. Gauging willingness to pay.
+M|references|**Strengths:** Fast (can be live in hours). Cheap. Generates quantitative data.
+M|references|**Limitations:** Measures intent, not behavior. No product learning. Can produce false positives with compelling copy.
+M|references|Build one core feature exceptionally well rather than many features poorly.
+M|references|**How it works:** Identify the single feature that best tests your value hypothesis. Build only that feature. Strip away everything else (no settings, no profiles, no dashboards).
+M|references|**Real example:** Early Foursquare launched with just one feature: check-ins. No recommendations, no city guides, no brand pages. Just the ability to check in at a location and see who else was there.
+M|references|**Best for:** Products where the core interaction is the hypothesis. When you need real usage data, not just intent.
+M|references|**Strengths:** Tests actual product behavior. Generates real usage metrics. Can evolve into the actual product.
+M|references|**Limitations:** Requires real dev work. Risk of scope creep.
+M|references|Combine existing tools, platforms, and services to deliver the product experience without building custom technology.
+M|references|**How it works:** Stitch together Airtable, Zapier, Typeform, Calendly, Stripe, email, and other off-the-shelf tools to create a functional product.
+M|references|**Real example:** Groupon started as a WordPress blog with manually generated PDF coupons emailed to subscribers. The "platform" was a blog, an email list, and Apple Mail.
+M|references|**Best for:** Validating the full customer journey. Products that integrate existing capabilities in a new way.
+M|references|**Strengths:** Very fast to build. Low cost. Tests real customer behavior.
+M|references|**Limitations:** Clunky user experience. Hard to scale. Maintenance overhead with multiple tools.
+M|references|A video demonstration of how the product works (or would work), used to gauge interest and explain complex value propositions.
+M|references|**How it works:** Create a 2-4 minute video showing the product in action (can be real, simulated, or animated). Share it with the target audience. Measure engagement, shares, signups, or pre-orders.
+M|references|**Real example:** Dropbox created a 3-minute screencast demonstrating the file-syncing experience. The video drove their beta waitlist from 5,000 to 75,000 overnight. The product barely worked at the 
+M|references|**Best for:** Products with complex value propositions. tec products hard to explain in text. Viral consumer products.
+M|references|**Strengths:** Can go viral. Explains complex products quickly. Low build cost.
+M|references|**Limitations:** Measures interest, not commitment. prd quality matters. Does not test actual usage.
+M|references|Ask customers to pay before the product exists.
+M|references|**How it works:** Describe the product. Set a price. Accept payment (or refundable deposits). Deliver later if funded.
+M|references|**Real example:** Pebble Watch raised over $10 million on Kickstarter before manufacturing a single unit. 68,929 people pre-ordered based on renderings and a prototype video.
+M|references|**Best for:** Hardware products. High-commitment purchase decisions. Validating willingness to pay at a specific price.
+M|references|**Strengths:** Strongest signal of demand (actual money). Can fund dev. Tests pricing.
+M|references|**Limitations:** Sets delivery expectations. Legal and ethical obligations. Reputational risk if you cannot deliver.
+M|references|| Situation | Recommended MVP Types | Why |
+M|references||-----------|----------------------|-----|
+M|references|| Uncertain if problem exists | Concierge, Smoke Test | Direct customer contact reveals real vs imagined problems |
+M|references|| Problem validated, solution uncertain | Wizard of Oz, Single Feature | Test the actual solution experience |
+M|references|| Solution clear, demand uncertain | Smoke Test, Video, Pre-Order | Measure market-level interest |
+M|references|| Complex B2B workflow | Concierge, Piecemeal | Must understand workflow before automating |
+M|references|| Consumer mobile app | Single Feature, Video, Smoke Test | Consumer attention is scarce; test one hook |
+M|references|| Marketplace | Concierge (supply side), Smoke Test (demand side) | Must validate both sides separately |
+M|references|| Hardware product | Video, Pre-Order, Wizard of Oz | Physical prototyping is expensive; validate demand first |
+M|references|| API / developer tool | Single Feature, Piecemeal | Developers want working tools, not promises |
+M|references|An MVP is too small when it cannot gen the data needed to make a dec. Ask:
+M|references|- Can a customer understand the value proposition?
+M|references|- Can a customer take a meaningful action (sign up, pay, use)?
+M|references|- Can you distinguish signal from noise in the data?
+M|references|If the answer to any of these is no, the MVP is too small.
+M|references|An MVP is too big when it includes anything that does not directly serve the current hypothesis. Warning signs:
+M|references|- You are building features "while we are at it"
+M|references|- The build phase exceeds 3-4 weeks
+M|references|- You are debating polish, edge cases, or error handling
+M|references|- You are building for scale before validating demand
+M|references|| Stage | Appropriate MVP Scope | Time to Build |
+M|references||-------|----------------------|---------------|
+M|references|| Problem validation | Landing page, customer interviews, concierge for 5 customers | 1-5 days |
+M|references|| Solution validation | Wizard of Oz, clickable prototype, single feature for 20 users | 1-3 weeks |
+M|references|| Business model validation | Piecemeal MVP, pre-order cg, working product for 50-100 users | 2-4 weeks |
+M|references|| Growth validation | Instrumented product for 500+ users with A/B testing capability | 4-8 weeks |
+M|references|Use this canvas to design your next MVP:
+M|references|```
+M|references|MVP DESIGN CANVAS
+M|references|=================
+M|references|1. HYPOTHESIS
+M|references|What we believe: ____________________
+M|references|For whom: ____________________
+M|references|The riskiest assumption: ____________________
+M|references|2. MVP TYPE
+M|references|Selected type: ____________________
+M|references|Why this type: ____________________
+M|references|3. SCOPE
+M|references|Included:
+M|references|- ____________________
+M|references|- ____________________
+M|references|- ____________________
+M|references|Explicitly excluded:
+M|references|- ____________________
+M|references|- ____________________
+M|references|4. SUCCESS CRITERIA
+M|references|Primary metric: ____________________
+M|references|Success threshold: ____________________
+M|references|Sample size needed: ____________________
+M|references|Time to collect data: ____________________
+M|references|5. BUILD PLAN
+M|references|Resources needed: ____________________
+M|references|Time-box: ____________________
+M|references|Launch date: ____________________
+M|references|6. RISK MITIGATION
+M|references|Biggest risk: ____________________
+M|references|Mitigation: ____________________
+M|references|```
+M|references|**What happens:** Team builds 15 features because "users expect a complete product." The build takes 4 months. When it launches, they cannot tell which feature drove engagement.
+M|references|**Fix:** One hypothesis per MVP. One primary metric. If you cannot explain the MVP in one sentence, it is too complex.
+M|references|**What happens:** Team builds something minimal but shows it to no one. "We need to make it a little better first."
+M|references|**Fix:** Set a launch date before you start building. Announce it publicly. Ship on that date regardless of how "ready" it feels.
+M|references|**What happens:** Team tests the MVP with friends, family, or colleagues instead of actual target customers.
+M|references|**Fix:** Define your early adopter profile before building. Recruit from channels where real customers exist. Friends will tell you what you want to hear.
+M|references|**What happens:** Team launches the MVP but has no instrumentation. Learning is based on gut feel and anecdotes.
+M|references|**Fix:** Define your metric and instrument the MVP before launch. Use anl tools, manual tracking, or direct observation. Data collection is not optional.
+M|references|**What happens:** Team keeps polishing because "our brand reputation is at stake." MVP never launches.
+M|references|**Fix:** Remember that the MVP is for early adopters, not the mass market. Early adopters tolerate rough edges if the core value is there. Use a separate brand if reputation is a concern.
+M|references|**What happens:** Team builds for 100,000 users when they need 100. Invests in infrastructure, sec, and compliance before validating demand.
+M|references|**Fix:** Do things that do not scale. Manual processes are fine. tec debt is acceptable. Scaling problems are a luxury you earn by proving demand.
+M|references|An MVP graduates to product dev when:
+M|references|| Criterion | Signal | Threshold Example |
+M|references||-----------|--------|-------------------|
+M|references|| Problem-Solution Fit | Customers actively use the MVP and express disappointment at the idea of losing it | 40%+ say "very disappointed" on Sean Ellis test |
+M|references|| Repeatable Demand | New customers arrive through identifiable, repeatable channels | 3+ consistent acquisition channels |
+M|references|| Willingness to Pay | Customers pay (or demonstrate clear intent) at a sustainable price point | Positive unit economics on paper |
+M|references|| Retention | Customers return and use the product repeatedly | Week 4 retention above 20% (varies by category) |
+M|references|| Organic Growth | Some customers refer others without prompting | Viral coefficient above 0.2 |
+M|references|- [ ] Core value hypothesis validated with paying customers
+M|references|- [ ] Growth hypothesis has initial evidence
+M|references|- [ ] Unit economics are viable (or have a clear path to viability)
+M|references|- [ ] Early adopters are retained and engaged
+M|references|- [ ] The team can articulate what they learned and why they are confident
+M|references|- [ ] At least 3 Build-Measure-Learn loops have been completed
+M|references|- [ ] Pivot or persevere dec has been explicitly made (and persevere was chosen)
+M|references|Do not graduate the MVP prematurely. The most expensive mistake in startups is scaling something that has not been validated.

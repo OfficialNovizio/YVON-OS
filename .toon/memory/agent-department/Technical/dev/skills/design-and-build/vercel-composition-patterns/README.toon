@@ -1,0 +1,36 @@
+#MEM id=vercel-composition-patterns source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/README.md
+M|vercel-composition-patterns|A structured repository for React composition patterns that scale. These
+M|vercel-composition-patterns|patterns help avoid boolean prop proliferation by using compound components,
+M|vercel-composition-patterns|lifting state, and composing internals.
+M|vercel-composition-patterns|- `rules/` - Individual rule files (one per rule)
+M|vercel-composition-patterns|- `_sections.md` - Section metadata (titles, impacts, descriptions)
+M|vercel-composition-patterns|- `_template.md` - Template for creating new rules
+M|vercel-composition-patterns|- `area-description.md` - Individual rule files
+M|vercel-composition-patterns|- `metadata.json` - doc metadata (version, organization, abstract)
+M|vercel-composition-patterns|- **`AGENTS.md`** - Compiled output (generated)
+M|vercel-composition-patterns|- `architecture-avoid-boolean-props.md` - Don't add boolean props to customize
+M|vercel-composition-patterns|behavior
+M|vercel-composition-patterns|- `architecture-compound-components.md` - Structure as compound components with
+M|vercel-composition-patterns|shared ctx
+M|vercel-composition-patterns|- `state-lift-state.md` - Lift state into provider components
+M|vercel-composition-patterns|- `state-ctx-interface.md` - Define clear ctx interfaces
+M|vercel-composition-patterns|(state/actions/meta)
+M|vercel-composition-patterns|- `state-decouple-implementation.md` - Decouple state management from UI
+M|vercel-composition-patterns|- `patterns-children-over-render-props.md` - Prefer children over renderX props
+M|vercel-composition-patterns|- `patterns-explicit-variants.md` - Create explicit component variants
+M|vercel-composition-patterns|1. **Composition over cfg** — Instead of adding props, let consumers
+M|vercel-composition-patterns|compose
+M|vercel-composition-patterns|2. **Lift your state** — State in providers, not trapped in components
+M|vercel-composition-patterns|3. **Compose your internals** — Subcomponents access ctx, not props
+M|vercel-composition-patterns|4. **Explicit variants** — Create ThreadComposer, EditComposer, not Composer
+M|vercel-composition-patterns|with isThread
+M|vercel-composition-patterns|1. Copy `rules/_template.md` to `rules/area-description.md`
+M|vercel-composition-patterns|2. Choose the appropriate area prefix:
+M|vercel-composition-patterns|- `architecture-` for Component Architecture
+M|vercel-composition-patterns|- `state-` for State Management
+M|vercel-composition-patterns|- `patterns-` for Implementation Patterns
+M|vercel-composition-patterns|3. Fill in the frontmatter and cnt
+M|vercel-composition-patterns|4. Ensure you have clear examples with explanations
+M|vercel-composition-patterns|- `CRITICAL` - Foundational patterns, prevents unmaintainable code
+M|vercel-composition-patterns|- `HIGH` - Significant maintainability improvements
+M|vercel-composition-patterns|- `MEDIUM` - Good practices for cleaner code

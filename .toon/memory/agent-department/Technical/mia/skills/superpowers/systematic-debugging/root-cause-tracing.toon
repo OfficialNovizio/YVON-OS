@@ -1,0 +1,116 @@
+#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/root-cause-tracing.md
+M|systematic-debugging|Bugs often manifest deep in the call stack (git init in wrong directory, file created in wrong location, database opened with wrong path). Your instinct is to fix where the error appears, but that's t
+M|systematic-debugging|**Core principle:** Trace backward through the call chain until you find the original trigger, then fix at the source.
+M|systematic-debugging|```dot
+M|systematic-debugging|digraph when_to_use {
+M|systematic-debugging|"Bug appears deep in stack?" [shape=diamond];
+M|systematic-debugging|"Can trace backwards?" [shape=diamond];
+M|systematic-debugging|"Fix at symptom point" [shape=box];
+M|systematic-debugging|"Trace to original trigger" [shape=box];
+M|systematic-debugging|"BETTER: Also add defense-in-depth" [shape=box];
+M|systematic-debugging|"Bug appears deep in stack?" -> "Can trace backwards?" [label="yes"];
+M|systematic-debugging|"Can trace backwards?" -> "Trace to original trigger" [label="yes"];
+M|systematic-debugging|"Can trace backwards?" -> "Fix at symptom point" [label="no - dead end"];
+M|systematic-debugging|"Trace to original trigger" -> "BETTER: Also add defense-in-depth";
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**Use when:**
+M|systematic-debugging|- Error happens deep in execution (not at entry point)
+M|systematic-debugging|- Stack trace shows long call chain
+M|systematic-debugging|- Unclear where invalid data originated
+M|systematic-debugging|- Need to find which test/code triggers the problem
+M|systematic-debugging|```
+M|systematic-debugging|Error: git init failed in /Users/jesse/project/packages/core
+M|systematic-debugging|```
+M|systematic-debugging|**What code directly causes this?**
+M|systematic-debugging|```typescript
+M|systematic-debugging|await execFileAsync('git', ['init'], { cwd: projectDir });
+M|systematic-debugging|```
+M|systematic-debugging|```typescript
+M|systematic-debugging|WorktreeManager.createSessionWorktree(projectDir, sessionId)
+M|systematic-debugging|→ called by ses.initializeWorkspace()
+M|systematic-debugging|→ called by ses.create()
+M|systematic-debugging|→ called by test at Project.create()
+M|systematic-debugging|```
+M|systematic-debugging|**What value was passed?**
+M|systematic-debugging|- `projectDir = ''` (empty string!)
+M|systematic-debugging|- Empty string as `cwd` resolves to `process.cwd()`
+M|systematic-debugging|- That's the source code directory!
+M|systematic-debugging|**Where did empty string come from?**
+M|systematic-debugging|```typescript
+M|systematic-debugging|const ctx = setupCoreTest(); // Returns { tempDir: '' }
+M|systematic-debugging|Project.create('name', ctx.tempDir); // Accessed before beforeEach!
+M|systematic-debugging|```
+M|systematic-debugging|When you can't trace manually, add instrumentation:
+M|systematic-debugging|```typescript
+M|systematic-debugging|// Before the problematic operation
+M|systematic-debugging|async function gitInit(directory: string) {
+M|systematic-debugging|const stack = new Error().stack;
+M|systematic-debugging|console.error('DEBUG git init:', {
+M|systematic-debugging|directory,
+M|systematic-debugging|cwd: process.cwd(),
+M|systematic-debugging|nodeEnv: process.env.NODE_ENV,
+M|systematic-debugging|stack,
+M|systematic-debugging|});
+M|systematic-debugging|await execFileAsync('git', ['init'], { cwd: directory });
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**Critical:** Use `console.error()` in tests (not logger - may not show)
+M|systematic-debugging|**Run and capture:**
+M|systematic-debugging|```bash
+M|systematic-debugging|npm test 2>&1 | grep 'DEBUG git init'
+M|systematic-debugging|```
+M|systematic-debugging|**Analyze stack traces:**
+M|systematic-debugging|- Look for test file names
+M|systematic-debugging|- Find the line number triggering the call
+M|systematic-debugging|- Identify the pattern (same test? same parameter?)
+M|systematic-debugging|If something appears during tests but you don't know which test:
+M|systematic-debugging|Use the bisection script `find-polluter.sh` in this directory:
+M|systematic-debugging|```bash
+M|systematic-debugging|./find-polluter.sh '.git' 'src/**/*.test.ts'
+M|systematic-debugging|```
+M|systematic-debugging|Runs tests one-by-one, stops at first polluter. See script for usage.
+M|systematic-debugging|**Symptom:** `.git` created in `packages/core/` (source code)
+M|systematic-debugging|**Trace chain:**
+M|systematic-debugging|1. `git init` runs in `process.cwd()` ← empty cwd parameter
+M|systematic-debugging|2. WorktreeManager called with empty projectDir
+M|systematic-debugging|3. ses.create() passed empty string
+M|systematic-debugging|4. Test accessed `ctx.tempDir` before beforeEach
+M|systematic-debugging|5. setupCoreTest() returns `{ tempDir: '' }` initially
+M|systematic-debugging|**Root cause:** Top-level variable initialization accessing empty value
+M|systematic-debugging|**Fix:** Made tempDir a getter that throws if accessed before beforeEach
+M|systematic-debugging|**Also added defense-in-depth:**
+M|systematic-debugging|- Layer 1: Project.create() validates directory
+M|systematic-debugging|- Layer 2: WorkspaceManager validates not empty
+M|systematic-debugging|- Layer 3: NODE_ENV guard refuses git init outside tmpdir
+M|systematic-debugging|- Layer 4: Stack trace logging before git init
+M|systematic-debugging|```dot
+M|systematic-debugging|digraph principle {
+M|systematic-debugging|"Found immediate cause" [shape=ellipse];
+M|systematic-debugging|"Can trace one level up?" [shape=diamond];
+M|systematic-debugging|"Trace backwards" [shape=box];
+M|systematic-debugging|"Is this the source?" [shape=diamond];
+M|systematic-debugging|"Fix at source" [shape=box];
+M|systematic-debugging|"Add validation at each layer" [shape=box];
+M|systematic-debugging|"Bug impossible" [shape=doublecircle];
+M|systematic-debugging|"NEVER fix just the symptom" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+M|systematic-debugging|"Found immediate cause" -> "Can trace one level up?";
+M|systematic-debugging|"Can trace one level up?" -> "Trace backwards" [label="yes"];
+M|systematic-debugging|"Can trace one level up?" -> "NEVER fix just the symptom" [label="no"];
+M|systematic-debugging|"Trace backwards" -> "Is this the source?";
+M|systematic-debugging|"Is this the source?" -> "Trace backwards" [label="no - keeps going"];
+M|systematic-debugging|"Is this the source?" -> "Fix at source" [label="yes"];
+M|systematic-debugging|"Fix at source" -> "Add validation at each layer";
+M|systematic-debugging|"Add validation at each layer" -> "Bug impossible";
+M|systematic-debugging|}
+M|systematic-debugging|```
+M|systematic-debugging|**NEVER fix just where the error appears.** Trace back to find the original trigger.
+M|systematic-debugging|**In tests:** Use `console.error()` not logger - logger may be suppressed
+M|systematic-debugging|**Before operation:** Log before the dangerous operation, not after it fails
+M|systematic-debugging|**Include ctx:** Directory, cwd, environment variables, timestamps
+M|systematic-debugging|**Capture stack:** `new Error().stack` shows complete call chain
+M|systematic-debugging|From debugging ses (2025-10-03):
+M|systematic-debugging|- Found root cause through 5-level trace
+M|systematic-debugging|- Fixed at source (getter validation)
+M|systematic-debugging|- Added 4 layers of defense
+M|systematic-debugging|- 1847 tests passed, zero pollution

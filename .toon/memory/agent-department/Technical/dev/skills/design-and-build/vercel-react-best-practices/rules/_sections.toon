@@ -1,0 +1,19 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/_sections.md
+M|rules|This file defines all sections, their ordering, impact levels, and descriptions.
+M|rules|The section ID (in parentheses) is the filename prefix used to group rules.
+M|rules|**Impact:** CRITICAL
+M|rules|**Description:** Waterfalls are the #1 performance killer. Each sequential await adds full network latency. Eliminating them yields the largest gains.
+M|rules|**Impact:** CRITICAL
+M|rules|**Description:** Reducing initial bundle size improves Time to Interactive and Largest Contentful Paint.
+M|rules|**Impact:** HIGH
+M|rules|**Description:** Optimizing server-side rendering and data fetching eliminates server-side waterfalls and reduces rsp times.
+M|rules|**Impact:** MEDIUM-HIGH
+M|rules|**Description:** Automatic deduplication and efficient data fetching patterns reduce redundant network requests.
+M|rules|**Impact:** MEDIUM
+M|rules|**Description:** Reducing unnecessary re-renders minimizes wasted computation and improves UI responsiveness.
+M|rules|**Impact:** MEDIUM
+M|rules|**Description:** Optimizing the rendering process reduces the work the browser needs to do.
+M|rules|**Impact:** LOW-MEDIUM
+M|rules|**Description:** Micro-optimizations for hot paths can add up to meaningful improvements.
+M|rules|**Impact:** LOW
+M|rules|**Description:** Advanced patterns for specific cases that require careful implementation.

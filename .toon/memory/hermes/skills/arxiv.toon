@@ -1,0 +1,27 @@
+SKILL|arxiv|"Search arXiv papers by keyword, author, category, or ID."
+STEP|1|**Discover**: `python scripts/search_arxiv.py "your topic" --sort date --max 10`
+STEP|2|**Assess impact**: `curl -s "https://api.semanticscholar.org/graph/v1/paper/arXiv:ID?fields=citationCount,influentialCitationCount"`
+STEP|3|**Read abstract**: `web_extract(urls=["https://arxiv.org/abs/ID"])`
+STEP|4|**Read full paper**: `web_extract(urls=["https://arxiv.org/pdf/ID"])`
+STEP|5|**Find related work**: `curl -s "https://api.semanticscholar.org/graph/v1/paper/arXiv:ID/references?fields=title,citationCount&limit=20"`
+STEP|6|**Get recommendations**: POST to Semantic Scholar recommendations endpoint
+STEP|7|**Track authors**: `curl -s "https://api.semanticscholar.org/graph/v1/author/search?query=NAME"`
+STEP|8|arXiv returns Atom XML — use the helper script or parsing snippet for clean output
+STEP|9|Semantic Scholar returns JSON — pipe through `python3 -m json.tool` for readability
+STEP|10|arXiv IDs: old format (`hep-th/0601001`) vs new (`2402.03300`)
+STEP|11|PDF: `https://arxiv.org/pdf/{id}` — Abstract: `https://arxiv.org/abs/{id}`
+STEP|12|HTML (when available): `https://arxiv.org/html/{id}`
+STEP|13|For local PDF processing, see the `ocr-and-documents` skill
+STEP|14|`arxiv.org/abs/1706.03762` always resolves to the **latest** version
+STEP|15|`arxiv.org/abs/1706.03762v1` points to a **specific** immutable version
+STEP|16|When generating citations, preserve the version suffix you actually read to prevent citation drift (a later version may substantially change content)
+STEP|17|The API `<id>` field returns the versioned URL (e.g., `http://arxiv.org/abs/1706.03762v7`)
+STEP|18|The `<summary>` field contains a withdrawal notice (look for "withdrawn" or "retracted")
+STEP|19|Metadata fields may be incomplete
+STEP|20|Always check the summary before treating a result as a valid paper
+PIT|arXiv returns Atom XML — use the helper script or parsing snippet for clean output
+PIT|Semantic Scholar returns JSON — pipe through `python3 -m json.tool` for readability
+PIT|arXiv IDs: old format (`hep-th/0601001`) vs new (`2402.03300`)
+PIT|PDF: `https://arxiv.org/pdf/{id}` — Abstract: `https://arxiv.org/abs/{id}`
+PIT|HTML (when available): `https://arxiv.org/html/{id}`
+PIT|For local PDF processing, see the `ocr-and-documents` skill

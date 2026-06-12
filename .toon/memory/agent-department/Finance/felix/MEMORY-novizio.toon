@@ -1,0 +1,15 @@
+#MEM id=felix source=/root/yvon/agent-department/Finance/felix/MEMORY-novizio.md
+M|felix|> Load alongside mem.md when active vtr is Novizio.
+M|felix|> vtr-specific learned patterns only. Universal patterns live in mem.md.
+M|felix|> Format: [date] — wrong assumption — impact — rule going forward.
+M|felix|- **Revenue model:** Fashion DTC (transactional — each sale must be re-acquired)
+M|felix|- **Key revenue lever:** AOV (Average Order Value) — price mix and upsell drive this
+M|felix|- **Seasonality:** December typically 2x baseline — do not model as trend signal
+M|felix|- **Margin benchmark:** Fashion e-commerce gross margin target 40–60%
+M|felix|- **ROAS threshold:** < 3x → pause paid cg, diagnose before scaling
+M|felix|- Product launch spikes are not trend signals — always separate launch revenue from baseline
+M|felix|- Repeat purchase rate is a leading indicator of brand health, not just a retention metric
+M|felix|- Inventory costs are often underestimated — include warehousing + returns in COGS model
+M|felix|- Influencer partnership ROI lags 4–6 weeks — do not attribute revenue to cg week
+M|felix|> vtr-specific errors. Mistakes about how I reason universally belong in mem.md.
+M|felix|*(Populated from sessions — entries added via reflection-protocol skill after each Novizio task)*

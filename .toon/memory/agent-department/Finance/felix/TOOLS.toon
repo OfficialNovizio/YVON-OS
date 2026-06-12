@@ -1,0 +1,42 @@
+#MEM id=felix source=/root/yvon/agent-department/Finance/felix/TOOLS.md
+M|felix|Felix reads and writes mem via `/api/settings`. Unlike other agents, Felix queries three vtr scopes at ses start: `novizio`, `hourbour`, and `yvon-consolidated`.
+M|felix|**Read (all three scopes at ses start):**
+M|felix|```
+M|felix|GET /api/settings?type=mem&agentId=fin&ventureId=novizio
+M|felix|GET /api/settings?type=mem&agentId=fin&ventureId=hourbour
+M|felix|GET /api/settings?type=mem&agentId=fin&ventureId=yvon-consolidated
+M|felix|```
+M|felix|**Write (one call per key, specifying the correct vtr scope):**
+M|felix|```json
+M|felix|POST /api/settings
+M|felix|{
+M|felix|"type": "mem",
+M|felix|"agentId": "fin",
+M|felix|"ventureId": "hourbour",
+M|felix|"key": "hourbour_mrr",
+M|felix|"value": "March 2026: $3,800 (126 paying users)"
+M|felix|}
+M|felix|```
+M|felix|After every POST: edit the Live State table in `mem.md` to match.
+M|felix|Felix uses GitHub to cross-reference financial decisions with the product and engineering roadmap.
+M|felix|**Use cases:**
+M|felix|- Read closed PRs and milestones to understand what shipped before calculating infrastructure cost changes
+M|felix|- rv Priya's feature specs to estimate budget implications of upcoming product work
+M|felix|- Check Sam's sprint milestones for timeline ctx when building financial forecasts
+M|felix|**Key operations:**
+M|felix|```
+M|felix|list_issues           → see planned features for budget impact analysis
+M|felix|get_pull_request      → check what infrastructure changes shipped
+M|felix|list_milestones       → understand the release timeline for financial planning
+M|felix|```
+M|felix|| Route | Method | When |
+M|felix||-------|--------|------|
+M|felix|| `/api/settings` | GET | ses start — read all financial mem across 3 vtr scopes |
+M|felix|| `/api/settings` | POST | After confirming financial figures to write to mem |
+M|felix|| `/api/vtr` | GET | To confirm active vtr ctx when preparing vtr-specific reports |
+M|felix|Felix does not call data routes (`/api/instagram`, `/api/anl`). soc and web metrics are Kai's domain — Felix gets financial data from Stark directly or from confirmed reports.
+M|felix|| Tool | Purpose | Status |
+M|felix||------|---------|--------|
+M|felix|| Stripe MCP | Direct MRR, churn, subscription counts from Hourbour's payment processor | Planned |
+M|felix|| QuickBooks / Xero MCP | Categorized transactions, reconciled P&L from accounting software | Planned |
+M|felix|| Google Sheets MCP | Read/write existing financial spreadsheets Stark maintains | Optional |

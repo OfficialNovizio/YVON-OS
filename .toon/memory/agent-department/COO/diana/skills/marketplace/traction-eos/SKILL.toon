@@ -1,0 +1,269 @@
+#MEM id=traction-eos source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/SKILL.md
+M|traction-eos|name: traction-eos
+M|traction-eos|description: 'Implement the Entrepreneurial Operating System (EOS) to align vision and execution across a company. Use when the user mentions "EOS", "V/TO", "quarterly rocks", "Level 10 meetings", "ac
+M|traction-eos|license: MIT
+M|traction-eos|metadata:
+M|traction-eos|author: wondelai
+M|traction-eos|version: "1.1.0"
+M|traction-eos|A complete system for running a business with six key components. Designed for entrepreneurial companies ($2M-$50M revenue, 10-250 employees) that want to align vision and execution.
+M|traction-eos|**Most businesses suffer from the same core issues: people, vision, traction.** EOS provides a simple, complete operating system that strengthens the Six Key Components of any organization.
+M|traction-eos|**The foundation:** Great vision without traction is hallucination. Traction without vision is aimless. EOS connects the two through a practical, weekly operating rhythm.
+M|traction-eos|**Goal: 10/10.** When evaluating or implementing business processes, rate 0-10 based on EOS component strength. A 10/10 means all six components are strong, meetings are productive, and quarterly rock
+M|traction-eos|```
+M|traction-eos|Vision → People → Data → Issues → Process → Traction
+M|traction-eos|```
+M|traction-eos|Every business is built on these six components. EOS strengthens all six.
+M|traction-eos|**Question:** Does everyone in the organization know where you're going and how you plan to get there?
+M|traction-eos|**Tool: Vision/Traction Organizer (V/TO)**
+M|traction-eos|The V/TO answers eight questions on two pages:
+M|traction-eos|| Question | What It Defines | Example |
+M|traction-eos||----------|----------------|---------|
+M|traction-eos|| **Core Values** | 3-7 non-negotiable beliefs | "Own it", "Do the right thing", "Grow or die" |
+M|traction-eos|| **Core Focus** | Purpose/cause/passion + niche | "Simplify small business" + "Cloud accounting" |
+M|traction-eos|| **10-Year Target** | Big, hairy, audacious goal | "$100M revenue" or "10,000 customers" |
+M|traction-eos|| **mkt str** | Target market, 3 uniques, proven process, guarantee | Who you serve, why you're different |
+M|traction-eos|| **3-Year Picture** | What company looks like in 3 years | Revenue, profit, headcount, key metrics |
+M|traction-eos|| **1-Year Plan** | Revenue, profit, measurables, goals | Specific targets for this year |
+M|traction-eos|| **Quarterly Rocks** | 3-7 priorities for this quarter | The most important things to accomplish in 90 days |
+M|traction-eos|| **Issues List** | All unresolved obstacles | Problems, ideas, opportunities to discuss |
+M|traction-eos|**Process:**
+M|traction-eos|1. Leadership team completes V/TO together (2-day off-site)
+M|traction-eos|2. Share with entire organization
+M|traction-eos|3. rv quarterly
+M|traction-eos|4. Update annually
+M|traction-eos|**Key insight:** If leadership team can't agree on V/TO, you have a bigger problem. Alignment comes first.
+M|traction-eos|See: [references/vto.md](references/vto.md) for V/TO templates and exercises.
+M|traction-eos|**Question:** Do you have the right people in the right seats?
+M|traction-eos|**Tool: Accountability Chart**
+M|traction-eos|Not an org chart—an accountability chart. Defines the structure and who owns what.
+M|traction-eos|**Structure:**
+M|traction-eos|```
+M|traction-eos|Visionary ←→ Integrator
+M|traction-eos|├── Sales/mkt
+M|traction-eos|├── Operations
+M|traction-eos|└── fin
+M|traction-eos|```
+M|traction-eos|**Two key roles:**
+M|traction-eos|- **Visionary:** Big ideas, culture, key relationships, creative problem solving
+M|traction-eos|- **Integrator:** Runs business day-to-day, manages team, executes vision, resolves conflicts
+M|traction-eos|**Rule:** One person per seat. No shared accountability.
+M|traction-eos|**Tool: People Analyzer**
+M|traction-eos|Evaluate every person on two dimensions:
+M|traction-eos|**1. Right Person (core values fit)**
+M|traction-eos|| Core Value | + (most of the time) | +/- (sometimes) | - (rarely) |
+M|traction-eos||-----------|---------------------|-----------------|------------|
+M|traction-eos|| Own it | + | | |
+M|traction-eos|| Do the right thing | | +/- | |
+M|traction-eos|| Grow or die | + | | |
+M|traction-eos|**Standard:** Must be "+" on all core values. One "+/-" is a conversation. Any "-" is wrong person.
+M|traction-eos|**2. Right Seat (GWC)**
+M|traction-eos|- **G**et it: Understands the role
+M|traction-eos|- **W**ant it: Genuinely wants the role
+M|traction-eos|- **C**apacity: Has the mental, physical, emotional capacity
+M|traction-eos|**Must be "yes" on all three.** If missing any one, wrong seat.
+M|traction-eos|**The formula:** Right People + Right Seats = A-players
+M|traction-eos|**People decisions:**
+M|traction-eos|- Right person, right seat → Keep and invest in
+M|traction-eos|- Right person, wrong seat → Move to right seat
+M|traction-eos|- Wrong person, right seat → Coaching/exit (hardest call)
+M|traction-eos|- Wrong person, wrong seat → Exit immediately
+M|traction-eos|See: [references/people.md](references/people.md) for accountability chart and people analyzer templates.
+M|traction-eos|**Question:** Are you managing based on objective data, or subjective opinions?
+M|traction-eos|**Tool: Scorecard**
+M|traction-eos|A weekly report card of 5-15 numbers that tell you how the business is doing.
+M|traction-eos|**Scorecard rules:**
+M|traction-eos|- Activity-based metrics (leading indicators), not results (lagging)
+M|traction-eos|- Weekly numbers (monthly is too slow)
+M|traction-eos|- Every number has an owner
+M|traction-eos|- Every number has a goal
+M|traction-eos|- Red/green: on track or off track
+M|traction-eos|**Example Scorecard:**
+M|traction-eos|| Metric | Owner | Goal | W1 | W2 | W3 | W4 |
+M|traction-eos||--------|-------|------|----|----|----|----|
+M|traction-eos|| Revenue | Sales Lead | $50K/wk | ✓ | ✓ | ✗ | ✓ |
+M|traction-eos|| New Leads | mkt | 100/wk | ✓ | ✗ | ✓ | ✓ |
+M|traction-eos|| Demos Completed | Sales | 20/wk | ✗ | ✓ | ✓ | ✓ |
+M|traction-eos|| Customer NPS | Support | >50 | ✓ | ✓ | ✓ | ✓ |
+M|traction-eos|| Cash Balance | fin | >$200K | ✓ | ✓ | ✓ | ✓ |
+M|traction-eos|**Benefits:**
+M|traction-eos|- Spot problems 2-4 weeks earlier
+M|traction-eos|- Reduce "gut feeling" management
+M|traction-eos|- Create accountability without micromanagement
+M|traction-eos|- Everyone knows the score
+M|traction-eos|**Metric selection:** If you had to go on vacation for 4 weeks, what 5-15 numbers would tell you how the business is doing?
+M|traction-eos|See: [references/data.md](references/data.md) for scorecard templates and metric selection.
+M|traction-eos|**Question:** Are you identifying, discussing, and solving issues quickly?
+M|traction-eos|**Tool: Issues Solving Track (IDS)**
+M|traction-eos|**I**dentify → **D**iscuss → **S**olve
+M|traction-eos|**Step 1: Identify**
+M|traction-eos|- What's the real issue? (Not the symptom)
+M|traction-eos|- Ask "Why?" until you reach root cause
+M|traction-eos|- State the issue in one sentence
+M|traction-eos|**Step 2: Discuss**
+M|traction-eos|- Everyone gets input (not equal time)
+M|traction-eos|- Tangents are stopped
+M|traction-eos|- Focus on the ONE issue
+M|traction-eos|- Time-boxed (usually 5-15 minutes)
+M|traction-eos|**Step 3: Solve**
+M|traction-eos|- dec is made
+M|traction-eos|- Action items are assigned (who + what + when)
+M|traction-eos|- Move to next issue
+M|traction-eos|**Three types of issues:**
+M|traction-eos|| Type | Examples | Action |
+M|traction-eos||------|----------|--------|
+M|traction-eos|| **Problems** | Customer churn, team conflict, system outage | IDS → solve |
+M|traction-eos|| **Ideas** | New feature, process change, market opportunity | IDS → decide (yes/no/later) |
+M|traction-eos|| **Obstacles** | Blocking a rock, resource constraint, dependency | IDS → remove or escalate |
+M|traction-eos|**Issues list rules:**
+M|traction-eos|- Everyone can add issues
+M|traction-eos|- Prioritize: most important first
+M|traction-eos|- Not all issues get solved every meeting
+M|traction-eos|- Unsolved issues carry forward
+M|traction-eos|**Common IDS mistakes:**
+M|traction-eos|- Discussing symptoms, not root cause
+M|traction-eos|- Rehashing same issue every week
+M|traction-eos|- No clear action items
+M|traction-eos|- Too much discussion, not enough solving
+M|traction-eos|See: [references/issues.md](references/issues.md) for IDS facilitation guides.
+M|traction-eos|**Question:** Have you documented and consistently followed your core processes?
+M|traction-eos|**Tool: Core Process Documentation**
+M|traction-eos|**The 20/80 rule:** doc 20% of your processes to get 80% consistency.
+M|traction-eos|**Identify core processes:**
+M|traction-eos|- HR process (hiring, onboarding, reviews)
+M|traction-eos|- Sales process (lead → close)
+M|traction-eos|- Operations process (delivery, fulfillment)
+M|traction-eos|- Customer service process (support → resolution)
+M|traction-eos|- fin process (invoicing, collections)
+M|traction-eos|**Documentation format:**
+M|traction-eos|1. Name the process
+M|traction-eos|2. List 5-20 major steps
+M|traction-eos|3. Add just enough detail (not a 50-page manual)
+M|traction-eos|4. Make it visual where possible
+M|traction-eos|**Example: Sales Process "The Closer"**
+M|traction-eos|1. Qualify lead (BANT: Budget, Authority, Need, Timeline)
+M|traction-eos|2. Discovery call (30 min, use question guide)
+M|traction-eos|3. Demo (customize to their pain points)
+M|traction-eos|4. Proposal (send within 24 hours)
+M|traction-eos|5. Follow up (3 touches in 7 days)
+M|traction-eos|6. Close or disqualify
+M|traction-eos|**Followed By All (FBA):**
+M|traction-eos|- doc it
+M|traction-eos|- Train on it
+M|traction-eos|- Measure compliance
+M|traction-eos|- Update quarterly
+M|traction-eos|See: [references/process.md](references/process.md) for process documentation templates.
+M|traction-eos|**Question:** Are you executing on your vision every day?
+M|traction-eos|**Two tools: Rocks and Level 10 Meetings**
+M|traction-eos|**Definition:** The 3-7 most important things to accomplish in the next 90 days.
+M|traction-eos|**Why 90 days?**
+M|traction-eos|- Long enough to accomplish something meaningful
+M|traction-eos|- Short enough to maintain urgency
+M|traction-eos|- Natural human rhythm for focus
+M|traction-eos|**Rock-setting process:**
+M|traction-eos|1. rv V/TO (vision, 3-year, 1-year)
+M|traction-eos|2. Brainstorm: "What must get done this quarter to stay on track?"
+M|traction-eos|3. Narrow to 3-7 company rocks
+M|traction-eos|4. Assign each rock to one owner
+M|traction-eos|5. Each leadership member also has 3-7 individual rocks
+M|traction-eos|6. Share with entire organization
+M|traction-eos|7. Track weekly
+M|traction-eos|**SMART rocks:**
+M|traction-eos|- **S**pecific: "Launch new pricing page" not "improve pricing"
+M|traction-eos|- **M**easurable: Clear completion criteria
+M|traction-eos|- **A**chievable: Can be done in 90 days
+M|traction-eos|- **R**ealistic: Given current resources
+M|traction-eos|- **T**ime-bound: Due end of quarter
+M|traction-eos|**Rock scoring:**
+M|traction-eos|- **Done** = checked off (no partial credit)
+M|traction-eos|- **Not done** = carried forward or dropped
+M|traction-eos|- **Goal:** 80%+ completion rate
+M|traction-eos|**Anti-patterns:**
+M|traction-eos|- Too many rocks (>7) → Focus is diluted
+M|traction-eos|- Rocks too vague → Can't tell if done
+M|traction-eos|- No owner → Nobody accountable
+M|traction-eos|- All rocks are "business as usual" → Not moving the needle
+M|traction-eos|See: [references/rocks.md](references/rocks.md) for rock-setting exercises.
+M|traction-eos|**The most important meeting in EOS.** Runs every week, same day, same time, same agenda.
+M|traction-eos|**Duration:** 90 minutes, never longer.
+M|traction-eos|**Agenda:**
+M|traction-eos|| Time | Section | Purpose |
+M|traction-eos||------|---------|---------|
+M|traction-eos|| 5 min | **Segue** | Good news (personal and professional) |
+M|traction-eos|| 5 min | **Scorecard** | rv weekly numbers |
+M|traction-eos|| 5 min | **Rock rv** | On track / Off track for each rock |
+M|traction-eos|| 5 min | **Customer/Employee Headlines** | Quick updates |
+M|traction-eos|| 5 min | **To-Do List** | rv last week's to-dos (done or not done) |
+M|traction-eos|| 60 min | **IDS** | Identify, Discuss, Solve issues |
+M|traction-eos|| 5 min | **Conclude** | Recap to-dos, rate meeting 1-10 |
+M|traction-eos|**Level 10 meeting rules:**
+M|traction-eos|- Starts on time, ends on time (non-negotiable)
+M|traction-eos|- Same day, same time every week
+M|traction-eos|- No phones/laptops (except for agenda)
+M|traction-eos|- IDS gets 60 of 90 minutes (most important part)
+M|traction-eos|- Rate meeting 1-10 at end (target: 8+)
+M|traction-eos|- If below 8, discuss what to improve
+M|traction-eos|**Why "Level 10"?**
+M|traction-eos|- Every meeting is rated 1-10 by participants
+M|traction-eos|- Goal is to consistently achieve 10/10
+M|traction-eos|**To-Do rules:**
+M|traction-eos|- 7-day action items only
+M|traction-eos|- Each has owner and due date
+M|traction-eos|- Done = 100% complete
+M|traction-eos|- 90%+ completion rate is target
+M|traction-eos|See: [references/level-10.md](references/level-10.md) for meeting facilitation guides.
+M|traction-eos|**Typical rollout: 2 years to full implementation**
+M|traction-eos|| Phase | Timeline | Focus |
+M|traction-eos||-------|----------|-------|
+M|traction-eos|| **Focus Day** | Day 1 (8 hours) | Accountability chart, rocks, scorecard, Level 10 |
+M|traction-eos|| **Vision Building Day 1** | Month 1 | V/TO: core values, core focus, 10-year target |
+M|traction-eos|| **Vision Building Day 2** | Month 2 | V/TO: mkt str, 3-year, 1-year, rocks |
+M|traction-eos|| **Quarterly Sessions** | Every 90 days | rv rocks, set new rocks, IDS major issues |
+M|traction-eos|| **Annual Planning** | Yearly | Full V/TO rv, set 1-year plan, Q1 rocks |
+M|traction-eos|**Self-implementation vs. EOS Implementer:**
+M|traction-eos|- Self: Read the book, follow the tools (free, slower)
+M|traction-eos|- EOS Implementer: Certified facilitator guides the process (faster, expensive)
+M|traction-eos|Rate your company 1-5 on each statement:
+M|traction-eos|| Component | Statement | Score (1-5) |
+M|traction-eos||-----------|-----------|-------------|
+M|traction-eos|| **Vision** | Leadership team is on the same page with where we're going and how to get there | |
+M|traction-eos|| **People** | We have the right people in the right seats | |
+M|traction-eos|| **Data** | We manage from a weekly scorecard of 5-15 numbers | |
+M|traction-eos|| **Issues** | We solve issues quickly and permanently | |
+M|traction-eos|| **Process** | Core processes are documented and followed by all | |
+M|traction-eos|| **Traction** | We set and achieve 90-day priorities (rocks) | |
+M|traction-eos|**Scoring:**
+M|traction-eos|- 25-30: Strong (maintain and fine-tune)
+M|traction-eos|- 20-24: Good (close gaps)
+M|traction-eos|- 15-19: Average (significant work needed)
+M|traction-eos|- Below 15: Weak (consider EOS implementer)
+M|traction-eos|| Mistake | Why It Fails | Fix |
+M|traction-eos||---------|-------------|------|
+M|traction-eos|| **Skipping Level 10s** | Lose weekly rhythm, issues pile up | Protect meeting, never cancel |
+M|traction-eos|| **Too many rocks** | No focus, nothing gets done | Max 7 company rocks, 3-7 per person |
+M|traction-eos|| **Vague rocks** | Can't tell if done | Write SMART rocks with clear criteria |
+M|traction-eos|| **No scorecard** | Managing by gut, surprises | Choose 5-15 weekly numbers |
+M|traction-eos|| **Wrong people kept** | Drags entire team down | Use People Analyzer, make tough calls |
+M|traction-eos|| **V/TO not shared** | Team doesn't know the vision | Share with entire company |
+M|traction-eos|Audit any business:
+M|traction-eos|| Question | If No | Action |
+M|traction-eos||----------|-------|--------|
+M|traction-eos|| Does leadership agree on vision? | Misalignment | Complete V/TO together |
+M|traction-eos|| Right people in right seats? | Performance issues | People Analyzer on all seats |
+M|traction-eos|| Managing from data weekly? | Reactive management | Build weekly scorecard |
+M|traction-eos|| Issues solved permanently? | Same problems repeat | Implement IDS in Level 10s |
+M|traction-eos|| Core processes documented? | Inconsistency | doc top 5 processes |
+M|traction-eos|| 90-day priorities set and tracked? | No traction | Set quarterly rocks |
+M|traction-eos|- [vto.md](references/vto.md): Vision/Traction Organizer templates, eight questions
+M|traction-eos|- [people.md](references/people.md): Accountability chart, People Analyzer, GWC
+M|traction-eos|- [data.md](references/data.md): Scorecard templates, metric selection
+M|traction-eos|- [issues.md](references/issues.md): IDS process, facilitation, issue types
+M|traction-eos|- [process.md](references/process.md): Core process documentation templates
+M|traction-eos|- [rocks.md](references/rocks.md): Rock-setting exercises, SMART rocks
+M|traction-eos|- [level-10.md](references/level-10.md): Meeting agenda, facilitation, rating
+M|traction-eos|- [implementation.md](references/implementation.md): EOS rollout timeline, self-implementation guide
+M|traction-eos|- [case-studies.md](references/case-studies.md): Companies that implemented EOS successfully
+M|traction-eos|This skill is based on the Entrepreneurial Operating System developed by Gino Wickman. For the complete system:
+M|traction-eos|- [*"Traction: Get a Grip on Your Business"*](https://www.amazon.com/Traction-Get-Grip-Your-Business/dp/1936661837?tag=wondelai00-20) by Gino Wickman
+M|traction-eos|- [*"Get a Grip"*](https://www.amazon.com/Get-Grip-Entrepreneurial-Fable-Business/dp/1939529824?tag=wondelai00-20) by Gino Wickman & Mike Paton (EOS as a business fable)
+M|traction-eos|- [*"Rocket Fuel"*](https://www.amazon.com/Rocket-Fuel-Essential-Combination-Business/dp/1941631150?tag=wondelai00-20) by Gino Wickman & Mark C. Winters (Visionary + Integrator relationship)
+M|traction-eos|**Gino Wickman** is the creator of EOS (Entrepreneurial Operating System) and founder of EOS Worldwide, a community of certified EOS Implementers who help companies implement the system. Wickman has w

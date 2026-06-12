@@ -1,0 +1,31 @@
+SKILL|yvon-venture-config|"Build venture/configuration UI pages for YVON OS — card layouts, chip selectors, node trees, deployment platforms."
+STEP|1|**Cards, not tabs.** The user explicitly rejected tab-based navigation for settings. Use card grids with expandable sections or separate sub-pages. Sub-tabs are OK ONLY inside a detail page (like `/se
+STEP|2|**Clickable chips, not text inputs.** For selections (brand type, age groups, social status, gender, product categories), use chip/button multi-select. NEVER make the user type values — provide all op
+STEP|3|**Minimum 2 cards per row.** All card grids use `grid-cols-2` on mobile, NOT `grid-cols-1`. Wrap to single column only at the narrowest breakpoints.
+STEP|4|**Node tree for hierarchies.** Product categories and similar hierarchical data use a visual node tree: category circles connected to sub-category chips via lines. Active nodes glow with accent color.
+STEP|5|**One thing at a time.** Build iteratively. Present a plan before coding. Get confirmation. Don't jump into large rewrites.
+STEP|6|**Don't invent features.** Only build what the user asks for. If they say "remove Switch Venture from Settings," just remove it — don't add alternatives in other locations.
+STEP|7|supabase/migrations/XXX.sql → ALTER TABLE ADD COLUMN
+STEP|8|lib/types.ts → Add to VentureConfig interface
+STEP|9|lib/db.ts mapVentureRow() → Read from DB row
+STEP|10|lib/db.ts updateVenture() → Write to DB column
+STEP|11|Pitfall:** If you skip layer 3 or 4, data lives only in React state and vanishes on refresh. The user will report "nothing saves" or "it doesn't work."
+STEP|12|cards in a `grid-cols-2 sm:grid-cols-2 lg:grid-cols-3` grid. Each card has platform icon + name + description, connect/depconnect toggle.
+STEP|13|When connected,** a hint card appears BELOW the grid showing per-platform details:
+STEP|14|`references/constants.md` — Brand cascade, age groups, social statuses, product categories, deployment platforms, social platforms — all canonical constants.
+STEP|15|`references/deployment-hints.md` — Full 13-platform connection documentation: credentials needed, where to get them, what YVON extracts, setup times, and credential input field specs per platform.
+PIT|**Cards, not tabs.** The user explicitly rejected tab-based navigation for settings. Use card grids with expandable sections or separate sub-pages. Sub-tabs are OK ONLY inside a detail page (like `/se
+PIT|**Clickable chips, not text inputs.** For selections (brand type, age groups, social status, gender, product categories), use chip/button multi-select. NEVER make the user type values — provide all op
+PIT|**Minimum 2 cards per row.** All card grids use `grid-cols-2` on mobile, NOT `grid-cols-1`. Wrap to single column only at the narrowest breakpoints.
+PIT|**Node tree for hierarchies.** Product categories and similar hierarchical data use a visual node tree: category circles connected to sub-category chips via lines. Active nodes glow with accent color.
+PIT|**One thing at a time.** Build iteratively. Present a plan before coding. Get confirmation. Don't jump into large rewrites.
+PIT|**Don't invent features.** Only build what the user asks for. If they say "remove Switch Venture from Settings," just remove it — don't add alternatives in other locations.
+PIT|supabase/migrations/XXX.sql → ALTER TABLE ADD COLUMN
+PIT|lib/types.ts → Add to VentureConfig interface
+PIT|lib/db.ts mapVentureRow() → Read from DB row
+PIT|lib/db.ts updateVenture() → Write to DB column
+PIT|Pitfall:** If you skip layer 3 or 4, data lives only in React state and vanishes on refresh. The user will report "nothing saves" or "it doesn't work."
+PIT|cards in a `grid-cols-2 sm:grid-cols-2 lg:grid-cols-3` grid. Each card has platform icon + name + description, connect/depconnect toggle.
+PIT|When connected,** a hint card appears BELOW the grid showing per-platform details:
+PIT|`references/constants.md` — Brand cascade, age groups, social statuses, product categories, deployment platforms, social platforms — all canonical constants.
+PIT|`references/deployment-hints.md` — Full 13-platform connection documentation: credentials needed, where to get them, what YVON extracts, setup times, and credential input field specs per platform.

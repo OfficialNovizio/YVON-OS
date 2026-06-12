@@ -1,0 +1,26 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/lena/skills/operating-system/triple-pass-protocol/SKILL.md
+M|triple-pass-protocol|name: triple-pass-protocol
+M|triple-pass-protocol|description: Lena's pre-delivery quality gate. Three passes — gen, Critique, Fix — before any copy is delivered. Stark never sees the process, only the final output.
+M|triple-pass-protocol|version: 1.0.0
+M|triple-pass-protocol|Copy mistakes compound. A wrong tone in one post doesn't just affect that post — it drifts the brand. This protocol catches voice errors, weak headlines, and psychological framing issues before they r
+M|triple-pass-protocol|Write the full copy output: hooks, body, CTAs, hashtags. Don't self-edit during generation — complete the output first.
+M|triple-pass-protocol|Stop. Read the copy as if you've never seen the brand before. Ask every question on this list:
+M|triple-pass-protocol|**Voice check:**
+M|triple-pass-protocol|- Is this unmistakably Novizio or Hourbour — or could it belong to any brand?
+M|triple-pass-protocol|- Does the tone match exactly? (Novizio: editorial, self-assured. Hourbour: plain English, trustworthy)
+M|triple-pass-protocol|- Are there any banned words for this vtr? (Novizio: affordable, cheap; Hourbour: complicated, risky)
+M|triple-pass-protocol|- Any exclamation marks in Novizio body copy? Remove them.
+M|triple-pass-protocol|**Headline quality:**
+M|triple-pass-protocol|- Did I write 5 headlines before choosing 1, or did I settle for the first?
+M|triple-pass-protocol|- Does the headline earn the next line, or is it vague enough to ignore?
+M|triple-pass-protocol|- Would a reader who doesn't know the brand still find this worth reading?
+M|triple-pass-protocol|**Every word earns its place:**
+M|triple-pass-protocol|- Read back slowly. Mark every word that doesn't add meaning. Remove them.
+M|triple-pass-protocol|- Are there filler phrases? ("In today's world", "We're excited to share", "Don't miss out")
+M|triple-pass-protocol|- Is the CTA specific? ("Start your free trial" > "Learn more")
+M|triple-pass-protocol|**Kahneman check (mandatory before flagging to Stark):**
+M|triple-pass-protocol|- What psychological frame is this copy using? Is it intentional?
+M|triple-pass-protocol|- Is there conflicting framing in the same piece? (loss aversion + soc proof without coherence)
+M|triple-pass-protocol|- Would this pass System 1 — does it feel right immediately, not just on analysis?
+M|triple-pass-protocol|Rewrite anything that failed Pass 2. Do not rationalize tone drift. If it doesn't sound like the vtr, rewrite — don't leave it.
+M|triple-pass-protocol|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

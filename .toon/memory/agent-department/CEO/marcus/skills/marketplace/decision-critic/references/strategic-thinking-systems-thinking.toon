@@ -1,0 +1,52 @@
+#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/strategic-thinking-systems-thinking.md
+M|references|source: wiki/concepts/Strategic Thinking/Systems Thinking.md
+M|references|created: 2026-04-11
+M|references|rv-by: 2026-07-11
+M|references|Understand behavior by examining the whole system, not isolated parts. System behavior emerges from the interactions between components, not from the components themselves.
+M|references|| Concept | Definition | Example |
+M|references||---------|-----------|---------|
+M|references|| Feedback loops | Output feeds back as input, amplifying or dampening | Team velocity drops, so management adds process, which drops velocity further |
+M|references|| Emergence | System behavior not predictable from individual parts | Microservices that each work fine but create cascading failures together |
+M|references|| Delays | Effects lag behind causes | tec debt accrues silently, then explodes during a critical feature push |
+M|references|| Leverage points | Small changes with outsized impact | Fixing a shared library bug vs patching each consumer |
+M|references|| Mental models | Assumptions that shape how we interpret the system | "More engineers = faster delivery" (ignoring Brooks's Law) |
+M|references|Use this model during **Challenge** (Steps 5-6) to identify second-order effects and feedback loops.
+M|references|When evaluating any dec:
+M|references|1. What feedback loops does this dec create or break?
+M|references|2. What are the second-order effects? Third-order?
+M|references|3. Where are the delays between action and consequence?
+M|references|4. What leverage points exist? Are we acting on them or on symptoms?
+M|references|5. What mental models are we assuming that might be wrong?
+M|references|| Signal | Risk |
+M|references||--------|------|
+M|references|| "This only affects component X" | Ignoring system interconnections |
+M|references|| "We'll see results immediately" | Ignoring delays in the system |
+M|references|| "More resources will fix it" | Linear thinking in a nonlinear system |
+M|references|| "We fixed the symptom" | Root cause unaddressed, will resurface |
+M|references|| Optimizing one metric aggressively | Goodhart's Law: metric becomes the target, not the goal |
+M|references|For each proposed dec, trace effects through at least two levels:
+M|references|```
+M|references|dec: [proposed action]
+M|references|-> First-order: [immediate, intended effect]
+M|references|-> Second-order: [downstream consequence]
+M|references|-> Third-order: [further ripple effect]
+M|references|```
+M|references|- "What if this fix creates a worse problem elsewhere in the system?"
+M|references|- "What feedback loop are we accidentally creating?"
+M|references|- "Are we treating the symptom or the cause?"
+M|references|- "What will this look like in 6 months when delays manifest?"
+M|references|- Fixing a symptom while the root cause generates new symptoms
+M|references|- Creating reinforcing feedback loops that accelerate problems
+M|references|- Ignoring delays and declaring success before consequences arrive
+M|references|- Optimizing a subsystem at the expense of the whole system
+M|references|- Missing leverage points and applying effort where impact is lowest
+M|references|Before accepting a dec as VERIFIED:
+M|references|- [ ] System boundaries defined (what is inside/outside scope)
+M|references|- [ ] Feedback loops identified (reinforcing and balancing)
+M|references|- [ ] Second-order effects traced for at least 2 levels
+M|references|- [ ] Delays between action and effect estimated
+M|references|- [ ] Leverage points identified and targeted
+M|references|- [ ] Mental model assumptions stated explicitly
+M|references|- Gall's Law: complex systems evolve from simple ones
+M|references|- Chesterton's Fence: understand the system before changing it
+M|references|- Survivorship Bias: examine the full system, not just visible outputs

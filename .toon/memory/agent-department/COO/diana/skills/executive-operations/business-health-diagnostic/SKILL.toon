@@ -1,0 +1,467 @@
+#MEM id=business-health-diagnostic source=/root/yvon/agent-department/COO/diana/skills/executive-operations/business-health-diagnostic/SKILL.md
+M|business-health-diagnostic|name: business-health-diagnostic
+M|business-health-diagnostic|description: >-
+M|business-health-diagnostic|Diagnose SaaS business health across growth, retention, efficiency, and capital. Use when preparing a business rv or prioritizing urgent fixes.
+M|business-health-diagnostic|version: 1.0.0
+M|business-health-diagnostic|platforms: []
+M|business-health-diagnostic|metadata:
+M|business-health-diagnostic|hermes:
+M|business-health-diagnostic|tags: [coo, operations, workflow, planning, sprint, milestones, process, str]
+M|business-health-diagnostic|intent: Diagnose overall SaaS business health by analyzing growth, retention, unit economics, and capital efficiency metrics together. Use this to identify problems early, prioritize actions by urgenc
+M|business-health-diagnostic|type: interactive
+M|business-health-diagnostic|theme: fin-metrics
+M|business-health-diagnostic|best_for:
+M|business-health-diagnostic|scenarios:
+M|business-health-diagnostic|estimated_time: "20-30 min"
+M|business-health-diagnostic|Diagnose overall SaaS business health by analyzing growth, retention, unit economics, and capital efficiency metrics together. Use this to identify problems early, prioritize actions by urgency, and d
+M|business-health-diagnostic|This is not a single-metric check—it's a holistic diagnostic that connects revenue, retention, economics, and efficiency to reveal systemic issues and opportunities.
+M|business-health-diagnostic|A SaaS business is healthy when four dimensions work together:
+M|business-health-diagnostic|1. **Growth & Retention** — Are you growing and keeping customers?
+M|business-health-diagnostic|- Revenue growth rate
+M|business-health-diagnostic|- NRR (Net Revenue Retention)
+M|business-health-diagnostic|- Churn rate
+M|business-health-diagnostic|- Quick Ratio
+M|business-health-diagnostic|2. **Unit Economics** — Is the business model profitable at the customer level?
+M|business-health-diagnostic|- CAC (Customer Acquisition Cost)
+M|business-health-diagnostic|- LTV (Lifetime Value)
+M|business-health-diagnostic|- LTV:CAC ratio
+M|business-health-diagnostic|- Payback period
+M|business-health-diagnostic|- Gross margin
+M|business-health-diagnostic|3. **Capital Efficiency** — Are you using cash efficiently?
+M|business-health-diagnostic|- Burn rate
+M|business-health-diagnostic|- Runway
+M|business-health-diagnostic|- Rule of 40
+M|business-health-diagnostic|- Magic Number
+M|business-health-diagnostic|4. **Strategic Position** — Are you positioned for sustainable success?
+M|business-health-diagnostic|- Market positioning (below, at, above market pricing)
+M|business-health-diagnostic|- Competitive moat (network effects, data, brand)
+M|business-health-diagnostic|- Revenue concentration risk
+M|business-health-diagnostic|- Operating leverage
+M|business-health-diagnostic|**Early Stage (Pre-$10M ARR):**
+M|business-health-diagnostic|- Focus: Product-market fit, unit economics
+M|business-health-diagnostic|- Growth: >50% YoY
+M|business-health-diagnostic|- LTV:CAC: >3:1
+M|business-health-diagnostic|- Gross Margin: >70%
+M|business-health-diagnostic|- Runway: >12 months
+M|business-health-diagnostic|- Acceptable: Negative margins, high burn (if unit economics work)
+M|business-health-diagnostic|**Growth Stage ($10M-$50M ARR):**
+M|business-health-diagnostic|- Focus: Scaling efficiently
+M|business-health-diagnostic|- Growth: >40% YoY
+M|business-health-diagnostic|- NRR: >100%
+M|business-health-diagnostic|- Rule of 40: >40
+M|business-health-diagnostic|- Magic Number: >0.75
+M|business-health-diagnostic|- Acceptable: Moderate burn if growth is strong
+M|business-health-diagnostic|**Scale Stage ($50M+ ARR):**
+M|business-health-diagnostic|- Focus: Profitability, efficiency
+M|business-health-diagnostic|- Growth: >25% YoY
+M|business-health-diagnostic|- NRR: >110%
+M|business-health-diagnostic|- Rule of 40: >40
+M|business-health-diagnostic|- Profit Margin: >10%
+M|business-health-diagnostic|- Required: Positive or near-positive cash flow
+M|business-health-diagnostic|**Critical (Fix immediately):**
+M|business-health-diagnostic|- Runway <6 months
+M|business-health-diagnostic|- LTV:CAC <1.5:1
+M|business-health-diagnostic|- Churn accelerating cohort-over-cohort
+M|business-health-diagnostic|- NRR <90%
+M|business-health-diagnostic|- Magic Number <0.3
+M|business-health-diagnostic|**High Priority (Fix within quarter):**
+M|business-health-diagnostic|- Rule of 40 <25
+M|business-health-diagnostic|- Payback >24 months
+M|business-health-diagnostic|- Quick Ratio <2
+M|business-health-diagnostic|- Gross margin <60%
+M|business-health-diagnostic|- Revenue concentration >50% in top 10 customers
+M|business-health-diagnostic|**Medium Priority (Address within 6 months):**
+M|business-health-diagnostic|- NRR 90-100% (flat, not growing)
+M|business-health-diagnostic|- Magic Number 0.3-0.5
+M|business-health-diagnostic|- Operating leverage negative
+M|business-health-diagnostic|- Churn rate stable but high (>5% monthly)
+M|business-health-diagnostic|- **Not a single metric:** "Revenue is growing 50%, we're great!" (ignoring burn, churn, unit economics)
+M|business-health-diagnostic|- **Not stage-agnostic:** Early-stage burn is acceptable; scale-stage burn is a problem
+M|business-health-diagnostic|- **Not static:** Health is directional—are metrics improving or degrading?
+M|business-health-diagnostic|- **Not just numbers:** ctx matters (competitive pressure, market changes, team capacity)
+M|business-health-diagnostic|**Use this when:**
+M|business-health-diagnostic|- Preparing for board meetings or investor updates
+M|business-health-diagnostic|- Quarterly business reviews (QBR)
+M|business-health-diagnostic|- Fundraising preparation (know your numbers)
+M|business-health-diagnostic|- Annual planning (identify improvement areas)
+M|business-health-diagnostic|- You suspect problems but can't pinpoint them
+M|business-health-diagnostic|- New PM/exec joining and needs health assessment
+M|business-health-diagnostic|**Don't use this when:**
+M|business-health-diagnostic|- You're pre-revenue (focus on product-market fit first)
+M|business-health-diagnostic|- You're in pure research mode (not enough data)
+M|business-health-diagnostic|- You need tactical guidance (use specific skills: feature, channel, pricing)
+M|business-health-diagnostic|Use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the default interaction protocol for this skill.
+M|business-health-diagnostic|It defines:
+M|business-health-diagnostic|- ses heads-up + entry mode (Guided, ctx dump, Best guess)
+M|business-health-diagnostic|- one-question turns with plain-language prompts
+M|business-health-diagnostic|- progress labels (for example, ctx Qx/8 and Scoring Qx/5)
+M|business-health-diagnostic|- interruption handling and pause/resume behavior
+M|business-health-diagnostic|- numbered recommendations at dec points
+M|business-health-diagnostic|- quick-select numbered rsp options for regular questions (include `Other (specify)` when useful)
+M|business-health-diagnostic|This file defines the domain-specific assessment cnt. If there is a conflict, follow this file's domain logic.
+M|business-health-diagnostic|This interactive skill asks **up to 4 adaptive questions**, then delivers a comprehensive diagnostic with prioritized recommendations.
+M|business-health-diagnostic|**agt asks:**
+M|business-health-diagnostic|"Let's diagnose your business health. I'll need metrics across four dimensions: growth, retention, unit economics, and capital efficiency.
+M|business-health-diagnostic|**Company ctx:**
+M|business-health-diagnostic|- Stage: (Pre-$10M ARR, $10M-$50M ARR, $50M+ ARR)
+M|business-health-diagnostic|- Business model: (PLG, sales-led, hybrid)
+M|business-health-diagnostic|- Target market: (SMB, mid-market, enterprise, mixed)
+M|business-health-diagnostic|**Why this matters:** Benchmarks vary by stage. Early-stage optimizes for growth; scale-stage optimizes for efficiency.
+M|business-health-diagnostic|Please provide the following metrics. Use 'unknown' if you don't have a metric."
+M|business-health-diagnostic|**agt asks:**
+M|business-health-diagnostic|"**Growth & Retention:**
+M|business-health-diagnostic|1. **Revenue:**
+M|business-health-diagnostic|- Current MRR or ARR: $___
+M|business-health-diagnostic|- Revenue growth rate: ___% (MoM or YoY)
+M|business-health-diagnostic|2. **Retention:**
+M|business-health-diagnostic|- Monthly churn rate: ___%
+M|business-health-diagnostic|- NRR (Net Revenue Retention): ___%
+M|business-health-diagnostic|- Quick Ratio: ___ (or I can calculate it)
+M|business-health-diagnostic|3. **Expansion:**
+M|business-health-diagnostic|- Expansion revenue as % of total MRR: ___%
+M|business-health-diagnostic|4. **Cohort trends:**
+M|business-health-diagnostic|- Are recent cohorts retaining better or worse than older cohorts?
+M|business-health-diagnostic|1. Better (improving)
+M|business-health-diagnostic|2. Same (stable)
+M|business-health-diagnostic|3. Worse (degrading)
+M|business-health-diagnostic|4. Unknown"
+M|business-health-diagnostic|**Based on answers, agt evaluates:**
+M|business-health-diagnostic|- ✅ **Healthy growth:** Growth >40% YoY (growth stage) or >25% (scale stage)
+M|business-health-diagnostic|- ✅ **Healthy retention:** NRR >100%, churn <5% monthly, Quick Ratio >2
+M|business-health-diagnostic|- 🚨 **Growth problems:** Growth <20% YoY
+M|business-health-diagnostic|- 🚨 **Retention problems:** NRR <100%, churn >5%, cohort degradation
+M|business-health-diagnostic|**agt asks:**
+M|business-health-diagnostic|"**Unit Economics:**
+M|business-health-diagnostic|1. **Acquisition:**
+M|business-health-diagnostic|- CAC (Customer Acquisition Cost): $___
+M|business-health-diagnostic|- Blended or by channel? (If by channel, what's your best channel CAC?)
+M|business-health-diagnostic|2. **Value:**
+M|business-health-diagnostic|- LTV (Lifetime Value): $___
+M|business-health-diagnostic|- LTV:CAC ratio: ___ (or I can calculate it)
+M|business-health-diagnostic|- Payback period: ___ months (or I can calculate it)
+M|business-health-diagnostic|3. **Margins:**
+M|business-health-diagnostic|- Gross margin: ___%
+M|business-health-diagnostic|- Contribution margin (if known): ___%
+M|business-health-diagnostic|4. **Trends:**
+M|business-health-diagnostic|- Is CAC increasing, stable, or decreasing over time?
+M|business-health-diagnostic|1. Decreasing (improving efficiency)
+M|business-health-diagnostic|2. Stable
+M|business-health-diagnostic|3. Increasing (diminishing returns)
+M|business-health-diagnostic|4. Unknown"
+M|business-health-diagnostic|**Based on answers, agt evaluates:**
+M|business-health-diagnostic|- ✅ **Healthy economics:** LTV:CAC >3:1, payback <12 months, gross margin >70%
+M|business-health-diagnostic|- ⚠️ **Marginal economics:** LTV:CAC 2-3:1, payback 12-18 months
+M|business-health-diagnostic|- 🚨 **Poor economics:** LTV:CAC <2:1, payback >24 months, gross margin <60%
+M|business-health-diagnostic|**agt asks:**
+M|business-health-diagnostic|"**Capital Efficiency:**
+M|business-health-diagnostic|1. **Cash:**
+M|business-health-diagnostic|- Cash balance: $___
+M|business-health-diagnostic|- Monthly net burn rate: $___
+M|business-health-diagnostic|- Runway: ___ months (or I can calculate it)
+M|business-health-diagnostic|2. **Efficiency ratios:**
+M|business-health-diagnostic|- Rule of 40: ___ (Growth % + Profit Margin %) (or I can calculate it)
+M|business-health-diagnostic|- Magic Number: ___ (S&M efficiency) (or I can calculate it)
+M|business-health-diagnostic|3. **Operating expenses:**
+M|business-health-diagnostic|- S&M as % of revenue: ___%
+M|business-health-diagnostic|- R&D as % of revenue: ___%
+M|business-health-diagnostic|- Is OpEx growing faster than revenue?
+M|business-health-diagnostic|1. No (positive operating leverage)
+M|business-health-diagnostic|2. Yes (negative operating leverage)
+M|business-health-diagnostic|3. Unknown
+M|business-health-diagnostic|4. **Profitability:**
+M|business-health-diagnostic|- Profit margin: ___%
+M|business-health-diagnostic|- Path to profitability: (already profitable, 6-12 months, 12-24 months, >24 months, unknown)"
+M|business-health-diagnostic|**Based on answers, agt evaluates:**
+M|business-health-diagnostic|- ✅ **Healthy efficiency:** Rule of 40 >40, magic number >0.75, runway >12 months
+M|business-health-diagnostic|- ⚠️ **Acceptable efficiency:** Rule of 40 25-40, magic number 0.5-0.75, runway 6-12 months
+M|business-health-diagnostic|- 🚨 **Poor efficiency:** Rule of 40 <25, magic number <0.5, runway <6 months
+M|business-health-diagnostic|**agt synthesizes all metrics and delivers:**
+M|business-health-diagnostic|1. **Overall Health Score** — Healthy / Moderate / Concerning / Critical
+M|business-health-diagnostic|2. **Dimension Scores** — Growth, Retention, Economics, Efficiency
+M|business-health-diagnostic|3. **Red Flags** — Critical, High Priority, Medium Priority
+M|business-health-diagnostic|4. **Prioritized Recommendations** — Top 3-5 actions with expected impact
+M|business-health-diagnostic|5. **Stage-Appropriate Benchmarks** — How you compare to peers
+M|business-health-diagnostic|**When:**
+M|business-health-diagnostic|- Growth, retention, economics, and efficiency all meet stage-appropriate benchmarks
+M|business-health-diagnostic|- No critical red flags
+M|business-health-diagnostic|- Improving trends
+M|business-health-diagnostic|**Output:**
+M|business-health-diagnostic|"## ✅ Overall Health: **Healthy**
+M|business-health-diagnostic|Your business shows strong fundamentals across all dimensions.
+M|business-health-diagnostic|| Dimension | Score | Status |
+M|business-health-diagnostic||-----------|-------|--------|
+M|business-health-diagnostic|| **Growth & Retention** | ✅ Healthy | Growth ___% YoY, NRR ___%, Churn ___% |
+M|business-health-diagnostic|| **Unit Economics** | ✅ Healthy | LTV:CAC ___:1, Payback ___ months |
+M|business-health-diagnostic|| **Capital Efficiency** | ✅ Healthy | Rule of 40: ___, Runway ___ months |
+M|business-health-diagnostic|| **Overall** | ✅ **Healthy** | Strong position for scaling |
+M|business-health-diagnostic|1. **[Specific strength 1]**
+M|business-health-diagnostic|- Metric: [e.g., NRR 120%]
+M|business-health-diagnostic|- Why it matters: [Expanding within base without new logos]
+M|business-health-diagnostic|2. **[Specific strength 2]**
+M|business-health-diagnostic|- Metric: [e.g., LTV:CAC 5:1]
+M|business-health-diagnostic|- Why it matters: [Sustainable unit economics support scaling]
+M|business-health-diagnostic|3. **[Specific strength 3]**
+M|business-health-diagnostic|- Metric: [e.g., Rule of 40 = 65]
+M|business-health-diagnostic|- Why it matters: [Excellent balance of growth and efficiency]
+M|business-health-diagnostic|Even healthy businesses can improve. Here are your top opportunities:
+M|business-health-diagnostic|**1. [Opportunity 1]**
+M|business-health-diagnostic|- Current: [e.g., Magic Number 0.9]
+M|business-health-diagnostic|- Opportunity: [Could scale S&M spend 2x and maintain efficiency]
+M|business-health-diagnostic|- Impact: [+$___ MRR/month]
+M|business-health-diagnostic|**2. [Opportunity 2]**
+M|business-health-diagnostic|- Current: [e.g., Expansion revenue 15% of total]
+M|business-health-diagnostic|- Opportunity: [Build upsell paths, target 25% expansion revenue]
+M|business-health-diagnostic|- Impact: [NRR 110% → 120%]
+M|business-health-diagnostic|**3. [Opportunity 3]**
+M|business-health-diagnostic|- Current: [e.g., CAC $500, stable]
+M|business-health-diagnostic|- Opportunity: [Improve conversion, reduce CAC to $400]
+M|business-health-diagnostic|- Impact: [Faster payback, better LTV:CAC]
+M|business-health-diagnostic|**Priority 1: Scale what's working**
+M|business-health-diagnostic|- [e.g., Double cnt mkt budget (best channel)]
+M|business-health-diagnostic|- Expected impact: [+___ customers/month, +$___ MRR]
+M|business-health-diagnostic|**Priority 2: Expand within base**
+M|business-health-diagnostic|- [e.g., Launch premium tier for 20% of customers]
+M|business-health-diagnostic|- Expected impact: [NRR 110% → 115%]
+M|business-health-diagnostic|**Priority 3: Improve efficiency**
+M|business-health-diagnostic|- [e.g., Optimize paid acquisition (reduce CAC 10%)]
+M|business-health-diagnostic|- Expected impact: [Payback 8mo → 7mo]
+M|business-health-diagnostic|**Weekly:**
+M|business-health-diagnostic|- NRR (should stay >___%)
+M|business-health-diagnostic|- Churn rate (should stay <___%)
+M|business-health-diagnostic|- Quick Ratio (should stay >___)
+M|business-health-diagnostic|**Monthly:**
+M|business-health-diagnostic|- Rule of 40 (should stay >___)
+M|business-health-diagnostic|- Magic Number (should stay >___)
+M|business-health-diagnostic|- LTV:CAC (should stay >___:1)
+M|business-health-diagnostic|**Quarterly:**
+M|business-health-diagnostic|- Cohort retention trends
+M|business-health-diagnostic|- Revenue concentration risk
+M|business-health-diagnostic|- Operating leverage
+M|business-health-diagnostic|| Metric | Your Performance | Benchmark | Status |
+M|business-health-diagnostic||--------|------------------|-----------|--------|
+M|business-health-diagnostic|| Growth Rate | ___% | >40% (growth) / >25% (scale) | ✅ |
+M|business-health-diagnostic|| NRR | ___% | >100% | ✅ |
+M|business-health-diagnostic|| LTV:CAC | ___:1 | >3:1 | ✅ |
+M|business-health-diagnostic|| Rule of 40 | ___ | >40 | ✅ |
+M|business-health-diagnostic|| Gross Margin | ___% | >70% | ✅ |
+M|business-health-diagnostic|You're performing at or above benchmarks across the board."
+M|business-health-diagnostic|**When:**
+M|business-health-diagnostic|- Most metrics acceptable, but 1-2 dimensions have problems
+M|business-health-diagnostic|- Medium-priority red flags
+M|business-health-diagnostic|- Solvable with focus
+M|business-health-diagnostic|**Output:**
+M|business-health-diagnostic|"## ⚠️ Overall Health: **Moderate** (Fixable Issues)
+M|business-health-diagnostic|Your business has good fundamentals but needs attention in [specific dimension].
+M|business-health-diagnostic|| Dimension | Score | Status |
+M|business-health-diagnostic||-----------|-------|--------|
+M|business-health-diagnostic|| **Growth & Retention** | [✅ / ⚠️ / 🚨] | [Details] |
+M|business-health-diagnostic|| **Unit Economics** | [✅ / ⚠️ / 🚨] | [Details] |
+M|business-health-diagnostic|| **Capital Efficiency** | [✅ / ⚠️ / 🚨] | [Details] |
+M|business-health-diagnostic|| **Overall** | ⚠️ **Moderate** | [Primary issue area] needs attention |
+M|business-health-diagnostic|**High Priority** 🚨
+M|business-health-diagnostic|1. **[Specific red flag]**
+M|business-health-diagnostic|- Metric: [e.g., NRR 95%]
+M|business-health-diagnostic|- Threshold: [Should be >100%]
+M|business-health-diagnostic|- Impact: [Base is contracting, not expanding]
+M|business-health-diagnostic|- Fix by: [End of quarter]
+M|business-health-diagnostic|**Medium Priority** ⚠️
+M|business-health-diagnostic|1. **[Specific issue]**
+M|business-health-diagnostic|- Metric: [e.g., Magic Number 0.6]
+M|business-health-diagnostic|- Threshold: [Should be >0.75]
+M|business-health-diagnostic|- Impact: [S&M spend moderately efficient, room for improvement]
+M|business-health-diagnostic|- Fix by: [6 months]
+M|business-health-diagnostic|**Primary Issue: [e.g., Retention & Expansion]**
+M|business-health-diagnostic|**Symptoms:**
+M|business-health-diagnostic|- NRR 95% (should be >100%)
+M|business-health-diagnostic|- Churn rate 5% monthly (should be <3%)
+M|business-health-diagnostic|- Expansion revenue only 10% of MRR (should be 20-30%)
+M|business-health-diagnostic|**Diagnosis:**
+M|business-health-diagnostic|[e.g., Customers are churning before they expand. Onboarding is weak, no clear upsell paths.]
+M|business-health-diagnostic|**Impact:**
+M|business-health-diagnostic|- Lost MRR: [Calculate churn impact]
+M|business-health-diagnostic|- Missed expansion: [Calculate expansion opportunity]
+M|business-health-diagnostic|- Total impact: [Combined revenue loss]
+M|business-health-diagnostic|**Immediate (Next 30 days):**
+M|business-health-diagnostic|**1. Fix [Primary Issue]**
+M|business-health-diagnostic|- Action: [Specific step, e.g., "Launch onboarding improvement program"]
+M|business-health-diagnostic|- Owner: [PM, Customer Success]
+M|business-health-diagnostic|- Target: [Reduce churn 5% → 4%]
+M|business-health-diagnostic|- Impact: [Save $___K MRR/month]
+M|business-health-diagnostic|**Short-term (Next Quarter):**
+M|business-health-diagnostic|**2. [Secondary Action]**
+M|business-health-diagnostic|- Action: [e.g., "Build premium tier for upsell"]
+M|business-health-diagnostic|- Target: [NRR 95% → 105%]
+M|business-health-diagnostic|- Impact: [+$___K expansion MRR]
+M|business-health-diagnostic|**3. [Tertiary Action]**
+M|business-health-diagnostic|- Action: [e.g., "Optimize S&M spend, improve magic number"]
+M|business-health-diagnostic|- Target: [Magic Number 0.6 → 0.8]
+M|business-health-diagnostic|- Impact: [More efficient growth]
+M|business-health-diagnostic|**Target metrics:**
+M|business-health-diagnostic|- NRR: 95% → 105% (+10pp)
+M|business-health-diagnostic|- Churn: 5% → 3.5% (-30%)
+M|business-health-diagnostic|- Magic Number: 0.6 → 0.8 (+33%)
+M|business-health-diagnostic|**Impact:**
+M|business-health-diagnostic|- Monthly revenue saved from churn: +$___K
+M|business-health-diagnostic|- Expansion revenue: +$___K
+M|business-health-diagnostic|- More efficient S&M: [details]
+M|business-health-diagnostic|**If you hit these targets, you'll be in 'Healthy' territory.**
+M|business-health-diagnostic|**Must-track metrics:**
+M|business-health-diagnostic|- Churn rate (track to ensure it's decreasing)
+M|business-health-diagnostic|- NRR (track to ensure it's improving)
+M|business-health-diagnostic|- Customer feedback (are improvements working?)
+M|business-health-diagnostic|**Leading indicators:**
+M|business-health-diagnostic|- Onboarding completion rate
+M|business-health-diagnostic|- Time-to-value
+M|business-health-diagnostic|- Usage metrics (activation, engagement)
+M|business-health-diagnostic|**Don't:**
+M|business-health-diagnostic|- Scale acquisition until retention is fixed (you'll just churn faster)
+M|business-health-diagnostic|- Ignore expansion (it's easier than new acquisition)
+M|business-health-diagnostic|- Wait too long (retention problems compound)"
+M|business-health-diagnostic|**When:**
+M|business-health-diagnostic|- Multiple critical red flags
+M|business-health-diagnostic|- 2+ dimensions problematic
+M|business-health-diagnostic|- Requires immediate intervention
+M|business-health-diagnostic|**Output:**
+M|business-health-diagnostic|"## 🚨 Overall Health: **Concerning** (Urgent Action Required)
+M|business-health-diagnostic|Your business has multiple critical issues that need immediate attention.
+M|business-health-diagnostic|| Dimension | Score | Status |
+M|business-health-diagnostic||-----------|-------|--------|
+M|business-health-diagnostic|| **Growth & Retention** | 🚨 Concerning | [Details] |
+M|business-health-diagnostic|| **Unit Economics** | 🚨 Concerning | [Details] |
+M|business-health-diagnostic|| **Capital Efficiency** | 🚨 Critical | [Details] |
+M|business-health-diagnostic|| **Overall** | 🚨 **Concerning** | Multiple urgent issues |
+M|business-health-diagnostic|**1. [Critical Issue 1 - e.g., Runway]**
+M|business-health-diagnostic|- Current: [6 months runway]
+M|business-health-diagnostic|- Threshold: [<6 months = crisis]
+M|business-health-diagnostic|- Impact: [Survival risk]
+M|business-health-diagnostic|- Action: [Raise capital OR cut burn immediately]
+M|business-health-diagnostic|- Timeline: [30 days]
+M|business-health-diagnostic|**2. [Critical Issue 2 - e.g., Unit Economics]**
+M|business-health-diagnostic|- Current: [LTV:CAC 1.2:1]
+M|business-health-diagnostic|- Threshold: [<1.5:1 = unsustainable]
+M|business-health-diagnostic|- Impact: [Losing money on every customer]
+M|business-health-diagnostic|- Action: [Reduce CAC OR increase LTV]
+M|business-health-diagnostic|- Timeline: [60 days]
+M|business-health-diagnostic|**3. [Critical Issue 3 - e.g., Cohort Degradation]**
+M|business-health-diagnostic|- Current: [Newer cohorts churning 2x faster than old]
+M|business-health-diagnostic|- Threshold: [Degrading PMF]
+M|business-health-diagnostic|- Impact: [Scaling makes problem worse]
+M|business-health-diagnostic|- Action: [Stop scaling, fix retention]
+M|business-health-diagnostic|- Timeline: [90 days]
+M|business-health-diagnostic|**Week 1-2: Triage**
+M|business-health-diagnostic|**Immediate actions:**
+M|business-health-diagnostic|1. **Extend runway** (if <6 months)
+M|business-health-diagnostic|- Option A: Raise bridge round ($___K)
+M|business-health-diagnostic|- Option B: Cut burn by ___%
+M|business-health-diagnostic|- Option C: Combination
+M|business-health-diagnostic|- dec by: [Date]
+M|business-health-diagnostic|2. **Stop scaling broken channels**
+M|business-health-diagnostic|- Pause S&M spend on channels with LTV:CAC <2:1
+M|business-health-diagnostic|- Reallocate budget to [best-performing channel]
+M|business-health-diagnostic|3. **Assemble crisis team**
+M|business-health-diagnostic|- Daily standups on key metrics
+M|business-health-diagnostic|- Weekly progress reviews
+M|business-health-diagnostic|**Month 1: Stop the Bleeding**
+M|business-health-diagnostic|**Priority 1: Fix Unit Economics**
+M|business-health-diagnostic|- Current: LTV:CAC ___:1 (unsustainable)
+M|business-health-diagnostic|- Actions:
+M|business-health-diagnostic|1. Reduce CAC: [Specific tactics]
+M|business-health-diagnostic|2. Increase LTV: [Improve retention, add expansion]
+M|business-health-diagnostic|- Target: LTV:CAC >2:1 within 30 days
+M|business-health-diagnostic|**Priority 2: Improve Retention**
+M|business-health-diagnostic|- Current: Churn ___% (too high)
+M|business-health-diagnostic|- Actions:
+M|business-health-diagnostic|1. Interview churned customers (identify top 3 reasons)
+M|business-health-diagnostic|2. Fix onboarding (reduce early churn)
+M|business-health-diagnostic|3. Proactive outreach to at-risk accounts
+M|business-health-diagnostic|- Target: Reduce churn by 20% within 30 days
+M|business-health-diagnostic|**Month 2-3: Stabilize**
+M|business-health-diagnostic|**Milestone 1: Positive Unit Economics**
+M|business-health-diagnostic|- LTV:CAC >2:1 ✅
+M|business-health-diagnostic|- Payback <18 months ✅
+M|business-health-diagnostic|- Gross margin >60% ✅
+M|business-health-diagnostic|**Milestone 2: Slowing Churn**
+M|business-health-diagnostic|- Churn decreasing month-over-month
+M|business-health-diagnostic|- Cohort degradation stopped
+M|business-health-diagnostic|- NRR improving toward 100%
+M|business-health-diagnostic|**Milestone 3: Runway Extended**
+M|business-health-diagnostic|- 12+ months runway (via fundraise or burn reduction)
+M|business-health-diagnostic|- Clear path to next milestone
+M|business-health-diagnostic|**Metrics:**
+M|business-health-diagnostic|- Runway: ___ months → 12+ months ✅
+M|business-health-diagnostic|- LTV:CAC: ___:1 → >2:1 ✅
+M|business-health-diagnostic|- Churn: ___% → reduced by 30% ✅
+M|business-health-diagnostic|- NRR: ___% → improving toward 100%
+M|business-health-diagnostic|**Position:**
+M|business-health-diagnostic|- Out of crisis mode
+M|business-health-diagnostic|- Stable foundation to rebuild growth
+M|business-health-diagnostic|- Clear plan for next 6-12 months
+M|business-health-diagnostic|**Don't:**
+M|business-health-diagnostic|- Try to grow your way out of this (fix unit economics first)
+M|business-health-diagnostic|- Ignore the data (hope is not a str)
+M|business-health-diagnostic|- Scale before you fix retention (accelerates failure)
+M|business-health-diagnostic|- Wait until runway <3 months to fundraise (too late)
+M|business-health-diagnostic|**Do:**
+M|business-health-diagnostic|- Focus ruthlessly on retention and unit economics
+M|business-health-diagnostic|- Cut costs to extend runway
+M|business-health-diagnostic|- Be honest with board/investors about problems
+M|business-health-diagnostic|- Move fast (you don't have time to waste)"
+M|business-health-diagnostic|**When:**
+M|business-health-diagnostic|- Runway <3 months OR
+M|business-health-diagnostic|- Multiple critical failures (LTV:CAC <1:1, massive churn, no path to profitability)
+M|business-health-diagnostic|**Output:**
+M|business-health-diagnostic|"## 🚨🚨 Overall Health: **Critical** (Existential Crisis)
+M|business-health-diagnostic|Your business is in survival mode. Immediate drastic action required.
+M|business-health-diagnostic|[Similar structure to Pattern 3, but more urgent tone, shorter timelines, more drastic measures]
+M|business-health-diagnostic|**Immediate Actions (This Week):**
+M|business-health-diagnostic|1. Emergency board meeting
+M|business-health-diagnostic|2. Fundraise immediately OR cut burn 50%+
+M|business-health-diagnostic|3. Stop all non-essential spend
+M|business-health-diagnostic|4. Fix top 1-2 critical issues (runway, unit economics)"
+M|business-health-diagnostic|See `examples/` folder. Mini examples below:
+M|business-health-diagnostic|**Metrics:**
+M|business-health-diagnostic|- ARR: $20M, Growth: 60% YoY
+M|business-health-diagnostic|- NRR: 115%, Churn: 2.5%
+M|business-health-diagnostic|- LTV:CAC: 4:1, Payback: 10 months
+M|business-health-diagnostic|- Rule of 40: 50, Runway: 18 months
+M|business-health-diagnostic|**Diagnosis:** Healthy. Scale aggressively.
+M|business-health-diagnostic|**Metrics:**
+M|business-health-diagnostic|- ARR: $15M, Growth: 40% YoY
+M|business-health-diagnostic|- NRR: 95%, Churn: 5%
+M|business-health-diagnostic|- LTV:CAC: 3.5:1, Payback: 12 months
+M|business-health-diagnostic|- Rule of 40: 38, Runway: 12 months
+M|business-health-diagnostic|**Diagnosis:** Moderate. Fix retention before scaling further.
+M|business-health-diagnostic|**Metrics:**
+M|business-health-diagnostic|- ARR: $8M, Growth: 25% YoY (slowing)
+M|business-health-diagnostic|- NRR: 88%, Churn: 7% (increasing)
+M|business-health-diagnostic|- LTV:CAC: 1.8:1, Payback: 20 months
+M|business-health-diagnostic|- Rule of 40: 15, Runway: 8 months
+M|business-health-diagnostic|**Diagnosis:** Concerning. Urgent action on retention and unit economics required.
+M|business-health-diagnostic|**Symptom:** "Revenue growing 50%!" (ignoring burn, churn, unit economics)
+M|business-health-diagnostic|**Consequence:** Unsustainable growth. Scaling broken model.
+M|business-health-diagnostic|**Fix:** Look at all four dimensions together.
+M|business-health-diagnostic|**Symptom:** "We're not profitable yet, is that bad?" (early-stage company)
+M|business-health-diagnostic|**Consequence:** Misplaced worry. Early-stage should optimize for growth and unit economics, not profitability.
+M|business-health-diagnostic|**Fix:** Use stage-appropriate benchmarks.
+M|business-health-diagnostic|**Symptom:** "Churn is 5%, let's watch it"
+M|business-health-diagnostic|**Consequence:** By the time lagging indicators (churn, NRR) show problems, it's late.
+M|business-health-diagnostic|**Fix:** Track leading indicators (usage, engagement, onboarding completion).
+M|business-health-diagnostic|**Symptom:** "NRR <100% for 3 quarters, but we'll fix it eventually"
+M|business-health-diagnostic|**Consequence:** Problems compound. Becomes crisis.
+M|business-health-diagnostic|**Fix:** Set clear timelines. If metric doesn't improve in X time, escalate.
+M|business-health-diagnostic|**Symptom:** "Let's improve growth, retention, CAC, and efficiency simultaneously"
+M|business-health-diagnostic|**Consequence:** Resources spread thin. Nothing improves.
+M|business-health-diagnostic|**Fix:** Prioritize top 1-3 issues. Fix sequentially.
+M|business-health-diagnostic|- `saas-revenue-growth-metrics` — Detailed growth and retention metrics
+M|business-health-diagnostic|- `saas-economics-efficiency-metrics` — Detailed unit economics and capital efficiency
+M|business-health-diagnostic|- `fin-metrics-quickref` — Fast lookup for all metrics and benchmarks
+M|business-health-diagnostic|- `feature-investment-advisor` — Uses health diagnostic to inform feature priorities
+M|business-health-diagnostic|- `acquisition-channel-advisor` — Uses health diagnostic to inform channel priorities
+M|business-health-diagnostic|- `fin-based-pricing-advisor` — Uses health diagnostic to inform pricing decisions
+M|business-health-diagnostic|- **Bessemer vtr Partners:** "SaaS Metrics 2.0" — Comprehensive benchmarks
+M|business-health-diagnostic|- **David Skok:** "SaaS Metrics" — Unit economics benchmarks
+M|business-health-diagnostic|- **OpenView Partners:** SaaS benchmarking reports
+M|business-health-diagnostic|- **Battery Ventures:** "State of SaaS" annual report
+M|business-health-diagnostic|- Adapted from `research/fin/Finance_QuickRef.md` (Red flags table)
+M|business-health-diagnostic|- dec frameworks from `research/fin/Finance_For_PMs.Putting_It_Together_Synthesis.md`
+M|business-health-diagnostic|- Benchmarks from `research/fin/fin for Product Managers.md`

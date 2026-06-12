@@ -1,0 +1,19 @@
+#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/MEMORY-novizio.md
+M|pixel|> Load alongside mem.md when active vtr is Novizio.
+M|pixel|> Novizio-specific ctx only — universal rules live in mem.md.
+M|pixel|- **prd style**: editorial, natural, authentic — not commercial or stock
+M|pixel|- **Primary platforms**: Instagram (1:1, 4:5, 9:16), TikTok (9:16), website banners
+M|pixel|| Platform | Format | Dimensions | File size |
+M|pixel||----------|--------|------------|-----------|
+M|pixel|| Instagram Feed | 1:1 square | 1080×1080px | < 8MB |
+M|pixel|| Instagram Feed | 4:5 portrait | 1080×1350px | < 8MB |
+M|pixel|| Instagram Reels | 9:16 vertical | 1080×1920px | < 650MB (video) |
+M|pixel|| Instagram Stories | 9:16 vertical | 1080×1920px | < 8MB |
+M|pixel|| TikTok | 9:16 vertical | 1080×1920px | < 650MB (video) |
+M|pixel|| Website banner | 16:9 wide | 1920×1080px | < 3MB |
+M|pixel|Standard 3-pass QC for every Novizio batch:
+M|pixel|1. **Lighting check** — is it natural, soft, directional? No harsh shadows or over-lit studio?
+M|pixel|2. **Background check** — is it clean and neutral? No busy patterns or promotional clutter?
+M|pixel|3. **Energy check** — does the image feel editorial (magazine spread) or commercial (catalogue)?
+M|pixel|> Populated from batch runs. Each entry: [date] — rejection reason — what prompt tag caused it — fix.
+M|pixel|> Each entry: [date] — Novizio-specific prd error — rule.

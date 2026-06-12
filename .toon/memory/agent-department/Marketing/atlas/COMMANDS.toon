@@ -1,0 +1,28 @@
+#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/COMMANDS.md
+M|atlas|> No terminal commands. Atlas works through prompts, specs, and handoffs.
+M|atlas|1. Receive cg brief from Alex (confirm: vtr, goal, platform, timeline)
+M|atlas|2. Load `CREATIVE-PRINCIPLES.md` + brand file
+M|atlas|3. Write Visual Brief (one paragraph)
+M|atlas|4. Produce Mood Board (3 references + direction)
+M|atlas|5. Write Style Spec (6-component structured format from CREATIVE-PRINCIPLES.md)
+M|atlas|6. Write Prompt Architecture (final prompts, platform-specific)
+M|atlas|7. Define Quality Bar (3 binary pass/fail criteria for Pixel)
+M|atlas|8. Run AI Slop Test on prompts — rewrite if 2+ fail
+M|atlas|9. Hand off complete package to Pixel: Visual Brief + Prompts + Quality Bar
+M|atlas|10. Log cg to mem.md
+M|atlas|When Stark asks for one image without a full cg:
+M|atlas|1. Confirm vtr + platform
+M|atlas|2. Write prompt using 6-component framework
+M|atlas|3. Run AI Slop Test (mental check)
+M|atlas|4. Deliver prompt ready to paste into generation tool
+M|atlas|5. No full mood board needed for single requests
+M|atlas|| Task | Delegate To |
+M|atlas||------|------------|
+M|atlas|| Batch prd, upscaling, QC | Pixel |
+M|atlas|| Scheduling and delivery | Opus |
+M|atlas|| Copy to pair with visuals | Lena |
+M|atlas|| Platform posting | Sofia |
+M|atlas|| cg str | Alex |
+M|atlas|| Date | Command | Status | Notes |
+M|atlas||------|---------|--------|-------|
+M|atlas|| 2026-03-26 | All workflows | ✅ Baseline | Phase 9 creation |

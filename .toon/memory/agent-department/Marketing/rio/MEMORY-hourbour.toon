@@ -1,0 +1,22 @@
+#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/MEMORY-hourbour.md
+M|rio|> Load alongside mem.md when active vtr is Hourbour.
+M|rio|> Hourbour-specific ctx only — universal rules live in mem.md.
+M|rio|- **Model**: Fintech SaaS subscription (B2C/B2B)
+M|rio|- **Primary paid channels**: LinkedIn Ads, YouTube Ads (pre-roll)
+M|rio|- **Audience**: fin-aware professionals 28–45yo; exclude high-net-worth investors (wrong fit)
+M|rio|| Metric | Target | Pause Threshold |
+M|rio||--------|--------|-----------------|
+M|rio|| LinkedIn Sponsored CTR | > 0.5% | < 0.25% |
+M|rio|| LinkedIn CPL (lead gen) | < $45 | > $90 |
+M|rio|| YouTube VTR (pre-roll) | > 30% | < 15% |
+M|rio|| Trial-to-paid ROAS | > 3× LTV:CAC | < 2× LTV:CAC |
+M|rio|| CAC (blended) | < 3-month MRR | > 6-month MRR |
+M|rio|- **LinkedIn**: job titles — fin manager, operations lead, small business owner; company size 10–200
+M|rio|- **Exclusions**: investment advisors, wealth managers (wrong product fit)
+M|rio|- **YouTube**: target in-market fin cnt viewers; exclude existing users
+M|rio|- **Retargeting**: website visitors (30-day window) + trial sign-ups who haven't converted (60-day)
+M|rio|- Ads should sell the outcome ("See every transaction, automatically") not the feature list
+M|rio|- Testimonial ads with a specific number perform best: "Saved me 3 hours per week"
+M|rio|- Trial CTA outperforms "Download" or "Buy Now" — reduce friction in the ask
+M|rio|> Populated from cg results. Each entry: [date] — angle — ROAS/CAC achieved — what worked.
+M|rio|> Each entry: [date] — Hourbour-specific ad error — rule.

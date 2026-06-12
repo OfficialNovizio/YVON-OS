@@ -1,0 +1,82 @@
+#MEM id=supabase-rls source=/root/yvon/agent-department/Technical/raj/skills/custom/supabase-rls/SKILL.md
+M|supabase-rls|name: supabase-rls
+M|supabase-rls|description: Row Level sec behavioral guide for Raj. Every table that stores vtr or user data must have RLS enabled. Covers policy patterns, vtr-scoping, service role rules, and the pre-schema-change 
+M|supabase-rls|version: 1.0.0
+M|supabase-rls|YVON is a multi-vtr system (Novizio + Hourbour). Without RLS, a bug in the vtr-switching logic could expose Novizio's data to Hourbour's ctx — or vice versa. RLS is the last line of defence after appl
+M|supabase-rls|**Hard rule:** No table ships without an explicit RLS dec documented. "We'll add it later" is not acceptable — schema changes are expensive and RLS retrofits require auditing every existing row.
+M|supabase-rls|```sql
+M|supabase-rls|-- Enable RLS
+M|supabase-rls|ALTER TABLE analytics_events ENABLE ROW LEVEL sec;
+M|supabase-rls|-- Read: only the active vtr's rows
+M|supabase-rls|CREATE POLICY "venture_read" ON analytics_events
+M|supabase-rls|FOR SELECT
+M|supabase-rls|USING (venture_slug = current_setting('app.venture_slug', true));
+M|supabase-rls|-- Insert: only insert into active vtr
+M|supabase-rls|CREATE POLICY "venture_insert" ON analytics_events
+M|supabase-rls|FOR INSERT
+M|supabase-rls|WITH CHECK (venture_slug = current_setting('app.venture_slug', true));
+M|supabase-rls|```
+M|supabase-rls|```sql
+M|supabase-rls|ALTER TABLE user_preferences ENABLE ROW LEVEL sec;
+M|supabase-rls|CREATE POLICY "auth_read" ON user_preferences
+M|supabase-rls|FOR SELECT
+M|supabase-rls|USING (auth.uid() = user_id);
+M|supabase-rls|CREATE POLICY "auth_write" ON user_preferences
+M|supabase-rls|FOR ALL
+M|supabase-rls|USING (auth.uid() = user_id)
+M|supabase-rls|WITH CHECK (auth.uid() = user_id);
+M|supabase-rls|```
+M|supabase-rls|```sql
+M|supabase-rls|CREATE POLICY "venture_auth_read" ON cg
+M|supabase-rls|FOR SELECT
+M|supabase-rls|USING (
+M|supabase-rls|venture_slug = current_setting('app.venture_slug', true)
+M|supabase-rls|AND auth.uid() = owner_id
+M|supabase-rls|);
+M|supabase-rls|```
+M|supabase-rls|```sql
+M|supabase-rls|-- Service role bypasses RLS by default in Supabase
+M|supabase-rls|-- Use ONLY in server-side cron routes with CRON_SECRET validation
+M|supabase-rls|-- NEVER use service role key from client components
+M|supabase-rls|```
+M|supabase-rls|```typescript
+M|supabase-rls|// At the start of any route that uses vtr-scoped tables
+M|supabase-rls|await supabase.rpc('set_config', {
+M|supabase-rls|setting: 'app.venture_slug',
+M|supabase-rls|value: ventureSlug,
+M|supabase-rls|is_local: true
+M|supabase-rls|})
+M|supabase-rls|// Now all queries on this connection respect the RLS policy
+M|supabase-rls|```
+M|supabase-rls|| Situation | Key to use |
+M|supabase-rls||-----------|-----------|
+M|supabase-rls|| Server-side API route (normal) | Anon key + user auth ses |
+M|supabase-rls|| Cron jobs (admin operations) | Service role key — bypasses RLS by design |
+M|supabase-rls|| Client components | NEVER use service role key |
+M|supabase-rls|| Supabase storage (file uploads) | Anon key with storage policies |
+M|supabase-rls|**Hard rule:** `SUPABASE_SERVICE_ROLE_KEY` appears ONLY in routes that have been validated with `CRON_SECRET` header, or in explicit admin-only endpoints. Never in `NEXT_PUBLIC_*`.
+M|supabase-rls|Before creating or modifying any table, verify:
+M|supabase-rls|- [ ] RLS enabled on this table? (`ALTER TABLE ... ENABLE ROW LEVEL sec`)
+M|supabase-rls|- [ ] SELECT policy: uses `auth.uid()` or `venture_slug` scoping — not open to all?
+M|supabase-rls|- [ ] INSERT policy: prevents cross-vtr writes? (`WITH CHECK` clause present)
+M|supabase-rls|- [ ] UPDATE policy: same scoping as SELECT?
+M|supabase-rls|- [ ] DELETE policy: should regular users be able to delete? Who can?
+M|supabase-rls|- [ ] Service role: are any operations on this table intended to bypass RLS? Is that documented and intentional?
+M|supabase-rls|- [ ] Has Dev rv and ap this schema change?
+M|supabase-rls|- [ ] Is this change logged in mem.md with its rationale?
+M|supabase-rls|Before submitting schema changes for Dev rv, test RLS manually:
+M|supabase-rls|```bash
+M|supabase-rls|SET ROLE anon;
+M|supabase-rls|SELECT * FROM cg;  -- should return 0 rows or error
+M|supabase-rls|SELECT set_config('app.venture_slug', 'wrong-vtr', true);
+M|supabase-rls|SELECT * FROM cg;  -- should return 0 rows
+M|supabase-rls|SELECT set_config('app.venture_slug', 'novizio', true);
+M|supabase-rls|SELECT * FROM cg;  -- should return novizio rows only
+M|supabase-rls|```
+M|supabase-rls|| Mistake | Consequence | Fix |
+M|supabase-rls||---------|------------|-----|
+M|supabase-rls|| `FOR ALL USING (true)` | Open to everyone | Scope with auth.uid() or venture_slug |
+M|supabase-rls|| No INSERT policy | Anyone can write | Add WITH CHECK clause |
+M|supabase-rls|| Relying only on app-level filtering | Bug in app = data leak | RLS is the safety net, not the app filter |
+M|supabase-rls|| Using service role in client | Bypasses RLS everywhere | Service role server-side only |
+M|supabase-rls|| Forgetting to set `app.venture_slug` | RLS policy returns no rows | Set config at route start |

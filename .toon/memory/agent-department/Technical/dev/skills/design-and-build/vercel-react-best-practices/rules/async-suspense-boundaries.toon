@@ -1,0 +1,78 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/async-suspense-boundaries.md
+M|rules|title: Strategic Suspense Boundaries
+M|rules|impact: HIGH
+M|rules|impactDescription: faster initial paint
+M|rules|tags: async, suspense, streaming, layout-shift
+M|rules|Instead of awaiting data in async components before returning JSX, use Suspense boundaries to show the wrapper UI faster while data loads.
+M|rules|**Incorrect (wrapper blocked by data fetching):**
+M|rules|```tsx
+M|rules|async function Page() {
+M|rules|const data = await fetchData() // Blocks entire page
+M|rules|return (
+M|rules|<div>
+M|rules|<div>Sidebar</div>
+M|rules|<div>Header</div>
+M|rules|<div>
+M|rules|<DataDisplay data={data} />
+M|rules|</div>
+M|rules|<div>Footer</div>
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|The entire layout waits for data even though only the middle section needs it.
+M|rules|**Correct (wrapper shows immediately, data streams in):**
+M|rules|```tsx
+M|rules|function Page() {
+M|rules|return (
+M|rules|<div>
+M|rules|<div>Sidebar</div>
+M|rules|<div>Header</div>
+M|rules|<div>
+M|rules|<Suspense fallback={<Skeleton />}>
+M|rules|<DataDisplay />
+M|rules|</Suspense>
+M|rules|</div>
+M|rules|<div>Footer</div>
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|async function DataDisplay() {
+M|rules|const data = await fetchData() // Only blocks this component
+M|rules|return <div>{data.cnt}</div>
+M|rules|}
+M|rules|```
+M|rules|Sidebar, Header, and Footer render immediately. Only DataDisplay waits for data.
+M|rules|**Alternative (share promise across components):**
+M|rules|```tsx
+M|rules|function Page() {
+M|rules|// Start fetch immediately, but don't await
+M|rules|const dataPromise = fetchData()
+M|rules|return (
+M|rules|<div>
+M|rules|<div>Sidebar</div>
+M|rules|<div>Header</div>
+M|rules|<Suspense fallback={<Skeleton />}>
+M|rules|<DataDisplay dataPromise={dataPromise} />
+M|rules|<DataSummary dataPromise={dataPromise} />
+M|rules|</Suspense>
+M|rules|<div>Footer</div>
+M|rules|</div>
+M|rules|)
+M|rules|}
+M|rules|function DataDisplay({ dataPromise }: { dataPromise: Promise<Data> }) {
+M|rules|const data = use(dataPromise) // Unwraps the promise
+M|rules|return <div>{data.cnt}</div>
+M|rules|}
+M|rules|function DataSummary({ dataPromise }: { dataPromise: Promise<Data> }) {
+M|rules|const data = use(dataPromise) // Reuses the same promise
+M|rules|return <div>{data.summary}</div>
+M|rules|}
+M|rules|```
+M|rules|Both components share the same promise, so only one fetch occurs. Layout renders immediately while both components wait together.
+M|rules|**When NOT to use this pattern:**
+M|rules|- Critical data needed for layout decisions (affects positioning)
+M|rules|- SEO-critical cnt above the fold
+M|rules|- Small, fast queries where suspense overhead isn't worth it
+M|rules|- When you want to avoid layout shift (loading → cnt jump)
+M|rules|**Trade-off:** Faster initial paint vs potential layout shift. Choose based on your UX priorities.

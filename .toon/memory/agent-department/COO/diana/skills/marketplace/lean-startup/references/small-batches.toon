@@ -1,0 +1,171 @@
+#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/small-batches.md
+M|references|The power of small batches is counterintuitive. Most people believe working in large batches is more efficient because it minimizes setup time and ctx switching. In reality, small batches dramatically
+M|references|Imagine you need to stuff, seal, stamp, and address 100 envelopes. There are two approaches:
+M|references|**Large batch approach:** Fold all 100 letters, then stuff all 100 envelopes, then seal all 100, then stamp all 100, then address all 100.
+M|references|**Small batch approach:** Take one envelope through the entire process (fold, stuff, seal, stamp, address), then move to the next.
+M|references|Most people intuitively believe the large batch approach is faster. They are wrong.
+M|references|**Why small batches win:**
+M|references|| Factor | Large Batch | Small Batch |
+M|references||--------|-------------|-------------|
+M|references|| Total time | Longer (measured repeatedly in experiments) | Shorter |
+M|references|| Error detection | Errors found at the very end; must redo entire batch | Errors found immediately; fix one item |
+M|references|| Work in progress | 100 items in various partial states | 1 item in progress at a time |
+M|references|| Feedback speed | After all 100 are done | After each one is done |
+M|references|| Flexibility | Cannot change approach mid-batch | Can adapt approach after each item |
+M|references|The envelope experiment has been replicated hundreds of times. Small batches win every time. The advantage increases as complexity increases.
+M|references|| Large Batch Startup | Small Batch Startup |
+M|references||--------------------|---------------------|
+M|references|| Spend 6 months building 20 features | Ship 1 feature, measure, learn, then decide on the next |
+M|references|| Launch with a "complete" product | Launch with an MVP, iterate based on data |
+M|references|| Conduct a large market research study, then build | Interview 5 customers, build a test, interview 5 more |
+M|references|| Write a full business plan, then execute | Test one assumption, adjust plan, test the next |
+M|references|| Redesign the entire app at once | Change one screen, measure impact, then the next |
+M|references|**Defect amplification:** In large batches, a defect in step 1 affects all items processed in steps 2, 3, 4, and 5 before being discovered. In small batches, a defect is caught before it propagates.
+M|references|**Queue time:** In large batches, each step waits for the entire previous batch to complete. Items spend most of their time waiting, not being worked on. In small batches, items flow continuously.
+M|references|**Learning delay:** In large batches, you learn nothing until the entire batch is complete. In small batches, you learn after each item, enabling course correction throughout.
+M|references|Continuous dpl is the ultimate expression of small batch thinking in software. Every change to the codebase is automatically tested and deployed to prd, often multiple times per day.
+M|references|```
+M|references|Code commit → Automated tests → Build → Staging deploy → Automated checks → prd deploy → Monitoring
+M|references|```
+M|references|| Stage | Description | Batch Size | Deploy Frequency |
+M|references||-------|-------------|------------|-----------------|
+M|references|| 1. Manual | Developer packages and deploys manually | Large (weeks of work) | Monthly or less |
+M|references|| 2. Scripted | Deploy script automates the process | Medium (days of work) | Weekly |
+M|references|| 3. Continuous Integration | Automated build and test on every commit | Small (hours of work) | Daily |
+M|references|| 4. Continuous Delivery | Automated pl to staging; manual prd trigger | Very small (single changes) | Multiple daily |
+M|references|| 5. Continuous dpl | Fully automated to prd | Minimal (single commit) | Per commit |
+M|references|**tec requirements:**
+M|references|- Automated test suite with reasonable coverage (aim for 70%+ of critical paths)
+M|references|- Automated build process
+M|references|- Automated dpl scripts
+M|references|- prd monitoring and alerting
+M|references|- Ability to roll back quickly (under 5 minutes)
+M|references|**Cultural requirements:**
+M|references|- Team trusts the automated pl
+M|references|- Everyone takes responsibility for the build
+M|references|- Broken builds are fixed immediately (not "I'll fix it later")
+M|references|- Small commits are valued over large ones
+M|references|**Process requirements:**
+M|references|- Code rv before merge (pull request workflow)
+M|references|- Feature flags for incomplete work
+M|references|- Trunk-based dev or short-lived branches
+M|references|- On-call rotation for prd issues
+M|references|Feature flags decouple dpl from release. You can deploy code to prd without exposing it to users, then gradually roll it out.
+M|references|| Type | Purpose | Example |
+M|references||------|---------|---------|
+M|references|| Release flag | Control when a feature becomes visible | New dashboard hidden behind flag until ready |
+M|references|| Experiment flag | Enable A/B testing | Show new checkout flow to 50% of users |
+M|references|| Ops flag | Control system behavior in prd | Disable expensive background job during peak load |
+M|references|| Permission flag | Restrict access to specific users | Beta feature available only to internal team |
+M|references|| Phase | Audience | Purpose | Duration |
+M|references||-------|----------|---------|----------|
+M|references|| 1. Internal | Team members only | Catch obvious bugs and UX issues | 1-3 days |
+M|references|| 2. Beta | 1-5% of users (early adopters) | Validate in real conditions with sympathetic users | 3-7 days |
+M|references|| 3. Canary | 10-25% of users | Monitor for performance and stability issues | 3-7 days |
+M|references|| 4. Broad rollout | 50-100% of users | Full launch with monitoring | 1-3 days |
+M|references|- [ ] Feature flag is in place and tested (can enable and disable cleanly)
+M|references|- [ ] Monitoring dashboard shows feature-specific metrics
+M|references|- [ ] Rollback plan is documented and tested
+M|references|- [ ] Success metrics are defined for each rollout phase
+M|references|- [ ] On-call team is aware of the rollout schedule
+M|references|- [ ] Customer support team is briefed on the new feature
+M|references|Small batches apply far beyond software dpl.
+M|references|| Large Batch | Small Batch |
+M|references||-------------|-------------|
+M|references|| Plan a 6-month cg, execute all at once | Test one ad creative per day for a week, then scale winners |
+M|references|| Write 30 blog posts, publish all at once | Write and publish 1 post, measure engagement, adjust topics |
+M|references|| Redesign the entire website | Change one page, measure conversion, iterate |
+M|references|| Launch on 5 channels simultaneously | Start with 1 channel, optimize, then expand |
+M|references|| Large Batch | Small Batch |
+M|references||-------------|-------------|
+M|references|| Build a 50-slide pitch deck, present to 20 prospects | Create a 5-slide deck, pitch to 3 prospects, revise based on feedback |
+M|references|| Train the entire sales team on a new script | Test the script with 2 reps for a week, refine, then train everyone |
+M|references|| Negotiate all contract terms at once | Agree on key terms first, then iterate on details |
+M|references|| Large Batch | Small Batch |
+M|references||-------------|-------------|
+M|references|| Write 10 job descriptions, post all, interview in batches | Post 1 role, refine the process, then post the next |
+M|references|| Onboard 5 new hires simultaneously | Onboard 1 person, learn from their experience, improve for the next |
+M|references|| Create an entire employee handbook before hiring | doc policies as they become relevant |
+M|references|| Large Batch | Small Batch |
+M|references||-------------|-------------|
+M|references|| Design 20 screens in Figma, then hand off to engineering | Design 1 screen, get engineering feedback, iterate, then next screen |
+M|references|| Conduct a 50-person usability study | Test with 5 users, fix issues, test with 5 more |
+M|references|| Redesign the entire product information architecture | Change 1 navigation element, measure impact, then the next |
+M|references|Break every task into the smallest independently valuable unit.
+M|references|**Before:** "Build user dashboard" (2 weeks of work)
+M|references|**After:**
+M|references|1. Display user's name and avatar (2 hours)
+M|references|2. Show account creation date (1 hour)
+M|references|3. Add usage statistics section (4 hours)
+M|references|4. Add recent activity feed (6 hours)
+M|references|5. Add settings shortcuts (3 hours)
+M|references|Each piece can be deployed, measured, and iterated independently.
+M|references|Set maximum time limits for work in progress.
+M|references|| ctx | Maximum Batch Size |
+M|references||---------|-------------------|
+M|references|| Feature dev | 3 days of work before shipping something |
+M|references|| Customer research | 5 interviews before synthesizing findings |
+M|references|| Design iteration | 2 days before user testing |
+M|references|| cnt creation | 1 piece before measuring engagement |
+M|references|| Experiment cycles | 2 weeks before reviewing results |
+M|references|Limit the number of items in progress simultaneously.
+M|references|**Kanban board example:**
+M|references|| To Do | In Progress (max 2) | In rv (max 1) | Done |
+M|references||-------|---------------------|-------------------|------|
+M|references|| Task D | Task B | Task A | ... |
+M|references|| Task E | Task C | | |
+M|references|| Task F | | | |
+M|references|When the "In Progress" column is full, no new work starts until something moves to "In rv." This forces completion over starting.
+M|references|Process one item completely before starting the next. In software, this means:
+M|references|1. Pick one user story
+M|references|2. Design it
+M|references|3. Build it
+M|references|4. Test it
+M|references|5. Deploy it
+M|references|6. Measure it
+M|references|7. Then pick the next one
+M|references|This feels slower per item but is faster in total throughput and dramatically faster in learning speed.
+M|references|| Tool Category | Purpose | Examples |
+M|references||--------------|---------|---------|
+M|references|| CI/CD pl | Automate build, test, deploy | GitHub Actions, GitLab CI, CircleCI |
+M|references|| Feature flags | Decouple deploy from release | LaunchDarkly, Unleash, Flagsmith, Statsig |
+M|references|| Monitoring | Detect issues immediately after deploy | Datadog, Sentry, PagerDuty, Grafana |
+M|references|| Rollback | Revert quickly when problems occur | Built into most CI/CD tools; Kubernetes rollback |
+M|references|| A/B testing | Compare variations with real users | Optimizely, Statsig, PostHog, GrowthBook |
+M|references|| Tool Category | Purpose | Examples |
+M|references||--------------|---------|---------|
+M|references|| Kanban boards | Visualize flow and WIP limits | Jira, Linear, Trello, Notion |
+M|references|| Experiment tracking | doc and track experiments | Notion, Airtable, custom spreadsheet |
+M|references|| Customer feedback | Collect real-time user input | Intercom, Hotjar, UserTesting |
+M|references|| anl | Measure impact of each batch | Amplitude, Mixpanel, PostHog, Google anl |
+M|references|IMVU, where Eric Ries served as CTO, deployed code to prd 50+ times per day. Each deploy was a tiny batch: sometimes a single line of code.
+M|references|**Key practices:**
+M|references|- Automated test suite ran on every commit
+M|references|- Immune system: automated monitoring rolled back deploys that degraded key metrics
+M|references|- Engineers deployed their own code (no separate ops team)
+M|references|- Cluster immune system measured real-time customer behavior after each deploy
+M|references|**Result:** Problems were caught within minutes. Each deploy was so small that root cause analysis was trivial. The team iterated faster than cp who deployed monthly.
+M|references|Amazon decomposed its monolithic application into hundreds of independent services, each owned by a small team (the "two-pizza team" - small enough to feed with two pizzas).
+M|references|**Key practices:**
+M|references|- Each team deploys independently
+M|references|- Services communicate through well-defined APIs
+M|references|- Teams own their service end-to-end (build, deploy, monitor, support)
+M|references|- Average deploy frequency: every 11.7 seconds (across the company)
+M|references|**Result:** Amazon can ship thousands of changes per day. Each change is small, independently deployable, and independently reversible.
+M|references|Etsy transformed from quarterly "big bang" releases to continuous dpl over several years.
+M|references|**Before (quarterly releases):**
+M|references|- 4 deploys per year
+M|references|- Each deploy was a massive batch of hundreds of changes
+M|references|- Deploys required multi-day "war rooms" to manage
+M|references|- Bugs were hard to isolate because so many changes were bundled
+M|references|**After (continuous dpl):**
+M|references|- 50+ deploys per day
+M|references|- Each deploy is a single engineer's change
+M|references|- Deploys take minutes and require no coordination
+M|references|- Bugs are immediately traceable to the single change that caused them
+M|references|**Key enablers:**
+M|references|- Feature flags (Etsy built their own system, later open-sourced)
+M|references|- Comprehensive monitoring with deploy annotations
+M|references|- "Push trains" that batch deploys automatically with individual rollback capability
+M|references|- Culture of "if it hurts, do it more often"
+M|references|The lesson across all these examples is the same: reducing batch size feels risky but actually reduces risk. The smaller the batch, the faster the feedback, and the faster you learn.

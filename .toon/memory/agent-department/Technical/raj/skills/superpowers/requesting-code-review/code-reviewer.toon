@@ -1,0 +1,87 @@
+#MEM id=requesting-code-review source=/root/yvon/agent-department/Technical/raj/skills/superpowers/requesting-code-review/code-reviewer.md
+M|requesting-code-review|You are reviewing code changes for prd readiness.
+M|requesting-code-review|**Your task:**
+M|requesting-code-review|1. rv {WHAT_WAS_IMPLEMENTED}
+M|requesting-code-review|2. Compare against {PLAN_OR_REQUIREMENTS}
+M|requesting-code-review|3. Check code quality, architecture, testing
+M|requesting-code-review|4. Categorize issues by severity
+M|requesting-code-review|5. Assess prd readiness
+M|requesting-code-review|{DESCRIPTION}
+M|requesting-code-review|{PLAN_REFERENCE}
+M|requesting-code-review|**Base:** {BASE_SHA}
+M|requesting-code-review|**Head:** {HEAD_SHA}
+M|requesting-code-review|```bash
+M|requesting-code-review|git diff --stat {BASE_SHA}..{HEAD_SHA}
+M|requesting-code-review|git diff {BASE_SHA}..{HEAD_SHA}
+M|requesting-code-review|```
+M|requesting-code-review|**Code Quality:**
+M|requesting-code-review|- Clean separation of concerns?
+M|requesting-code-review|- Proper error handling?
+M|requesting-code-review|- Type safety (if applicable)?
+M|requesting-code-review|- DRY principle followed?
+M|requesting-code-review|- Edge cases handled?
+M|requesting-code-review|**Architecture:**
+M|requesting-code-review|- Sound design decisions?
+M|requesting-code-review|- Scalability considerations?
+M|requesting-code-review|- Performance implications?
+M|requesting-code-review|- sec concerns?
+M|requesting-code-review|**Testing:**
+M|requesting-code-review|- Tests actually test logic (not mocks)?
+M|requesting-code-review|- Edge cases covered?
+M|requesting-code-review|- Integration tests where needed?
+M|requesting-code-review|- All tests passing?
+M|requesting-code-review|**Requirements:**
+M|requesting-code-review|- All plan requirements met?
+M|requesting-code-review|- Implementation matches spec?
+M|requesting-code-review|- No scope creep?
+M|requesting-code-review|- Breaking changes documented?
+M|requesting-code-review|**prd Readiness:**
+M|requesting-code-review|- Migration str (if schema changes)?
+M|requesting-code-review|- Backward compatibility considered?
+M|requesting-code-review|- Documentation complete?
+M|requesting-code-review|- No obvious bugs?
+M|requesting-code-review|[What's well done? Be specific.]
+M|requesting-code-review|[Bugs, sec issues, data loss risks, broken functionality]
+M|requesting-code-review|[Architecture problems, missing features, poor error handling, test gaps]
+M|requesting-code-review|[Code style, optimization opportunities, documentation improvements]
+M|requesting-code-review|**For each issue:**
+M|requesting-code-review|- File:line reference
+M|requesting-code-review|- What's wrong
+M|requesting-code-review|- Why it matters
+M|requesting-code-review|- How to fix (if not obvious)
+M|requesting-code-review|[Improvements for code quality, architecture, or process]
+M|requesting-code-review|**Ready to merge?** [Yes/No/With fixes]
+M|requesting-code-review|**Reasoning:** [tec assessment in 1-2 sentences]
+M|requesting-code-review|**DO:**
+M|requesting-code-review|- Categorize by actual severity (not everything is Critical)
+M|requesting-code-review|- Be specific (file:line, not vague)
+M|requesting-code-review|- Explain WHY issues matter
+M|requesting-code-review|- Acknowledge strengths
+M|requesting-code-review|- Give clear verdict
+M|requesting-code-review|**DON'T:**
+M|requesting-code-review|- Say "looks good" without checking
+M|requesting-code-review|- Mark nitpicks as Critical
+M|requesting-code-review|- Give feedback on code you didn't rv
+M|requesting-code-review|- Be vague ("improve error handling")
+M|requesting-code-review|- Avoid giving a clear verdict
+M|requesting-code-review|```
+M|requesting-code-review|- Clean database schema with proper migrations (db.ts:15-42)
+M|requesting-code-review|- Comprehensive test coverage (18 tests, all edge cases)
+M|requesting-code-review|- Good error handling with fallbacks (summarizer.ts:85-92)
+M|requesting-code-review|1. **Missing help text in CLI wrapper**
+M|requesting-code-review|- File: index-conversations:1-31
+M|requesting-code-review|- Issue: No --help flag, users won't discover --concurrency
+M|requesting-code-review|- Fix: Add --help case with usage examples
+M|requesting-code-review|2. **Date validation missing**
+M|requesting-code-review|- File: search.ts:25-27
+M|requesting-code-review|- Issue: Invalid dates silently return no results
+M|requesting-code-review|- Fix: Validate ISO format, throw error with example
+M|requesting-code-review|1. **Progress indicators**
+M|requesting-code-review|- File: indexer.ts:130
+M|requesting-code-review|- Issue: No "X of Y" counter for long operations
+M|requesting-code-review|- Impact: Users don't know how long to wait
+M|requesting-code-review|- Add progress reporting for user experience
+M|requesting-code-review|- Consider config file for excluded projects (portability)
+M|requesting-code-review|**Ready to merge: With fixes**
+M|requesting-code-review|**Reasoning:** Core implementation is solid with good architecture and tests. Important issues (help text, date validation) are easily fixed and don't affect core functionality.
+M|requesting-code-review|```

@@ -1,0 +1,28 @@
+#MEM id=code-review source=/root/yvon/agent-department/Technical/dev/skills/code-review/02-review-pr.md
+M|code-review|priority: high
+M|code-review|applies-to: dev
+M|code-review|load: on-request
+M|code-review|model: qwen3.5-4b
+M|code-review|conflicts: []
+M|code-review|source: github.com/tirth8205/code-rv-graph
+M|code-review|Full pull request rv using code-rv-graph for token-efficient analysis.
+M|code-review|```bash
+M|code-review|uv run code-rv-graph update
+M|code-review|```
+M|code-review|1. **Get PR ctx** — `get_minimal_context(task="PR #[number]: [title]")`
+M|code-review|2. **Check impact** — `detect_changes()` — read risk scores
+M|code-review|3. **Spot broken callers** — `query_graph(target="[changed function]")`
+M|code-review|4. **Verify tests exist** — check test coverage nodes in rsp
+M|code-review|5. **Write verdict** — use output format below
+M|code-review|```
+M|code-review|**Risk:** [low / medium / high]
+M|code-review|**Changed nodes:** [list]
+M|code-review|**Test coverage:** [covered / partial / missing]
+M|code-review|1. [Specific issue with file:line reference]
+M|code-review|2. ...
+M|code-review|[ap / REQUEST CHANGES / NEEDS DISCUSSION]
+M|code-review|Reason: [one sentence]
+M|code-review|```
+M|code-review|- Never ap a PR with HIGH risk and no tests
+M|code-review|- Never ap if unrelated files were modified
+M|code-review|- Always check that the PR touches only what the task required (karpathy surgical rule)

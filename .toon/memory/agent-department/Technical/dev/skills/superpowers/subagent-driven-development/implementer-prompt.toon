@@ -1,0 +1,76 @@
+#MEM id=subagent-driven-development source=/root/yvon/agent-department/Technical/dev/skills/superpowers/subagent-driven-development/implementer-prompt.md
+M|subagent-driven-development|Use this template when dispatching an implementer subagent.
+M|subagent-driven-development|```
+M|subagent-driven-development|Task tool (general-purpose):
+M|subagent-driven-development|description: "Implement Task N: [task name]"
+M|subagent-driven-development|prompt: |
+M|subagent-driven-development|You are implementing Task N: [task name]
+M|subagent-driven-development|[FULL TEXT of task from plan - paste it here, don't make subagent read file]
+M|subagent-driven-development|[Scene-setting: where this fits, dependencies, architectural ctx]
+M|subagent-driven-development|If you have questions about:
+M|subagent-driven-development|- The requirements or acceptance criteria
+M|subagent-driven-development|- The approach or implementation str
+M|subagent-driven-development|- Dependencies or assumptions
+M|subagent-driven-development|- Anything unclear in the task description
+M|subagent-driven-development|**Ask them now.** Raise any concerns before starting work.
+M|subagent-driven-development|Once you're clear on requirements:
+M|subagent-driven-development|1. Implement exactly what the task specifies
+M|subagent-driven-development|2. Write tests (following TDD if task says to)
+M|subagent-driven-development|3. Verify implementation works
+M|subagent-driven-development|4. Commit your work
+M|subagent-driven-development|5. Self-rv (see below)
+M|subagent-driven-development|6. Report back
+M|subagent-driven-development|Work from: [directory]
+M|subagent-driven-development|**While you work:** If you encounter something unexpected or unclear, **ask questions**.
+M|subagent-driven-development|It's always OK to pause and clarify. Don't guess or make assumptions.
+M|subagent-driven-development|You reason best about code you can hold in ctx at once, and your edits are more
+M|subagent-driven-development|reliable when files are focused. Keep this in mind:
+M|subagent-driven-development|- Follow the file structure defined in the plan
+M|subagent-driven-development|- Each file should have one clear responsibility with a well-defined interface
+M|subagent-driven-development|- If a file you're creating is growing beyond the plan's intent, stop and report
+M|subagent-driven-development|it as DONE_WITH_CONCERNS — don't split files on your own without plan guidance
+M|subagent-driven-development|- If an existing file you're modifying is already large or tangled, work carefully
+M|subagent-driven-development|and note it as a concern in your report
+M|subagent-driven-development|- In existing codebases, follow established patterns. Improve code you're touching
+M|subagent-driven-development|the way a good developer would, but don't restructure things outside your task.
+M|subagent-driven-development|It is always OK to stop and say "this is too hard for me." Bad work is worse than
+M|subagent-driven-development|no work. You will not be penalized for escalating.
+M|subagent-driven-development|**STOP and escalate when:**
+M|subagent-driven-development|- The task requires architectural decisions with multiple valid approaches
+M|subagent-driven-development|- You need to understand code beyond what was provided and can't find clarity
+M|subagent-driven-development|- You feel uncertain about whether your approach is correct
+M|subagent-driven-development|- The task involves restructuring existing code in ways the plan didn't anticipate
+M|subagent-driven-development|- You've been reading file after file trying to understand the system without progress
+M|subagent-driven-development|**How to escalate:** Report back with status BLOCKED or NEEDS_CONTEXT. Describe
+M|subagent-driven-development|specifically what you're stuck on, what you've tried, and what kind of help you need.
+M|subagent-driven-development|The controller can provide more ctx, re-dispatch with a more capable model,
+M|subagent-driven-development|or break the task into smaller pieces.
+M|subagent-driven-development|rv your work with fresh eyes. Ask yourself:
+M|subagent-driven-development|**Completeness:**
+M|subagent-driven-development|- Did I fully implement everything in the spec?
+M|subagent-driven-development|- Did I miss any requirements?
+M|subagent-driven-development|- Are there edge cases I didn't handle?
+M|subagent-driven-development|**Quality:**
+M|subagent-driven-development|- Is this my best work?
+M|subagent-driven-development|- Are names clear and accurate (match what things do, not how they work)?
+M|subagent-driven-development|- Is the code clean and maintainable?
+M|subagent-driven-development|**Discipline:**
+M|subagent-driven-development|- Did I avoid overbuilding (YAGNI)?
+M|subagent-driven-development|- Did I only build what was requested?
+M|subagent-driven-development|- Did I follow existing patterns in the codebase?
+M|subagent-driven-development|**Testing:**
+M|subagent-driven-development|- Do tests actually verify behavior (not just mock behavior)?
+M|subagent-driven-development|- Did I follow TDD if required?
+M|subagent-driven-development|- Are tests comprehensive?
+M|subagent-driven-development|If you find issues during self-rv, fix them now before reporting.
+M|subagent-driven-development|When done, report:
+M|subagent-driven-development|- **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+M|subagent-driven-development|- What you implemented (or what you attempted, if blocked)
+M|subagent-driven-development|- What you tested and test results
+M|subagent-driven-development|- Files changed
+M|subagent-driven-development|- Self-rv findings (if any)
+M|subagent-driven-development|- Any issues or concerns
+M|subagent-driven-development|Use DONE_WITH_CONCERNS if you completed the work but have doubts about correctness.
+M|subagent-driven-development|Use BLOCKED if you cannot complete the task. Use NEEDS_CONTEXT if you need
+M|subagent-driven-development|information that wasn't provided. Never silently produce work you're unsure about.
+M|subagent-driven-development|```

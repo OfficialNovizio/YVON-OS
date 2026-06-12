@@ -1,0 +1,51 @@
+SKILL|github-auth|"GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login."
+STEP|1|**`git` (always available)** — uses HTTPS personal access tokens or SSH keys
+STEP|2|**`gh` CLI (if installed)** — richer GitHub API access with a simpler auth flow
+STEP|3|Decision tree:**
+STEP|4|If `gh auth status` shows authenticated → you're good, use `gh` for everything
+STEP|5|If `gh` is installed but not authenticated → use "gh auth" method below
+STEP|6|If `gh` is not installed → use "git-only" method below (no sudo needed)
+STEP|7|Step 1: Create a personal access token**
+STEP|8|Click "Generate new token (classic)"
+STEP|9|Give it a name like "hermes-agent"
+STEP|10|Select scopes:
+STEP|11|Set expiration (90 days is a good default)
+STEP|12|Copy the token — it won't be shown again
+STEP|13|Step 2: Configure git to store the token**
+STEP|14|Alternative: cache helper (credentials expire from memory)**
+STEP|15|Alternative: set the token directly in the remote URL (per-repo)**
+STEP|16|Step 3: Configure git identity**
+STEP|17|Step 4: Verify**
+STEP|18|Step 1: Check for existing SSH keys**
+STEP|19|Step 2: Generate a key if needed**
+STEP|20|Click "New SSH key"
+STEP|21|Paste the public key content
+STEP|22|Give it a title like "hermes-agent-<machine-name>"
+STEP|23|Step 3: Test the connection**
+STEP|24|Step 4: Configure git to use SSH for GitHub**
+STEP|25|Step 5: Configure git identity**
+PIT|**`git` (always available)** — uses HTTPS personal access tokens or SSH keys
+PIT|**`gh` CLI (if installed)** — richer GitHub API access with a simpler auth flow
+PIT|Decision tree:**
+PIT|If `gh auth status` shows authenticated → you're good, use `gh` for everything
+PIT|If `gh` is installed but not authenticated → use "gh auth" method below
+PIT|If `gh` is not installed → use "git-only" method below (no sudo needed)
+PIT|Step 1: Create a personal access token**
+PIT|Click "Generate new token (classic)"
+PIT|Give it a name like "hermes-agent"
+PIT|Select scopes:
+PIT|Set expiration (90 days is a good default)
+PIT|Copy the token — it won't be shown again
+PIT|Step 2: Configure git to store the token**
+PIT|Alternative: cache helper (credentials expire from memory)**
+PIT|Alternative: set the token directly in the remote URL (per-repo)**
+PIT|Step 3: Configure git identity**
+PIT|Step 4: Verify**
+PIT|Step 1: Check for existing SSH keys**
+PIT|Step 2: Generate a key if needed**
+PIT|Click "New SSH key"
+PIT|Paste the public key content
+PIT|Give it a title like "hermes-agent-<machine-name>"
+PIT|Step 3: Test the connection**
+PIT|Step 4: Configure git to use SSH for GitHub**
+PIT|Step 5: Configure git identity**

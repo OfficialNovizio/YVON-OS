@@ -1,0 +1,34 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-dependencies.md
+M|rules|title: Narrow Effect Dependencies
+M|rules|impact: LOW
+M|rules|impactDescription: minimizes effect re-runs
+M|rules|tags: rerender, useEffect, dependencies, optimization
+M|rules|Specify primitive dependencies instead of objects to minimize effect re-runs.
+M|rules|**Incorrect (re-runs on any user field change):**
+M|rules|```tsx
+M|rules|useEffect(() => {
+M|rules|console.log(user.id)
+M|rules|}, [user])
+M|rules|```
+M|rules|**Correct (re-runs only when id changes):**
+M|rules|```tsx
+M|rules|useEffect(() => {
+M|rules|console.log(user.id)
+M|rules|}, [user.id])
+M|rules|```
+M|rules|**For derived state, compute outside effect:**
+M|rules|```tsx
+M|rules|// Incorrect: runs on width=767, 766, 765...
+M|rules|useEffect(() => {
+M|rules|if (width < 768) {
+M|rules|enableMobileMode()
+M|rules|}
+M|rules|}, [width])
+M|rules|// Correct: runs only on boolean transition
+M|rules|const isMobile = width < 768
+M|rules|useEffect(() => {
+M|rules|if (isMobile) {
+M|rules|enableMobileMode()
+M|rules|}
+M|rules|}, [isMobile])
+M|rules|```

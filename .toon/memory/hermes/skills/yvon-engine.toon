@@ -1,0 +1,135 @@
+SKILL|yvon-engine|"Build and maintain the YVON Engine standalone npm package (@yvon/engine). Covers: extracting CIE+TOON+agents from YVON monolith into an installable package, auto-init CLI pattern (yvon init for new projects, yvon integrate for existing projects), built-in knowledge graph builder, dashboard server, Hermes CRDT sync, code-review-graph MCP integration, npm packaging pitfalls, and the 'one command activates everything' user expectation."
+STEP|1|CIE: Context Intelligence Engine (classify → retrieve → rank → inject)
+STEP|2|TOON: Token-Optimized Object Notation (84.5% token savings on data tasks)
+STEP|3|13 AI agents with full folder structures (AGENT.md, MEMORY.md, SESSION.md, SKILLS.md, skills/)
+STEP|4|Built-in knowledge graph builder (JS/TS/Python import scanner)
+STEP|5|Dashboard server (D3.js force graph, CIE pipeline, agent cards, token gauge)
+STEP|6|Hermes CRDT bidirectional memory sync
+STEP|7|code-review-graph MCP client (auto-detect, pip install suggestion)
+STEP|8|Auto-detect existing features (graphify, codegraph, hermes, claude, nextjs, typescript)
+STEP|9|Create missing project structure (CLAUDE.md, graph placeholders, venture docs, agent-memory/)
+STEP|10|Deploy all 13 agents with full folder structures (803 template files)
+STEP|11|Build knowledge graphs immediately (no external deps needed)
+STEP|12|Write yvon.config.json with all paths configured
+STEP|13|Show what was created, what was kept, and what optional deps to install
+STEP|14|Never** require the user to run separate install commands for components that can be built-in. Graphify and codegraph are built-in. Only Hermes and Claude are external services (optional).
+STEP|15|Arrow function array destructuring in forEach: `([a, b]) =>` — breaks in some Node versions
+STEP|16|TypeScript type annotations: `function foo(p: string)` — breaks in plain JS
+STEP|17|`Array.prototype.findLast` — not available in Node <18
+STEP|18|Detect existing features (fs.existsSync checks)
+STEP|19|Show what's found and what's missing
+STEP|20|Create missing project structure
+STEP|21|Deploy agent templates (only create if not existing)
+STEP|22|Build knowledge graphs (inline builder, zero deps)
+STEP|23|Write yvon.config.json
+STEP|24|Show summary: created X, kept Y, optional deps
+STEP|25|Rule:** Never overwrite existing files. Never require the user to run separate install commands for built-in features.
+STEP|26|Scans project for `.ts`, `.tsx`, `.js`, `.jsx`, `.py` files
+STEP|27|Extracts imports using regex patterns
+STEP|28|Builds dependency graph with hub files (most imported) and high fan-out files
+STEP|29|Generates GRAPH_REPORT.md and CODEGRAPH_REPORT.md
+STEP|30|Skipped directories: `node_modules`, `.git`, `dist`, `.next`, `__pycache__`
+STEP|31|Force-directed D3.js graph of codebase structure
+STEP|32|CIE pipeline status panel (classified → retrieved → injected → filtered)
+STEP|33|Agent status cards (13 agents with roles, models, status dots)
+STEP|34|Token savings gauge (animated SVG arc at 84.5%)
+STEP|35|Single self-contained HTML with inline CSS/JS — dark theme, glass-morphism
+STEP|36|API endpoints: `/api/graph`, `/api/cie-status`, `/api/agents`, `/api/token-savings`
+STEP|37|Exported as `startDashboard` from main `@yvon/engine` (added to exports field: `"./dashboard": "./dist/dashboard/index.js"`)
+STEP|38|CLI command:** `npx yvon dashboard` — starts server on port 4200.
+STEP|39|Dashboard v1 (current):** Single inline HTML page with static D3 graph, hardcoded CIE stats, token gauge at 84%. Serves as proof-of-concept.
+STEP|40|Dashboard v2 (planned):** Full React SPA with Express API + WebSocket. See detailed plan at `.hermes/plans/2026-06-12_dashboard-v2-plan.md`. Key upgrades: live TOON metrics (actual tokens/cost saved),
+STEP|41|Programmatic usage:**
+STEP|42|Doctor output:**
+STEP|43|Check: which code-review-graph → if found, features.codeReviewGraph = true
+STEP|44|If missing: check pip → pip install code-review-graph → code-review-graph build
+STEP|45|Fallback: built-in regex graph builder (always works, zero deps)
+STEP|46|Reads `~/.hermes/memories/USER.md` and `MEMORY.md`
+STEP|47|Timestamped entries, section-based parsing
+STEP|48|Returns pre-formatted contextString for LLM injection
+STEP|49|"I don't need md file we make a proper plugin"
+STEP|50|"Fix everything even though I didn't get dashboard view"
+STEP|51|"it's clearly not working good right now"
+STEP|52|Response pattern:** Audit what's broken → list the broken items → fix them all → verify end-to-end → report. Never plan more when the user wants execution.
+STEP|53|Scans all `.ts`/`.tsx` files (skipping `node_modules`, `.git`, `.next`, `dist`)
+STEP|54|Finds imports from `@/lib/cie`, `@/lib/toon`, `@/lib/algorithms`
+STEP|55|Replaces with `@yvon/engine/cie`, `@yvon/engine/toon`, `@yvon/engine/algorithms`
+STEP|56|Verifies `dist/index.js` exists before patching (safety check)
+STEP|57|Reports: files scanned, patched, skipped
+STEP|58|Non-destructive — never deletes local `lib/cie/`, only changes import sources
+STEP|59|integrate injection behavior:**
+STEP|60|Scan all `.ts`/`.tsx` files for existing `@/lib/cie` imports → patch to `@yvon/engine/cie`
+STEP|61|Check `app/api/claude/route.ts` — if it exists but doesn't import `buildCieContext`, inject it
+STEP|62|Insert the CIE wiring block (classify → retrieve → rank → inject) into the POST handler
+STEP|63|Wire `finalDataBlock` and `userMessageFinal` variables through the handler
+STEP|64|Non-destructive — wraps in try/catch, CIE is non-blocking on failure
+STEP|65|`toon-format` — TOON compression format, bidirectional benchmarks, adaptive injection
+STEP|66|`yvon-os-development` — YVON OS internal development patterns
+STEP|67|`hermes-agent` — Hermes agent framework, CLI, memory, skills
+PIT|CIE: Context Intelligence Engine (classify → retrieve → rank → inject)
+PIT|TOON: Token-Optimized Object Notation (84.5% token savings on data tasks)
+PIT|13 AI agents with full folder structures (AGENT.md, MEMORY.md, SESSION.md, SKILLS.md, skills/)
+PIT|Built-in knowledge graph builder (JS/TS/Python import scanner)
+PIT|Dashboard server (D3.js force graph, CIE pipeline, agent cards, token gauge)
+PIT|Hermes CRDT bidirectional memory sync
+PIT|code-review-graph MCP client (auto-detect, pip install suggestion)
+PIT|Auto-detect existing features (graphify, codegraph, hermes, claude, nextjs, typescript)
+PIT|Create missing project structure (CLAUDE.md, graph placeholders, venture docs, agent-memory/)
+PIT|Deploy all 13 agents with full folder structures (803 template files)
+PIT|Build knowledge graphs immediately (no external deps needed)
+PIT|Write yvon.config.json with all paths configured
+PIT|Show what was created, what was kept, and what optional deps to install
+PIT|Never** require the user to run separate install commands for components that can be built-in. Graphify and codegraph are built-in. Only Hermes and Claude are external services (optional).
+PIT|Arrow function array destructuring in forEach: `([a, b]) =>` — breaks in some Node versions
+PIT|TypeScript type annotations: `function foo(p: string)` — breaks in plain JS
+PIT|`Array.prototype.findLast` — not available in Node <18
+PIT|Detect existing features (fs.existsSync checks)
+PIT|Show what's found and what's missing
+PIT|Create missing project structure
+PIT|Deploy agent templates (only create if not existing)
+PIT|Build knowledge graphs (inline builder, zero deps)
+PIT|Write yvon.config.json
+PIT|Show summary: created X, kept Y, optional deps
+PIT|Rule:** Never overwrite existing files. Never require the user to run separate install commands for built-in features.
+PIT|Scans project for `.ts`, `.tsx`, `.js`, `.jsx`, `.py` files
+PIT|Extracts imports using regex patterns
+PIT|Builds dependency graph with hub files (most imported) and high fan-out files
+PIT|Generates GRAPH_REPORT.md and CODEGRAPH_REPORT.md
+PIT|Skipped directories: `node_modules`, `.git`, `dist`, `.next`, `__pycache__`
+PIT|Force-directed D3.js graph of codebase structure
+PIT|CIE pipeline status panel (classified → retrieved → injected → filtered)
+PIT|Agent status cards (13 agents with roles, models, status dots)
+PIT|Token savings gauge (animated SVG arc at 84.5%)
+PIT|Single self-contained HTML with inline CSS/JS — dark theme, glass-morphism
+PIT|API endpoints: `/api/graph`, `/api/cie-status`, `/api/agents`, `/api/token-savings`
+PIT|Exported as `startDashboard` from main `@yvon/engine` (added to exports field: `"./dashboard": "./dist/dashboard/index.js"`)
+PIT|CLI command:** `npx yvon dashboard` — starts server on port 4200.
+PIT|Dashboard v1 (current):** Single inline HTML page with static D3 graph, hardcoded CIE stats, token gauge at 84%. Serves as proof-of-concept.
+PIT|Dashboard v2 (planned):** Full React SPA with Express API + WebSocket. See detailed plan at `.hermes/plans/2026-06-12_dashboard-v2-plan.md`. Key upgrades: live TOON metrics (actual tokens/cost saved),
+PIT|Programmatic usage:**
+PIT|Doctor output:**
+PIT|Check: which code-review-graph → if found, features.codeReviewGraph = true
+PIT|If missing: check pip → pip install code-review-graph → code-review-graph build
+PIT|Fallback: built-in regex graph builder (always works, zero deps)
+PIT|Reads `~/.hermes/memories/USER.md` and `MEMORY.md`
+PIT|Timestamped entries, section-based parsing
+PIT|Returns pre-formatted contextString for LLM injection
+PIT|"I don't need md file we make a proper plugin"
+PIT|"Fix everything even though I didn't get dashboard view"
+PIT|"it's clearly not working good right now"
+PIT|Response pattern:** Audit what's broken → list the broken items → fix them all → verify end-to-end → report. Never plan more when the user wants execution.
+PIT|Scans all `.ts`/`.tsx` files (skipping `node_modules`, `.git`, `.next`, `dist`)
+PIT|Finds imports from `@/lib/cie`, `@/lib/toon`, `@/lib/algorithms`
+PIT|Replaces with `@yvon/engine/cie`, `@yvon/engine/toon`, `@yvon/engine/algorithms`
+PIT|Verifies `dist/index.js` exists before patching (safety check)
+PIT|Reports: files scanned, patched, skipped
+PIT|Non-destructive — never deletes local `lib/cie/`, only changes import sources
+PIT|integrate injection behavior:**
+PIT|Scan all `.ts`/`.tsx` files for existing `@/lib/cie` imports → patch to `@yvon/engine/cie`
+PIT|Check `app/api/claude/route.ts` — if it exists but doesn't import `buildCieContext`, inject it
+PIT|Insert the CIE wiring block (classify → retrieve → rank → inject) into the POST handler
+PIT|Wire `finalDataBlock` and `userMessageFinal` variables through the handler
+PIT|Non-destructive — wraps in try/catch, CIE is non-blocking on failure
+PIT|`toon-format` — TOON compression format, bidirectional benchmarks, adaptive injection
+PIT|`yvon-os-development` — YVON OS internal development patterns
+PIT|`hermes-agent` — Hermes agent framework, CLI, memory, skills

@@ -1,0 +1,74 @@
+#MEM id=seo-copywriting source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/seo-copywriting/SKILL.md
+M|seo-copywriting|name: seo-copywriting
+M|seo-copywriting|description: Lena's SEO copywriting framework for Novizio and Hourbour. Covers keyword intent mapping, meta title and description templates, heading hierarchy, semantic SEO patterns, and balancing bra
+M|seo-copywriting|version: 1.0.0
+M|seo-copywriting|Novizio and Hourbour both have organic search potential. Fashion DTC depends heavily on discovery (editorial, Pinterest, Google Shopping). Fintech SaaS depends on intent-driven search ("time tracking 
+M|seo-copywriting|**Rule:** Brand voice comes first. SEO is a constraint, not the driver. Copy that reads like it was written for a bot converts no one.
+M|seo-copywriting|- Any product page, landing page, or collection page copy for Novizio
+M|seo-copywriting|- Any feature page, pricing page, or onboarding email for Hourbour
+M|seo-copywriting|- Any long-form cnt (blog post, editorial) for either vtr
+M|seo-copywriting|- When Kai provides SEO data from `/api/anl` and routes to Lena for copy
+M|seo-copywriting|Before writing any SEO-optimized copy, classify the keyword intent:
+M|seo-copywriting|| Intent type | What the user wants | Copy approach | vtr examples |
+M|seo-copywriting||-------------|--------------------|--------------|--------------------|
+M|seo-copywriting|| **Informational** | Learn or discover | Educate → inspire → soft CTA | "how to style linen trousers" / "what is time blocking" |
+M|seo-copywriting|| **Commercial investigation** | Compare options before buying | Show differentiators + soc proof | "best minimalist fashion brands UK" / "best freelancer invoicing tool" |
+M|seo-copywriting|| **Transactional** | Ready to buy or sign up | Clear CTA, benefit-led headline | "linen blazer women" / "invoice app free trial" |
+M|seo-copywriting|| **Navigational** | Find a specific brand/product | Brand name in title + rich meta | "Novizio summer collection" / "Hourbour pricing" |
+M|seo-copywriting|```
+M|seo-copywriting|[H1]: [Primary keyword] — [brand differentiator]
+M|seo-copywriting|Example: "Linen Trousers Women — Elevated Everyday Essentials"
+M|seo-copywriting|[Meta title]: [Primary keyword] | Novizio (max 60 chars)
+M|seo-copywriting|Example: "Linen Trousers for Women | Novizio"
+M|seo-copywriting|[Meta description]: [Benefit] [keyword] [CTA]. (max 160 chars)
+M|seo-copywriting|Example: "Discover effortless linen trousers designed for the everyday. Free UK delivery. Shop the SS26 edit at Novizio."
+M|seo-copywriting|[Body copy rules]:
+M|seo-copywriting|- Use H2s for fabric, fit, styling (keyword-rich subheadings)
+M|seo-copywriting|- First paragraph contains primary keyword naturally
+M|seo-copywriting|- No keyword stuffing — read aloud test: if it sounds robotic, remove
+M|seo-copywriting|- Brand voice: editorial, understated luxury. Not "buy now" — "add to your edit"
+M|seo-copywriting|```
+M|seo-copywriting|```
+M|seo-copywriting|H1: [Category keyword] — Collection (e.g., "Women's Linen Clothing — SS26 Collection")
+M|seo-copywriting|200–300 word editorial description using semantic keywords (related terms, not just exact match)
+M|seo-copywriting|Include: material, occasion, styling cues — these are the long-tail queries
+M|seo-copywriting|```
+M|seo-copywriting|```
+M|seo-copywriting|[H1]: [Primary keyword] — [unique value prop]
+M|seo-copywriting|Example: "Time Tracking for Freelancers — Built for How You Actually Work"
+M|seo-copywriting|[Meta title]: [Primary keyword] | Hourbour (max 60 chars)
+M|seo-copywriting|[Meta description]: [Problem solved] + [unique mechanism] + [CTA]. (max 160 chars)
+M|seo-copywriting|[Body copy rules]:
+M|seo-copywriting|- H2s address the specific pain point each feature solves
+M|seo-copywriting|- Include the keyword in H1, first paragraph, one H2, and one alt text
+M|seo-copywriting|- Use trust signals near the CTA: "No credit card required", soc proof
+M|seo-copywriting|- Voice: trustworthy, clear, working-professional tone. Not SaaS-generic.
+M|seo-copywriting|```
+M|seo-copywriting|```
+M|seo-copywriting|Target informational + commercial investigation keywords
+M|seo-copywriting|Structure: Problem → Cause → Solution (their workflow) → How [product] helps
+M|seo-copywriting|Word count guide: 1200–2000 words for informational, 600–1000 for commercial investigation
+M|seo-copywriting|Internal linking: 2–3 links to Hourbour feature pages per post
+M|seo-copywriting|```
+M|seo-copywriting|When the optimal keyword conflicts with the brand voice:
+M|seo-copywriting|```
+M|seo-copywriting|Novizio example:
+M|seo-copywriting|Keyword: "cheap linen clothes women"    ← brand prohibits "cheap"
+M|seo-copywriting|Fix: target "affordable linen fashion women" or "linen clothing women" instead
+M|seo-copywriting|→ Never use keywords that undermine the brand positioning
+M|seo-copywriting|Hourbour example:
+M|seo-copywriting|Keyword: "free invoice software"       ← Hourbour may not have a free tier
+M|seo-copywriting|Fix: target "invoice software free trial" if a trial exists
+M|seo-copywriting|→ Never target keywords that make false promises
+M|seo-copywriting|```
+M|seo-copywriting|**Rule from vtr FEEDBACK.md applies here too:** Kahneman framing check before any urgency or scarcity language in SEO copy.
+M|seo-copywriting|```
+M|seo-copywriting|□ Keyword intent classified (informational / commercial / transactional / navigational)
+M|seo-copywriting|□ Primary keyword in H1, first paragraph, meta title
+M|seo-copywriting|□ Meta title ≤ 60 characters
+M|seo-copywriting|□ Meta description ≤ 160 characters with CTA
+M|seo-copywriting|□ No keyword stuffing — read aloud test passed
+M|seo-copywriting|□ Brand voice preserved — does not read like generic SEO copy
+M|seo-copywriting|□ No keywords that contradict brand positioning or make false promises
+M|seo-copywriting|□ Kahneman framing check: no manipulative urgency or loss framing
+M|seo-copywriting|```

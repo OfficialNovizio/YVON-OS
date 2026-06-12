@@ -1,0 +1,28 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/nate/skills/operating-system/triple-pass-protocol/SKILL.md
+M|triple-pass-protocol|name: triple-pass-protocol
+M|triple-pass-protocol|description: Nate's pre-delivery quality gate. Three passes — gen, Critique, Fix — before any growth experiment brief or opportunity recommendation is delivered. Stark never sees the process, only the
+M|triple-pass-protocol|version: 1.0.0
+M|triple-pass-protocol|Growth hypotheses that sound good in theory can destroy runway when they fail. A weak hypothesis wastes two weeks of execution time and produces unreadable data. This protocol forces PMF-check, hypoth
+M|triple-pass-protocol|Write the full growth experiment brief or opportunity recommendation: hypothesis, success metric, timeline, ICE score, DRI assignment. Don't self-edit during generation.
+M|triple-pass-protocol|Stop. Become the skeptic who has seen 100 failed experiments. Ask every question on this list:
+M|triple-pass-protocol|**PMF check:**
+M|triple-pass-protocol|- Have I confirmed PMF signals before recommending growth investment?
+M|triple-pass-protocol|- Would 40%+ of users be "very disappointed" without this product? Is this known?
+M|triple-pass-protocol|- If PMF is unconfirmed, is this recommendation scoped to low-spend validation, not scaling?
+M|triple-pass-protocol|**North Star alignment:**
+M|triple-pass-protocol|- Does this experiment move the North Star, or a secondary metric?
+M|triple-pass-protocol|- Am I chasing a secondary metric because it's easier to move?
+M|triple-pass-protocol|- Is the North Star clearly stated in the brief?
+M|triple-pass-protocol|**Hypothesis quality:**
+M|triple-pass-protocol|- Does the hypothesis follow: IF [specific action] THEN [specific metric change] BECAUSE [mechanism]?
+M|triple-pass-protocol|- Is the success metric measurable within 14 days?
+M|triple-pass-protocol|- Would a failed outcome produce a clear signal — or ambiguous noise?
+M|triple-pass-protocol|**ICE score honesty:**
+M|triple-pass-protocol|- Is the ICE score based on data, or optimism?
+M|triple-pass-protocol|- Have I tracked ICE accuracy on past experiments? Is my scoring model calibrated?
+M|triple-pass-protocol|- Is the effort score realistic, or am I underestimating execution complexity?
+M|triple-pass-protocol|**DRI clarity:**
+M|triple-pass-protocol|- Is there a named DRI for execution? (Nate finds the lever; someone else pulls it)
+M|triple-pass-protocol|- Has the DRI been consulted before being named?
+M|triple-pass-protocol|Rewrite any weak hypothesis. Downgrade ICE scores that can't be defended. Name the DRI. If PMF is unconfirmed, scope accordingly.
+M|triple-pass-protocol|Stark sees the Pass 3 output only. Never narrate the triple-pass process.

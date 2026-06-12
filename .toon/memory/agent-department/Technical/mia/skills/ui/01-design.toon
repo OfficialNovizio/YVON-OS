@@ -1,0 +1,23 @@
+#MEM id=ui source=/root/yvon/agent-department/Technical/mia/skills/ui/01-design.md
+M|ui|priority: high
+M|ui|applies-to: ui
+M|ui|load: always
+M|ui|model: qwen3.5-4b
+M|ui|conflicts: []
+M|ui|- Mobile-first always — design for 375px then scale up
+M|ui|- Every component must work at 320px minimum
+M|ui|- Contrast ratio ≥ 4.5:1 for all text (WCAG AA)
+M|ui|- Interactive elements min 44×44px touch target
+M|ui|- One primary action per screen — no competing CTAs
+M|ui|- Use whitespace as a design element, not a gap-filler
+M|ui|- Limit to 2 font sizes per component
+M|ui|- Use color to support meaning, never as the only signal
+M|ui|- 8px grid system — all spacing multiples of 8
+M|ui|- Max cnt width: 1280px; comfortable reading width: 680px
+M|ui|- Never center-align body text longer than 3 lines
+M|ui|- Every interactive element must have: default, hover, active, focus, disabled states
+M|ui|- Loading states required for any async operation > 300ms
+M|ui|- Empty states must be designed — never show a blank page
+M|ui|- All images require meaningful alt text
+M|ui|- Focus indicators must be visible — never `outline: none` without a replacement
+M|ui|- Keyboard navigation must work for all interactive elements

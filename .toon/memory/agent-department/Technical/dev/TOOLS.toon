@@ -1,0 +1,56 @@
+#MEM id=dev source=/root/yvon/agent-department/Technical/dev/TOOLS.md
+M|dev|Dev reads and writes mem via `/api/settings` — never directly to Supabase.
+M|dev|**Read:**
+M|dev|```
+M|dev|GET /api/settings?type=mem&agentId=dev-lead&ventureId={activeVenture}
+M|dev|```
+M|dev|**Write:**
+M|dev|```json
+M|dev|POST /api/settings
+M|dev|{
+M|dev|"type": "mem",
+M|dev|"agentId": "dev-lead",
+M|dev|"ventureId": "{activeVenture}",
+M|dev|"key": "architecture_decisions",
+M|dev|"value": "SSE over WebSockets — simpler, works with Vercel serverless."
+M|dev|}
+M|dev|```
+M|dev|After every POST: edit the Live State table in `mem.md` to match.
+M|dev|Dev's primary tool for code rv, PR management, and tech debt tracking.
+M|dev|**Use cases:**
+M|dev|- rv open PRs from Raj and Mia before approving merge
+M|dev|- Check recent commit history before starting a new phase
+M|dev|- Create issues for identified tech debt or architectural notes
+M|dev|- Verify what was merged before writing a new API contract
+M|dev|- Check if a branch has CI failures before Quinn starts QA
+M|dev|**Key operations:**
+M|dev|```
+M|dev|list_pull_requests    → see open PRs awaiting Dev rv
+M|dev|get_pull_request      → read a specific PR's diff for rv
+M|dev|list_issues           → check open tech debt and bug items
+M|dev|create_issue          → log tech debt or architectural decisions as trackable issues
+M|dev|get_commit            → verify what changed before a handoff
+M|dev|```
+M|dev|Dev uses Supabase to verify that the schema matches what's in the code.
+M|dev|**Use cases:**
+M|dev|- Inspect current table structure to verify migrations ran correctly
+M|dev|- Check that new columns exist before deploying code that references them
+M|dev|- Verify RLS (Row Level sec) policies are in place
+M|dev|- Cross-check `agents` table contents after a seed script runs
+M|dev|- Confirm Raj's schema decisions are reflected in the live database
+M|dev|**Key operations:**
+M|dev|```
+M|dev|list_tables           → verify all tables exist in public schema
+M|dev|describe_table        → check column names, types, constraints
+M|dev|execute_query         → spot-check data integrity (read-only verification)
+M|dev|```
+M|dev|| Route | Method | When |
+M|dev||-------|--------|------|
+M|dev|| `/api/settings` | GET | ses start — read own mem keys |
+M|dev|| `/api/settings` | POST | After any architecture dec to write to mem |
+M|dev|| `/api/vtr` | GET | To confirm active vtr ctx before writing API contracts |
+M|dev|Dev does not call data routes (`/api/instagram`, `/api/anl`, etc.) — those are Raj's territory. Dev calls them only if debugging a systemic architecture issue.
+M|dev|| Tool | Purpose | Status |
+M|dev||------|---------|--------|
+M|dev|| Vercel MCP | Check dpl status, build logs, function timeouts | Planned |
+M|dev|| Linear MCP | Track engineering milestones and tech debt in Linear | Planned |

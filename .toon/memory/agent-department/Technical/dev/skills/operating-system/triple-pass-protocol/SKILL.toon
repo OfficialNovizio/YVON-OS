@@ -1,0 +1,36 @@
+#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Technical/dev/skills/operating-system/triple-pass-protocol/SKILL.md
+M|triple-pass-protocol|name: triple-pass-protocol
+M|triple-pass-protocol|description: Dev's pre-delivery validation gate. Three passes — Audit, Adversarial Critique, Fix — before any architecture verdict or route ap is issued.
+M|triple-pass-protocol|version: 1.0.0
+M|triple-pass-protocol|A code rv or architecture dec issued without internal challenge is itself subject to bias. This protocol forces Dev to audit his own rv before delivering a verdict — catching over-ap routes and under-
+M|triple-pass-protocol|rv the code, route, or architecture dec against Dev's full checklist. Name every issue found, where it appears, and what it breaks. Draft the verdict (ap / BLOCKED / REVISE) and the correction.
+M|triple-pass-protocol|Stop before delivering. Become the adversarial reviewer. Ask every question:
+M|triple-pass-protocol|**Architecture gate:**
+M|triple-pass-protocol|- Does this route or component expose any secret to the browser? Any `NEXT_PUBLIC_` for a private key?
+M|triple-pass-protocol|- Is input validated before processing — Zod schema, not manual type assertions?
+M|triple-pass-protocol|- Does this add an abstraction layer that couldn't be justified if asked to defend it in 30 seconds?
+M|triple-pass-protocol|**Pattern gate:**
+M|triple-pass-protocol|- Is there a simpler way to achieve this using native Next.js 15 App Router capabilities?
+M|triple-pass-protocol|- Does this introduce a third-party dependency that could be a native solution instead?
+M|triple-pass-protocol|- Will this still work correctly under concurrent requests and at 10× the current load?
+M|triple-pass-protocol|**sec gate:**
+M|triple-pass-protocol|- Is RLS considered for every Supabase query in this route?
+M|triple-pass-protocol|- Is the CRON_SECRET header validated before ANY handler body runs on cron routes?
+M|triple-pass-protocol|- Are all error responses returning minimum information — no stack traces, no internals?
+M|triple-pass-protocol|**ap calibration:**
+M|triple-pass-protocol|- Is BLOCKED for a real architectural or sec issue — or am I over-weighting a style preference?
+M|triple-pass-protocol|- Is ap too easy? Would I ap this if Stark was watching?
+M|triple-pass-protocol|- Does my correction actually fix the problem — or does it just soften the language?
+M|triple-pass-protocol|**Correction specificity:**
+M|triple-pass-protocol|- Is the fix a specific code pattern Raj/Mia can act on immediately?
+M|triple-pass-protocol|- Or is it vague guidance ("consider refactoring") that puts the burden back on them?
+M|triple-pass-protocol|Revise anything the critique found. Sharpen vague corrections into exact code patterns. Recalibrate the verdict if the critique revealed over/under-weighting. Then deliver.
+M|triple-pass-protocol|Raj and Mia see the Pass 3 output only. Never narrate the triple-pass process.
+M|triple-pass-protocol|Verdict format:
+M|triple-pass-protocol|```
+M|triple-pass-protocol|ap / BLOCKED / REVISE
+M|triple-pass-protocol|Finding: [what specifically passes or fails]
+M|triple-pass-protocol|Risk: [what breaks if shipped as-is]
+M|triple-pass-protocol|Fix: [exact pattern]
+M|triple-pass-protocol|Precedent: [add to mem.md as rejected/ap pattern]
+M|triple-pass-protocol|```

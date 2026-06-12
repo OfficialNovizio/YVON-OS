@@ -1,0 +1,397 @@
+#MEM id=writing-skills source=/root/yvon/agent-department/Technical/dev/skills/superpowers/writing-skills/SKILL.md
+M|writing-skills|name: writing-skills
+M|writing-skills|description: >-
+M|writing-skills|Use when creating new skills, editing existing skills, or verifying skills work before dpl
+M|writing-skills|version: 1.0.0
+M|writing-skills|platforms: []
+M|writing-skills|metadata:
+M|writing-skills|hermes:
+M|writing-skills|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, productivity]
+M|writing-skills|**Writing skills IS Test-Driven dev applied to process documentation.**
+M|writing-skills|**Personal skills live in agt-specific directories (`~/.claude/skills` for Claude Code, `~/.agents/skills/` for Codex)**
+M|writing-skills|You write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
+M|writing-skills|**Core principle:** If you didn't watch an agt fail without the skill, you don't know if the skill teaches the right thing.
+M|writing-skills|**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-dev before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill adapts TDD to documentation.
+M|writing-skills|**Official guidance:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This doc provides additional patterns and guidelines that complement the TDD-focused ap
+M|writing-skills|A **skill** is a reference guide for proven techniques, patterns, or tools. Skills help future Claude instances find and apply effective approaches.
+M|writing-skills|**Skills are:** Reusable techniques, patterns, tools, reference guides
+M|writing-skills|**Skills are NOT:** Narratives about how you solved a problem once
+M|writing-skills|| TDD Concept | Skill Creation |
+M|writing-skills||-------------|----------------|
+M|writing-skills|| **Test case** | Pressure scenario with subagent |
+M|writing-skills|| **prd code** | Skill doc (SKILL.md) |
+M|writing-skills|| **Test fails (RED)** | agt violates rule without skill (baseline) |
+M|writing-skills|| **Test passes (GREEN)** | agt complies with skill present |
+M|writing-skills|| **Refactor** | Close loopholes while maintaining compliance |
+M|writing-skills|| **Write test first** | Run baseline scenario BEFORE writing skill |
+M|writing-skills|| **Watch it fail** | doc exact rationalizations agt uses |
+M|writing-skills|| **Minimal code** | Write skill addressing those specific violations |
+M|writing-skills|| **Watch it pass** | Verify agt now complies |
+M|writing-skills|| **Refactor cycle** | Find new rationalizations → plug → re-verify |
+M|writing-skills|The entire skill creation process follows RED-GREEN-REFACTOR.
+M|writing-skills|**Create when:**
+M|writing-skills|- Technique wasn't intuitively obvious to you
+M|writing-skills|- You'd reference this again across projects
+M|writing-skills|- Pattern applies broadly (not project-specific)
+M|writing-skills|- Others would benefit
+M|writing-skills|**Don't create for:**
+M|writing-skills|- One-off solutions
+M|writing-skills|- Standard practices well-documented elsewhere
+M|writing-skills|- Project-specific conventions (put in CLAUDE.md)
+M|writing-skills|- Mechanical constraints (if it's enforceable with regex/validation, automate it—save documentation for judgment calls)
+M|writing-skills|Concrete method with steps to follow (condition-based-waiting, root-cause-tracing)
+M|writing-skills|Way of thinking about problems (flatten-with-flags, test-invariants)
+M|writing-skills|API docs, syntax guides, tool documentation (office docs)
+M|writing-skills|```
+M|writing-skills|skills/
+M|writing-skills|skill-name/
+M|writing-skills|SKILL.md              # Main reference (required)
+M|writing-skills|supporting-file.*     # Only if needed
+M|writing-skills|```
+M|writing-skills|**Flat namespace** - all skills in one searchable namespace
+M|writing-skills|**Separate files for:**
+M|writing-skills|1. **Heavy reference** (100+ lines) - API docs, comprehensive syntax
+M|writing-skills|2. **Reusable tools** - Scripts, utilities, templates
+M|writing-skills|**Keep inline:**
+M|writing-skills|- Principles and concepts
+M|writing-skills|- Code patterns (< 50 lines)
+M|writing-skills|- Everything else
+M|writing-skills|**Frontmatter (YAML):**
+M|writing-skills|- Two required fields: `name` and `description` (see [agentskills.io/specification](https://agentskills.io/specification) for all supported fields)
+M|writing-skills|- Max 1024 characters total
+M|writing-skills|- `name`: Use letters, numbers, and hyphens only (no parentheses, special chars)
+M|writing-skills|- `description`: Third-person, describes ONLY when to use (NOT what it does)
+M|writing-skills|- Start with "Use when..." to focus on triggering conditions
+M|writing-skills|- Include specific symptoms, situations, and contexts
+M|writing-skills|- **NEVER summarize the skill's process or workflow** (see CSO section for why)
+M|writing-skills|- Keep under 500 characters if possible
+M|writing-skills|```markdown
+M|writing-skills|name: Skill-Name-With-Hyphens
+M|writing-skills|description: Use when [specific triggering conditions and symptoms]
+M|writing-skills|What is this? Core principle in 1-2 sentences.
+M|writing-skills|[Small inline flowchart IF dec non-obvious]
+M|writing-skills|Bullet list with SYMPTOMS and use cases
+M|writing-skills|When NOT to use
+M|writing-skills|Before/after code comparison
+M|writing-skills|Table or bullets for scanning common operations
+M|writing-skills|Inline code for simple patterns
+M|writing-skills|Link to file for heavy reference or reusable tools
+M|writing-skills|What goes wrong + fixes
+M|writing-skills|Concrete results
+M|writing-skills|```
+M|writing-skills|**Critical for discovery:** Future Claude needs to FIND your skill
+M|writing-skills|**Purpose:** Claude reads description to decide which skills to load for a given task. Make it answer: "Should I read this skill right now?"
+M|writing-skills|**Format:** Start with "Use when..." to focus on triggering conditions
+M|writing-skills|**CRITICAL: Description = When to Use, NOT What the Skill Does**
+M|writing-skills|The description should ONLY describe triggering conditions. Do NOT summarize the skill's process or workflow in the description.
+M|writing-skills|**Why this matters:** Testing revealed that when a description summarizes the skill's workflow, Claude may follow the description instead of reading the full skill cnt. A description saying "code rv b
+M|writing-skills|When the description was changed to just "Use when executing implementation plans with independent tasks" (no workflow summary), Claude correctly read the flowchart and followed the two-stage rv proce
+M|writing-skills|**The trap:** Descriptions that summarize workflow create a shortcut Claude will take. The skill body becomes documentation Claude skips.
+M|writing-skills|```yaml
+M|writing-skills|description: Use when executing plans - dispatches subagent per task with code rv between tasks
+M|writing-skills|description: Use for TDD - write test first, watch it fail, write minimal code, refactor
+M|writing-skills|description: Use when executing implementation plans with independent tasks in the current ses
+M|writing-skills|description: Use when implementing any feature or bugfix, before writing implementation code
+M|writing-skills|```
+M|writing-skills|**cnt:**
+M|writing-skills|- Use concrete triggers, symptoms, and situations that signal this skill applies
+M|writing-skills|- Describe the *problem* (race conditions, inconsistent behavior) not *language-specific symptoms* (setTimeout, sleep)
+M|writing-skills|- Keep triggers technology-agnostic unless the skill itself is technology-specific
+M|writing-skills|- If skill is technology-specific, make that explicit in the trigger
+M|writing-skills|- Write in third person (injected into system prompt)
+M|writing-skills|- **NEVER summarize the skill's process or workflow**
+M|writing-skills|```yaml
+M|writing-skills|description: For async testing
+M|writing-skills|description: I can help you with async tests when they're flaky
+M|writing-skills|description: Use when tests use setTimeout/sleep and are flaky
+M|writing-skills|description: Use when tests have race conditions, timing dependencies, or pass/fail inconsistently
+M|writing-skills|description: Use when using React Router and handling authentication redirects
+M|writing-skills|```
+M|writing-skills|Use words Claude would search for:
+M|writing-skills|- Error messages: "Hook timed out", "ENOTEMPTY", "race condition"
+M|writing-skills|- Symptoms: "flaky", "hanging", "zombie", "pollution"
+M|writing-skills|- Synonyms: "timeout/hang/freeze", "cleanup/teardown/afterEach"
+M|writing-skills|- Tools: Actual commands, library names, file types
+M|writing-skills|**Use active voice, verb-first:**
+M|writing-skills|- ✅ `creating-skills` not `skill-creation`
+M|writing-skills|- ✅ `condition-based-waiting` not `async-test-helpers`
+M|writing-skills|**Problem:** getting-started and frequently-referenced skills load into EVERY conversation. Every token counts.
+M|writing-skills|**Target word counts:**
+M|writing-skills|- getting-started workflows: <150 words each
+M|writing-skills|- Frequently-loaded skills: <200 words total
+M|writing-skills|- Other skills: <500 words (still be concise)
+M|writing-skills|**Techniques:**
+M|writing-skills|**Move details to tool help:**
+M|writing-skills|```bash
+M|writing-skills|search-conversations supports --text, --both, --after DATE, --before DATE, --limit N
+M|writing-skills|search-conversations supports multiple modes and filters. Run --help for details.
+M|writing-skills|```
+M|writing-skills|**Use cross-references:**
+M|writing-skills|```markdown
+M|writing-skills|When searching, dispatch subagent with template...
+M|writing-skills|[20 lines of repeated instructions]
+M|writing-skills|Always use subagents (50-100x ctx savings). REQUIRED: Use [other-skill-name] for workflow.
+M|writing-skills|```
+M|writing-skills|**Compress examples:**
+M|writing-skills|```markdown
+M|writing-skills|your human partner: "How did we handle authentication errors in React Router before?"
+M|writing-skills|You: I'll search past conversations for React Router authentication patterns.
+M|writing-skills|[Dispatch subagent with search query: "React Router authentication error handling 401"]
+M|writing-skills|Partner: "How did we handle auth errors in React Router?"
+M|writing-skills|You: Searching...
+M|writing-skills|[Dispatch subagent → synthesis]
+M|writing-skills|```
+M|writing-skills|**Eliminate redundancy:**
+M|writing-skills|- Don't repeat what's in cross-referenced skills
+M|writing-skills|- Don't explain what's obvious from command
+M|writing-skills|- Don't include multiple examples of same pattern
+M|writing-skills|**Verification:**
+M|writing-skills|```bash
+M|writing-skills|wc -w skills/path/SKILL.md
+M|writing-skills|```
+M|writing-skills|**Name by what you DO or core insight:**
+M|writing-skills|- ✅ `condition-based-waiting` > `async-test-helpers`
+M|writing-skills|- ✅ `using-skills` not `skill-usage`
+M|writing-skills|- ✅ `flatten-with-flags` > `data-structure-refactoring`
+M|writing-skills|- ✅ `root-cause-tracing` > `debugging-techniques`
+M|writing-skills|**Gerunds (-ing) work well for processes:**
+M|writing-skills|- `creating-skills`, `testing-skills`, `debugging-with-logs`
+M|writing-skills|- Active, describes the action you're taking
+M|writing-skills|**When writing documentation that references other skills:**
+M|writing-skills|Use skill name only, with explicit requirement markers:
+M|writing-skills|- ✅ Good: `**REQUIRED SUB-SKILL:** Use superpowers:test-driven-dev`
+M|writing-skills|- ✅ Good: `**REQUIRED BACKGROUND:** You MUST understand superpowers:systematic-debugging`
+M|writing-skills|- ❌ Bad: `See skills/testing/test-driven-dev` (unclear if required)
+M|writing-skills|- ❌ Bad: `@skills/testing/test-driven-dev/SKILL.md` (force-loads, burns ctx)
+M|writing-skills|**Why no @ links:** `@` syntax force-loads files immediately, consuming 200k+ ctx before you need them.
+M|writing-skills|```dot
+M|writing-skills|digraph when_flowchart {
+M|writing-skills|"Need to show information?" [shape=diamond];
+M|writing-skills|"dec where I might go wrong?" [shape=diamond];
+M|writing-skills|"Use markdown" [shape=box];
+M|writing-skills|"Small inline flowchart" [shape=box];
+M|writing-skills|"Need to show information?" -> "dec where I might go wrong?" [label="yes"];
+M|writing-skills|"dec where I might go wrong?" -> "Small inline flowchart" [label="yes"];
+M|writing-skills|"dec where I might go wrong?" -> "Use markdown" [label="no"];
+M|writing-skills|}
+M|writing-skills|```
+M|writing-skills|**Use flowcharts ONLY for:**
+M|writing-skills|- Non-obvious dec points
+M|writing-skills|- Process loops where you might stop too early
+M|writing-skills|- "When to use A vs B" decisions
+M|writing-skills|**Never use flowcharts for:**
+M|writing-skills|- Reference material → Tables, lists
+M|writing-skills|- Code examples → Markdown blocks
+M|writing-skills|- Linear instructions → Numbered lists
+M|writing-skills|- Labels without semantic meaning (step1, helper2)
+M|writing-skills|See @graphviz-conventions.dot for graphviz style rules.
+M|writing-skills|**Visualizing for your human partner:** Use `render-graphs.js` in this directory to render a skill's flowcharts to SVG:
+M|writing-skills|```bash
+M|writing-skills|./render-graphs.js ../some-skill           # Each diagram separately
+M|writing-skills|./render-graphs.js ../some-skill --combine # All diagrams in one SVG
+M|writing-skills|```
+M|writing-skills|**One excellent example beats many mediocre ones**
+M|writing-skills|Choose most relevant language:
+M|writing-skills|- Testing techniques → TypeScript/JavaScript
+M|writing-skills|- System debugging → Shell/Python
+M|writing-skills|- Data processing → Python
+M|writing-skills|**Good example:**
+M|writing-skills|- Complete and runnable
+M|writing-skills|- Well-commented explaining WHY
+M|writing-skills|- From real scenario
+M|writing-skills|- Shows pattern clearly
+M|writing-skills|- Ready to adapt (not generic template)
+M|writing-skills|**Don't:**
+M|writing-skills|- Implement in 5+ languages
+M|writing-skills|- Create fill-in-the-blank templates
+M|writing-skills|- Write contrived examples
+M|writing-skills|You're good at porting - one great example is enough.
+M|writing-skills|```
+M|writing-skills|defense-in-depth/
+M|writing-skills|SKILL.md    # Everything inline
+M|writing-skills|```
+M|writing-skills|When: All cnt fits, no heavy reference needed
+M|writing-skills|```
+M|writing-skills|condition-based-waiting/
+M|writing-skills|SKILL.md    # Overview + patterns
+M|writing-skills|example.ts  # Working helpers to adapt
+M|writing-skills|```
+M|writing-skills|When: Tool is reusable code, not just narrative
+M|writing-skills|```
+M|writing-skills|pptx/
+M|writing-skills|SKILL.md       # Overview + workflows
+M|writing-skills|pptxgenjs.md   # 600 lines API reference
+M|writing-skills|ooxml.md       # 500 lines XML structure
+M|writing-skills|scripts/       # Executable tools
+M|writing-skills|```
+M|writing-skills|When: Reference material too large for inline
+M|writing-skills|```
+M|writing-skills|NO SKILL WITHOUT A FAILING TEST FIRST
+M|writing-skills|```
+M|writing-skills|This applies to NEW skills AND EDITS to existing skills.
+M|writing-skills|Write skill before testing? Delete it. Start over.
+M|writing-skills|Edit skill without testing? Same violation.
+M|writing-skills|**No exceptions:**
+M|writing-skills|- Not for "simple additions"
+M|writing-skills|- Not for "just adding a section"
+M|writing-skills|- Not for "documentation updates"
+M|writing-skills|- Don't keep untested changes as "reference"
+M|writing-skills|- Don't "adapt" while running tests
+M|writing-skills|- Delete means delete
+M|writing-skills|**REQUIRED BACKGROUND:** The superpowers:test-driven-dev skill explains why this matters. Same principles apply to documentation.
+M|writing-skills|Different skill types need different test approaches:
+M|writing-skills|**Examples:** TDD, verification-before-completion, designing-before-coding
+M|writing-skills|**Test with:**
+M|writing-skills|- Academic questions: Do they understand the rules?
+M|writing-skills|- Pressure scenarios: Do they comply under stress?
+M|writing-skills|- Multiple pressures combined: time + sunk cost + exhaustion
+M|writing-skills|- Identify rationalizations and add explicit counters
+M|writing-skills|**Success criteria:** agt follows rule under maximum pressure
+M|writing-skills|**Examples:** condition-based-waiting, root-cause-tracing, defensive-programming
+M|writing-skills|**Test with:**
+M|writing-skills|- Application scenarios: Can they apply the technique correctly?
+M|writing-skills|- Variation scenarios: Do they handle edge cases?
+M|writing-skills|- Missing information tests: Do instructions have gaps?
+M|writing-skills|**Success criteria:** agt successfully applies technique to new scenario
+M|writing-skills|**Examples:** reducing-complexity, information-hiding concepts
+M|writing-skills|**Test with:**
+M|writing-skills|- Recognition scenarios: Do they recognize when pattern applies?
+M|writing-skills|- Application scenarios: Can they use the mental model?
+M|writing-skills|- Counter-examples: Do they know when NOT to apply?
+M|writing-skills|**Success criteria:** agt correctly identifies when/how to apply pattern
+M|writing-skills|**Examples:** API documentation, command references, library guides
+M|writing-skills|**Test with:**
+M|writing-skills|- Retrieval scenarios: Can they find the right information?
+M|writing-skills|- Application scenarios: Can they use what they found correctly?
+M|writing-skills|- Gap testing: Are common use cases covered?
+M|writing-skills|**Success criteria:** agt finds and correctly applies reference information
+M|writing-skills|| Excuse | Reality |
+M|writing-skills||--------|---------|
+M|writing-skills|| "Skill is obviously clear" | Clear to you ≠ clear to other agents. Test it. |
+M|writing-skills|| "It's just a reference" | References can have gaps, unclear sections. Test retrieval. |
+M|writing-skills|| "Testing is overkill" | Untested skills have issues. Always. 15 min testing saves hours. |
+M|writing-skills|| "I'll test if problems emerge" | Problems = agents can't use skill. Test BEFORE deploying. |
+M|writing-skills|| "Too tedious to test" | Testing is less tedious than debugging bad skill in prd. |
+M|writing-skills|| "I'm confident it's good" | Overconfidence guarantees issues. Test anyway. |
+M|writing-skills|| "Academic rv is enough" | Reading ≠ using. Test application scenarios. |
+M|writing-skills|| "No time to test" | Deploying untested skill wastes more time fixing it later. |
+M|writing-skills|**All of these mean: Test before deploying. No exceptions.**
+M|writing-skills|Skills that enforce discipline (like TDD) need to resist rationalization. Agents are smart and will find loopholes when under pressure.
+M|writing-skills|**Psychology note:** Understanding WHY persuasion techniques work helps you apply them systematically. See persuasion-principles.md for research foundation (Cialdini, 2021; Meincke et al., 2025) on au
+M|writing-skills|Don't just state the rule - forbid specific workarounds:
+M|writing-skills|<Bad>
+M|writing-skills|```markdown
+M|writing-skills|Write code before test? Delete it.
+M|writing-skills|```
+M|writing-skills|</Bad>
+M|writing-skills|<Good>
+M|writing-skills|```markdown
+M|writing-skills|Write code before test? Delete it. Start over.
+M|writing-skills|**No exceptions:**
+M|writing-skills|- Don't keep it as "reference"
+M|writing-skills|- Don't "adapt" it while writing tests
+M|writing-skills|- Don't look at it
+M|writing-skills|- Delete means delete
+M|writing-skills|```
+M|writing-skills|</Good>
+M|writing-skills|Add foundational principle early:
+M|writing-skills|```markdown
+M|writing-skills|**Violating the letter of the rules is violating the spirit of the rules.**
+M|writing-skills|```
+M|writing-skills|This cuts off entire class of "I'm following the spirit" rationalizations.
+M|writing-skills|Capture rationalizations from baseline testing (see Testing section below). Every excuse agents make goes in the table:
+M|writing-skills|```markdown
+M|writing-skills|| Excuse | Reality |
+M|writing-skills||--------|---------|
+M|writing-skills|| "Too simple to test" | Simple code breaks. Test takes 30 seconds. |
+M|writing-skills|| "I'll test after" | Tests passing immediately prove nothing. |
+M|writing-skills|| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
+M|writing-skills|```
+M|writing-skills|Make it easy for agents to self-check when rationalizing:
+M|writing-skills|```markdown
+M|writing-skills|- Code before test
+M|writing-skills|- "I already manually tested it"
+M|writing-skills|- "Tests after achieve the same purpose"
+M|writing-skills|- "It's about spirit not ritual"
+M|writing-skills|- "This is different because..."
+M|writing-skills|**All of these mean: Delete code. Start over with TDD.**
+M|writing-skills|```
+M|writing-skills|Add to description: symptoms of when you're ABOUT to violate the rule:
+M|writing-skills|```yaml
+M|writing-skills|description: use when implementing any feature or bugfix, before writing implementation code
+M|writing-skills|```
+M|writing-skills|Follow the TDD cycle:
+M|writing-skills|Run pressure scenario with subagent WITHOUT the skill. doc exact behavior:
+M|writing-skills|- What choices did they make?
+M|writing-skills|- What rationalizations did they use (verbatim)?
+M|writing-skills|- Which pressures triggered violations?
+M|writing-skills|This is "watch the test fail" - you must see what agents naturally do before writing the skill.
+M|writing-skills|Write skill that addresses those specific rationalizations. Don't add extra cnt for hypothetical cases.
+M|writing-skills|Run same scenarios WITH skill. agt should now comply.
+M|writing-skills|agt found new rationalization? Add explicit counter. Re-test until bulletproof.
+M|writing-skills|**Testing methodology:** See @testing-skills-with-subagents.md for the complete testing methodology:
+M|writing-skills|- How to write pressure scenarios
+M|writing-skills|- Pressure types (time, sunk cost, authority, exhaustion)
+M|writing-skills|- Plugging holes systematically
+M|writing-skills|- Meta-testing techniques
+M|writing-skills|"In ses 2025-10-03, we found empty projectDir caused..."
+M|writing-skills|**Why bad:** Too specific, not reusable
+M|writing-skills|example-js.js, example-py.py, example-go.go
+M|writing-skills|**Why bad:** Mediocre quality, maintenance burden
+M|writing-skills|```dot
+M|writing-skills|step1 [label="import fs"];
+M|writing-skills|step2 [label="read file"];
+M|writing-skills|```
+M|writing-skills|**Why bad:** Can't copy-paste, hard to read
+M|writing-skills|helper1, helper2, step3, pattern4
+M|writing-skills|**Why bad:** Labels should have semantic meaning
+M|writing-skills|**After writing ANY skill, you MUST STOP and complete the dpl process.**
+M|writing-skills|**Do NOT:**
+M|writing-skills|- Create multiple skills in batch without testing each
+M|writing-skills|- Move to next skill before current one is verified
+M|writing-skills|- Skip testing because "batching is more efficient"
+M|writing-skills|**The dpl checklist below is MANDATORY for EACH skill.**
+M|writing-skills|Deploying untested skills = deploying untested code. It's a violation of quality standards.
+M|writing-skills|**IMPORTANT: Use TodoWrite to create todos for EACH checklist item below.**
+M|writing-skills|**RED Phase - Write Failing Test:**
+M|writing-skills|- [ ] Create pressure scenarios (3+ combined pressures for discipline skills)
+M|writing-skills|- [ ] Run scenarios WITHOUT skill - doc baseline behavior verbatim
+M|writing-skills|- [ ] Identify patterns in rationalizations/failures
+M|writing-skills|**GREEN Phase - Write Minimal Skill:**
+M|writing-skills|- [ ] Name uses only letters, numbers, hyphens (no parentheses/special chars)
+M|writing-skills|- [ ] YAML frontmatter with required `name` and `description` fields (max 1024 chars; see [spec](https://agentskills.io/specification))
+M|writing-skills|- [ ] Description starts with "Use when..." and includes specific triggers/symptoms
+M|writing-skills|- [ ] Description written in third person
+M|writing-skills|- [ ] Keywords throughout for search (errors, symptoms, tools)
+M|writing-skills|- [ ] Clear overview with core principle
+M|writing-skills|- [ ] Address specific baseline failures identified in RED
+M|writing-skills|- [ ] Code inline OR link to separate file
+M|writing-skills|- [ ] One excellent example (not multi-language)
+M|writing-skills|- [ ] Run scenarios WITH skill - verify agents now comply
+M|writing-skills|**REFACTOR Phase - Close Loopholes:**
+M|writing-skills|- [ ] Identify NEW rationalizations from testing
+M|writing-skills|- [ ] Add explicit counters (if discipline skill)
+M|writing-skills|- [ ] Build rationalization table from all test iterations
+M|writing-skills|- [ ] Create red flags list
+M|writing-skills|- [ ] Re-test until bulletproof
+M|writing-skills|**Quality Checks:**
+M|writing-skills|- [ ] Small flowchart only if dec non-obvious
+M|writing-skills|- [ ] Quick reference table
+M|writing-skills|- [ ] Common mistakes section
+M|writing-skills|- [ ] No narrative storytelling
+M|writing-skills|- [ ] Supporting files only for tools or heavy reference
+M|writing-skills|**dpl:**
+M|writing-skills|- [ ] Commit skill to git and push to your fork (if configured)
+M|writing-skills|- [ ] Consider contributing back via PR (if broadly useful)
+M|writing-skills|How future Claude finds your skill:
+M|writing-skills|1. **Encounters problem** ("tests are flaky")
+M|writing-skills|3. **Finds SKILL** (description matches)
+M|writing-skills|4. **Scans overview** (is this relevant?)
+M|writing-skills|5. **Reads patterns** (quick reference table)
+M|writing-skills|6. **Loads example** (only when implementing)
+M|writing-skills|**Optimize for this flow** - put searchable terms early and often.
+M|writing-skills|**Creating skills IS TDD for process documentation.**
+M|writing-skills|Same Iron Law: No skill without failing test first.
+M|writing-skills|Same cycle: RED (baseline) → GREEN (write skill) → REFACTOR (close loopholes).
+M|writing-skills|Same benefits: Better quality, fewer surprises, bulletproof results.
+M|writing-skills|If you follow TDD for code, follow it for skills. It's the same discipline applied to documentation.

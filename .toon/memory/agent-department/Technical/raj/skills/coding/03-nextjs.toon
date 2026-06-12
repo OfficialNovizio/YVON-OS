@@ -1,0 +1,24 @@
+#MEM id=coding source=/root/yvon/agent-department/Technical/raj/skills/coding/03-nextjs.md
+M|coding|priority: high
+M|coding|applies-to: dev
+M|coding|load: always
+M|coding|model: qwen3.5-4b
+M|coding|conflicts: [02-general.md]
+M|coding|- Use App Router — no Pages Router patterns
+M|coding|- Keep `page.tsx` files thin — logic goes in components or server actions
+M|coding|- Use `loading.tsx` and `error.tsx` at every route level
+M|coding|- Default to Server Components — only use `"use client"` when you need interactivity
+M|coding|- Never leak API keys or secrets to client components
+M|coding|- All API calls go through server-side route handlers — never call external APIs from client
+M|coding|- Use `fetch()` with `cache` options in Server Components
+M|coding|- Use React Query or SWR for client-side data that changes
+M|coding|- Never fetch in `useEffect` unless unavoidable
+M|coding|- Use `next/image` for all images — never plain `<img>`
+M|coding|- Use `next/font` for custom fonts
+M|coding|- Lazy-load heavy components with `dynamic()`
+M|coding|- All API routes in `app/api/[route]/route.ts`
+M|coding|- Always validate request body with Zod
+M|coding|- Return consistent `{ data, error }` shape
+M|coding|- Use server-side Supabase client for mutations
+M|coding|- Use RLS — never bypass row-level sec
+M|coding|- All DB queries parameterized — no string interpolation

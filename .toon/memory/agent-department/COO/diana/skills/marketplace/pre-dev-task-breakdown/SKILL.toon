@@ -1,0 +1,102 @@
+#MEM id=pre-dev-task-breakdown source=/root/yvon/agent-department/COO/diana/skills/marketplace/pre-dev-task-breakdown/SKILL.md
+M|pre-dev-task-breakdown|name: ring:pre-dev-task-breakdown
+M|pre-dev-task-breakdown|description: |
+M|pre-dev-task-breakdown|Gate 7 (Full Track) / Gate 3 (Small Track): Implementation tasks - value-driven decomposition into working increments
+M|pre-dev-task-breakdown|that deliver measurable user value.
+M|pre-dev-task-breakdown|- TRD passed Gate 3 (Full Track) / Gate 2 (Small Track)
+M|pre-dev-task-breakdown|- Dependency Map passed Gate 6 (Full Track only)
+M|pre-dev-task-breakdown|- Ready to create sprint/iteration tasks
+M|pre-dev-task-breakdown|- TRD not validated → complete earlier gates
+M|pre-dev-task-breakdown|- Tasks already exist → proceed to Subtask Creation
+M|pre-dev-task-breakdown|- Trivial change → direct implementation
+M|pre-dev-task-breakdown|**Runs before:** ring:pre-dev-subtask-creation (Full Track), ring:pre-dev-delivery-planning (Small Track)
+M|pre-dev-task-breakdown|**Runs after:** ring:pre-dev-dependency-map (Full Track), ring:pre-dev-trd-creation (Small Track)
+M|pre-dev-task-breakdown|Every task must deliver working software with measurable user value. Tasks answer WHAT working increment is delivered, never HOW it's implemented (that's subtasks).
+M|pre-dev-task-breakdown|| Phase | Activities |
+M|pre-dev-task-breakdown||-------|------------|
+M|pre-dev-task-breakdown|| **1. Task Identification** | Load PRD (required), TRD (required); optionally Feature Map, API Design, Data Model, Dependency Map; identify value streams |
+M|pre-dev-task-breakdown|| **2. Decomposition** | Per feature: define deliverable, set success criteria, map dependencies, estimate effort (max 16 AI-agt-hours), plan testing, identify risks |
+M|pre-dev-task-breakdown|| **3. Gate 7 Validation** | All TRD components covered; every task delivers working software; measurable success criteria; correct deps; no task >2 weeks; testing str defined |
+M|pre-dev-task-breakdown|| Size | AI-agt-hours | Calendar Duration* | Scope |
+M|pre-dev-task-breakdown||------|----------------|-------------------|-------|
+M|pre-dev-task-breakdown|| Small (S) | 1-4h | 1-2 days | Single component |
+M|pre-dev-task-breakdown|| Medium (M) | 4-8h | 2-4 days | Few dependencies |
+M|pre-dev-task-breakdown|| Large (L) | 8-16h | 1-2 weeks | Multiple components |
+M|pre-dev-task-breakdown|| XL (>16h) | BREAK IT DOWN | Too large | Not atomic |
+M|pre-dev-task-breakdown|*1.5x multiplier, 90% capacity, 1 developer
+M|pre-dev-task-breakdown|After defining task scope, dispatch the appropriate specialist agt to estimate AI-agt-hours:
+M|pre-dev-task-breakdown|| Project Type | agt |
+M|pre-dev-task-breakdown||-------------|-------|
+M|pre-dev-task-breakdown|| Go | ring:backend-engineer-golang |
+M|pre-dev-task-breakdown|| TypeScript Backend | ring:backend-engineer-typescript |
+M|pre-dev-task-breakdown|| React/Next.js | ring:frontend-engineer |
+M|pre-dev-task-breakdown|| Mixed/Unknown | ring:codebase-explorer |
+M|pre-dev-task-breakdown|agt analyzes: endpoints/schemas/services, complexity, available libraries, test requirements, documentation needs — and returns a detailed breakdown by component.
+M|pre-dev-task-breakdown|**Confidence levels:** High (standard patterns + libs available), Medium (some custom logic), Low (novel algorithms or vague scope)
+M|pre-dev-task-breakdown|**Estimation fallback:** If AI unavailable, use manual estimate with 1.3x buffer, mark as "Estimation Pending", re-estimate when service restored.
+M|pre-dev-task-breakdown|| Section | cnt |
+M|pre-dev-task-breakdown||---------|---------|
+M|pre-dev-task-breakdown|| **Header** | T-[XXX]: [Task Title] |
+M|pre-dev-task-breakdown|| **Target** | backend \| frontend \| shared (if multi-module) |
+M|pre-dev-task-breakdown|| **Working Directory** | Path from topology config (if multi-module) |
+M|pre-dev-task-breakdown|| **agt** | Recommended agt: ring:backend-engineer-* or ring:frontend-*-engineer-* |
+M|pre-dev-task-breakdown|| **Deliverable** | One sentence: what working software ships |
+M|pre-dev-task-breakdown|| **Scope** | Includes + Excludes (with task IDs for future work) |
+M|pre-dev-task-breakdown|| **Success Criteria** | Testable: Functional, tec, Operational, Quality |
+M|pre-dev-task-breakdown|| **User/tec Value** | What users can do; what this enables |
+M|pre-dev-task-breakdown|| **tec Components** | From TRD + From Dependencies |
+M|pre-dev-task-breakdown|| **Dependencies** | Blocks (T-AAA), Requires (T-BBB), Optional (T-CCC) |
+M|pre-dev-task-breakdown|| **Integration Contracts** | Required when task references external product/plugin |
+M|pre-dev-task-breakdown|| **Effort Estimate** | AI hours, confidence, method, team type, breakdown |
+M|pre-dev-task-breakdown|| **Risks** | Impact, Probability, Mitigation, Fallback |
+M|pre-dev-task-breakdown|| **Testing str** | Unit, Integration, E2E, Performance, sec |
+M|pre-dev-task-breakdown|| **Definition of Done** | Code rv, tests passing, docs updated, sec clean, deployed to staging, PO acceptance |
+M|pre-dev-task-breakdown|Required when Deliverable, tec Components, or Success Criteria references an external product or plugin (plugin-pix, plugin-fees, Core two, etc.).
+M|pre-dev-task-breakdown|```markdown
+M|pre-dev-task-breakdown|| ID | Product/Plugin | Endpoint/Interface | Method | Request Schema | rsp Schema | Version |
+M|pre-dev-task-breakdown||----|---------------|-------------------|--------|---------------|----------------|---------|
+M|pre-dev-task-breakdown|| IC-001 | plugin-pix | POST /api/v1/pix/payments | POST | { amount, key, ... } | { id, status, ... } | v1.2.0 |
+M|pre-dev-task-breakdown|```
+M|pre-dev-task-breakdown|Rules: exact endpoint/interface, all required request fields, fields the implementation will read, exact API version (not `latest`), sourced from actual spec.
+M|pre-dev-task-breakdown|**Table 1 — tec Overview:**
+M|pre-dev-task-breakdown|```markdown
+M|pre-dev-task-breakdown|| Task | Title | Type | Hours | Confidence | Blocks | Status |
+M|pre-dev-task-breakdown||------|-------|------|-------|------------|--------|--------|
+M|pre-dev-task-breakdown|| T-001 | Project Foundation | Foundation | 3.0 | High | All | ⏸️ Pending |
+M|pre-dev-task-breakdown||       | **TOTAL** | | **85.0h** | | | |
+M|pre-dev-task-breakdown|```
+M|pre-dev-task-breakdown|Status lifecycle: `⏸️ Pending` (creation) → `🔄 Doing` (Gate 0 started) → `✅ Done` (Gate 9 ap) → `❌ Failed` (unresolved blocker)
+M|pre-dev-task-breakdown|**Table 2 — Business Deliverables View** (immediately after Table 1):
+M|pre-dev-task-breakdown|```markdown
+M|pre-dev-task-breakdown|| Task | Deliverable (business view) |
+M|pre-dev-task-breakdown||------|-----------------------------|
+M|pre-dev-task-breakdown|| T-001 | The team can develop and test locally from day one — **every contributor gets a working environment**. |
+M|pre-dev-task-breakdown|```
+M|pre-dev-task-breakdown|Business Deliverables rules: plain language (no tec jargon), 1-3 sentences, active voice, core value proposition bolded, no file names or architecture terms.
+M|pre-dev-task-breakdown|Each task MUST have `Target:` and `Working Directory:` when topology is monorepo or multi-repo.
+M|pre-dev-task-breakdown|| Target | API Pattern | agt |
+M|pre-dev-task-breakdown||--------|-------------|-------|
+M|pre-dev-task-breakdown|| `backend` | any | ring:backend-engineer-golang or ring:backend-engineer-typescript |
+M|pre-dev-task-breakdown|| `frontend` | `direct` | ring:frontend-engineer |
+M|pre-dev-task-breakdown|| `frontend` | `bff` (API routes) | ring:frontend-bff-engineer-typescript |
+M|pre-dev-task-breakdown|| `frontend` | `bff` (UI components) | ring:frontend-engineer |
+M|pre-dev-task-breakdown|| `shared` | any | DevOps or general |
+M|pre-dev-task-breakdown|**Output paths:**
+M|pre-dev-task-breakdown|- single-repo: `docs/pre-dev/{feature}/tasks.md`
+M|pre-dev-task-breakdown|- monorepo: Index + `{backend.path}/docs/pre-dev/{feature}/tasks.md` + `{frontend.path}/docs/pre-dev/{feature}/tasks.md`
+M|pre-dev-task-breakdown|- multi-repo: `{backend.path}/docs/pre-dev/{feature}/tasks.md` + `{frontend.path}/docs/pre-dev/{feature}/tasks.md`
+M|pre-dev-task-breakdown|| Category | Requirements |
+M|pre-dev-task-breakdown||----------|--------------|
+M|pre-dev-task-breakdown|| **Task Completeness** | All TRD components have tasks; all PRD features have tasks; no XL+ tasks; boundaries clear |
+M|pre-dev-task-breakdown|| **Delivery Value** | Every task delivers working software; user value explicit; tec value clear |
+M|pre-dev-task-breakdown|| **tec Clarity** | Success criteria measurable; dependencies mapped; testing approach defined; DoD comprehensive |
+M|pre-dev-task-breakdown|| **Multi-Module** | All tasks have `target:` and `working_directory:` (if multi-module); agt assignments valid |
+M|pre-dev-task-breakdown|| **Risk Management** | Risks identified; mitigations defined; high-risk tasks scheduled early |
+M|pre-dev-task-breakdown|**Gate Result:** ✅ PASS → Subtasks | ⚠️ CONDITIONAL (refine oversized/vague) | ❌ FAIL (re-decompose)
+M|pre-dev-task-breakdown|| Factor | Points | Criteria |
+M|pre-dev-task-breakdown||--------|--------|----------|
+M|pre-dev-task-breakdown|| Task Decomposition | 0-30 | All appropriately sized: 30, Most: 20, Too large/vague: 10 |
+M|pre-dev-task-breakdown|| Value Clarity | 0-25 | Every task delivers working software: 25, Most: 15, Unclear: 5 |
+M|pre-dev-task-breakdown|| Dependency Mapping | 0-25 | All documented: 25, Most: 15, Ambiguous: 5 |
+M|pre-dev-task-breakdown|| Estimation Quality | 0-20 | Based on past work: 20, Educated guesses: 12, Speculation: 5 |
+M|pre-dev-task-breakdown|80+ → proceed autonomously | 50-79 → present options | <50 → ask about velocity

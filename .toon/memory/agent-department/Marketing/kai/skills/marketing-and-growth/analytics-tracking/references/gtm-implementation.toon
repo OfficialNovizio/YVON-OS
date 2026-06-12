@@ -1,0 +1,264 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/references/gtm-implementation.md
+M|references|Detailed guide for implementing tracking via Google Tag Manager.
+M|references|- Container Structure (tags, triggers, variables)
+M|references|- Naming Conventions
+M|references|- Data Layer Patterns
+M|references|- Common Tag Configurations (GA4 cfg tag, GA4 event tag, Facebook pixel)
+M|references|- Preview and Debug
+M|references|- Workspaces and Versioning
+M|references|- Consent Management
+M|references|- Advanced Patterns (tag sequencing, exception handling, custom JavaScript variables)
+M|references|Tags are code snippets that execute when triggered.
+M|references|**Common tag types:**
+M|references|- GA4 cfg (base setup)
+M|references|- GA4 Event (custom events)
+M|references|- Google Ads Conversion
+M|references|- Facebook Pixel
+M|references|- LinkedIn Insight Tag
+M|references|- Custom HTML (for other pixels)
+M|references|Triggers define when tags fire.
+M|references|**Built-in triggers:**
+M|references|- Page View: All Pages, DOM Ready, Window Loaded
+M|references|- Click: All Elements, Just Links
+M|references|- Form Submission
+M|references|- Scroll Depth
+M|references|- Timer
+M|references|- Element Visibility
+M|references|**Custom triggers:**
+M|references|- Custom Event (from dataLayer)
+M|references|- Trigger Groups (multiple conditions)
+M|references|Variables capture dynamic values.
+M|references|**Built-in (enable as needed):**
+M|references|- Click Text, Click URL, Click ID, Click Classes
+M|references|- Page Path, Page URL, Page Hostname
+M|references|- Referrer
+M|references|- Form Element, Form ID
+M|references|**User-defined:**
+M|references|- Data Layer variables
+M|references|- JavaScript variables
+M|references|- Lookup tables
+M|references|- RegEx tables
+M|references|- Constants
+M|references|```
+M|references|[Type] - [Description] - [Detail]
+M|references|Tags:
+M|references|GA4 - Event - Signup Completed
+M|references|GA4 - Config - Base cfg
+M|references|FB - Pixel - Page View
+M|references|HTML - LiveChat Widget
+M|references|Triggers:
+M|references|Click - CTA Button
+M|references|Submit - Contact Form
+M|references|View - Pricing Page
+M|references|Custom - signup_completed
+M|references|Variables:
+M|references|DL - user_id
+M|references|JS - Current Timestamp
+M|references|LT - cg Source Map
+M|references|```
+M|references|```javascript
+M|references|// Initialize (in <head> before GTM)
+M|references|window.dataLayer = window.dataLayer || [];
+M|references|// Push event
+M|references|dataLayer.push({
+M|references|'event': 'event_name',
+M|references|'property1': 'value1',
+M|references|'property2': 'value2'
+M|references|});
+M|references|```
+M|references|```javascript
+M|references|// Set on page load (before GTM container)
+M|references|window.dataLayer = window.dataLayer || [];
+M|references|dataLayer.push({
+M|references|'pageType': 'product',
+M|references|'contentGroup': 'products',
+M|references|'user': {
+M|references|'loggedIn': true,
+M|references|'userId': '12345',
+M|references|'userType': 'premium'
+M|references|}
+M|references|});
+M|references|```
+M|references|```javascript
+M|references|doc.querySelector('#contact-form').addEventListener('submit', function() {
+M|references|dataLayer.push({
+M|references|'event': 'form_submitted',
+M|references|'formName': 'contact',
+M|references|'formLocation': 'footer'
+M|references|});
+M|references|});
+M|references|```
+M|references|```javascript
+M|references|doc.querySelector('.cta-button').addEventListener('click', function() {
+M|references|dataLayer.push({
+M|references|'event': 'cta_clicked',
+M|references|'ctaText': this.innerText,
+M|references|'ctaLocation': 'hero'
+M|references|});
+M|references|});
+M|references|```
+M|references|```javascript
+M|references|// Product view
+M|references|dataLayer.push({ ecommerce: null }); // Clear previous
+M|references|dataLayer.push({
+M|references|'event': 'view_item',
+M|references|'ecommerce': {
+M|references|'items': [{
+M|references|'item_id': 'SKU123',
+M|references|'item_name': 'Product Name',
+M|references|'price': 99.99,
+M|references|'item_category': 'Category',
+M|references|'quantity': 1
+M|references|}]
+M|references|}
+M|references|});
+M|references|// Add to cart
+M|references|dataLayer.push({ ecommerce: null });
+M|references|dataLayer.push({
+M|references|'event': 'add_to_cart',
+M|references|'ecommerce': {
+M|references|'items': [{
+M|references|'item_id': 'SKU123',
+M|references|'item_name': 'Product Name',
+M|references|'price': 99.99,
+M|references|'quantity': 1
+M|references|}]
+M|references|}
+M|references|});
+M|references|// Purchase
+M|references|dataLayer.push({ ecommerce: null });
+M|references|dataLayer.push({
+M|references|'event': 'purchase',
+M|references|'ecommerce': {
+M|references|'transaction_id': 'T12345',
+M|references|'value': 99.99,
+M|references|'currency': 'USD',
+M|references|'tax': 5.00,
+M|references|'shipping': 10.00,
+M|references|'items': [{
+M|references|'item_id': 'SKU123',
+M|references|'item_name': 'Product Name',
+M|references|'price': 99.99,
+M|references|'quantity': 1
+M|references|}]
+M|references|}
+M|references|});
+M|references|```
+M|references|**Tag Type:** Google anl: GA4 cfg
+M|references|**Settings:**
+M|references|- Measurement ID: G-XXXXXXXX
+M|references|- Send page view: Checked (for pageviews)
+M|references|- User Properties: Add any user-level dimensions
+M|references|**Trigger:** All Pages
+M|references|**Tag Type:** Google anl: GA4 Event
+M|references|**Settings:**
+M|references|- cfg Tag: Select your config tag
+M|references|- Event Name: {{DL - event_name}} or hardcode
+M|references|- Event Parameters: Add parameters from dataLayer
+M|references|**Trigger:** Custom Event with event name match
+M|references|**Tag Type:** Custom HTML
+M|references|```html
+M|references|<script>
+M|references|!function(f,b,e,v,n,t,s)
+M|references|{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+M|references|n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+M|references|if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+M|references|n.queue=[];t=b.createElement(e);t.async=!0;
+M|references|t.src=v;s=b.getElementsByTagName(e)[0];
+M|references|s.parentNode.insertBefore(t,s)}(window, doc,'script',
+M|references|'https://connect.facebook.net/en_US/fbevents.js');
+M|references|fbq('init', 'YOUR_PIXEL_ID');
+M|references|fbq('track', 'PageView');
+M|references|</script>
+M|references|```
+M|references|**Trigger:** All Pages
+M|references|**Tag Type:** Custom HTML
+M|references|```html
+M|references|<script>
+M|references|fbq('track', 'Lead', {
+M|references|content_name: '{{DL - form_name}}'
+M|references|});
+M|references|</script>
+M|references|```
+M|references|**Trigger:** Custom Event - form_submitted
+M|references|1. Click "Preview" in GTM
+M|references|2. Enter site URL
+M|references|3. GTM debug panel opens at bottom
+M|references|**What to check:**
+M|references|- Tags fired on this event
+M|references|- Tags not fired (and why)
+M|references|- Variables and their values
+M|references|- Data layer contents
+M|references|**Tag not firing:**
+M|references|- Check trigger conditions
+M|references|- Verify data layer push
+M|references|- Check tag sequencing
+M|references|**Wrong variable value:**
+M|references|- Check data layer structure
+M|references|- Verify variable path (nested objects)
+M|references|- Check timing (data may not exist yet)
+M|references|**Multiple firings:**
+M|references|- Check trigger uniqueness
+M|references|- Look for duplicate tags
+M|references|- Check tag firing options
+M|references|Use workspaces for team collaboration:
+M|references|- Default workspace for prd
+M|references|- Separate workspaces for large changes
+M|references|- Merge when ready
+M|references|**Best practices:**
+M|references|- Name every version descriptively
+M|references|- Add notes explaining changes
+M|references|- rv changes before publish
+M|references|- Keep prd version noted
+M|references|**Version notes example:**
+M|references|```
+M|references|v15: Added purchase conversion tracking
+M|references|- New tag: GA4 - Event - Purchase
+M|references|- New trigger: Custom Event - purchase
+M|references|- New variables: DL - transaction_id, DL - value
+M|references|- Tested: Chrome, Safari, Mobile
+M|references|```
+M|references|```javascript
+M|references|// Default state (before consent)
+M|references|gtag('consent', 'default', {
+M|references|'analytics_storage': 'denied',
+M|references|'ad_storage': 'denied'
+M|references|});
+M|references|// Update on consent
+M|references|function grantConsent() {
+M|references|gtag('consent', 'update', {
+M|references|'analytics_storage': 'granted',
+M|references|'ad_storage': 'granted'
+M|references|});
+M|references|}
+M|references|```
+M|references|1. Enable Consent Overview in Admin
+M|references|2. Configure consent for each tag
+M|references|3. Tags respect consent state automatically
+M|references|**Setup tags to fire in order:**
+M|references|Tag cfg > Advanced Settings > Tag Sequencing
+M|references|**Use cases:**
+M|references|- Config tag before event tags
+M|references|- Pixel initialization before tracking
+M|references|- Cleanup after conversion
+M|references|**Trigger exceptions** - Prevent tag from firing:
+M|references|- Exclude certain pages
+M|references|- Exclude internal traffic
+M|references|- Exclude during testing
+M|references|```javascript
+M|references|// Get URL parameter
+M|references|function() {
+M|references|var params = new URLSearchParams(window.location.search);
+M|references|return params.get('cg') || '(not set)';
+M|references|}
+M|references|// Get cookie value
+M|references|function() {
+M|references|var match = doc.cookie.match('(^|;) ?user_id=([^;]*)(;|$)');
+M|references|return match ? match[2] : null;
+M|references|}
+M|references|// Get data from page
+M|references|function() {
+M|references|var el = doc.querySelector('.product-price');
+M|references|return el ? parseFloat(el.textContent.replace('$', '')) : 0;
+M|references|}
+M|references|```

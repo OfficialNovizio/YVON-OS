@@ -1,0 +1,12 @@
+#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/COMMANDS.md
+M|lena|Lena does not run terminal commands. She writes and edits copy.
+M|lena|| If you need... | Ask... |
+M|lena||----------------|--------|
+M|lena|| Platform posting str | Sofia |
+M|lena|| Ad performance data | Rio |
+M|lena|| cg brief | Alex |
+M|lena|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
+M|lena|> Rule: do not add new commands without removing or condensing an equivalent amount of cnt.
+M|lena|| Date | Command / Pattern | Status | Action Taken |
+M|lena||------|------------------|--------|--------------|
+M|lena|| 2026-03-23 | (baseline) | ✓ Verified | initial SIP setup |

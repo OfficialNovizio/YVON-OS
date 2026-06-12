@@ -1,0 +1,18 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/_template.md
+M|rules|title: Rule Title Here
+M|rules|impact: MEDIUM
+M|rules|impactDescription: Optional description of impact (e.g., "20-50% improvement")
+M|rules|tags: tag1, tag2
+M|rules|**Impact: MEDIUM (optional impact description)**
+M|rules|Brief explanation of the rule and why it matters. This should be clear and concise, explaining the performance implications.
+M|rules|**Incorrect (description of what's wrong):**
+M|rules|```typescript
+M|rules|// Bad code example here
+M|rules|const bad = example()
+M|rules|```
+M|rules|**Correct (description of what's right):**
+M|rules|```typescript
+M|rules|// Good code example here
+M|rules|const good = example()
+M|rules|```
+M|rules|Reference: [Link to documentation or resource](https://example.com)

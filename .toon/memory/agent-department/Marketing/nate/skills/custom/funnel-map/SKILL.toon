@@ -1,0 +1,80 @@
+#MEM id=funnel-map source=/root/yvon/agent-department/Marketing/nate/skills/custom/funnel-map/SKILL.md
+M|funnel-map|name: funnel-map
+M|funnel-map|description: YVON-specific funnel stages for Novizio and Hourbour with drop-off benchmarks and experiment type per stage. Load before designing any growth experiment to confirm which stage to target.
+M|funnel-map|version: 1.0.0
+M|funnel-map|Designing a great experiment at the wrong funnel stage wastes 14 days. If Hourbour's activation rate is 25% (well below the 40% benchmark), running a trial-to-paid conversion experiment is premature —
+M|funnel-map|```
+M|funnel-map|[soc Discovery] → [Site Visit] → [Product Page] → [Add to Cart] → [Purchase] → [Repeat]
+M|funnel-map|```
+M|funnel-map|- **Primary channels:** Instagram, TikTok, organic search, influencer
+M|funnel-map|- **Key metric:** soc CTR (link in bio + story swipe-up click rate)
+M|funnel-map|- **Benchmark:** 1–3% CTR from soc post to site
+M|funnel-map|- **Drop-off signal:** High impressions, low site traffic
+M|funnel-map|- **Experiment types:** Hook testing (Lena), creative format (Atlas/Pixel), landing page match
+M|funnel-map|- **DRI:** Rio (paid) / Lena (organic) / Kai (tracking)
+M|funnel-map|- **Key metric:** Pages per ses, bounce rate
+M|funnel-map|- **Benchmark:** < 60% bounce, > 2 pages/ses
+M|funnel-map|- **Drop-off signal:** High bounce on homepage or category pages
+M|funnel-map|- **Experiment types:** Homepage layout (Mia), navigation structure (Dev), featured product selection (Marcus)
+M|funnel-map|- **DRI:** Mia / Dev
+M|funnel-map|- **Key metric:** Add-to-cart rate
+M|funnel-map|- **Benchmark:** 3–8% of product page views
+M|funnel-map|- **Drop-off signal:** High product page views, low ATC rate
+M|funnel-map|- **Experiment types:** Product imagery (Atlas), size guide, soc proof placement (Lena), price anchoring, reviews display
+M|funnel-map|- **DRI:** Mia (layout) / Lena (copy) / Atlas (visual)
+M|funnel-map|- **Key metric:** Cart abandonment rate
+M|funnel-map|- **Benchmark:** 65–75% abandon (above 75% = investigate)
+M|funnel-map|- **Drop-off signal:** High ATC, low purchase completion
+M|funnel-map|- **Experiment types:** Checkout friction reduction (Dev), free shipping threshold, payment method options, urgency copy (Kahneman gate required before any scarcity/urgency)
+M|funnel-map|- **DRI:** Dev (checkout) / Lena (copy) / Rio (retargeting)
+M|funnel-map|- **Key metric:** Repeat purchase rate within 90 days
+M|funnel-map|- **Benchmark:** > 20% repeat within 90 days for fashion
+M|funnel-map|- **Drop-off signal:** Low LTV, high new customer dependency
+M|funnel-map|- **Experiment types:** Post-purchase email sequence (Lena), loyalty signals, personalised recommendations
+M|funnel-map|- **DRI:** Lena
+M|funnel-map|```
+M|funnel-map|[Acquisition] → [Trial Signup] → [Activation] → [Engagement] → [Paid Conversion] → [Retention]
+M|funnel-map|```
+M|funnel-map|- **Primary channels:** LinkedIn, YouTube, SEO, cnt mkt
+M|funnel-map|- **Key metric:** Landing page → trial signup rate
+M|funnel-map|- **Benchmark:** 1–3% of landing page visitors
+M|funnel-map|- **Drop-off signal:** High traffic, low signups
+M|funnel-map|- **Experiment types:** Landing page headline (Lena), CTA button, soc proof placement, pricing page design (Mia)
+M|funnel-map|- **DRI:** Rio (paid) / Lena (copy) / Mia (design)
+M|funnel-map|- **Key metric:** Activation rate within 7 days
+M|funnel-map|- **Benchmark:** 40–60% of signups reach activation
+M|funnel-map|- **Aha moment:** First timer logged AND first invoice or report generated
+M|funnel-map|- **Drop-off signal:** High signups, low Day-7 DAU
+M|funnel-map|- **Experiment types:** Onboarding flow (Dev), first-run experience, Day 1–3 email drip (Lena), in-app prompts
+M|funnel-map|- **DRI:** Dev (flow) / Lena (email) / Raj (backend triggers)
+M|funnel-map|- **Key metric:** Week-2 retention rate (active in trial week 2)
+M|funnel-map|- **Benchmark:** > 50% of activated users return in week 2
+M|funnel-map|- **Drop-off signal:** Activated but not returning after Day 7
+M|funnel-map|- **Experiment types:** Weekly summary email (Lena), habit-forming feature nudges, push notification timing
+M|funnel-map|- **DRI:** Lena
+M|funnel-map|- **Key metric:** Trial-to-paid conversion rate
+M|funnel-map|- **Benchmark:** 15–25% of activated trials convert
+M|funnel-map|- **Drop-off signal:** Trial ending with low upgrade rate
+M|funnel-map|- **Experiment types:** Upgrade prompt timing (Dev), pricing page clarity (Mia), trial extension offer, loss aversion CTA (Kahneman gate required)
+M|funnel-map|- **DRI:** Dev (prompt) / Lena (copy) / Rio (retargeting)
+M|funnel-map|- **Key metric:** Monthly churn rate
+M|funnel-map|- **Benchmark:** < 3% monthly churn for healthy SaaS
+M|funnel-map|- **Drop-off signal:** Churning in months 2–3
+M|funnel-map|- **Experiment types:** Success milestone emails (Lena), feature education sequence, proactive check-in, annual plan offer
+M|funnel-map|- **DRI:** Lena / Diana (process)
+M|funnel-map|Before proposing an experiment, answer in order:
+M|funnel-map|1. **Where is Kai's data showing the largest relative drop-off?** (not absolute volume — relative conversion rate vs benchmark)
+M|funnel-map|2. **Is the stage above it healthy?** Fixing Stage 4 (cart → purchase) is premature if Stage 3 (PDP → ATC) is already broken.
+M|funnel-map|3. **Is this stage within Nate's experiment scope?** Stages requiring major Dev work (> 1 week) need Diana's sprint queue first.
+M|funnel-map|**Rule:** Always fix the earliest broken stage first. Traffic leaking at Stage 2 cannot be recovered by a Stage 4 experiment.
+M|funnel-map|```
+M|funnel-map|vtr: [Novizio / Hourbour]
+M|funnel-map|Date: [YYYY-MM-DD]
+M|funnel-map|Data source: Kai — [date of last report]
+M|funnel-map|Stage 1 [Discovery]:    [metric] vs [benchmark] — [status: healthy / at-risk / broken]
+M|funnel-map|Stage 2 [Interest]:     [metric] vs [benchmark] — [status]
+M|funnel-map|Stage 3 [Consideration]:[metric] vs [benchmark] — [status]
+M|funnel-map|Stage 4 [dec]:     [metric] vs [benchmark] — [status]
+M|funnel-map|Stage 5 [Retention]:    [metric] vs [benchmark] — [status]
+M|funnel-map|→ Priority stage for experiment design: [stage + reason]
+M|funnel-map|```

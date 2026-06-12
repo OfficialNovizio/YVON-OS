@@ -1,0 +1,35 @@
+SKILL|blogwatcher|"Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool."
+STEP|1|**Go:** `go install github.com/JulienTant/blogwatcher-cli/cmd/blogwatcher-cli@latest`
+STEP|2|**Docker:** `docker run --rm -v blogwatcher-cli:/data ghcr.io/julientant/blogwatcher-cli`
+STEP|3|**Binary (Linux amd64):** `curl -sL https://github.com/JulienTant/blogwatcher-cli/releases/latest/download/blogwatcher-cli_linux_amd64.tar.gz \| tar xz -C /usr/local/bin blogwatcher-cli`
+STEP|4|**Binary (Linux arm64):** `curl -sL https://github.com/JulienTant/blogwatcher-cli/releases/latest/download/blogwatcher-cli_linux_arm64.tar.gz \| tar xz -C /usr/local/bin blogwatcher-cli`
+STEP|5|**Binary (macOS Apple Silicon):** `curl -sL https://github.com/JulienTant/blogwatcher-cli/releases/latest/download/blogwatcher-cli_darwin_arm64.tar.gz \| tar xz -C /usr/local/bin blogwatcher-cli`
+STEP|6|**Binary (macOS Intel):** `curl -sL https://github.com/JulienTant/blogwatcher-cli/releases/latest/download/blogwatcher-cli_darwin_amd64.tar.gz \| tar xz -C /usr/local/bin blogwatcher-cli`
+STEP|7|Add a blog: `blogwatcher-cli add "My Blog" https://example.com`
+STEP|8|Add with explicit feed: `blogwatcher-cli add "My Blog" https://example.com --feed-url https://example.com/feed.xml`
+STEP|9|Add with HTML scraping: `blogwatcher-cli add "My Blog" https://example.com --scrape-selector "article h2 a"`
+STEP|10|List tracked blogs: `blogwatcher-cli blogs`
+STEP|11|Remove a blog: `blogwatcher-cli remove "My Blog" --yes`
+STEP|12|Import from OPML: `blogwatcher-cli import subscriptions.opml`
+STEP|13|Scan all blogs: `blogwatcher-cli scan`
+STEP|14|Scan one blog: `blogwatcher-cli scan "My Blog"`
+STEP|15|List unread articles: `blogwatcher-cli articles`
+STEP|16|List all articles: `blogwatcher-cli articles --all`
+STEP|17|Filter by blog: `blogwatcher-cli articles --blog "My Blog"`
+STEP|18|Filter by category: `blogwatcher-cli articles --category "Engineering"`
+STEP|19|Mark article read: `blogwatcher-cli read 1`
+STEP|20|Mark article unread: `blogwatcher-cli unread 1`
+STEP|21|Mark all read: `blogwatcher-cli read-all`
+STEP|22|Mark all read for a blog: `blogwatcher-cli read-all --blog "My Blog" --yes`
+STEP|23|Auto-discovers RSS/Atom feeds from blog homepages when no `--feed-url` is provided.
+STEP|24|Falls back to HTML scraping if RSS fails and `--scrape-selector` is configured.
+STEP|25|Categories from RSS/Atom feeds are stored and can be used to filter articles.
+STEP|26|Import blogs in bulk from OPML files exported by Feedly, Inoreader, NewsBlur, etc.
+STEP|27|Database stored at `~/.blogwatcher-cli/blogwatcher-cli.db` by default (override with `--db` or `BLOGWATCHER_DB`).
+STEP|28|Use `blogwatcher-cli <command> --help` to discover all flags and options.
+PIT|Auto-discovers RSS/Atom feeds from blog homepages when no `--feed-url` is provided.
+PIT|Falls back to HTML scraping if RSS fails and `--scrape-selector` is configured.
+PIT|Categories from RSS/Atom feeds are stored and can be used to filter articles.
+PIT|Import blogs in bulk from OPML files exported by Feedly, Inoreader, NewsBlur, etc.
+PIT|Database stored at `~/.blogwatcher-cli/blogwatcher-cli.db` by default (override with `--db` or `BLOGWATCHER_DB`).
+PIT|Use `blogwatcher-cli <command> --help` to discover all flags and options.

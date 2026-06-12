@@ -1,0 +1,28 @@
+SKILL|codebase-inspection|"Inspect codebases w/ pygount: LOC, languages, ratios."
+STEP|1|User asks for LOC (lines of code) count
+STEP|2|User wants a language breakdown of a repo
+STEP|3|User asks about codebase size or composition
+STEP|4|User wants code-vs-comment ratios
+STEP|5|General "how big is this repo" questions
+STEP|6|IMPORTANT:** Always use `--folders-to-skip` to exclude dependency/build directories, otherwise pygount will crawl them and take a very long time or hang.
+STEP|7|folders-to-skip=".git,venv,.venv,__pycache__,.cache,dist,build,.tox,.eggs,.mypy_cache"
+STEP|8|folders-to-skip=".git,node_modules,dist,build,.next,.cache,.turbo,coverage"
+STEP|9|folders-to-skip=".git,node_modules,venv,.venv,__pycache__,.cache,dist,build,.next,.tox,vendor,third_party"
+STEP|10|**Language** — detected programming language
+STEP|11|**Files** — number of files of that language
+STEP|12|**Code** — lines of actual code (executable/declarative)
+STEP|13|**Comment** — lines that are comments or documentation
+STEP|14|**%** — percentage of total
+STEP|15|`__empty__` — empty files
+STEP|16|`__binary__` — binary files (images, compiled, etc.)
+STEP|17|`__generated__` — auto-generated files (detected heuristically)
+STEP|18|`__duplicate__` — files with identical content
+STEP|19|`__unknown__` — unrecognized file types
+STEP|20|**Always exclude .git, node_modules, venv** — without `--folders-to-skip`, pygount will crawl everything and may take minutes or hang on large dependency trees.
+STEP|21|**Markdown shows 0 code lines** — pygount classifies all Markdown content as comments, not code. This is expected behavior.
+STEP|22|**JSON files show low code counts** — pygount may count JSON lines conservatively. For accurate JSON line counts, use `wc -l` directly.
+STEP|23|**Large monorepos** — for very large repos, consider using `--suffix` to target specific languages rather than scanning everything.
+PIT|**Always exclude .git, node_modules, venv** — without `--folders-to-skip`, pygount will crawl everything and may take minutes or hang on large dependency trees.
+PIT|**Markdown shows 0 code lines** — pygount classifies all Markdown content as comments, not code. This is expected behavior.
+PIT|**JSON files show low code counts** — pygount may count JSON lines conservatively. For accurate JSON line counts, use `wc -l` directly.
+PIT|**Large monorepos** — for very large repos, consider using `--suffix` to target specific languages rather than scanning everything.

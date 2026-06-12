@@ -5,6 +5,7 @@ import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
 import { buildCieContext } from 'yvon-engine/cie'
 
+import { autoToonMiddleware } from 'yvon-engine/toon/auto/middleware'
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // ── Fire-and-forget token usage save ─────────────────────────────────────────
@@ -133,13 +134,25 @@ export async function POST(request: Request): Promise<Response> {
       const encoder = new TextEncoder()
 
       try {
+        // ─── TOON AUTO-COMPRESSION: prompt + dictionary ──────────────
+        const toonCtx = autoToonMiddleware({
+          systemPrompt: effectiveSystemPrompt,
+          userMessage: userMessageFinal,
+          agentId,
+          ventureId,
+        })
+        const compressedSystem = effectiveSystemPrompt
+          ? (toonCtx.dictionary ? toonCtx.dictionary + '\n' : '') + effectiveSystemPrompt
+          : effectiveSystemPrompt
+        const compressedMessage = toonCtx.compressedUserMessage || userMessageFinal
+
         const baseParams = {
           model: resolvedModel,
           max_tokens: 2048,
-          system: effectiveSystemPrompt
-            ? [{ type: 'text' as const, text: effectiveSystemPrompt, cache_control: { type: 'ephemeral' as const } }]
+          system: compressedSystem
+            ? [{ type: 'text' as const, text: compressedSystem, cache_control: { type: 'ephemeral' as const } }]
             : [],
-          messages: [{ role: 'user' as const, content: userMessageFinal }],
+          messages: [{ role: 'user' as const, content: compressedMessage }],
         }
 
         // Note: web search beta tools removed — local proxy cannot use Anthropic beta endpoints

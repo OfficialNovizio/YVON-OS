@@ -1,0 +1,355 @@
+SKILL|humanizer|"Humanize text: strip AI-isms and add real voice."
+STEP|1|Key insight:** LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely completion, which is how the telltale patterns below get baked in.
+STEP|2|"humanize", "de-AI", "de-slop", or "un-ChatGPT" a piece of text
+STEP|3|rewrite something so it doesn't sound like it was written by an LLM
+STEP|4|edit a draft (blog post, essay, PR description, docs, memo, email, tweet, resume bullet) to sound more natural
+STEP|5|match their voice in writing they're producing
+STEP|6|review text for AI tells before publishing
+STEP|7|**Inline** — user pastes the text directly into the message. Work on it in-place, reply with the rewrite.
+STEP|8|**File** — user points at a file. Use `read_file` to load it, then `patch` or `write_file` to apply edits. For markdown docs in a repo, a targeted `patch` per section is cleaner than rewriting the who
+STEP|9|**Voice calibration sample** — user provides an additional sample of their own writing (inline or by file path) and asks you to match it. Read the sample first, then rewrite. See the Voice Calibration
+STEP|10|**Identify AI patterns** — scan for the 29 patterns listed below.
+STEP|11|**Rewrite problematic sections** — replace AI-isms with natural alternatives.
+STEP|12|**Preserve meaning** — keep the core message intact.
+STEP|13|**Maintain voice** — match the intended tone (formal, casual, technical, etc.). If a voice sample was provided, match it specifically.
+STEP|14|**Add soul** — don't just remove bad patterns, inject actual personality. See PERSONALITY AND SOUL below.
+STEP|15|**Do a final anti-AI pass** — ask yourself: "What makes the below so obviously AI generated?" Answer briefly with any remaining tells, then revise one more time.
+STEP|16|**Read the sample first.** Note:
+STEP|17|**Match their voice in the rewrite.** Don't just remove AI patterns — replace them with patterns from the sample. If they write short sentences, don't produce long ones. If they use "stuff" and "thing
+STEP|18|**When no sample is provided,** fall back to the default behavior (natural, varied, opinionated voice from the PERSONALITY AND SOUL section below).
+STEP|19|Inline: "Humanize this text. Here's a sample of my writing for voice matching: [sample]"
+STEP|20|File: "Humanize this text. Use my writing style from [file path] as a reference."
+STEP|21|Every sentence is the same length and structure
+STEP|22|No opinions, just neutral reporting
+STEP|23|No acknowledgment of uncertainty or mixed feelings
+STEP|24|No first-person perspective when appropriate
+STEP|25|No humor, no edge, no personality
+STEP|26|Reads like a Wikipedia article or press release
+STEP|27|Have opinions.** Don't just report facts — react to them. "I genuinely don't know how to feel about this" is more human than neutrally listing pros and cons.
+STEP|28|Vary your rhythm.** Short punchy sentences. Then longer ones that take their time getting where they're going. Mix it up.
+STEP|29|Acknowledge complexity.** Real humans have mixed feelings. "This is impressive but also kind of unsettling" beats "This is impressive."
+STEP|30|Use "I" when it fits.** First person isn't unprofessional — it's honest. "I keep coming back to..." or "Here's what gets me..." signals a real person thinking.
+STEP|31|Let some mess in.** Perfect structure feels algorithmic. Tangents, asides, and half-formed thoughts are human.
+STEP|32|Be specific about feelings.** Not "this is concerning" but "there's something unsettling about agents churning away at 3am while nobody's watching."
+STEP|33|Words to watch:** stands/serves as, is a testament/reminder, a vital/significant/crucial/pivotal/key role/moment, underscores/highlights its importance/significance, reflects broader, symbolizing its 
+STEP|34|Problem:** LLM writing puffs up importance by adding statements about how arbitrary aspects represent or contribute to a broader topic.
+STEP|35|Before:**
+STEP|36|After:**
+STEP|37|Words to watch:** independent coverage, local/regional/national media outlets, written by a leading expert, active social media presence
+STEP|38|Problem:** LLMs hit readers over the head with claims of notability, often listing sources without context.
+STEP|39|Before:**
+STEP|40|After:**
+STEP|41|Words to watch:** highlighting/underscoring/emphasizing..., ensuring..., reflecting/symbolizing..., contributing to..., cultivating/fostering..., encompassing..., showcasing...
+STEP|42|Problem:** AI chatbots tack present participle ("-ing") phrases onto sentences to add fake depth.
+STEP|43|Before:**
+STEP|44|After:**
+STEP|45|Words to watch:** boasts a, vibrant, rich (figurative), profound, enhancing its, showcasing, exemplifies, commitment to, natural beauty, nestled, in the heart of, groundbreaking (figurative), renowned
+STEP|46|Problem:** LLMs have serious problems keeping a neutral tone, especially for "cultural heritage" topics.
+STEP|47|Before:**
+STEP|48|After:**
+STEP|49|Words to watch:** Industry reports, Observers have cited, Experts argue, Some critics argue, several sources/publications (when few cited)
+STEP|50|Problem:** AI chatbots attribute opinions to vague authorities without specific sources.
+STEP|51|Before:**
+STEP|52|After:**
+STEP|53|Words to watch:** Despite its... faces several challenges..., Despite these challenges, Challenges and Legacy, Future Outlook
+STEP|54|Problem:** Many LLM-generated articles include formulaic "Challenges" sections.
+STEP|55|Before:**
+STEP|56|After:**
+STEP|57|High-frequency AI words:** Actually, additionally, align with, crucial, delve, emphasizing, enduring, enhance, fostering, garner, highlight (verb), interplay, intricate/intricacies, key (adjective), l
+STEP|58|Problem:** These words appear far more frequently in post-2023 text. They often co-occur.
+STEP|59|Before:**
+STEP|60|After:**
+STEP|61|Words to watch:** serves as/stands as/marks/represents [a], boasts/features/offers [a]
+STEP|62|Problem:** LLMs substitute elaborate constructions for simple copulas.
+STEP|63|Before:**
+STEP|64|After:**
+STEP|65|Problem:** Constructions like "Not only...but..." or "It's not just about..., it's..." are overused. So are clipped tailing-negation fragments such as "no guessing" or "no wasted motion" tacked onto t
+STEP|66|Before:**
+STEP|67|After:**
+STEP|68|Before (tailing negation):**
+STEP|69|After:**
+STEP|70|Problem:** LLMs force ideas into groups of three to appear comprehensive.
+STEP|71|Before:**
+STEP|72|After:**
+STEP|73|Problem:** AI has repetition-penalty code causing excessive synonym substitution.
+STEP|74|Before:**
+STEP|75|After:**
+STEP|76|Problem:** LLMs use "from X to Y" constructions where X and Y aren't on a meaningful scale.
+STEP|77|Before:**
+STEP|78|After:**
+STEP|79|Problem:** LLMs often hide the actor or drop the subject entirely with lines like "No configuration file needed" or "The results are preserved automatically." Rewrite these when active voice makes the
+STEP|80|Before:**
+STEP|81|After:**
+STEP|82|Problem:** LLMs use em dashes (—) more than humans, mimicking "punchy" sales writing. In practice, most of these can be rewritten more cleanly with commas, periods, or parentheses.
+STEP|83|Before:**
+STEP|84|After:**
+STEP|85|Problem:** AI chatbots emphasize phrases in boldface mechanically.
+STEP|86|Before:**
+STEP|87|After:**
+STEP|88|Problem:** AI outputs lists where items start with bolded headers followed by colons.
+STEP|89|Before:**
+STEP|90|After:**
+STEP|91|Problem:** AI chatbots capitalize all main words in headings.
+STEP|92|Before:**
+STEP|93|After:**
+STEP|94|Problem:** AI chatbots often decorate headings or bullet points with emojis.
+STEP|95|Before:**
+STEP|96|After:**
+STEP|97|Problem:** ChatGPT uses curly quotes ("...") instead of straight quotes ("...").
+STEP|98|Before:**
+STEP|99|After:**
+STEP|100|Words to watch:** I hope this helps, Of course!, Certainly!, You're absolutely right!, Would you like..., let me know, here is a...
+STEP|101|Problem:** Text meant as chatbot correspondence gets pasted as content.
+STEP|102|Before:**
+STEP|103|After:**
+STEP|104|Words to watch:** as of [date], Up to my last training update, While specific details are limited/scarce..., based on available information...
+STEP|105|Problem:** AI disclaimers about incomplete information get left in text.
+STEP|106|Before:**
+STEP|107|After:**
+STEP|108|Problem:** Overly positive, people-pleasing language.
+STEP|109|Before:**
+STEP|110|After:**
+STEP|111|Before → After:**
+STEP|112|"In order to achieve this goal" → "To achieve this"
+STEP|113|"Due to the fact that it was raining" → "Because it was raining"
+STEP|114|"At this point in time" → "Now"
+STEP|115|"In the event that you need help" → "If you need help"
+STEP|116|"The system has the ability to process" → "The system can process"
+STEP|117|"It is important to note that the data shows" → "The data shows"
+STEP|118|Problem:** Over-qualifying statements.
+STEP|119|Before:**
+STEP|120|After:**
+STEP|121|Problem:** Vague upbeat endings.
+STEP|122|Before:**
+STEP|123|After:**
+STEP|124|Words to watch:** third-party, cross-functional, client-facing, data-driven, decision-making, well-known, high-quality, real-time, long-term, end-to-end
+STEP|125|Problem:** AI hyphenates common word pairs with perfect consistency. Humans rarely hyphenate these uniformly, and when they do, it's inconsistent. Less common or technical compound modifiers are fine 
+STEP|126|Before:**
+STEP|127|After:**
+STEP|128|Phrases to watch:** The real question is, at its core, in reality, what really matters, fundamentally, the deeper issue, the heart of the matter
+STEP|129|Problem:** LLMs use these phrases to pretend they are cutting through noise to some deeper truth, when the sentence that follows usually just restates an ordinary point with extra ceremony.
+STEP|130|Before:**
+STEP|131|After:**
+STEP|132|Phrases to watch:** Let's dive in, let's explore, let's break this down, here's what you need to know, now let's look at, without further ado
+STEP|133|Problem:** LLMs announce what they are about to do instead of doing it. This meta-commentary slows the writing down and gives it a tutorial-script feel.
+STEP|134|Before:**
+STEP|135|After:**
+STEP|136|Signs to watch:** A heading followed by a one-line paragraph that simply restates the heading before the real content begins.
+STEP|137|Problem:** LLMs often add a generic sentence after a heading as a rhetorical warm-up. It usually adds nothing and makes the prose feel padded.
+STEP|138|Before:**
+STEP|139|After:**
+STEP|140|Read the input text carefully (use `read_file` if it's a file).
+STEP|141|Identify all instances of the patterns above.
+STEP|142|Rewrite each problematic section.
+STEP|143|Ensure the revised text:
+STEP|144|Present a draft humanized version.
+STEP|145|Prompt yourself: "What makes the below so obviously AI generated?"
+STEP|146|Answer briefly with the remaining tells (if any).
+STEP|147|Prompt yourself: "Now make it not obviously AI generated."
+STEP|148|Present the final version (revised after the audit).
+STEP|149|If the text came from a file, apply the edit with `patch` (targeted) or `write_file` (full rewrite) and show the user what changed.
+STEP|150|Draft rewrite
+STEP|151|"What makes the below so obviously AI generated?" (brief bullets)
+STEP|152|Final rewrite
+STEP|153|A brief summary of changes made (optional, if helpful)
+STEP|154|Before (AI-sounding):**
+STEP|155|Draft rewrite:**
+STEP|156|What makes the below so obviously AI generated?**
+STEP|157|The rhythm is still a bit too tidy (clean contrasts, evenly paced paragraphs).
+STEP|158|The named people and study citations can read like plausible-but-made-up placeholders unless they're real and sourced.
+STEP|159|The closer leans a touch slogan-y ("If you do not have tests...") rather than sounding like a person talking.
+STEP|160|Now make it not obviously AI generated.**
+STEP|161|Changes made:**
+STEP|162|Removed chatbot artifacts ("Great question!", "I hope this helps!", "Let me know if...")
+STEP|163|Removed significance inflation ("testament", "pivotal moment", "evolving landscape", "vital role")
+STEP|164|Removed promotional language ("groundbreaking", "nestled", "seamless, intuitive, and powerful")
+STEP|165|Removed vague attributions ("Industry observers")
+STEP|166|Removed superficial -ing phrases ("underscoring", "highlighting", "reflecting", "contributing to")
+STEP|167|Removed negative parallelism ("It's not just X; it's Y")
+STEP|168|Removed rule-of-three patterns and synonym cycling ("catalyst/partner/foundation")
+STEP|169|Removed false ranges ("from X to Y, from A to B")
+STEP|170|Removed em dashes, emojis, boldface headers, and curly quotes
+STEP|171|Removed copula avoidance ("serves as", "functions as", "stands as") in favor of "is"/"are"
+STEP|172|Removed formulaic challenges section ("Despite challenges... continues to thrive")
+STEP|173|Removed knowledge-cutoff hedging ("While specific details are limited...")
+STEP|174|Removed excessive hedging ("could potentially be argued that... might have some")
+STEP|175|Removed filler phrases and persuasive framing ("In order to", "At its core")
+STEP|176|Removed generic positive conclusion ("the future looks bright", "exciting times lie ahead")
+STEP|177|Made the voice more personal and less "assembled" (varied rhythm, fewer placeholders)
+PIT|Key insight:** LLMs use statistical algorithms to guess what should come next. The result tends toward the most statistically likely completion, which is how the telltale patterns below get baked in.
+PIT|"humanize", "de-AI", "de-slop", or "un-ChatGPT" a piece of text
+PIT|rewrite something so it doesn't sound like it was written by an LLM
+PIT|edit a draft (blog post, essay, PR description, docs, memo, email, tweet, resume bullet) to sound more natural
+PIT|match their voice in writing they're producing
+PIT|review text for AI tells before publishing
+PIT|**Inline** — user pastes the text directly into the message. Work on it in-place, reply with the rewrite.
+PIT|**File** — user points at a file. Use `read_file` to load it, then `patch` or `write_file` to apply edits. For markdown docs in a repo, a targeted `patch` per section is cleaner than rewriting the who
+PIT|**Voice calibration sample** — user provides an additional sample of their own writing (inline or by file path) and asks you to match it. Read the sample first, then rewrite. See the Voice Calibration
+PIT|**Identify AI patterns** — scan for the 29 patterns listed below.
+PIT|**Rewrite problematic sections** — replace AI-isms with natural alternatives.
+PIT|**Preserve meaning** — keep the core message intact.
+PIT|**Maintain voice** — match the intended tone (formal, casual, technical, etc.). If a voice sample was provided, match it specifically.
+PIT|**Add soul** — don't just remove bad patterns, inject actual personality. See PERSONALITY AND SOUL below.
+PIT|**Do a final anti-AI pass** — ask yourself: "What makes the below so obviously AI generated?" Answer briefly with any remaining tells, then revise one more time.
+PIT|**Read the sample first.** Note:
+PIT|**Match their voice in the rewrite.** Don't just remove AI patterns — replace them with patterns from the sample. If they write short sentences, don't produce long ones. If they use "stuff" and "thing
+PIT|**When no sample is provided,** fall back to the default behavior (natural, varied, opinionated voice from the PERSONALITY AND SOUL section below).
+PIT|Inline: "Humanize this text. Here's a sample of my writing for voice matching: [sample]"
+PIT|File: "Humanize this text. Use my writing style from [file path] as a reference."
+PIT|Every sentence is the same length and structure
+PIT|No opinions, just neutral reporting
+PIT|No acknowledgment of uncertainty or mixed feelings
+PIT|No first-person perspective when appropriate
+PIT|No humor, no edge, no personality
+PIT|Reads like a Wikipedia article or press release
+PIT|Have opinions.** Don't just report facts — react to them. "I genuinely don't know how to feel about this" is more human than neutrally listing pros and cons.
+PIT|Vary your rhythm.** Short punchy sentences. Then longer ones that take their time getting where they're going. Mix it up.
+PIT|Acknowledge complexity.** Real humans have mixed feelings. "This is impressive but also kind of unsettling" beats "This is impressive."
+PIT|Use "I" when it fits.** First person isn't unprofessional — it's honest. "I keep coming back to..." or "Here's what gets me..." signals a real person thinking.
+PIT|Let some mess in.** Perfect structure feels algorithmic. Tangents, asides, and half-formed thoughts are human.
+PIT|Be specific about feelings.** Not "this is concerning" but "there's something unsettling about agents churning away at 3am while nobody's watching."
+PIT|Words to watch:** stands/serves as, is a testament/reminder, a vital/significant/crucial/pivotal/key role/moment, underscores/highlights its importance/significance, reflects broader, symbolizing its 
+PIT|Problem:** LLM writing puffs up importance by adding statements about how arbitrary aspects represent or contribute to a broader topic.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** independent coverage, local/regional/national media outlets, written by a leading expert, active social media presence
+PIT|Problem:** LLMs hit readers over the head with claims of notability, often listing sources without context.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** highlighting/underscoring/emphasizing..., ensuring..., reflecting/symbolizing..., contributing to..., cultivating/fostering..., encompassing..., showcasing...
+PIT|Problem:** AI chatbots tack present participle ("-ing") phrases onto sentences to add fake depth.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** boasts a, vibrant, rich (figurative), profound, enhancing its, showcasing, exemplifies, commitment to, natural beauty, nestled, in the heart of, groundbreaking (figurative), renowned
+PIT|Problem:** LLMs have serious problems keeping a neutral tone, especially for "cultural heritage" topics.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** Industry reports, Observers have cited, Experts argue, Some critics argue, several sources/publications (when few cited)
+PIT|Problem:** AI chatbots attribute opinions to vague authorities without specific sources.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** Despite its... faces several challenges..., Despite these challenges, Challenges and Legacy, Future Outlook
+PIT|Problem:** Many LLM-generated articles include formulaic "Challenges" sections.
+PIT|Before:**
+PIT|After:**
+PIT|High-frequency AI words:** Actually, additionally, align with, crucial, delve, emphasizing, enduring, enhance, fostering, garner, highlight (verb), interplay, intricate/intricacies, key (adjective), l
+PIT|Problem:** These words appear far more frequently in post-2023 text. They often co-occur.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** serves as/stands as/marks/represents [a], boasts/features/offers [a]
+PIT|Problem:** LLMs substitute elaborate constructions for simple copulas.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** Constructions like "Not only...but..." or "It's not just about..., it's..." are overused. So are clipped tailing-negation fragments such as "no guessing" or "no wasted motion" tacked onto t
+PIT|Before:**
+PIT|After:**
+PIT|Before (tailing negation):**
+PIT|After:**
+PIT|Problem:** LLMs force ideas into groups of three to appear comprehensive.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** AI has repetition-penalty code causing excessive synonym substitution.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** LLMs use "from X to Y" constructions where X and Y aren't on a meaningful scale.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** LLMs often hide the actor or drop the subject entirely with lines like "No configuration file needed" or "The results are preserved automatically." Rewrite these when active voice makes the
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** LLMs use em dashes (—) more than humans, mimicking "punchy" sales writing. In practice, most of these can be rewritten more cleanly with commas, periods, or parentheses.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** AI chatbots emphasize phrases in boldface mechanically.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** AI outputs lists where items start with bolded headers followed by colons.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** AI chatbots capitalize all main words in headings.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** AI chatbots often decorate headings or bullet points with emojis.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** ChatGPT uses curly quotes ("...") instead of straight quotes ("...").
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** I hope this helps, Of course!, Certainly!, You're absolutely right!, Would you like..., let me know, here is a...
+PIT|Problem:** Text meant as chatbot correspondence gets pasted as content.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** as of [date], Up to my last training update, While specific details are limited/scarce..., based on available information...
+PIT|Problem:** AI disclaimers about incomplete information get left in text.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** Overly positive, people-pleasing language.
+PIT|Before:**
+PIT|After:**
+PIT|Before → After:**
+PIT|"In order to achieve this goal" → "To achieve this"
+PIT|"Due to the fact that it was raining" → "Because it was raining"
+PIT|"At this point in time" → "Now"
+PIT|"In the event that you need help" → "If you need help"
+PIT|"The system has the ability to process" → "The system can process"
+PIT|"It is important to note that the data shows" → "The data shows"
+PIT|Problem:** Over-qualifying statements.
+PIT|Before:**
+PIT|After:**
+PIT|Problem:** Vague upbeat endings.
+PIT|Before:**
+PIT|After:**
+PIT|Words to watch:** third-party, cross-functional, client-facing, data-driven, decision-making, well-known, high-quality, real-time, long-term, end-to-end
+PIT|Problem:** AI hyphenates common word pairs with perfect consistency. Humans rarely hyphenate these uniformly, and when they do, it's inconsistent. Less common or technical compound modifiers are fine 
+PIT|Before:**
+PIT|After:**
+PIT|Phrases to watch:** The real question is, at its core, in reality, what really matters, fundamentally, the deeper issue, the heart of the matter
+PIT|Problem:** LLMs use these phrases to pretend they are cutting through noise to some deeper truth, when the sentence that follows usually just restates an ordinary point with extra ceremony.
+PIT|Before:**
+PIT|After:**
+PIT|Phrases to watch:** Let's dive in, let's explore, let's break this down, here's what you need to know, now let's look at, without further ado
+PIT|Problem:** LLMs announce what they are about to do instead of doing it. This meta-commentary slows the writing down and gives it a tutorial-script feel.
+PIT|Before:**
+PIT|After:**
+PIT|Signs to watch:** A heading followed by a one-line paragraph that simply restates the heading before the real content begins.
+PIT|Problem:** LLMs often add a generic sentence after a heading as a rhetorical warm-up. It usually adds nothing and makes the prose feel padded.
+PIT|Before:**
+PIT|After:**
+PIT|Read the input text carefully (use `read_file` if it's a file).
+PIT|Identify all instances of the patterns above.
+PIT|Rewrite each problematic section.
+PIT|Ensure the revised text:
+PIT|Present a draft humanized version.
+PIT|Prompt yourself: "What makes the below so obviously AI generated?"
+PIT|Answer briefly with the remaining tells (if any).
+PIT|Prompt yourself: "Now make it not obviously AI generated."
+PIT|Present the final version (revised after the audit).
+PIT|If the text came from a file, apply the edit with `patch` (targeted) or `write_file` (full rewrite) and show the user what changed.
+PIT|Draft rewrite
+PIT|"What makes the below so obviously AI generated?" (brief bullets)
+PIT|Final rewrite
+PIT|A brief summary of changes made (optional, if helpful)
+PIT|Before (AI-sounding):**
+PIT|Draft rewrite:**
+PIT|What makes the below so obviously AI generated?**
+PIT|The rhythm is still a bit too tidy (clean contrasts, evenly paced paragraphs).
+PIT|The named people and study citations can read like plausible-but-made-up placeholders unless they're real and sourced.
+PIT|The closer leans a touch slogan-y ("If you do not have tests...") rather than sounding like a person talking.
+PIT|Now make it not obviously AI generated.**
+PIT|Changes made:**
+PIT|Removed chatbot artifacts ("Great question!", "I hope this helps!", "Let me know if...")
+PIT|Removed significance inflation ("testament", "pivotal moment", "evolving landscape", "vital role")
+PIT|Removed promotional language ("groundbreaking", "nestled", "seamless, intuitive, and powerful")
+PIT|Removed vague attributions ("Industry observers")
+PIT|Removed superficial -ing phrases ("underscoring", "highlighting", "reflecting", "contributing to")
+PIT|Removed negative parallelism ("It's not just X; it's Y")
+PIT|Removed rule-of-three patterns and synonym cycling ("catalyst/partner/foundation")
+PIT|Removed false ranges ("from X to Y, from A to B")
+PIT|Removed em dashes, emojis, boldface headers, and curly quotes
+PIT|Removed copula avoidance ("serves as", "functions as", "stands as") in favor of "is"/"are"
+PIT|Removed formulaic challenges section ("Despite challenges... continues to thrive")
+PIT|Removed knowledge-cutoff hedging ("While specific details are limited...")
+PIT|Removed excessive hedging ("could potentially be argued that... might have some")
+PIT|Removed filler phrases and persuasive framing ("In order to", "At its core")
+PIT|Removed generic positive conclusion ("the future looks bright", "exciting times lie ahead")
+PIT|Made the voice more personal and less "assembled" (varied rhythm, fewer placeholders)

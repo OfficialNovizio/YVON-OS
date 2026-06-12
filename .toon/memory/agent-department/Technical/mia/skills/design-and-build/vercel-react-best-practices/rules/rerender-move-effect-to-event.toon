@@ -1,0 +1,32 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-move-effect-to-event.md
+M|rules|title: Put Interaction Logic in Event Handlers
+M|rules|impact: MEDIUM
+M|rules|impactDescription: avoids effect re-runs and duplicate side effects
+M|rules|tags: rerender, useEffect, events, side-effects, dependencies
+M|rules|If a side effect is triggered by a specific user action (submit, click, drag), run it in that event handler. Do not model the action as state + effect; it makes effects re-run on unrelated changes and
+M|rules|**Incorrect (event modeled as state + effect):**
+M|rules|```tsx
+M|rules|function Form() {
+M|rules|const [submitted, setSubmitted] = useState(false)
+M|rules|const theme = useContext(ThemeContext)
+M|rules|useEffect(() => {
+M|rules|if (submitted) {
+M|rules|post('/api/register')
+M|rules|showToast('Registered', theme)
+M|rules|}
+M|rules|}, [submitted, theme])
+M|rules|return <button onClick={() => setSubmitted(true)}>Submit</button>
+M|rules|}
+M|rules|```
+M|rules|**Correct (do it in the handler):**
+M|rules|```tsx
+M|rules|function Form() {
+M|rules|const theme = useContext(ThemeContext)
+M|rules|function handleSubmit() {
+M|rules|post('/api/register')
+M|rules|showToast('Registered', theme)
+M|rules|}
+M|rules|return <button onClick={handleSubmit}>Submit</button>
+M|rules|}
+M|rules|```
+M|rules|Reference: [Should this code move to an event handler?](https://react.dev/learn/removing-effect-dependencies#should-this-code-move-to-an-event-handler)

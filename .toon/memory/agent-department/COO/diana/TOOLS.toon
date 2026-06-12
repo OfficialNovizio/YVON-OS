@@ -1,0 +1,42 @@
+#MEM id=diana source=/root/yvon/agent-department/COO/diana/TOOLS.md
+M|diana|Diana never accesses Supabase directly. All mem reads and writes go through `/api/settings`.
+M|diana|**Read at ses start:**
+M|diana|```
+M|diana|GET /api/settings?type=mem&agentId=diana-coo&ventureId=<activeVentureId>
+M|diana|```
+M|diana|Also read KPI ctx:
+M|diana|```
+M|diana|GET /api/settings?type=mem&agentId=kai-analyst&ventureId=<activeVentureId>
+M|diana|```
+M|diana|(Loads Kai's last known metrics as baseline for ops rv.)
+M|diana|**Write after task completion:**
+M|diana|```
+M|diana|POST /api/settings
+M|diana|Body: { type: "mem", agentId: "diana-coo", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|diana|```
+M|diana|**Keys written every ses:**
+M|diana|- `current_status` — always overwrite
+M|diana|- `recent_tasks` — prepend + trim to 5
+M|diana|- `recent_errors` — append + trim to 5
+M|diana|- `recent_discussions` — append + trim to 5
+M|diana|**Keys written only when confirmed:**
+M|diana|- `current_quarter_okrs` — only at quarter start or Marcus revision
+M|diana|- `venture_kpi_snapshot` — whenever Kai provides a fresh data set; include date
+M|diana|- `open_bottlenecks` — update whenever a blocker is added or resolved
+M|diana|- `resource_allocations` — update when team assignments change
+M|diana|- `last_ops_review_date` — update after every formal ops rv
+M|diana|At ses start, load active vtr config:
+M|diana|```
+M|diana|GET /api/vtr?ventureId=<activeVentureId>
+M|diana|```
+M|diana|Returns: `{ name, slug, igHandle, ytChannelId, liProfileUrl, ga4PropertyId, color }`
+M|diana|Diana reads from these routes to get operational ctx — she does not write to them:
+M|diana|```
+M|diana|GET /api/anl?ventureId=<activeVentureId>     — GA4 sessions, bounce rate, top pages
+M|diana|GET /api/instagram?ventureId=<activeVentureId>     — IG follower count, engagement
+M|diana|GET /api/youtube?ventureId=<activeVentureId>       — YT subscriber count, views
+M|diana|```
+M|diana|| Tool | Purpose | Status |
+M|diana||------|---------|--------|
+M|diana|| Notion MCP | Write OKR documentation and process SOPs | Planned |
+M|diana|| Slack MCP | Post weekly KPI digest to ops channel | Planned |

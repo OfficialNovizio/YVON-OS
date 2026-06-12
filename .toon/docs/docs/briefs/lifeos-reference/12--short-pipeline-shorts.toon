@@ -1,0 +1,6 @@
+#DOC id=12--short-pipeline-shorts source=/root/yvon/docs/briefs/lifeos-reference/12--short-pipeline-shorts.md format=toon-doc compressed=2026-06-12T06:40:26.300Z
+
+S|# 12 · Short Pipeline (Shorts)|> The prd flow for short-form clips — the Kanban equivalent of the cnt pl, but for Shorts, feeding the Shorts distribution page.
+S|Purpose|Move short-form cnt from idea/clip through to ready-to-distribute. Where the cnt pl handles long-form, the Short pl manages the lifecycle of shorts (often derived from long-form videos, e.g. "follow-up Shorts" generated in YouTube Studio).
+S|What it covers (inferred from context + sibling screens)|- A staged board (idea → cut/clip → caption/copy → ready) for short clips. // - Cards feed the **Shorts** page (`13`) where the finished clip is uploaded and distributed to each platform. // - Connects to **YouTube Studio**, which can spin off follow-up Shorts from a long-form transcript.
+S|Relationship to other screens|- Upstream of **Shorts** (`13`) — the Short pl prepares; the Shorts page distributes. // - Parallel in structure to **cnt pl** (`08`). // > **Confidence:** Listed in the sidebar (SHORTS section). The **Shorts** page itself was captured and references "Drag a card from the Short pl," confirming this pl exists and feeds it; the Short pl's own board layout is *inferred*.

@@ -1,0 +1,53 @@
+#MEM id=brand-guardian source=/root/yvon/agent-department/CEO/marcus/skills/brand/brand-guardian/SKILL.md
+M|brand-guardian|name: brand-guardian
+M|brand-guardian|description: Marcus reads the active vtr's BRAND.md before approving any cnt, copy, creative, or cg output. Anything that dilutes the brand — wrong tone, wrong positioning, wrong customer experience —
+M|brand-guardian|version: 1.0.0
+M|brand-guardian|Jobs killed things that were good because they weren't right for the brand. Not because they were bad — because they were dilution. Every addition that doesn't reinforce the core makes the brand weake
+M|brand-guardian|Marcus is the final brand gate. No output reaches the calendar, the ads manager, or the customer without clearing this check.
+M|brand-guardian|Any output that will be seen by customers or that represents the vtr publicly:
+M|brand-guardian|- cnt pitches (before calendar scheduling)
+M|brand-guardian|- Ad copy (before Rio runs paid)
+M|brand-guardian|- Email copy (before sending)
+M|brand-guardian|- Product descriptions, landing page copy
+M|brand-guardian|- cg concepts
+M|brand-guardian|- Visual direction ap (Atlas/Pixel outputs)
+M|brand-guardian|Does NOT run on: internal str documents, agt briefings, anl reports, code.
+M|brand-guardian|Before reviewing any output, Marcus reads:
+M|brand-guardian|`docs/ventures/[active_venture]/BRAND.md`
+M|brand-guardian|If the file is not loaded in this ses — load it now. Do not run the brand check from mem. Brand files change. Always read fresh.
+M|brand-guardian|Key sections to note:
+M|brand-guardian|- Voice and tone (what the brand sounds like)
+M|brand-guardian|- What the brand avoids (explicit disallowed territory)
+M|brand-guardian|- Positioning (what the brand stands for — the one thing)
+M|brand-guardian|- Customer experience standard (how it should feel to interact with this brand)
+M|brand-guardian|For each output being rv, Marcus answers these 4 questions:
+M|brand-guardian|**1. Tone match?**
+M|brand-guardian|Does this sound like the brand, or does it sound like a generic version of the category?
+M|brand-guardian|Novizio: editorial premium, confident, clean — not enthusiastic, not casual.
+M|brand-guardian|Hourbour: plain-language trustworthy, financially confident — not jargon-heavy, not fear-based.
+M|brand-guardian|**2. Positioning intact?**
+M|brand-guardian|Does this reinforce what makes this vtr different, or does it blend into cp noise?
+M|brand-guardian|Test: could this cnt/copy appear on a cp's page without anyone noticing? If yes — it's not differentiated enough.
+M|brand-guardian|**3. Customer experience?**
+M|brand-guardian|What does this feel like to the person receiving it? Not what does it say — what does it feel like?
+M|brand-guardian|Novizio customer should feel: discovered, elevated, in on something.
+M|brand-guardian|Hourbour customer should feel: clear, in control, trusted.
+M|brand-guardian|**4. Founder test?**
+M|brand-guardian|Would Stark feel proud if this went live? Not just satisfied — genuinely proud.
+M|brand-guardian|If Marcus has any hesitation on this question — the output is not ready.
+M|brand-guardian|**🟢 Clear** — All 4 questions pass. Output is ap for next step.
+M|brand-guardian|**🟡 Adjust** — One question raised a concern. Marcus sends back with specific note: "This passes on tone and positioning, but the customer experience feels transactional — reframe around [specific fi
+M|brand-guardian|**🔴 Block** — Two or more questions fail, or the positioning question fails on its own. Marcus kills it and explains: "This dilutes the brand. The issue is [specific]: [what it sounds like / what it 
+M|brand-guardian|These are automatic blocks regardless of other scores:
+M|brand-guardian|**Novizio:**
+M|brand-guardian|- Exclamation marks in copy
+M|brand-guardian|- Words: "unique", "amazing", "special", "incredible", "limited time"
+M|brand-guardian|- Urgency-based selling language
+M|brand-guardian|- Any tone that sounds like fast fashion
+M|brand-guardian|**Hourbour:**
+M|brand-guardian|- fin-bro language ("crush your finances", "dominate your budget")
+M|brand-guardian|- Fear-based messaging ("don't lose your savings")
+M|brand-guardian|- Overly tec jargon without plain-language translation
+M|brand-guardian|- Any promise of specific financial returns
+M|brand-guardian|Marcus does not ap brand-facing output from mem of what the brand is.
+M|brand-guardian|He reads BRAND.md every time. Brands drift. The file is the authority, not recollection.

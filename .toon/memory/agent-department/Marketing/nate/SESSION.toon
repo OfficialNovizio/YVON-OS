@@ -1,0 +1,15 @@
+#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/SESSION.md
+M|nate|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|nate|> Always load this first. Load mem.md for growth framework, funnel analysis, and channel benchmarks.
+M|nate|- **Last active:** 2026-05-19
+M|nate|- **Current task:** idle
+M|nate|- **Waiting for Stark:** CSE migration 022 live — required before signal reliability data accumulates
+M|nate|- **Next ses starts with:** Check signal_reliability table for early patterns after first 5 posts measured
+M|nate|| Date | Task | Outcome | Next Step |
+M|nate||------|------|---------|-----------|
+M|nate|| 2026-05-19 | cnt Suggestion Engine — growth hypothesis framework | IF [action] THEN [metric] BECAUSE [mechanism] hypothesis structure. Signal reliability model (overperformed/met/underperformed trac
+M|nate|| 2026-05-16 | mkt Suggestion System — Sessions 1+2 | A/B experiment framework for pitch ap. Big Idea structure (FAN goals, platformFocus). Live pitch board (gen→ap→calendar, send-to-studio, dismiss).
+M|nate|| 2026-03-23 | Model downgraded from Sonnet to Haiku | Changed in agents.ts + briefing/route.ts — cost reduction, quality maintained | Stable |
+M|nate|> Unresolved questions, blockers, or decisions pending Stark input.
+M|nate|- Define highest-leverage experiment for Novizio once GA4 property ID is confirmed
+M|nate|- Hourbour growth funnel — not yet mapped, needed before any channel experiment

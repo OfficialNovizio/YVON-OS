@@ -1,0 +1,73 @@
+#MEM id=prompt-qa source=/root/yvon/agent-department/Marketing/atlas/skills/custom/prompt-qa/SKILL.md
+M|prompt-qa|name: prompt-qa
+M|prompt-qa|description: YVON-specific pre-handoff prompt checklist. Run on every prompt before it reaches Pixel. Catches contradictory style tags, vtr forbidden elements, missing Avoid list items, and platform d
+M|prompt-qa|version: 1.0.0
+M|prompt-qa|A prompt with contradictory tags produces inconsistent batches. A prompt missing the Avoid list produces images that technically pass the style spec but violate the brand. This skill catches both — at
+M|prompt-qa|Scan for known incompatible tag pairs. Any of these present together = rewrite before handoff:
+M|prompt-qa|| Tag A | Incompatible with | Why |
+M|prompt-qa||-------|------------------|-----|
+M|prompt-qa|| `candid` | `studio-lit` | Candid = unposed/natural; studio-lit = controlled setup |
+M|prompt-qa|| `editorial` | `catalogue` | Editorial = conceptual; catalogue = commercial product focus |
+M|prompt-qa|| `editorial` | `product shot` | Same conflict as above |
+M|prompt-qa|| `raw` | `polished` | Contradictory finish |
+M|prompt-qa|| `minimal` | `maximalist` | Opposite compositional philosophies |
+M|prompt-qa|| `natural light` | `neon` | Conflicting light sources |
+M|prompt-qa|| `natural light` | `studio flash` | Conflicting light sources |
+M|prompt-qa|| `lifestyle` | `product shot` | Different compositional register |
+M|prompt-qa|| `moody` | `bright and airy` | Contradictory mood |
+M|prompt-qa|| `documentary` | `staged` | Contradictory authenticity signals |
+M|prompt-qa|| `bokeh` | `tack sharp everything` | Contradictory depth of field |
+M|prompt-qa|| `close-up portrait` | `wide establishing shot` | Contradictory composition |
+M|prompt-qa|**Rule:** If a contradiction is found, resolve it — don't send both tags hoping the model will figure it out.
+M|prompt-qa|**Novizio — forbidden in every prompt:**
+M|prompt-qa|- Busy patterns or busy backgrounds
+M|prompt-qa|- Stock-photo energy: perfect poses, fake smiles, overly generic settings
+M|prompt-qa|- Promotional overlays: sale banners, price text, "Buy Now" text within the image
+M|prompt-qa|- Harsh flash or high-key flat lighting
+M|prompt-qa|- Catalogue-style white-background product shots (unless product-only cg is specifically ap)
+M|prompt-qa|- Any element that reads as fast fashion or disposable
+M|prompt-qa|**Hourbour — forbidden in every prompt:**
+M|prompt-qa|- Money imagery: coins, cash, piggy banks, dollar signs, stacks of notes
+M|prompt-qa|- Dark or dramatic backgrounds (unless explicitly brand-ap for that cg)
+M|prompt-qa|- Generic corporate imagery: suits in boardrooms, handshakes, stock-photo professionals
+M|prompt-qa|- Clichéd fintech visuals: upward graph lines, padlocks, checkmarks in shields
+M|prompt-qa|- Overly clinical/sterile environments
+M|prompt-qa|- Generic phone mockups that could belong to any SaaS brand
+M|prompt-qa|**Fix:** If any forbidden element is present in the prompt or is likely to appear based on the style tags — add it to the Avoid list explicitly.
+M|prompt-qa|Every prompt must have an Avoid list that meets this minimum:
+M|prompt-qa|| Requirement | Standard |
+M|prompt-qa||------------|---------|
+M|prompt-qa|| Minimum items | 3 specific items |
+M|prompt-qa|| Specificity | Each item names something concrete — not "avoid bad quality" |
+M|prompt-qa|| vtr-specific | At least 1 item is specific to the vtr's known failure patterns |
+M|prompt-qa|| cg-specific | At least 1 item is specific to this cg's risk (what could easily go wrong here?) |
+M|prompt-qa|**Reject if:** Avoid list is empty, has only generic items ("avoid blurry images"), or has fewer than 3 entries.
+M|prompt-qa|Confirm the prompt or prd brief includes the correct output dimensions for the target platform:
+M|prompt-qa|| Platform | vtr | Ratio | Dimensions |
+M|prompt-qa||---------|---------|-------|-----------|
+M|prompt-qa|| Instagram Feed | Novizio | 1:1 or 4:5 | 1080×1080 or 1080×1350 |
+M|prompt-qa|| Instagram Stories / Reels | Novizio | 9:16 | 1080×1920 |
+M|prompt-qa|| TikTok | Novizio | 9:16 | 1080×1920 |
+M|prompt-qa|| LinkedIn post | Hourbour | 1:1 or 1.91:1 | 1080×1080 or 1200×628 |
+M|prompt-qa|| YouTube Thumbnail | Hourbour | 16:9 | 1280×720 |
+M|prompt-qa|**Fix:** If dimensions aren't specified, add them to the prd brief before handoff. Pixel should not have to infer the target format.
+M|prompt-qa|Final check before handoff: "If this prompt were given to three different AI models, would they all produce images in the same aesthetic register?"
+M|prompt-qa|- If yes → specific enough. Proceed.
+M|prompt-qa|- If no → identify the ambiguous term (usually the mood or style tag) and replace with a more specific descriptor.
+M|prompt-qa|**Common vague terms and what to replace them with:**
+M|prompt-qa|| Vague | Replace with |
+M|prompt-qa||-------|-------------|
+M|prompt-qa|| `beautiful` | Specific mood: `soft, editorial, quiet confidence` |
+M|prompt-qa|| `professional` | Specific setting: `clean workspace, natural light, focused` |
+M|prompt-qa|| `modern` | Specific aesthetic: `minimal, white space, geometric` |
+M|prompt-qa|| `aesthetic` | Specific register: `Scandinavian editorial, muted palette` |
+M|prompt-qa|| `luxurious` | Specific cues: `soft cashmere, clean neutrals, considered composition` |
+M|prompt-qa|After all 4 checks, deliver:
+M|prompt-qa|```
+M|prompt-qa|Check 1 — Contradictions: [none found / resolved: X replaced Y because Z]
+M|prompt-qa|Check 2 — Forbidden elements: [none present / removed: X from prompt]
+M|prompt-qa|Check 3 — Avoid list: [passed: N items / added: X]
+M|prompt-qa|Check 4 — Platform dimensions: [confirmed: ratio X / added to brief]
+M|prompt-qa|Ambiguity test: [passed / resolved: X replaced with Y]
+M|prompt-qa|Prompt status: READY FOR PIXEL / REVISED — see updated prompt below
+M|prompt-qa|```

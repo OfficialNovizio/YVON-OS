@@ -1,0 +1,191 @@
+SKILL|yvon-os-development|Develop features for YVON OS — the AI operating system (Next.js 15, Supabase, 13 agents, 2 ventures). Covers project conventions, venture system, component patterns, API patterns, UI preferences, and common pitfalls.
+STEP|1|Repo: `OfficialNovizio/YVON2.0` (branch: `master`)
+STEP|2|Stack: Next.js 15 App Router · TypeScript strict · Tailwind CSS · Supabase · Vercel
+STEP|3|Deployed: `yvon.in` (CI auto-deploys on push to master — never push to Vercel manually)
+STEP|4|13 agents across 4 departments: CEO, Technical, Marketing, Finance
+STEP|5|Ventures: **Novizio** (fashion e-commerce, accent `#E94560`) and **Hourbour** (fintech SaaS, accent `#3B82F6`)
+STEP|6|**Gather & Plan** — Research the existing codebase (APIs, types, DB columns, migrations) before writing any code. Present a structured plan to the user listing exactly what files will change and what 
+STEP|7|**Build** — implement one layer at a time following the 4-layer pipeline (migration → types → db → page).
+STEP|8|**Verify** — `npx tsc --noEmit` (0 errors), `npx next lint`, then if possible `npm run build`
+STEP|9|**Commit** — descriptive commit message, then `git push origin master`
+STEP|10|Deploy happens automatically via GitHub CI → Vercel
+STEP|11|Plan template:** Present as a table or bullet list showing each change with file path, what changes, and which API/DB function it uses. The user prefers seeing a clear map of changes before work begin
+STEP|12|`WorkspaceContext` provides `{ workspace, setWorkspace }`
+STEP|13|`workspace.key` = `'novizio'` \| `'hourbour'`
+STEP|14|`setWorkspace(key)` persists to localStorage + sets `yvon_active_venture` cookie
+STEP|15|Venture pill (TopBar) is the ONLY place to switch — no duplicate in sidebar
+STEP|16|Fetch ventures from `/api/ventures` (Supabase), not hardcoded
+STEP|17|All routes in `app/api/` — server-side only
+STEP|18|Supabase client: `createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)`
+STEP|19|Pattern: try/catch with fallback data, return 200 even on error (graceful degradation)
+STEP|20|Venture-scoped queries: filter by `venture_slug` or `venture_id`
+STEP|21|**Chip toggles** over dropdowns/typing for selection
+STEP|22|**Node-based tree** for hierarchical data (categories, sub-categories)
+STEP|23|**Cards in rows** — grid with `sm:grid-cols-2` minimum, wrap naturally
+STEP|24|**No tabs** in settings — use expandable cards or sub-pages instead
+STEP|25|**Venture switching** ONLY in TopBar pill — never duplicate
+STEP|26|**Ventures from Supabase** via `/api/ventures`, not hardcoded `WORKSPACES` array
+STEP|27|If user says "you did wrong" or sends a screenshot, revert immediately
+STEP|28|The pattern:**
+STEP|29|Each domain module imports `supabase` from `@/lib/supabase` and types from `@/lib/types`
+STEP|30|Extract functions verbatim — NO signature changes, NO behavior changes
+STEP|31|Private helpers stay in their module (helpers only used by that domain)
+STEP|32|`lib/db/index.ts` re-exports everything: `export * from './ventures'; export * from './tasks'; ...`
+STEP|33|`lib/db.ts` becomes a single line: `export * from './db/index'`
+STEP|34|This means every existing import** (`import { getAllVentures } from '@/lib/db'`) **works unchanged** through the re-export chain: `db.ts → index.ts → ventures.ts`.
+STEP|35|The pattern:**
+STEP|36|State stays in `page.tsx` (the parent). Components receive state + setters as props.
+STEP|37|Extract exact JSX and logic verbatim — zero visual or behavioral changes.
+STEP|38|Private constants that multiple components need can be duplicated or extracted to a shared file.
+STEP|39|This is a mandatory gate.** Never skip it before pushing major changes. The user has explicitly required it: "always do verification of code quality for frontend, backend, API, security, UI. By using 
+STEP|40|Load `references/agent-cron-workflows.md` for the full pattern: template, vercel.json registration, schema-check rules, agent_sessions logging.
+STEP|41|MANDATORY:** All agent LLM data injection must use TOON format, never raw JSON. Verified 84.5% bidirectional savings on real DeepSeek benchmarks (50-item filter). See `toon-format` skill for the full 
+STEP|42|Quick reference:**
+STEP|43|≤10 items → `toon.dense()` (55-66% savings)
+STEP|44|20+ items → `compress()` + dictionary (68-73%)
+STEP|45|Repeat calls → delta sync (90%+)
+STEP|46|Bidirectional (TOON output format): 80-85% total savings on data tasks
+STEP|47|Templates MUST be resolved before sending to LLM — never send template IDs
+STEP|48|Libraries:** `lib/toon.ts`, `lib/compressor.ts`, `lib/delta.ts`
+STEP|49|Injection:** `ClaudeRequestBody.dataBlock` field in `/api/claude` route
+STEP|50|Standalone package:** `@yvon/engine` v1.3.0 — published on npm. Install: `npm install @yvon/engine`. CIE + TOON + 13 agents + graphs + dashboard. CLI: `yvon init`, `yvon integrate`, `yvon doctor`, `yv
+STEP|51|What `yvon integrate` does (fully autonomous — never tells user to manually import):**
+STEP|52|Scans all `.ts`/`.tsx` files for `@/lib/cie`, `@/lib/toon`, `@/lib/algorithms` imports
+STEP|53|Patches them to `@yvon/engine/cie`, `@yvon/engine/toon`, `@yvon/engine/algorithms`
+STEP|54|If `app/api/claude/route.ts` exists but has NO CIE import, injects the import + CIE wiring code
+STEP|55|If `@yvon/engine` not installed, auto-runs `npm install` first
+STEP|56|Idempotent — safe to re-run; skips already-patched files
+STEP|57|Engine auto-publish:** GitHub Action on push to master → npm. Token requirements: npm account with 2FA enabled + Automation token with bypass-2FA. See `npm-publishing` skill for the full CI setup.
+STEP|58|Dashboard v2 plan:** `.hermes/plans/2026-06-12_dashboard-v2-plan.md` — 4-phase upgrade replacing the basic HTML dashboard with React + Recharts + WebSocket + live TOON/cost/CIE/agent/connection metric
+STEP|59|Load reference:** `references/cie-architecture.md` for full algorithm details, 5-layer architecture, and build verification.
+STEP|60|**Card component** doesn't accept `style`/`onClick` — wrap in `<div>` or use `glass-card` class
+STEP|61|**Don't add fake workspaces** — only novizio/hourbour in `WORKSPACES`
+STEP|62|**Never duplicate venture selector** — only in TopBar pill
+STEP|63|**Don't use tabs** where user wants cards — revert to expandable cards. Exception: sub-tabs on `/settings/venture` detail page are acceptable.
+STEP|64|**Free-text inputs** → replace with chip toggles or dropdowns when possible
+STEP|65|**Every new DB field must touch 4 layers** — missing any = silent data loss:
+STEP|66|**No double-padding** — pages must NOT add `max-w-6xl mx-auto`; `Shell` already handles spacing.
+STEP|67|**ADDITIVE-ONLY principle** — when fixing gaps or rebuilding pages per LifeOS spec, merge spec features INTO the existing codebase. Never delete YVON OS features (Settings page, venture sub-page, 13 d
+STEP|68|**Don't fabricate API data** — if a backend route doesn't return fleet stats, mock them on the frontend with realistic data rather than inventing server responses.
+STEP|69|**Phantom columns cause silent data loss** — when creating agent cron routes that write to `execution_steps`, verify columns exist in the migration schema (migration 009). The table only has: `id, pla
+STEP|70|**Engine extraction — hardcoded paths** — When extracting internal libraries into an npm package, 4+ source files will reference hardcoded project paths (`/root/yvon/`, `~/agent-department/`). Fix: cr
+STEP|71|**Agent structure MUST be complete in npm packages.** Users immediately notice stubs. When extracting agents into a package, copy the FULL folder structure from the source project: `AGENT.md + MEMORY.
+STEP|72|**npm package shipping — triple gate.** Before telling a user to install from GitHub, verify ALL three: (a) `"files"` field in package.json includes templates/ — otherwise `npm pack` excludes them; (b
+STEP|73|🚨 CRITICAL — npm install from GitHub will fail silently if:**
+STEP|74|`dist/` directory is missing (TypeScript not compiled before push)
+STEP|75|`tsconfig.json` doesn't have `"downlevelIteration": true` (Set/Map iteration breaks in commonjs)
+STEP|76|`package.json` missing `"prepare": "npm run build"` script (npm runs prepare after GitHub install)
+STEP|77|Users get cryptic `MODULE_NOT_FOUND` errors — always test with `npm pack --dry-run` and verify `dist/*.js` exists before pushing.
+STEP|78|Load the LifeOS briefings from `yvon-os/Briefings/` (33 .md files) — these are the canonical spec.
+STEP|79|Load agent `MEMORY.md` files from `yvon-os/agent-department/*/MEMORY.md` — these define agent personalities and intended workflows.
+STEP|80|For each page, cross-reference keywords from the briefing against the current `page.tsx` source. Flag what's present vs missing.
+STEP|81|Produce a gap table with severity tiers (🔴 stubs, 🟡 missing features, 🟢 nice-to-have).
+STEP|82|Exact file path to modify
+STEP|83|Complete feature spec (what to build, component imports, aesthetic requirements)
+STEP|84|Clear "Do NOT delete" list of existing features to preserve
+STEP|85|Toolsets: `["file", "terminal"]` for file writes + build verification
+STEP|86|Read the current file first
+STEP|87|Give the subagent the full current content as context
+STEP|88|Specify exact feature additions, not a full rewrite
+STEP|89|**Sprint A**: Worst stubs (Agents, Skill Workshop, etc.)
+STEP|90|**Sprint B**: Analytics + Revenue pages
+STEP|91|**Sprint C**: Knowledge + Content depth
+STEP|92|**Sprint D**: Global system polish (sidebar, TopBar, shared components)
+STEP|93|**Sprint E**: Remaining thin pages + minor feature additions
+STEP|94|`npx tsc --noEmit` — must pass before proceeding
+STEP|95|Commit + push after sprint completion, not after every individual page
+PIT|Repo: `OfficialNovizio/YVON2.0` (branch: `master`)
+PIT|Stack: Next.js 15 App Router · TypeScript strict · Tailwind CSS · Supabase · Vercel
+PIT|Deployed: `yvon.in` (CI auto-deploys on push to master — never push to Vercel manually)
+PIT|13 agents across 4 departments: CEO, Technical, Marketing, Finance
+PIT|Ventures: **Novizio** (fashion e-commerce, accent `#E94560`) and **Hourbour** (fintech SaaS, accent `#3B82F6`)
+PIT|**Gather & Plan** — Research the existing codebase (APIs, types, DB columns, migrations) before writing any code. Present a structured plan to the user listing exactly what files will change and what 
+PIT|**Build** — implement one layer at a time following the 4-layer pipeline (migration → types → db → page).
+PIT|**Verify** — `npx tsc --noEmit` (0 errors), `npx next lint`, then if possible `npm run build`
+PIT|**Commit** — descriptive commit message, then `git push origin master`
+PIT|Deploy happens automatically via GitHub CI → Vercel
+PIT|Plan template:** Present as a table or bullet list showing each change with file path, what changes, and which API/DB function it uses. The user prefers seeing a clear map of changes before work begin
+PIT|`WorkspaceContext` provides `{ workspace, setWorkspace }`
+PIT|`workspace.key` = `'novizio'` \| `'hourbour'`
+PIT|`setWorkspace(key)` persists to localStorage + sets `yvon_active_venture` cookie
+PIT|Venture pill (TopBar) is the ONLY place to switch — no duplicate in sidebar
+PIT|Fetch ventures from `/api/ventures` (Supabase), not hardcoded
+PIT|All routes in `app/api/` — server-side only
+PIT|Supabase client: `createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)`
+PIT|Pattern: try/catch with fallback data, return 200 even on error (graceful degradation)
+PIT|Venture-scoped queries: filter by `venture_slug` or `venture_id`
+PIT|**Chip toggles** over dropdowns/typing for selection
+PIT|**Node-based tree** for hierarchical data (categories, sub-categories)
+PIT|**Cards in rows** — grid with `sm:grid-cols-2` minimum, wrap naturally
+PIT|**No tabs** in settings — use expandable cards or sub-pages instead
+PIT|**Venture switching** ONLY in TopBar pill — never duplicate
+PIT|**Ventures from Supabase** via `/api/ventures`, not hardcoded `WORKSPACES` array
+PIT|If user says "you did wrong" or sends a screenshot, revert immediately
+PIT|The pattern:**
+PIT|Each domain module imports `supabase` from `@/lib/supabase` and types from `@/lib/types`
+PIT|Extract functions verbatim — NO signature changes, NO behavior changes
+PIT|Private helpers stay in their module (helpers only used by that domain)
+PIT|`lib/db/index.ts` re-exports everything: `export * from './ventures'; export * from './tasks'; ...`
+PIT|`lib/db.ts` becomes a single line: `export * from './db/index'`
+PIT|This means every existing import** (`import { getAllVentures } from '@/lib/db'`) **works unchanged** through the re-export chain: `db.ts → index.ts → ventures.ts`.
+PIT|The pattern:**
+PIT|State stays in `page.tsx` (the parent). Components receive state + setters as props.
+PIT|Extract exact JSX and logic verbatim — zero visual or behavioral changes.
+PIT|Private constants that multiple components need can be duplicated or extracted to a shared file.
+PIT|This is a mandatory gate.** Never skip it before pushing major changes. The user has explicitly required it: "always do verification of code quality for frontend, backend, API, security, UI. By using 
+PIT|Load `references/agent-cron-workflows.md` for the full pattern: template, vercel.json registration, schema-check rules, agent_sessions logging.
+PIT|MANDATORY:** All agent LLM data injection must use TOON format, never raw JSON. Verified 84.5% bidirectional savings on real DeepSeek benchmarks (50-item filter). See `toon-format` skill for the full 
+PIT|Quick reference:**
+PIT|≤10 items → `toon.dense()` (55-66% savings)
+PIT|20+ items → `compress()` + dictionary (68-73%)
+PIT|Repeat calls → delta sync (90%+)
+PIT|Bidirectional (TOON output format): 80-85% total savings on data tasks
+PIT|Templates MUST be resolved before sending to LLM — never send template IDs
+PIT|Libraries:** `lib/toon.ts`, `lib/compressor.ts`, `lib/delta.ts`
+PIT|Injection:** `ClaudeRequestBody.dataBlock` field in `/api/claude` route
+PIT|Standalone package:** `@yvon/engine` v1.3.0 — published on npm. Install: `npm install @yvon/engine`. CIE + TOON + 13 agents + graphs + dashboard. CLI: `yvon init`, `yvon integrate`, `yvon doctor`, `yv
+PIT|What `yvon integrate` does (fully autonomous — never tells user to manually import):**
+PIT|Scans all `.ts`/`.tsx` files for `@/lib/cie`, `@/lib/toon`, `@/lib/algorithms` imports
+PIT|Patches them to `@yvon/engine/cie`, `@yvon/engine/toon`, `@yvon/engine/algorithms`
+PIT|If `app/api/claude/route.ts` exists but has NO CIE import, injects the import + CIE wiring code
+PIT|If `@yvon/engine` not installed, auto-runs `npm install` first
+PIT|Idempotent — safe to re-run; skips already-patched files
+PIT|Engine auto-publish:** GitHub Action on push to master → npm. Token requirements: npm account with 2FA enabled + Automation token with bypass-2FA. See `npm-publishing` skill for the full CI setup.
+PIT|Dashboard v2 plan:** `.hermes/plans/2026-06-12_dashboard-v2-plan.md` — 4-phase upgrade replacing the basic HTML dashboard with React + Recharts + WebSocket + live TOON/cost/CIE/agent/connection metric
+PIT|Load reference:** `references/cie-architecture.md` for full algorithm details, 5-layer architecture, and build verification.
+PIT|**Card component** doesn't accept `style`/`onClick` — wrap in `<div>` or use `glass-card` class
+PIT|**Don't add fake workspaces** — only novizio/hourbour in `WORKSPACES`
+PIT|**Never duplicate venture selector** — only in TopBar pill
+PIT|**Don't use tabs** where user wants cards — revert to expandable cards. Exception: sub-tabs on `/settings/venture` detail page are acceptable.
+PIT|**Free-text inputs** → replace with chip toggles or dropdowns when possible
+PIT|**Every new DB field must touch 4 layers** — missing any = silent data loss:
+PIT|**No double-padding** — pages must NOT add `max-w-6xl mx-auto`; `Shell` already handles spacing.
+PIT|**ADDITIVE-ONLY principle** — when fixing gaps or rebuilding pages per LifeOS spec, merge spec features INTO the existing codebase. Never delete YVON OS features (Settings page, venture sub-page, 13 d
+PIT|**Don't fabricate API data** — if a backend route doesn't return fleet stats, mock them on the frontend with realistic data rather than inventing server responses.
+PIT|**Phantom columns cause silent data loss** — when creating agent cron routes that write to `execution_steps`, verify columns exist in the migration schema (migration 009). The table only has: `id, pla
+PIT|**Engine extraction — hardcoded paths** — When extracting internal libraries into an npm package, 4+ source files will reference hardcoded project paths (`/root/yvon/`, `~/agent-department/`). Fix: cr
+PIT|**Agent structure MUST be complete in npm packages.** Users immediately notice stubs. When extracting agents into a package, copy the FULL folder structure from the source project: `AGENT.md + MEMORY.
+PIT|**npm package shipping — triple gate.** Before telling a user to install from GitHub, verify ALL three: (a) `"files"` field in package.json includes templates/ — otherwise `npm pack` excludes them; (b
+PIT|🚨 CRITICAL — npm install from GitHub will fail silently if:**
+PIT|`dist/` directory is missing (TypeScript not compiled before push)
+PIT|`tsconfig.json` doesn't have `"downlevelIteration": true` (Set/Map iteration breaks in commonjs)
+PIT|`package.json` missing `"prepare": "npm run build"` script (npm runs prepare after GitHub install)
+PIT|Users get cryptic `MODULE_NOT_FOUND` errors — always test with `npm pack --dry-run` and verify `dist/*.js` exists before pushing.
+PIT|Load the LifeOS briefings from `yvon-os/Briefings/` (33 .md files) — these are the canonical spec.
+PIT|Load agent `MEMORY.md` files from `yvon-os/agent-department/*/MEMORY.md` — these define agent personalities and intended workflows.
+PIT|For each page, cross-reference keywords from the briefing against the current `page.tsx` source. Flag what's present vs missing.
+PIT|Produce a gap table with severity tiers (🔴 stubs, 🟡 missing features, 🟢 nice-to-have).
+PIT|Exact file path to modify
+PIT|Complete feature spec (what to build, component imports, aesthetic requirements)
+PIT|Clear "Do NOT delete" list of existing features to preserve
+PIT|Toolsets: `["file", "terminal"]` for file writes + build verification
+PIT|Read the current file first
+PIT|Give the subagent the full current content as context
+PIT|Specify exact feature additions, not a full rewrite
+PIT|**Sprint A**: Worst stubs (Agents, Skill Workshop, etc.)
+PIT|**Sprint B**: Analytics + Revenue pages
+PIT|**Sprint C**: Knowledge + Content depth
+PIT|**Sprint D**: Global system polish (sidebar, TopBar, shared components)
+PIT|**Sprint E**: Remaining thin pages + minor feature additions
+PIT|`npx tsc --noEmit` — must pass before proceeding
+PIT|Commit + push after sprint completion, not after every individual page

@@ -1,0 +1,78 @@
+#MEM id=canvas-design source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/canvas-design/SKILL.md
+M|canvas-design|name: canvas-design
+M|canvas-design|description: >-
+M|canvas-design|Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create ori
+M|canvas-design|version: 1.0.0
+M|canvas-design|license: Complete terms in LICENSE.txt
+M|canvas-design|platforms: []
+M|canvas-design|metadata:
+M|canvas-design|hermes:
+M|canvas-design|tags: [art-direction, visual, mood-board, creative, brand-identity, image-prompt, design, canvas-design]
+M|canvas-design|These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files.
+M|canvas-design|Complete this in two steps:
+M|canvas-design|1. Design Philosophy Creation (.md file)
+M|canvas-design|2. Express by creating it on a canvas (.pdf file or .png file)
+M|canvas-design|First, undertake this task:
+M|canvas-design|To begin, create a VISUAL PHILOSOPHY (not layouts or templates) that will be interpreted through:
+M|canvas-design|- Form, space, color, composition
+M|canvas-design|- Images, graphics, shapes, patterns
+M|canvas-design|- Minimal text as visual accent
+M|canvas-design|- What is received: Some subtle input or instructions by the user that should be taken into account, but used as a foundation; it should not constrain creative freedom.
+M|canvas-design|- What is created: A design philosophy/aesthetic movement.
+M|canvas-design|- What happens next: Then, the same version receives the philosophy and EXPRESSES IT VISUALLY - creating artifacts that are 90% visual design, 10% essential text.
+M|canvas-design|Consider this approach:
+M|canvas-design|- Write a manifesto for an art movement
+M|canvas-design|- The next phase involves making the artwork
+M|canvas-design|The philosophy must emphasize: Visual expression. Spatial communication. Artistic interpretation. Minimal words.
+M|canvas-design|**Name the movement** (1-2 words): "Brutalist Joy" / "Chromatic Silence" / "Metabolist Dreams"
+M|canvas-design|**Articulate the philosophy** (4-6 paragraphs - concise but complete):
+M|canvas-design|To capture the VISUAL essence, express how the philosophy manifests through:
+M|canvas-design|- Space and form
+M|canvas-design|- Color and material
+M|canvas-design|- Scale and rhythm
+M|canvas-design|- Composition and balance
+M|canvas-design|- Visual hierarchy
+M|canvas-design|**CRITICAL GUIDELINES:**
+M|canvas-design|- **Avoid redundancy**: Each design aspect should be mentioned once. Avoid repeating points about color theory, spatial relationships, or typographic principles unless adding new depth.
+M|canvas-design|- **Emphasize craftsmanship REPEATEDLY**: The philosophy MUST stress multiple times that the final work should appear as though it took countless hours to create, was labored over with care, and comes
+M|canvas-design|- **Leave creative space**: Remain specific about the aesthetic direction, but concise enough that the next Claude has room to make interpretive choices also at a extremely high level of craftmanship.
+M|canvas-design|The philosophy must guide the next version to express ideas VISUALLY, not through text. Information lives in design, not paragraphs.
+M|canvas-design|**"Concrete Poetry"**
+M|canvas-design|Philosophy: Communication through monumental form and bold geometry.
+M|canvas-design|Visual expression: Massive color blocks, sculptural typography (huge single words, tiny labels), Brutalist spatial divisions, Polish poster energy meets Le Corbusier. Ideas expressed through visual we
+M|canvas-design|**"Chromatic Language"**
+M|canvas-design|Philosophy: Color as the primary information system.
+M|canvas-design|Visual expression: Geometric precision where color zones create meaning. Typography minimal - small sans-serif labels letting chromatic fields communicate. Think Josef Albers' interaction meets data v
+M|canvas-design|**"Analog Meditation"**
+M|canvas-design|Philosophy: Quiet visual contemplation through texture and breathing room.
+M|canvas-design|Visual expression: Paper grain, ink bleeds, vast negative space. Photography and illustration dominate. Typography whispered (small, restrained, serving the visual). Japanese photobook aesthetic. Imag
+M|canvas-design|**"Organic Systems"**
+M|canvas-design|Philosophy: Natural clustering and modular growth patterns.
+M|canvas-design|Visual expression: Rounded forms, organic arrangements, color from nature through architecture. Information shown through visual diagrams, spatial relationships, iconography. Text only for key labels 
+M|canvas-design|**"Geometric Silence"**
+M|canvas-design|Philosophy: Pure order and restraint.
+M|canvas-design|Visual expression: Grid-based precision, bold photography or stark graphics, dramatic negative space. Typography precise but minimal - small essential text, large quiet zones. Swiss formalism meets Br
+M|canvas-design|*These are condensed examples. The actual design philosophy should be 4-6 substantial paragraphs.*
+M|canvas-design|- **VISUAL PHILOSOPHY**: Create an aesthetic worldview to be expressed through design
+M|canvas-design|- **MINIMAL TEXT**: Always emphasize that text is sparse, essential-only, integrated as visual element - never lengthy
+M|canvas-design|- **SPATIAL EXPRESSION**: Ideas communicate through space, form, color, composition - not paragraphs
+M|canvas-design|- **ARTISTIC FREEDOM**: The next Claude interprets the philosophy visually - provide creative room
+M|canvas-design|- **PURE DESIGN**: This is about making ART OBJECTS, not documents with decoration
+M|canvas-design|- **EXPERT CRAFTSMANSHIP**: Repeatedly emphasize the final work must look meticulously crafted, labored over with care, the product of countless hours by someone at the top of their field
+M|canvas-design|**The design philosophy should be 4-6 paragraphs long.** Fill it with poetic design philosophy that brings together the core vision. Avoid repeating the same points. Keep the design philosophy generic
+M|canvas-design|**CRITICAL STEP**: Before creating the canvas, identify the subtle conceptual thread from the original request.
+M|canvas-design|**THE ESSENTIAL PRINCIPLE**:
+M|canvas-design|The topic is a **subtle, niche reference embedded within the art itself** - not always literal, always sophisticated. Someone familiar with the subject should feel it intuitively, while others simply 
+M|canvas-design|This is **VERY IMPORTANT**: The reference must be refined so it enhances the work's depth without announcing itself. Think like a jazz musician quoting another song - only those who know will catch it
+M|canvas-design|With both the philosophy and the conceptual framework established, express it on a canvas. Take a moment to gather thoughts and clear the mind. Use the design philosophy created and the instructions b
+M|canvas-design|**IMPORTANT**: For any type of cnt, even if the user requests something for a movie/game/book, the approach should still be sophisticated. Never lose sight of the idea that this should be art, not som
+M|canvas-design|To create museum or magazine quality work, use the design philosophy as the foundation. Create one single page, highly visual, design-forward PDF or PNG output (unless asked for more pages). Generally
+M|canvas-design|**Text as a contextual element**: Text is always minimal and visual-first, but let ctx guide whether that means whisper-quiet labels or bold typographic gestures. A punk venue poster might have larger
+M|canvas-design|Download and use whatever fonts are needed to make this a reality. Get creative by making the typography actually part of the art itself -- if the art is abstract, bring the font onto the canvas, not 
+M|canvas-design|To push boundaries, follow design instinct/intuition while using the philosophy as a guiding principle. Embrace ultimate design freedom and choice. Push aesthetics and design to the frontier.
+M|canvas-design|**CRITICAL**: To achieve human-crafted quality (not AI-generated), create work that looks like it took countless hours. Make it appear as though someone at the absolute top of their field labored over
+M|canvas-design|Output the final result as a single, downloadable .pdf or .png file, alongside the design philosophy used as a .md file.
+M|canvas-design|**IMPORTANT**: The user ALREADY said "It isn't perfect enough. It must be pristine, a masterpiece if craftsmanship, as if it were about to be displayed in a museum."
+M|canvas-design|**CRITICAL**: To refine the work, avoid adding more graphics; instead refine what has been created and make it extremely crisp, respecting the design philosophy and the principles of minimalism entire
+M|canvas-design|Take a second pass. Go back to the code and refine/polish further to make this a philosophically designed masterpiece.
+M|canvas-design|To create additional pages when requested, create more creative pages along the same lines as the design philosophy but distinctly different as well. Bundle those pages in the same .pdf or many .pngs.

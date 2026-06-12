@@ -1,0 +1,374 @@
+#MEM id=prd-development source=/root/yvon/agent-department/COO/diana/skills/executive-operations/prd-development/SKILL.md
+M|prd-development|name: prd-dev
+M|prd-development|description: >-
+M|prd-development|Build a structured PRD that connects problem, users, solution, and success criteria. Use when turning discovery notes into an engineering-ready doc for a major initiative.
+M|prd-development|version: 1.0.0
+M|prd-development|platforms: []
+M|prd-development|metadata:
+M|prd-development|hermes:
+M|prd-development|tags: [coo, operations, workflow, planning, sprint, milestones, process, str]
+M|prd-development|intent: Guide product managers through structured PRD (Product Requirements doc) creation by orchestrating problem framing, user research synthesis, solution definition, and success criteria into a co
+M|prd-development|type: workflow
+M|prd-development|theme: pm-artifacts
+M|prd-development|best_for:
+M|prd-development|scenarios:
+M|prd-development|estimated_time: "60-120 min"
+M|prd-development|Guide product managers through structured PRD (Product Requirements doc) creation by orchestrating problem framing, user research synthesis, solution definition, and success criteria into a cohesive d
+M|prd-development|This is not a waterfall spec—it's a living doc that captures strategic ctx, customer problems, proposed solutions, and success criteria, evolving as you learn through delivery.
+M|prd-development|A PRD (Product Requirements doc) is a structured doc that answers:
+M|prd-development|1. **What problem are we solving?** (Problem statement)
+M|prd-development|2. **For whom?** (Target users/personas)
+M|prd-development|3. **Why now?** (Strategic ctx, business case)
+M|prd-development|4. **What are we building?** (Solution overview)
+M|prd-development|5. **How will we measure success?** (Metrics, success criteria)
+M|prd-development|6. **What are the requirements?** (User stories, acceptance criteria, constraints)
+M|prd-development|7. **What are we NOT building?** (Out of scope)
+M|prd-development|```markdown
+M|prd-development|- One-paragraph overview (problem + solution + impact)
+M|prd-development|- Who has this problem?
+M|prd-development|- What is the problem?
+M|prd-development|- Why is it painful?
+M|prd-development|- Evidence (customer quotes, data, research)
+M|prd-development|- Primary persona(s)
+M|prd-development|- Secondary persona(s)
+M|prd-development|- Jobs-to-be-done
+M|prd-development|- Business goals (OKRs)
+M|prd-development|- Market opportunity (TAM/SAM/SOM)
+M|prd-development|- Competitive landscape
+M|prd-development|- Why now?
+M|prd-development|- High-level description
+M|prd-development|- User flows or wireframes
+M|prd-development|- Key features
+M|prd-development|- Primary metric (what we're optimizing for)
+M|prd-development|- Secondary metrics
+M|prd-development|- Targets (current → goal)
+M|prd-development|- Epic hypothesis
+M|prd-development|- User stories with acceptance criteria
+M|prd-development|- Edge cases, constraints
+M|prd-development|- What we're NOT building (and why)
+M|prd-development|- tec dependencies
+M|prd-development|- External dependencies (integrations, partnerships)
+M|prd-development|- Risks and mitigations
+M|prd-development|- Unresolved decisions
+M|prd-development|- Areas requiring discovery
+M|prd-development|```
+M|prd-development|- **Alignment:** Ensures everyone (PM, design, eng, stakeholders) understands the "why"
+M|prd-development|- **ctx preservation:** Captures research and strategic rationale for future reference
+M|prd-development|- **dec log:** Documents what's in scope, out of scope, and why
+M|prd-development|- **Execution clarity:** Provides engineering with user stories and acceptance criteria
+M|prd-development|- **Not a detailed spec:** PRDs frame the problem and solution; they don't specify UI pixel-by-pixel
+M|prd-development|- **Not waterfall:** PRDs evolve as you learn; they're not frozen contracts
+M|prd-development|- **Not a substitute for collaboration:** PRDs complement conversation, not replace it
+M|prd-development|- Starting a major feature or product initiative
+M|prd-development|- Aligning cross-functional teams on scope and requirements
+M|prd-development|- Documenting decisions for future reference
+M|prd-development|- Onboarding new team members to a project
+M|prd-development|- For small bug fixes or trivial features (overkill)
+M|prd-development|- When problem and solution are already clear and aligned (just write user stories)
+M|prd-development|- For continuous discovery experiments (use Lean UX Canvas instead)
+M|prd-development|When running this workflow as a guided conversation, use [`workshop-facilitation`](../workshop-facilitation/SKILL.md) as the interaction protocol.
+M|prd-development|It defines:
+M|prd-development|- ses heads-up + entry mode (Guided, ctx dump, Best guess)
+M|prd-development|- one-question turns with plain-language prompts
+M|prd-development|- progress labels (for example, ctx Qx/8 and Scoring Qx/5)
+M|prd-development|- interruption handling and pause/resume behavior
+M|prd-development|- numbered recommendations at dec points
+M|prd-development|- quick-select numbered rsp options for regular questions (include `Other (specify)` when useful)
+M|prd-development|This file defines the workflow sequence and domain-specific outputs. If there is a conflict, follow this file's workflow logic.
+M|prd-development|Use `template.md` for the full fill-in structure.
+M|prd-development|This workflow orchestrates **8 phases** over **2-4 days**, using multiple component and interactive skills.
+M|prd-development|**Goal:** Write a one-paragraph overview for skimmers.
+M|prd-development|**1. Draft Executive Summary**
+M|prd-development|- **Format:** "We're building [solution] for [persona] to solve [problem], which will result in [impact]."
+M|prd-development|- **Example:**
+M|prd-development|> "We're building a guided onboarding checklist for non-tec small business owners to solve the problem of 60% drop-off in the first 24 hours due to lack of guidance, which will increase activation rat
+M|prd-development|- **Participants:** PM
+M|prd-development|- **Duration:** 30 minutes
+M|prd-development|- **Output:** One-paragraph summary
+M|prd-development|**Tip:** Write this first (forces clarity), but refine it last (after other sections are complete).
+M|prd-development|**Goal:** Frame the customer problem with evidence.
+M|prd-development|**1. Write Problem Statement**
+M|prd-development|- **Use:** `skills/problem-statement/SKILL.md` (component)
+M|prd-development|- **Input:** Discovery insights from `skills/discovery-process/SKILL.md` or `skills/problem-framing-canvas/SKILL.md`
+M|prd-development|- **Participants:** PM
+M|prd-development|- **Duration:** 30 minutes
+M|prd-development|- **Output:** Structured problem statement
+M|prd-development|**Example Problem Statement:**
+M|prd-development|```markdown
+M|prd-development|Non-tec small business owners (solopreneurs, 1-10 employees) who sign up for our SaaS product.
+M|prd-development|60% of users abandon onboarding within the first 24 hours because they don't know what to do first. They see an empty dashboard with no guidance, get overwhelmed by options, and leave.
+M|prd-development|- **User impact:** Wastes time (30-60 min trying to figure out product), never reaches "aha moment," churns before experiencing value
+M|prd-development|- **Business impact:** 60% activation rate → high churn, low LTV, poor word-of-mouth
+M|prd-development|- **Interviews:** 8/10 churned users said "I didn't know what to do first" (discovery interviews, Feb 2026)
+M|prd-development|- **anl:** 60% of signups complete 0 actions within 24 hours (Mixpanel, Jan 2026)
+M|prd-development|- **Support tickets:** "How do I get started?" is #1 support question (350 tickets/month)
+M|prd-development|- **Customer quote:** "I logged in, saw an empty dashboard, and thought 'now what?' I gave up and went back to my spreadsheet."
+M|prd-development|```
+M|prd-development|**2. Add Supporting ctx (Optional)**
+M|prd-development|- **Customer journey map:** If problem spans multiple touchpoints
+M|prd-development|- **Use:** `skills/customer-journey-mapping-workshop/SKILL.md` output
+M|prd-development|- **Jobs-to-be-done:** If motivations are key
+M|prd-development|- **Use:** `skills/jobs-to-be-done/SKILL.md` output
+M|prd-development|- **Problem statement:** Who, what, why, evidence
+M|prd-development|- **Supporting artifacts:** Journey map, JTBD (if relevant)
+M|prd-development|**Goal:** Define who you're building for.
+M|prd-development|**1. doc Personas**
+M|prd-development|- **Use:** `skills/proto-persona/SKILL.md` (component) output
+M|prd-development|- **Participants:** PM
+M|prd-development|- **Duration:** 30 minutes
+M|prd-development|- **Format:** Include persona name, role, goals, pain points, behaviors
+M|prd-development|**Example:**
+M|prd-development|```markdown
+M|prd-development|- **Role:** Freelance consultant, solopreneur
+M|prd-development|- **Company size:** 1 person (no IT support)
+M|prd-development|- **Tech savviness:** Low (uses email, spreadsheets, basic SaaS)
+M|prd-development|- **Goals:** Get value from software fast without tec expertise
+M|prd-development|- **Pain points:** Overwhelmed by complex UIs, no time to watch tutorials, needs immediate value
+M|prd-development|- **Current behavior:** Signs up for products, tries for 1 day, churns if not immediately useful
+M|prd-development|- **Role:** Owner-operator, manages team
+M|prd-development|- **Needs:** Onboard team members quickly
+M|prd-development|- **Differs from primary:** More tolerant of complexity, willing to invest setup time
+M|prd-development|```
+M|prd-development|- **Primary persona:** Detailed profile
+M|prd-development|- **Secondary personas:** (if applicable)
+M|prd-development|**Goal:** Explain why this matters to the business and why now.
+M|prd-development|**1. doc Business Goals**
+M|prd-development|- **Source:** Company OKRs, strategic memos, roadmap
+M|prd-development|- **Format:** Link feature to business outcomes
+M|prd-development|- **Example:**
+M|prd-development|> "This initiative supports our Q1 OKR: Reduce churn from 15% to 8%. Improving onboarding activation directly impacts retention."
+M|prd-development|**2. Size Market Opportunity (Optional)**
+M|prd-development|- **Use:** `skills/tam-sam-som-calculator/SKILL.md` (interactive) output
+M|prd-development|- **When:** For major initiatives, new products, exec presentations
+M|prd-development|- **Example:**
+M|prd-development|> "TAM: 50M small businesses globally. SAM: 5M using SaaS tools. SOM: 500K solopreneurs in our target segments. Improving onboarding could unlock 30% of SAM (1.5M potential customers)."
+M|prd-development|**3. doc Competitive Landscape (Optional)**
+M|prd-development|- **Source:** cp research, G2/Capterra reviews
+M|prd-development|- **Example:**
+M|prd-development|> "cp (cp A, B) have guided onboarding. Our lack of guidance is cited as a churn reason in exit surveys."
+M|prd-development|**4. Explain "Why Now?"**
+M|prd-development|- **Rationale:** Why prioritize this now vs. later?
+M|prd-development|- **Example:**
+M|prd-development|> "Churn spiked 15% in Q4. Onboarding is the #1 driver (60% churn in first 30 days). Fixing this is critical to hitting retention OKR."
+M|prd-development|- **Business goals:** OKRs or strategic initiatives
+M|prd-development|- **Market opportunity:** TAM/SAM/SOM (if applicable)
+M|prd-development|- **Competitive ctx:** How cp address this
+M|prd-development|- **Why now:** Urgency rationale
+M|prd-development|**Goal:** Describe what you're building (high-level, not detailed spec).
+M|prd-development|**1. Write Solution Description**
+M|prd-development|- **Format:** High-level overview, 2-3 paragraphs
+M|prd-development|- **Example:**
+M|prd-development|```markdown
+M|prd-development|We're building a **guided onboarding checklist** that walks new users through core workflows step-by-step when they first log in.
+M|prd-development|**How it works:**
+M|prd-development|1. User signs up and logs in for the first time
+M|prd-development|2. Modal appears: "Let's get you set up! Complete these 3 steps to get started."
+M|prd-development|3. Checklist shows:
+M|prd-development|- ☐ Create your first project
+M|prd-development|- ☐ Invite a teammate (optional)
+M|prd-development|- ☐ Complete a sample task
+M|prd-development|4. As user completes each step, checklist updates with checkmarks
+M|prd-development|5. After completion, celebration modal: "You're all set! Here's what to do next."
+M|prd-development|**Key features:**
+M|prd-development|- Minimal: Only 3 core steps (not overwhelming)
+M|prd-development|- Dismissible: Users can skip if they prefer to explore
+M|prd-development|- Progress tracking: Visual progress bar (1/3, 2/3, 3/3)
+M|prd-development|- Celebration: Positive reinforcement when complete
+M|prd-development|```
+M|prd-development|**2. Add User Flows or Wireframes (Optional)**
+M|prd-development|- **Use:** Design tools (Figma, Sketch), or hand-drawn sketches
+M|prd-development|- **When:** For complex features requiring visual explanation
+M|prd-development|- **Output:** Embedded in PRD or linked
+M|prd-development|**3. Reference Story Map (Optional)**
+M|prd-development|- **Use:** `skills/user-story-mapping-workshop/SKILL.md` output
+M|prd-development|- **When:** For complex features with multiple release slices
+M|prd-development|- **Output:** Link to story map
+M|prd-development|- **Solution description:** High-level overview
+M|prd-development|- **User flows/wireframes:** (if applicable)
+M|prd-development|- **Story map:** (if applicable)
+M|prd-development|**Goal:** Define how you'll measure success.
+M|prd-development|**1. Define Primary Metric**
+M|prd-development|- **Question:** What is the ONE metric this feature must move?
+M|prd-development|- **Example:** "Activation rate (% of users completing first action within 24 hours)"
+M|prd-development|- **Target:** "Increase from 40% to 60%"
+M|prd-development|**2. Define Secondary Metrics**
+M|prd-development|- **Question:** What else should we monitor (but not optimize for)?
+M|prd-development|- **Examples:**
+M|prd-development|- Time-to-first-action (reduce from 3 days to 1 day)
+M|prd-development|- Completion rate of onboarding checklist (target: 80%)
+M|prd-development|- Support ticket volume (reduce "How do I get started?" tickets by 50%)
+M|prd-development|**3. Define Guardrail Metrics**
+M|prd-development|- **Question:** What should NOT get worse?
+M|prd-development|- **Example:** "Sign-up conversion rate (don't add friction to signup flow)"
+M|prd-development|**Example:**
+M|prd-development|```markdown
+M|prd-development|**Activation rate** (% of users completing first action within 24 hours)
+M|prd-development|- **Current:** 40%
+M|prd-development|- **Target:** 60%
+M|prd-development|- **Timeline:** Measure 30 days after launch
+M|prd-development|- **Time-to-first-action:** Reduce from 3 days to 1 day
+M|prd-development|- **Onboarding checklist completion rate:** 80% of users complete all 3 steps
+M|prd-development|- **Support tickets:** Reduce "How do I get started?" tickets from 350/month to 175/month
+M|prd-development|- **Sign-up conversion rate:** Maintain at 10% (don't add friction to signup)
+M|prd-development|```
+M|prd-development|- **Primary metric:** What you're optimizing for
+M|prd-development|- **Secondary metrics:** Additional success indicators
+M|prd-development|- **Guardrail metrics:** What shouldn't regress
+M|prd-development|**Goal:** Break solution into user stories with acceptance criteria.
+M|prd-development|**1. Write Epic Hypothesis**
+M|prd-development|- **Use:** `skills/epic-hypothesis/SKILL.md` (component)
+M|prd-development|- **Participants:** PM
+M|prd-development|- **Duration:** 30 minutes
+M|prd-development|- **Output:** Epic hypothesis statement
+M|prd-development|**Example:**
+M|prd-development|> "We believe that adding a guided onboarding checklist for non-tec users will increase activation rate from 40% to 60% because users currently drop off due to lack of guidance. We'll measure success 
+M|prd-development|**2. Break Down Epic into User Stories**
+M|prd-development|- **Use:** `skills/epic-breakdown-advisor/SKILL.md` (interactive - with Richard Lawrence's 9 patterns)
+M|prd-development|- **Participants:** PM, design, engineering
+M|prd-development|- **Duration:** 90 minutes
+M|prd-development|- **Output:** User stories split by patterns (workflow, CRUD, business rules, etc.)
+M|prd-development|**3. Write User Stories**
+M|prd-development|- **Use:** `skills/user-story/SKILL.md` (component)
+M|prd-development|- **Participants:** PM
+M|prd-development|- **Duration:** 30 minutes per story
+M|prd-development|- **Format:** User story + acceptance criteria
+M|prd-development|**Example User Stories:**
+M|prd-development|```markdown
+M|prd-development|We believe that adding a guided onboarding checklist for non-tec users will increase activation rate from 40% to 60% because users currently drop off due to lack of guidance.
+M|prd-development|**Story 1: Display onboarding checklist on first login**
+M|prd-development|As a new user, I want to see a guided checklist when I first log in, so I know what to do first.
+M|prd-development|**Acceptance Criteria:**
+M|prd-development|- [ ] When user logs in for the first time, modal appears with checklist
+M|prd-development|- [ ] Checklist shows 3 steps: "Create project," "Invite teammate," "Complete task"
+M|prd-development|- [ ] Modal is dismissible (close button)
+M|prd-development|- [ ] If dismissed, checklist doesn't reappear (user preference saved)
+M|prd-development|**Story 2: Track checklist progress**
+M|prd-development|As a new user, I want to see my progress as I complete checklist steps, so I feel a sense of accomplishment.
+M|prd-development|**Acceptance Criteria:**
+M|prd-development|- [ ] When user completes step 1, checkmark appears next to "Create project"
+M|prd-development|- [ ] Progress bar updates (1/3 → 2/3 → 3/3)
+M|prd-development|- [ ] Checklist persists across sessions (if user logs out and back in)
+M|prd-development|**Story 3: Celebrate checklist completion**
+M|prd-development|As a new user, I want to receive positive feedback when I complete the checklist, so I feel confident using the product.
+M|prd-development|**Acceptance Criteria:**
+M|prd-development|- [ ] When user completes all 3 steps, celebration modal appears
+M|prd-development|- [ ] Message: "You're all set! Here's what to do next: [suggested next actions]"
+M|prd-development|- [ ] Confetti animation (optional, nice-to-have)
+M|prd-development|```
+M|prd-development|**4. doc Constraints & Edge Cases**
+M|prd-development|- **tec constraints:** Platform limitations, browser support, etc.
+M|prd-development|- **Edge cases:** What if user skips step 2? What if they complete steps out of order?
+M|prd-development|- **Epic hypothesis:** Testable statement
+M|prd-development|- **User stories:** 3-10 stories with acceptance criteria
+M|prd-development|- **Constraints:** tec limitations, edge cases
+M|prd-development|**Goal:** Define what you're NOT building and what you depend on.
+M|prd-development|**1. doc Out of Scope**
+M|prd-development|- **Format:** List features/requests explicitly excluded
+M|prd-development|- **Rationale:** Why not building now?
+M|prd-development|**Example:**
+M|prd-development|```markdown
+M|prd-development|**Not included in this release:**
+M|prd-development|- **Advanced onboarding personalization** (e.g., different checklists per persona) — Adds complexity, test simple version first
+M|prd-development|- **Video tutorials embedded in checklist** — Resource-intensive, validate checklist concept first
+M|prd-development|- **Gamification (badges, points)** — Nice-to-have, focus on core workflow guidance
+M|prd-development|**Future consideration:**
+M|prd-development|- Mobile-optimized onboarding (desktop-first for now)
+M|prd-development|```
+M|prd-development|**2. doc Dependencies**
+M|prd-development|- **tec dependencies:** Platform upgrades, API changes required
+M|prd-development|- **External dependencies:** Third-party integrations, partnerships
+M|prd-development|- **Team dependencies:** Design handoff, data pl work
+M|prd-development|**Example:**
+M|prd-development|```markdown
+M|prd-development|- **Design:** Wireframes for checklist UI (ETA: Week 1)
+M|prd-development|- **Engineering:** No tec dependencies (uses existing modals framework)
+M|prd-development|- **Risk:** Users dismiss checklist immediately, never see it
+M|prd-development|- **Mitigation:** Track dismissal rate; if >50%, iterate on messaging or timing
+M|prd-development|- **Risk:** Checklist steps are too generic, don't resonate with all personas
+M|prd-development|- **Mitigation:** Start with primary persona (Solo Entrepreneur Sam), personalize later
+M|prd-development|```
+M|prd-development|**3. doc Open Questions**
+M|prd-development|- **Unresolved decisions:** Areas requiring discovery or discussion
+M|prd-development|**Example:**
+M|prd-development|```markdown
+M|prd-development|- Should checklist be mandatory or optional? (dec: Optional, dismissible)
+M|prd-development|- Should we A/B test checklist vs. no checklist? (dec: Yes, show to 50% of new users)
+M|prd-development|- What happens if user completes steps out of order? (dec: Allow any order, update checklist dynamically)
+M|prd-development|```
+M|prd-development|- **Out of scope:** What we're NOT building
+M|prd-development|- **Dependencies:** What we need before starting
+M|prd-development|- **Risks:** Potential blockers and mitigations
+M|prd-development|- **Open questions:** Unresolved decisions
+M|prd-development|```
+M|prd-development|Day 1:
+M|prd-development|├─ Phase 1: Executive Summary (30 min)
+M|prd-development|├─ Phase 2: Problem Statement (60 min)
+M|prd-development|│  └─ Use: skills/problem-statement/SKILL.md
+M|prd-development|├─ Phase 3: Target Users & Personas (30 min)
+M|prd-development|│  └─ Use: skills/proto-persona/SKILL.md
+M|prd-development|└─ Phase 4: Strategic ctx (45 min)
+M|prd-development|└─ Use: skills/tam-sam-som-calculator/SKILL.md (optional)
+M|prd-development|Day 2:
+M|prd-development|├─ Phase 5: Solution Overview (60 min)
+M|prd-development|│  └─ Use: skills/user-story-mapping-workshop/SKILL.md (optional)
+M|prd-development|├─ Phase 6: Success Metrics (30 min)
+M|prd-development|└─ Phase 7: User Stories & Requirements (90-120 min)
+M|prd-development|├─ Use: skills/epic-hypothesis/SKILL.md
+M|prd-development|├─ Use: skills/epic-breakdown-advisor/SKILL.md
+M|prd-development|└─ Use: skills/user-story/SKILL.md
+M|prd-development|Day 3:
+M|prd-development|├─ Phase 8: Out of Scope & Dependencies (30 min)
+M|prd-development|└─ rv & Refine (60 min)
+M|prd-development|└─ Read full PRD, polish, get feedback
+M|prd-development|Day 4 (Optional):
+M|prd-development|└─ Stakeholder rv & ap
+M|prd-development|└─ Present PRD to stakeholders, incorporate feedback
+M|prd-development|```
+M|prd-development|**Total Time Investment:**
+M|prd-development|- **Fast track:** 1.5-2 days (straightforward feature, clear requirements)
+M|prd-development|- **Typical:** 2-3 days (includes discovery synthesis, stakeholder rv)
+M|prd-development|- **Complex:** 3-4 days (major initiative, multiple personas, extensive user stories)
+M|prd-development|See `examples/sample.md` for full PRD examples.
+M|prd-development|Mini example excerpt:
+M|prd-development|```markdown
+M|prd-development|- 60% of trial users drop off in first 24 hours
+M|prd-development|- Activation rate: 40% → 60%
+M|prd-development|```
+M|prd-development|**Symptom:** PM writes PRD alone, presents finished doc to team
+M|prd-development|**Consequence:** No buy-in, team doesn't understand rationale
+M|prd-development|**Fix:** Collaborate on Phase 7 (user stories) with design + eng; rv draft PRD before finalizing
+M|prd-development|**Symptom:** "We believe users have this problem" (no data, no quotes)
+M|prd-development|**Consequence:** Team questions whether problem is real
+M|prd-development|**Fix:** Use discovery insights from `skills/discovery-process/SKILL.md`; include customer quotes, anl, support tickets
+M|prd-development|**Symptom:** PRD specifies exact UI, pixel dimensions, button colors
+M|prd-development|**Consequence:** Removes design collaboration, becomes waterfall spec
+M|prd-development|**Fix:** Keep Phase 5 high-level; let design own UI details
+M|prd-development|**Symptom:** PRD defines problem + solution but no metrics
+M|prd-development|**Consequence:** Can't validate if feature succeeded
+M|prd-development|**Fix:** Always define primary metric in Phase 6 (what you're optimizing for)
+M|prd-development|**Symptom:** No section on what's NOT being built
+M|prd-development|**Consequence:** Scope creep, stakeholders expect features not planned
+M|prd-development|**Fix:** Explicitly doc out of scope in Phase 8
+M|prd-development|**Phase 2:**
+M|prd-development|- `skills/problem-statement/SKILL.md` (component)
+M|prd-development|- `skills/problem-framing-canvas/SKILL.md` (interactive, for ctx)
+M|prd-development|- `skills/customer-journey-mapping-workshop/SKILL.md` (interactive, optional)
+M|prd-development|**Phase 3:**
+M|prd-development|- `skills/proto-persona/SKILL.md` (component)
+M|prd-development|- `skills/jobs-to-be-done/SKILL.md` (component, optional)
+M|prd-development|**Phase 4:**
+M|prd-development|- `skills/tam-sam-som-calculator/SKILL.md` (interactive, optional)
+M|prd-development|**Phase 5:**
+M|prd-development|- `skills/user-story-mapping-workshop/SKILL.md` (interactive, optional)
+M|prd-development|**Phase 7:**
+M|prd-development|- `skills/epic-hypothesis/SKILL.md` (component)
+M|prd-development|- `skills/epic-breakdown-advisor/SKILL.md` (interactive)
+M|prd-development|- `skills/user-story/SKILL.md` (component)
+M|prd-development|- Martin Eriksson, "How to Write a Good PRD" (2012) — PRD structure
+M|prd-development|- Marty Cagan, *Inspired* (2017) — Product spec principles
+M|prd-development|- Amazon, "Working Backwards" (PR/FAQ format) — Alternative to PRD
+M|prd-development|- [If Dean has PRD templates, link here]
+M|prd-development|**Skill type:** Workflow
+M|prd-development|**Suggested filename:** `prd-dev.md`
+M|prd-development|**Suggested placement:** `/skills/workflows/`
+M|prd-development|**Dependencies:** Orchestrates 8+ component and interactive skills across 8 phases

@@ -1,0 +1,63 @@
+SKILL|python-debugpy|"Debug Python: pdb REPL + debugpy remote (DAP)."
+STEP|1|Start with `breakpoint()`.** It's the cheapest thing that works.
+STEP|2|A test fails and the traceback doesn't reveal why a value is wrong
+STEP|3|You need to step through a function and watch a collection mutate
+STEP|4|A long-running process (hermes gateway, tui_gateway) misbehaves and you can't restart it
+STEP|5|Post-mortem: an exception fired in prod-ish code and you want to inspect locals at the crash site
+STEP|6|A subprocess / child (Python `_SlashWorker`, PTY bridge worker) is the actual bug site
+STEP|7|Don't use for:** things `print()` / `logging.debug` solve in under a minute, or things `pytest -vv --tb=long --showlocals` already reveals.
+STEP|8|Don't forget to remove `breakpoint()` before committing.** Use `git diff` or a pre-commit grep:
+STEP|9|Option 1: `debugpy`'s own CLI REPL** — not an official feature, but a tiny DAP client script:
+STEP|10|Option 2: Attach from VS Code / Cursor / Zed** — if the user has one open, they can add a `launch.json`:
+STEP|11|Option 3: Ditch DAP, use `remote-pdb`** — usually what you actually want from a terminal agent:
+STEP|12|A. Source-edit the gateway:**
+STEP|13|B. Use `remote-pdb` at a specific handler:**
+STEP|14|**pdb under pytest-xdist silently does nothing.** You won't see the prompt, the test just hangs. Always use `-p no:xdist` or `-n 0`.
+STEP|15|**`breakpoint()` in CI / non-TTY contexts hangs the process.** Safe locally; never commit it. Add a pre-commit grep as a safety net.
+STEP|16|**`PYTHONBREAKPOINT=0`** disables all `breakpoint()` calls. Check the env if your breakpoint isn't hitting:
+STEP|17|**`debugpy.listen` blocks only if you also call `wait_for_client()`.** Without it, execution continues and your first breakpoint may fire before the client is attached.
+STEP|18|**Attach to PID fails on hardened kernels.** `ptrace_scope=1` (Ubuntu default) allows only same-user ptrace of child processes. Workaround: `echo 0 > /proc/sys/kernel/yama/ptrace_scope` (needs root) o
+STEP|19|**Threads.** `pdb` only debugs the current thread. For multithreaded code, use `debugpy` (thread-aware DAP) or set `threading.settrace()` per thread.
+STEP|20|**asyncio.** `pdb` works in coroutines but `await` inside pdb requires Python 3.13+ or `await` from `interact` mode on older versions. For 3.11/3.12, use `asyncio.run_coroutine_threadsafe` tricks or `
+STEP|21|**`scripts/run_tests.sh` strips credentials and sets `HOME=<tmpdir>`.** If your bug depends on user config or real API keys, it won't reproduce under the wrapper. Debug with raw `pytest` first to repr
+STEP|22|**Forking / multiprocessing.** pdb does not follow forks. Each child needs its own `breakpoint()` or `set_trace()`. For Hermes subagents, debug one process at a time.
+STEP|23|[ ] After `pip install debugpy`, confirm: `python -c "import debugpy; print(debugpy.__version__)"`
+STEP|24|[ ] For remote debug, confirm the port is actually listening: `ss -tlnp \| grep 5678`
+STEP|25|[ ] First breakpoint actually hits (if it doesn't, you likely have `PYTHONBREAKPOINT=0`, you're under xdist, or execution finished before attach)
+STEP|26|[ ] `where` / `w` shows the expected call stack
+STEP|27|[ ] Post-debug cleanup: no stray `breakpoint()` / `set_trace()` in committed code
+STEP|28|"Why is this dict missing a key?"**
+STEP|29|"This test passes in isolation but fails in the suite."**
+STEP|30|"My async handler deadlocks."**
+STEP|31|"Post-mortem on a crash in an Ink child process / subprocess."**
+PIT|Start with `breakpoint()`.** It's the cheapest thing that works.
+PIT|A test fails and the traceback doesn't reveal why a value is wrong
+PIT|You need to step through a function and watch a collection mutate
+PIT|A long-running process (hermes gateway, tui_gateway) misbehaves and you can't restart it
+PIT|Post-mortem: an exception fired in prod-ish code and you want to inspect locals at the crash site
+PIT|A subprocess / child (Python `_SlashWorker`, PTY bridge worker) is the actual bug site
+PIT|Don't use for:** things `print()` / `logging.debug` solve in under a minute, or things `pytest -vv --tb=long --showlocals` already reveals.
+PIT|Don't forget to remove `breakpoint()` before committing.** Use `git diff` or a pre-commit grep:
+PIT|Option 1: `debugpy`'s own CLI REPL** — not an official feature, but a tiny DAP client script:
+PIT|Option 2: Attach from VS Code / Cursor / Zed** — if the user has one open, they can add a `launch.json`:
+PIT|Option 3: Ditch DAP, use `remote-pdb`** — usually what you actually want from a terminal agent:
+PIT|A. Source-edit the gateway:**
+PIT|B. Use `remote-pdb` at a specific handler:**
+PIT|**pdb under pytest-xdist silently does nothing.** You won't see the prompt, the test just hangs. Always use `-p no:xdist` or `-n 0`.
+PIT|**`breakpoint()` in CI / non-TTY contexts hangs the process.** Safe locally; never commit it. Add a pre-commit grep as a safety net.
+PIT|**`PYTHONBREAKPOINT=0`** disables all `breakpoint()` calls. Check the env if your breakpoint isn't hitting:
+PIT|**`debugpy.listen` blocks only if you also call `wait_for_client()`.** Without it, execution continues and your first breakpoint may fire before the client is attached.
+PIT|**Attach to PID fails on hardened kernels.** `ptrace_scope=1` (Ubuntu default) allows only same-user ptrace of child processes. Workaround: `echo 0 > /proc/sys/kernel/yama/ptrace_scope` (needs root) o
+PIT|**Threads.** `pdb` only debugs the current thread. For multithreaded code, use `debugpy` (thread-aware DAP) or set `threading.settrace()` per thread.
+PIT|**asyncio.** `pdb` works in coroutines but `await` inside pdb requires Python 3.13+ or `await` from `interact` mode on older versions. For 3.11/3.12, use `asyncio.run_coroutine_threadsafe` tricks or `
+PIT|**`scripts/run_tests.sh` strips credentials and sets `HOME=<tmpdir>`.** If your bug depends on user config or real API keys, it won't reproduce under the wrapper. Debug with raw `pytest` first to repr
+PIT|**Forking / multiprocessing.** pdb does not follow forks. Each child needs its own `breakpoint()` or `set_trace()`. For Hermes subagents, debug one process at a time.
+PIT|[ ] After `pip install debugpy`, confirm: `python -c "import debugpy; print(debugpy.__version__)"`
+PIT|[ ] For remote debug, confirm the port is actually listening: `ss -tlnp \| grep 5678`
+PIT|[ ] First breakpoint actually hits (if it doesn't, you likely have `PYTHONBREAKPOINT=0`, you're under xdist, or execution finished before attach)
+PIT|[ ] `where` / `w` shows the expected call stack
+PIT|[ ] Post-debug cleanup: no stray `breakpoint()` / `set_trace()` in committed code
+PIT|"Why is this dict missing a key?"**
+PIT|"This test passes in isolation but fails in the suite."**
+PIT|"My async handler deadlocks."**
+PIT|"Post-mortem on a crash in an Ink child process / subprocess."**

@@ -1,0 +1,36 @@
+#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/mental-models-galls-law.md
+M|references|source: wiki/concepts/Mental Models/Galls Law.md
+M|references|created: 2026-04-11
+M|references|rv-by: 2026-07-11
+M|references|Complex systems that work evolved from simple systems that worked.
+M|references|> "A complex system that works is invariably found to have evolved from a simple system that worked." -- John Gall
+M|references|A complex system designed from scratch never works and cannot be patched up to make it work. You have to start over with a working simple system.
+M|references|Use this model during **Challenge** (Steps 5-6) to stress-test architectural proposals and system designs.
+M|references|When a dec proposes building a new system or major redesign:
+M|references|1. Does the proposal start with a working simple version?
+M|references|2. Is the complexity justified by real feedback, or imagined future needs?
+M|references|3. Can the design be decomposed into independently working subsystems?
+M|references|4. Is there a "big bang" cutover, or incremental evolution?
+M|references|| Signal | Risk |
+M|references||--------|------|
+M|references|| "We'll build it all at once" | Big bang failure |
+M|references|| "We need this for future scale" | YAGNI violation, premature complexity |
+M|references|| "The perfect architecture" | Designed-from-scratch trap |
+M|references|| "Complete rewrite" | Ignoring evolved knw in existing system |
+M|references|| "We'll need this someday" | Speculative features increase failure surface |
+M|references|When reviewing system design decisions, gen these contrarian views:
+M|references|- "What if we built only the simplest version that solves the immediate problem?"
+M|references|- "What if we evolved the existing system instead of replacing it?"
+M|references|- "What if we shipped in 3 increments instead of 1?"
+M|references|- System never ships because scope is too large
+M|references|- Integration failures between components designed in isolation
+M|references|- Real user needs diverge from upfront assumptions
+M|references|- Team burns out on complexity before delivering value
+M|references|Before accepting a system design dec as VERIFIED:
+M|references|- [ ] Simplest working version identified
+M|references|- [ ] Evolution path from simple to complex defined
+M|references|- [ ] Each increment delivers standalone value
+M|references|- [ ] No speculative features included
+M|references|- Chesterton's Fence: understand existing systems before replacing
+M|references|- YAGNI: do not build for imagined future needs
+M|references|- Strangler Fig: incremental migration pattern

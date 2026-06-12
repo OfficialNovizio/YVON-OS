@@ -1,0 +1,86 @@
+#MEM id=content-pipeline-coordination source=/root/yvon/agent-department/COO/diana/skills/custom/content-pipeline-coordination/SKILL.md
+M|content-pipeline-coordination|name: cnt-pl-coordination
+M|content-pipeline-coordination|description: Diana's orchestration skill for the Lena → Atlas → Pixel cnt prd pl. Defines stage gates, handoff checklists, blocking criteria, ap gates, and calendar scheduling. Ensures cnt moves throu
+M|content-pipeline-coordination|version: 1.0.0
+M|content-pipeline-coordination|The Brand Intelligence pl (P4-A on roadmap) involves three agents in sequence: Kai generates the brief → Lena writes copy → Atlas gives creative direction → Pixel runs prd. Without a coordinator, thes
+M|content-pipeline-coordination|- When Kai routes a cnt brief to Lena
+M|content-pipeline-coordination|- When Lena routes ap copy to Atlas
+M|content-pipeline-coordination|- When Atlas routes a visual brief to Pixel
+M|content-pipeline-coordination|- When a cnt piece is overdue at any stage
+M|content-pipeline-coordination|- Weekly cnt calendar rv
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|Stage 0: BRIEF      Kai generates cnt brief from anl/cp data
+M|content-pipeline-coordination|↓ Gate: brief must include vtr, platform, target metric, creative direction
+M|content-pipeline-coordination|Stage 1: COPY       Lena writes caption, email, or long-form copy from brief
+M|content-pipeline-coordination|↓ Gate: Kahneman framing check for any ad copy or urgency language
+M|content-pipeline-coordination|Stage 2: DIRECTION  Atlas provides visual style brief + AI prompt architecture
+M|content-pipeline-coordination|↓ Gate: Atlas prompt-qa check before handing to Pixel
+M|content-pipeline-coordination|Stage 3: prd Pixel generates, QCs, and delivers final assets
+M|content-pipeline-coordination|↓ Gate: Pixel QC criteria + Stark ap before publish
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|**No stage starts until the previous stage's gate is cleared.**
+M|content-pipeline-coordination|Before Lena starts writing:
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|□ vtr specified: [novizio | hourbour]
+M|content-pipeline-coordination|□ Platform specified: [Instagram | TikTok | Email | LinkedIn]
+M|content-pipeline-coordination|□ cnt goal: [awareness | conversion | retention]
+M|content-pipeline-coordination|□ Key metric this cnt should move: [e.g., engagement rate, CTR, trial starts]
+M|content-pipeline-coordination|□ cp ctx: [what are cp doing that this should respond to?]
+M|content-pipeline-coordination|□ Brand constraints: [any cg-specific rules from vtr FEEDBACK.md]
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|Before Atlas starts:
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|□ Copy is complete and rv by Lena (triple-pass run)
+M|content-pipeline-coordination|□ Kahneman framing check complete for any ad copy (🟢 or 🟡 only — 🔴 blocks)
+M|content-pipeline-coordination|□ Copy includes: headline, body, CTA
+M|content-pipeline-coordination|□ Platform format confirmed: [static | carousel | Reel/video | story]
+M|content-pipeline-coordination|□ Any specific visual constraints from the copy (mentions of season, color, mood)
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|Before Pixel starts batch:
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|□ Atlas visual brief complete
+M|content-pipeline-coordination|□ Prompt-qa check run by Atlas (skills/custom/prompt-qa)
+M|content-pipeline-coordination|□ AI model selected for this batch (skills/workflow/model-selection)
+M|content-pipeline-coordination|□ Number of variants confirmed: [single | 3-5 variants | batch > 20]
+M|content-pipeline-coordination|□ Output format specified: [dimensions, file type, naming convention]
+M|content-pipeline-coordination|□ Pre-mortem run if batch > 20 images
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|Before anything goes to market:
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|□ Pixel QC complete: rejection rate < 20%
+M|content-pipeline-coordination|□ Stark (or Marcus) has ap final assets
+M|content-pipeline-coordination|□ Copy and visual are still aligned (no copy drift during prd)
+M|content-pipeline-coordination|□ Scheduled in cnt calendar with correct vtr ctx
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|Each agt uses this handoff card when passing to the next stage:
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|cnt HANDOFF — [Stage name] → [Next agt]
+M|content-pipeline-coordination|vtr:    [novizio | hourbour]
+M|content-pipeline-coordination|Platform:   [platform]
+M|content-pipeline-coordination|Piece type: [copy | visual brief | prd batch]
+M|content-pipeline-coordination|Status:     GATE CLEARED ✅
+M|content-pipeline-coordination|What's included: [short description]
+M|content-pipeline-coordination|What's needed from [next agt]: [clear ask]
+M|content-pipeline-coordination|Deadline: [date]
+M|content-pipeline-coordination|Blocker risk: [any known risk to the next stage?]
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|Diana maintains the cnt calendar in `/api/cnt-calendar`. Rules:
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|□ Every piece in the pl has a Stage 0 date (brief) and a publish date
+M|content-pipeline-coordination|□ Stage 1 (copy) must be complete ≥ 5 days before publish date
+M|content-pipeline-coordination|□ Stage 2 (direction) must be complete ≥ 3 days before publish date
+M|content-pipeline-coordination|□ Stage 3 (prd) must be complete ≥ 1 day before publish date (QC buffer)
+M|content-pipeline-coordination|□ Stark ap gate: ≥ 1 day before publish date
+M|content-pipeline-coordination|```
+M|content-pipeline-coordination|If a stage is running late: Diana flags to Marcus — never silently slip the publish date without Marcus knowing.
+M|content-pipeline-coordination|Diana reports weekly (in KPI briefing to Marcus):
+M|content-pipeline-coordination|| Metric | Green | Amber | Red |
+M|content-pipeline-coordination||--------|-------|-------|-----|
+M|content-pipeline-coordination|| Pieces in Stage 1 (copy) | ≤ 3 | 4–5 | ≥ 6 (backlog) |
+M|content-pipeline-coordination|| Avg stage duration (days) | Brief→Copy: 2 | 3 | > 3 |
+M|content-pipeline-coordination|| Gate failure rate | < 10% | 10–20% | > 20% |
+M|content-pipeline-coordination|| Pieces missed publish date | 0 | 1 | ≥ 2/week |
+M|content-pipeline-coordination|- Never let Pixel start prd without Atlas's direction brief — random prompts in prd waste compute
+M|content-pipeline-coordination|- Never skip the Kahneman framing check on ad copy — this gate exists because it was violated repeatedly
+M|content-pipeline-coordination|- Never schedule a publish date without confirming Stage 3 completion is possible in the window
+M|content-pipeline-coordination|- Never route a cnt piece directly from Kai to Pixel — copy always comes before prd

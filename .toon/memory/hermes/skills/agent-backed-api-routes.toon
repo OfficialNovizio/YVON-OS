@@ -1,0 +1,21 @@
+SKILL|agent-backed-api-routes||
+STEP|1|**search_files truncation**: The `search_files` tool caps results at 50 by default. API routes with many subdirectories may not appear. Use `find` or `ls` via terminal to get complete directory listin
+STEP|2|**patch tool import mangling**: When using `patch` to edit imports, avoid replacing lines that include semicolons if the replacement drops them — TypeScript treats `from './module'` and `from './modul
+STEP|3|**Agent output parsing**: Hermes agents may wrap JSON in markdown fences or include conversational text around the JSON. Always regex-extract (`/\{[\s\S]*"key"[\s\S]*\}/`) rather than `JSON.parse(whol
+STEP|4|**Always provide a fallback**: If the agent spawn fails (timeout, process error, parse failure), return a graceful fallback response — never a 500 to the user. The fallback should be honest ("analysis
+STEP|5|**Cron jobs can fail silently**: When chaining jobs via `context_from`, a failed upstream job (no output produced, agent crashed, file not written) will pass empty context to downstream jobs. The down
+STEP|6|**Cron delivery modes**: `deliver=local` for file-only jobs (Kai writes briefs to disk), `deliver=origin` for user-facing delivery (Marcus's CEO brief, Quinn's Pulse). Mixing modes is correct — not al
+STEP|7|**Shared Agent-Backed Components**: When multiple dashboards need the same agent-backed UI component (e.g., Kai's Read card), place it in `app/components/` with absolute imports from the analytics scr
+STEP|8|**Replace 501 stubs with real agent spawns + anti-hallucination data injection**: When an API route returns `error: 'not_implemented'` with status 501, the pattern is: gather data context from Supabas
+STEP|9|Create a `_venture-context.ts` module with typed profiles per brand
+STEP|10|Each profile defines: primary platform, KPIs, accent color, Kai focus, market framing, empty state messaging
+STEP|11|Components read `ventureSlug` from cookie/context and call `getVentureProfile(slug)`
+STEP|12|The API routes receive `venture` param and switch behavior (fashion metrics vs SaaS metrics)
+PIT|**search_files truncation**: The `search_files` tool caps results at 50 by default. API routes with many subdirectories may not appear. Use `find` or `ls` via terminal to get complete directory listin
+PIT|**patch tool import mangling**: When using `patch` to edit imports, avoid replacing lines that include semicolons if the replacement drops them — TypeScript treats `from './module'` and `from './modul
+PIT|**Agent output parsing**: Hermes agents may wrap JSON in markdown fences or include conversational text around the JSON. Always regex-extract (`/\{[\s\S]*"key"[\s\S]*\}/`) rather than `JSON.parse(whol
+PIT|**Always provide a fallback**: If the agent spawn fails (timeout, process error, parse failure), return a graceful fallback response — never a 500 to the user. The fallback should be honest ("analysis
+PIT|**Cron jobs can fail silently**: When chaining jobs via `context_from`, a failed upstream job (no output produced, agent crashed, file not written) will pass empty context to downstream jobs. The down
+PIT|**Cron delivery modes**: `deliver=local` for file-only jobs (Kai writes briefs to disk), `deliver=origin` for user-facing delivery (Marcus's CEO brief, Quinn's Pulse). Mixing modes is correct — not al
+PIT|**Shared Agent-Backed Components**: When multiple dashboards need the same agent-backed UI component (e.g., Kai's Read card), place it in `app/components/` with absolute imports from the analytics scr
+PIT|**Replace 501 stubs with real agent spawns + anti-hallucination data injection**: When an API route returns `error: 'not_implemented'` with status 501, the pattern is: gather data context from Supabas

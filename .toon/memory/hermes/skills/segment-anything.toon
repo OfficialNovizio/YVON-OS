@@ -1,0 +1,53 @@
+SKILL|segment-anything-model|"SAM: zero-shot image segmentation via points, boxes, masks."
+STEP|1|Use SAM when:**
+STEP|2|Need to segment any object in images without task-specific training
+STEP|3|Building interactive annotation tools with point/box prompts
+STEP|4|Generating training data for other vision models
+STEP|5|Need zero-shot transfer to new image domains
+STEP|6|Building object detection/segmentation pipelines
+STEP|7|Processing medical, satellite, or domain-specific images
+STEP|8|Key features:**
+STEP|9|**Zero-shot segmentation**: Works on any image domain without fine-tuning
+STEP|10|**Flexible prompts**: Points, bounding boxes, or previous masks
+STEP|11|**Automatic segmentation**: Generate all object masks automatically
+STEP|12|**High quality**: Trained on 1.1 billion masks from 11 million images
+STEP|13|**Multiple model sizes**: ViT-B (fastest), ViT-L, ViT-H (most accurate)
+STEP|14|**ONNX export**: Deploy in browsers and edge devices
+STEP|15|Use alternatives instead:**
+STEP|16|**YOLO/Detectron2**: For real-time object detection with classes
+STEP|17|**Mask2Former**: For semantic/panoptic segmentation with categories
+STEP|18|**GroundingDINO + SAM**: For text-prompted segmentation
+STEP|19|**SAM 2**: For video segmentation tasks
+STEP|20|**[Advanced Usage](references/advanced-usage.md)** - Batching, fine-tuning, integration
+STEP|21|**[Troubleshooting](references/troubleshooting.md)** - Common issues and solutions
+STEP|22|**GitHub**: https://github.com/facebookresearch/segment-anything
+STEP|23|**Paper**: https://arxiv.org/abs/2304.02643
+STEP|24|**Demo**: https://segment-anything.com
+STEP|25|**SAM 2 (Video)**: https://github.com/facebookresearch/segment-anything-2
+STEP|26|**HuggingFace**: https://huggingface.co/facebook/sam-vit-huge
+PIT|Use SAM when:**
+PIT|Need to segment any object in images without task-specific training
+PIT|Building interactive annotation tools with point/box prompts
+PIT|Generating training data for other vision models
+PIT|Need zero-shot transfer to new image domains
+PIT|Building object detection/segmentation pipelines
+PIT|Processing medical, satellite, or domain-specific images
+PIT|Key features:**
+PIT|**Zero-shot segmentation**: Works on any image domain without fine-tuning
+PIT|**Flexible prompts**: Points, bounding boxes, or previous masks
+PIT|**Automatic segmentation**: Generate all object masks automatically
+PIT|**High quality**: Trained on 1.1 billion masks from 11 million images
+PIT|**Multiple model sizes**: ViT-B (fastest), ViT-L, ViT-H (most accurate)
+PIT|**ONNX export**: Deploy in browsers and edge devices
+PIT|Use alternatives instead:**
+PIT|**YOLO/Detectron2**: For real-time object detection with classes
+PIT|**Mask2Former**: For semantic/panoptic segmentation with categories
+PIT|**GroundingDINO + SAM**: For text-prompted segmentation
+PIT|**SAM 2**: For video segmentation tasks
+PIT|**[Advanced Usage](references/advanced-usage.md)** - Batching, fine-tuning, integration
+PIT|**[Troubleshooting](references/troubleshooting.md)** - Common issues and solutions
+PIT|**GitHub**: https://github.com/facebookresearch/segment-anything
+PIT|**Paper**: https://arxiv.org/abs/2304.02643
+PIT|**Demo**: https://segment-anything.com
+PIT|**SAM 2 (Video)**: https://github.com/facebookresearch/segment-anything-2
+PIT|**HuggingFace**: https://huggingface.co/facebook/sam-vit-huge

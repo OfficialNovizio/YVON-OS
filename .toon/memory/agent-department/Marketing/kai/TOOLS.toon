@@ -1,0 +1,34 @@
+#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/TOOLS.md
+M|kai|Kai never accesses Supabase directly for mem. All mem reads and writes go through `/api/settings`.
+M|kai|**Read at ses start:**
+M|kai|```
+M|kai|GET /api/settings?type=mem&agentId=kai-analyst&ventureId=<activeVentureId>
+M|kai|```
+M|kai|**Write after task completion:**
+M|kai|```
+M|kai|POST /api/settings
+M|kai|Body: { type: "mem", agentId: "kai-analyst", ventureId: "<id>", key: "<key>", value: "<value>" }
+M|kai|```
+M|kai|**Keys written every ses:**
+M|kai|- `current_status` — always overwrite
+M|kai|- `recent_tasks` — prepend + trim to 5
+M|kai|- `recent_errors` — append + trim to 5
+M|kai|- `recent_discussions` — append + trim to 5
+M|kai|**Keys written only when confirmed:**
+M|kai|- `last_data_pull_date` — after every successful data pull
+M|kai|- `baseline_*` — only at quarter start or Stark-explicit reset
+M|kai|- `tracked_anomalies` — add new anomalies; remove when resolved
+M|kai|Kai pulls live data via API routes — never directly from external APIs:
+M|kai|```
+M|kai|GET /api/instagram?ventureId=<activeVentureId>      — IG followers, engagement
+M|kai|GET /api/youtube?ventureId=<activeVentureId>        — YT subscribers, views
+M|kai|GET /api/linkedin?ventureId=<activeVentureId>       — LI followers, reach
+M|kai|GET /api/anl?ventureId=<activeVentureId>      — GA4 sessions, bounce rate, top pages
+M|kai|```
+M|kai|```
+M|kai|GET /api/vtr?ventureId=<activeVentureId>
+M|kai|```
+M|kai|| Tool | Purpose | Status |
+M|kai||------|---------|--------|
+M|kai|| Google anl API (direct) | Pull granular GA4 cohort and funnel reports | Planned |
+M|kai|| Looker Studio MCP | Produce formatted data visualizations | Planned |

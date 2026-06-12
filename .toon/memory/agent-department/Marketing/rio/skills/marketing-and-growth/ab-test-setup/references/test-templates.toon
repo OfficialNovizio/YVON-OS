@@ -1,0 +1,154 @@
+#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ab-test-setup/references/test-templates.md
+M|references|Templates for planning, documenting, and analyzing experiments.
+M|references|- Test Plan Template
+M|references|- Results Documentation Template
+M|references|- Test Repository Entry Template
+M|references|- Quick Test Brief Template
+M|references|- Stakeholder Update Template
+M|references|- Experiment Prioritization Scorecard
+M|references|- Hypothesis Bank Template
+M|references|```markdown
+M|references|- **Owner**: [Name]
+M|references|- **Test ID**: [ID in testing tool]
+M|references|- **Page/Feature**: [What's being tested]
+M|references|- **Planned dates**: [Start] - [End]
+M|references|Because [observation/data],
+M|references|we believe [change]
+M|references|will cause [expected outcome]
+M|references|for [audience].
+M|references|We'll know this is true when [metrics].
+M|references|| Element | Details |
+M|references||---------|---------|
+M|references|| Test type | A/B / A/B/n / MVT |
+M|references|| Duration | X weeks |
+M|references|| Sample size | X per variant |
+M|references|| Traffic allocation | 50/50 |
+M|references|| Tool | [Tool name] |
+M|references|| Implementation | Client-side / Server-side |
+M|references|[Screenshot]
+M|references|- Current experience
+M|references|- [Key details about current state]
+M|references|[Screenshot or mockup]
+M|references|- [Specific change #1]
+M|references|- [Specific change #2]
+M|references|- Rationale: [Why we think this will win]
+M|references|- **Metric**: [metric name]
+M|references|- **Definition**: [how it's calculated]
+M|references|- **Current baseline**: [X%]
+M|references|- **Minimum detectable effect**: [X%]
+M|references|- [Metric 1]: [what it tells us]
+M|references|- [Metric 2]: [what it tells us]
+M|references|- [Metric 3]: [what it tells us]
+M|references|- [Metric that shouldn't get worse]
+M|references|- [Another safety metric]
+M|references|- Mobile vs. desktop
+M|references|- New vs. returning visitors
+M|references|- Traffic source
+M|references|- [Other relevant segments]
+M|references|- Winner: [Primary metric improves by X% with 95% confidence]
+M|references|- Loser: [Primary metric decreases significantly]
+M|references|- Inconclusive: [What we'll do if no significant result]
+M|references|- [ ] Hypothesis documented and rv
+M|references|- [ ] Primary metric defined and trackable
+M|references|- [ ] Sample size calculated
+M|references|- [ ] Test duration estimated
+M|references|- [ ] Variants implemented correctly
+M|references|- [ ] Tracking verified in all variants
+M|references|- [ ] QA completed on all variants
+M|references|- [ ] Stakeholders informed
+M|references|- [ ] Calendar hold for analysis date
+M|references|```
+M|references|```markdown
+M|references|| Element | Value |
+M|references||---------|-------|
+M|references|| Test ID | [ID] |
+M|references|| Dates | [Start] - [End] |
+M|references|| Duration | X days |
+M|references|| Result | Winner / Loser / Inconclusive |
+M|references|| dec | [What we're doing] |
+M|references|[Copy from test plan]
+M|references|| Variant | Target | Actual | % of target |
+M|references||---------|--------|--------|-------------|
+M|references|| Control | X | Y | Z% |
+M|references|| Variant | X | Y | Z% |
+M|references|| Variant | Value | 95% CI | vs. Control |
+M|references||---------|-------|--------|-------------|
+M|references|| Control | X% | [X%, Y%] | — |
+M|references|| Variant | X% | [X%, Y%] | +X% |
+M|references|**Statistical significance**: p = X.XX (95% = sig / not sig)
+M|references|**Practical significance**: [Is this lift meaningful for the business?]
+M|references|| Metric | Control | Variant | Change | Significant? |
+M|references||--------|---------|---------|--------|--------------|
+M|references|| [Metric 1] | X | Y | +Z% | Yes/No |
+M|references|| [Metric 2] | X | Y | +Z% | Yes/No |
+M|references|| Metric | Control | Variant | Change | Concern? |
+M|references||--------|---------|---------|--------|----------|
+M|references|| [Metric 1] | X | Y | +Z% | Yes/No |
+M|references|**Mobile vs. Desktop**
+M|references|| Segment | Control | Variant | Lift |
+M|references||---------|---------|---------|------|
+M|references|| Mobile | X% | Y% | +Z% |
+M|references|| Desktop | X% | Y% | +Z% |
+M|references|**New vs. Returning**
+M|references|| Segment | Control | Variant | Lift |
+M|references||---------|---------|---------|------|
+M|references|| New | X% | Y% | +Z% |
+M|references|| Returning | X% | Y% | +Z% |
+M|references|[Explanation of results in plain language]
+M|references|[Analysis and reasoning]
+M|references|[Any limitations, external factors, or concerns]
+M|references|**Winner**: [Control / Variant]
+M|references|**Action**: [Implement variant / Keep control / Re-test]
+M|references|**Timeline**: [When changes will be implemented]
+M|references|- [Key insight 1]
+M|references|- [Key insight 2]
+M|references|- [Follow-up test idea 1]
+M|references|- [Follow-up test idea 2]
+M|references|- **Projected lift**: [X% improvement in Y metric]
+M|references|- **Business impact**: [Revenue, conversions, etc.]
+M|references|```
+M|references|For tracking all tests in a central location:
+M|references|```markdown
+M|references|| Test ID | Name | Page | Dates | Primary Metric | Result | Lift | Link |
+M|references||---------|------|------|-------|----------------|--------|------|------|
+M|references|| 001 | Hero headline test | Homepage | 1/1-1/15 | CTR | Winner | +12% | [Link] |
+M|references|| 002 | Pricing table layout | Pricing | 1/10-1/31 | Plan selection | Loser | -5% | [Link] |
+M|references|| 003 | Signup form fields | Signup | 2/1-2/14 | Completion | Inconclusive | +2% | [Link] |
+M|references|```
+M|references|For simple tests that don't need full documentation:
+M|references|```markdown
+M|references|**What**: [One sentence description]
+M|references|**Why**: [One sentence hypothesis]
+M|references|**Metric**: [Primary metric]
+M|references|**Duration**: [X weeks]
+M|references|**Result**: [TBD / Winner / Loser / Inconclusive]
+M|references|**Learnings**: [Key takeaway]
+M|references|```
+M|references|```markdown
+M|references|**Status**: Running / Complete
+M|references|**Days remaining**: X (or complete)
+M|references|**Current sample**: X% of target
+M|references|[What we're seeing - without making decisions yet]
+M|references|[What happens next]
+M|references|- [Date]: Analysis complete
+M|references|- [Date]: dec and recommendation
+M|references|- [Date]: Implementation (if winner)
+M|references|```
+M|references|For deciding which tests to run:
+M|references|| Factor | Weight | Test A | Test B | Test C |
+M|references||--------|--------|--------|--------|--------|
+M|references|| Potential impact | 30% | | | |
+M|references|| Confidence in hypothesis | 25% | | | |
+M|references|| Ease of implementation | 20% | | | |
+M|references|| Risk if wrong | 15% | | | |
+M|references|| Strategic alignment | 10% | | | |
+M|references|| **Total** | | | | |
+M|references|Scoring: 1-5 (5 = best)
+M|references|For collecting test ideas:
+M|references|```markdown
+M|references|| ID | Page/Area | Observation | Hypothesis | Potential Impact | Status |
+M|references||----|-----------|-------------|------------|------------------|--------|
+M|references|| H1 | Homepage | Low scroll depth | Shorter hero will increase scroll | High | Testing |
+M|references|| H2 | Pricing | Users compare plans | Comparison table will help | Medium | Backlog |
+M|references|| H3 | Signup | Drop-off at email | soc login will increase completion | Medium | Backlog |
+M|references|```

@@ -1,0 +1,73 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/patterns-children-over-render-props.md
+M|rules|title: Prefer Composing Children Over Render Props
+M|rules|impact: MEDIUM
+M|rules|impactDescription: cleaner composition, better readability
+M|rules|tags: composition, children, render-props
+M|rules|Use `children` for composition instead of `renderX` props. Children are more
+M|rules|readable, compose naturally, and don't require understanding callback
+M|rules|signatures.
+M|rules|**Incorrect (render props):**
+M|rules|```tsx
+M|rules|function Composer({
+M|rules|renderHeader,
+M|rules|renderFooter,
+M|rules|renderActions,
+M|rules|}: {
+M|rules|renderHeader?: () => React.ReactNode
+M|rules|renderFooter?: () => React.ReactNode
+M|rules|renderActions?: () => React.ReactNode
+M|rules|}) {
+M|rules|return (
+M|rules|<form>
+M|rules|{renderHeader?.()}
+M|rules|<Input />
+M|rules|{renderFooter ? renderFooter() : <DefaultFooter />}
+M|rules|{renderActions?.()}
+M|rules|</form>
+M|rules|)
+M|rules|}
+M|rules|// Usage is awkward and inflexible
+M|rules|return (
+M|rules|<Composer
+M|rules|renderHeader={() => <CustomHeader />}
+M|rules|renderFooter={() => (
+M|rules|<>
+M|rules|<Formatting />
+M|rules|<Emojis />
+M|rules|</>
+M|rules|)}
+M|rules|renderActions={() => <SubmitButton />}
+M|rules|/>
+M|rules|)
+M|rules|```
+M|rules|**Correct (compound components with children):**
+M|rules|```tsx
+M|rules|function ComposerFrame({ children }: { children: React.ReactNode }) {
+M|rules|return <form>{children}</form>
+M|rules|}
+M|rules|function ComposerFooter({ children }: { children: React.ReactNode }) {
+M|rules|return <footer className='flex'>{children}</footer>
+M|rules|}
+M|rules|// Usage is flexible
+M|rules|return (
+M|rules|<Composer.Frame>
+M|rules|<CustomHeader />
+M|rules|<Composer.Input />
+M|rules|<Composer.Footer>
+M|rules|<Composer.Formatting />
+M|rules|<Composer.Emojis />
+M|rules|<SubmitButton />
+M|rules|</Composer.Footer>
+M|rules|</Composer.Frame>
+M|rules|)
+M|rules|```
+M|rules|**When render props are appropriate:**
+M|rules|```tsx
+M|rules|// Render props work well when you need to pass data back
+M|rules|<List
+M|rules|data={items}
+M|rules|renderItem={({ item, index }) => <Item item={item} index={index} />}
+M|rules|/>
+M|rules|```
+M|rules|Use render props when the parent needs to provide data or state to the child.
+M|rules|Use children when composing static structure.

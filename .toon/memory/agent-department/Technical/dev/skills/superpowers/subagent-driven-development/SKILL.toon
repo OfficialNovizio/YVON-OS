@@ -1,0 +1,205 @@
+#MEM id=subagent-driven-development source=/root/yvon/agent-department/Technical/dev/skills/superpowers/subagent-driven-development/SKILL.md
+M|subagent-driven-development|name: subagent-driven-dev
+M|subagent-driven-development|description: >-
+M|subagent-driven-development|Use when executing implementation plans with independent tasks in the current ses
+M|subagent-driven-development|version: 1.0.0
+M|subagent-driven-development|platforms: []
+M|subagent-driven-development|metadata:
+M|subagent-driven-development|hermes:
+M|subagent-driven-development|tags: [dev, nextjs, typescript, architecture, vercel, api-routes, build, productivity]
+M|subagent-driven-development|Execute plan by dispatching fresh subagent per task, with two-stage rv after each: spec compliance rv first, then code quality rv.
+M|subagent-driven-development|**Why subagents:** You delegate tasks to specialized agents with isolated ctx. By precisely crafting their instructions and ctx, you ensure they stay focused and succeed at their task. They should nev
+M|subagent-driven-development|**Core principle:** Fresh subagent per task + two-stage rv (spec then quality) = high quality, fast iteration
+M|subagent-driven-development|```dot
+M|subagent-driven-development|digraph when_to_use {
+M|subagent-driven-development|"Have implementation plan?" [shape=diamond];
+M|subagent-driven-development|"Tasks mostly independent?" [shape=diamond];
+M|subagent-driven-development|"Stay in this ses?" [shape=diamond];
+M|subagent-driven-development|"subagent-driven-dev" [shape=box];
+M|subagent-driven-development|"executing-plans" [shape=box];
+M|subagent-driven-development|"Manual execution or brainstorm first" [shape=box];
+M|subagent-driven-development|"Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
+M|subagent-driven-development|"Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
+M|subagent-driven-development|"Tasks mostly independent?" -> "Stay in this ses?" [label="yes"];
+M|subagent-driven-development|"Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
+M|subagent-driven-development|"Stay in this ses?" -> "subagent-driven-dev" [label="yes"];
+M|subagent-driven-development|"Stay in this ses?" -> "executing-plans" [label="no - parallel ses"];
+M|subagent-driven-development|}
+M|subagent-driven-development|```
+M|subagent-driven-development|**vs. Executing Plans (parallel ses):**
+M|subagent-driven-development|- Same ses (no ctx switch)
+M|subagent-driven-development|- Fresh subagent per task (no ctx pollution)
+M|subagent-driven-development|- Two-stage rv after each task: spec compliance first, then code quality
+M|subagent-driven-development|- Faster iteration (no human-in-loop between tasks)
+M|subagent-driven-development|```dot
+M|subagent-driven-development|digraph process {
+M|subagent-driven-development|rankdir=TB;
+M|subagent-driven-development|subgraph cluster_per_task {
+M|subagent-driven-development|label="Per Task";
+M|subagent-driven-development|"Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
+M|subagent-driven-development|"Implementer subagent asks questions?" [shape=diamond];
+M|subagent-driven-development|"Answer questions, provide ctx" [shape=box];
+M|subagent-driven-development|"Implementer subagent implements, tests, commits, self-reviews" [shape=box];
+M|subagent-driven-development|"Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
+M|subagent-driven-development|"Spec reviewer subagent confirms code matches spec?" [shape=diamond];
+M|subagent-driven-development|"Implementer subagent fixes spec gaps" [shape=box];
+M|subagent-driven-development|"Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
+M|subagent-driven-development|"Code quality reviewer subagent approves?" [shape=diamond];
+M|subagent-driven-development|"Implementer subagent fixes quality issues" [shape=box];
+M|subagent-driven-development|"Mark task complete in TodoWrite" [shape=box];
+M|subagent-driven-development|}
+M|subagent-driven-development|"Read plan, extract all tasks with full text, note ctx, create TodoWrite" [shape=box];
+M|subagent-driven-development|"More tasks remain?" [shape=diamond];
+M|subagent-driven-development|"Dispatch final code reviewer subagent for entire implementation" [shape=box];
+M|subagent-driven-development|"Use superpowers:finishing-a-dev-branch" [shape=box style=filled fillcolor=lightgreen];
+M|subagent-driven-development|"Read plan, extract all tasks with full text, note ctx, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+M|subagent-driven-development|"Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
+M|subagent-driven-development|"Implementer subagent asks questions?" -> "Answer questions, provide ctx" [label="yes"];
+M|subagent-driven-development|"Answer questions, provide ctx" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+M|subagent-driven-development|"Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
+M|subagent-driven-development|"Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
+M|subagent-driven-development|"Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
+M|subagent-driven-development|"Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
+M|subagent-driven-development|"Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-rv"];
+M|subagent-driven-development|"Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
+M|subagent-driven-development|"Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
+M|subagent-driven-development|"Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
+M|subagent-driven-development|"Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-rv"];
+M|subagent-driven-development|"Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
+M|subagent-driven-development|"Mark task complete in TodoWrite" -> "More tasks remain?";
+M|subagent-driven-development|"More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
+M|subagent-driven-development|"More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
+M|subagent-driven-development|"Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-dev-branch";
+M|subagent-driven-development|}
+M|subagent-driven-development|```
+M|subagent-driven-development|Use the least powerful model that can handle each role to conserve cost and increase speed.
+M|subagent-driven-development|**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+M|subagent-driven-development|**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+M|subagent-driven-development|**Architecture, design, and rv tasks**: use the most capable available model.
+M|subagent-driven-development|**Task complexity signals:**
+M|subagent-driven-development|- Touches 1-2 files with a complete spec → cheap model
+M|subagent-driven-development|- Touches multiple files with integration concerns → standard model
+M|subagent-driven-development|- Requires design judgment or broad codebase understanding → most capable model
+M|subagent-driven-development|Implementer subagents report one of four statuses. Handle each appropriately:
+M|subagent-driven-development|**DONE:** Proceed to spec compliance rv.
+M|subagent-driven-development|**DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before rv. If they're o
+M|subagent-driven-development|**NEEDS_CONTEXT:** The implementer needs information that wasn't provided. Provide the missing ctx and re-dispatch.
+M|subagent-driven-development|**BLOCKED:** The implementer cannot complete the task. Assess the blocker:
+M|subagent-driven-development|1. If it's a ctx problem, provide more ctx and re-dispatch with the same model
+M|subagent-driven-development|2. If the task requires more reasoning, re-dispatch with a more capable model
+M|subagent-driven-development|3. If the task is too large, break it into smaller pieces
+M|subagent-driven-development|4. If the plan itself is wrong, escalate to the human
+M|subagent-driven-development|**Never** ignore an escalation or force the same model to retry without changes. If the implementer said it's stuck, something needs to change.
+M|subagent-driven-development|- `./implementer-prompt.md` - Dispatch implementer subagent
+M|subagent-driven-development|- `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
+M|subagent-driven-development|- `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+M|subagent-driven-development|```
+M|subagent-driven-development|You: I'm using Subagent-Driven dev to execute this plan.
+M|subagent-driven-development|[Read plan file once: docs/superpowers/plans/feature-plan.md]
+M|subagent-driven-development|[Extract all 5 tasks with full text and ctx]
+M|subagent-driven-development|[Create TodoWrite with all tasks]
+M|subagent-driven-development|Task 1: Hook installation script
+M|subagent-driven-development|[Get Task 1 text and ctx (already extracted)]
+M|subagent-driven-development|[Dispatch implementation subagent with full task text + ctx]
+M|subagent-driven-development|Implementer: "Before I begin - should the hook be installed at user or system level?"
+M|subagent-driven-development|You: "User level (~/.config/superpowers/hooks/)"
+M|subagent-driven-development|Implementer: "Got it. Implementing now..."
+M|subagent-driven-development|[Later] Implementer:
+M|subagent-driven-development|- Implemented install-hook command
+M|subagent-driven-development|- Added tests, 5/5 passing
+M|subagent-driven-development|- Self-rv: Found I missed --force flag, added it
+M|subagent-driven-development|- Committed
+M|subagent-driven-development|[Dispatch spec compliance reviewer]
+M|subagent-driven-development|Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+M|subagent-driven-development|[Get git SHAs, dispatch code quality reviewer]
+M|subagent-driven-development|Code reviewer: Strengths: Good test coverage, clean. Issues: None. ap.
+M|subagent-driven-development|[Mark Task 1 complete]
+M|subagent-driven-development|Task 2: Recovery modes
+M|subagent-driven-development|[Get Task 2 text and ctx (already extracted)]
+M|subagent-driven-development|[Dispatch implementation subagent with full task text + ctx]
+M|subagent-driven-development|Implementer: [No questions, proceeds]
+M|subagent-driven-development|Implementer:
+M|subagent-driven-development|- Added verify/repair modes
+M|subagent-driven-development|- 8/8 tests passing
+M|subagent-driven-development|- Self-rv: All good
+M|subagent-driven-development|- Committed
+M|subagent-driven-development|[Dispatch spec compliance reviewer]
+M|subagent-driven-development|Spec reviewer: ❌ Issues:
+M|subagent-driven-development|- Missing: Progress reporting (spec says "report every 100 items")
+M|subagent-driven-development|- Extra: Added --json flag (not requested)
+M|subagent-driven-development|[Implementer fixes issues]
+M|subagent-driven-development|Implementer: Removed --json flag, added progress reporting
+M|subagent-driven-development|[Spec reviewer reviews again]
+M|subagent-driven-development|Spec reviewer: ✅ Spec compliant now
+M|subagent-driven-development|[Dispatch code quality reviewer]
+M|subagent-driven-development|Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+M|subagent-driven-development|[Implementer fixes]
+M|subagent-driven-development|Implementer: Extracted PROGRESS_INTERVAL constant
+M|subagent-driven-development|[Code reviewer reviews again]
+M|subagent-driven-development|Code reviewer: ✅ ap
+M|subagent-driven-development|[Mark Task 2 complete]
+M|subagent-driven-development|...
+M|subagent-driven-development|[After all tasks]
+M|subagent-driven-development|[Dispatch final code-reviewer]
+M|subagent-driven-development|Final reviewer: All requirements met, ready to merge
+M|subagent-driven-development|Done!
+M|subagent-driven-development|```
+M|subagent-driven-development|**vs. Manual execution:**
+M|subagent-driven-development|- Subagents follow TDD naturally
+M|subagent-driven-development|- Fresh ctx per task (no confusion)
+M|subagent-driven-development|- Parallel-safe (subagents don't interfere)
+M|subagent-driven-development|- Subagent can ask questions (before AND during work)
+M|subagent-driven-development|**vs. Executing Plans:**
+M|subagent-driven-development|- Same ses (no handoff)
+M|subagent-driven-development|- Continuous progress (no waiting)
+M|subagent-driven-development|- rv checkpoints automatic
+M|subagent-driven-development|**Efficiency gains:**
+M|subagent-driven-development|- No file reading overhead (controller provides full text)
+M|subagent-driven-development|- Controller curates exactly what ctx is needed
+M|subagent-driven-development|- Subagent gets complete information upfront
+M|subagent-driven-development|- Questions surfaced before work begins (not after)
+M|subagent-driven-development|**Quality gates:**
+M|subagent-driven-development|- Self-rv catches issues before handoff
+M|subagent-driven-development|- Two-stage rv: spec compliance, then code quality
+M|subagent-driven-development|- rv loops ensure fixes actually work
+M|subagent-driven-development|- Spec compliance prevents over/under-building
+M|subagent-driven-development|- Code quality ensures implementation is well-built
+M|subagent-driven-development|**Cost:**
+M|subagent-driven-development|- More subagent invocations (implementer + 2 reviewers per task)
+M|subagent-driven-development|- Controller does more prep work (extracting all tasks upfront)
+M|subagent-driven-development|- rv loops add iterations
+M|subagent-driven-development|- But catches issues early (cheaper than debugging later)
+M|subagent-driven-development|**Never:**
+M|subagent-driven-development|- Start implementation on main/master branch without explicit user consent
+M|subagent-driven-development|- Skip reviews (spec compliance OR code quality)
+M|subagent-driven-development|- Proceed with unfixed issues
+M|subagent-driven-development|- Dispatch multiple implementation subagents in parallel (conflicts)
+M|subagent-driven-development|- Make subagent read plan file (provide full text instead)
+M|subagent-driven-development|- Skip scene-setting ctx (subagent needs to understand where task fits)
+M|subagent-driven-development|- Ignore subagent questions (answer before letting them proceed)
+M|subagent-driven-development|- Accept "close enough" on spec compliance (spec reviewer found issues = not done)
+M|subagent-driven-development|- Skip rv loops (reviewer found issues = implementer fixes = rv again)
+M|subagent-driven-development|- Let implementer self-rv replace actual rv (both are needed)
+M|subagent-driven-development|- **Start code quality rv before spec compliance is ✅** (wrong order)
+M|subagent-driven-development|- Move to next task while either rv has open issues
+M|subagent-driven-development|**If subagent asks questions:**
+M|subagent-driven-development|- Answer clearly and completely
+M|subagent-driven-development|- Provide additional ctx if needed
+M|subagent-driven-development|- Don't rush them into implementation
+M|subagent-driven-development|**If reviewer finds issues:**
+M|subagent-driven-development|- Implementer (same subagent) fixes them
+M|subagent-driven-development|- Reviewer reviews again
+M|subagent-driven-development|- Repeat until ap
+M|subagent-driven-development|- Don't skip the re-rv
+M|subagent-driven-development|**If subagent fails task:**
+M|subagent-driven-development|- Dispatch fix subagent with specific instructions
+M|subagent-driven-development|- Don't try to fix manually (ctx pollution)
+M|subagent-driven-development|**Required workflow skills:**
+M|subagent-driven-development|- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+M|subagent-driven-development|- **superpowers:writing-plans** - Creates the plan this skill executes
+M|subagent-driven-development|- **superpowers:requesting-code-rv** - Code rv template for reviewer subagents
+M|subagent-driven-development|- **superpowers:finishing-a-dev-branch** - Complete dev after all tasks
+M|subagent-driven-development|**Subagents should use:**
+M|subagent-driven-development|- **superpowers:test-driven-dev** - Subagents follow TDD for each task
+M|subagent-driven-development|**Alternative workflow:**
+M|subagent-driven-development|- **superpowers:executing-plans** - Use for parallel ses instead of same-ses execution

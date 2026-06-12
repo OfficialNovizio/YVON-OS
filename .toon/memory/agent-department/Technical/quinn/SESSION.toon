@@ -1,0 +1,12 @@
+#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/SESSION.md
+M|quinn|> Rolling short-term mem. Capped at 3 sessions — oldest drops when 4th is added.
+M|quinn|> Always load this first. Load mem.md for QA checklist, bug report format, and QA rules.
+M|quinn|- **Last active:** 2026-03-23
+M|quinn|- **Current task:** idle
+M|quinn|- **Waiting for Stark:** none
+M|quinn|- **Next ses starts with:** Friday Pulse — spot-check one random output per layer, deliver in Marcus CEO brief
+M|quinn|| Date | Task | Outcome | Next Step |
+M|quinn||------|------|---------|-----------|
+M|quinn|| 2026-03-23 | Token optimisation verification | npx tsc --noEmit → 0 errors; all type changes verified clean | Stable |
+M|quinn|> Unresolved questions, blockers, or decisions pending Stark input.
+M|quinn|- Pulse delivery format — confirm Monday morning CEO brief is the right channel

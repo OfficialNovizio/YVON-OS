@@ -1,0 +1,96 @@
+#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/architecture-compound-components.md
+M|rules|title: Use Compound Components
+M|rules|impact: HIGH
+M|rules|impactDescription: enables flexible composition without prop drilling
+M|rules|tags: composition, compound-components, architecture
+M|rules|Structure complex components as compound components with a shared ctx. Each
+M|rules|subcomponent accesses shared state via ctx, not props. Consumers compose the
+M|rules|pieces they need.
+M|rules|**Incorrect (monolithic component with render props):**
+M|rules|```tsx
+M|rules|function Composer({
+M|rules|renderHeader,
+M|rules|renderFooter,
+M|rules|renderActions,
+M|rules|showAttachments,
+M|rules|showFormatting,
+M|rules|showEmojis,
+M|rules|}: Props) {
+M|rules|return (
+M|rules|<form>
+M|rules|{renderHeader?.()}
+M|rules|<Input />
+M|rules|{showAttachments && <Attachments />}
+M|rules|{renderFooter ? (
+M|rules|renderFooter()
+M|rules|) : (
+M|rules|<Footer>
+M|rules|{showFormatting && <Formatting />}
+M|rules|{showEmojis && <Emojis />}
+M|rules|{renderActions?.()}
+M|rules|</Footer>
+M|rules|)}
+M|rules|</form>
+M|rules|)
+M|rules|}
+M|rules|```
+M|rules|**Correct (compound components with shared ctx):**
+M|rules|```tsx
+M|rules|const ComposerContext = createContext<ComposerContextValue | null>(null)
+M|rules|function ComposerProvider({ children, state, actions, meta }: ProviderProps) {
+M|rules|return (
+M|rules|<ComposerContext value={{ state, actions, meta }}>
+M|rules|{children}
+M|rules|</ComposerContext>
+M|rules|)
+M|rules|}
+M|rules|function ComposerFrame({ children }: { children: React.ReactNode }) {
+M|rules|return <form>{children}</form>
+M|rules|}
+M|rules|function ComposerInput() {
+M|rules|const {
+M|rules|state,
+M|rules|actions: { update },
+M|rules|meta: { inputRef },
+M|rules|} = use(ComposerContext)
+M|rules|return (
+M|rules|<TextInput
+M|rules|ref={inputRef}
+M|rules|value={state.input}
+M|rules|onChangeText={(text) => update((s) => ({ ...s, input: text }))}
+M|rules|/>
+M|rules|)
+M|rules|}
+M|rules|function ComposerSubmit() {
+M|rules|const {
+M|rules|actions: { submit },
+M|rules|} = use(ComposerContext)
+M|rules|return <Button onPress={submit}>Send</Button>
+M|rules|}
+M|rules|// Export as compound component
+M|rules|const Composer = {
+M|rules|Provider: ComposerProvider,
+M|rules|Frame: ComposerFrame,
+M|rules|Input: ComposerInput,
+M|rules|Submit: ComposerSubmit,
+M|rules|Header: ComposerHeader,
+M|rules|Footer: ComposerFooter,
+M|rules|Attachments: ComposerAttachments,
+M|rules|Formatting: ComposerFormatting,
+M|rules|Emojis: ComposerEmojis,
+M|rules|}
+M|rules|```
+M|rules|**Usage:**
+M|rules|```tsx
+M|rules|<Composer.Provider state={state} actions={actions} meta={meta}>
+M|rules|<Composer.Frame>
+M|rules|<Composer.Header />
+M|rules|<Composer.Input />
+M|rules|<Composer.Footer>
+M|rules|<Composer.Formatting />
+M|rules|<Composer.Submit />
+M|rules|</Composer.Footer>
+M|rules|</Composer.Frame>
+M|rules|</Composer.Provider>
+M|rules|```
+M|rules|Consumers explicitly compose exactly what they need. No hidden conditionals. And the state, actions and meta are dependency-injected by a parent provider, allowing multiple usages of the same componen
