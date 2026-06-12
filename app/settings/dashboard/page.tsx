@@ -1,31 +1,41 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 interface DashboardData {
   toon: any; cie: any; cost: any; modules: any[]; agents: any[]
 }
 
-const DASHBOARD_PORT = 4200
+const POLL_INTERVAL = 30000 // 30 seconds
 
 export default function DashboardSettingsPage() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [connected, setConnected] = useState(false)
   const [config, setConfig] = useState<any>(null)
 
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await fetch('/api/yvon-dashboard-stats')
+      if (res.ok) {
+        const stats = await res.json()
+        setData(stats)
+        setConnected(true)
+      } else {
+        setConnected(false)
+      }
+    } catch {
+      setConnected(false)
+    }
+  }, [])
+
   useEffect(() => {
     fetch('/api/yvon-config').then(r => r.json()).then(setConfig).catch(() => {})
 
-    try {
-      const ws = new WebSocket(`ws://localhost:${DASHBOARD_PORT}/api/live`)
-      ws.onopen = () => setConnected(true)
-      ws.onclose = () => setConnected(false)
-      ws.onmessage = (e) => {
-        try { const msg = JSON.parse(e.data); if (msg.type === 'stats') setData(msg) } catch {}
-      }
-      return () => ws.close()
-    } catch { setConnected(false) }
-  }, [])
+    // Initial fetch + polling
+    fetchStats()
+    const interval = setInterval(fetchStats, POLL_INTERVAL)
+    return () => clearInterval(interval)
+  }, [fetchStats])
 
   async function toggleSetting(key: string) {
     try {
@@ -50,7 +60,7 @@ export default function DashboardSettingsPage() {
         <a href="/settings" style={{ color: '#5a6478', fontSize: 14, textDecoration: 'none' }}>
           ← Back to Settings
         </a>
-        <h1 style={{ fontSize: 24, fontWeight: 700, marginTop: 16 }}>⚙️ Dashboard Settings</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, marginTop: 16 }}>⚙️ YVON Engine Dashboard</h1>
 
         {/* Toggles */}
         <div style={{
@@ -73,12 +83,12 @@ export default function DashboardSettingsPage() {
           ))}
         </div>
 
-        {/* Dashboard embed */}
+        {/* Connection status */}
         <div style={{
           background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
           borderRadius: 14, padding: 20, marginBottom: 32
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: data ? 16 : 0 }}>
             <span style={{
               width: 10, height: 10, borderRadius: '50%',
               background: connected ? '#34d399' : '#f87171', display: 'inline-block'
@@ -87,7 +97,7 @@ export default function DashboardSettingsPage() {
               {connected ? 'Dashboard Connected' : 'Dashboard Offline'}
             </span>
             <span style={{ fontSize: 13, color: '#5a6478', marginLeft: 'auto' }}>
-              {connected ? 'WebSocket active' : 'Start with: npx yvon dashboard'}
+              {connected ? `REST polling · ${POLL_INTERVAL / 1000}s` : 'Waiting for connection...'}
             </span>
           </div>
 
@@ -176,12 +186,8 @@ export default function DashboardSettingsPage() {
               </div>
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: 40, color: '#5a6478' }}>
-              {connected ? 'Waiting for data...' : 'Dashboard server not running. Start with:'}
-              <br />
-              <code style={{ color: '#00d4ff', marginTop: 8, display: 'inline-block' }}>
-                npx yvon dashboard
-              </code>
+            <div style={{ textAlign: 'center', padding: 32, color: '#5a6478' }}>
+              {connected ? 'Loading metrics...' : 'Connecting to dashboard...'}
             </div>
           )}
         </div>
