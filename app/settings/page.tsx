@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight } from 'lucide-react'
+import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight, LayoutDashboard } from 'lucide-react'
 
 interface SystemInfo {
   systemHealth: {
@@ -112,6 +112,20 @@ export default function SettingsPage() {
             {s?.deepseekBalance != null ? `$${s.deepseekBalance.toFixed(2)}` : '—'}
           </StatusBadge>
         </Card>
+
+        {/* YVON Dashboard */}
+        <Link href="/settings/dashboard">
+          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group">
+            <div className="flex items-center gap-2 mb-3">
+              <LayoutDashboard size={16} style={{ color: 'var(--ws-accent)' }} />
+              <h3 className="text-sm font-semibold text-on-surface flex-1">Dashboard</h3>
+              <ChevronRight size={14} className="text-on-surface-variant/30 group-hover:text-on-surface-variant transition" />
+            </div>
+            <p className="text-[13px] text-on-surface">Live metrics · Cost tracking · Agents</p>
+            <p className="text-[12px] text-on-surface-variant/60 mt-1">TOON · CIE · Knowledge Graph</p>
+            <StatusBadge tone="green">Active</StatusBadge>
+          </Card>
+        </Link>
 
         {/* Database */}
         <Card className="p-4">

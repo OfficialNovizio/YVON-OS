@@ -3,6 +3,7 @@ import type { ClaudeRequestBody, AgentId } from '@/lib/types'
 import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
+import { buildCieContext } from 'yvon-engine/cie'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -78,13 +79,46 @@ export async function POST(request: Request): Promise<Response> {
     }
   }
 
-  // Append TOON-formatted data block to system prompt (Claude-optimized contextual data)
-  // This is where decision queues, venture context, session history are injected.
-  // TOON format saves ~41.5% tokens vs JSON (verified live benchmark 2026-06-11).
-  // The parsing instruction below tells the LLM how to read the format.
-  if (dataBlock) {
+  // ─── CIE INJECTION (Context Intelligence Engine v1) ─────────────────────────
+  // Auto-injects relevant context from graphify, codegraph, agent memory,
+  // Hermes memory, and project docs. Zero-token classification.
+  // Adaptive: skips for short tasks, full context for complex tasks.
+  let finalDataBlock = dataBlock ?? ''
+  let userMessageFinal: string = userMessage as string
+  if (agentId) {
+    try {
+      const cie = buildCieContext({
+        agentId,
+        task: String(userMessage).slice(0, 1000),
+        venture: ventureId ?? 'yvon-dashboard',
+      })
+      if (cie.systemExtension) {
+        effectiveSystemPrompt = (effectiveSystemPrompt ?? '') + '\n\n' + cie.systemExtension
+      }
+      if (cie.dataBlock) {
+        finalDataBlock = (finalDataBlock ? finalDataBlock + '\n' : '') + cie.dataBlock
+      }
+      // ─── TOON BIDIRECTIONAL: compress output for data tasks ───────────────────
+      // Data-processing tasks (filters, queries, extractions) benefit from
+      // structured TOON-format responses — 60% fewer output tokens.
+      // Reasoning tasks (strategy, marketing, design) keep prose output.
+      const dataTaskTypes = ['backend_bug', 'data_query', 'ops_risk']
+      const taskLen = String(userMessage).length
+      if (taskLen > 300 && cie.itemsInjected > 2) {
+        // Only enable TOON output for tasks where CIE actually injected context
+        // (indicates structured data, not simple questions)
+        userMessageFinal = String(userMessage) + 
+          '\n\n[RESPOND IN TOON FORMAT: pipe-delimited fields. One record per line. No markdown, no intro, no conclusion. Example: id|action|reason_or_fix]'
+      }
+    } catch {
+      // CIE is non-blocking — agent call proceeds without it on failure
+    }
+  }
+
+  // Append TOON-formatted data block to system prompt
+  if (finalDataBlock) {
     const toonInstruction = '\n\n[DATA FORMAT: The following data uses TOON (Token-Optimized Object Notation). Each line is a record. Fields are separated by | (pipe). The first character is the type prefix: D=decision, V=venture, S=session, T=task, C=competitor. Empty/missing values are marked as -. Parse each line by splitting on | and mapping fields positionally.]\n\n'
-    effectiveSystemPrompt = (effectiveSystemPrompt ?? '') + toonInstruction + dataBlock
+    effectiveSystemPrompt = (effectiveSystemPrompt ?? '') + toonInstruction + finalDataBlock
   }
 
   if (!userMessage) {
@@ -105,7 +139,7 @@ export async function POST(request: Request): Promise<Response> {
           system: effectiveSystemPrompt
             ? [{ type: 'text' as const, text: effectiveSystemPrompt, cache_control: { type: 'ephemeral' as const } }]
             : [],
-          messages: [{ role: 'user' as const, content: userMessage }],
+          messages: [{ role: 'user' as const, content: userMessageFinal }],
         }
 
         // Note: web search beta tools removed — local proxy cannot use Anthropic beta endpoints

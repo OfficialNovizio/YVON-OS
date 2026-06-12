@@ -10,7 +10,7 @@
 // but rewards natural language formats. This library exploits that asymmetry.
 //
 // Usage:
-//   import { toon } from '@/lib/toon'
+//   import { toon } from 'yvon-engine/toon'
 //   const compact = toon.claude(decisions, 'decision')
 //   const parsed  = toon.parse(compact)
 

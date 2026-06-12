@@ -1,0 +1,15 @@
+{
+  "version": "1.3.0",
+  "projectRoot": ".",
+  "cieEnabled": true,
+  "contextCap": 2500,
+  "adaptiveInjection": true,
+  "toonEnabled": true,
+  "toonBidirectional": true,
+  "dashboard": {
+    "showInSettings": true,
+    "autoStartOnDev": true,
+    "port": 4200,
+    "theme": "dark"
+  }
+}
