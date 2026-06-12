@@ -7,7 +7,14 @@ import { buildCieContext } from 'yvon-engine/cie'
 
 import { autoToonMiddleware } from 'yvon-engine/toon/auto/middleware'
 import { decodeToonResponse } from 'yvon-engine/toon/auto/decoder'
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+// DeepSeek via Anthropic endpoint — auto-configure base URL
+const isDeepSeek = !!process.env.DEEPSEEK_API_KEY
+const client = new Anthropic({
+  apiKey: isDeepSeek ? process.env.DEEPSEEK_API_KEY : process.env.ANTHROPIC_API_KEY,
+  baseURL: isDeepSeek
+    ? (process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/anthropic')
+    : undefined,
+})
 
 // ── Fire-and-forget token usage save ─────────────────────────────────────────
 async function saveUsage(params: {
