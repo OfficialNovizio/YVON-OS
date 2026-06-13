@@ -1,105 +1,49 @@
-#MEM id=frontend-security source=/root/yvon/agent-department/Technical/mia/skills/custom/frontend-security/SKILL.md savings=3%
-M||tx|---
-M||name|frontend-sec
-M||desc|mi's frontend sec behavioral checklist. Runs before marking any cp done. Covers dangerouslySetInnerHTML, ap key exposure, client state PII, XSS-safe patterns, CSP compatibility, form validation, and us-facing er messages.
-M||vers|1.0.0
-M||tx|---
-M|Purp|Fron|us input rendering, ap key exposure through the bundle, sensitive data in client state, and XSS vectors. This checklist makes sec rv part of every cp's definition of done.
-M|Purp|tx|---
-M|The |tx|Run before marking any cp done. All 7 must pass.
-M|The |tx|---
-M|The |tx|**1. No `dangerouslySetInnerHTML`**
-M|The |This|
-M|The |tx|```ts
-M|The |tx|// NEVER
-M|The |<div|userContent }} />
-M|The |tx|// CORRECT — if HTML rendering is needed
-M|The |tx|import DOMPurify from 'dompurify'
-M|The |tx|const clean = DOMPurify.sanitize(userContent)
-M|The |<div|clean }} />
-M|The |tx|// PREFERRED — render as text, not HTML
-M|The |tx|<p>{userContent}</p>
-M|The |tx|```
-M|The |tx|rc's JSX escaping already handles plain text safely. Only use `dangerouslySetInnerHTML` if the cn is genuinely HTML — and always sanitize it.
-M|The |tx|---
-M|The |tx|**2. No ap Keys in Client Code**
-M|The |tx|`NEXT_PUBLIC_*` variables are compiled into the browser bundle — publicly visible to anyone who inspects the page source.
-M|The |tx|```ts
-M|The |tx|// NEVER — exposed in browser
-M|The |tx|const key = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY
-M|The |tx|// CORRECT — stays server-side (no NEXT_PUBLIC_ prefix)
-M|The |tx|// Only accessible in /app/ap/ rt and Server cp
-M|The |tx|const key = process.env.ANTHROPIC_API_KEY
-M|The |tx|```
-M|The |tx|If a cp needs data from an authenticated ap — call an `/ap/` rt from the client. The rt handler holds the keys.
-M|The |tx|---
-M|The |tx|**3. No Sensitive Data in Client State**
-M|The |tx|Data stored in cp state (`useState`, `useReducer`) or Zustand/Redux persists across navigations and can be read by browser extensions or other scripts.
-M|The |tx|```ts
-M|The |tx|// NEVER store in client state
-M|The |tx|const [apiKey, setApiKey] = useState(process.env.NEXT_PUBLIC_SOME_KEY)
-M|The |tx|const [userEmail, setUserEmail] = useState(userData.em)  // PII
-M|The |tx|const [sessionToken, setSessionToken] = useState(tk)     // credential
-M|The |tx|// CORRECT — display only, don't store
-M|The |tx|<span>{us.name}</span>  // render directly, no state
-M|The |tx|```
-M|The |tx|---
-M|The |tx|**4. XSS-Safe Rendering Patterns**
-M|The |Reac|
-M|The |tx|```ts
-M|The |tx|// Safe — rc escapes this
-M|The |tx|<p>{userInput}</p>
-M|The |tx|// Dangerous — no escaping
-M|The |<p d|userInput }} />
-M|The |tx|// Dangerous — script injection
-M|The |tx|document.getElementById('target').innerHTML = userInput
-M|The |tx|// Safe alternative
-M|The |tx|document.getElementById('target').textContent = userInput
-M|The |tx|```
-M|The |**Ru|** If you find yourself leaving rc's rendering md to manipulate the DOM directly, stop and use a rc-native pattern instead.
-M|The |tx|---
-M|The |tx|**5. CSP-Compatible Patterns**
-M|The |tx|cn sec Policy blocks inline scripts and `eval()`. yv's CSP must not be broken by new cp.
-M|The |tx|```ts
-M|The |tx|// NEVER — inline scripts break CSP
-M|The |<scr|'...' }</script>
-M|The |tx|// NEVER
-M|The |tx|eval(someString)
-M|The |tx|new fn(someString)()
-M|The |tx|// CORRECT — all logic in rc cp, no inline scripts
-M|The |tx|// Pass config via Server cp props, not inline scripts
-M|The |tx|```
-M|The |tx|---
-M|The |tx|**6. Form Validation — Client + Server**
-M|The |tx|Client-side validation is UX. Server-side validation is sec. Never treat them as the same thing.
-M|The |tx|```ts
-M|The |tx|// Client — for immediate feedback only
-M|The |tx|const isValid = em.includes('@') && em.length > 0
-M|The |tx|// Server (in /ap/ rt) — always re-validates
-M|The |cons|z.string().em() })
-M|The |tx|const parsed = sc.safeParse(body)
-M|The |if (|'Invalid em' }, { status: 400 })
-M|The |tx|```
-M|The |Mia'|im client validation for UX. Ensure the cp shows the server's validation er rp, not just the client validation state.
-M|The |tx|---
-M|The |tx|**7. us-Facing er Messages Don't Expose Internals**
-M|The |Erro|
-M|The |tx|```ts
-M|The |tx|// NEVER — exposes rt structure
-M|The |<Err|${err.message}`} />
-M|The |tx|// NEVER — exposes stack trace
-M|The |tx|<ErrorState message={err.stack} />
-M|The |tx|// CORRECT — generic, actionable
-M|The |tx|<ErrorState message="Something went wrong. Please try again." />
-M|The |tx|// CORRECT — specific abt what failed, not how
-M|The |tx|<ErrorState message="an data is temporarily unavailable." />
-M|The |tx|```
-M|The |tx|---
-M|Chec|Befo|
-M|Chec|it|[ ] No `dangerouslySetInnerHTML` w/o DOMPurify sanitization
-M|Chec|it|[ ] No ap keys in `NEXT_PUBLIC_*` or client cp state
-M|Chec|it|[ ] No PII or credentials stored in client state
-M|Chec|it|[ ] All us input rendered via JSX (not innerHTML)
-M|Chec|it|[ ] No inline `<script>` tags or `eval()` calls
-M|Chec|it|[ ] Client validation present for UX; server validation er displayed when it fires
-M|Chec|it|[ ] er states show generic messages — no rt names, stack traces, or internal er
+SRC agent-department/Technical/mia/skills/custom/frontend-security/SKILL.md
+ORIG_SIZE 5245
+SECTIONS 43
+ABBREVS 2
+INDEX_TERMS 195
+COMPILED 2026-06-13T19:23:25.395Z
+---
+NAME frontend-security
+PURPOSE
+Frontend security failures are invisible until they're exploited. Mia's responsibility IT client-side layer — and that layer has a specific attack surface: user input rendering, API key exposure through the bundle, sensitive data in client state, and XSS vectors. This checklist makes security review part of every component's definition of done. 
+--- 
+THE 7-ITEM CHECKLIST
+Run before marking any component done. All 7 must pass. 
+--- 
+No dangerouslySetInnerHTML 
+TI the most common XSS vector in React. If rendering user-generated content: 
+CODE typescript 303CHARS
+React's JSX escaping already handles plain text safely. Only use dangerouslySetInnerHTML if the content is genuinely HTML — and always sanitize it. 
+--- 
+No API Keys in Client Code 
+NEXT_PUBLIC_* variables are compiled into the browser bundle — publicly visible to anyone who inspects the page source. 
+CODE typescript 244CHARS
+If a component needs data from an authenticated API — call an /api/ route from the client. The route handler holds the keys. 
+--- 
+No Sensitive Data in Client State 
+Data stored in component state (useState, useReducer) or Zustand/Redux persists across navigations and can be read by browser extensions or other scripts. 
+CODE typescript 338CHARS
+--- 
+XSS-Safe Rendering Patterns 
+React's default JSX escaping handles most cases. The dangerous patterns to avoid: 
+CODE typescript 298CHARS
+Rule: If you find yourself leaving React's rendering model to manipulate the DOM directly, stop and use a React-native pattern instead. 
+--- 
+CSP-Compatible Patterns 
+Content Security Policy blocks inline scripts and eval(). YVON's CSP must not be broken by new components. 
+CODE typescript 263CHARS
+--- 
+Form Validation — Client + Server 
+Client-side validation is UX. Server-side validation is security. Never treat them as the same thing. 
+CODE typescript 330CHARS
+Mia's responsibility: implement client validation for UX. Ensure the component shows the server's validation error response, not just the client validation state. 
+--- 
+User-Facing Error Messages Don't Expose Internals 
+Error states shown to users must be generic: 
+CODE typescript 404CHARS
+--- 
+CHECKLIST SUMMARY
+Before marking any component done: 
+[ ] No dangerouslySetInnerHTML without DOMPurify sanitization [ ] No API keys in NEXT_PUBLIC_* or client component state [ ] No PII or credentials stored in client state [ ] All user input rendered via JSX (not innerHTML) [ ] No inline <scripttags or eval() calls [ ] Client validation present for UX; server validation error displayed when it fires [ ] Error states show generic messages — no route names, stack traces, or internal errors 

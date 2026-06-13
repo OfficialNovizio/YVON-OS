@@ -1,325 +1,61 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copy-editing/references/plain-english-alternatives.md savings=-34%
-M|Plai|tx|Replace complex or pompous words w/ plain English alternatives.
-M|Plai|Sour|Plain English cg A-Z of Alternative Words (2001), Australian Government Style Manual (2024), plainlanguage.gov
-M|Plai|tx|---
-M|Cont|it|A
-M|Cont|it|B
-M|Cont|it|C
-M|Cont|it|D
-M|Cont|it|E
-M|Cont|it|F
-M|Cont|it|G-H
-M|Cont|it|I
-M|Cont|it|L-M
-M|Cont|it|N-O
-M|Cont|it|P
-M|Cont|it|R
-M|Cont|it|S
-M|Cont|it|T-U
-M|Cont|it|V-Z
-M|Cont|it|Phrases to Remove Entirely
-M|A|tx|\| Complex \| Plain Alternative \|
-M|A|tx|\|---------\|-------------------\|
-M|A|tx|\| (an) absence of \| no, none \|
-M|A|tx|\| abundance \| enough, plenty, many \|
-M|A|tx|\| accede to \| allow, agree to \|
-M|A|tx|\| accelerate \| speed up \|
-M|A|tx|\| accommodate \| meet, hold, house \|
-M|A|tx|\| accomplish \| do, finish, complete \|
-M|A|tx|\| accordingly \| so, therefore \|
-M|A|tx|\| acknowledge \| thank you for, confirm \|
-M|A|tx|\| acquire \| get, buy, obtain \|
-M|A|tx|\| additional \| extra, more \|
-M|A|tx|\| adjacent \| nx to \|
-M|A|tx|\| advantageous \| useful, helpful \|
-M|A|tx|\| advise \| tell, say, inform \|
-M|A|tx|\| aforesaid \| this, earlier \|
-M|A|tx|\| aggregate \| total \|
-M|A|tx|\| alleviate \| ease, reduce \|
-M|A|tx|\| allocate \| give, share, assign \|
-M|A|tx|\| alternative \| other, choice \|
-M|A|tx|\| ameliorate \| improve \|
-M|A|tx|\| anticipate \| expect \|
-M|A|tx|\| apparent \| clear, obvious \|
-M|A|tx|\| appreciable \| large, noticeable \|
-M|A|tx|\| appropriate \| proper, right, suitable \|
-M|A|tx|\| ~ \| abt, roughly \|
-M|A|tx|\| ascertain \| find out \|
-M|A|tx|\| assistance \| help \|
-M|A|tx|\| at the present time \| now \|
-M|A|tx|\| attempt \| try \|
-M|A|tx|\| authorise \| allow, let \|
-M|A|tx|---
-M|B|tx|\| Complex \| Plain Alternative \|
-M|B|tx|\|---------\|-------------------\|
-M|B|tx|\| belated \| late \|
-M|B|tx|\| beneficial \| helpful, useful \|
-M|B|tx|\| bestow \| give \|
-M|B|tx|\| by means of \| by \|
-M|B|tx|---
-M|C|tx|\| Complex \| Plain Alternative \|
-M|C|tx|\|---------\|-------------------\|
-M|C|tx|\| calculate \| work out \|
-M|C|tx|\| cease \| stop, end \|
-M|C|tx|\| circumvent \| avoid, get around \|
-M|C|tx|\| clarification \| explanation \|
-M|C|tx|\| commence \| start, begin \|
-M|C|tx|\| communicate \| tell, talk, write \|
-M|C|tx|\| competent \| able \|
-M|C|tx|\| compile \| collect, make \|
-M|C|tx|\| complete \| fill in, finish \|
-M|C|tx|\| cp \| part \|
-M|C|tx|\| comprise \| include, make up \|
-M|C|tx|\| (it is) compulsory \| (you) must \|
-M|C|tx|\| conceal \| hide \|
-M|C|tx|\| concerning \| abt \|
-M|C|tx|\| consequently \| so \|
-M|C|tx|\| considerable \| large, great, much \|
-M|C|tx|\| constitute \| make up, form \|
-M|C|tx|\| consult \| ask, talk to \|
-M|C|tx|\| consumption \| use \|
-M|C|tx|\| currently \| now \|
-M|C|tx|---
-M|D|tx|\| Complex \| Plain Alternative \|
-M|D|tx|\|---------\|-------------------\|
-M|D|tx|\| deduct \| take off \|
-M|D|tx|\| deem \| treat as, consider \|
-M|D|tx|\| defer \| delay, put off \|
-M|D|tx|\| deficiency \| lack \|
-M|D|tx|\| dl \| remove, cross out \|
-M|D|tx|\| demonstrate \| show, prove \|
-M|D|tx|\| denote \| show, mean \|
-M|D|tx|\| designate \| name, appoint \|
-M|D|tx|\| despatch/dispatch \| send \|
-M|D|tx|\| determine \| decide, find out \|
-M|D|tx|\| detrimental \| harmful \|
-M|D|tx|\| diminish \| reduce, lessen \|
-M|D|tx|\| discontinue \| stop \|
-M|D|tx|\| disseminate \| spread, distribute \|
-M|D|tx|\| doc \| papers, documents \|
-M|D|tx|\| due to the fact that \| bc \|
-M|D|tx|\| duration \| time, length \|
-M|D|tx|\| dwelling \| home \|
-M|D|tx|---
-M|E|tx|\| Complex \| Plain Alternative \|
-M|E|tx|\|---------\|-------------------\|
-M|E|tx|\| economical \| cheap, good value \|
-M|E|tx|\| eligible \| allowed, qualified \|
-M|E|tx|\| elucidate \| explain \|
-M|E|tx|\| enable \| allow \|
-M|E|tx|\| encounter \| meet \|
-M|E|tx|\| endeavour \| try \|
-M|E|tx|\| enquire \| ask \|
-M|E|tx|\| ensure \| make sure \|
-M|E|tx|\| entitlement \| right \|
-M|E|tx|\| envisage \| expect \|
-M|E|tx|\| equivalent \| equal, the same \|
-M|E|tx|\| erroneous \| wrong \|
-M|E|tx|\| establish \| set up, show \|
-M|E|tx|\| evaluate \| assess, tst \|
-M|E|tx|\| excessive \| too much \|
-M|E|tx|\| exclusively \| only \|
-M|E|tx|\| exempt \| free from \|
-M|E|tx|\| expedite \| speed up \|
-M|E|tx|\| expenditure \| spending \|
-M|E|tx|\| expire \| run out \|
-M|E|tx|---
-M|F|tx|\| Complex \| Plain Alternative \|
-M|F|tx|\|---------\|-------------------\|
-M|F|tx|\| fabricate \| make \|
-M|F|tx|\| facilitate \| help, make possible \|
-M|F|tx|\| finalise \| finish, complete \|
-M|F|tx|\| following \| after \|
-M|F|tx|\| for the purpose of \| to, for \|
-M|F|tx|\| for the reason that \| bc \|
-M|F|tx|\| forthwith \| now, at once \|
-M|F|tx|\| forward \| send \|
-M|F|tx|\| frequently \| often \|
-M|F|tx|\| furnish \| give, provide \|
-M|F|tx|\| furthermore \| also, and \|
-M|F|tx|---
-M|G-H|tx|\| Complex \| Plain Alternative \|
-M|G-H|tx|\|---------\|-------------------\|
-M|G-H|tx|\| gn \| produce, cr \|
-M|G-H|tx|\| henceforth \| from now on \|
-M|G-H|tx|\| hitherto \| until now \|
-M|G-H|tx|---
-M|I|tx|\| Complex \| Plain Alternative \|
-M|I|tx|\|---------\|-------------------\|
-M|I|tx|\| if and when \| if, when \|
-M|I|tx|\| illustrate \| show \|
-M|I|tx|\| immediately \| at once, now \|
-M|I|tx|\| im \| carry out, do \|
-M|I|tx|\| imply \| suggest \|
-M|I|tx|\| in accordance w/ \| under, following \|
-M|I|tx|\| in addition to \| and, also \|
-M|I|tx|\| in conjunction w/ \| w/ \|
-M|I|tx|\| in excess of \| more than \|
-M|I|tx|\| in lieu of \| instead of \|
-M|I|tx|\| in order to \| to \|
-M|I|tx|\| in receipt of \| receive \|
-M|I|tx|\| in relation to \| abt \|
-M|I|tx|\| in respect of \| abt, for \|
-M|I|tx|\| in the event of \| if \|
-M|I|tx|\| in the majority of instances \| most, usually \|
-M|I|tx|\| in the near future \| soon \|
-M|I|tx|\| in view of the fact that \| bc \|
-M|I|tx|\| inception \| start \|
-M|I|tx|\| indicate \| show, suggest \|
-M|I|tx|\| inform \| tell \|
-M|I|tx|\| initiate \| start, begin \|
-M|I|tx|\| insert \| put in \|
-M|I|tx|\| instances \| cases \|
-M|I|tx|\| irrespective of \| despite \|
-M|I|tx|\| issue \| give, send \|
-M|I|tx|---
-M|L-M|tx|\| Complex \| Plain Alternative \|
-M|L-M|tx|\|---------\|-------------------\|
-M|L-M|tx|\| (a) large number of \| many \|
-M|L-M|tx|\| liaise w/ \| work w/, talk to \|
-M|L-M|tx|\| locality \| place, area \|
-M|L-M|tx|\| locate \| find \|
-M|L-M|tx|\| magnitude \| size \|
-M|L-M|tx|\| (it is) mandatory \| (you) must \|
-M|L-M|tx|\| manner \| way \|
-M|L-M|tx|\| modification \| change \|
-M|L-M|tx|\| moreover \| also, and \|
-M|L-M|tx|---
-M|N-O|tx|\| Complex \| Plain Alternative \|
-M|N-O|tx|\|---------\|-------------------\|
-M|N-O|tx|\| negligible \| small \|
-M|N-O|tx|\| nevertheless \| but, however \|
-M|N-O|tx|\| notify \| tell \|
-M|N-O|tx|\| notwithstanding \| despite, even if \|
-M|N-O|tx|\| numerous \| many \|
-M|N-O|tx|\| objective \| aim, goal \|
-M|N-O|tx|\| (it is) obligatory \| (you) must \|
-M|N-O|tx|\| obtain \| get \|
-M|N-O|tx|\| occasioned by \| caused by \|
-M|N-O|tx|\| on behalf of \| for \|
-M|N-O|tx|\| on numerous occasions \| often \|
-M|N-O|tx|\| on receipt of \| when you get \|
-M|N-O|tx|\| on the grounds that \| bc \|
-M|N-O|tx|\| operate \| work, run \|
-M|N-O|tx|\| optimum \| best \|
-M|N-O|tx|\| option \| choice \|
-M|N-O|tx|\| otherwise \| or \|
-M|N-O|tx|\| outstanding \| unpaid \|
-M|N-O|tx|\| owing to \| bc \|
-M|N-O|tx|---
-M|P|tx|\| Complex \| Plain Alternative \|
-M|P|tx|\|---------\|-------------------\|
-M|P|tx|\| partially \| partly \|
-M|P|tx|\| participate \| take part \|
-M|P|tx|\| particulars \| details \|
-M|P|tx|\| per annum \| a year \|
-M|P|tx|\| perform \| do \|
-M|P|tx|\| permit \| let, allow \|
-M|P|tx|\| personnel \| staff, people \|
-M|P|tx|\| peruse \| read \|
-M|P|tx|\| possess \| have, own \|
-M|P|tx|\| practically \| almost \|
-M|P|tx|\| predominant \| main \|
-M|P|tx|\| prescribe \| set \|
-M|P|tx|\| preserve \| keep \|
-M|P|tx|\| previous \| earlier, before \|
-M|P|tx|\| principal \| main \|
-M|P|tx|\| prior to \| before \|
-M|P|tx|\| proceed \| go ahead \|
-M|P|tx|\| procure \| get \|
-M|P|tx|\| prohibit \| ban, stop \|
-M|P|tx|\| promptly \| quickly \|
-M|P|tx|\| provide \| give \|
-M|P|tx|\| provided that \| if \|
-M|P|tx|\| provisions \| rules, terms \|
-M|P|tx|\| proximity \| nearness \|
-M|P|tx|\| purchase \| buy \|
-M|P|tx|\| pursuant to \| under \|
-M|P|tx|---
-M|R|tx|\| Complex \| Plain Alternative \|
-M|R|tx|\|---------\|-------------------\|
-M|R|tx|\| reconsider \| think again \|
-M|R|tx|\| reduction \| cut \|
-M|R|tx|\| referred to as \| called \|
-M|R|tx|\| regarding \| abt \|
-M|R|tx|\| reimburse \| repay \|
-M|R|tx|\| reiterate \| repeat \|
-M|R|tx|\| relating to \| abt \|
-M|R|tx|\| remain \| stay \|
-M|R|tx|\| remainder \| rest \|
-M|R|tx|\| remuneration \| pay \|
-M|R|tx|\| render \| make, give \|
-M|R|tx|\| represent \| stand for \|
-M|R|tx|\| request \| ask \|
-M|R|tx|\| require \| need \|
-M|R|tx|\| residence \| home \|
-M|R|tx|\| retain \| keep \|
-M|R|tx|\| revised \| changed, new \|
-M|R|tx|---
-M|S|tx|\| Complex \| Plain Alternative \|
-M|S|tx|\|---------\|-------------------\|
-M|S|tx|\| scrutinise \| examine, check \|
-M|S|tx|\| select \| choose \|
-M|S|tx|\| solely \| only \|
-M|S|tx|\| specified \| given, stated \|
-M|S|tx|\| state \| say \|
-M|S|tx|\| statutory \| legal, by law \|
-M|S|tx|\| subject to \| depending on \|
-M|S|tx|\| submit \| send, give \|
-M|S|tx|\| subsequent to \| after \|
-M|S|tx|\| subsequently \| later \|
-M|S|tx|\| substantial \| large, much \|
-M|S|tx|\| sufficient \| enough \|
-M|S|tx|\| supplement \| add to \|
-M|S|tx|\| supplementary \| extra \|
-M|S|tx|---
-M|T-U|tx|\| Complex \| Plain Alternative \|
-M|T-U|tx|\|---------\|-------------------\|
-M|T-U|tx|\| terminate \| end, stop \|
-M|T-U|tx|\| thereafter \| then \|
-M|T-U|tx|\| thereby \| by this \|
-M|T-U|tx|\| thus \| so \|
-M|T-U|tx|\| to date \| so far \|
-M|T-U|tx|\| transfer \| move \|
-M|T-U|tx|\| transmit \| send \|
-M|T-U|tx|\| ultimately \| in the end \|
-M|T-U|tx|\| undertake \| agree, do \|
-M|T-U|tx|\| uniform \| same \|
-M|T-U|tx|\| utilise \| use \|
-M|T-U|tx|---
-M|V-Z|tx|\| Complex \| Plain Alternative \|
-M|V-Z|tx|\|---------\|-------------------\|
-M|V-Z|tx|\| variation \| change \|
-M|V-Z|tx|\| virtually \| almost \|
-M|V-Z|tx|\| visualise \| imagine, see \|
-M|V-Z|tx|\| ways and means \| ways \|
-M|V-Z|tx|\| whatsoever \| any \|
-M|V-Z|tx|\| w/ a view to \| to \|
-M|V-Z|tx|\| w/ effect from \| from \|
-M|V-Z|tx|\| w/ reference to \| abt \|
-M|V-Z|tx|\| w/ regard to \| abt \|
-M|V-Z|tx|\| w/ respect to \| abt \|
-M|V-Z|tx|\| zone \| area \|
-M|V-Z|tx|---
-M|Phra|Thes|
-M|Phra|it|a total of
-M|Phra|it|absolutely
-M|Phra|it|actually
-M|Phra|it|all things being equal
-M|Phra|it|as a matter of fact
-M|Phra|it|at the end of the day
-M|Phra|it|at this moment in time
-M|Phra|it|basically
-M|Phra|it|currently (when "now" or nothing works)
-M|Phra|- I |I think)
-M|Phra|- in|soon, or say when)
-M|Phra|it|in the final al
-M|Phra|it|it shd be understood
-M|Phra|it|last but not least
-M|Phra|it|obviously
-M|Phra|it|of course
-M|Phra|it|quite
-M|Phra|it|really
-M|Phra|it|the fact of the matter is
-M|Phra|it|to all intents and purposes
-M|Phra|it|very
+SRC agent-department/Marketing/lena/skills/marketing-and-growth/copy-editing/references/plain-english-alternatives.md
+ORIG_SIZE 8258
+SECTIONS 54
+ABBREVS 1
+INDEX_TERMS 498
+COMPILED 2026-06-13T19:23:25.094Z
+---
+PLAIN ENGLISH ALTERNATIVES
+Replace complex or pompous words with plain English alternatives. 
+SOURCE Plain English Campaign A-Z of Alternative Words (2001), Australian Government Style Manual (2024), plainlanguage.gov
+--- 
+CONTENTS
+A B C D E F G-H I L-M N-O P R S T-U V-Z Phrases to Remove Entirely 
+A
+Complex Plain Alternative (an) absence of no, none abundance enough, plenty, many accede to allow, agree to accelerate speed up accommodate meet, hold, house accomplish do, finish, complete accordingly so, therefore acknowledge thank you for, confirm acquire get, buy, obtain additional extra, more adjacent next to advantageous useful, helpful advise tell, say, inform aforesaid this, earlier aggregate total alleviate ease, reduce allocate give, share, assign alternative other, choice ameliorate improve anticipate expect apparent clear, obvious appreciable large, noticeable appropriate proper, right, suitable approximately about, roughly ascertain find out assistance help at the present time now attempt try authorise allow, let 
+--- 
+B
+Complex Plain Alternative belated late beneficial helpful, useful bestow give by means of by 
+--- 
+C
+Complex Plain Alternative calculate work out cease stop, end circumvent avoid, get around clarification explanation commence start, begin communicate tell, talk, write competent able compile collect, make complete fill in, finish component part comprise include, make up (it is) compulsory (you) must conceal hide concerning about consequently so considerable large, great, much constitute make up, form consult ask, talk to consumption use currently now 
+--- 
+D
+Complex Plain Alternative deduct take off deem treat as, consider defer delay, put off deficiency lack delete remove, cross out demonstrate show, prove denote show, mean designate name, appoint despatch/dispatch send determine decide, find out detrimental harmful diminish reduce, lessen discontinue stop disseminate spread, distribute documentation papers, documents due to the fact that because duration time, length dwelling home 
+--- 
+E
+Complex Plain Alternative economical cheap, good value eligible allowed, qualified elucidate explain enable allow encounter meet endeavour try enquire ask ensure make sure entitlement right envisage expect equivalent equal, the same erroneous wrong establish set up, show evaluate assess, test excessive too much exclusively only exempt free from expedite speed up expenditure spending expire run out 
+--- 
+F
+Complex Plain Alternative fabricate make facilitate help, make possible finalise finish, complete following after for the purpose of to, for for the reason that because forthwith now, at once forward send frequently often furnish give, provide furthermore also, and 
+--- 
+G-H
+Complex Plain Alternative generate produce, create henceforth from now on hitherto until now 
+--- 
+I
+Complex Plain Alternative if and when if, when illustrate show immediately at once, now implement carry out, do imply suggest in accordance with under, following in addition to and, also in conjunction with with in excess of more than in lieu of IO in order to to in receipt of receive in relation to about in respect of about, for in the event of if in the majority of instances most, usually in the near future soon in view of the fact that because inception start indicate show, suggest inform tell initiate start, begin insert put in instances cases irrespective of despite issue give, send 
+--- 
+L-M
+Complex Plain Alternative (a) large number of many liaise with work with, talk to locality place, area locate find magnitude size (it is) mandatory (you) must manner way modification change moreover also, and 
+--- 
+N-O
+Complex Plain Alternative negligible small nevertheless but, however notify tell notwithstanding despite, even if numerous many objective aim, goal (it is) obligatory (you) must obtain get occasioned by caused by on behalf of for on numerous occasions often on receipt of when you get on the grounds that because operate work, run optimum best option choice otherwise or outstanding unpaid owing to because 
+--- 
+P
+Complex Plain Alternative partially partly participate take part particulars details per annum a year perform do permit let, allow personnel staff, people peruse read possess have, own practically almost predominant main prescribe set preserve keep previous earlier, before principal main prior to before proceed go ahead procure get prohibit ban, stop promptly quickly provide give provided that if provisions rules, terms proximity nearness purchase buy pursuant to under 
+--- 
+R
+Complex Plain Alternative reconsider think again reduction cut referred to as called regarding about reimburse repay reiterate repeat relating to about remain stay remainder rest remuneration pay render make, give represent stand for request ask require need residence home retain keep revised changed, new 
+--- 
+S
+Complex Plain Alternative scrutinise examine, check select choose solely only specified given, stated state say statutory legal, by law subject to depending on submit send, give subsequent to after subsequently later substantial large, much sufficient enough supplement add to supplementary extra 
+--- 
+T-U
+Complex Plain Alternative terminate end, stop thereafter then thereby by this thus so to date so far transfer move transmit send ultimately in the end undertake agree, do uniform same utilise use 
+--- 
+V-Z
+Complex Plain Alternative variation change virtually almost visualise imagine, see ways and means ways whatsoever any with a view to to with effect from from with reference to about with regard to about with respect to about zone area 
+--- 
+PHRASES TO REMOVE ENTIRELY
+These phrases often add nothing. Delete them: 
+a total of absolutely actually all things being equal as a matter of fact at the end of the day at this moment in time basically currently (when "now" or nothing works) I am of the opinion that (use: I think) in due course (use: soon, or say when) in the final analysis it should be understood last but not least obviously of course quite really the fact of the matter is to all intents and purposes very 

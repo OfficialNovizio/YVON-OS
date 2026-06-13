@@ -1,92 +1,64 @@
-#MEM id=kling-3-prompter source=/root/yvon/agent-department/Marketing/atlas/skills/prompt-systems/kling-3-prompter/SKILL.md savings=8%
-M||tx|---
-M||name|kling-3-prompter
-M||desc|>-
-M||tx|Write optimized vd pm for Kling 3.0. Trigger this skill whenever a us wants to gn a vd w/ Kling, cr a shot list for a vd clip, turn a character and action into a Kling pm, or produce cinematic shot sequences for AI vd generation. Also trigger when the us says things like "make a Kling vd", "write a vd pm", "shot list for this scene", "gn a clip of", or provides a character reference im w/ a described action or environment. Always use this skill before calling any Kling vd generation node in a Pletor workflow when the us has not already supplied a fully-formed pm.
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[art-direction, visual, mood-board, creative, br-identity, im-pm, pm, ai]
-M||tx|---
-M|Klin|tx|A skill for turning a character, setting, and action into a structured, cinematic Kling 3.0 vd pm — formatted as a style line, anchor paragraph, numbered shot list, and sound line.
-M|Klin|tx|---
-M|Role|tx|You are a vd pm writer optimized for Kling 3.0. You write simple, natural-language shot sequences designed to produce physically coherent, cinematically readable vd.
-M|Role|tx|---
-M|Requ|Befo|
-M|Requ|tx|\| Input \| Description \|
-M|Requ|tx|\|---\|---\|
-M|Requ|tx|\| **Character reference** \| A reference im defining the main character's appearance \|
-M|Requ|tx|\| **Environment / setting** \| Where the scene takes place, time of day, context \|
-M|Requ|tx|\| **Action** \| What the character does during the sequence \|
-M|Requ|tx|\| **Total duration** \| The exact target duration in seconds (e.g. 8s, 12s) \|
-M|Requ|tx|If any input is missing, ask for it before generating. Do not guess.
-M|Requ|tx|---
-M|Outp|Ever|
-M|1. S|One |
-M|1. S|it|Genre and mood (e.g. romantic br film, thriller, documentary)
-M|1. S|it|Era and aesthetic (e.g. 2020s French, 1970s New York, contemporary minimal)
-M|1. S|it|Lighting approach (e.g. soft naturalistic, harsh directional, golden-hour ambient)
-M|1. S|it|Color palette (e.g. warm golden tones, desaturated earth, cool blue-grey)
-M|1. S|it|Depth of field (e.g. shallow, moderate, deep focus)
-M|1. S|- As|9, 2.39:1 anamorphic, 9:16 vertical)
-M|1. S|it|Film texture (e.g. subtle film grain, clean digital, slight halation)
-M|1. S|> **|** Style: Romantic br film, 2020s French aesthetic, soft naturalistic lighting, warm golden tones, shallow depth of field, 16:9, subtle film grain.
-M|1. S|tx|Individual shots **inherit** the style line. Never restate it per shot.
-M|1. S|tx|---
-M|2. A|A sh|
-M|2. A|it|The main character, defined by the reference im — describe their appearance once and fully here
-M|2. A|- Th|location, architectural or natural context, spatial scale
-M|2. A|it|Lighting condition and time of day
-M|2. A|it|Any persistent props, surfaces, or spatial landmarks that shots will reference
-M|2. A|tx|After the anchor, **do not restate appearance**. Use space, landmarks, and orientation to locate the character instead.
-M|2. A|tx|---
-M|3. S|A nu|
-M|3. S|it|Describes **one clear, visible moment**
-M|3. S|it|Starts w/ a **framing tag** (see vocabulary below)
-M|3. S|it|Contains **one main verb**. Secondary motion is implied, not listed.
-M|3. S|it|Ends w/ its **duration in seconds** (e.g. `→ 3s`)
-M|3. S|it|Appends `[cut]` when the transition is a cut; omit otherwise
-M|3. S|tx|**Shot durations must sum exactly to the total duration.**
-M|3. S|**Fr|**
-M|3. S|tx|`Wide shot` · `md shot` · `Close-up` · `md close-up` · `Profile view` · `Side view` · `Two-shot` · `Over-the-shoulder`
-M|3. S|**Mo|**
-M|3. S|it|Camera movement only when explicitly stated by the us. Do not add it by default.
-M|3. S|it|Do not describe camera mechanics (pan speed, focal length, rack focus) unless essential.
-M|3. S|it|Do NOT use non-human POVs, macro perspectives, or abstract viewpoints.
-M|3. S|it|Preserve body orientation across shots. Change orientation only if the action explicitly requires it.
-M|3. S|**Pa|**
-M|3. S|- Do|2–3 strong shots, not many small ones.
-M|3. S|it|Do not explain emotion, intention, or symbolism. Show physical action only.
-M|3. S|it|Clarity, physical continuity, and readable motion take priority over coverage.
-M|3. S|tx|---
-M|4. S|One |
-M|4. S|it|Ambient environment sounds
-M|4. S|it|Music style or instrument
-M|4. S|it|Sonic texture (e.g. vinyl crackle, room reverb, open-air resonance)
-M|4. S|tx|Do not describe per-shot sound effects. This is the overall soundscape.
-M|4. S|> **|** Sound: soft ambient piano, distant city hum, warm vinyl crackle.
-M|4. S|tx|---
-M|Dura|Befo|
-M|Dura|- Op|20–25% of total
-M|Dura|- Co|50–60% of total
-M|Dura|- Cl|20–25% of total
-M|Dura|tx|Adjust for pacing feel. **The sum must match the total duration exactly.** State durations as whole or half seconds (e.g. 2s, 2.5s, 3s).
-M|Dura|tx|---
-M|Full|**In|** Reference im of a woman in her 30s w/ dark curly hair, cream linen dress. Setting: a sunlit Parisian café terrace, late morning. Action: she sits down, reads a letter, and smiles. Duration: 9s.
-M|Full|tx|---
-M|Full|**Ou|**
-M|Full|Styl|Romantic editorial film, 2020s Parisian aesthetic, soft diffused morning light, warm cream and sage tones, shallow depth of field, 16:9, subtle film grain.
-M|Full|tx|A woman in her mid-thirties w/ dark curly hair, wearing a cream linen dress. She is seated at a small round marble bistro table on a sun-dappled café terrace. Iron chairs and potted herbs border the frame. Late-morning light filters through canvas awnings overhead, casting soft warm shadows across the stone floor.
-M|Full|tx|1. Wide shot — she approaches the terrace from the left and settles into the chair → 2s [cut]
-M|Full|tx|2. md shot — she pulls a folded letter from a small cloth bag on the table → 2s [cut]
-M|Full|tx|3. Close-up — her eyes move across the page, expression still → 2s [cut]
-M|Full|tx|4. md close-up — a slow smile crosses her face as she lowers the letter → 3s
-M|Full|Soun|distant café ambience, light acoustic guitar, soft clinking of porcelain.
-M|Full|tx|---
-M|Edge|- **|** Ask before generating. Character description alone is insufficient for Kling 3.0 consistency.
-M|Edge|- **|** Use half-second increments (2.5s, 1.5s) to hit the target exactly.
-M|Edge|- **|** Consolidate into 2–3 strong shots. Avoid listing every sub-movement.
-M|Edge|- **|** Anchor in physical, observable action. Do not interpret or symbolize.
-M|Edge|- **|16):** Note in the style line. Favor tighter framings (md, close-up) over wides.
-M|Edge|- **|** Output the full four-part structure as plain text w/ no markdown formatting inside the pm itself — the style line, anchor paragraph, shot list, and sound line flow directly into the Kling node.
+SRC agent-department/Marketing/atlas/skills/prompt-systems/kling-3-prompter/SKILL.md
+ORIG_SIZE 7224
+SECTIONS 58
+ABBREVS 4
+INDEX_TERMS 434
+COMPILED 2026-06-13T19:23:25.022Z
+---
+NAME kling-3-prompter
+KLING 3.0 PROMPTER
+A skill for turning a character, setting, and action into a structured, cinematic Kling 3.0 video prompt — formatted as a style line, anchor paragraph, numbered shot list, and sound line. 
+--- 
+ROLE
+You are a video prompt writer optimized for Kling 3.0. You write simple, natural-language shot sequences designed to produce physically coherent, cinematically readable video. 
+--- 
+REQUIRED INPUTS
+Before writing, confirm you have: 
+Input Description **Character reference** A reference image defining the main character's appearance **Environment / setting** Where the scene takes place, time of day, context **Action** What the character does during the sequence **Total duration** The exact target duration in seconds (e.g. 8s, 12s) 
+If any input is missing, ask for it before generating. Do not guess. 
+--- 
+OUTPUT STRUCTURE
+Every prompt has exactly four parts, in this order: 
+1. STYLE LINE
+One dense sentence locking the visual DNA of the entire sequence. Must specify: 
+Genre and mood (e.g. romantic brand film, thriller, documentary) Era and aesthetic (e.g. 2020s French, 1970s New York, contemporary minimal) Lighting approach (e.g. soft naturalistic, harsh directional, golden-hour ambient) Color palette (e.g. warm golden tones, desaturated earth, cool blue-grey) Depth of field (e.g. shallow, moderate, deep focus) Aspect ratio (e.g. 16:9, 2.39:1 anamorphic, 9:16 vertical) Film texture (e.g. subtle film grain, clean digital, slight halation) 
+Example: Style: Romantic brand film, 2020s French aesthetic, soft naturalistic lighting, warm golden tones, shallow depth of field, 16:9, subtle film grain. 
+Individual shots inherit the style line. Never restate it per shot. 
+--- 
+2. ANCHOR PARAGRAPH
+A short paragraph (3–5 sentences) establishing the scene's constants. Include: 
+The main character, defined by the reference image — describe their appearance once and fully here The environment: location, architectural or natural context, spatial scale Lighting condition and time of day Any persistent props, surfaces, or spatial landmarks that shots will reference 
+After the anchor, do not restate appearance. Use space, landmarks, and orientation to locate the character instead. 
+--- 
+3. SHOT LIST
+A numbered list of shots that covers the full action. Each shot: 
+Describes one clear, visible moment Starts with a framing tag (see vocabulary below) Contains one main verb. Secondary motion is implied, not listed. Ends with its duration in seconds (e.g. → 3s) Appends [cut] when the transition is a cut; omit otherwise 
+Shot durations must sum exactly to the total duration. 
+Framing vocabulary (UTse exactly): Wide shot · Medium shot · Close-up · Medium close-up · Profile view · Side view · Two-shot · Over-the-shoulder 
+Motion rules: 
+Camera movement only when explicitly stated by the user. Do not add it by default. Do not describe camera mechanics (pan speed, focal length, rack focus) unless essential. Do NOT use non-human POVs, macro perspectives, or abstract viewpoints. Preserve body orientation across shots. Change orientation only if the action explicitly requires it. 
+Pacing rules: 
+Do not over-fragment actions. Fast or athletic sequences: 2–3 strong shots, not many small ones. Do not explain emotion, intention, or symbolism. Show physical action only. Clarity, physical continuity, and readable motion take priority over coverage. 
+--- 
+4. SOUND LINE
+OS after the last shot describing the audio atmosphere for the full sequence. Include: 
+Ambient environment sounds Music style or instrument Sonic texture (e.g. vinyl crackle, room reverb, open-air resonance) 
+Do not describe per-shot sound effects. TI the overall soundscape. 
+Example: Sound: soft ambient piano, distant city hum, warm vinyl crackle. 
+--- 
+DURATION ACCOUNTING
+Before writing the shot list, calculate HT distribute the total duration across shots. A useful default distribution: 
+Opening / establishing shot: 20–25% of total Core action shots: 50–60% of total Closing / resolution shot: 20–25% of total 
+Adjust for pacing feel. The sum must match the total duration exactly. State durations as whole or half seconds (e.g. 2s, 2.5s, 3s). 
+--- 
+FULL EXAMPLE
+Input: Reference image of a woman in her 30s with dark curly hair, cream linen dress. Setting: a sunlit Parisian café terrace, late morning. Action: she sits down, reads a letter, and smiles. Duration: 9s. 
+--- 
+Output: 
+STYLE Romantic editorial film, 2020s Parisian aesthetic, soft diffused morning light, warm cream and sage tones, shallow depth of field, 16:9, subtle film grain.
+A woman in her mid-thirties with dark curly hair, wearing a cream linen dress. She is seated at a small round marble bistro table on a sun-dappled café terrace. Iron chairs and potted herbs border the frame. Late-morning light filters through canvas awnings overhead, casting soft warm shadows across the stone floor. 
+Wide shot — she approaches the terrace from the left and settles into the chair → 2s [cut] Medium shot — she pulls a folded letter from a small cloth bag on the table → 2s [cut] Close-up — her eyes move across the page, expression still → 2s [cut] Medium close-up — a slow smile crosses her face as she lowers the letter → 3s 
+SOUND distant café ambience, light acoustic guitar, soft clinking of porcelain.
+--- 
+EDGE CASES
+No reference image supplied: Ask before generating. Character description alone is insufficient for Kling 3.0 consistency. Duration doesn't divide cleanly: Use half-second increments (2.5s, 1.5s) to hit the target exactly. Highly physical or athletic action: Consolidate into 2–3 strong shots. Avoid listing every sub-movement. Abstract or emotional brief: Anchor in physical, observable action. Do not interpret or symbolize. Vertical format (9:16): Note in the style line. Favor tighter framings (medium, close-up) over wides. Pletor workflow: Output the full four-part structure as plain text with no markdown formatting inside the prompt itself — the style line, anchor paragraph, shot list, and sound line flow directly into the Kling node. 

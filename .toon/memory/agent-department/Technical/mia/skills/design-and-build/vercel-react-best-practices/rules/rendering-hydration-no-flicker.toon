@@ -1,67 +1,20 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-hydration-no-flicker.md savings=-1%
-M||tx|---
-M||titl|Prevent Hydration Mismatch w/o Flickering
-M||impa|md
-M||impa|avoids visual flicker and hydration er
-M||tags|rendering, ssr, hydration, localStorage, flicker
-M||tx|---
-M|Prev|tx|When rendering cn that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before rc hydrates.
-M|Prev|**In|**
-M|Prev|tx|```tsx
-M|Prev|func|{ children: ReactNode }) {
-M|Prev|tx|// localStorage is not available on server - throws er
-M|Prev|tx|const theme = localStorage.getItem('theme') \|\| 'light'
-M|Prev|tx|return (
-M|Prev|tx|<div className={theme}>
-M|Prev|tx|{children}
-M|Prev|tx|</div>
-M|Prev|tx|)
-M|Prev|tx|}
-M|Prev|tx|```
-M|Prev|tx|Server-side rendering will fail bc `localStorage` is undefined.
-M|Prev|**In|**
-M|Prev|tx|```tsx
-M|Prev|func|{ children: ReactNode }) {
-M|Prev|tx|const [theme, setTheme] = useState('light')
-M|Prev|tx|useEffect(() => {
-M|Prev|tx|// Runs after hydration - causes visible flash
-M|Prev|tx|const stored = localStorage.getItem('theme')
-M|Prev|tx|if (stored) {
-M|Prev|tx|setTheme(stored)
-M|Prev|tx|}
-M|Prev|tx|}, [])
-M|Prev|tx|return (
-M|Prev|tx|<div className={theme}>
-M|Prev|tx|{children}
-M|Prev|tx|</div>
-M|Prev|tx|)
-M|Prev|tx|}
-M|Prev|tx|```
-M|Prev|tx|cp first renders w/ default value (`light`), then updates after hydration, causing a visible flash of incorrect cn.
-M|Prev|**Co|**
-M|Prev|tx|```tsx
-M|Prev|func|{ children: ReactNode }) {
-M|Prev|tx|return (
-M|Prev|tx|<>
-M|Prev|tx|<div id="theme-wrapper">
-M|Prev|tx|{children}
-M|Prev|tx|</div>
-M|Prev|tx|<script
-M|Prev|tx|dangerouslySetInnerHTML={{
-M|Prev|__ht|`
-M|Prev|tx|(fn() {
-M|Prev|tx|try {
-M|Prev|tx|var theme = localStorage.getItem('theme') \|\| 'light';
-M|Prev|tx|var el = document.getElementById('theme-wrapper');
-M|Prev|tx|if (el) el.className = theme;
-M|Prev|tx|} catch (e) {}
-M|Prev|tx|})();
-M|Prev|tx|`,
-M|Prev|tx|}}
-M|Prev|tx|/>
-M|Prev|tx|</>
-M|Prev|tx|)
-M|Prev|tx|}
-M|Prev|tx|```
-M|Prev|tx|The inline script executes synchronously before showing the element, ensuring the DOM already has the correct value. No flickering, no hydration mismatch.
-M|Prev|tx|This pattern is esp useful for theme toggles, us preferences, authentication states, and any client-only data that shd render immediately w/o flashing default values.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-hydration-no-flicker.md
+ORIG_SIZE 2308
+SECTIONS 14
+ABBREVS 0
+INDEX_TERMS 84
+COMPILED 2026-06-13T19:23:25.463Z
+---
+TITLE Prevent Hydration Mismatch Without Flickering
+PREVENT HYDRATION MISMATCH WITHOUT FLICKERING
+When rendering content that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before React hydrates. 
+Incorrect (breaks SSR): 
+CODE tsx 256CHARS
+Server-side rendering will fail because localStorage is undefined. 
+Incorrect (visual flickering): 
+CODE tsx 364CHARS
+Component first renders with default value (light), then updates after hydration, causing a visible flash of incorrect content. 
+Correct (no flicker, no hydration mismatch): 
+CODE tsx 536CHARS
+The inline script executes synchronously before showing the element, ensuring the DOM already has the correct value. No flickering, no hydration mismatch. 
+This pattern is especially useful for theme toggles, user preferences, authentication states, and any client-only data that should render immediately without flashing default values. 

@@ -1,41 +1,15 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/bundle-preload.md savings=-3%
-M||tx|---
-M||titl|Preload Based on us Intent
-M||impa|md
-M||impa|reduces perceived latency
-M||tags|bundle, preload, us-intent, hover
-M||tx|---
-M|Prel|tx|Preload heavy bundles before they're needed to reduce perceived latency.
-M|Prel|**Ex|**
-M|Prel|tx|```tsx
-M|Prel|func|{ onClick: () => void }) {
-M|Prel|tx|const preload = () => {
-M|Prel|tx|if (typeof window !== 'undefined') {
-M|Prel|tx|void import('./monaco-editor')
-M|Prel|tx|}
-M|Prel|tx|}
-M|Prel|tx|return (
-M|Prel|tx|<button
-M|Prel|tx|onMouseEnter={preload}
-M|Prel|tx|onFocus={preload}
-M|Prel|tx|onClick={onClick}
-M|Prel|tx|>
-M|Prel|tx|Open Editor
-M|Prel|tx|</button>
-M|Prel|tx|)
-M|Prel|tx|}
-M|Prel|tx|```
-M|Prel|**Ex|**
-M|Prel|tx|```tsx
-M|Prel|func|Props) {
-M|Prel|tx|useEffect(() => {
-M|Prel|tx|if (flags.editorEnabled && typeof window !== 'undefined') {
-M|Prel|tx|void import('./monaco-editor').then(mod => mod.init())
-M|Prel|tx|}
-M|Prel|tx|}, [flags.editorEnabled])
-M|Prel|tx|return <FlagsContext.pr value={flags}>
-M|Prel|tx|{children}
-M|Prel|tx|</FlagsContext.pr>
-M|Prel|tx|}
-M|Prel|tx|```
-M|Prel|tx|The `typeof window !== 'undefined'` check prevents bundling preloaded modules for SSR, optimizing server bundle size and bd speed.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/bundle-preload.md
+ORIG_SIZE 1149
+SECTIONS 9
+ABBREVS 0
+INDEX_TERMS 41
+COMPILED 2026-06-13T19:23:25.447Z
+---
+TITLE Preload Based on User Intent
+PRELOAD BASED ON USER INTENT
+Preload heavy bundles before they're needed to reduce perceived latency. 
+Example (preload on hover/focus): 
+CODE tsx 321CHARS
+Example (preload when feature flag is enabled): 
+CODE tsx 324CHARS
+The typeof window !== 'undefined' check prevents bundling preloaded modules for SSR, optimizing server bundle size and build speed. 

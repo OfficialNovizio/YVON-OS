@@ -1,115 +1,45 @@
-#MEM id=asset-delivery source=/root/yvon/agent-department/Marketing/pixel/skills/custom/asset-delivery/SKILL.md savings=-6%
-M||tx|---
-M||name|asset-delivery
-M||desc|File naming conventions, folder structure, file size limits, and delivery checklist for every yv asset. Covers images and vd. Version control for at revision cycles. Load before organizing or delivering any batch.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|An asset Stark cannot find is an asset that doesn't exist. An asset w/ the wrong name is an asset that will be used in the wrong context. This skill makes delivery consistent so every file is immediately usable w/o asking px what it is.
-M|Purp|tx|---
-M|Stan|tx|```
-M|Stan|tx|[vt]-[cg-slug]-[platform]-[##].[ext]
-M|Stan|tx|```
-M|Stan|**Ex|**
-M|Stan|tx|```
-M|Stan|tx|nz-summer26-feed-01.jpg
-M|Stan|tx|nz-summer26-feed-02.jpg
-M|Stan|tx|nz-summer26-stories-01.jpg
-M|Stan|tx|hb-launch-linkedin-01.jpg
-M|Stan|tx|hb-launch-yt-thumb-01.jpg
-M|Stan|tx|```
-M|Rule|tx|\| Rule \| Detail \|
-M|Rule|tx|\|------\|--------\|
-M|Rule|tx|\| All lowercase \| No capitals, no spaces \|
-M|Rule|tx|\| Hyphens only \| No underscores, no dots in the name segment \|
-M|Rule|tx|\| Two-digit numbering \| `01`, `02` — not `1`, `2` \|
-M|Rule|tx|\| cg slug \| Short, recognizable, consistent across the batch (e.g., `summer26`, `launch`, `br-awareness`) \|
-M|Rule|tx|\| Platform code \| See platform code reference below \|
-M|Rule|tx|\| Extension \| `.jpg` for images (not `.jpeg`), `.mp4` for vd \|
-M|Plat|tx|\| Platform \| Code \|
-M|Plat|tx|\|---------\|------\|
-M|Plat|tx|\| Instagram Feed \| `feed` \|
-M|Plat|tx|\| Instagram Stories \| `stories` \|
-M|Plat|tx|\| Instagram Reels \| `reels` \|
-M|Plat|tx|\| TikTok \| `tiktok` \|
-M|Plat|tx|\| LinkedIn Post \| `linkedin` \|
-M|Plat|tx|\| YouTube Thumbnail \| `yt-thumb` \|
-M|Plat|tx|\| YouTube Shorts \| `yt-shorts` \|
-M|Plat|tx|\| Multi-use / no specific platform \| `multi` \|
-M|Vers|Appe|
-M|Vers|tx|```
-M|Vers|tx|nz-summer26-feed-v2-01.jpg   ← v2 revision of the full batch
-M|Vers|tx|nz-summer26-feed-v2-02.jpg
-M|Vers|tx|```
-M|Vers|tx|Never overwrite v1 files. Keep all versions until Stark confirms which version is used.
-M|Vers|tx|---
-M|Fold|Ever|
-M|Fold|tx|```
-M|Fold|tx|[vt]/
-M|Fold|tx|[cg-slug]/
-M|Fold|tx|images/
-M|Fold|tx|feed/
-M|Fold|tx|stories/
-M|Fold|tx|multi/
-M|Fold|tx|vd/
-M|Fold|tx|reels/
-M|Fold|tx|tiktok/
-M|Fold|tx|linkedin/
-M|Fold|tx|raw/              ← original generation output (keep 14 days, then archive)
-M|Fold|tx|rejected/         ← failed QC, named w/ rejection reason
-M|Fold|tx|upscaled/         ← post-upscale, pre-format (intermediate stage)
-M|Fold|tx|```
-M|Fold|**Ex|**
-M|Fold|tx|```
-M|Fold|tx|nz/
-M|Fold|tx|summer26/
-M|Fold|tx|images/
-M|Fold|tx|feed/
-M|Fold|tx|nz-summer26-feed-01.jpg
-M|Fold|tx|nz-summer26-feed-02.jpg
-M|Fold|tx|stories/
-M|Fold|tx|nz-summer26-stories-01.jpg
-M|Fold|tx|vd/
-M|Fold|tx|reels/
-M|Fold|tx|nz-summer26-reels-clip01-9x16.mp4
-M|Fold|tx|```
-M|Fold|tx|---
-M|Imag|tx|\| Platform \| Max file size \| Format \| Notes \|
-M|Imag|tx|\|---------\|--------------\|--------\|-------\|
-M|Imag|tx|\| Instagram Feed \| 8 MB \| JPG or PNG \| Keep under 3 MB for fast load \|
-M|Imag|tx|\| Instagram Stories \| 30 MB \| JPG or PNG \| \|
-M|Imag|tx|\| TikTok (cover im) \| 10 MB \| JPG \| \|
-M|Imag|tx|\| LinkedIn Post \| 5 MB \| JPG or PNG \| \|
-M|Imag|tx|\| YouTube Thumbnail \| 2 MB \| JPG or PNG \| \|
-M|Imag|**De|** JPG at 85% qual. If file size is over limit after 85% → reduce to 80%. Never below 75% — visible qual loss.
-M|vd|tx|\| Platform \| Max file size \| Format \| Frame rate \|
-M|vd|tx|\|---------\|--------------\|--------\|-----------\|
-M|vd|tx|\| Instagram Reels \| 4 GB \| MP4 \| 24–30 fps \|
-M|vd|tx|\| TikTok \| 287.6 MB (< 1 min) \| MP4 \| 24–30 fps \|
-M|vd|tx|\| LinkedIn vd \| 5 GB \| MP4 \| 24–30 fps \|
-M|vd|tx|\| YouTube Shorts \| 256 MB \| MP4 \| 24–30 fps \|
-M|vd|tx|---
-M|Deli|Run |
-M|Deli|tx|```
-M|Deli|[ ] |[vt]-[cg]-[platform]-[##].[ext]
-M|Deli|tx|[ ] Folder structure created and files in correct subfolders
-M|Deli|tx|[ ] File sizes checked against platform limits
-M|Deli|tx|[ ] All images exported at correct dimensions for target platform
-M|Deli|tx|[ ] All vd files exported at correct ratio and resolution
-M|Deli|tx|[ ] QC pass rate ≥ 80% — if not, flagged to at before delivery
-M|Deli|tx|[ ] Rejected files in /rejected/ w/ rejection reason in filename
-M|Deli|tx|[ ] Version is clear — v1 if first delivery, v2+ if revision
-M|Deli|[ ] |batch name, im count, vd count, platform breakdown
-M|Deli|tx|```
-M|Deli|tx|---
-M|Deli|Send|
-M|Deli|tx|```
-M|Deli|Deli|[vt] — [cg] — [date]
-M|Deli|cn|
-M|Deli|- Im|[N] ([platform breakdown: N feed, N stories, N multi])
-M|Deli|- Vi|[N] ([platform breakdown: N reels, N tiktok])
-M|Deli|QC s|
-M|Deli|- Pa|[%]
-M|Deli|- Re|[N] — [reason if notable]
-M|Deli|Loca|[folder path]
-M|Deli|Note|[anything Stark shd know — variation attempted, at flag sent if applicable]
-M|Deli|tx|```
+SRC agent-department/Marketing/pixel/skills/custom/asset-delivery/SKILL.md
+ORIG_SIZE 4582
+SECTIONS 39
+ABBREVS 3
+INDEX_TERMS 166
+COMPILED 2026-06-13T19:23:25.167Z
+---
+NAME asset-delivery
+PURPOSE
+An asset Stark cannot find is an asset that doesn't exist. An asset with the wrong name is an asset that will be used in the wrong context. This skill makes delivery consistent so every file is immediately usable without asking Pixel WII. 
+--- 
+FILE NAMING CONVENTION
+STANDARD FORMAT
+CODE  48CHARS
+CODE  154CHARS
+Examples: 
+RULES
+Rule Detail All lowercase No capitals, no spaces Hyphens only No underscores, no dots in the name segment Two-digit numbering `01`, `02` — not `1`, `2` Campaign slug Short, recognizable, consistent across the batch (e.g., `summer26`, `launch`, `brand-awareness`) Platform code See platform code reference below Extension `.jpg` for images (not `.jpeg`), `.mp4` for video 
+PLATFORM CODES
+Platform Code Instagram Feed `feed` Instagram Stories `stories` Instagram Reels `reels` TikTok `tiktok` LinkedIP `linkedin` YouTube Thumbnail `yt-thumb` YouTube Shorts `yt-shorts` Multi-use / no specific platform `multi` 
+VERSION CONTROL — WHEN ATLAS REQUESTS REVISION
+Append -v2, -v3 to the base name, not the number: 
+CODE  98CHARS
+Never overwrite v1 files. Keep all versions until Stark confirms which version is used. 
+--- 
+FOLDER STRUCTURE
+Every delivery is organized by venture → campaign → platform: 
+CODE  349CHARS
+CODE  245CHARS
+Examples: 
+--- 
+FILE SIZE LIMITS — PLATFORM SPECS
+IMAGES
+Platform Max file size Format Notes Instagram Feed 8 MB JPG or PNG Keep under 3 MB for fast load Instagram Stories 30 MB JPG or PNG TikTok (cover image) 10 MB JPG LinkedIP 5 MB JPG or PNG YouTube Thumbnail 2 MB JPG or PNG 
+Default export: JPG at 85% quality. If file size is over limit after 85% → reduce to 80%. Never below 75% — visible quality loss. 
+VIDEO
+Platform Max file size Format Frame rate Instagram Reels 4 GB MP4 24–30 fps TikTok 287.6 MB (< 1 min) MP4 24–30 fps LinkedIn Video 5 GB MP4 24–30 fps YouTube Shorts 256 MB MP4 24–30 fps 
+--- 
+DELIVERY CHECKLIST
+Run before handing off any batch to Stark: 
+CODE  603CHARS
+--- 
+DELIVERY NOTE FORMAT
+Send to Stark at every delivery: 
+CODE  357CHARS

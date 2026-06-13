@@ -1,149 +1,51 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/seo-audit/references/ai-writing-detection.md savings=-12%
-M|AI W|tx|Words, phrases, and punctuation patterns commonly associated w/ AI-generated text. Avoid these to ensure writing sounds natural and human.
-M|AI W|Sour|Grammarly (2025), Microsoft 365 Life Hacks (2025), GPTHuman (2025), Walter Writes (2025), Textero (2025), Plagiarism Today (2025), Rolling Stone (2025), MDPI Blog (2025)
-M|AI W|tx|---
-M|Cont|- Em|The Primary AI Tell
-M|Cont|it|Overused Verbs
-M|Cont|it|Overused Adjectives
-M|Cont|it|Overused Transitions and Connectors
-M|Cont|it|Phrases That Signal AI Writing (Opening Phrases, Transitional Phrases, Concluding Phrases, Structural Patterns)
-M|Cont|it|Filler Words and Empty Intensifiers
-M|Cont|it|Academic-Specific AI Tells
-M|Cont|it|How to Self-Check
-M|Em D|tx|**The em dash (—) has become one of the most reliable markers of AI-generated cn.**
-M|Em D|tx|Em dashes are longer than hyphens (-) and are used for emphasis, interruptions, or parenthetical information. While they have legitimate uses in writing, AI md drastically overuse them.
-M|Why |it|AI md were trained on edited books, academic papers, and style guides where em dashes appear frequently
-M|Why |it|AI uses em dashes as a shortcut for sentence variety instead of commas, colons, or parentheses
-M|Why |it|Most human writers rarely use em dashes bc they don't exist as a standard keyboard key
-M|Why |it|The overuse is so consistent that it has become the unofficial signature of ChatGPT writing
-M|What|tx|\| Instead of \| Use \|
-M|What|tx|\|------------\|-----\|
-M|What|tx|\| The results—which were surprising—showed... \| The results, which were surprising, showed... \|
-M|What|tx|\| This approach—unlike traditional methods—allows... \| This approach, unlike traditional methods, allows... \|
-M|What|tx|\| The study found—as expected—that... \| The study found, as expected, that... \|
-M|What|tx|\| Communication skills—both written and verbal—are essential \| Communication skills (both written and verbal) are essential \|
-M|Guid|it|Use commas for most parenthetical information
-M|Guid|it|Use colons to introduce explanations or lists
-M|Guid|it|Use parentheses for supplementary information
-M|Guid|it|Reserve em dashes for rare, deliberate emphasis only
-M|Guid|it|If you find yourself using more than one em dash per page, revise
-M|Guid|tx|---
-M|Over|tx|\| Avoid \| Use Instead \|
-M|Over|tx|\|-------\|-------------\|
-M|Over|tx|\| delve (into) \| explore, examine, investigate, look at \|
-M|Over|tx|\| leverage \| use, apply, draw on \|
-M|Over|tx|\| optimise \| improve, refine, enhance \|
-M|Over|tx|\| utilise \| use \|
-M|Over|tx|\| facilitate \| help, enable, support \|
-M|Over|tx|\| foster \| encourage, support, develop, nurture \|
-M|Over|tx|\| bolster \| strengthen, support, reinforce \|
-M|Over|tx|\| underscore \| emphasise, highlight, stress \|
-M|Over|tx|\| unveil \| reveal, show, introduce, present \|
-M|Over|tx|\| navigate \| manage, handle, work through \|
-M|Over|tx|\| streamline \| simplify, make more efficient \|
-M|Over|tx|\| enhance \| improve, strengthen \|
-M|Over|tx|\| endeavour \| try, attempt, effort \|
-M|Over|tx|\| ascertain \| find out, determine, establish \|
-M|Over|tx|\| elucidate \| explain, clarify, make clear \|
-M|Over|tx|---
-M|Over|tx|\| Avoid \| Use Instead \|
-M|Over|tx|\|-------\|-------------\|
-M|Over|tx|\| robust \| strong, reliable, thorough, solid \|
-M|Over|tx|\| comprehensive \| complete, thorough, full, detailed \|
-M|Over|tx|\| pivotal \| key, ct, central, important \|
-M|Over|tx|\| crucial \| important, key, essential, ct \|
-M|Over|tx|\| vital \| important, essential, necessary \|
-M|Over|tx|\| transformative \| sig, important, major \|
-M|Over|tx|\| cutting-edge \| new, advanced, recent, modern \|
-M|Over|tx|\| groundbreaking \| new, original, sig \|
-M|Over|tx|\| innovative \| new, original, creative \|
-M|Over|tx|\| seamless \| smooth, easy, effortless \|
-M|Over|tx|\| intricate \| complex, detailed, complicated \|
-M|Over|tx|\| nuanced \| subtle, complex, detailed \|
-M|Over|tx|\| multifaceted \| complex, varied, diverse \|
-M|Over|tx|\| holistic \| complete, whole, comprehensive \|
-M|Over|tx|---
-M|Over|tx|\| Avoid \| Use Instead \|
-M|Over|tx|\|-------\|-------------\|
-M|Over|tx|\| furthermore \| also, in addition, and \|
-M|Over|tx|\| moreover \| also, and, besides \|
-M|Over|tx|\| notwithstanding \| despite, even so, still \|
-M|Over|tx|\| that being said \| however, but, still \|
-M|Over|tx|\| at its core \| essentially, fundamentally, basically \|
-M|Over|tx|\| to put it simply \| in short, simply put \|
-M|Over|tx|\| it is worth noting that \| note that, importantly \|
-M|Over|tx|\| in the realm of \| in, within, regarding \|
-M|Over|tx|\| in the landscape of \| in, within \|
-M|Over|tx|\| in today's [anything] \| currently, now, today \|
-M|Over|tx|---
-M|Open|it|"In today's fast-paced world..."
-M|Open|it|"In today's digital age..."
-M|Open|it|"In an era of..."
-M|Open|it|"In the ever-evolving landscape of..."
-M|Open|it|"In the realm of..."
-M|Open|it|"It's important to note that..."
-M|Open|it|"Let's delve into..."
-M|Open|it|"Imagine a world where..."
-M|Tran|it|"That being said..."
-M|Tran|it|"w/ that in mind..."
-M|Tran|it|"It's worth mentioning that..."
-M|Tran|it|"At its core..."
-M|Tran|it|"To put it simply..."
-M|Tran|it|"In essence..."
-M|Tran|it|"This begs the question..."
-M|Conc|it|"In conclusion..."
-M|Conc|it|"To sum up..."
-M|Conc|it|"By [doing X], you can [achieve Y]..."
-M|Conc|it|"In the final al..."
-M|Conc|it|"All things considered..."
-M|Conc|it|"At the end of the day..."
-M|Stru|it|"Whether you're a [X], [Y], or [Z]..." (listing three examples after "whether")
-M|Stru|it|"It's not just [X], it's also [Y]..."
-M|Stru|it|"Think of [X] as [elaborate metaphor]..."
-M|Stru|- St|"By understanding X, you can Y..."
-M|Stru|tx|---
-M|Fill|Thes|
-M|Fill|it|absolutely
-M|Fill|it|actually
-M|Fill|it|basically
-M|Fill|it|certainly
-M|Fill|it|clearly
-M|Fill|it|definitely
-M|Fill|it|essentially
-M|Fill|it|extremely
-M|Fill|it|fundamentally
-M|Fill|it|incredibly
-M|Fill|it|interestingly
-M|Fill|it|naturally
-M|Fill|it|obviously
-M|Fill|it|quite
-M|Fill|it|really
-M|Fill|it|significantly
-M|Fill|it|simply
-M|Fill|it|surely
-M|Fill|it|truly
-M|Fill|it|ultimately
-M|Fill|it|undoubtedly
-M|Fill|it|very
-M|Fill|tx|---
-M|Acad|tx|\| Avoid \| Use Instead \|
-M|Acad|tx|\|-------\|-------------\|
-M|Acad|tx|\| shed light on \| clarify, explain, reveal \|
-M|Acad|tx|\| pave the way for \| enable, allow, make possible \|
-M|Acad|tx|\| a myriad of \| many, numerous, various \|
-M|Acad|tx|\| a plethora of \| many, numerous, several \|
-M|Acad|tx|\| paramount \| very important, essential, ct \|
-M|Acad|tx|\| pertaining to \| abt, regarding, concerning \|
-M|Acad|tx|\| prior to \| before \|
-M|Acad|tx|\| subsequent to \| after \|
-M|Acad|tx|\| in light of \| bc of, given, considering \|
-M|Acad|tx|\| w/ respect to \| abt, regarding, for \|
-M|Acad|tx|\| in terms of \| regarding, for, abt \|
-M|Acad|tx|\| the fact that \| that (or rewrite sentence) \|
-M|Acad|tx|---
-M|How |tx|1. Read your text aloud. If phrases sound unnatural in speech, revise them
-M|How |2. A|"wld I say this in a conversation w/ a colleague?"
-M|How |tx|3. Check for repetitive sentence structures
-M|How |tx|4. Look for clusters of the words listed above
-M|How |tx|5. Ensure varied sentence lengths (not all similar length)
-M|How |tx|6. Verify each intensifier adds genuine meaning
+SRC agent-department/Marketing/kai/skills/marketing-and-growth/seo-audit/references/ai-writing-detection.md
+ORIG_SIZE 6528
+SECTIONS 44
+ABBREVS 8
+INDEX_TERMS 420
+COMPILED 2026-06-13T19:23:25.054Z
+---
+AI WRITING DETECTION
+Words, phrases, and punctuation patterns commonly associated with AI-generated text. Avoid these to ensure writing sounds natural and human. 
+SOURCES Grammarly (2025), Microsoft 365 Life Hacks (2025), GPTHuman (2025), Walter Writes (2025), Textero (2025), Plagiarism Today (2025), Rolling Stone (2025), MDPI Blog (2025)
+--- 
+CONTENTS
+EM_DASHES The Primary AI Tell
+EM DASHES: THE PRIMARY AI TELL
+The em dash (—) has become one of the most reliable markers of AI-generated content. 
+Em dashes are longer than hyphens (-) and are used for emphasis, interruptions, or parenthetical information. While they have legitimate uses in writing, AI models drastically overUTm. 
+WHY EM DASHES SIGNAL AI WRITING
+AI models were trained on edited books, academic papers, and style guides where em dashes appear frequently AI uses em dashes as a shortcut for sentence variety IO commas, colons, or parentheses Most human writers rarely use em dashes becaUTy don't exist as a standard keyboard key The overuse is so consistent that it has become the unofficial signature of ChatGPT writing 
+WHAT TO DO INSTEAD
+IO UT results—which were surprising—showed... The results, which were surprising, showed... This approach—unlike traditional methods—allows... This approach, unlike traditional methods, allows... The study found—as expected—that... The study found, as expected, that... Communication skills—both written and verbal—are essential Communication skills (both written and verbal) are essential 
+GUIDELINES
+Use commas for most parenthetical information Use colons to introduce explanations or lists Use parentheses for supplementary information Reserve em dashes for rare, deliberate emphasis only If you find yourself using more than one em dash per page, revise 
+--- 
+OVERUSED VERBS
+Avoid Use Instead delve (into) explore, examine, investigate, look at leverage use, apply, draw on optimise improve, refine, enhance utilise use facilitate help, enable, support foster encourage, support, develop, nurture bolster strengthen, support, reinforce underscore emphasise, highlight, stress unveil reveal, show, introduce, present navigate manage, handle, work through streamline simplify, make more efficient enhance improve, strengthen endeavour try, attempt, effort ascertain find out, determine, establish elucidate explain, clarify, make clear 
+--- 
+OVERUSED ADJECTIVES
+Avoid Use Instead robust strong, reliable, thorough, solid comprehensive complete, thorough, full, detailed pivotal key, critical, central, important crucial important, key, essential, critical vital important, essential, necessary transformative significant, important, major cutting-edge new, advanced, recent, modern groundbreaking new, original, significant innovative new, original, creative seamless smooth, easy, effortless intricate complex, detailed, complicated nuanced subtle, complex, detailed multifaceted complex, varied, diverse holistic complete, whole, comprehensive 
+--- 
+OVERUSED TRANSITIONS AND CONNECTORS
+Avoid Use Instead furthermore also, in addition, and moreover also, and, besides notwithstanding despite, even so, still that being said however, but, still at its core essentially, fundamentally, basically to put it simply in short, simply put it is worth noting that note that, importantly in the realm of in, within, regarding in the landscape of in, within in today's [anything] currently, now, today 
+--- 
+PHRASES THAT SIGNAL AI WRITING
+OPENING PHRASES TO AVOID
+"In today's fast-paced world..." "In today's digital age..." "In an era of..." "In the ever-evolving landscape of..." "In the realm of..." "It's important to note that..." "Let's delve into..." "Imagine a world where..." 
+TRANSITIONAL PHRASES TO AVOID
+"That being said..." "With that in mind..." "It's worth mentioning that..." "At its core..." "To put it simply..." "In essence..." "This begs the question..." 
+CONCLUDING PHRASES TO AVOID
+"In conclusion..." "To sum up..." "By [doing X], you can [achieve Y]..." "In the final analysis..." "All things considered..." "At the end of the day..." 
+STRUCTURAL PATTERNS TO AVOID
+"Whether you're a [X], [Y], or [Z]..." (listing three examples after "whether") "It's not just [X], it's also [Y]..." "Think of [X] as [elaborate metaphor]..." Starting sentences with "By" followed by a gerund: "By understanding X, you can Y..." 
+--- 
+FILLER WORDS AND EMPTY INTENSIFIERS
+These words often add nothing to meaning. Remove them or find specific alternatives: 
+absolutely actually basically certainly clearly definitely essentially extremely fundamentally incredibly interestingly naturally obviously quite really significantly simply surely truly ultimately undoubtedly very 
+--- 
+ACADEMIC-SPECIFIC AI TELLS
+Avoid Use Instead shed light on clarify, explain, reveal pave the way for enable, allow, make possible a myriad of many, numerous, various a plethora of many, numerous, several paramount very important, essential, critical pertaining to about, regarding, concerning prior to before subsequent to after in light of because of, given, considering with respect to about, regarding, for in terms of regarding, for, about the fact that that (or rewrite sentence) 
+--- 
+HT SELF-CHECK
+Read your text aloud. If phrases sound unnatural in speech, revise them Ask: "Would I say this in a conversation with a colleague?" CF repetitive sentence structures Look for clusters of the words listed above Ensure varied SLs (not all similar length) Verify each intensifier adds genuine meaning 

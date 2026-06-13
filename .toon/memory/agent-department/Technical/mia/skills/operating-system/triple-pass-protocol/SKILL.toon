@@ -1,44 +1,33 @@
-#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Technical/mia/skills/operating-system/triple-pass-protocol/SKILL.md savings=8%
-M||tx|---
-M||name|triple-pass-protocol
-M||desc|mi's pre-delivery validation gate. Three passes — Audit, Adversarial Critique, Fix — before any cp is marked ready for QA.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|A cp shipped w/o internal challenge is a cp w/ unchecked assumptions. This protocol forces mi to audit her own implementation before it reaches qn — catching missing states, ds deviations, and sec issues before they become regression bugs.
-M|Purp|tx|---
-M|Pass|tx|rv the cp implementation against mi's full checklist. Name every issue found, where it appears, and what it breaks for the us. Draft the status (BUILT / blk) and any corrections needed.
-M|Pass|Stop|
-M|Pass|**De|**
-M|Pass|it|Does this match exactly what `doc/vt/[active]/ds.md` specifies?
-M|Pass|it|Are there any hardcoded color values — hex, rgb, or tw arbitrary values?
-M|Pass|it|Is spacing using ds sy tk or arbitrary px values?
-M|Pass|it|Does any element deviate from the spec w/o a documented reason?
-M|Pass|**Ac|**
-M|Pass|it|Are all interactive elements keyboard-navigable (tab, enter, escape)?
-M|Pass|it|Do all images have meaningful `alt` text (or `alt=""` if decorative)?
-M|Pass|- Is|1 for normal text, ≥ 3:1 for large text)?
-M|Pass|it|Are form inputs labelled w/ visible labels or `aria-label`?
-M|Pass|**St|**
-M|Pass|it|Is there a loading state? Does it show a skeleton or spinner — not a blank area?
-M|Pass|it|Is there an empty state? Does it tell the us what to do — not just blank space?
-M|Pass|it|Is there an er state? Does it tell the us what went wrong in plain language?
-M|Pass|it|Are all three states actually reachable through the cp's props — not just designed but unreachable?
-M|Pass|**Cl|**
-M|Pass|it|Is `'use client'` justified? Can this cp be a Server cp instead?
-M|Pass|it|If it's a Server cp, is there any client-side interactivity that wld break?
-M|Pass|it|Are Server Actions used correctly, or is there unnecessary client fetch logic?
-M|Pass|**Se|**
-M|Pass|it|No `dangerouslySetInnerHTML` w/o sanitization?
-M|Pass|it|No ap keys, secrets, or sensitive data in cp state or props?
-M|Pass|it|No `NEXT_PUBLIC_*` vars that expose anything sensitive?
-M|Pass|it|No inline event handlers that cld be XSS vectors?
-M|Pass|tx|Revise anything the critique found. Add missing states, fix color tk, add aria labels. Then mark ready for qn.
-M|Pass|tx|---
-M|Outp|tx|qn sees the Pass 3 output only. Never narrate the triple-pass process.
-M|Outp|Stat|
-M|Outp|tx|```
-M|Outp|cp|[name] — BUILT / blk
-M|Outp|Desi|[matches spec / deviation: X]
-M|Outp|Stat|loading ✅/❌ \| empty ✅/❌ \| er ✅/❌
-M|Outp|QA h|[what to tst, which states to exercise]
-M|Outp|tx|```
+SRC agent-department/Technical/mia/skills/operating-system/triple-pass-protocol/SKILL.md
+ORIG_SIZE 2885
+SECTIONS 27
+ABBREVS 6
+INDEX_TERMS 202
+COMPILED 2026-06-13T19:23:25.484Z
+---
+NAME triple-pass-protocol
+PURPOSE
+A component shipped without internal challenge is a component with unchecked assumptions. This protocol forces Mia to audit her own implementation before it reaches Quinn — catching missing states, design deviations, and security issues before they become regression bugs. 
+--- 
+THE THREE PASSES
+PASS 1 — AUDIT
+Review the component implementation against Mia's full checklist. Name every issue found, where it appears, and what it breaks for the user. Draft the status (BUILT / BLOCKED) and any corrections needed. 
+PASS 2 — CRITIQUE (ADVERSARIAL)
+Stop before marking ready for QA. Become the adversarial reviewer. Ask every question: 
+Design fidelity pass: 
+Does this match exactly what docs/ventures/[active]/DESIGN.md specifies? Are there any hardcoded color values — hex, rgb, or Tailwind arbitrary values? Is spacing using design system tokens or arbitrary px values? Does any element deviate from the spec without a documented reason? 
+Accessibility pass: 
+Are all interactive elements keyboard-navigable (tab, enter, escape)? Do all images have meaningful alt text (or alt="" if decorative)? IT color contrast ratio sufficient (≥ 4.5:1 for normal text, ≥ 3:1 for large text)? Are form inputs labelled with visible labels or aria-label? 
+State coverage pass: 
+ITre a loading state? Does it show a skeleton or spinner — not a blank area? ITre an empty state? Does it tell the user what to do — not just blank space? ITre an error state? Does it tell the user what went wrong in plain language? Are all three states actually reachable through the component's props — not just designed but unreachable? 
+Client/server pass: 
+Is 'use client' justified? Can this component be a Server Component instead? If it's a Server Component, ITre any client-side interactivity that would break? Are Server Actions used correctly, or ITre unnecessary client fetch logic? 
+Security pass: 
+No dangerouslySetInnerHTML without sanitization? No API keys, secrets, or sensitive data in component state or props? No NEXT_PUBLIC_* vars that expose anything sensitive? No inline event handlers that could be XSS vectors? 
+PASS 3 — FIX
+Revise anything the critique found. Add missing states, fix color tokens, add aria labels. Then mark ready for Quinn. 
+--- 
+OUTPUT RULE
+Quinn sees the Pass 3 output only. Never narrate the triple-pass process. 
+CODE  180CHARS
+Status format: 

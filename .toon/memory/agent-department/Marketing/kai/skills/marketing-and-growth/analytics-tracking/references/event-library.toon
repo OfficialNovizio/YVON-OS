@@ -1,179 +1,71 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/references/event-library.md savings=-14%
-M|Even|tx|Comprehensive list of events to track by business tp and context.
-M|Cont|it|mk Site Events (navigation & engagement, CTA & form interactions, conversion events)
-M|Cont|it|pd/App Events (onboarding, core usage, er & support)
-M|Cont|it|Monetization Events (pricing & checkout, subscription management)
-M|Cont|it|E-commerce Events (browsing, cart, checkout, post-purchase)
-M|Cont|it|B2B / SaaS Specific Events (team & collaboration, integration events, account events)
-M|Cont|it|Event Properties (Parameters)
-M|Cont|it|Funnel Event Sequences
-M|Navi|tx|\| Event Name \| Description \| Properties \|
-M|Navi|tx|\|------------\|-------------\|------------\|
-M|Navi|tx|\| page_view \| Page loaded (enhanced) \| page_title, page_location, content_group \|
-M|Navi|tx|\| scroll_depth \| us scrolled to threshold \| depth (25, 50, 75, 100) \|
-M|Navi|tx|\| outbound_link_clicked \| Click to external site \| link_url, link_text \|
-M|Navi|tx|\| internal_link_clicked \| Click within site \| link_url, link_text, location \|
-M|Navi|tx|\| video_played \| vd started \| video_id, video_title, duration \|
-M|Navi|tx|\| video_completed \| vd finished \| video_id, video_title, duration \|
-M|CTA |tx|\| Event Name \| Description \| Properties \|
-M|CTA |tx|\|------------\|-------------\|------------\|
-M|CTA |tx|\| cta_clicked \| Call to action clicked \| button_text, cta_location, page \|
-M|CTA |tx|\| form_started \| us began form \| form_name, form_location \|
-M|CTA |tx|\| form_field_completed \| Field filled \| form_name, field_name \|
-M|CTA |tx|\| form_submitted \| Form successfully sent \| form_name, form_location \|
-M|CTA |tx|\| form_error \| Form validation failed \| form_name, error_type \|
-M|CTA |tx|\| resource_downloaded \| Asset downloaded \| resource_name, resource_type \|
-M|Conv|tx|\| Event Name \| Description \| Properties \|
-M|Conv|tx|\|------------\|-------------\|------------\|
-M|Conv|tx|\| signup_started \| Initiated signup \| source, page \|
-M|Conv|tx|\| signup_completed \| Finished signup \| method, plan, source \|
-M|Conv|tx|\| demo_requested \| Demo form submitted \| company_size, industry \|
-M|Conv|tx|\| contact_submitted \| Contact form sent \| inquiry_type \|
-M|Conv|tx|\| newsletter_subscribed \| em list signup \| source, list_name \|
-M|Conv|tx|\| trial_started \| Free trial began \| plan, source \|
-M|Conv|tx|---
-M|Onbo|tx|\| Event Name \| Description \| Properties \|
-M|Onbo|tx|\|------------\|-------------\|------------\|
-M|Onbo|tx|\| signup_completed \| Account created \| method, referral_source \|
-M|Onbo|tx|\| onboarding_started \| Began onboarding \| - \|
-M|Onbo|tx|\| onboarding_step_completed \| Step finished \| step_number, step_name \|
-M|Onbo|tx|\| onboarding_completed \| All steps done \| steps_completed, time_to_complete \|
-M|Onbo|tx|\| onboarding_skipped \| us skipped onboarding \| step_skipped_at \|
-M|Onbo|tx|\| first_key_action_completed \| Aha moment reached \| action_type \|
-M|Core|tx|\| Event Name \| Description \| Properties \|
-M|Core|tx|\|------------\|-------------\|------------\|
-M|Core|tx|\| session_started \| App sn began \| session_number \|
-M|Core|tx|\| feature_used \| Feature interaction \| feature_name, feature_category \|
-M|Core|tx|\| action_completed \| Core action done \| action_type, count \|
-M|Core|tx|\| content_created \| us created cn \| content_type \|
-M|Core|tx|\| content_edited \| us modified cn \| content_type \|
-M|Core|tx|\| content_deleted \| us removed cn \| content_type \|
-M|Core|tx|\| search_performed \| In-app search \| query, results_count \|
-M|Core|tx|\| settings_changed \| Settings modified \| setting_name, new_value \|
-M|Core|tx|\| invite_sent \| us invited others \| invite_type, count \|
-M|Erro|tx|\| Event Name \| Description \| Properties \|
-M|Erro|tx|\|------------\|-------------\|------------\|
-M|Erro|tx|\| error_occurred \| er experienced \| error_type, error_message, page \|
-M|Erro|tx|\| help_opened \| Help accessed \| help_type, page \|
-M|Erro|tx|\| support_contacted \| Support request made \| contact_method, issue_type \|
-M|Erro|tx|\| feedback_submitted \| us feedback given \| feedback_type, rating \|
-M|Erro|tx|---
-M|Pric|tx|\| Event Name \| Description \| Properties \|
-M|Pric|tx|\|------------\|-------------\|------------\|
-M|Pric|tx|\| pricing_viewed \| Pricing page seen \| source \|
-M|Pric|tx|\| plan_selected \| Plan chosen \| plan_name, billing_cycle \|
-M|Pric|tx|\| checkout_started \| Began checkout \| plan, value \|
-M|Pric|tx|\| payment_info_entered \| Payment submitted \| payment_method \|
-M|Pric|tx|\| purchase_completed \| Purchase successful \| plan, value, currency, transaction_id \|
-M|Pric|tx|\| purchase_failed \| Purchase failed \| error_reason, plan \|
-M|Subs|tx|\| Event Name \| Description \| Properties \|
-M|Subs|tx|\|------------\|-------------\|------------\|
-M|Subs|tx|\| trial_started \| Trial began \| plan, trial_length \|
-M|Subs|tx|\| trial_ended \| Trial expired \| plan, converted (bool) \|
-M|Subs|tx|\| subscription_upgraded \| Plan upgraded \| from_plan, to_plan, value \|
-M|Subs|tx|\| subscription_downgraded \| Plan downgraded \| from_plan, to_plan \|
-M|Subs|tx|\| subscription_cancelled \| can \| plan, reason, tenure \|
-M|Subs|tx|\| subscription_renewed \| Renewed \| plan, value \|
-M|Subs|tx|\| billing_updated \| Payment method changed \| - \|
-M|Subs|tx|---
-M|Brow|tx|\| Event Name \| Description \| Properties \|
-M|Brow|tx|\|------------\|-------------\|------------\|
-M|Brow|tx|\| product_viewed \| pd page viewed \| product_id, product_name, category, price \|
-M|Brow|tx|\| product_list_viewed \| Category/list viewed \| list_name, pd[] \|
-M|Brow|tx|\| product_searched \| Search performed \| query, results_count \|
-M|Brow|tx|\| product_filtered \| Filters applied \| filter_type, filter_value \|
-M|Brow|tx|\| product_sorted \| Sort applied \| sort_by, sort_order \|
-M|Cart|tx|\| Event Name \| Description \| Properties \|
-M|Cart|tx|\|------------\|-------------\|------------\|
-M|Cart|tx|\| product_added_to_cart \| Item added \| product_id, product_name, price, quantity \|
-M|Cart|tx|\| product_removed_from_cart \| Item removed \| product_id, product_name, price, quantity \|
-M|Cart|tx|\| cart_viewed \| Cart page viewed \| cart_value, items_count \|
-M|Chec|tx|\| Event Name \| Description \| Properties \|
-M|Chec|tx|\|------------\|-------------\|------------\|
-M|Chec|tx|\| checkout_started \| Checkout began \| cart_value, items_count \|
-M|Chec|tx|\| checkout_step_completed \| Step finished \| step_number, step_name \|
-M|Chec|tx|\| shipping_info_entered \| Address entered \| shipping_method \|
-M|Chec|tx|\| payment_info_entered \| Payment entered \| payment_method \|
-M|Chec|tx|\| coupon_applied \| Coupon used \| coupon_code, discount_value \|
-M|Chec|tx|\| purchase_completed \| Order placed \| transaction_id, value, currency, items[] \|
-M|Post|tx|\| Event Name \| Description \| Properties \|
-M|Post|tx|\|------------\|-------------\|------------\|
-M|Post|tx|\| order_confirmed \| Confirmation viewed \| transaction_id \|
-M|Post|tx|\| refund_requested \| Refund initiated \| transaction_id, reason \|
-M|Post|tx|\| refund_completed \| Refund processed \| transaction_id, value \|
-M|Post|tx|\| review_submitted \| pd reviewed \| product_id, rating \|
-M|Post|tx|---
-M|Team|tx|\| Event Name \| Description \| Properties \|
-M|Team|tx|\|------------\|-------------\|------------\|
-M|Team|tx|\| team_created \| New team/org made \| team_size, plan \|
-M|Team|tx|\| team_member_invited \| Invite sent \| role, invite_method \|
-M|Team|tx|\| team_member_joined \| Member accepted \| role \|
-M|Team|tx|\| team_member_removed \| Member removed \| role \|
-M|Team|tx|\| role_changed \| Permissions updated \| user_id, old_role, new_role \|
-M|Inte|tx|\| Event Name \| Description \| Properties \|
-M|Inte|tx|\|------------\|-------------\|------------\|
-M|Inte|tx|\| integration_viewed \| Integration page seen \| integration_name \|
-M|Inte|tx|\| integration_started \| Setup began \| integration_name \|
-M|Inte|tx|\| integration_connected \| Successfully connected \| integration_name \|
-M|Inte|tx|\| integration_disconnected \| Removed integration \| integration_name, reason \|
-M|Acco|tx|\| Event Name \| Description \| Properties \|
-M|Acco|tx|\|------------\|-------------\|------------\|
-M|Acco|tx|\| account_created \| New account \| source, plan \|
-M|Acco|tx|\| account_upgraded \| Plan upgrade \| from_plan, to_plan \|
-M|Acco|tx|\| account_churned \| Account closed \| reason, tenure, mrr_lost \|
-M|Acco|tx|\| account_reactivated \| Returned cs \| previous_tenure, new_plan \|
-M|Acco|tx|---
-M|Stan|**Us|**
-M|Stan|tx|```
-M|Stan|user|"12345"
-M|Stan|user|"free" \| "trial" \| "paid"
-M|Stan|acco|"acct_123"
-M|Stan|plan|"starter" \| "pro" \| "enterprise"
-M|Stan|tx|```
-M|Stan|**Se|**
-M|Stan|tx|```
-M|Stan|sess|"sess_abc"
-M|Stan|sess|5
-M|Stan|page|"/pricing"
-M|Stan|refe|"https://google.com"
-M|Stan|tx|```
-M|Stan|**Ca|**
-M|Stan|tx|```
-M|Stan|sour|"google"
-M|Stan|md|"cpc"
-M|Stan|cg|"spring_sale"
-M|Stan|cn|"hero_cta"
-M|Stan|tx|```
-M|Stan|**Pr|**
-M|Stan|tx|```
-M|Stan|prod|"SKU123"
-M|Stan|prod|"pd Name"
-M|Stan|cate|"Category"
-M|Stan|pric|99.99
-M|Stan|quan|1
-M|Stan|curr|"USD"
-M|Stan|tx|```
-M|Stan|**Ti|**
-M|Stan|tx|```
-M|Stan|time|"2024-01-15T10:30:00Z"
-M|Stan|time|45
-M|Stan|sess|300
-M|Stan|tx|```
-M|Stan|tx|---
-M|Sign|tx|1. signup_started
-M|Sign|tx|2. signup_step_completed (em)
-M|Sign|tx|3. signup_step_completed (password)
-M|Sign|tx|4. signup_completed
-M|Sign|tx|5. onboarding_started
-M|Purc|tx|1. pricing_viewed
-M|Purc|tx|2. plan_selected
-M|Purc|tx|3. checkout_started
-M|Purc|tx|4. payment_info_entered
-M|Purc|tx|5. purchase_completed
-M|E-co|tx|1. product_viewed
-M|E-co|tx|2. product_added_to_cart
-M|E-co|tx|3. cart_viewed
-M|E-co|tx|4. checkout_started
-M|E-co|tx|5. shipping_info_entered
-M|E-co|tx|6. payment_info_entered
-M|E-co|tx|7. purchase_completed
+SRC agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/references/event-library.md
+ORIG_SIZE 8654
+SECTIONS 64
+ABBREVS 0
+INDEX_TERMS 330
+COMPILED 2026-06-13T19:23:25.044Z
+---
+EVENT LIBRARY REFERENCE
+Comprehensive list of events to track by business type and context. 
+CONTENTS
+Marketing Site Events (navigation & engagement, CTA & form interactions, conversion events) Product/App Events (onboarding, core usage, errors & support) Monetization Events (pricing & checkout, subscription management) E-commerce Events (browsing, cart, checkout, post-purchase) B2B / SaaS Specific Events (team & collaboration, integration events, account events) Event Properties (Parameters) Funnel Event Sequences 
+MARKETING SITE EVENTS
+NAVIGATION & ENGAGEMENT
+Event Name Description Properties page_view Page loaded (enhanced) page_title, page_location, content_group scroll_depth User scrolled to threshold depth (25, 50, 75, 100) outbound_link_clicked Click to external site link_url, link_text internal_link_clicked Click within site link_url, link_text, location video_played Video started video_id, video_title, duration video_completed Video finished video_id, video_title, duration 
+CTA & FORM INTERACTIONS
+Event Name Description Properties cta_clicked Call to action clicked button_text, cta_location, page form_started User began form form_name, form_location form_field_completed Field filled form_name, field_name form_submitted Form successfully sent form_name, form_location form_error Form validation failed form_name, error_type resource_downloaded Asset downloaded resource_name, resource_type 
+CONVERSION EVENTS
+Event Name Description Properties signup_started Initiated signup source, page signup_completed Finished signup method, plan, source demo_requested Demo form submitted company_size, industry contact_submitted Contact form sent inquiry_type newsletter_subscribed Email list signup source, list_name trial_started Free trial began plan, source 
+--- 
+PRODUCT/APP EVENTS
+ONBOARDING
+Event Name Description Properties signup_completed Account created method, referral_source onboarding_started Began onboarding - onboarding_step_completed Step finished step_number, step_name onboarding_completed All steps done steps_completed, time_to_complete onboarding_skipped User skipped onboarding step_skipped_at first_key_action_completed Aha moment reached action_type 
+CORE USAGE
+Event Name Description Properties session_started App session began session_number feature_used Feature interaction feature_name, feature_category action_completed Core action done action_type, count content_created User created content content_type content_edited User modified content content_type content_deleted User removed content content_type search_performed In-app search query, results_count settings_changed Settings modified setting_name, new_value invite_sent User invited others invite_type, count 
+ERRORS & SUPPORT
+Event Name Description Properties error_occurred Error experienced error_type, error_message, page help_opened Help accessed help_type, page support_contacted Support request made contact_method, issue_type feedback_submitted User feedback given feedback_type, rating 
+--- 
+MONETIZATION EVENTS
+PRICING & CHECKOUT
+Event Name Description Properties pricing_viewed Pricing page seen source plan_selected Plan chosen plan_name, billing_cycle checkout_started Began checkout plan, value payment_info_entered Payment submitted payment_method purchase_completed Purchase successful plan, value, currency, transaction_id purchase_failed Purchase failed error_reason, plan 
+SUBSCRIPTION MANAGEMENT
+Event Name Description Properties trial_started Trial began plan, trial_length trial_ended Trial expired plan, converted (bool) subscription_upgraded Plan upgraded from_plan, to_plan, value subscription_downgraded Plan downgraded from_plan, to_plan subscription_cancelled Cancelled plan, reason, tenure subscription_renewed Renewed plan, value billing_updated Payment method changed - 
+--- 
+E-COMMERCE EVENTS
+BROWSING
+Event Name Description Properties product_viewed Product page viewed product_id, product_name, category, price product_list_viewed Category/list viewed list_name, products[] product_searched Search performed query, results_count product_filtered Filters applied filter_type, filter_value product_sorted Sort applied sort_by, sort_order 
+CART
+Event Name Description Properties product_added_to_cart Item added product_id, product_name, price, quantity product_removed_from_cart Item removed product_id, product_name, price, quantity cart_viewed Cart page viewed cart_value, items_count 
+CHECKOUT
+Event Name Description Properties checkout_started Checkout began cart_value, items_count checkout_step_completed Step finished step_number, step_name shipping_info_entered Address entered shipping_method payment_info_entered Payment entered payment_method coupon_applied Coupon used coupon_code, discount_value purchase_completed Order placed transaction_id, value, currency, items[] 
+POST-PURCHASE
+Event Name Description Properties order_confirmed Confirmation viewed transaction_id refund_requested Refund initiated transaction_id, reason refund_completed Refund processed transaction_id, value review_submitted Product reviewed product_id, rating 
+--- 
+B2B / SAAS SPECIFIC EVENTS
+TEAM & COLLABORATION
+Event Name Description Properties team_created New team/org made team_size, plan team_member_invited Invite sent role, invite_method team_member_joined Member accepted role team_member_removed Member removed role role_changed Permissions updated user_id, old_role, new_role 
+INTEGRATION EVENTS
+Event Name Description Properties integration_viewed Integration page seen integration_name integration_started Setup began integration_name integration_connected Successfully connected integration_name integration_disconnected Removed integration integration_name, reason 
+ACCOUNT EVENTS
+Event Name Description Properties account_created New account source, plan account_upgraded Plan upgrade from_plan, to_plan account_churned Account closed reason, tenure, mrr_lost account_reactivated Returned customer previous_tenure, new_plan 
+--- 
+EVENT PROPERTIES (PARAMETERS)
+STANDARD PROPERTIES TO INCLUDE
+CODE  121CHARS
+User Context: 
+CODE  89CHARS
+Session Context: 
+CODE  75CHARS
+Campaign Context: 
+CODE  112CHARS
+Product Context (E-commerce): 
+CODE  73CHARS
+Timing: 
+--- 
+FUNNEL EVENT SEQUENCES
+SIGNUP FUNNEL
+signup_started signup_step_completed (email) signup_step_completed (password) signup_completed onboarding_started 
+PURCHASE FUNNEL
+pricing_viewed plan_selected checkout_started payment_info_entered purchase_completed 
+E-COMMERCE FUNNEL
+product_viewed product_added_to_cart cart_viewed checkout_started shipping_info_entered payment_info_entered purchase_completed 

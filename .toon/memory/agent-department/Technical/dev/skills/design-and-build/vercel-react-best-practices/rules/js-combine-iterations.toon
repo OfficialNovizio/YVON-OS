@@ -1,25 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-combine-iterations.md savings=2%
-M||tx|---
-M||titl|Combine Multiple Array Iterations
-M||impa|lo-md
-M||impa|reduces iterations
-M||tags|javascript, arrays, loops, perf
-M||tx|---
-M|Comb|tx|Multiple `.filter()` or `.map()` calls iterate the array multiple times. Combine into one loop.
-M|Comb|**In|**
-M|Comb|tx|```ts
-M|Comb|tx|const admins = us.filter(u => u.isAdmin)
-M|Comb|tx|const testers = us.filter(u => u.isTester)
-M|Comb|tx|const inactive = us.filter(u => !u.isActive)
-M|Comb|tx|```
-M|Comb|**Co|**
-M|Comb|tx|```ts
-M|Comb|cons|us[] = []
-M|Comb|cons|us[] = []
-M|Comb|cons|us[] = []
-M|Comb|tx|for (const us of us) {
-M|Comb|tx|if (us.isAdmin) admins.push(us)
-M|Comb|tx|if (us.isTester) testers.push(us)
-M|Comb|tx|if (!us.isActive) inactive.push(us)
-M|Comb|tx|}
-M|Comb|tx|```
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-combine-iterations.md
+ORIG_SIZE 753
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 21
+COMPILED 2026-06-13T19:23:25.318Z
+---
+TITLE Combine Multiple Array Iterations
+COMBINE MULTIPLE ARRAY ITERATIONS
+Multiple .filter() or .map() calls iterate the array multiple times. Combine into one loop. 
+Incorrect (3 iterations): 
+CODE typescript 138CHARS
+Correct (1 iteration): 
+CODE typescript 232CHARS

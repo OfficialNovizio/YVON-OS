@@ -1,44 +1,16 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-lazy-state-init.md savings=-4%
-M||tx|---
-M||titl|Use Lazy State Initialization
-M||impa|md
-M||impa|wasted computation on every render
-M||tags|rc, hooks, useState, perf, initialization
-M||tx|---
-M|Use |tx|Pass a fn to `useState` for expensive initial values. w/o the fn form, the initializer runs on every render even though the value is only used once.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |func|{ items: Item[] }) {
-M|Use |tx|// buildSearchIndex() runs on EVERY render, even after initialization
-M|Use |tx|const [searchIndex, setSearchIndex] = useState(buildSearchIndex(items))
-M|Use |tx|const [query, setQuery] = useState('')
-M|Use |tx|// When query changes, buildSearchIndex runs again unnecessarily
-M|Use |tx|return <SearchResults index={searchIndex} query={query} />
-M|Use |tx|}
-M|Use |tx|fn UserProfile() {
-M|Use |tx|// JSON.parse runs on every render
-M|Use |tx|const [settings, setSettings] = useState(
-M|Use |tx|JSON.parse(localStorage.getItem('settings') \|\| '{}')
-M|Use |tx|)
-M|Use |tx|return <SettingsForm settings={settings} onChange={setSettings} />
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |func|{ items: Item[] }) {
-M|Use |tx|// buildSearchIndex() runs ONLY on initial render
-M|Use |tx|const [searchIndex, setSearchIndex] = useState(() => buildSearchIndex(items))
-M|Use |tx|const [query, setQuery] = useState('')
-M|Use |tx|return <SearchResults index={searchIndex} query={query} />
-M|Use |tx|}
-M|Use |tx|fn UserProfile() {
-M|Use |tx|// JSON.parse runs only on initial render
-M|Use |tx|const [settings, setSettings] = useState(() => {
-M|Use |tx|const stored = localStorage.getItem('settings')
-M|Use |retu|{}
-M|Use |tx|})
-M|Use |tx|return <SettingsForm settings={settings} onChange={setSettings} />
-M|Use |tx|}
-M|Use |tx|```
-M|Use |tx|Use lazy initialization when computing initial values from localStorage/sessionStorage, building data structures (indexes, maps), reading from the DOM, or performing heavy transformations.
-M|Use |tx|For simple primitives (`useState(0)`), direct references (`useState(props.value)`), or cheap literals (`useState({})`), the fn form is unnecessary.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-lazy-state-init.md
+ORIG_SIZE 2016
+SECTIONS 10
+ABBREVS 0
+INDEX_TERMS 53
+COMPILED 2026-06-13T19:23:25.469Z
+---
+TITLE Use Lazy State Initialization
+USE LAZY STATE INITIALIZATION
+Pass a function to useState for expensive initial values. Without the function form, the initializer runs on every render even though the value is only used once. 
+Incorrect (runs on every render): 
+CODE tsx 616CHARS
+Correct (runs only once): 
+CODE tsx 589CHARS
+Use lazy initialization when computing initial values from localStorage/sessionStorage, building data structures (indexes, maps), reading from the DOM, or performing heavy transformations. 
+For simple primitives (useState(0)), direct references (useState(props.value)), or cheap literals (useState({})), the function form is unnecessary. 

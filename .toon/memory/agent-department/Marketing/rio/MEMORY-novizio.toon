@@ -1,23 +1,21 @@
-#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/MEMORY-novizio.md savings=17%
-M|Rio |tx|> Load alongside MEMORY.md when active vt is nz.
-M|Rio |tx|> nz-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|DTC fashion e-commerce (B2C)
-M|Vent|- **|Meta (Instagram + Facebook), TikTok ad
-M|Vent|- **|style-conscious 25–40yo; exclude bargain-hunter segments
-M|Novi|tx|\| Metric \| Target \| Pause Threshold \|
-M|Novi|tx|\|--------\|--------\|-----------------\|
-M|Novi|tx|\| ROAS (Meta) \| > 2.5× \| < 1.5× for 7+ days \|
-M|Novi|tx|\| CPM (Meta) \| < $10 \| > $18 \|
-M|Novi|tx|\| CPC (Meta) \| < $1.20 \| > $2.50 \|
-M|Novi|tx|\| CTR (Meta) \| > 1.5% \| < 0.8% \|
-M|Novi|tx|\| TikTok CPM \| < $8 \| > $15 \|
-M|Novi|- **|existing buyers (em list → Meta Custom Audience)
-M|Novi|- **|add-to-cart visitors who bounced more than 3 times (bargain signal)
-M|Novi|- **|14 days for website visitors; 30 days for vd viewers
-M|Novi|- **|fashion, DTC, sustainable brands — avoid discount/deal seekers
-M|Crea|- UG|1 on Meta
-M|Crea|it|md-focused cn outperforms pd-only flat lays
-M|Crea|it|Hook must communicate pd qual within 3 seconds
-M|Crea|it|Carousel format works for multi-pd storytelling
-M|Prov|> Po|[date] — angle — ROAS achieved — what worked.
-M|Neve|> Ea|[date] — nz-specific ad er — rule.
+SRC agent-department/Marketing/rio/MEMORY-novizio.md
+ORIG_SIZE 1494
+SECTIONS 14
+ABBREVS 3
+INDEX_TERMS 116
+COMPILED 2026-06-13T19:23:25.184Z
+---
+RIO — NOVIZIO ADS MEMORY
+Load alongside MEMORY.md when active venture is Novizio. Novizio-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Model: DTC fashion e-commerce (B2C) Primary paid channels: Meta (Instagram + Facebook), TikTok Ads Audience: style-conscious 25–40yo; exclude bargain-hunter segments 
+NOVIZIO AD BENCHMARKS
+Metric Target Pause Threshold ROAS (Meta) > 2.5× < 1.5× for 7+ days CPM (Meta) < $10 > $18 CPC (Meta) < $1.20 > $2.50 CTR (Meta) > 1.5% < 0.8% TikTok CPM < $8 > $15 
+NOVIZIO AUDIENCE STRATEGY
+Lookalike source: existing buyers (email list → Meta Custom Audience) Exclusions: add-to-cart visitors who bounced more than 3 times (bargain signal) Retargeting window: 14 days for website visitors; 30 days for video viewers Interest layer: fashion, DTC, sustainable brands — avoid discount/deal seekers 
+CREATIVE THAT WORKS (NOVIZIO)
+UGC-style Reels outperform polished creative 2:1 on Meta Model-focused content outperforms product-only flat lays Hook must communicate product quality within 3 seconds Carousel format works FM-product storytelling 
+PROVEN ANGLES (NOVIZIO)
+Populated from campaign results. EE: [date] — angle — ROAS achieved — what worked. 
+NEVER AGAIN (NOVIZIO-SPECIFIC)
+EE: [date] — Novizio-specific ad error — rule. 

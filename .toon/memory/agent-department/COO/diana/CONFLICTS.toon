@@ -1,2 +1,10 @@
-#MEM id=diana source=/root/yvon/agent-department/COO/diana/CONFLICTS.md savings=35%
-M|Agen|tx|> Inherits from project root CONFLICTS.md. Add ag-specific conflicts here only.
+SRC agent-department/COO/diana/CONFLICTS.md
+ORIG_SIZE 139
+SECTIONS 3
+ABBREVS 1
+INDEX_TERMS 12
+COMPILED 2026-06-13T19:23:24.797Z
+---
+AGENT: DIANA — CONFLICT RESOLUTIONS
+IFPR CONFLICTS.md. Add agent-specific conflicts here only. 
+(NONE YET)

@@ -1,59 +1,41 @@
-#MEM id=emotional-triggers source=/root/yvon/agent-department/Marketing/lena/skills/custom/emotional-triggers/SKILL.md savings=3%
-M||tx|---
-M||name|emotional-triggers
-M||desc|12 emotional triggers mapped to funnel stage and vt fit. Load before selecting cp angle for any cg, ad, or em sequence.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|Every piece of cp activates an emotional state. Choosing the wrong trigger for the funnel stage (e.g., FOMO at awareness, not decision) wastes the activation on an audience that isn't ready for it. This skill maps triggers to where they belong.
-M|Purp|tx|---
-M|The |tx|\| # \| Trigger \| Definition \| Funnel Stage \| nz Fit \| hb Fit \|
-M|The |tx|\|---\|---------\|-----------\|--------------\|-------------\|--------------\|
-M|The |tx|\| 1 \| **Curiosity** \| Open question, knowledge gap \| Top (awareness) \| ✅ Strong \| ✅ Strong \|
-M|The |tx|\| 2 \| **Aspiration** \| Who will they become \| Top (awareness) \| ✅ Primary \| ✅ Secondary \|
-M|The |tx|\| 3 \| **Excitement** \| Energy, launch momentum \| Top (awareness) \| ⚠️ Careful — can break editorial tone \| ❌ Too loud \|
-M|The |tx|\| 4 \| **Belonging** \| Community, shared identity \| Top–Mid \| ✅ Secondary \| ✅ Secondary \|
-M|The |tx|\| 5 \| **Empathy** \| We understand your pain \| Mid (consideration) \| ✅ Secondary \| ✅ Strong \|
-M|The |tx|\| 6 \| **Trust** \| Evidence, specificity, track record \| Mid (consideration) \| ✅ Strong \| ✅ Primary \|
-M|The |tx|\| 7 \| **Authority** \| Credentials, expertise, data \| Mid (consideration) \| ✅ Secondary \| ✅ Strong \|
-M|The |tx|\| 8 \| **FOMO** \| Scarcity, exclusivity, missing out \| Mid–Bottom \| ✅ Limited drops only \| ⚠️ Use w/ care \|
-M|The |tx|\| 9 \| **Safety/Certainty** \| Remove risk, provide guarantee \| Bottom (decision) \| ⚠️ qual angle only \| ✅ Primary \|
-M|The |tx|\| 10 \| **Loss Aversion** \| Cost of inaction \| Bottom (decision) \| ❌ Off-tone \| ✅ kh gate required \|
-M|The |tx|\| 11 \| **Pride** \| They made the right call \| Post-purchase \| ✅ Strong \| ✅ Strong \|
-M|The |tx|\| 12 \| **Nostalgia** \| Emotional connection to past \| br storytelling \| ⚠️ Risk of dated feel \| ❌ Off-tone \|
-M|The |tx|---
-M|Top-|Prim|**Curiosity, Aspiration, Belonging**
-M|Top-|- Go|Stop the scroll. cr desire to know more.
-M|Top-|- Do|Loss Aversion, Safety (too transactional for first impression)
-M|Mid-|Prim|**Trust, Empathy, Authority, FOMO**
-M|Mid-|- Go|bd belief that this br/pd is right for them.
-M|Mid-|- Do|Excitement (they're past the energy phase — they want evidence)
-M|Bott|Prim|**Safety/Certainty, Loss Aversion, FOMO**
-M|Bott|- Go|Remove the last barrier to purchase.
-M|Bott|- Ka|Is the framing persuasive or manipulative?
-M|Post|Prim|**Pride, Belonging**
-M|Post|- Go|Reinforce the decision. bd loyalty and referral intent.
-M|Post|tx|---
-M|Vent|tx|**nz**
-M|Vent|- Pr|Aspiration, Curiosity, FOMO (drops only), Pride, Belonging
-M|Vent|- Ne|Loss Aversion (anxious tone, conflicts w/ self-assured br voice)
-M|Vent|it|Excitement is allowed for drop launches only — one line, not the full cg
-M|Vent|it|Safety framing only appears as qual guarantee, never as fear-removal
-M|Vent|tx|**hb**
-M|Vent|- Pr|Safety/Certainty, Trust, Authority, Empathy
-M|Vent|- Lo|allowed w/ mandatory kh gate ("Every untracked hour costs you..." — check for manipulative framing)
-M|Vent|- Ne|Excitement (too loud for professional SaaS tone), Nostalgia (off-br)
-M|Vent|- FO|only in competitive contexts ("Your cr already have this") — one line max
-M|Vent|tx|---
-M|Kahn|Requ|
-M|Kahn|tx|1. Is the loss real and specific — or manufactured urgency?
-M|Kahn|tx|2. Is the framing proportionate — or exaggerated?
-M|Kahn|tx|3. Is this appropriate for the funnel stage?
-M|Kahn|tx|4. Am I stacking this w/ another heavy trigger (e.g., Loss Aversion + FOMO = manipulative)?
-M|Kahn|tx|If any answer is "yes, this is problematic" — reframe using Safety/Certainty instead.
-M|Kahn|tx|---
-M|Usag|tx|1. Identify the funnel stage this cp is serving.
-M|Usag|tx|2. Select triggers appropriate to that stage.
-M|Usag|tx|3. Cross-check against vt fit (nz/hb columns above).
-M|Usag|4. I|run kh gate before delivery.
-M|Usag|tx|5. Max 2 active triggers per piece of cp. Stacking 3+ is lever manipulation, not persuasion.
-M|Usag|6. L|Voice Note).
+SRC agent-department/Marketing/lena/skills/custom/emotional-triggers/SKILL.md
+ORIG_SIZE 4346
+SECTIONS 35
+ABBREVS 6
+INDEX_TERMS 210
+COMPILED 2026-06-13T19:23:25.076Z
+---
+NAME emotional-triggers
+PURPOSE
+Every piece of copy activates an emotional state. Choosing the wrong trigger for the funnel stage (e.g., FOMO at awareness, not decision) wastes the activation on an audience that isn't ready for it. This skill maps triggers to where they belong. 
+--- 
+THE 12 TRIGGERS
+# Trigger Definition Funnel Stage Novizio Fit Hourbour Fit 1 **Curiosity** Open question, knowledge gap Top (awareness) ✅ Strong ✅ Strong 2 **Aspiration** Who will they become Top (awareness) ✅ Primary ✅ Secondary 3 **Excitement** Energy, launch momentum Top (awareness) ⚠️ Careful — can break editorial tone ❌ Too loud 4 **Belonging** Community, shared identity Top–Mid ✅ Secondary ✅ Secondary 5 **Empathy** We understand your pain Mid (consideration) ✅ Secondary ✅ Strong 6 **Trust** Evidence, specificity, track record Mid (consideration) ✅ Strong ✅ Primary 7 **Authority** Credentials, expertise, data Mid (consideration) ✅ Secondary ✅ Strong 8 **FOMO** Scarcity, exclusivity, missing out Mid–Bottom ✅ Limited drops only ⚠️ Use with care 9 **Safety/Certainty** Remove risk, provide guarantee Bottom (decision) ⚠️ Quality angle only ✅ Primary 10 **Loss Aversion** Cost of inaction Bottom (decision) ❌ Off-tone ✅ KG required 11 **Pride** They made the right call Post-purchase ✅ Strong ✅ Strong 12 **Nostalgia** Emotional connection to past Brand storytelling ⚠️ Risk of dated feel ❌ Off-tone 
+--- 
+FUNNEL STAGE MAPPING
+TOP-OF-FUNNEL (AWARENESS)
+PRIMARY_TRIGGERS **Curiosity, Aspiration, Belonging**
+GOAL Stop the scroll. Create desire to know more.
+MID-FUNNEL (CONSIDERATION)
+PRIMARY_TRIGGERS **Trust, Empathy, Authority, FOMO**
+GOAL Build belief that this brand/product is right for them.
+BOTTOM-OF-FUNNEL (DECISION)
+PRIMARY_TRIGGERS **Safety/Certainty, Loss Aversion, FOMO**
+GOAL Remove the last barrier to purchase.
+POST-PURCHASE
+PRIMARY_TRIGGERS **Pride, Belonging**
+GOAL Reinforce the decision. Build loyalty and referral intent.
+--- 
+VENTURE RULES
+Novizio 
+PRIMARY_TRIGGERS Aspiration, Curiosity, FOMO (drops only), Pride, Belonging
+Hourbour 
+PRIMARY_TRIGGERS Safety/Certainty, Trust, Authority, Empathy
+--- 
+KG — LOSS AVERSION CHECKLIST
+Required before using Loss Aversion in any copy: 
+IT loss real and specific — or manufactured urgency? IT framing proportionate — or exaggerated? Is this appropriate for the funnel stage? Am I stacking this with another heavy trigger (e.g., Loss Aversion + FOMO = manipulative)? 
+If any answer is "yes, TI problematic" — reframe using Safety/Certainty instead. 
+--- 
+USAGE PROTOCOL
+Identify the funnel stage this copy is serving. Select triggers appropriate to that stage. Cross-check against venture fit (Novizio/Hourbour columns above). If using Loss Aversion: run KG before delivery. Max 2 active triggers per piece of copy. Stacking 3+ is lever manipulation, not persuasion. Log chosen triggers in delivery brief echo (Communication DNA step 4: Voice Note). 

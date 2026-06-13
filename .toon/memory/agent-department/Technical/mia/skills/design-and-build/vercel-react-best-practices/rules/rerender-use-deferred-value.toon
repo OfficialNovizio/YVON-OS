@@ -1,47 +1,18 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-use-deferred-value.md savings=-1%
-M||tx|---
-M||titl|Use useDeferredValue for Expensive Derived Renders
-M||impa|md
-M||impa|keeps input responsive during heavy computation
-M||tags|rerender, useDeferredValue, op, concurrent
-M||tx|---
-M|Use |tx|When us input triggers expensive computations or renders, use `useDeferredValue` to keep the input responsive. The deferred value lags behind, allowing rc to prioritize the input up and render the expensive result when idle.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |func|{ items: Item[] }) {
-M|Use |tx|const [query, setQuery] = useState('')
-M|Use |tx|const filtered = items.filter(item => fuzzyMatch(item, query))
-M|Use |tx|return (
-M|Use |tx|<>
-M|Use |tx|<input value={query} onChange={e => setQuery(e.target.value)} />
-M|Use |tx|<ResultsList results={filtered} />
-M|Use |tx|</>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |func|{ items: Item[] }) {
-M|Use |tx|const [query, setQuery] = useState('')
-M|Use |tx|const deferredQuery = useDeferredValue(query)
-M|Use |tx|const filtered = useMemo(
-M|Use |tx|() => items.filter(item => fuzzyMatch(item, deferredQuery)),
-M|Use |tx|[items, deferredQuery]
-M|Use |tx|)
-M|Use |tx|const isStale = query !== deferredQuery
-M|Use |tx|return (
-M|Use |tx|<>
-M|Use |tx|<input value={query} onChange={e => setQuery(e.target.value)} />
-M|Use |<div|isStale ? 0.7 : 1 }}>
-M|Use |tx|<ResultsList results={filtered} />
-M|Use |tx|</div>
-M|Use |tx|</>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Wh|**
-M|Use |it|Filtering/searching large lists
-M|Use |it|Expensive visualizations (charts, graphs) reacting to input
-M|Use |it|Any derived state that causes noticeable render delays
-M|Use |**No|** Wrap the expensive computation in `useMemo` w/ the deferred value as a dependency, otherwise it still runs on every render.
-M|Use |Refe|[rc useDeferredValue](https://rc.dv/reference/rc/useDeferredValue)
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-use-deferred-value.md
+ORIG_SIZE 1846
+SECTIONS 12
+ABBREVS 4
+INDEX_TERMS 69
+COMPILED 2026-06-13T19:23:25.474Z
+---
+TITLE UUDeferredValue for Expensive Derived Renders
+UUDEFERREDVALUE FOR EXPENSIVE DERIVED RENDERS
+When user input triggers expensive computations or renders, UUDeferredValue to keep the input responsive. The deferred value lags behind, allowing React to prioritize the input update and render the expensive result when idle. 
+Incorrect (input feels laggy while filtering): 
+CODE tsx 299CHARS
+Correct (input stays snappy, results render when ready): 
+CODE tsx 514CHARS
+WTU: 
+Filtering/searching large lists Expensive visualizations (charts, graphs) reacting to input Any derived state that causes noticeable render delays 
+Note: Wrap the expensive computation in useMemo with the deferred value as a dependency, otherwise it still runs on every render. 
+REFERENCE [React useDeferredValue](https://react.dev/reference/react/useDeferredValue)

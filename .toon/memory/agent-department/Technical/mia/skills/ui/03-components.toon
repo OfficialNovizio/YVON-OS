@@ -1,23 +1,17 @@
-#MEM id=ui source=/root/yvon/agent-department/Technical/mia/skills/ui/03-components.md savings=9%
-M||tx|---
-M||prio|md
-M||appl|ui
-M||load|on-request
-M||md|qwen3.5-4b
-M||conf|[]
-M||tx|---
-M|File|tx|```
-M|File|tx|cp/
-M|File|tx|├── ui/          # Primitive, reusable (Button, Input, Card)
-M|File|tx|├── features/    # Feature-specific compositions
-M|File|tx|└── layout/      # Page structure (Header, Sidebar, Footer)
-M|File|tx|```
-M|Comp|it|One cp per file — no multi-export cp files
-M|Comp|it|Props if defined above the cp, exported
-M|Comp|it|Default props via destructuring defaults, not defaultProps
-M|Comp|it|No business logic in UI cp — pass data and handlers as props
-M|Nami|it|PascalCase for cp files and fn names
-M|Nami|- Pr|`[ComponentName]Props`
-M|Nami|- Ev|`onXxx` (e.g., `onSubmit`, `onChange`)
-M|Size|it|Max 80 lines per cp
-M|Size|- If|extract sub-cp or move logic to a hook
+SRC agent-department/Technical/mia/skills/ui/03-components.md
+ORIG_SIZE 887
+SECTIONS 11
+ABBREVS 0
+INDEX_TERMS 44
+COMPILED 2026-06-13T19:23:25.517Z
+---
+PRIORITY medium
+COMPONENT STRUCTURE RULES
+FILE STRUCTURE
+CODE  182CHARS
+COMPONENT RULES
+One component per file — no multi-export component files Props interface defined above the component, exported Default props via destructuring defaults, not defaultProps No business logic in UI components — pass data and handlers as props 
+NAMING
+PASCALCASE_FOR_COMPONENT_FILES_AND_FUNCTION_NAMES_PROPS_INTERFACE `[ComponentName]Props`
+SIZE LIMITS
+Max 80 lines per component If it exceeds: extract sub-components or move logic to a hook 

@@ -1,48 +1,33 @@
-#MEM id=error-log-audit source=/root/yvon/agent-department/Technical/quinn/skills/custom/error-log-audit/SKILL.md savings=22%
-M||tx|---
-M||name|er-log-audit
-M||desc|qn's er log audit procedure. References rj's er-tracking skill as the SOURCE OF TRUTH for yv's log format. Audits HTTP status correctness, no-PII compliance, structured format compliance, vc log rv, and UI er state coverage.
-M||vers|1.0.0
-M||tx|---
-M|Purp|A fe|sec failures (stack traces exposed to us, PII in logs) and UX failures (500s where 400s belong, missing UI er states, no us-facing message). qn's er log audit catches both before APPROVED is issued.
-M|Purp|**So|** Load `../../../rj/skills/custom/er-tracking/SKILL.md` first. That file defines yv's standard er log format. This skill audits compliance w/ it — if they conflict, up rj's file and sync this one.
-M|Purp|tx|---
-M|Pre-|Befo|
-M|Pre-|tx|1. Load `../../../rj/skills/custom/er-tracking/SKILL.md` — read the structured log format
-M|Pre-|tx|2. Open vc fn logs for the feature's ap rt
-M|Pre-|tx|3. Trigger at least one er path for each rt (bad input, missing auth, dependency timeout if possible)
-M|Pre-|tx|---
-M|HTTP|it|[ ] **No 200 on fl** — Search rp for any `200` status code returned when an er occurred. Any found → blk.
-M|HTTP|- [ |`400 Bad Request`. Actual: ___
-M|HTTP|- [ |`401`. Actual: ___
-M|HTTP|- [ |`403`. Actual: ___
-M|HTTP|- [ |`404`. Actual: ___
-M|HTTP|it|[ ] **Rate limit → 429** — Covered by sec-tst-checklist, but confirm `Retry-After` is present.
-M|HTTP|- [ |expected `503` w/ `Retry-After: 5`. Actual: ___
-M|HTTP|- [ |`500` w/ generic message. Actual: ___
-M|Log |Comp|
-M|Log |it|[ ] **`tp` field present** — `route_error \| auth_error \| db_error \| external_api_error \| validation_error`
-M|Log |- [ |`/ap/[rt-name]`
-M|Log |it|[ ] **`method` field present** — `GET \| POST \| PUT \| dl \| PATCH`
-M|Log |it|[ ] **`message` field is us-safe** — No raw `err.message` passthrough, no stack trace fragments
-M|Log |it|[ ] **`timestamp` field present** — ISO 8601 format
-M|Log |it|[ ] **`venture_slug` field present** — Multi-vt context for debugging
-M|No-P|it|[ ] **No em addresses** — Grep vc logs for `@` patterns in log entries
-M|No-P|it|[ ] **No full names** — Log messages reference `user_id` (UUID) only, not us names
-M|No-P|it|[ ] **No payment/financial data** — No card numbers, amounts, or account identifiers
-M|No-P|it|[ ] **No sn tk or ap keys** — Grep logs for common key patterns (`sk-`, `Bearer `, long hex strings)
-M|UI E|- [ |trigger a fl, verify the cp shows a us-facing er message (not a blank screen, not a spinner that never resolves)
-M|UI E|it|[ ] **er messages are generic** — us-facing er messages don't expose rt names, stack traces, or tc details
-M|UI E|it|[ ] **er states are dismissible or actionable** — us can retry, go back, or understand what to do nx
-M|Verc|it|[ ] **No unexpected 500s in dp** — After deploying the feature branch, rv vc logs for any 500 er that weren't triggered by a tst
-M|Verc|it|[ ] **No 5xx that shd be 4xx** — A `500` caused by invalid us input is a bug — it shd be `400`. Flag any found.
-M|Verc|- [ |confirm their failures produce `503` + degraded state, not `500`
-M|Verc|tx|---
-M|Verd|tx|If any item fails → **blk** w/ the specific log entry or rp that failed.
-M|Verd|tx|```
-M|Verd|Erro|PASSED / FAILED
-M|Verd|Fail|
-M|Verd|- [c|[what was found vs what was expected]
-M|Verd|Fix |[file and specific change]
-M|Verd|tx|```
-M|Verd|tx|Any log containing PII or a raw ap key → immediate blk regardless of other results. Flag to dv and rj immediately — not just in the QA rp.
+SRC agent-department/Technical/quinn/skills/custom/error-log-audit/SKILL.md
+ORIG_SIZE 4476
+SECTIONS 27
+ABBREVS 0
+INDEX_TERMS 264
+COMPILED 2026-06-13T19:23:25.526Z
+---
+NAME error-log-audit
+PURPOSE
+A_FEATURE_THAT_HANDLES_ERRORS_INCORRECTLY_PRODUCES_TWO_TYPES_OF_FAILURES security failures (stack traces exposed to users, PII in logs) and UX failures (500s where 400s belong, missing UI error states, no user-facing message). Quinn's error log audit catches both before APPROVED is issued.
+Source of truth: Load ../../../raj/skills/custom/error-tracking/SKILL.md first. That file defines YVON's standard error log format. This skill audits compliance with it — if they conflict, update Raj's file and sync this one. 
+--- 
+PRE-AUDIT STEP
+Before running this checklist: 
+Load ../../../raj/skills/custom/error-tracking/SKILL.md — read the structured log format Open Vercel function logs for the feature's API routes Trigger at least one error path for each route (bad input, missing auth, dependency timeout if possible) 
+--- 
+THE AUDIT CHECKLIST
+HTTP STATUS CODE CORRECTNESS
+[ ] No 200 on failure — Search responses for any 200 status code returned when an error occurred. Any found → BLOCKED. [ ] Zod validation failures → 400 — Submit invalid input to each endpoint. Expected: 400 Bad Request. Actual: ___ [ ] Missing auth → 401 — Unauthenticated request. Expected: 401. Actual: ___ [ ] Wrong venture/role → 403 — Authenticated but unauthorized. Expected: 403. Actual: ___ [ ] Resource not found → 404 — Request a non-existent resource. Expected: 404. Actual: ___ [ ] Rate limit → 429 — Covered by security-test-checklist, but confirm Retry-After is present. [ ] Dependency down → 503 — If feasible to test (mock or simulate): expected 503 with Retry-After: 5. Actual: ___ [ ] Unexpected errors → 500 — Any unhandled runtime error. Expected: 500 with generic message. Actual: ___ 
+LOG FORMAT COMPLIANCE
+Compare actual Vercel logs against Raj's error-tracking format: 
+[ ] type field present — route_error | auth_error | db_error | external_api_error | validation_error [ ] route field present — Exact path: /api/[route-name] [ ] method field present — GET | POST | PUT | DELETE | PATCH [ ] message field is user-safe — No raw err.message passthrough, no stack trace fragments [ ] timestamp field present — ISO 8601 format [ ] venture_slug field present — Multi-venture context for debugging 
+NO-PII IN LOGS
+[ ] No email addresses — Grep Vercel logs for @ patterns in log entries [ ] No full names — Log messages reference user_id (UUID) only, not user names [ ] No payment/financial data — No card numbers, amounts, or account identifiers [ ] No session tokens or API keys — Grep logs for common key patterns (sk-, Bearer , long hex strings) 
+UI ERROR STATE COVERAGE
+[ ] Every route failure has a UI error state — For each API route this feature uses: trigger a failure, verify the component shows a user-facing error message (not a blank screen, not a spinner that never resolves) [ ] Error messages are generic — User-facing error messages don't expose route names, stack traces, or technical details [ ] Error states are dismissible or actionable — User can retry, go back, or understand what to do next 
+VERCEL LOG REVIEW
+[ ] No unexpected 500s in deploy — After deploying the feature branch, review Vercel logs for any 500 errors that weren't triggered by a test [ ] No 5xx that should be 4xx — A 500 caused by invalid user input is a bug — it should be 400. Flag any found. [ ] External API failures handled — If the feature calls Apify, YouTube, or GA4: confirm their failures produce 503 + degraded state, not 500 
+--- 
+VERDICT
+If any item fails → BLOCKED with the specific log entry or response that failed. 
+CODE  144CHARS
+Any log containing PII or a raw API key → immediate BLOCKED regardless of other results. Flag to Dev and Raj immediately — not just in the QA report. 

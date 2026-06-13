@@ -1,89 +1,44 @@
-#MEM id=next-browser source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/next-browser/SKILL.md savings=5%
-M||tx|---
-M||name|nx-browser
-M||desc|CLI tool for inspecting a running nx.js dv app programmatically. Enables dv/mi/qn to inspect rc cp trees, capture er, audit network calls, profile Core Web Vitals, and debug PPR — all from the terminal w/o clicking through browser DevTools.
-M||vers|1.0.0
-M||tx|---
-M|What|tx|`@vc/nx-browser` is a CLI that exposes rc DevTools and the nx.js dv overlay as shell commands. A persistent Chromium daemon runs in the background; each CLI command sends a JSON-RPC message to it and returns structured, ag-parseable output.
-M|What|**Wh|** Any time dv, mi, or qn needs to inspect what a running nx.js app is actually doing — cp state, network calls, render perf, accessibility, or bd er — w/o manual browser interaction.
-M|What|tx|---
-M|Inst|**Pr|**
-M|Inst|tx|```bash
-M|Inst|tx|npx skills add vc-labs/nx-browser
-M|Inst|tx|```
-M|Inst|**Ma|**
-M|Inst|tx|```bash
-M|Inst|tx|pnpm add -g @vc/nx-browser
-M|Inst|tx|playwright install chromium
-M|Requ|tx|```
-M|Requ|tx|---
-M|Star|tx|```bash
-M|Star|next|//localhost:3000        # launch browser + navigate
-M|Star|tx|nx-browser goto /an                  # full-page reload to path
-M|Star|tx|nx-browser push /settings                   # client-side navigation (no reload)
-M|Star|tx|nx-browser back                             # previous page
-M|Star|tx|nx-browser reload                           # refresh
-M|Star|tx|nx-browser restart-server                   # reset nx.js dv server + clear cache
-M|Star|tx|nx-browser close                            # terminate daemon
-M|Star|tx|```
-M|Insp|tx|```bash
-M|Insp|tx|nx-browser snapshot                         # accessibility tree w/ interactive element refs
-M|Insp|tx|nx-browser tree                             # rc cp hierarchy (full)
-M|Insp|next|props + hooks + state
-M|Insp|tx|nx-browser er                           # bd + runtime er
-M|Insp|tx|nx-browser logs                             # dv server stdout
-M|Insp|tx|nx-browser browser-logs                     # console.log/warn/er from browser
-M|Insp|tx|nx-browser network                          # list all network requests
-M|Insp|tx|nx-browser network <idx>                    # inspect specific request (headers, body, rp)
-M|Insp|tx|nx-browser screenshot                       # viewport capture
-M|Insp|tx|nx-browser screenshot --full-page          # full scrollable page capture
-M|Insp|tx|```
-M|Inte|tx|```bash
-M|Inte|tx|nx-browser click <ref\|text\|selector>        # click an element
-M|Inte|tx|nx-browser fill <ref\|selector> <value>      # tp into an input
-M|Inte|tx|nx-browser eval <script>                    # run JS in page context
-M|Inte|tx|nx-browser eval <ref> <script>              # run JS scoped to a cp
-M|Inte|tx|```
-M|perf|tx|```bash
-M|perf|tx|nx-browser perf                             # Core Web Vitals + rc hydration timing
-M|perf|tx|nx-browser renders start                    # begin cp render profiling
-M|perf|tx|nx-browser renders stop                     # end profiling + output render counts
-M|perf|tx|nx-browser ppr lock                         # freeze dynamic cn (inspect PPR shell)
-M|perf|tx|nx-browser ppr unlock                       # restore dynamic cn
-M|perf|tx|```
-M|Next|tx|```bash
-M|Next|tx|nx-browser page                             # current page metadata
-M|Next|tx|nx-browser project                          # project structure info
-M|Next|tx|nx-browser rt                           # all registered rt
-M|Next|tx|nx-browser action <id>                      # inspect a Server Action
-M|Next|tx|```
-M|Next|tx|---
-M|Patt|tx|```bash
-M|Patt|next|//localhost:3000
-M|Patt|tx|nx-browser goto /an
-M|Patt|tx|nx-browser er          # check for bd/runtime er first
-M|Patt|tx|nx-browser tree            # inspect cp hierarchy
-M|Patt|tx|nx-browser network         # check which ap calls fired and their status
-M|Patt|tx|```
-M|Patt|tx|```bash
-M|Patt|tx|nx-browser goto /war-room
-M|Patt|tx|nx-browser network         # list all requests made during page load
-M|Patt|tx|nx-browser network 3       # inspect request #3 — headers, body, rp
-M|Patt|tx|```
-M|Patt|tx|```bash
-M|Patt|tx|nx-browser snapshot        # get accessibility tree
-M|Look|tx|```
-M|Patt|tx|```bash
-M|Patt|next|//localhost:3000/an
-M|Retu|tx|```
-M|Patt|tx|```bash
-M|Patt|tx|nx-browser ppr lock        # freeze Suspense boundaries
-M|Patt|tx|nx-browser screenshot      # capture static shell
-M|Patt|tx|nx-browser tree            # inspect which cp are in the shell vs dynamic
-M|Patt|tx|nx-browser ppr unlock
-M|Patt|tx|```
-M|Patt|tx|---
-M|Requ|it|nx.js dv server must be running (`npm run dv`)
-M|Requ|it|Node.js >= 20
-M|Requ|it|Chromium (installed via `playwright install chromium`)
-M|Requ|it|Works only against localhost dv server — not production builds
+SRC agent-department/Technical/dev/skills/design-and-build/next-browser/SKILL.md
+ORIG_SIZE 4966
+SECTIONS 38
+ABBREVS 2
+INDEX_TERMS 115
+COMPILED 2026-06-13T19:23:25.281Z
+---
+NAME next-browser
+WII
+@vercel/next-browser is a CLI that exposes React DevTools and the Next.js dev overlay as shell commands. A persistent Chromium daemon runs in the background; each CLI command sends a JSON-RPC message to it and returns structured, agent-parseable output. 
+WTU: Any time Dev, Mia, or Quinn needs to inspect what a running Next.js app is actually doing — component state, network calls, render performance, accessibility, or build errors — without manual browser interaction. 
+--- 
+INSTALLATION
+CODE bash 40CHARS
+Preferred (integrates with Claude Code): 
+CODE bash 86CHARS
+Manual: 
+--- 
+COMMAND REFERENCE
+START / NAVIGATE
+CODE bash 501CHARS
+INSPECT
+CODE bash 805CHARS
+INTERACT
+CODE bash 280CHARS
+PERFORMANCE
+CODE bash 418CHARS
+NEXT.JS FRAMEWORK
+CODE bash 283CHARS
+--- 
+YVON WORKFLOW PATTERNS
+PATTERN 1 — DEBUG A ROUTE RENDERING ISSUE
+CODE bash 272CHARS
+PATTERN 2 — VERIFY API CALLS FROM A SCREEN
+CODE bash 175CHARS
+PATTERN 3 — ACCESSIBILITY AUDIT BEFORE QA SIGN-OFF
+CODE bash 126CHARS
+PATTERN 4 — PERFORMANCE PROFILING
+CODE bash 103CHARS
+PATTERN 5 — PPR SHELL DEBUGGING
+CODE bash 218CHARS
+--- 
+REQUIREMENTS
+Next.js dev server must be running (npm run dev) Node.js = 20 Chromium (installed via playwright install chromium) Works only against localhost dev server — not production builds 

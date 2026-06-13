@@ -1,299 +1,179 @@
-#MEM id=lean-startup source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/SKILL.md savings=5%
-M||tx|---
-M||name|lean-startup
-M||desc|'ds MVPs, validated learning experiments, and pivot-or-persevere decisions using bd-Measure-Learn. Use when the us mentions "MVP scope", "validated learning", "pivot or persevere", "vanity metrics", "tst assumptions", "innovation accounting", "bd-measure-learn", or "minimum viable experiment". Also trigger when deciding what to include in a first version, measuring startup progress, or evaluating whether to change direction on a pd bet. Covers innovation accounting and actionable metrics. For 5-day prototype testing, see ds-sprint. For cs motivation al, see jobs-to-be-done.'
-M||lice|MIT
-M||meta|
-M||auth|wondelai
-M||vers|"1.1.0"
-M||tx|---
-M|Lean|tx|A systematic approach to building startups and launching new pd that shortens dv cycles and rapidly discovers if a business md is viable.
-M|Core|tx|**Entrepreneurship is a form of management.** sc doesn't require a perfect plan or brilliant in—it requires a systematic process for testing assumptions, learning from cs, and iterating rapidly.
-M|Core|**Th|** Most startups fail not bc they couldn't bd what they planned, but bc they built the wrong thing. The Lean Startup methodology applies scientific experimentation to eliminate waste and accelerate validated learning.
-M|Scor|**Go|10/10.** When reviewing or creating pd dv plans, experiments, or metrics, rate them 0-10 based on adherence to Lean Startup principles. A 10/10 means full application of bd-Measure-Learn, validated learning, and evidence-based decisions; lower scores indicate waterfall thinking or waste. Always provide the current score and specific improvements needed to reach 10/10.
-M|The |The |
-M|The |tx|```
-M|The |tx|IDEAS
-M|The |tx|↓
-M|The |tx|bd → pd
-M|The |tx|↓
-M|The |tx|MEASURE → Data
-M|The |tx|↓
-M|The |tx|LEARN → Knowledge
-M|The |tx|↓
-M|The |tx|(back to IDEAS)
-M|The |tx|```
-M|The |**Cr|** The loop is actually backward. Start w/ what you want to learn, determine metrics that will inform that learning, then bd the minimum pd to collect those metrics.
-M|The |**Re|**
-M|The |tx|1. **What do we want to learn?** (hypothesis to tst)
-M|The |tx|2. **How will we know if we learned it?** (metrics)
-M|The |tx|3. **What's the minimum we can bd?** (MVP)
-M|The |**Go|** Minimize total time through the loop.
-M|The |See|[references/bd-measure-learn.md](references/bd-measure-learn.md) for detailed loop execution.
-M|Vali|**De|** Learning what cs really want through validated experiments, not opinion or anecdotes.
-M|Vali|**Va|**
-M|Vali|it|Building features cs request (they don't know what they want)
-M|Vali|it|Achieving vanity metrics (downloads, signups w/o engagement)
-M|Vali|it|Doing surveys or focus groups (people lie/mispredict behavior)
-M|Vali|**Va|**
-M|Vali|it|Testing hypotheses w/ real behavior
-M|Vali|it|Measuring what cs *do*, not what they *say*
-M|Vali|it|Running experiments that cld falsify your assumptions
-M|Vali|it|Learning = when your predictions were wrong
-M|Vali|**Th|**
-M|Vali|tx|\| Level \| Evidence \| Strength \|
-M|Vali|tx|\|-------\|----------\|----------\|
-M|Vali|tx|\| 1 \| "I think cs want this" \| Weakest (opinion) \|
-M|Vali|tx|\| 2 \| "cs said they want this" \| Weak (stated preference) \|
-M|Vali|tx|\| 3 \| "cs signed up for early access" \| md (lo commitment) \|
-M|Vali|tx|\| 4 \| "cs paid a deposit" \| Strong (real commitment) \|
-M|Vali|tx|\| 5 \| "cs are actively using it" \| Strongest (revealed preference) \|
-M|Vali|**Ta|** Level 4-5 before building at scale.
-M|Mini|**De|** The version of a new pd that allows a team to collect the maximum amount of validated learning w/ the least effort.
-M|Mini|**MV|**
-M|Mini|it|A prototype (not abt proving tc feasibility)
-M|Mini|it|A beta version (not abt qual or features)
-M|Mini|it|A minimum marketable pd (it might be embarrassing)
-M|Mini|**MV|**
-M|Mini|it|A learning vehicle
-M|Mini|it|The smallest experiment to tst a hypothesis
-M|Mini|it|Often much smaller than you think
-M|Mini|**MV|**
-M|Mini|tx|\| tp \| What It Is \| When to Use \| Example \|
-M|Mini|tx|\|------\|------------\|-------------\|---------\|
-M|Mini|tx|\| **Concierge** \| Manual service pretending to be automated \| tst if solution is valuable \| Food on the Table (manual meal planning) \|
-M|Mini|tx|\| **Wizard of Oz** \| Fake automation, manual backend \| tst if automation is needed \| Zappos (no inventory, bought shoes retail) \|
-M|Mini|tx|\| **Smoke tst** \| Landing page + signup, no pd \| tst demand before building \| Dropbox vd (explained concept, measured signups) \|
-M|Mini|tx|\| **Single feature** \| One core feature only \| tst which feature is most valuable \| Twitter (just status updates) \|
-M|Mini|tx|\| **Piecemeal** \| Combine existing tools \| tst workflow before custom bd \| Groupon (WordPress + em) \|
-M|Mini|**MV|**
-M|Mini|it|What's the riskiest assumption to tst first?
-M|Mini|it|What's the minimum to tst that assumption?
-M|Mini|it|How do we measure if the assumption was validated?
-M|Mini|**Co|**
-M|Mini|it|Building too much (overestimate MVP size)
-M|Mini|it|Optimizing for scale prematurely
-M|Mini|it|Confusing qual w/ learning (MVP can be lo qual)
-M|Mini|it|Skipping the experiment (building w/o hypothesis)
-M|Mini|See|[references/mvp-ds.md](references/mvp-ds.md) for MVP tp and ds patterns.
-M|Leap|**De|** The assumptions that, if wrong, will cause your business to fail.
-M|Leap|**Pr|**
-M|Leap|tx|1. **Identify your business md's ct assumptions**
-M|Leap|tx|2. **Prioritize by risk** (which fl wld be fatal?)
-M|Leap|tx|3. **tst the riskiest assumption first**
-M|Leap|**Co|**
-M|Leap|tx|\| Assumption tp \| Question \| tst Method \|
-M|Leap|tx|\|----------------\|----------\|-------------\|
-M|Leap|tx|\| **Value hypothesis** \| Do cs care abt this problem? \| Smoke tst, concierge MVP \|
-M|Leap|tx|\| **Growth hypothesis** \| How will cs discover us? \| Channel tests, referral experiments \|
-M|Leap|tx|\| **Retention hypothesis** \| Will cs come back? \| Cohort al, engagement metrics \|
-M|Leap|tx|\| **Monetization hypothesis** \| Will cs pay? \| Pre-orders, pricing tests \|
-M|Leap|**Ex|Dropbox**
-M|Leap|- **|** "People will download and use a file sync tool"
-M|Leap|- **|** Explainer vd showing pd (before building full version)
-M|Leap|- **|** Beta signup list grew from 5,000 to 75,000 overnight
-M|Leap|- **|** Validated demand before building scale infrastructure
-M|Leap|**An|** Testing assumptions in order of ease rather than risk.
-M|Leap|See|[references/assumptions.md](references/assumptions.md) for assumption mapping frameworks.
-M|Inno|**De|** Measuring progress when traditional accounting doesn't apply.
-M|Inno|**Th|**
-M|Inno|it|rv (startups start at $0)
-M|Inno|it|cs (startups start at 0)
-M|Inno|it|Vanity metrics (look good but don't drive decisions)
-M|Inno|**In|**
-M|1. E|**Qu|** Where are we today?
-M|1. E|tx|Measure current reality, even if it's zero or embarrassing.
-M|1. E|**Me|**
-M|1. E|it|Conversion funnel (signup → active → retained → paying)
-M|1. E|it|Engagement (DAU/MAU, sn length, features used)
-M|1. E|it|Economics (CAC, LTV, churn rate)
-M|1. E|**Go|** Know your starting point precisely.
-M|2. T|**Qu|** What can we improve to move toward our goal?
-M|2. T|tx|Run experiments to improve baseline metrics.
-M|2. T|**Ex|**
-M|2. T|it|A/B tst pricing ($9/mo vs. $19/mo)
-M|2. T|it|tst onboarding flows (% who complete setup)
-M|2. T|it|Experiment w/ channels (SEO vs. paid vs. referral)
-M|2. T|**Go|** Systematically improve metrics through validated learning.
-M|3. P|**Qu|** Are we making sufficient progress, or do we need to change st?
-M|3. P|tx|Based on data, decide whether to continue or pivot.
-M|3. P|**Cr|**
-M|3. P|it|Are metrics moving in the right direction?
-M|3. P|it|Is the rate of improvement acceptable?
-M|3. P|it|Are we learning what we expected?
-M|3. P|**Go|** Make evidence-based st decisions.
-M|3. P|See|[references/innovation-accounting.md](references/innovation-accounting.md) for metric frameworks and dashboards.
-M|Acti|**Va|** Make you feel good but don't change behavior.
-M|Acti|**Ac|** Drive decisions and clarify cause and effect.
-M|Acti|tx|\| Vanity \| Why It's Bad \| Actionable Alternative \|
-M|Acti|tx|\|--------\|-------------\|------------------------\|
-M|Acti|tx|\| **Total signups** \| Always goes up, no context \| **% signup → active** (conversion rate) \|
-M|Acti|tx|\| **Page views** \| Doesn't indicate value \| **Time on page**, **bounce rate** \|
-M|Acti|tx|\| **Total us** \| Includes inactive/churned \| **Active us** (DAU, WAU, MAU) \|
-M|Acti|tx|\| **Downloads** \| Doesn't mean usage \| **DAU/downloads** (activation rate) \|
-M|Acti|tx|\| **rv** \| w/o context \| **rv per cohort**, **LTV/CAC** \|
-M|Acti|**Th|**
-M|Acti|1. *|** Clear cause-and-effect (can reproduce)
-M|Acti|2. *|** Simple, understandable by everyone
-M|Acti|3. *|** Can check the underlying data (not a black box)
-M|Acti|**Ex|**
-M|Acti|- **|** "We have 100,000 us!"
-M|Acti|- **|** "us from channel X have 2x retention vs. channel Y. Let's double down on X."
-M|Acti|**Co|** Group us by signup date and track behavior over time. Reveals if pd is actually improving.
-M|Acti|See|[references/metrics.md](references/metrics.md) for metric selection and tracking.
-M|Pivo|**Pi|** A structured course correction designed to tst a new hypothesis abt the pd, st, or engine of growth.
-M|Pivo|**Wh|**
-M|Pivo|it|Experiments consistently fail to validate hypotheses
-M|Pivo|it|Metrics are flat despite multiple iterations
-M|Pivo|it|cs feedback contradicts your vision
-M|Pivo|it|Progress is too slow given runway
-M|Pivo|**Wh|**
-M|Pivo|it|Metrics are improving (even if slowly)
-M|Pivo|it|Clear learning is happening
-M|Pivo|it|Adjustments are moving in right direction
-M|Pivo|**Pi|**
-M|Pivo|tx|\| Pivot tp \| What Changes \| Example \|
-M|Pivo|tx|\|------------\|-------------\|---------\|
-M|Pivo|tx|\| **Zoom-in pivot** \| Single feature becomes the whole pd \| Instagram (photo filters from Burbn check-in app) \|
-M|Pivo|tx|\| **Zoom-out pivot** \| pd becomes a single feature \| Flickr (photo-sharing from Game Neverending) \|
-M|Pivo|tx|\| **cs segment** \| Same problem, different cs \| Groupon (activism platform → local deals) \|
-M|Pivo|tx|\| **cs need** \| Same cs, different problem \| Potbelly Sandwich (antique store → sandwiches) \|
-M|Pivo|tx|\| **Platform** \| App → Platform or Platform → App \| YouTube (dating site → vd platform) \|
-M|Pivo|tx|\| **Business architecture** \| hi margin, lo volume ↔ lo margin, hi volume \| Salesforce (software → SaaS) \|
-M|Pivo|tx|\| **Value capture** \| Monetization md change \| Android (paid → free + app rv) \|
-M|Pivo|tx|\| **Engine of growth** \| Viral, sticky, or paid growth md \| Facebook (viral within colleges → paid advertising) \|
-M|Pivo|tx|\| **Channel** \| How you reach cs \| Salesforce (direct sales → self-service) \|
-M|Pivo|tx|\| **Technology** \| Different technology, same solution \| Apple (Intel → ARM chips) \|
-M|Pivo|**Pi|** Many successful startups pivot 1-5 times before finding pd-mk fit.
-M|Pivo|**An|** "Pivot" w/o validating that the new direction solves the core problem.
-M|Pivo|See|[references/pivots.md](references/pivots.md) for pivot decision frameworks and case studies.
-M|The |**Gr|** How your startup acquires and retains cs sustainably.
-M|The |**Ch|**
-M|1. S|**Me|** hi retention, lo churn
-M|1. S|**Fo|** `Growth rate = New cs acquisition rate - Churn rate`
-M|1. S|**Fo|** Keep cs coming back
-M|1. S|**Me|**
-M|1. S|it|Churn rate (% who stop using per month)
-M|1. S|it|Retention cohorts (% still active after 30/60/90 days)
-M|1. S|it|Engagement (DAU/MAU ratio)
-M|1. S|**Ex|** SaaS, subscription services, sl networks
-M|1. S|st|** Improve pd until churn rate is lo enough that natural growth exceeds churn.
-M|2. V|**Me|** cs bring other cs
-M|2. V|**Fo|** `Viral coefficient = (% who invite) × (invites sent) × (% who join)`
-M|2. V|**Fo|** Viral coefficient > 1.0 = exponential growth
-M|2. V|**Me|**
-M|2. V|it|Viral coefficient (invites → signups)
-M|2. V|it|Viral cycle time (how long until referred us invites others)
-M|2. V|it|Referral source attribution
-M|2. V|**Ex|** Dropbox, Hotmail, WhatsApp
-M|2. V|st|** bd virality into the pd. Must be > 1.0 to be self-sustaining.
-M|3. P|**Me|** Spend money to acquire cs
-M|3. P|**Fo|** `LTV (Lifetime Value) > CAC (cs Acquisition Cost)`
-M|3. P|**Fo|** Unit economics that allow reinvestment
-M|3. P|**Me|**
-M|3. P|it|CAC (cost per acquisition)
-M|3. P|it|LTV (average rv per cs)
-M|3. P|- LT|> 3x)
-M|3. P|it|Payback period (how long to recoup CAC)
-M|3. P|**Ex|** E-commerce, traditional businesses
-M|3. P|st|** op until each cs generates enough profit to acquire more cs.
-M|3. P|wn|** Don't use multiple engines simultaneously. Pick one, op it, then consider adding others.
-M|3. P|See|[references/growth-engines.md](references/growth-engines.md) for engine selection and op.
-M|The |**Pu|** Root cause al to prevent problems from recurring.
-M|The |**Pr|**
-M|The |tx|1. A problem occurs (bug, outage, cs complaint)
-M|The |tx|2. Ask "Why did this happen?" → Answer
-M|The |tx|3. Ask "Why?" abt that answer → Second answer
-M|The |tx|4. Repeat 5 times until you reach the root cause
-M|The |tx|5. Make proportional investments at each level
-M|The |**Ex|**
-M|The |**Pr|** Website went down
-M|The |tx|1. **Why?** Server ran out of memory
-M|The |tx|2. **Why?** Memory leak in new feature
-M|The |tx|3. **Why?** Code wasn't reviewed for memory management
-M|The |tx|4. **Why?** No code rv process for infrastructure changes
-M|The |tx|5. **Why?** Team is moving too fast to cr processes
-M|The |**Pr|**
-M|The |it|Fix the immediate bug (level 1)
-M|The |it|Add memory monitoring (level 2)
-M|The |it|im code rv (level 3-4)
-M|The |it|Slow down to bd qual processes (level 5)
-M|The |**An|** Stop at level 1 (just fix the symptom).
-M|The |See|[references/five-whys.md](references/five-whys.md) for facilitation guides.
-M|Smal|**Pr|** Work in small batches to accelerate learning and reduce waste.
-M|Smal|**Wh|**
-M|Smal|it|Faster feedback loops
-M|Smal|it|Easier to pivot
-M|Smal|it|Less waste when you're wrong
-M|Smal|it|Faster time to mk
-M|Smal|**Ex|**
-M|Smal|tx|\| Large Batch \| Small Batch \|
-M|Smal|tx|\|-------------\|-------------\|
-M|Smal|tx|\| bd entire pd, then launch \| Launch landing page, then bd \|
-M|Smal|tx|\| Release quarterly \| Release weekly or daily \|
-M|Smal|tx|\| Plan 12-month roadmap \| Plan 6-week cycles \|
-M|Smal|tx|\| Big bang rewrite \| Incremental refactoring \|
-M|Smal|**Co|** The ultimate small batch = dp every code commit.
-M|Smal|**Be|**
-M|Smal|it|Bugs are caught immediately
-M|Smal|it|Learning happens continuously
-M|Smal|it|Reduced risk per dpl
-M|Smal|See|[references/small-batches.md](references/small-batches.md) for implementation patterns.
-M|Lean|**Fo|**
-M|SaaS|1. *|** Landing page + em list (validate demand)
-M|SaaS|2. *|** Manually deliver service to 10 cs (validate value)
-M|SaaS|3. *|** bd one core workflow (validate engagement)
-M|SaaS|4. *|** Retention, NPS, feature usage
-M|SaaS|5. *|** Based on cohort data
-M|Corp|1. *|** Separate metrics from core business
-M|Corp|2. *|** Shield from quarterly rv pressure
-M|Corp|3. *|** Unlock funding based on validated learning milestones
-M|Corp|4. *|** Treat team as startup within company
-M|Prod|1. *|** dp behind flag, tst w/ small cohort
-M|Prod|2. *|** Measure impact on core metrics
-M|Prod|3. *|** Based on data
-M|Prod|See|[references/applications.md](references/applications.md) for context-specific guides.
-M|Comm|tx|\| Mistake \| Why It Fails \| Fix \|
-M|Comm|tx|\|---------\|-------------\|------\|
-M|Comm|tx|\| **Building too much** \| Waste before validation \| tst w/ smoke tst or concierge first \|
-M|Comm|tx|\| **Asking cs** \| People don't know/mispredict \| Observe behavior, not opinions \|
-M|Comm|tx|\| **Vanity metrics** \| Feel-good numbers, no decisions \| Track cohorts, conversion, retention \|
-M|Comm|tx|\| **No hypothesis** \| Can't learn if you don't predict \| Write hypothesis before each experiment \|
-M|Comm|tx|\| **Pivot too slow** \| Waste runway \| Set clear pivot criteria upfront \|
-M|Comm|tx|\| **Skip innovation accounting** \| Can't tell if you're improving \| Establish baseline, measure tuning efforts \|
-M|Quic|Audi|
-M|Quic|tx|\| Question \| If No \| Action \|
-M|Quic|tx|\|----------\|-------\|--------\|
-M|Quic|tx|\| What's the riskiest assumption? \| You're building on shaky ground \| Map leap-of-faith assumptions \|
-M|Quic|tx|\| How will you tst it? \| You're guessing \| ds MVP to tst assumption \|
-M|Quic|tx|\| What metric will validate/invalidate? \| You won't learn \| Define actionable metrics \|
-M|Quic|tx|\| Can you tst w/ less than this? \| You're over-building \| Shrink MVP further \|
-M|Quic|tx|\| What will you do if the experiment fails? \| No pivot criteria \| Define pivot triggers upfront \|
-M|The |**Ph|Problem/Solution Fit**
-M|The |- **|** Validate the problem exists and cs care
-M|The |- **|** cs discovery, smoke tests, concierge MVP
-M|The |- **|** cs willing to pay or commit
-M|The |**Ph|pd/mk Fit**
-M|The |- **|** bd something people want
-M|The |- **|** bd MVP, iterate based on usage data
-M|The |- **|** hi retention, organic growth, strong engagement
-M|The |**Ph|Scale**
-M|The |- **|** Grow efficiently
-M|The |- **|** op growth engine, improve unit economics
-M|The |- **|** Sustainable, profitable growth
-M|The |**An|** Skipping Phase 1-2 and jumping straight to scale.
-M|Refe|- [b|Detailed loop execution, reverse planning
-M|Refe|- [m|MVP tp, ds patterns, sizing
-M|Refe|- [a|Leap-of-faith assumption mapping
-M|Refe|- [i|Metric frameworks, dashboards
-M|Refe|- [m|Actionable vs. vanity, cohort al, metric selection
-M|Refe|- [p|Pivot tp, decision frameworks, case studies
-M|Refe|- [g|Sticky, viral, paid engines in depth
-M|Refe|- [f|Root cause al, facilitation guides
-M|Refe|- [s|Batch size reduction, continuous dpl
-M|Refe|- [a|SaaS, corporate innovation, features
-M|Refe|- [c|Dropbox, IMVU, Zappos, Groupon, and failures
-M|Furt|This|
-M|Furt|- [*|//www.amazon.com/Lean-Startup-Entrepreneurs-Continuous-Innovation/dp/0307887898?tag=wondelai00-20) by Eric Ries
-M|Furt|- [*|//www.amazon.com/Startup-Way-Companies-Entrepreneurial-Management/dp/1101903201?tag=wondelai00-20) by Eric Ries (applying Lean Startup to established companies)
-M|Abou|tx|**Eric Ries** is an entrepreneur and author best known for developing the Lean Startup methodology. He was co-founder and CTO of IMVU, where he pioneered continuous dpl and cs dv practices that became the foundation of Lean Startup. *The Lean Startup* has been translated into over 30 languages and has influenced startup culture worldwide. Ries is also the creator of the Long-Term Stock Exchange (LTSE), a new stock exchange designed for companies focused on long-term value creation.
+SRC agent-department/COO/diana/skills/marketplace/lean-startup/SKILL.md
+ORIG_SIZE 19693
+SECTIONS 173
+ABBREVS 21
+INDEX_TERMS 888
+COMPILED 2026-06-13T19:23:24.847Z
+---
+NAME lean-startup
+LEAN STARTUP METHODOLOGY
+A systematic approach to building startups and launching new products that shortens development cycles and rapidly discovers if a BM is viable. 
+CP
+Entrepreneurship is a form of management. Success doesn't require a perfect plan or brilliant insight—it requires a systematic process for testing assumptions, learning from customers, and iterating rapidly. 
+The foundation: Most startups fail not becaUTy couldn't build what they planned, but becaUTy built the wrong thing. The Lean Startup methodology applies scientific experimentation to eliminate waste and accelerate validated learning. 
+SCORING
+Goal: 10/10. When reviewing or creating product development plans, experiments, or metrics, rate them 0-10 based on adherence to Lean Startup principles. A 10/10 means full application of Build-Measure-Learn, validated learning, and evidence-based decisions; lower scores indicate waterfall thinking or waste. Always provide the current score and specific improvements needed to reach 10/10. 
+THE BUILD-MEASURE-LEARN LOOP
+The fundamental cycle of Lean Startup: 
+CODE  128CHARS
+Critical insight: The loop is actually backward. Start with what you want to learn, determine metrics that will inform that learning, then build the minimum product to collect those metrics. 
+Reverse planning: 
+What do we want to learn? (hypothesis to test) How will we know if we learned it? (metrics) What's the minimum we can build? (MVP) 
+Goal: Minimize total time through the loop. 
+SEE [references/build-measure-learn.md](references/build-measure-learn.md) for detailed loop execution.
+VALIDATED LEARNING
+Definition: Learning what customers really want through validated experiments, not opinion or anecdotes. 
+Validated learning is not: 
+Building features customers request (they don't know what they want) Achieving vanity metrics (downloads, signups without engagement) Doing surveys or focus groups (people lie/mispredict behavior) 
+Validated learning is: 
+Testing hypotheses with real behavior Measuring what customers do, not what they say Running experiments that could falsify your assumptions Learning = when your predictions were wrong 
+The Validation Ladder: 
+Level Evidence Strength 1 "I think customers want this" Weakest (opinion) 2 "Customers said they want this" Weak (stated preference) 3 "Customers signed up for early access" Medium (low commitment) 4 "Customers paid a deposit" Strong (real commitment) 5 "Customers are actively using it" Strongest (revealed preference) 
+Target: Level 4-5 before building at scale. 
+MINIMUM VIABLE PRODUCT (MVP)
+Definition: The version of a new product that allows a team to collect the maximum amount of validated learning with the least effort. 
+MVP is not: 
+A prototype (not about proving technical feasibility) A beta version (not about quality or features) A minimum marketable product (it might be embarrassing) 
+MVP is: 
+A learning vehicle The smallest experiment to test a hypothesis Often much smaller than you think 
+MVP Types: 
+Type WII WTU Example **Concierge** Manual service pretending to be automated Test if solution is valuable Food on the Table (manual meal planning) **WO Oz** Fake automation, manual backend Test if automation is needed Zappos (no inventory, bought shoes retail) **Smoke test** Landing page + signup, no product Test demand before building Dropbox video (explained concept, measured signups) **Single feature** One core feature only Test which feature is most valuable Twitter (just status updates) **Piecemeal** Combine existing tools Test workflow before custom build Groupon (WordPress + email) 
+MVP Design Questions: 
+What's the riskiest assumption to test first? What's the minimum to test that assumption? How do we measure if the assumption was validated? 
+Common mistakes: 
+Building too much (overestimate MVP size) Optimizing for scale prematurely Confusing quality with learning (MVP can be low quality) Skipping the experiment (building without hypothesis) 
+SEE [references/mvp-design.md](references/mvp-design.md) for MVP types and design patterns.
+LEAP-OF-FAITH ASSUMPTIONS
+Definition: The assumptions that, if wrong, will cause your business to fail. 
+Process: 
+Identify your BM's critical assumptions Prioritize by risk (which failure would be fatal?) Test the riskiest assumption first 
+Common leap-of-faith assumptions: 
+Assumption Type Question Test Method **Value hypothesis** Do customers care about this problem? Smoke test, concierge MVP **Growth hypothesis** How will customers discover us? Channel tests, referral experiments **Retention hypothesis** Will customers come back? Cohort analysis, engagement metrics **Monetization hypothesis** Will customers pay? Pre-orders, pricing tests 
+Example: Dropbox 
+Leap-of-faith: "People will download and use a file sync tool" Test: Explainer video showing product (before building full version) Metric: Beta signup list grew from 5,000 to 75,000 overnight Learning: Validated demand before building scale infrastructure 
+Anti-pattern: Testing assumptions in order of ease rather than risk. 
+SEE [references/assumptions.md](references/assumptions.md) for assumption mapping frameworks.
+INNOVATION ACCOUNTING
+Definition: Measuring progress when traditional accounting doesn't apply. 
+The problem with traditional metrics: 
+Revenue (startups start at $0) Customers (startups start at 0) Vanity metrics (look good but don't drive decisions) 
+Innovation accounting framework: 
+1. ESTABLISH THE BASELINE
+Question: Where are we today? 
+Measure current reality, even if it's zero or embarrassing. 
+MT establish: 
+Conversion funnel (signup → active → retained → paying) Engagement (DAU/MAU, session length, features used) Economics (CAC, LTV, CR) 
+Goal: Know your starting point precisely. 
+2. TUNE THE ENGINE
+Question: What can we improve to move toward our goal? 
+Run experiments to improve baseline metrics. 
+Examples: 
+A/B test pricing ($9/mo vs. $19/mo) Test onboarding flows (% who complete setup) Experiment with channels (SEO vs. paid vs. referral) 
+Goal: Systematically improve metrics through validated learning. 
+3. PIVOT OR PERSEVERE
+Question: Are we making sufficient progress, or do we need to change strategy? 
+Based on data, decide whether to continue or pivot. 
+Criteria: 
+Are metrics moving in the right direction? IT rate of improvement acceptable? Are we learning what we expected? 
+Goal: Make evidence-based strategic decisions. 
+SEE [references/innovation-accounting.md](references/innovation-accounting.md) for metric frameworks and dashboards.
+ACTIONABLE VS. VANITY METRICS
+Vanity metrics: Make you feel good but don't change behavior. 
+Actionable metrics: Drive decisions and clarify cause and effect. 
+Vanity Why It's Bad Actionable Alternative **Total signups** Always goes up, no context **% signup → active** (conversion rate) **Page views** Doesn't indicate value **Time on page**, **bounce rate** **Total users** Includes inactive/churned **Active users** (DAU, WAU, MAU) **Downloads** Doesn't mean usage **DAU/downloads** (AR) **Revenue** Without context **Revenue per cohort**, **LTV/CAC** 
+Three characteristics of actionable metrics: 
+Actionable: Clear cause-and-effect (can reproduce) Accessible: Simple, understandable by everyone Auditable: Can check the underlying data (not a black box) 
+Example: 
+Vanity: "We have 100,000 users!" Actionable: "Users from channel X have 2x retention vs. channel Y. Let's double down on X." 
+Cohort analysis: Group users by signup date and track behavior over time. Reveals if product is actually improving. 
+SEE [references/metrics.md](references/metrics.md) for metric selection and tracking.
+PIVOT OR PERSEVERE
+Pivot: A structured course correction designed to test a new hypothesis about the product, strategy, or engine of growth. 
+WT pivot: 
+Experiments consistently fail to validate hypotheses Metrics are flat despite multiple iterations Customer feedback contradicts your vision Progress is too slow given runway 
+WT persevere: 
+Metrics are improving (even if slowly) Clear learning is happening Adjustments are moving in right direction 
+Pivot Types: 
+Pivot Type What Changes Example **Zoom-in pivot** Single feature becomes the whole product Instagram (photo filters from Burbn check-in app) **Zoom-out pivot** Product becomes a single feature Flickr (photo-sharing from Game Neverending) **Customer segment** Same problem, different customer Groupon (activism platform → local deals) **Customer need** Same customer, different problem Potbelly Sandwich (antique store → sandwiches) **Platform** App → Platform or Platform → App YouTube (dating site → video platform) **Business architecture** High margin, low volume ↔ Low margin, high volume Salesforce (software → SaaS) **Value capture** Monetization model change Android (paid → free + app revenue) **Engine of growth** Viral, sticky, or paid growth model Facebook (viral within colleges → paid advertising) **Channel** How you reach customers Salesforce (direct sales → self-service) **Technology** Different technology, same solution Apple (Intel → ARM chips) 
+Pivot cadence: Many successful startups pivot 1-5 times before finding product-market fit. 
+Anti-pattern: "Pivot" without validating that the new direction solves the core problem. 
+SEE [references/pivots.md](references/pivots.md) for pivot decision frameworks and case studies.
+THE THREE ENGINES OF GROWTH
+Growth engine: How your startup acquires and retains customers sustainably. 
+Choose one engine to focus on: 
+1. STICKY ENGINE OF GROWTH
+Mechanism: High retention, low churn 
+Formula: Growth rate = New customer acquisition rate - CR 
+Focus: Keep customers coming back 
+Metrics: 
+CR (% who stop using per month) Retention cohorts (% still active after 30/60/90 days) Engagement (DAU/MAU ratio) 
+Examples: SaaS, subscription services, social networks 
+Strategy: Improve product until CR is low enough that natural growth exceeds churn. 
+2. VIRAL ENGINE OF GROWTH
+Mechanism: Customers bring other customers 
+Formula: Viral coefficient = (% who invite) × (invites sent) × (% who join) 
+Focus: Viral coefficient 1.0 = exponential growth 
+Metrics: 
+Viral coefficient (invites → signups) Viral cycle time (how long until referred user invites others) Referral source attribution 
+Examples: Dropbox, Hotmail, WhatsApp 
+Strategy: Build virality into the product. Must be 1.0 to be self-sustaining. 
+3. PAID ENGINE OF GROWTH
+Mechanism: Spend money to acquire customers 
+Formula: LTV (Lifetime Value) CAC (Customer Acquisition Cost) 
+Focus: Unit economics that allow reinvestment 
+Metrics: 
+CAC (cost per acquisition) LTV (average revenue per customer) LTV/CAC ratio (target: 3x) PP (how long to recoup CAC) 
+Examples: E-commerce, traditional businesses 
+Strategy: Optimize until each customer generates enough profit to acquire more customers. 
+Warning: Don't use multiple engines simultaneously. Pick one, optimize it, then consider adding others. 
+SEE [references/growth-engines.md](references/growth-engines.md) for engine selection and optimization.
+THE FIVE WHYS
+Purpose: Root cause analysis to prevent problems from recurring. 
+Process: 
+A problem occurs (bug, outage, customer complaint) Ask "Why did this happen?" → Answer Ask "Why?" about that answer → Second answer Repeat 5 times until you reach the root cause Make proportional investments at each level 
+Example: 
+Problem: Website went down 
+Why? Server ran out of memory Why? Memory leak in new feature Why? Code wasn't reviewed for memory management Why? No code review process for infrastructure changes Why? Team is moving too fast to create processes 
+Proportional investments: 
+Fix the immediate bug (level 1) Add memory monitoring (level 2) Implement code review (level 3-4) Slow down to build quality processes (level 5) 
+Anti-pattern: Stop at level 1 (just fix the symptom). 
+SEE [references/five-whys.md](references/five-whys.md) for facilitation guides.
+SMALL BATCHES
+Principle: Work in small batches to accelerate learning and reduce waste. 
+Why small batches win: 
+Faster feedback loops Easier to pivot Less waste when you're wrong Faster time to market 
+Examples: 
+Large Batch Small Batch Build entire product, then launch Launch landing page, then build Release quarterly Release weekly or daily Plan 12-month roadmap Plan 6-week cycles Big bang rewrite Incremental refactoring 
+Continuous deployment: The ultimate small batch = deploy every code commit. 
+Benefits: 
+Bugs are caught immediately Learning happens continuously Reduced risk per deployment 
+SEE [references/small-batches.md](references/small-batches.md) for implementation patterns.
+LEAN STARTUP APPLIED
+For different contexts: 
+SAAS STARTUP
+Smoke test: Landing page + email list (validate demand) Concierge MVP: Manually deliver service to 10 customers (validate value) Single-feature MVP: Build one core workflow (validate engagement) Measure: Retention, NPS, feature usage Pivot or scale: Based on cohort data 
+CORPORATE INNOVATION
+Innovation accounting: Separate metrics from core business Protected teams: Shield from quarterly revenue pressure Metered funding: Unlock funding based on validated learning milestones Internal entrepreneurship: Treat team as startup within company 
+PRODUCT FEATURES
+Feature flags: Deploy behind flag, TW small cohort A/B test: Measure impact on core metrics Kill, iterate, or scale: Based on data 
+SEE [references/applications.md](references/applications.md) for context-specific guides.
+COMMON MISTAKES
+Mistake Why It Fails Fix **Building too much** Waste before validation TW smoke test or concierge first **Asking customers** People don't know/mispredict Observe behavior, not opinions **Vanity metrics** Feel-good numbers, no decisions Track cohorts, conversion, retention **No hypothesis** Can't learn if you don't predict Write hypothesis before each experiment **Pivot too slow** Waste runway Set clear pivot criteria upfront **Skip innovation accounting** Can't tell if you're improving Establish baseline, measure tuning efforts 
+QUICK DIAGNOSTIC
+Audit any product development plan: 
+Question If No Action What's the riskiest assumption? You're building on shaky ground Map leap-of-faith assumptions How will you test it? You're guessing Design MVP to test assumption What metric will validate/invalidate? You won't learn Define actionable metrics Can you TW less than this? You're over-building Shrink MVP further What will you do if the experiment fails? No pivot criteria Define pivot triggers upfront 
+THE LEAN STARTUP APPLIED: FROM IDEA TO SCALE
+Phase 1: Problem/Solution Fit 
+Goal: Validate the problem exists and customers care Method: Customer discovery, smoke tests, concierge MVP Metric: Customers willing to pay or commit 
+Phase 2: Product/Market Fit 
+Goal: Build something people want Method: Build MVP, iterate based on usage data Metric: High retention, organic growth, strong engagement 
+Phase 3: Scale 
+Goal: Grow efficiently Method: Optimize growth engine, improve unit economics Metric: Sustainable, profitable growth 
+Anti-pattern: Skipping Phase 1-2 and jumping straight to scale. 
+REFERENCE FILES
+build-measure-learn.md: Detailed loop execution, reverse planning mvp-design.md: MVP types, design patterns, sizing assumptions.md: Leap-of-faith assumption mapping innovation-accounting.md: Metric frameworks, dashboards metrics.md: Actionable vs. vanity, cohort analysis, metric selection pivots.md: Pivot types, decision frameworks, case studies growth-engines.md: Sticky, viral, paid engines in depth five-whys.md: Root cause analysis, facilitation guides small-batches.md: Batch size reduction, continuous deployment applications.md: SaaS, corporate innovation, features case-studies.md: Dropbox, IMVU, Zappos, Groupon, and failures 
+FURTHER READING
+This skill is based on Eric Ries' Lean Startup methodology. For the complete framework, research, and case studies: 
+"The Lean Startup" by Eric Ries "The Startup Way" by Eric Ries (applying Lean Startup to established companies) 
+ABOUT THE AUTHOR
+Eric Ries is an entrepreneur and author best known for developing the Lean Startup methodology. He was co-founder and CTO of IMVU, where he pioneered continuous deployment and customer development practices that became the foundation of Lean Startup. The Lean Startup has been translated into over 30 languages and has influenced startup culture worldwide. Ries is also the creator of the Long-Term Stock Exchange (LTSE), a new stock exchange designed for companies focused on long-term value creation. 

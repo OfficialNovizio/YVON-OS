@@ -1,41 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-early-exit.md savings=8%
-M||tx|---
-M||titl|Early Return from Functions
-M||impa|lo-md
-M||impa|avoids unnecessary computation
-M||tags|javascript, functions, op, early-return
-M||tx|---
-M|Earl|tx|Return early when result is determined to skip unnecessary processing.
-M|Earl|**In|**
-M|Earl|tx|```ts
-M|Earl|func|us[]) {
-M|Earl|tx|let hasError = false
-M|Earl|tx|let errorMessage = ''
-M|Earl|tx|for (const us of us) {
-M|Earl|tx|if (!us.em) {
-M|Earl|tx|hasError = true
-M|Earl|tx|errorMessage = 'em required'
-M|Earl|tx|}
-M|Earl|tx|if (!us.name) {
-M|Earl|tx|hasError = true
-M|Earl|tx|errorMessage = 'Name required'
-M|Earl|tx|}
-M|Earl|tx|// Continues checking all us even after er found
-M|Earl|tx|}
-M|Earl|retu|false, er: errorMessage } : { valid: true }
-M|Earl|tx|}
-M|Earl|tx|```
-M|Earl|**Co|**
-M|Earl|tx|```ts
-M|Earl|func|us[]) {
-M|Earl|tx|for (const us of us) {
-M|Earl|tx|if (!us.em) {
-M|Earl|retu|false, er: 'em required' }
-M|Earl|tx|}
-M|Earl|tx|if (!us.name) {
-M|Earl|retu|false, er: 'Name required' }
-M|Earl|tx|}
-M|Earl|tx|}
-M|Earl|retu|true }
-M|Earl|tx|}
-M|Earl|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-early-exit.md
+ORIG_SIZE 1133
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 28
+COMPILED 2026-06-13T19:23:25.456Z
+---
+TITLE Early Return from Functions
+EARLY RETURN FROM FUNCTIONS
+Return early when result is determined to skip unnecessary processing. 
+Incorrect (processes all items even after finding answer): 
+CODE typescript 440CHARS
+Correct (returns immediately on first error): 
+CODE typescript 268CHARS

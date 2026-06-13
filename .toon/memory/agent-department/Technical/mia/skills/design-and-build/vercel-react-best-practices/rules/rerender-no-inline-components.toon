@@ -1,68 +1,19 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-no-inline-components.md savings=-1%
-M||tx|---
-M||titl|Don't Define cp Inside cp
-M||impa|hi
-M||impa|prevents remount on every render
-M||tags|rerender, cp, remount, perf
-M||tx|---
-M|Don'|**Im|hi (prevents remount on every render)**
-M|Don'|tx|Defining a cp inside another cp creates a new cp tp on every render. rc sees a different cp each time and fully remounts it, destroying all state and DOM.
-M|Don'|tx|A common reason developers do this is to access parent variables w/o passing props. Always pass props instead.
-M|Don'|**In|**
-M|Don'|tx|```tsx
-M|Don'|tx|fn UserProfile({ us, theme }) {
-M|Don'|tx|// Defined inside to access `theme` - BAD
-M|Don'|tx|const Avatar = () => (
-M|Don'|tx|<img
-M|Don'|tx|src={us.avatarUrl}
-M|Don'|clas|'avatar-light'}
-M|Don'|tx|/>
-M|Don'|tx|)
-M|Don'|tx|// Defined inside to access `us` - BAD
-M|Don'|tx|const Stats = () => (
-M|Don'|tx|<div>
-M|Don'|tx|<span>{us.followers} followers</span>
-M|Don'|tx|<span>{us.posts} posts</span>
-M|Don'|tx|</div>
-M|Don'|tx|)
-M|Don'|tx|return (
-M|Don'|tx|<div>
-M|Don'|tx|<Avatar />
-M|Don'|tx|<Stats />
-M|Don'|tx|</div>
-M|Don'|tx|)
-M|Don'|tx|}
-M|Don'|tx|```
-M|Don'|tx|Every time `UserProfile` renders, `Avatar` and `Stats` are new cp tp. rc unmounts the old instances and mounts new ones, losing any internal state, running effects again, and recreating DOM nodes.
-M|Don'|**Co|**
-M|Don'|tx|```tsx
-M|Don'|func|{ src: string; theme: string }) {
-M|Don'|tx|return (
-M|Don'|tx|<img
-M|Don'|tx|src={src}
-M|Don'|clas|'avatar-light'}
-M|Don'|tx|/>
-M|Don'|tx|)
-M|Don'|tx|}
-M|Don'|func|{ followers: number; posts: number }) {
-M|Don'|tx|return (
-M|Don'|tx|<div>
-M|Don'|tx|<span>{followers} followers</span>
-M|Don'|tx|<span>{posts} posts</span>
-M|Don'|tx|</div>
-M|Don'|tx|)
-M|Don'|tx|}
-M|Don'|tx|fn UserProfile({ us, theme }) {
-M|Don'|tx|return (
-M|Don'|tx|<div>
-M|Don'|tx|<Avatar src={us.avatarUrl} theme={theme} />
-M|Don'|tx|<Stats followers={us.followers} posts={us.posts} />
-M|Don'|tx|</div>
-M|Don'|tx|)
-M|Don'|tx|}
-M|Don'|tx|```
-M|Don'|**Sy|**
-M|Don'|it|Input fields lose focus on every keystroke
-M|Don'|it|Animations restart unexpectedly
-M|Don'|it|`useEffect` cleanup/setup runs on every parent render
-M|Don'|it|Scroll position resets inside the cp
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-no-inline-components.md
+ORIG_SIZE 2135
+SECTIONS 13
+ABBREVS 1
+INDEX_TERMS 84
+COMPILED 2026-06-13T19:23:25.472Z
+---
+TITLE Don't Define Components Inside Components
+DON'T DEFINE COMPONENTS INSIDE COMPONENTS
+Impact: HIGH (prevents remount on every render) 
+Defining a component inside another component creates a new component type on every render. React sees a different component each time and fully remounts it, destroying all state and DOM. 
+A common reason developers do TI to access parent variables without passing props. Always pass props instead. 
+Incorrect (remounts on every render): 
+CODE tsx 473CHARS
+Every time UserProfile renders, Avatar and Stats are new component types. React unmounts the old instances and mounts new ones, losing any internal state, running effects again, and recreating DOM nodes. 
+Correct (pass props instead): 
+CODE tsx 566CHARS
+Symptoms of this bug: 
+Input fields lose focus on every keystroke Animations restart unexpectedly useEffect cleanup/setup runs on every parent render Scroll position resets inside the component 

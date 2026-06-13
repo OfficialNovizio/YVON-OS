@@ -1,46 +1,34 @@
-#MEM id=marcus source=/root/yvon/agent-department/CEO/marcus/TOOLS.md savings=4%
-M|Memo|tx|mc never accesses sb directly. All memory reads and writes go through `/ap/settings`.
-M|Memo|**Re|**
-M|Memo|tx|```
-M|Memo|tx|GET /ap/settings?tp=memory&agentId=mc-ce&ventureId=<activeVentureId>
-M|Memo|tx|```
-M|Memo|**Wr|**
-M|Memo|tx|```
-M|Memo|tx|POST /ap/settings
-M|Memo|Body|{ tp: "memory", agentId: "mc-ce", ventureId: "<id>", key: "<key>", value: "<value>" }
-M|Memo|tx|```
-M|Memo|**Ke|**
-M|Memo|it|`current_status` — always overwrite w/ current state
-M|Memo|it|`recent_tasks` — prepend + trim to 5
-M|Memo|it|`recent_errors` — append + trim to 5
-M|Memo|it|`recent_discussions` — append + trim to 5
-M|Memo|**Ke|**
-M|Memo|it|`current_priorities` — only when Stark explicitly revises
-M|Memo|it|`strategic_goals_q` — only at quarter start or explicit revision
-M|Memo|it|`open_decisions` — add when deferred, remove when resolved
-M|Memo|it|`active_brief_date` — up every time a brief is sent
-M|Memo|it|`board_context` — only when new investor context confirmed
-M|Memo|tx|---
-M|CEO |Marc|
-M|CEO |tx|```
-M|CEO |tx|POST /ap/briefing
-M|CEO |Body|{ ventureId: "<activeVentureId>", tp: "morning" }
-M|CEO |tx|```
-M|CEO |The |
-M|CEO |tx|```
-M|CEO |tx|POST /ap/em
-M|CEO |Body|{ to: "<BRIEFING_EMAIL>", subject: "ce Brief — <date>", html: "<brief cn>" }
-M|CEO |tx|```
-M|CEO |tx|---
-M|Vent|At s|
-M|Vent|tx|```
-M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
-M|Vent|tx|```
-M|Vent|Retu|`{ name, slug, igHandle, ytChannelId, liProfileUrl, ga4PropertyId, color }`
-M|Vent|tx|---
-M|War |tx|In the War Room, mc receives specialist briefings via `/ap/team-chat`. He does not call tools directly — the orchestrator fans out to specialists and passes all briefings to mc for synthesis. mc outputs one unified executive recommendation.
-M|War |tx|---
-M|Futu|tx|\| Tool \| Purpose \| Status \|
-M|Futu|tx|\|------\|---------\|--------\|
-M|Futu|tx|\| Notion MCP \| Write st decisions to a company wiki \| Planned \|
-M|Futu|tx|\| Slack MCP \| Post daily brief summary to a channel \| Planned \|
+SRC agent-department/CEO/marcus/TOOLS.md
+ORIG_SIZE 2080
+SECTIONS 27
+ABBREVS 3
+INDEX_TERMS 127
+COMPILED 2026-06-13T19:23:24.752Z
+---
+TOOLS.MD — MARCUS, CHIEF EXECUTIVE OFFICER
+MEMORY (VIA /API/SETTINGS)
+Marcus never accesses Supabase directly. All memory reads and writes go through /api/settings. 
+CODE  77CHARS
+Read at SS: 
+CODE  118CHARS
+Write after task completion: 
+Keys written every session: 
+current_status — always overwrite with current state recent_tasks — prepend + trim to 5 recent_errors — append + trim to 5 recent_discussions — append + trim to 5 
+Keys written only when confirmed: 
+current_priorities — only when Stark explicitly revises strategic_goals_q — only at quarter start or explicit revision open_decisions — add when deferred, remove when resolved active_brief_date — update every time a brief is sent board_context — only when new investor context confirmed 
+--- 
+CEO BRIEF GENERATION
+Marcus triggers brief generation via the API route — not directly: 
+CODE  77CHARS
+CODE  105CHARS
+The brief ITn emailed via: 
+--- 
+VENTURE CONTEXT
+CODE  45CHARS
+At SS, load active venture config: Returns: { name, slug, igHandle, ytChannelId, liProfileUrl, ga4PropertyId, color } 
+--- 
+WAR ROOM (READ-ONLY FOR MARCUS)
+In the War Room, Marcus receives specialist briefings via /api/team-chat. He does not call tools directly — the orchestrator fans out to specialists and passes all briefings to Marcus for synthesis. Marcus outputs one unified executive recommendation. 
+--- 
+FUTURE TOOLS
+Tool Purpose Status Notion MCP Write strategic decisions to a company wiki Planned Slack MCP Post daily brief summary to a channel Planned 

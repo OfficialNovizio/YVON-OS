@@ -1,54 +1,22 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-functional-setstate.md savings=3%
-M||tx|---
-M||titl|Use Functional setState Updates
-M||impa|md
-M||impa|prevents stale closures and unnecessary callback recreations
-M||tags|rc, hooks, useState, useCallback, callbacks, closures
-M||tx|---
-M|Use |tx|When updating state based on the current state value, use the functional up form of setState instead of directly referencing the state variable. This prevents stale closures, eliminates unnecessary dependencies, and creates stable callback references.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |tx|fn TodoList() {
-M|Use |tx|const [items, setItems] = useState(initialItems)
-M|Use |tx|// Callback must depend on items, recreated on every items change
-M|Use |cons|Item[]) => {
-M|Use |tx|setItems([...items, ...newItems])
-M|Use |tx|}, [items])  // ❌ items dependency causes recreations
-M|Use |tx|// Risk of stale closure if dependency is forgotten
-M|Use |cons|string) => {
-M|Use |tx|setItems(items.filter(item => item.id !== id))
-M|Use |tx|}, [])  // ❌ Missing items dependency - will use stale items!
-M|Use |tx|return <ItemsEditor items={items} onAdd={addItems} onRemove={removeItem} />
-M|Use |tx|}
-M|Use |tx|```
-M|Use |tx|The first callback is recreated every time `items` changes, which can cause child cp to re-render unnecessarily. The second callback has a stale closure bug—it will always reference the initial `items` value.
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |tx|fn TodoList() {
-M|Use |tx|const [items, setItems] = useState(initialItems)
-M|Use |tx|// Stable callback, never recreated
-M|Use |cons|Item[]) => {
-M|Use |tx|setItems(curr => [...curr, ...newItems])
-M|Use |tx|}, [])  // ✅ No dependencies needed
-M|Use |tx|// Always uses latest state, no stale closure risk
-M|Use |cons|string) => {
-M|Use |tx|setItems(curr => curr.filter(item => item.id !== id))
-M|Use |tx|}, [])  // ✅ Safe and stable
-M|Use |tx|return <ItemsEditor items={items} onAdd={addItems} onRemove={removeItem} />
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Be|**
-M|Use |tx|1. **Stable callback references** - Callbacks don't need to be recreated when state changes
-M|Use |tx|2. **No stale closures** - Always operates on the latest state value
-M|Use |tx|3. **Fewer dependencies** - Simplifies dependency arrays and reduces memory leaks
-M|Use |tx|4. **Prevents bugs** - Eliminates the most common source of rc closure bugs
-M|Use |**Wh|**
-M|Use |it|Any setState that depends on the current state value
-M|Use |it|Inside useCallback/useMemo when state is needed
-M|Use |it|Event handlers that reference state
-M|Use |it|Async operations that up state
-M|Use |**Wh|**
-M|Use |- Se|`setCount(0)`
-M|Use |- Se|`setName(newName)`
-M|Use |it|State doesn't depend on previous value
-M|Use |**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, the compiler can automatically op some cases, but functional updates are still recommended for correctness and to prevent stale closure bugs.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-functional-setstate.md
+ORIG_SIZE 2968
+SECTIONS 16
+ABBREVS 4
+INDEX_TERMS 105
+COMPILED 2026-06-13T19:23:25.469Z
+---
+TITLE Use Functional setState Updates
+USE FUNCTIONAL SETSTATE UPDATES
+When updating state based on the current state value, UT functional update form of setState IO directly referencing the state variable. This prevents stale closures, eliminates unnecessary dependencies, and creates stable callback references. 
+Incorrect (requires state as dependency): 
+CODE tsx 599CHARS
+The first callback is recreated every time items changes, which can cause child components to re-render unnecessarily. The second callback has a stale closure bug—it will always reference the initial items value. 
+Correct (stable callbacks, no stale closures): 
+CODE tsx 531CHARS
+Benefits: 
+Stable callback references - Callbacks don't need to be recreated when state changes No stale closures - Always operates on the latest state value Fewer dependencies - Simplifies dependency arrays and reduces memory leaks Prevents bugs - Eliminates the most common source of React closure bugs 
+WTU functional updates: 
+Any setState that depends on the current state value Inside useCallback/useMemo when state is needed Event handlers that reference state Async operations that update state 
+When direct updates are fine: 
+SETTING_STATE_TO_A_STATIC_VALUE `setCount(0)`
+Note: IYPH React Compiler enabled, the compiler can automatically optimize some cases, but functional updates are still recommended for correctness and to prevent stale closure bugs. 

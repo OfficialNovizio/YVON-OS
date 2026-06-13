@@ -1,212 +1,77 @@
-#MEM id=test-driven-development source=/root/yvon/agent-department/Technical/raj/skills/superpowers/test-driven-development/testing-anti-patterns.md savings=-2%
-M|Test|**Lo|** writing or changing tests, adding mocks, or tempted to add tst-only methods to production code.
-M|Over|tx|Tests must verify real behavior, not mock behavior. Mocks are a means to isolate, not the thing being tested.
-M|Over|**Co|** tst what the code does, not what the mocks do.
-M|Over|tx|**Following strict TDD prevents these anti-patterns.**
-M|The |tx|```
-M|The |tx|1. NEVER tst mock behavior
-M|The |tx|2. NEVER add tst-only methods to production classes
-M|The |tx|3. NEVER mock w/o understanding dependencies
-M|The |tx|```
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ❌|Testing that the mock exists
-M|Anti|tx|tst('renders sidebar', () => {
-M|Anti|tx|render(<Page />);
-M|Anti|tx|expect(screen.getByTestId('sidebar-mock')).toBeInTheDocument();
-M|Anti|tx|});
-M|Anti|tx|```
-M|Anti|**Wh|**
-M|Anti|it|You're verifying the mock works, not that the cp works
-M|Anti|it|tst passes when mock is present, fails when it's not
-M|Anti|it|Tells you nothing abt real behavior
-M|Anti|**yo|** "Are we testing the behavior of a mock?"
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ✅|tst real cp or don't mock it
-M|Anti|tx|tst('renders sidebar', () => {
-M|Anti|tx|render(<Page />);  // Don't mock sidebar
-M|Anti|tx|expect(screen.getByRole('navigation')).toBeInTheDocument();
-M|Anti|tx|});
-M|Anti|// O|
-M|Anti|tx|// Don't assert on the mock - tst Page's behavior w/ sidebar present
-M|Anti|tx|```
-M|Gate|tx|```
-M|Gate|BEFO|
-M|Gate|Ask|"Am I testing real cp behavior or just mock existence?"
-M|Gate|IF t|
-M|Gate|tx|STOP - dl the assertion or unmock the cp
-M|Gate|tx|tst real behavior instead
-M|Gate|tx|```
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ❌|destroy() only used in tests
-M|Anti|tx|class sn {
-M|Anti|tx|async destroy() {  // Looks like production ap!
-M|Anti|tx|await this._workspaceManager?.destroyWorkspace(this.id);
-M|Anti|tx|// ... cleanup
-M|Anti|tx|}
-M|Anti|tx|}
-M|Anti|tx|// In tests
-M|Anti|tx|afterEach(() => sn.destroy());
-M|Anti|tx|```
-M|Anti|**Wh|**
-M|Anti|it|Production class polluted w/ tst-only code
-M|Anti|it|Dangerous if accidentally called in production
-M|Anti|it|Violates YAGNI and separation of concerns
-M|Anti|it|Confuses object lifecycle w/ entity lifecycle
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ✅|tst utilities handle tst cleanup
-M|Anti|tx|// sn has no destroy() - it's stateless in production
-M|Anti|tx|// In tst-utils/
-M|Anti|expo|sn) {
-M|Anti|tx|const workspace = sn.getWorkspaceInfo();
-M|Anti|tx|if (workspace) {
-M|Anti|tx|await workspaceManager.destroyWorkspace(workspace.id);
-M|Anti|tx|}
-M|Anti|tx|}
-M|Anti|tx|// In tests
-M|Anti|tx|afterEach(() => cleanupSession(sn));
-M|Anti|tx|```
-M|Gate|tx|```
-M|Gate|BEFO|
-M|Gate|Ask|"Is this only used by tests?"
-M|Gate|IF y|
-M|Gate|tx|STOP - Don't add it
-M|Gate|tx|Put it in tst utilities instead
-M|Gate|Ask|"Does this class own this resource's lifecycle?"
-M|Gate|IF n|
-M|Gate|tx|STOP - Wrong class for this method
-M|Gate|tx|```
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ❌|Mock breaks tst logic
-M|Anti|tx|tst('detects duplicate server', () => {
-M|Anti|tx|// Mock prevents config write that tst depends on!
-M|Anti|tx|vi.mock('ToolCatalog', () => ({
-M|Anti|disc|vi.fn().mockResolvedValue(undefined)
-M|Anti|tx|}));
-M|Anti|tx|await addServer(config);
-M|Anti|tx|await addServer(config);  // shd throw - but won't!
-M|Anti|tx|});
-M|Anti|tx|```
-M|Anti|**Wh|**
-M|Anti|it|Mocked method had side effect tst depended on (writing config)
-M|Anti|it|Over-mocking to "be safe" breaks actual behavior
-M|Anti|it|tst passes for wrong reason or fails mysteriously
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ✅|Mock at correct level
-M|Anti|tx|tst('detects duplicate server', () => {
-M|Anti|tx|// Mock the slow part, preserve behavior tst needs
-M|Anti|tx|vi.mock('MCPServerManager'); // Just mock slow server startup
-M|Anti|tx|await addServer(config);  // Config written
-M|Anti|tx|await addServer(config);  // Duplicate detected ✓
-M|Anti|tx|});
-M|Anti|tx|```
-M|Gate|tx|```
-M|Gate|BEFO|
-M|Gate|tx|STOP - Don't mock yet
-M|Gate|1. A|"What side effects does the real method have?"
-M|Gate|2. A|"Does this tst depend on any of those side effects?"
-M|Gate|3. A|"Do I fully understand what this tst needs?"
-M|Gate|IF d|
-M|Gate|tx|Mock at lower level (the actual slow/external operation)
-M|Gate|tx|OR use tst doubles that preserve necessary behavior
-M|Gate|tx|NOT the hi-level method the tst depends on
-M|Gate|IF u|
-M|Gate|tx|Run tst w/ real implementation FIRST
-M|Gate|tx|Observe what actually needs to happen
-M|Gate|tx|THEN add minimal mocking at the right level
-M|Gate|Red |
-M|Gate|it|"I'll mock this to be safe"
-M|Gate|it|"This might be slow, better mock it"
-M|Gate|it|Mocking w/o understanding the dependency chain
-M|Gate|tx|```
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ❌|Partial mock - only fields you think you need
-M|Anti|tx|const mockResponse = {
-M|Anti|stat|'sc',
-M|Anti|data|{ userId: '123', name: 'Alice' }
-M|Anti|// M|metadata that downstream code uses
-M|Anti|tx|};
-M|Anti|// L|breaks when code accesses rp.metadata.requestId
-M|Anti|tx|```
-M|Anti|**Wh|**
-M|Anti|it|**Partial mocks hide structural assumptions** - You only mocked fields you know abt
-M|Anti|it|**Downstream code may depend on fields you didn't include** - Silent failures
-M|Anti|it|**Tests pass but integration fails** - Mock incomplete, real ap complete
-M|Anti|it|**False confidence** - tst proves nothing abt real behavior
-M|Anti|**Th|** Mock the COMPLETE data structure as it exists in reality, not just fields your immediate tst uses.
-M|Anti|**Th|**
-M|Anti|tx|```ts
-M|Anti|// ✅|Mirror real ap completeness
-M|Anti|tx|const mockResponse = {
-M|Anti|stat|'sc',
-M|Anti|data|{ userId: '123', name: 'Alice' },
-M|Anti|meta|{ requestId: 'req-789', timestamp: 1234567890 }
-M|Anti|tx|// All fields real ap returns
-M|Anti|tx|};
-M|Anti|tx|```
-M|Gate|tx|```
-M|Gate|BEFO|
-M|Gate|Chec|"What fields does the real ap rp contain?"
-M|Gate|Acti|
-M|Gate|tx|1. Examine actual ap rp from doc/examples
-M|Gate|tx|2. Include ALL fields sy might consume downstream
-M|Gate|tx|3. Verify mock matches real rp sc completely
-M|Gate|ct|
-M|Gate|tx|If you're creating a mock, you must understand the ENTIRE structure
-M|Gate|tx|Partial mocks fail silently when code depends on omitted fields
-M|Gate|If u|Include all documented fields
-M|Gate|tx|```
-M|Anti|**Th|**
-M|Anti|tx|```
-M|Anti|tx|✅ Implementation complete
-M|Anti|tx|❌ No tests written
-M|Anti|tx|"Ready for testing"
-M|Anti|tx|```
-M|Anti|**Wh|**
-M|Anti|it|Testing is part of implementation, not optional follow-up
-M|Anti|it|TDD wld have caught this
-M|Anti|it|Can't claim complete w/o tests
-M|Anti|**Th|**
-M|Anti|tx|```
-M|Anti|TDD |
-M|Anti|tx|1. Write failing tst
-M|Anti|tx|2. im to pass
-M|Anti|tx|3. rf
-M|Anti|tx|4. THEN claim complete
-M|Anti|tx|```
-M|When|**Wa|**
-M|When|it|Mock setup longer than tst logic
-M|When|it|Mocking everything to make tst pass
-M|When|it|Mocks missing methods real cp have
-M|When|it|tst breaks when mock changes
-M|When|**yo|** "Do we need to be using a mock here?"
-M|When|**Co|** Integration tests w/ real cp often simpler than complex mocks
-M|TDD |**Wh|**
-M|TDD |tx|1. **Write tst first** → Forces you to think abt what you're actually testing
-M|TDD |tx|2. **Watch it fail** → Confirms tst tests real behavior, not mocks
-M|TDD |tx|3. **Minimal implementation** → No tst-only methods creep in
-M|TDD |tx|4. **Real dependencies** → You see what the tst actually needs before mocking
-M|TDD |tx|**If you're testing mock behavior, you violated TDD** - you added mocks w/o watching tst fail against real code first.
-M|Quic|tx|\| Anti-Pattern \| Fix \|
-M|Quic|tx|\|--------------\|-----\|
-M|Quic|tx|\| Assert on mock elements \| tst real cp or unmock it \|
-M|Quic|tx|\| tst-only methods in production \| Move to tst utilities \|
-M|Quic|tx|\| Mock w/o understanding \| Understand dependencies first, mock minimally \|
-M|Quic|tx|\| Incomplete mocks \| Mirror real ap completely \|
-M|Quic|tx|\| Tests as afterthought \| TDD - tests first \|
-M|Quic|tx|\| Over-complex mocks \| Consider integration tests \|
-M|Red |it|Assertion checks for `*-mock` tst IDs
-M|Red |it|Methods only called in tst files
-M|Red |it|Mock setup is >50% of tst
-M|Red |it|tst fails when you remove mock
-M|Red |it|Can't explain why mock is needed
-M|Red |it|Mocking "just to be safe"
-M|The |tx|**Mocks are tools to isolate, not things to tst.**
-M|The |tx|If TDD reveals you're testing mock behavior, you've gone wrong.
-M|The |fix|tst real behavior or question why you're mocking at all.
+SRC agent-department/Technical/raj/skills/superpowers/test-driven-development/testing-anti-patterns.md
+ORIG_SIZE 8251
+SECTIONS 70
+ABBREVS 17
+INDEX_TERMS 228
+COMPILED 2026-06-13T19:23:25.605Z
+---
+TESTING ANTI-PATTERNS
+Load this reference when: writing or changing tests, adding mocks, or tempted to add test-only methods to production code. 
+OVERVIEW
+Tests must verify real behavior, not mock behavior. Mocks are a means to isolate, not the thing being tested. 
+CP: Test what the code does, not what the mocks do. 
+Following strict TDD prevents these anti-patterns. 
+THE IRON LAWS
+CODE  130CHARS
+ANTI-PATTERN 1: TESTING MOCK BEHAVIOR
+CODE typescript 161CHARS
+TV: 
+WTIW: 
+You're verifying the mock works, not that the component works Test passes when mock is present, fails when it's not Tells you nothing about real behavior 
+your human partner's correction: "Are we testing the behavior of a mock?" 
+CODE typescript 309CHARS
+TF: 
+GATE FUNCTION
+CODE  224CHARS
+ANTI-PATTERN 2: TEST-ONLY METHODS IN PRODUCTION
+CODE typescript 241CHARS
+TV: 
+WTIW: 
+Production class polluted with test-only code Dangerous if accidentally called in production Violates YAGNI and separation of concerns Confuses object lifecycle with entity lifecycle 
+CODE typescript 368CHARS
+TF: 
+GATE FUNCTION
+CODE  261CHARS
+ANTI-PATTERN 3: MOCKING WITHOUT UNDERSTANDING
+CODE typescript 322CHARS
+TV: 
+WTIW: 
+Mocked method had side effect test depended on (writing config) Over-mocking to "be safe" breaks actual behavior Test passes for wrong reason or fails mysteriously 
+CODE typescript 295CHARS
+TF: 
+GATE FUNCTION
+CODE  745CHARS
+ANTI-PATTERN 4: INCOMPLETE MOCKS
+CODE typescript 258CHARS
+TV: 
+WTIW: 
+Partial mocks hide structural assumptions - You only mocked fields you know about Downstream code may depend on fields you didn't include - Silent failures Tests pass but integration fails - Mock incomplete, real API complete False confidence - Test proves nothing about real behavior 
+The Iron Rule: Mock the COMPLETE data structure as it exists in reality, not just fields your immediate test uses. 
+CODE typescript 222CHARS
+TF: 
+GATE FUNCTION
+CODE  474CHARS
+ANTI-PATTERN 5: INTEGRATION TESTS AS AFTERTHOUGHT
+CODE  65CHARS
+TV: 
+WTIW: 
+Testing is part of implementation, not optional follow-up TDD would have caught this Can't claim complete without tests 
+CODE  89CHARS
+TF: 
+WHEN MOCKS BECOME TOO COMPLEX
+Warning signs: 
+Mock setup longer than test logic Mocking everything to make test pass Mocks missing methods real components have Test breaks when mock changes 
+your human partner's question: "Do we need to be using a mock here?" 
+Consider: Integration tests with real components often simpler than complex mocks 
+TDD PREVENTS THESE ANTI-PATTERNS
+Why TDD helps: 
+Write test first → Forces you to think about what you're actually testing Watch it fail → Confirms test tests real behavior, not mocks Minimal implementation → No test-only methods creep in Real dependencies → You see what TT actually needs before mocking 
+If you're testing mock behavior, you violated TDD - you added mocks without watching test fail against real code first. 
+QUICK REFERENCE
+Anti-Pattern Fix Assert on mock elements Test real component or unmock it Test-only methods in production Move to test utilities Mock without understanding Understand dependencies first, mock minimally Incomplete mocks Mirror real API completely Tests as afterthought TDD - tests first Over-complex mocks Consider integration tests 
+RED FLAGS
+Assertion checks for *-mock test IDs Methods only called in test files Mock setup is 50% of test Test fails when you remove mock Can't explain why mock is needed Mocking "just to be safe" 
+THE BOTTOM LINE
+Mocks are tools to isolate, not things to test. 
+If TDD reveals you're testing mock behavior, you've gone wrong. 
+FIX Test real behavior or question why you're mocking at all.

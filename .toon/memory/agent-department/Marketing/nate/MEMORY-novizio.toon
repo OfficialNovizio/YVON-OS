@@ -1,23 +1,22 @@
-#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/MEMORY-novizio.md savings=12%
-M|Nate|tx|> Load alongside MEMORY.md when active vt is nz.
-M|Nate|tx|> nz-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|DTC fashion e-commerce (B2C)
-M|Vent|- **|rv from new cs per month
-M|Vent|- **|repeat purchase rate > 30% within 90 days of first order
-M|Novi|tx|```
-M|Novi|tx|Discovery (sl/Paid) → Website → pd Page → Cart → Purchase → Repeat
-M|Novi|tx|```
-M|Novi|tx|\| Stage \| Benchmark \| Drop-off to investigate \|
-M|Novi|tx|\|-------\|-----------\|------------------------\|
-M|Novi|tx|\| Website → pd page \| > 60% \| < 45% \|
-M|Novi|tx|\| pd page → Cart \| > 8% \| < 4% \|
-M|Novi|tx|\| Cart → Purchase \| > 65% \| < 50% \|
-M|Novi|tx|\| Purchase → Repeat (90d) \| > 30% \| < 20% \|
-M|Novi|1. *|effort ratio; compound over time
-M|Novi|tx|2. **em capture w/ lead magnet** — style quiz, outfit guide; nz audience responds to taste-validation mechanics
-M|Novi|tx|3. **Referral program** — "Give a friend 15%, get 15%" structure works for fashion (sl proof + reciprocity)
-M|Novi|tx|4. **Post-purchase sequence** — 3-em sequence; day 1 confirm, day 7 style tips, day 14 related pd
-M|Seas|- De|2× baseline opportunity; plan experiments in October, execute in November
-M|Seas|- Ja|acquisition slows; focus on retention and LTV experiments
-M|Grow|> Po|[date] — hypothesis — result — reusable in.
-M|Neve|> Ea|[date] — nz-specific growth er — rule.
+SRC agent-department/Marketing/nate/MEMORY-novizio.md
+ORIG_SIZE 1591
+SECTIONS 15
+ABBREVS 2
+INDEX_TERMS 122
+COMPILED 2026-06-13T19:23:25.120Z
+---
+NATE — NOVIZIO GROWTH MEMORY
+Load alongside MEMORY.md when active venture is Novizio. Novizio-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Model: DTC fashion e-commerce (B2C) North Star: Revenue from new customers per month PMF signal: repeat purchase rate 30% within 90 days of first order 
+NOVIZIO FUNNEL
+CODE  76CHARS
+Stage Benchmark Drop-off to investigate Website → Product page > 60% < 45% Product page → Cart > 8% < 4% Cart → Purchase > 65% < 50% Purchase → Repeat (90d) > 30% < 20% 
+NOVIZIO GROWTH LEVERS
+Instagram Reels organic — highest reach : effort ratio; compound over time Email capture with lead magnet — style quiz, outfit guide; Novizio audience responds to taste-validation mechanics Referral program — "Give a friend 15%, get 15%" structure works for fashion (social proof + reciprocity) Post-purchase sequence — 3-email sequence; day 1 confirm, day 7 style tips, day 14 related products 
+SEASONALITY
+DECEMBER 2× baseline opportunity; plan experiments in October, execute in November
+GROWTH WINS (NOVIZIO)
+Populated from experiment results. EE: [date] — hypothesis — result — reusable insight. 
+NEVER AGAIN (NOVIZIO-SPECIFIC)
+EE: [date] — Novizio-specific growth error — rule. 

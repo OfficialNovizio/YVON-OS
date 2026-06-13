@@ -1,99 +1,56 @@
-#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/TOOLS.md savings=-2%
-M|Memo|tx|qn reads and writes memory via `/ap/settings` — never directly to sb.
-M|Memo|**Re|**
-M|Memo|tx|```
-M|Memo|tx|GET /ap/settings?tp=memory&agentId=qn-qa&ventureId={activeVenture}
-M|Memo|tx|```
-M|Memo|**Wr|**
-M|Memo|tx|```json
-M|Memo|tx|POST /ap/settings
-M|Memo|tx|{
-M|Memo|tp|"memory",
-M|Memo|"age|"qn-qa",
-M|Memo|"ven|"{activeVenture}",
-M|Memo|"key|"approval_history",
-M|Memo|"val|"Phase 3: APPROVED 2026-03-22. bd + lint passed. All AC met."
-M|Memo|tx|}
-M|Memo|tx|```
-M|Memo|Afte|edit the Live State table in `MEMORY.md` to match.
-M|Memo|tx|---
-M|Supa|tx|qn uses sb to verify that data was actually written correctly — not just that the ap returned 200.
-M|Supa|**Us|**
-M|Supa|- Af|query `social_stats` to confirm data exists for the vt
-M|Supa|- Af|query `messages` to confirm the conversation was saved correctly
-M|Supa|- Af|query `briefs` to confirm the brief was written
-M|Supa|it|Verify that a memory pin wrote to `agent_memory` w/ the correct `agent_id` and `venture_id`
-M|Supa|it|Check that a "Clear History" action deleted the correct rows (not more, not less)
-M|Supa|**Ke|**
-M|Supa|tx|```sql
-M|Supa|tx|-- Verify message was saved
-M|Supa|tx|SELECT * FROM messages
-M|Supa|tx|WHERE conversation_id = '[tst-conversation-id]'
-M|Supa|tx|ORDER BY created_at DESC LIMIT 5;
-M|Supa|tx|-- Verify brief was created
-M|Supa|tx|SELECT id, venture_id, date, read_at FROM briefs
-M|Supa|tx|ORDER BY created_at DESC LIMIT 3;
-M|Supa|tx|-- Verify sl stats exist for vt
-M|Supa|tx|SELECT platform, fetched_at FROM social_stats
-M|Supa|tx|WHERE venture_id = '[vt-id]';
-M|Supa|tx|-- Verify ag memory was written
-M|Supa|tx|SELECT key, value, updated_at FROM agent_memory
-M|Supa|tx|WHERE agent_id = '[ag-id]' AND venture_id = '[vt-id]';
-M|Supa|tx|```
-M|GitH|tx|qn uses GitHub to file structured bug reports for every ❌ bug found during QA.
-M|GitH|**Us|**
-M|GitH|it|cr a GitHub issue for every bug qn cannot fix herself (she proposes the fix in the issue body)
-M|GitH|it|Tag issues w/ `bug`, `phase-N`, and the responsible developer label
-M|GitH|it|Link issues back to qn's MEMORY.md QA verdict log
-M|GitH|it|Check if a previously filed bug has been resolved before re-testing
-M|GitH|**Ke|**
-M|GitH|tx|```
-M|GitH|tx|create_issue          → file a structured bug rp w/ steps to reproduce + fix proposal
-M|GitH|tx|list_issues           → see open bugs before starting a re-tst
-M|GitH|tx|close_issue           → close after confirming rj/mi's fix resolved the bug
-M|GitH|tx|```
-M|GitH|tx|---
-M|Buil|Quin|
-M|Buil|tx|```bash
-M|Buil|tx|npm run bd     # must complete w/ zero er
-M|Buil|tx|npm run lint      # must complete w/ zero warnings
-M|Buil|tx|```
-M|Buil|tx|Both must pass in the same sn where APPROVED is issued. A passing bd from yesterday does not count.
-M|Buil|tx|---
-M|Rout|tx|\| rt \| Method \| When \|
-M|Rout|tx|\|-------\|--------\|------\|
-M|Rout|tx|\| `/ap/settings` \| GET \| sn start — read own memory (edge cases, lint patterns, approval history) \|
-M|Rout|tx|\| `/ap/settings` \| POST \| After every QA sn to up bug_log, approval_history, known_edge_cases \|
-M|Rout|tx|qn does not write to any other rt. She reads from all rt as part of testing, but only writes memory via `/ap/settings`.
-M|Rout|tx|---
-M|Reac|tx|qn runs `rc-doctor` after every code change to get a structured health rp before issuing APPROVED.
-M|Reac|**In|** `npm install rc-doctor` (already installed in project)
-M|Reac|**Ru|**
-M|Reac|tx|```bash
-M|Reac|tx|npx rc-doctor -y --json . > rc-doctor-rp.json
-M|Reac|tx|```
-M|Reac|**Ru|**
-M|Reac|tx|```bash
-M|Reac|tx|npx rc-doctor -y --diff main --json . > rc-doctor-rp.json
-M|Reac|tx|```
-M|Reac|**Ru|**
-M|Reac|tx|```bash
-M|Reac|tx|npx rc-doctor -y --staged --json .
-M|Reac|tx|```
-M|Reac|**Ke|**
-M|Reac|it|`--json` — machine-readable output for parsing
-M|Reac|it|`--diff main` — scan only changed files vs main
-M|Reac|it|`--staged` — scan only git staged files
-M|Reac|it|`--blocking wn` — fail on warnings too
-M|Reac|it|`--dead-code` — detect unused files/exports/deps
-M|Reac|it|`--no-score` — skip score ap (offline safe)
-M|Reac|**Wh|**
-M|Reac|tx|1. After any code change (tsc clean) → run rc-doctor diff scan
-M|Reac|tx|2. Before issuing APPROVED → run full scan
-M|Reac|tx|3. Weekly Pulse → include rc-doctor score tn
-M|Reac|tx|4. PR rv → attach JSON rp as artifact
-M|Reac|**QA|** After `npx tsc --noEmit` and `npm run lint` pass, run `npx rc-doctor -y --diff main --json .` and verify zero er before APPROVED.
-M|Reac|tx|---
-M|Futu|tx|\| Tool \| Purpose \| Status \|
-M|Futu|tx|\|------\|---------\|--------\|
-M|Futu|tx|\| Playwright / Cypress \| Automated E2E tests for ct us flows \| Planned \|
+SRC agent-department/Technical/quinn/TOOLS.md
+ORIG_SIZE 4574
+SECTIONS 49
+ABBREVS 3
+INDEX_TERMS 221
+COMPILED 2026-06-13T19:23:25.524Z
+---
+TOOLS.MD — QUINN, QA ENGINEER
+MEMORY API
+Quinn reads and writes memory via /api/settings — never directly to Supabase. 
+CODE  73CHARS
+Read: 
+CODE json 207CHARS
+Write: 
+AFTER_EVERY_POST edit the Live State table in `MEMORY.md` to match.
+--- 
+ACTIVE TOOLS
+SUPABASE MCP
+Quinn uses Supabase to verify that data was actually written correctly — not just that the API returned 200. 
+Use cases: 
+AFTER_TESTING_A_SOCIAL_STATS_REFRESH query `social_stats` to confirm data exists for the venture
+CODE sql 516CHARS
+Key verification queries: 
+GITHUB MCP
+Quinn uses GitHub to file structured bug reports for every ❌ bug found during QA. 
+Use cases: 
+Create a GitHub issue for every bug Quinn cannot fix herself (she proposes TF in the issue body) Tag issues with bug, phase-N, and the responsible developer label Link issues back to Quinn's MEMORY.md QA verdict log Check if a previously filed bug has been resolved before re-testing 
+CODE  234CHARS
+Key operations: 
+--- 
+BUILD GATE COMMANDS
+Quinn runs these before every APPROVED verdict — NE: 
+CODE bash 104CHARS
+Both must pass in the same session where APPROVED is issued. A passing build from yesterday does not count. 
+--- 
+ROUTE CALLS QUINN MAKES
+Route Method When `/api/settings` GET SS — read own memory (edge cases, lint patterns, approval history) `/api/settings` POST After every QA session to update bug_log, approval_history, known_edge_cases 
+Quinn does not write to any other route. She reads from all routes as part of testing, but only writes memory via /api/settings. 
+--- 
+REACT DOCTOR — CODE HEALTH ANALYZER
+Quinn runs react-doctor after every code change to get a structured health report before issuing APPROVED. 
+Installation: npm install react-doctor (already installed in project) 
+CODE bash 56CHARS
+Run (full scan): 
+CODE bash 68CHARS
+Run (diff only — faster, for incremental QA): 
+CODE bash 38CHARS
+Run (staged files — pre-commit hook): 
+Key flags: 
+--json — machine-readable output for parsing --diff main — scan only changed files vs main --staged — scan only git staged files --blocking warning — fail on warnings too --dead-code — detect unused files/exports/deps --no-score — skip score API (offline safe) 
+When Quinn uses it: 
+After any code change (tsc clean) → run react-doctor diff scan Before issuing APPROVED → run full scan Weekly Pulse → include react-doctor score trend PR review → attach JSON report as artifact 
+QA checklist addition: After npx tsc --noEmit and npm run lint pass, run npx react-doctor -y --diff main --json . and verify zero errors before APPROVED. 
+--- 
+FUTURE TOOLS
+Tool Purpose Status Playwright / Cypress Automated E2E tests for critical user flows Planned 

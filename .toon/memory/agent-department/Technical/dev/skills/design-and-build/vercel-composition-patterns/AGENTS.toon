@@ -1,737 +1,162 @@
-#MEM id=vercel-composition-patterns source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/AGENTS.md savings=-8%
-M|Reac|tx|**Version 1.0.0**
-M|Reac|tx|Engineering
-M|Reac|tx|January 2026
-M|Reac|> **|**
-M|Reac|tx|> This document is mainly for ag and LLMs to follow when maintaining,
-M|Reac|tx|> generating, or refactoring rc codebases using composition. Humans
-M|Reac|tx|> may also find it useful, but guidance here is optimized for automation
-M|Reac|tx|> and consistency by AI-assisted workflows.
-M|Reac|tx|---
-M|Abst|tx|Composition patterns for building flexible, maintainable rc cp. Avoid boolean prop proliferation by using compound cp, lifting state, and composing internals. These patterns make codebases easier for both humans and AI ag to work w/ as they scale.
-M|Abst|tx|---
-M|Tabl|tx|1. [cp Architecture](#1-cp-architecture) — **hi**
-M|Tabl|it|1.1 [Avoid Boolean Prop Proliferation](#11-avoid-boolean-prop-proliferation)
-M|Tabl|it|1.2 [Use Compound cp](#12-use-compound-cp)
-M|Tabl|tx|2. [State Management](#2-state-management) — **md**
-M|Tabl|it|2.1 [Decouple State Management from UI](#21-decouple-state-management-from-ui)
-M|Tabl|it|2.2 [Define Generic Context Interfaces for Dependency Injection](#22-define-generic-context-interfaces-for-dependency-injection)
-M|Tabl|it|2.3 [Lift State into pr cp](#23-lift-state-into-pr-cp)
-M|Tabl|tx|3. [Implementation Patterns](#3-implementation-patterns) — **md**
-M|Tabl|it|3.1 [cr Explicit cp Variants](#31-cr-explicit-cp-variants)
-M|Tabl|it|3.2 [Prefer Composing Children Over Render Props](#32-prefer-composing-children-over-render-props)
-M|Tabl|tx|4. [rc 19 APIs](#4-rc-19-apis) — **md**
-M|Tabl|it|4.1 [rc 19 ap Changes](#41-rc-19-ap-changes)
-M|Tabl|tx|---
-M|1. C|**Im|hi**
-M|1. C|tx|Fundamental patterns for structuring cp to avoid prop
-M|1. C|tx|proliferation and enable flexible composition.
-M|1.1 |**Im|ct (prevents unmaintainable cp variants)**
-M|1.1 |tx|Don't add boolean props like `isThread`, `isEditing`, `isDMThread` to customize
-M|1.1 |tx|cp behavior. Each boolean doubles possible states and creates
-M|1.1 |tx|unmaintainable conditional logic. Use composition instead.
-M|1.1 |**In|boolean props cr exponential complexity**
-M|1.1 |tx|```tsx
-M|1.1 |tx|fn Composer({
-M|1.1 |tx|onSubmit,
-M|1.1 |tx|isThread,
-M|1.1 |tx|channelId,
-M|1.1 |tx|isDMThread,
-M|1.1 |tx|dmId,
-M|1.1 |tx|isEditing,
-M|1.1 |tx|isForwarding,
-M|1.1 |}|Props) {
-M|1.1 |tx|return (
-M|1.1 |tx|<form>
-M|1.1 |tx|<Header />
-M|1.1 |tx|<Input />
-M|1.1 |tx|{isDMThread ? (
-M|1.1 |tx|<AlsoSendToDMField id={dmId} />
-M|1.1 |)|isThread ? (
-M|1.1 |tx|<AlsoSendToChannelField id={channelId} />
-M|1.1 |)|null}
-M|1.1 |tx|{isEditing ? (
-M|1.1 |tx|<EditActions />
-M|1.1 |)|isForwarding ? (
-M|1.1 |tx|<ForwardActions />
-M|1.1 |)|(
-M|1.1 |tx|<DefaultActions />
-M|1.1 |tx|)}
-M|1.1 |tx|<Footer onSubmit={onSubmit} />
-M|1.1 |tx|</form>
-M|1.1 |tx|)
-M|1.1 |tx|}
-M|1.1 |tx|```
-M|1.1 |**Co|composition eliminates conditionals**
-M|1.1 |tx|```tsx
-M|1.1 |tx|// Channel composer
-M|1.1 |tx|fn ChannelComposer() {
-M|1.1 |tx|return (
-M|1.1 |tx|<Composer.Frame>
-M|1.1 |tx|<Composer.Header />
-M|1.1 |tx|<Composer.Input />
-M|1.1 |tx|<Composer.Footer>
-M|1.1 |tx|<Composer.Attachments />
-M|1.1 |tx|<Composer.Formatting />
-M|1.1 |tx|<Composer.Emojis />
-M|1.1 |tx|<Composer.Submit />
-M|1.1 |tx|</Composer.Footer>
-M|1.1 |tx|</Composer.Frame>
-M|1.1 |tx|)
-M|1.1 |tx|}
-M|1.1 |tx|// Thread composer - adds "also send to channel" field
-M|1.1 |func|{ channelId: string }) {
-M|1.1 |tx|return (
-M|1.1 |tx|<Composer.Frame>
-M|1.1 |tx|<Composer.Header />
-M|1.1 |tx|<Composer.Input />
-M|1.1 |tx|<AlsoSendToChannelField id={channelId} />
-M|1.1 |tx|<Composer.Footer>
-M|1.1 |tx|<Composer.Formatting />
-M|1.1 |tx|<Composer.Emojis />
-M|1.1 |tx|<Composer.Submit />
-M|1.1 |tx|</Composer.Footer>
-M|1.1 |tx|</Composer.Frame>
-M|1.1 |tx|)
-M|1.1 |tx|}
-M|1.1 |tx|// Edit composer - different footer actions
-M|1.1 |tx|fn EditComposer() {
-M|1.1 |tx|return (
-M|1.1 |tx|<Composer.Frame>
-M|1.1 |tx|<Composer.Input />
-M|1.1 |tx|<Composer.Footer>
-M|1.1 |tx|<Composer.Formatting />
-M|1.1 |tx|<Composer.Emojis />
-M|1.1 |tx|<Composer.CancelEdit />
-M|1.1 |tx|<Composer.SaveEdit />
-M|1.1 |tx|</Composer.Footer>
-M|1.1 |tx|</Composer.Frame>
-M|1.1 |tx|)
-M|1.1 |tx|}
-M|1.1 |tx|```
-M|1.1 |tx|Each variant is explicit abt what it renders. We can share internals w/o
-M|1.1 |tx|sharing a single monolithic parent.
-M|1.2 |**Im|hi (enables flexible composition w/o prop drilling)**
-M|1.2 |tx|Structure complex cp as compound cp w/ a shared context. Each
-M|1.2 |tx|subcomponent accesses shared state via context, not props. Consumers compose the
-M|1.2 |tx|pieces they need.
-M|1.2 |**In|monolithic cp w/ render props**
-M|1.2 |tx|```tsx
-M|1.2 |tx|fn Composer({
-M|1.2 |tx|renderHeader,
-M|1.2 |tx|renderFooter,
-M|1.2 |tx|renderActions,
-M|1.2 |tx|showAttachments,
-M|1.2 |tx|showFormatting,
-M|1.2 |tx|showEmojis,
-M|1.2 |}|Props) {
-M|1.2 |tx|return (
-M|1.2 |tx|<form>
-M|1.2 |tx|{renderHeader?.()}
-M|1.2 |tx|<Input />
-M|1.2 |tx|{showAttachments && <Attachments />}
-M|1.2 |tx|{renderFooter ? (
-M|1.2 |tx|renderFooter()
-M|1.2 |)|(
-M|1.2 |tx|<Footer>
-M|1.2 |tx|{showFormatting && <Formatting />}
-M|1.2 |tx|{showEmojis && <Emojis />}
-M|1.2 |tx|{renderActions?.()}
-M|1.2 |tx|</Footer>
-M|1.2 |tx|)}
-M|1.2 |tx|</form>
-M|1.2 |tx|)
-M|1.2 |tx|}
-M|1.2 |tx|```
-M|1.2 |**Co|compound cp w/ shared context**
-M|1.2 |tx|```tsx
-M|1.2 |tx|const ComposerContext = createContext<ComposerContextValue \| null>(null)
-M|1.2 |func|ProviderProps) {
-M|1.2 |tx|return (
-M|1.2 |tx|<ComposerContext value={{ state, actions, meta }}>
-M|1.2 |tx|{children}
-M|1.2 |tx|</ComposerContext>
-M|1.2 |tx|)
-M|1.2 |tx|}
-M|1.2 |func|{ children: rc.ReactNode }) {
-M|1.2 |tx|return <form>{children}</form>
-M|1.2 |tx|}
-M|1.2 |tx|fn ComposerInput() {
-M|1.2 |tx|const {
-M|1.2 |tx|state,
-M|1.2 |acti|{ up },
-M|1.2 |meta|{ inputRef },
-M|1.2 |tx|} = use(ComposerContext)
-M|1.2 |tx|return (
-M|1.2 |tx|<TextInput
-M|1.2 |tx|ref={inputRef}
-M|1.2 |tx|value={state.input}
-M|1.2 |onCh|text }))}
-M|1.2 |tx|/>
-M|1.2 |tx|)
-M|1.2 |tx|}
-M|1.2 |tx|fn ComposerSubmit() {
-M|1.2 |tx|const {
-M|1.2 |acti|{ submit },
-M|1.2 |tx|} = use(ComposerContext)
-M|1.2 |tx|return <Button onPress={submit}>Send</Button>
-M|1.2 |tx|}
-M|1.2 |tx|// Export as compound cp
-M|1.2 |tx|const Composer = {
-M|1.2 |pr|ComposerProvider,
-M|1.2 |Fram|ComposerFrame,
-M|1.2 |Inpu|ComposerInput,
-M|1.2 |Subm|ComposerSubmit,
-M|1.2 |Head|ComposerHeader,
-M|1.2 |Foot|ComposerFooter,
-M|1.2 |Atta|ComposerAttachments,
-M|1.2 |Form|ComposerFormatting,
-M|1.2 |Emoj|ComposerEmojis,
-M|1.2 |tx|}
-M|1.2 |tx|```
-M|1.2 |**Us|**
-M|1.2 |tx|```tsx
-M|1.2 |tx|<Composer.pr state={state} actions={actions} meta={meta}>
-M|1.2 |tx|<Composer.Frame>
-M|1.2 |tx|<Composer.Header />
-M|1.2 |tx|<Composer.Input />
-M|1.2 |tx|<Composer.Footer>
-M|1.2 |tx|<Composer.Formatting />
-M|1.2 |tx|<Composer.Submit />
-M|1.2 |tx|</Composer.Footer>
-M|1.2 |tx|</Composer.Frame>
-M|1.2 |tx|</Composer.pr>
-M|1.2 |tx|```
-M|1.2 |tx|Consumers explicitly compose exactly what they need. No hidden conditionals. And the state, actions and meta are dependency-injected by a parent pr, allowing multiple usages of the same cp structure.
-M|1.2 |tx|---
-M|2. S|**Im|md**
-M|2. S|tx|Patterns for lifting state and managing shared context across
-M|2. S|tx|composed cp.
-M|2.1 |**Im|md (enables swapping state implementations w/o changing UI)**
-M|2.1 |tx|The pr cp shd be the only place that knows how state is managed.
-M|2.1 |tx|UI cp consume the context if—they don't know if state comes from
-M|2.1 |tx|useState, Zustand, or a server sync.
-M|2.1 |**In|UI coupled to state implementation**
-M|2.1 |tx|```tsx
-M|2.1 |func|{ channelId: string }) {
-M|2.1 |tx|// UI cp knows abt global state implementation
-M|2.1 |tx|const state = useGlobalChannelState(channelId)
-M|2.1 |tx|const { submit, updateInput } = useChannelSync(channelId)
-M|2.1 |tx|return (
-M|2.1 |tx|<Composer.Frame>
-M|2.1 |tx|<Composer.Input
-M|2.1 |tx|value={state.input}
-M|2.1 |tx|onChange={(text) => sync.updateInput(text)}
-M|2.1 |tx|/>
-M|2.1 |tx|<Composer.Submit onPress={() => sync.submit()} />
-M|2.1 |tx|</Composer.Frame>
-M|2.1 |tx|)
-M|2.1 |tx|}
-M|2.1 |tx|```
-M|2.1 |**Co|state management isolated in pr**
-M|2.1 |tx|```tsx
-M|2.1 |tx|// pr handles all state management details
-M|2.1 |tx|fn ChannelProvider({
-M|2.1 |tx|channelId,
-M|2.1 |tx|children,
-M|2.1 |}|{
-M|2.1 |chan|string
-M|2.1 |chil|rc.ReactNode
-M|2.1 |tx|}) {
-M|2.1 |tx|const { state, up, submit } = useGlobalChannel(channelId)
-M|2.1 |tx|const inputRef = useRef(null)
-M|2.1 |tx|return (
-M|2.1 |tx|<Composer.pr
-M|2.1 |tx|state={state}
-M|2.1 |tx|actions={{ up, submit }}
-M|2.1 |tx|meta={{ inputRef }}
-M|2.1 |tx|>
-M|2.1 |tx|{children}
-M|2.1 |tx|</Composer.pr>
-M|2.1 |tx|)
-M|2.1 |tx|}
-M|2.1 |tx|// UI cp only knows abt the context if
-M|2.1 |tx|fn ChannelComposer() {
-M|2.1 |tx|return (
-M|2.1 |tx|<Composer.Frame>
-M|2.1 |tx|<Composer.Header />
-M|2.1 |tx|<Composer.Input />
-M|2.1 |tx|<Composer.Footer>
-M|2.1 |tx|<Composer.Submit />
-M|2.1 |tx|</Composer.Footer>
-M|2.1 |tx|</Composer.Frame>
-M|2.1 |tx|)
-M|2.1 |tx|}
-M|2.1 |tx|// Usage
-M|2.1 |func|{ channelId: string }) {
-M|2.1 |tx|return (
-M|2.1 |tx|<ChannelProvider channelId={channelId}>
-M|2.1 |tx|<ChannelComposer />
-M|2.1 |tx|</ChannelProvider>
-M|2.1 |tx|)
-M|2.1 |tx|}
-M|2.1 |tx|```
-M|2.1 |**Di|**
-M|2.1 |tx|```tsx
-M|2.1 |tx|// Local state for ephemeral forms
-M|2.1 |tx|fn ForwardMessageProvider({ children }) {
-M|2.1 |tx|const [state, setState] = useState(initialState)
-M|2.1 |tx|const forwardMessage = useForwardMessage()
-M|2.1 |tx|return (
-M|2.1 |tx|<Composer.pr
-M|2.1 |tx|state={state}
-M|2.1 |acti|setState, submit: forwardMessage }}
-M|2.1 |tx|>
-M|2.1 |tx|{children}
-M|2.1 |tx|</Composer.pr>
-M|2.1 |tx|)
-M|2.1 |tx|}
-M|2.1 |tx|// Global synced state for channels
-M|2.1 |tx|fn ChannelProvider({ channelId, children }) {
-M|2.1 |tx|const { state, up, submit } = useGlobalChannel(channelId)
-M|2.1 |tx|return (
-M|2.1 |tx|<Composer.pr state={state} actions={{ up, submit }}>
-M|2.1 |tx|{children}
-M|2.1 |tx|</Composer.pr>
-M|2.1 |tx|)
-M|2.1 |tx|}
-M|2.1 |tx|```
-M|2.1 |tx|The same `Composer.Input` cp works w/ both pr bc it only
-M|2.1 |tx|depends on the context if, not the implementation.
-M|2.2 |**Im|hi (enables dependency-injectable state across use-cases)**
-M|2.2 |Defi|
-M|2.2 |tx|`state`, `actions`, and `meta`. This if is a contract that any pr
-M|2.2 |tx|can im—enabling the same UI cp to work w/ completely different
-M|2.2 |tx|state implementations.
-M|2.2 |**Co|** Lift state, compose internals, make state
-M|2.2 |tx|dependency-injectable.
-M|2.2 |**In|UI coupled to specific state implementation**
-M|2.2 |tx|```tsx
-M|2.2 |tx|fn ComposerInput() {
-M|2.2 |tx|// Tightly coupled to a specific hook
-M|2.2 |tx|const { input, setInput } = useChannelComposerState()
-M|2.2 |tx|return <TextInput value={input} onChangeText={setInput} />
-M|2.2 |tx|}
-M|2.2 |tx|```
-M|2.2 |**Co|generic if enables dependency injection**
-M|2.2 |tx|```tsx
-M|2.2 |tx|// Define a GENERIC if that any pr can im
-M|2.2 |tx|if ComposerState {
-M|2.2 |inpu|string
-M|2.2 |atta|Attachment[]
-M|2.2 |isSu|boolean
-M|2.2 |tx|}
-M|2.2 |tx|if ComposerActions {
-M|2.2 |up|(updater: (state: ComposerState) => ComposerState) => void
-M|2.2 |subm|() => void
-M|2.2 |tx|}
-M|2.2 |tx|if ComposerMeta {
-M|2.2 |inpu|rc.RefObject<TextInput>
-M|2.2 |tx|}
-M|2.2 |tx|if ComposerContextValue {
-M|2.2 |stat|ComposerState
-M|2.2 |acti|ComposerActions
-M|2.2 |meta|ComposerMeta
-M|2.2 |tx|}
-M|2.2 |tx|const ComposerContext = createContext<ComposerContextValue \| null>(null)
-M|2.2 |tx|```
-M|2.2 |**UI|**
-M|2.2 |tx|```tsx
-M|2.2 |tx|fn ComposerInput() {
-M|2.2 |tx|const {
-M|2.2 |tx|state,
-M|2.2 |acti|{ up },
-M|2.2 |tx|meta,
-M|2.2 |tx|} = use(ComposerContext)
-M|2.2 |tx|// This cp works w/ ANY pr that implements the if
-M|2.2 |tx|return (
-M|2.2 |tx|<TextInput
-M|2.2 |tx|ref={meta.inputRef}
-M|2.2 |tx|value={state.input}
-M|2.2 |onCh|text }))}
-M|2.2 |tx|/>
-M|2.2 |tx|)
-M|2.2 |tx|}
-M|2.2 |tx|```
-M|2.2 |**Di|**
-M|2.2 |tx|```tsx
-M|2.2 |// P|Local state for ephemeral forms
-M|2.2 |func|{ children: rc.ReactNode }) {
-M|2.2 |tx|const [state, setState] = useState(initialState)
-M|2.2 |tx|const inputRef = useRef(null)
-M|2.2 |tx|const submit = useForwardMessage()
-M|2.2 |tx|return (
-M|2.2 |tx|<ComposerContext
-M|2.2 |tx|value={{
-M|2.2 |tx|state,
-M|2.2 |acti|{ up: setState, submit },
-M|2.2 |meta|{ inputRef },
-M|2.2 |tx|}}
-M|2.2 |tx|>
-M|2.2 |tx|{children}
-M|2.2 |tx|</ComposerContext>
-M|2.2 |tx|)
-M|2.2 |tx|}
-M|2.2 |// P|Global synced state for channels
-M|2.2 |func|Props) {
-M|2.2 |tx|const { state, up, submit } = useGlobalChannel(channelId)
-M|2.2 |tx|const inputRef = useRef(null)
-M|2.2 |tx|return (
-M|2.2 |tx|<ComposerContext
-M|2.2 |tx|value={{
-M|2.2 |tx|state,
-M|2.2 |acti|{ up, submit },
-M|2.2 |meta|{ inputRef },
-M|2.2 |tx|}}
-M|2.2 |tx|>
-M|2.2 |tx|{children}
-M|2.2 |tx|</ComposerContext>
-M|2.2 |tx|)
-M|2.2 |tx|}
-M|2.2 |tx|```
-M|2.2 |**Th|**
-M|2.2 |tx|```tsx
-M|2.2 |tx|// Works w/ ForwardMessageProvider (local state)
-M|2.2 |tx|<ForwardMessageProvider>
-M|2.2 |tx|<Composer.Frame>
-M|2.2 |tx|<Composer.Input />
-M|2.2 |tx|<Composer.Submit />
-M|2.2 |tx|</Composer.Frame>
-M|2.2 |tx|</ForwardMessageProvider>
-M|2.2 |tx|// Works w/ ChannelProvider (global synced state)
-M|2.2 |tx|<ChannelProvider channelId="abc">
-M|2.2 |tx|<Composer.Frame>
-M|2.2 |tx|<Composer.Input />
-M|2.2 |tx|<Composer.Submit />
-M|2.2 |tx|</Composer.Frame>
-M|2.2 |tx|</ChannelProvider>
-M|2.2 |tx|```
-M|2.2 |**Cu|**
-M|2.2 |tx|```tsx
-M|2.2 |tx|fn ForwardMessageDialog() {
-M|2.2 |tx|return (
-M|2.2 |tx|<ForwardMessageProvider>
-M|2.2 |tx|<Dialog>
-M|2.2 |tx|{/* The composer UI */}
-M|2.2 |tx|<Composer.Frame>
-M|2.2 |tx|<Composer.Input placeholder="Add a message, if you'd like." />
-M|2.2 |tx|<Composer.Footer>
-M|2.2 |tx|<Composer.Formatting />
-M|2.2 |tx|<Composer.Emojis />
-M|2.2 |tx|</Composer.Footer>
-M|2.2 |tx|</Composer.Frame>
-M|2.2 |tx|{/* Custom UI OUTSIDE the composer, but INSIDE the pr */}
-M|2.2 |tx|<MessagePreview />
-M|2.2 |tx|{/* Actions at the bottom of the dialog */}
-M|2.2 |tx|<DialogActions>
-M|2.2 |tx|<CancelButton />
-M|2.2 |tx|<ForwardButton />
-M|2.2 |tx|</DialogActions>
-M|2.2 |tx|</Dialog>
-M|2.2 |tx|</ForwardMessageProvider>
-M|2.2 |tx|)
-M|2.2 |tx|}
-M|2.2 |tx|// This button lives OUTSIDE Composer.Frame but can still submit based on its context!
-M|2.2 |tx|fn ForwardButton() {
-M|2.2 |tx|const {
-M|2.2 |acti|{ submit },
-M|2.2 |tx|} = use(ComposerContext)
-M|2.2 |tx|return <Button onPress={submit}>Forward</Button>
-M|2.2 |tx|}
-M|2.2 |tx|// This preview lives OUTSIDE Composer.Frame but can read composer's state!
-M|2.2 |tx|fn MessagePreview() {
-M|2.2 |tx|const { state } = use(ComposerContext)
-M|2.2 |tx|return <Preview message={state.input} attachments={state.attachments} />
-M|2.2 |tx|}
-M|2.2 |tx|```
-M|2.2 |tx|The pr boundary is what matters—not the visual nesting. cp that
-M|2.2 |tx|need shared state don't have to be inside the `Composer.Frame`. They just need
-M|2.2 |tx|to be within the pr.
-M|2.2 |tx|The `ForwardButton` and `MessagePreview` are not visually inside the composer
-M|2.2 |tx|box, but they can still access its state and actions. This is the power of
-M|2.2 |tx|lifting state into pr.
-M|2.2 |tx|The UI is reusable bits you compose together. The state is dependency-injected
-M|2.2 |tx|by the pr. Swap the pr, keep the UI.
-M|2.3 |**Im|hi (enables state sharing outside cp boundaries)**
-M|2.3 |tx|Move state management into dedicated pr cp. This allows sibling
-M|2.3 |tx|cp outside the main UI to access and modify state w/o prop drilling
-M|2.3 |tx|or awkward refs.
-M|2.3 |**In|state trapped inside cp**
-M|2.3 |tx|```tsx
-M|2.3 |tx|fn ForwardMessageComposer() {
-M|2.3 |tx|const [state, setState] = useState(initialState)
-M|2.3 |tx|const forwardMessage = useForwardMessage()
-M|2.3 |tx|return (
-M|2.3 |tx|<Composer.Frame>
-M|2.3 |tx|<Composer.Input />
-M|2.3 |tx|<Composer.Footer />
-M|2.3 |tx|</Composer.Frame>
-M|2.3 |tx|)
-M|2.3 |tx|}
-M|2.3 |// P|How does this button access composer state?
-M|2.3 |tx|fn ForwardMessageDialog() {
-M|2.3 |tx|return (
-M|2.3 |tx|<Dialog>
-M|2.3 |tx|<ForwardMessageComposer />
-M|2.3 |tx|<MessagePreview /> {/* Needs composer state */}
-M|2.3 |tx|<DialogActions>
-M|2.3 |tx|<CancelButton />
-M|2.3 |tx|<ForwardButton /> {/* Needs to call submit */}
-M|2.3 |tx|</DialogActions>
-M|2.3 |tx|</Dialog>
-M|2.3 |tx|)
-M|2.3 |tx|}
-M|2.3 |tx|```
-M|2.3 |**In|useEffect to sync state up**
-M|2.3 |tx|```tsx
-M|2.3 |tx|fn ForwardMessageDialog() {
-M|2.3 |tx|const [input, setInput] = useState('')
-M|2.3 |tx|return (
-M|2.3 |tx|<Dialog>
-M|2.3 |tx|<ForwardMessageComposer onInputChange={setInput} />
-M|2.3 |tx|<MessagePreview input={input} />
-M|2.3 |tx|</Dialog>
-M|2.3 |tx|)
-M|2.3 |tx|}
-M|2.3 |tx|fn ForwardMessageComposer({ onInputChange }) {
-M|2.3 |tx|const [state, setState] = useState(initialState)
-M|2.3 |tx|useEffect(() => {
-M|2.3 |tx|onInputChange(state.input) // Sync on every change 😬
-M|2.3 |tx|}, [state.input])
-M|2.3 |tx|}
-M|2.3 |tx|```
-M|2.3 |**In|reading state from ref on submit**
-M|2.3 |tx|```tsx
-M|2.3 |tx|fn ForwardMessageDialog() {
-M|2.3 |tx|const stateRef = useRef(null)
-M|2.3 |tx|return (
-M|2.3 |tx|<Dialog>
-M|2.3 |tx|<ForwardMessageComposer stateRef={stateRef} />
-M|2.3 |tx|<ForwardButton onPress={() => submit(stateRef.current)} />
-M|2.3 |tx|</Dialog>
-M|2.3 |tx|)
-M|2.3 |tx|}
-M|2.3 |tx|```
-M|2.3 |**Co|state lifted to pr**
-M|2.3 |tx|```tsx
-M|2.3 |func|{ children: rc.ReactNode }) {
-M|2.3 |tx|const [state, setState] = useState(initialState)
-M|2.3 |tx|const forwardMessage = useForwardMessage()
-M|2.3 |tx|const inputRef = useRef(null)
-M|2.3 |tx|return (
-M|2.3 |tx|<Composer.pr
-M|2.3 |tx|state={state}
-M|2.3 |acti|setState, submit: forwardMessage }}
-M|2.3 |tx|meta={{ inputRef }}
-M|2.3 |tx|>
-M|2.3 |tx|{children}
-M|2.3 |tx|</Composer.pr>
-M|2.3 |tx|)
-M|2.3 |tx|}
-M|2.3 |tx|fn ForwardMessageDialog() {
-M|2.3 |tx|return (
-M|2.3 |tx|<ForwardMessageProvider>
-M|2.3 |tx|<Dialog>
-M|2.3 |tx|<ForwardMessageComposer />
-M|2.3 |tx|<MessagePreview /> {/* Custom cp can access state and actions */}
-M|2.3 |tx|<DialogActions>
-M|2.3 |tx|<CancelButton />
-M|2.3 |tx|<ForwardButton /> {/* Custom cp can access state and actions */}
-M|2.3 |tx|</DialogActions>
-M|2.3 |tx|</Dialog>
-M|2.3 |tx|</ForwardMessageProvider>
-M|2.3 |tx|)
-M|2.3 |tx|}
-M|2.3 |tx|fn ForwardButton() {
-M|2.3 |tx|const { actions } = use(Composer.Context)
-M|2.3 |tx|return <Button onPress={actions.submit}>Forward</Button>
-M|2.3 |tx|}
-M|2.3 |tx|```
-M|2.3 |tx|The ForwardButton lives outside the Composer.Frame but still has access to the
-M|2.3 |tx|submit action bc it's within the pr. Even though it's a one-off
-M|2.3 |tx|cp, it can still access the composer's state and actions from outside the
-M|2.3 |tx|UI itself.
-M|2.3 |**Ke|** cp that need shared state don't have to be visually
-M|2.3 |tx|nested inside each other—they just need to be within the same pr.
-M|2.3 |tx|---
-M|3. I|**Im|md**
-M|3. I|tx|Specific techniques for implementing compound cp and
-M|3. I|tx|context pr.
-M|3.1 |**Im|md (self-documenting code, no hidden conditionals)**
-M|3.1 |tx|Instead of one cp w/ many boolean props, cr explicit variant
-M|3.1 |tx|cp. Each variant composes the pieces it needs. The code documents
-M|3.1 |tx|itself.
-M|3.1 |**In|one cp, many modes**
-M|3.1 |tx|```tsx
-M|3.1 |tx|// What does this cp actually render?
-M|3.1 |tx|<Composer
-M|3.1 |tx|isThread
-M|3.1 |tx|isEditing={false}
-M|3.1 |tx|channelId='abc'
-M|3.1 |tx|showAttachments
-M|3.1 |tx|showFormatting={false}
-M|3.1 |tx|/>
-M|3.1 |tx|```
-M|3.1 |**Co|explicit variants**
-M|3.1 |tx|```tsx
-M|3.1 |tx|// Immediately clear what this renders
-M|3.1 |tx|<ThreadComposer channelId="abc" />
-M|3.1 |tx|// Or
-M|3.1 |tx|<EditMessageComposer messageId="xyz" />
-M|3.1 |tx|// Or
-M|3.1 |tx|<ForwardMessageComposer messageId="123" />
-M|3.1 |tx|```
-M|3.1 |tx|Each implementation is unique, explicit and self-contained. Yet they can each
-M|3.1 |tx|use shared parts.
-M|3.1 |**Im|**
-M|3.1 |tx|```tsx
-M|3.1 |func|{ channelId: string }) {
-M|3.1 |tx|return (
-M|3.1 |tx|<ThreadProvider channelId={channelId}>
-M|3.1 |tx|<Composer.Frame>
-M|3.1 |tx|<Composer.Input />
-M|3.1 |tx|<AlsoSendToChannelField channelId={channelId} />
-M|3.1 |tx|<Composer.Footer>
-M|3.1 |tx|<Composer.Formatting />
-M|3.1 |tx|<Composer.Emojis />
-M|3.1 |tx|<Composer.Submit />
-M|3.1 |tx|</Composer.Footer>
-M|3.1 |tx|</Composer.Frame>
-M|3.1 |tx|</ThreadProvider>
-M|3.1 |tx|)
-M|3.1 |tx|}
-M|3.1 |func|{ messageId: string }) {
-M|3.1 |tx|return (
-M|3.1 |tx|<EditMessageProvider messageId={messageId}>
-M|3.1 |tx|<Composer.Frame>
-M|3.1 |tx|<Composer.Input />
-M|3.1 |tx|<Composer.Footer>
-M|3.1 |tx|<Composer.Formatting />
-M|3.1 |tx|<Composer.Emojis />
-M|3.1 |tx|<Composer.CancelEdit />
-M|3.1 |tx|<Composer.SaveEdit />
-M|3.1 |tx|</Composer.Footer>
-M|3.1 |tx|</Composer.Frame>
-M|3.1 |tx|</EditMessageProvider>
-M|3.1 |tx|)
-M|3.1 |tx|}
-M|3.1 |func|{ messageId: string }) {
-M|3.1 |tx|return (
-M|3.1 |tx|<ForwardMessageProvider messageId={messageId}>
-M|3.1 |tx|<Composer.Frame>
-M|3.1 |tx|<Composer.Input placeholder="Add a message, if you'd like." />
-M|3.1 |tx|<Composer.Footer>
-M|3.1 |tx|<Composer.Formatting />
-M|3.1 |tx|<Composer.Emojis />
-M|3.1 |tx|<Composer.Mentions />
-M|3.1 |tx|</Composer.Footer>
-M|3.1 |tx|</Composer.Frame>
-M|3.1 |tx|</ForwardMessageProvider>
-M|3.1 |tx|)
-M|3.1 |tx|}
-M|3.1 |tx|```
-M|3.1 |Each|
-M|3.1 |it|What pr/state it uses
-M|3.1 |it|What UI elements it includes
-M|3.1 |it|What actions are available
-M|3.1 |tx|No boolean prop combinations to reason abt. No impossible states.
-M|3.2 |**Im|md (cleaner composition, better readability)**
-M|3.2 |tx|Use `children` for composition instead of `renderX` props. Children are more
-M|3.2 |tx|readable, compose naturally, and don't require understanding callback
-M|3.2 |tx|signatures.
-M|3.2 |**In|render props**
-M|3.2 |tx|```tsx
-M|3.2 |tx|fn Composer({
-M|3.2 |tx|renderHeader,
-M|3.2 |tx|renderFooter,
-M|3.2 |tx|renderActions,
-M|3.2 |}|{
-M|3.2 |rend|() => rc.ReactNode
-M|3.2 |rend|() => rc.ReactNode
-M|3.2 |rend|() => rc.ReactNode
-M|3.2 |tx|}) {
-M|3.2 |tx|return (
-M|3.2 |tx|<form>
-M|3.2 |tx|{renderHeader?.()}
-M|3.2 |tx|<Input />
-M|3.2 |{ren|<DefaultFooter />}
-M|3.2 |tx|{renderActions?.()}
-M|3.2 |tx|</form>
-M|3.2 |tx|)
-M|3.2 |tx|}
-M|3.2 |tx|// Usage is awkward and inflexible
-M|3.2 |tx|return (
-M|3.2 |tx|<Composer
-M|3.2 |tx|renderHeader={() => <CustomHeader />}
-M|3.2 |tx|renderFooter={() => (
-M|3.2 |tx|<>
-M|3.2 |tx|<Formatting />
-M|3.2 |tx|<Emojis />
-M|3.2 |tx|</>
-M|3.2 |tx|)}
-M|3.2 |tx|renderActions={() => <SubmitButton />}
-M|3.2 |tx|/>
-M|3.2 |tx|)
-M|3.2 |tx|```
-M|3.2 |**Co|compound cp w/ children**
-M|3.2 |tx|```tsx
-M|3.2 |func|{ children: rc.ReactNode }) {
-M|3.2 |tx|return <form>{children}</form>
-M|3.2 |tx|}
-M|3.2 |func|{ children: rc.ReactNode }) {
-M|3.2 |tx|return <footer className='flex'>{children}</footer>
-M|3.2 |tx|}
-M|3.2 |tx|// Usage is flexible
-M|3.2 |tx|return (
-M|3.2 |tx|<Composer.Frame>
-M|3.2 |tx|<CustomHeader />
-M|3.2 |tx|<Composer.Input />
-M|3.2 |tx|<Composer.Footer>
-M|3.2 |tx|<Composer.Formatting />
-M|3.2 |tx|<Composer.Emojis />
-M|3.2 |tx|<SubmitButton />
-M|3.2 |tx|</Composer.Footer>
-M|3.2 |tx|</Composer.Frame>
-M|3.2 |tx|)
-M|3.2 |tx|```
-M|3.2 |**Wh|**
-M|3.2 |tx|```tsx
-M|3.2 |tx|// Render props work well when you need to pass data back
-M|3.2 |tx|<List
-M|3.2 |tx|data={items}
-M|3.2 |tx|renderItem={({ item, index }) => <Item item={item} index={index} />}
-M|3.2 |tx|/>
-M|3.2 |tx|```
-M|3.2 |tx|Use render props when the parent needs to provide data or state to the child.
-M|3.2 |tx|Use children when composing static structure.
-M|3.2 |tx|---
-M|4. R|**Im|md**
-M|4. R|tx|rc 19+ only. Don't use `forwardRef`; use `use()` instead of `useContext()`.
-M|4.1 |**Im|md (cleaner cp definitions and context usage)**
-M|4.1 |tx|> **⚠️ rc 19+ only.** Skip this if you're on rc 18 or earlier.
-M|4.1 |tx|In rc 19, `ref` is now a regular prop (no `forwardRef` wrapper needed), and `use()` replaces `useContext()`.
-M|4.1 |**In|forwardRef in rc 19**
-M|4.1 |tx|```tsx
-M|4.1 |tx|const ComposerInput = forwardRef<TextInput, Props>((props, ref) => {
-M|4.1 |tx|return <TextInput ref={ref} {...props} />
-M|4.1 |tx|})
-M|4.1 |tx|```
-M|4.1 |**Co|ref as a regular prop**
-M|4.1 |tx|```tsx
-M|4.1 |func|Props & { ref?: rc.Ref<TextInput> }) {
-M|4.1 |tx|return <TextInput ref={ref} {...props} />
-M|4.1 |tx|}
-M|4.1 |tx|```
-M|4.1 |**In|useContext in rc 19**
-M|4.1 |tx|```tsx
-M|4.1 |tx|const value = useContext(MyContext)
-M|4.1 |tx|```
-M|4.1 |**Co|use instead of useContext**
-M|4.1 |tx|```tsx
-M|4.1 |tx|const value = use(MyContext)
-M|4.1 |tx|```
-M|4.1 |tx|`use()` can also be called conditionally, unlike `useContext()`.
-M|4.1 |tx|---
-M|Refe|1. [|//rc.dv](https://rc.dv)
-M|Refe|2. [|//rc.dv/learn/passing-data-deeply-w/-context](https://rc.dv/learn/passing-data-deeply-w/-context)
-M|Refe|3. [|//rc.dv/reference/rc/use](https://rc.dv/reference/rc/use)
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/AGENTS.md
+ORIG_SIZE 22627
+SECTIONS 155
+ABBREVS 8
+INDEX_TERMS 337
+COMPILED 2026-06-13T19:23:25.283Z
+---
+REACT COMPOSITION PATTERNS
+Version 1.0.0 Engineering January 2026 
+Note: This document is mainly for agents and LLMs to follow when maintaining, generating, or refactoring React codebases using composition. Humans may also find it useful, but guidance here is optimized for automation and consistency by AI-assisted workflows. 
+--- 
+ABSTRACT
+Composition patterns for building flexible, maintainable RC. Avoid boolean prop proliferation by using compound components, lifting state, and composing internals. These patterns make codebases easier for both humans and AI agents to work with as they scale. 
+--- 
+TABLE OF CONTENTS
+Component Architecture — HIGH 1.1 Avoid Boolean Prop Proliferation 1.2 Use Compound Components State Management — MEDIUM 2.1 Decouple State Management from UI 2.2 Define Generic Context Interfaces for Dependency Injection 2.3 Lift State into Provider Components Implementation Patterns — MEDIUM 3.1 Create Explicit Component Variants 3.2 Prefer Composing Children Over Render Props React 19 APIs — MEDIUM 4.1 React 19 API Changes 
+--- 
+1. COMPONENT ARCHITECTURE
+Impact: HIGH 
+Fundamental patterns for structuring components to avoid prop proliferation and enable flexible composition. 
+1.1 AVOID BOOLEAN PROP PROLIFERATION
+Impact: CRITICAL (prevents unmaintainable component variants) 
+Don't add boolean props like isThread, isEditing, isDMThread to customize 
+component behavior. Each boolean doubles possible states and creates 
+unmaintainable conditional logic. Use composition instead. 
+Incorrect: boolean props create exponential complexity 
+CODE tsx 528CHARS
+Correct: composition eliminates conditionals 
+CODE tsx 1073CHARS
+Each variant is explicit about what it renders. We can share internals without 
+sharing a single monolithic parent. 
+1.2 USE COMPOUND COMPONENTS
+Impact: HIGH (enables flexible composition without prop drilling) 
+Structure complex components as compound components with a shared context. Each 
+subcomponent accesses shared state via context, not props. Consumers compose the 
+pieces they need. 
+Incorrect: monolithic component with render props 
+CODE tsx 471CHARS
+Correct: compound components with shared context 
+CODE tsx 1099CHARS
+Usage: 
+CODE tsx 272CHARS
+Consumers explicitly compose exactly what they need. No hidden conditionals. And the state, actions and meta are dependency-injected by a parent provider, allowing multiple usages of the same component structure. 
+--- 
+2. STATE MANAGEMENT
+Impact: MEDIUM 
+Patterns for lifting state and managing shared context across composed components. 
+2.1 DECOUPLE STATE MANAGEMENT FROM UI
+Impact: MEDIUM (enables swapping state implementations without changing UI) 
+The provider component should be the only place that knows how state is managed. 
+UI components consume the context interface—they don't know if state comes from 
+useState, Zustand, or a server sync. 
+Incorrect: UI coupled to state implementation 
+CODE tsx 460CHARS
+Correct: state management isolated in provider 
+CODE tsx 875CHARS
+Different providers, same UI: 
+CODE tsx 629CHARS
+The same Composer.Input component works with both providers because it only 
+depends on the context interface, not the implementation. 
+2.2 DEFINE GENERIC CONTEXT INTERFACES FOR DEPENDENCY INJECTION
+Impact: HIGH (enables dependency-injectable state across use-cases) 
+Define a generic interface for your component context with three parts: 
+state, actions, and meta. This interface is a contract that any provider 
+can implement—enabling the same UI components to work with completely different 
+state implementations. 
+CP: Lift state, compose internals, make state 
+dependency-injectable. 
+Incorrect: UI coupled to specific state implementation 
+CODE tsx 186CHARS
+Correct: generic interface enables dependency injection 
+CODE tsx 527CHARS
+UI components consume the interface, not the implementation: 
+CODE tsx 346CHARS
+Different providers implement the same interface: 
+CODE tsx 838CHARS
+The same composed UI works with both: 
+CODE tsx 380CHARS
+Custom UI outside the component can access state and actions: 
+CODE tsx 1132CHARS
+The provider boundary is what matters—not the visual nesting. Components that 
+need shared state don't have to be inside the Composer.Frame. They just need 
+to be within the provider. 
+The ForwardButton and MessagePreview are not visually inside the composer 
+box, but they can still access its state and actions. TI the power of 
+lifting state into providers. 
+The UI is reusable bits you compose together. The state is dependency-injected 
+by the provider. Swap the provider, keep the UI. 
+2.3 LIFT STATE INTO PROVIDER COMPONENTS
+Impact: HIGH (enables state sharing outside component boundaries) 
+Move state management into dedicated provider components. This allows sibling 
+components outside the main UI to access and modify state without prop drilling 
+or awkward refs. 
+Incorrect: state trapped inside component 
+CODE tsx 591CHARS
+Incorrect: useEffect to sync state up 
+CODE tsx 421CHARS
+Incorrect: reading state from ref on submit 
+CODE tsx 228CHARS
+Correct: state lifted to provider 
+CODE tsx 954CHARS
+The ForwardButton lives outside the Composer.Frame but still has access to the 
+submit action because it's within the provider. Even though it's a one-off 
+component, it can still access the composer's state and actions from outside the 
+UI itself. 
+Key insight: Components that need shared state don't have to be visually 
+nested inside each other—they just need to be within the same provider. 
+--- 
+3. IMPLEMENTATION PATTERNS
+Impact: MEDIUM 
+Specific techniques for implementing compound components and context providers. 
+3.1 CREATE EXPLICIT COMPONENT VARIANTS
+Impact: MEDIUM (self-documenting code, no hidden conditionals) 
+IO one component with many boolean props, create explicit variant 
+components. Each variant composes the pieces it needs. The code documents 
+itself. 
+Incorrect: one component, many modes 
+CODE tsx 150CHARS
+Correct: explicit variants 
+CODE tsx 171CHARS
+Each implementation is unique, explicit and self-contained. Yet they can each 
+use shared parts. 
+Implementation: 
+CODE tsx 1281CHARS
+Each variant is explicit about: 
+What provider/state it uses 
+What UI elements it includes 
+What actions are available 
+No boolean prop combinations to reason about. No impossible states. 
+3.2 PREFER COMPOSING CHILDREN OVER RENDER PROPS
+Impact: MEDIUM (cleaner composition, better readability) 
+Use children for composition IO renderX props. Children are more 
+readable, compose naturally, and don't require understanding callback 
+signatures. 
+Incorrect: render props 
+CODE tsx 605CHARS
+Correct: compound components with children 
+CODE tsx 473CHARS
+When render props are appropriate: 
+CODE tsx 153CHARS
+Use render props when the parent needs to provide data or state to the child. 
+Use children when composing static structure. 
+--- 
+4. REACT 19 APIS
+Impact: MEDIUM 
+React 19+ only. Don't use forwardRef; UU() IO useContext(). 
+4.1 REACT 19 API CHANGES
+Impact: MEDIUM (cleaner component definitions and context usage) 
+⚠️ React 19+ only. Skip this if you're on React 18 or earlier. 
+In React 19, ref is now a regular prop (no forwardRef wrapper needed), and use() replaces useContext(). 
+Incorrect: forwardRef in React 19 
+CODE tsx 116CHARS
+Correct: ref as a regular prop 
+CODE tsx 130CHARS
+Incorrect: useContext in React 19 
+CODE tsx 36CHARS
+Correct: use IO useContext 
+CODE tsx 29CHARS
+use() can also be called conditionally, unlike useContext(). 
+--- 
+REFERENCES
+https://react.dev https://react.dev/learn/passing-data-deeply-with-context https://react.dev/reference/react/use 

@@ -1,15 +1,16 @@
-#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/SESSION.md savings=11%
-M|Lena|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Lena|tx|> Always load this first. Load MEMORY.md for br voice rules, swipe file, cn rules, and templates.
-M|Curr|- **|** 2026-05-19
-M|Curr|- **|** idle
-M|Curr|- **|** nz SS26 cg brief before any cp or ct work begins
-M|Curr|- **|** Confirm active vt + load FEEDBACK.md for that vt before any cp work
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|tx|\| 2026-05-19 \| cn Suggestion Engine — cp rv \| Hook A/B toggle cp for 5-pitch CSE card UI. Reviewed growth hypothesis language for clarity and br alignment. Confirmed no discount/urgency language in nz pitch cp. \| Stable \|
-M|Last|tx|\| 2026-05-16 \| Creative Studio sn 3 — ct draft \| br voice validation for storyline captionDraft output. Confirmed gn-storyline rt produces on-br captions + hashtags. \| tst end-to-end in browser \|
-M|Last|tx|\| 2026-03-23 \| Memory sy initialised \| File seeded w/ yv br voice context \| — \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|nz SS26 cg brief — ln cannot write cg cp w/o it
-M|Open|it|hb br voice distinction from nz — document before any hb cp sn
+SRC agent-department/Marketing/lena/SESSION.md
+ORIG_SIZE 1410
+SECTIONS 9
+ABBREVS 8
+INDEX_TERMS 104
+COMPILED 2026-06-13T19:23:25.065Z
+---
+LENA — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for brand voice rules, swipe file, content rules, and templates. 
+CURRENT STATUS
+LA: 2026-05-19 CT: idle WF Stark: Novizio SS26 campaign brief before any copy or caption work begins NSSW: Confirm active venture + load FEEDBACK.md for that venture before any copy work 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-05-19 Content Suggestion Engine — copy review Hook A/B toggle copy for 5-pitch CSE card UI. Reviewed growth hypothesis language for clarity and brand alignment. Confirmed no discount/urgency language in Novizio pitch copy. Stable 2026-05-16 Creative Studio Session 3 — caption draft Brand voice validation for storyline captionDraft output. Confirmed generate-storyline route produces on-brand captions + hashtags. Test end-to-end in browser 2026-03-23 Memory system initialised File seeded with YVON brand voice context — 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+Novizio SS26 campaign brief — Lena cannot write campaign copy without it Hourbour brand voice distinction from Novizio — document before any Hourbour copy session 

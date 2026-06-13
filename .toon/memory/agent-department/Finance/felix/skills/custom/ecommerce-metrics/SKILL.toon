@@ -1,77 +1,41 @@
-#MEM id=ecommerce-metrics source=/root/yvon/agent-department/Finance/felix/skills/custom/ecommerce-metrics/SKILL.md savings=10%
-M||tx|---
-M||name|ecommerce-metrics
-M||desc|fx's financial framework for nz (DTC fashion e-commerce). Covers AOV, return rate, contribution margin per SKU, inventory turn, e-commerce CAC:LTV, sell-through rate, and SS26 cg financial modeling.
-M||vers|1.0.0
-M||tx|---
-M|Purp|Feli|CAC do not apply. This skill defines the metrics framework fx uses for any nz financial al to prevent SaaS-lens distortion on a fashion e-commerce vt.
-M|Purp|tx|---
-M|Aver|tx|```
-M|Aver|tx|AOV = Total rv ÷ Total Orders
-M|Aver|Targ|£80–£120 for contemporary fashion DTC
-M|Aver|Red |AOV declining WoW for 3+ consecutive weeks
-M|Aver|tx|```
-M|Retu|tx|```
-M|Retu|tx|Return Rate = Returned Orders ÷ Total Orders × 100
-M|Retu|Indu|20–30% for online fashion
-M|Retu|YVON|> 35% = sizing/qual issue · < 15% = potential friction in return process
-M|Retu|Impa|every 1% return rate increase reduces net rv by AOV × (1% of orders)
-M|Retu|tx|```
-M|Sell|tx|```
-M|Sell|tx|Sell-Through Rate = Units Sold ÷ (Units Sold + Units Remaining) × 100
-M|Sell|Good|≥ 70% within 90 days of season launch
-M|Sell|At 5|discount pressure begins
-M|Sell|At <|markdown risk — flag to mc before SS26 inventory decisions
-M|Sell|tx|```
-M|Cont|tx|```
-M|Cont|tx|Contribution Margin = (Selling Price − COGS − Shipping − Returns Cost − Payment Fees) ÷ Selling Price
-M|Cont|Targ|≥ 45% to support profitable paid acquisition
-M|Cont|Belo|SKU cannot support Meta ad — organic only
-M|Cont|tx|```
-M|Gros|tx|```
-M|Gros|tx|GMV = Total order value before returns
-M|Gros|tx|Net rv = GMV − Returns − Refunds − Discounts
-M|Gros|tx|Always rp both. A strong GMV w/ hi returns is a false signal.
-M|Gros|tx|```
-M|Gros|tx|---
-M|E-Co|LTV |
-M|E-Co|tx|```
-M|E-Co|tx|nz LTV = AOV × Avg. Purchase Frequency × Avg. cs Lifespan (years) × Gross Margin %
-M|E-Co|Exam|
-M|E-Co|tx|AOV £95 × 2.1 orders/year × 2.5 years × 48% margin = £239 LTV
-M|E-Co|CAC|LTV target: 3:1 minimum (spend £1 to earn £3 lifetime)
-M|E-Co|tx|Current CAC from ka's channel data → fx md LTV from above formula
-M|E-Co|tx|```
-M|E-Co|**Ne|CAC ratios for nz.** Fashion DTC benchmarks are structurally different.
-M|E-Co|tx|---
-M|SS26|Befo|
-M|SS26|tx|```
-M|SS26|1. I|Total cost of SS26 units × expected sell-through rate = expected net COGs
-M|SS26|2. R|Inventory value ÷ target contribution margin
-M|SS26|3. C|rv target × (1 ÷ LTV multiplier) = max total acquisition spend
-M|SS26|4. R|CAC Budget ÷ expected paid rv = minimum ROAS to break even
-M|SS26|5. M|Flag % of inventory likely to hit 40%+ markdown (sell-through < 50% at week 8)
-M|SS26|tx|```
-M|SS26|Outp|
-M|SS26|tx|```
-M|SS26|tx|SS26 FINANCIAL md
-M|SS26|Inve|£[X]
-M|SS26|Reve|£[X] (at [Y]% sell-through, [Z]% margin)
-M|SS26|Max |£[X]
-M|SS26|ROAS|[X.Xx]
-M|SS26|Mark|£[X] reserve if sell-through < 50% at week 8
-M|SS26|Feli|PROCEED / REDUCE INVENTORY / DELAY
-M|SS26|tx|```
-M|SS26|tx|---
-M|Week|Feli|
-M|Week|tx|\| Metric \| Green \| Amber \| Red \|
-M|Week|tx|\|--------\|-------\|-------\|-----\|
-M|Week|tx|\| AOV \| > £90 \| £70–£90 \| < £70 \|
-M|Week|tx|\| Return rate \| < 22% \| 22–32% \| > 32% \|
-M|Week|tx|\| Sell-through (SS) \| > 65% \| 50–65% \| < 50% \|
-M|Week|tx|\| Contribution margin \| > 45% \| 35–45% \| < 35% \|
-M|Week|tx|---
-M|Anti|it|Never apply SaaS MRR/ARR/NRR framework to nz al
-M|Anti|it|Never rp GMV as rv w/o netting out returns
-M|Anti|it|Never recommend a paid cg budget for nz w/o calculating contribution margin first
-M|Anti|it|Never project nz LTV using a subscription formula — use purchase frequency md above
+SRC agent-department/Finance/felix/skills/custom/ecommerce-metrics/SKILL.md
+ORIG_SIZE 3939
+SECTIONS 35
+ABBREVS 1
+INDEX_TERMS 118
+COMPILED 2026-06-13T19:23:24.948Z
+---
+NAME ecommerce-metrics
+E-COMMERCE FINANCIAL METRICS — NOVIZIO
+PURPOSE
+Felix's core skills are SaaS-optimized. Novizio is DTC fashion — a fundamentally different financial model. MRR, ARR, and SaaS LTV:CAC do not apply. This skill defines the metrics framework Felix uses for any Novizio financial analysis to prevent SaaS-lens distortion on a fashion e-commerce venture. 
+--- 
+CORE NOVIZIO METRICS
+AVERAGE ORDER VALUE (AOV)
+CODE  134CHARS
+RETURN RATE
+CODE  266CHARS
+SELL-THROUGH RATE
+CODE  220CHARS
+CONTRIBUTION MARGIN PER SKU
+CODE  209CHARS
+GROSS MERCHANDISE VALUE (GMV) VS NET REVENUE
+CODE  160CHARS
+--- 
+E-COMMERCE CAC:LTV
+LTV for Novizio is not a subscription metric. Use purchase frequency model: 
+CODE  300CHARS
+NU SaaS LTV:CAC ratios for Novizio. Fashion DTC benchmarks are structurally different. 
+--- 
+SS26 CAMPAIGN FINANCIAL MODEL
+Before any SS26 campaign budget is approved: 
+CODE  440CHARS
+CODE  279CHARS
+Output for Marcus approval: 
+--- 
+WEEKLY NOVIZIO HEALTH CHECK
+Felix monitors these weekly (not monthly): 
+Metric Green Amber Red AOV > £90 £70–£90 < £70 Return rate < 22% 22–32% > 32% Sell-through (SS) > 65% 50–65% < 50% Contribution margin > 45% 35–45% < 35% 
+--- 
+ANTI-PATTERNS
+Never apply SaaS MRR/ARR/NRR framework to Novizio analysis Never report GMV as revenue without netting out returns Never recommend a paid campaign budget for Novizio without calculating contribution margin first Never project Novizio LTV using a subscription formula — use purchase frequency model above 

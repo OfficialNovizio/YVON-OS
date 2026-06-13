@@ -1,13 +1,16 @@
-#MEM id=diana source=/root/yvon/agent-department/COO/diana/COMMANDS.md savings=-3%
-M|Term|tx|dn does not run terminal commands. She reads operational data and recommends process improvements.
-M|What|tx|\| If you need... \| Ask... \|
-M|What|tx|\|----------------\|--------\|
-M|What|tx|\| Running data queries \| ka — Lead Analyst \|
-M|What|tx|\| bd checks \| qn or dv \|
-M|What|tx|\| dpl status \| dv \|
-M|What|tx|---
-M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
-M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
-M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
-M|Comm|tx|\|------\|------------------\|--------\|--------------\|
-M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|
+SRC agent-department/COO/diana/COMMANDS.md
+ORIG_SIZE 740
+SECTIONS 9
+ABBREVS 1
+INDEX_TERMS 62
+COMPILED 2026-06-13T19:23:24.797Z
+---
+⌨️ DIANA — COMMANDS
+TERMINAL COMMANDS
+Diana does not run terminal commands. She reads operational data and recommends process improvements. 
+WHAT SHE DELEGATES
+If you need... Ask... Running data queries Kai — Lead Analyst Build checks Quinn or Dev Deployment status Dev 
+--- 
+COMMAND HEALTH LOG
+UB SIP after task completion. Proven commands stay. Failed or deprecated commands are removed. Rule: do not add new commands without removing or condensing an equivalent amount of content. 
+Date Command / Pattern Status Action Taken 2026-03-23 (baseline) ✓ Verified initial SIP setup 

@@ -1,130 +1,99 @@
-#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/mvp-design.md savings=12%
-M|MVP |A Mi|what do we need to learn, and what is the fastest way to learn it?
-M|Conc|tx|Deliver the pd exp entirely by hand to a small number of cs. No technology. No automation. Just humans doing the work the software wld eventually do.
-M|Conc|**Ho|** Find 5-10 target cs. Manually deliver the service your pd wld automate. Charge for it (or at least get commitment). Observe what cs actually value.
-M|Conc|**Re|** Food on the Table founder Manuel Rosso personally created grocery lists and meal plans for one family by visiting their home, learning their preferences, and checking local store sales. He scaled from 1 to dozens of families before writing a line of code.
-M|Conc|**Be|** Service-based pd, marketplace supply/demand validation, understanding workflows.
-M|Conc|**St|** Deep cs in, immediate feedback, zero tc risk.
-M|Conc|**Li|** Does not scale. Cannot tst tc feasibility. Labor-intensive.
-M|Wiza|tx|The cs sees what appears to be a working pd, but behind the scenes, humans perform the work manually.
-M|Wiza|**Ho|** bd the front-end exp (website, app, chatbot). When the cs interacts, a human fulfills the request instead of software.
-M|Wiza|**Re|** Zappos founder Nick Swinmurn posted photos of shoes from local stores on a website. When someone ordered, he went to the store, bought the shoes, and shipped them. cs thought they were buying from an online retailer.
-M|Wiza|**Be|** Testing demand and us exp before building the back-end. pd where the if matters but the engine is complex.
-M|Wiza|**St|** Tests real purchasing behavior. Feels like a real pd. Can validate pricing.
-M|Wiza|**Li|** Requires front-end bd. Hard to sustain for hi-volume use cases.
-M|Smok|tx|A mk page that describes the pd and captures a commitment signal (em, pre-order, click) before the pd exists.
-M|Smok|**Ho|** cr a landing page w/ a clear value proposition, feature descriptions, and a call-to-action. Drive targeted traffic. Measure conversion rate.
-M|Smok|**Re|** Buffer's Joel Gascoigne created a landing page describing a sl media scheduling tool w/ a pricing page. When visitors clicked a plan, they saw "we're not quite ready yet" and an em signup. Enough signups validated demand before dv began.
-M|Smok|**Be|** Validating demand and value proposition. Testing messaging and positioning. Gauging willingness to pay.
-M|Smok|**St|** Fast (can be live in hours). Cheap. Generates quantitative data.
-M|Smok|**Li|** Measures intent, not behavior. No pd learning. Can produce false positives w/ compelling cp.
-M|Sing|tx|bd one core feature exceptionally well rather than many features poorly.
-M|Sing|**Ho|** Identify the single feature that best tests your value hypothesis. bd only that feature. Strip away everything else (no settings, no profiles, no dashboards).
-M|Sing|**Re|** Early Foursquare launched w/ just one feature: check-ins. No recommendations, no city guides, no br pages. Just the ability to check in at a location and see who else was there.
-M|Sing|**Be|** pd where the core interaction is the hypothesis. When you need real usage data, not just intent.
-M|Sing|**St|** Tests actual pd behavior. Generates real usage metrics. Can evolve into the actual pd.
-M|Sing|**Li|** Requires real dv work. Risk of scope creep.
-M|Piec|tx|Combine existing tools, platforms, and services to deliver the pd exp w/o building custom technology.
-M|Piec|**Ho|** Stitch together Airtable, Zapier, Typeform, Calendly, Stripe, em, and other off-the-shelf tools to cr a functional pd.
-M|Piec|**Re|** Groupon started as a WordPress blog w/ manually generated PDF coupons emailed to subscribers. The "platform" was a blog, an em list, and Apple Mail.
-M|Piec|**Be|** Validating the full cs journey. pd that ig existing capabilities in a new way.
-M|Piec|**St|** Very fast to bd. lo cost. Tests real cs behavior.
-M|Piec|**Li|** Clunky us exp. Hard to scale. Maintenance overhead w/ multiple tools.
-M|Vide|tx|A vd demonstration of how the pd works (or wld work), used to gauge interest and explain complex value propositions.
-M|Vide|**Ho|** cr a 2-4 minute vd showing the pd in action (can be real, simulated, or animated). Share it w/ the target audience. Measure engagement, shares, signups, or pre-orders.
-M|Vide|**Re|** Dropbox created a 3-minute screencast demonstrating the file-syncing exp. The vd drove their beta waitlist from 5,000 to 75,000 overnight. The pd barely worked at the time.
-M|Vide|**Be|** pd w/ complex value propositions. tc pd hard to explain in text. Viral consumer pd.
-M|Vide|**St|** Can go viral. Explains complex pd quickly. lo bd cost.
-M|Vide|**Li|** Measures interest, not commitment. Production qual matters. Does not tst actual usage.
-M|Pre-|tx|Ask cs to pay before the pd exists.
-M|Pre-|**Ho|** Describe the pd. Set a price. Accept payment (or refundable deposits). Deliver later if funded.
-M|Pre-|**Re|** Pebble Watch raised over $10 million on Kickstarter before manufacturing a single unit. 68,929 people pre-ordered based on renderings and a prototype vd.
-M|Pre-|**Be|** Hardware pd. hi-commitment purchase decisions. Validating willingness to pay at a specific price.
-M|Pre-|**St|** Strongest signal of demand (actual money). Can fund dv. Tests pricing.
-M|Pre-|**Li|** Sets delivery expectations. Legal and ethical obligations. Reputational risk if you cannot deliver.
-M|MVP |tx|\| Situation \| Recommended MVP tp \| Why \|
-M|MVP |tx|\|-----------\|----------------------\|-----\|
-M|MVP |tx|\| Uncertain if problem exists \| Concierge, Smoke tst \| Direct cs contact reveals real vs imagined problems \|
-M|MVP |tx|\| Problem validated, solution uncertain \| Wizard of Oz, Single Feature \| tst the actual solution exp \|
-M|MVP |tx|\| Solution clear, demand uncertain \| Smoke tst, vd, Pre-Order \| Measure mk-level interest \|
-M|MVP |tx|\| Complex B2B workflow \| Concierge, Piecemeal \| Must understand workflow before automating \|
-M|MVP |tx|\| Consumer mobile app \| Single Feature, vd, Smoke tst \| Consumer attention is scarce; tst one hook \|
-M|MVP |tx|\| Marketplace \| Concierge (supply side), Smoke tst (demand side) \| Must validate both sides separately \|
-M|MVP |tx|\| Hardware pd \| vd, Pre-Order, Wizard of Oz \| Physical prototyping is expensive; validate demand first \|
-M|MVP |tx|\| ap / developer tool \| Single Feature, Piecemeal \| Developers want working tools, not promises \|
-M|The |An M|
-M|The |it|Can a cs understand the value proposition?
-M|The |it|Can a cs take a meaningful action (sign up, pay, use)?
-M|The |it|Can you distinguish signal from noise in the data?
-M|The |tx|If the answer to any of these is no, the MVP is too small.
-M|The |An M|
-M|The |it|You are building features "while we are at it"
-M|The |it|The bd phase exceeds 3-4 weeks
-M|The |it|You are debating polish, edge cases, or er handling
-M|The |it|You are building for scale before validating demand
-M|The |tx|\| Stage \| Appropriate MVP Scope \| Time to bd \|
-M|The |tx|\|-------\|----------------------\|---------------\|
-M|The |tx|\| Problem validation \| Landing page, cs interviews, concierge for 5 cs \| 1-5 days \|
-M|The |tx|\| Solution validation \| Wizard of Oz, clickable prototype, single feature for 20 us \| 1-3 weeks \|
-M|The |tx|\| Business md validation \| Piecemeal MVP, pre-order cg, working pd for 50-100 us \| 2-4 weeks \|
-M|The |tx|\| Growth validation \| Instrumented pd for 500+ us w/ A/B testing capability \| 4-8 weeks \|
-M|MVP |Use |
-M|MVP |tx|```
-M|MVP |tx|MVP ds CANVAS
-M|MVP |tx|=================
-M|MVP |tx|1. HYPOTHESIS
-M|MVP |What|____________________
-M|MVP |For |____________________
-M|MVP |The |____________________
-M|MVP |tx|2. MVP tp
-M|MVP |Sele|____________________
-M|MVP |Why |____________________
-M|MVP |tx|3. SCOPE
-M|MVP |Incl|
-M|MVP |it|____________________
-M|MVP |it|____________________
-M|MVP |it|____________________
-M|MVP |Expl|
-M|MVP |it|____________________
-M|MVP |it|____________________
-M|MVP |tx|4. sc CRITERIA
-M|MVP |Prim|____________________
-M|MVP |Succ|____________________
-M|MVP |Samp|____________________
-M|MVP |Time|____________________
-M|MVP |tx|5. bd PLAN
-M|MVP |Reso|____________________
-M|MVP |Time|____________________
-M|MVP |Laun|____________________
-M|MVP |tx|6. RISK MITIGATION
-M|MVP |Bigg|____________________
-M|MVP |Miti|____________________
-M|MVP |tx|```
-M|Mist|**Wh|** Team builds 15 features bc "us expect a complete pd." The bd takes 4 months. When it launches, they cannot tell which feature drove engagement.
-M|Mist|fix|** One hypothesis per MVP. One primary metric. If you cannot explain the MVP in one sentence, it is too complex.
-M|Mist|**Wh|** Team builds something minimal but shows it to no one. "We need to make it a little better first."
-M|Mist|fix|** Set a launch date before you start building. Announce it publicly. Ship on that date regardless of how "ready" it feels.
-M|Mist|**Wh|** Team tests the MVP w/ friends, family, or colleagues instead of actual target cs.
-M|Mist|fix|** Define your early adopter profile before building. Recruit from channels where real cs exist. Friends will tell you what you want to hear.
-M|Mist|**Wh|** Team launches the MVP but has no instrumentation. Learning is based on gut feel and anecdotes.
-M|Mist|fix|** Define your metric and instrument the MVP before launch. Use an tools, manual tracking, or direct observation. Data collection is not optional.
-M|Mist|**Wh|** Team keeps polishing bc "our br reputation is at stake." MVP never launches.
-M|Mist|fix|** Remember that the MVP is for early adopters, not the mass mk. Early adopters tolerate rough edges if the core value is there. Use a separate br if reputation is a concern.
-M|Mist|**Wh|** Team builds for 100,000 us when they need 100. Invests in infrastructure, sec, and compliance before validating demand.
-M|Mist|fix|** Do things that do not scale. Manual processes are fine. tc debt is acceptable. Scaling problems are a luxury you earn by proving demand.
-M|From|An M|
-M|From|tx|\| Criterion \| Signal \| Threshold Example \|
-M|From|tx|\|-----------\|--------\|-------------------\|
-M|From|tx|\| Problem-Solution Fit \| cs actively use the MVP and express disappointment at the idea of losing it \| 40%+ say "very disappointed" on Sean Ellis tst \|
-M|From|tx|\| Repeatable Demand \| New cs arrive through identifiable, repeatable channels \| 3+ consistent acquisition channels \|
-M|From|tx|\| Willingness to Pay \| cs pay (or demonstrate clear intent) at a sustainable price point \| Positive unit economics on paper \|
-M|From|tx|\| Retention \| cs return and use the pd repeatedly \| Week 4 retention above 20% (varies by category) \|
-M|From|tx|\| Organic Growth \| Some cs refer others w/o prompting \| Viral coefficient above 0.2 \|
-M|Grad|it|[ ] Core value hypothesis validated w/ paying cs
-M|Grad|it|[ ] Growth hypothesis has initial evidence
-M|Grad|it|[ ] Unit economics are viable (or have a clear path to viability)
-M|Grad|it|[ ] Early adopters are retained and engaged
-M|Grad|it|[ ] The team can articulate what they learned and why they are confident
-M|Grad|it|[ ] At least 3 bd-Measure-Learn loops have been done
-M|Grad|it|[ ] Pivot or persevere decision has been explicitly made (and persevere was chosen)
-M|Grad|tx|Do not graduate the MVP prematurely. The most expensive mistake in startups is scaling something that has not been validated.
+SRC agent-department/COO/diana/skills/marketplace/lean-startup/references/mvp-design.md
+ORIG_SIZE 12777
+SECTIONS 92
+ABBREVS 30
+INDEX_TERMS 674
+COMPILED 2026-06-13T19:23:24.877Z
+---
+MVP DESIGN GUIDE
+A Minimum Viable Product is not a minimal product. It IT smallest experiment that lets you collect the maximum amount of validated learning about customers with the least effort. The purpose of an MVP is to test a fundamental business hypothesis, not to satisfy customers or generate revenue (though both may happen). Every design decision about the MVP should flow from a single question: what do we need to learn, and what IT fastest way to learn it? 
+MVP TYPES IN DETAIL
+CONCIERGE MVP
+Deliver the product experience entirely by hand to a small number of customers. No technology. No automation. Just humans doing the work the software would eventually do. 
+HIW: Find 5-10 target customers. Manually deliver the service your product would automate. Charge for it (or at least get commitment). Observe what customers actually value. 
+Real example: Food on the Table founder Manuel Rosso personally created grocery lists and meal plans for one family by visiting their home, learning their preferences, and checking local store sales. He scaled from 1 to dozens of families before writing a line of code. 
+BF: Service-based products, marketplace supply/demand validation, understanding workflows. 
+Strengths: Deep customer insight, immediate feedback, zero technical risk. 
+Limitations: Does not scale. Cannot test technical feasibility. Labor-intensive. 
+WO OZ MVP
+The customer sees what appears to be a working product, but behind the scenes, humans perform the work manually. 
+HIW: Build the front-end experience (website, app, chatbot). When the customer interacts, a human fulfills the request IO software. 
+Real example: Zappos founder Nick Swinmurn posted photos of shoes from local stores on a website. When someone ordered, he went to the store, bought the shoes, and shipped them. Customers thought they were buying from an online retailer. 
+BF: Testing demand and user experience before building the back-end. Products where the interface matters but the engine is complex. 
+Strengths: Tests real purchasing behavior. Feels like a real product. Can validate pricing. 
+Limitations: Requires front-end build. Hard to sustain for high-volume use cases. 
+SMOKE TEST (LANDING PAGE) MVP
+A marketing page that describes the product and captures a commitment signal (email, pre-order, click) before the product exists. 
+HIW: Create a landing page with a clear value proposition, feature descriptions, and a call-to-action. Drive targeted traffic. Measure conversion rate. 
+Real example: Buffer's Joel Gascoigne created a landing page describing a social media scheduling tool with a pricing page. When visitors clicked a plan, they saw "we're not quite ready yet" and an email signup. Enough signups validated demand before development began. 
+BF: Validating demand and value proposition. Testing messaging and positioning. Gauging willingness to pay. 
+Strengths: Fast (can be live in hours). Cheap. Generates quantitative data. 
+Limitations: Measures intent, not behavior. No product learning. Can produce false positives with compelling copy. 
+SINGLE FEATURE MVP
+Build one core feature exceptionally well rather than many features poorly. 
+HIW: Identify the single feature that best tests your value hypothesis. Build only that feature. Strip away everything else (no settings, no profiles, no dashboards). 
+Real example: Early Foursquare launched with just one feature: check-ins. No recommendations, no city guides, no brand pages. Just the ability to check in at a location and see who else was there. 
+BF: Products where the core interaction IT hypothesis. When you need real usage data, not just intent. 
+Strengths: Tests actual product behavior. Generates real usage metrics. Can evolve into the actual product. 
+Limitations: Requires real development work. Risk of scope creep. 
+PIECEMEAL MVP
+Combine existing tools, platforms, and services to deliver the product experience without building custom technology. 
+HIW: Stitch together Airtable, Zapier, Typeform, Calendly, Stripe, email, and other off-the-shelf tools to create a functional product. 
+Real example: Groupon started as a WordPress blog with manually generated PDF coupons emailed to subscribers. The "platform" was a blog, an email list, and Apple Mail. 
+BF: Validating the full customer journey. Products that integrate existing capabilities in a new way. 
+Strengths: Very fast to build. Low cost. Tests real customer behavior. 
+Limitations: Clunky user experience. Hard to scale. Maintenance overhead with multiple tools. 
+VIDEO MVP
+A video demonstration of how the product works (or would work), used to gauge interest and explain complex value propositions. 
+HIW: Create a 2-4 minute video showing the product in action (can be real, simulated, or animated). Share it with the target audience. Measure engagement, shares, signups, or pre-orders. 
+Real example: Dropbox created a 3-minute screencast demonstrating the file-syncing experience. The video drove their beta waitlist from 5,000 to 75,000 overnight. The product barely worked at the time. 
+BF: Products with complex value propositions. Technical products hard to explain in text. Viral consumer products. 
+Strengths: Can go viral. Explains complex products quickly. Low build cost. 
+Limitations: Measures interest, not commitment. Production quality matters. Does not test actual usage. 
+PRE-ORDER MVP
+Ask customers to pay before the product exists. 
+HIW: Describe the product. Set a price. Accept payment (or refundable deposits). Deliver later if funded. 
+Real example: Pebble Watch raised over $10 million on Kickstarter before manufacturing a single unit. 68,929 people pre-ordered based on renderings and a prototype video. 
+BF: Hardware products. High-commitment purchase decisions. Validating willingness to pay at a specific price. 
+Strengths: Strongest signal of demand (actual money). Can fund development. Tests pricing. 
+Limitations: Sets delivery expectations. Legal and ethical obligations. Reputational risk if you cannot deliver. 
+MVP TYPE DECISION MATRIX
+Situation Recommended MVP Types Why Uncertain if problem exists Concierge, Smoke Test Direct customer contact reveals real vs imagined problems Problem validated, solution uncertain WO Oz, Single Feature Test the actual solution experience Solution clear, demand uncertain Smoke Test, Video, Pre-Order Measure market-level interest Complex B2B workflow Concierge, Piecemeal Must understand workflow before automating Consumer mobile app Single Feature, Video, Smoke Test Consumer attention is scarce; test one hook Marketplace Concierge (supply side), Smoke Test (demand side) Must validate both sides separately Hardware product Video, Pre-Order, WO Oz Physical prototyping is expensive; validate demand first API / developer tool Single Feature, Piecemeal Developers want working tools, not promises 
+MVP SIZING: HOW SMALL IS TOO SMALL?
+THE LOWER BOUND
+An MVP is too small when it cannot generate the data needed to make a decision. Ask: 
+Can a customer understand the value proposition? Can a customer take a meaningful action (sign up, pay, use)? Can you distinguish signal from noise in the data? 
+If the answer to any of these is no, the MVP is too small. 
+THE UPPER BOUND
+An MVP is too big when it includes anything that does not directly serve the current hypothesis. Warning signs: 
+You are building features "while we are at it" The build phase exceeds 3-4 weeks You are debating polish, edge cases, or error handling You are building for scale before validating demand 
+THE RIGHT SIZE
+Stage Appropriate MVP Scope Time to Build Problem validation Landing page, customer interviews, concierge for 5 customers 1-5 days Solution validation WO Oz, clickable prototype, single feature for 20 users 1-3 weeks BM validation Piecemeal MVP, pre-order campaign, working product for 50-100 users 2-4 weeks Growth validation Instrumented product for 500+ users with A/B testing capability 4-8 weeks 
+MVP DESIGN CANVAS
+Use this canvas to design your next MVP: 
+CODE  860CHARS
+COMMON MVP MISTAKES
+MISTAKE 1: THE FEATURE-STUFFED MVP
+What happens: Team builds 15 features because "users expect a complete product." The build takes 4 months. When it launches, they cannot tell which feature drove engagement. 
+Fix: One hypothesis per MVP. One PM. If you cannot explain the MVP in OS, it is too complex. 
+MISTAKE 2: THE INVISIBLE MVP
+What happens: Team builds something minimal but shows it to no one. "We need to make it a little better first." 
+Fix: Set a launch date before you start building. Announce it publicly. Ship on that date regardless of how "ready" it feels. 
+MISTAKE 3: THE WRONG AUDIENCE MVP
+What happens: Team tests the MVP with friends, family, or colleagues IO actual target customers. 
+Fix: Define your early adopter profile before building. Recruit from channels where real customers exist. Friends will tell you what you want to hear. 
+MISTAKE 4: THE NO-METRIC MVP
+What happens: Team launches the MVP but has no instrumentation. Learning is based on gut feel and anecdotes. 
+Fix: Define your metric and instrument the MVP before launch. Use analytics tools, manual tracking, or direct observation. Data collection is not optional. 
+MISTAKE 5: THE PERFECTIONIST MVP
+What happens: Team keeps polishing because "our brand reputation is at stake." MVP never launches. 
+Fix: Remember that the MVP is for early adopters, not the mass market. Early adopters tolerate rough edges if the core value ITre. Use a separate brand if reputation is a concern. 
+MISTAKE 6: THE SCALE-READY MVP
+What happens: Team builds for 100,000 users when they need 100. Invests in infrastructure, security, and compliance before validating demand. 
+Fix: Do things that do not scale. Manual processes are fine. Technical debt is acceptable. Scaling problems are a luxury you earn by proving demand. 
+FROM MVP TO PRODUCT: GRADUATION CRITERIA
+An MVP graduates to product development when: 
+Criterion Signal Threshold Example Problem-Solution Fit Customers actively UT MVP and express disappointment at the idea of losing it 40%+ say "very disappointed" on Sean Ellis test Repeatable Demand New customers arrive through identifiable, repeatable channels 3+ consistent acquisition channels Willingness to Pay Customers pay (or demonstrate clear intent) at a sustainable price point Positive unit economics on paper Retention Customers return and UT product repeatedly Week 4 retention above 20% (varies by category) Organic Growth Some customers refer others without prompting Viral coefficient above 0.2 
+GRADUATION CHECKLIST
+[ ] Core value hypothesis validated with paying customers [ ] Growth hypothesis has initial evidence [ ] Unit economics are viable (or have a clear path to viability) [ ] Early adopters are retained and engaged [ ] The team can articulate what they learned and why TA confident [ ] At least 3 Build-Measure-Learn loops have been completed [ ] Pivot or persevere decision has been explicitly made (and persevere was chosen) 
+Do not graduate the MVP prematurely. The most expensive mistake in startups is scaling something that has not been validated. 

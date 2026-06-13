@@ -1,72 +1,46 @@
-#MEM id=bloom-filter-caching source=/root/yvon/agent-department/Technical/raj/skills/custom/bloom-filter-caching/SKILL.md savings=17%
-M||tx|---
-M||name|bloom-filter-caching
-M||desc|Bloom filter caching st for yv. Covers membership testing (seen before? cached?), false positive rate tuning, cache stampede prevention, and yv-specific use cases (deduplicating cr checks, seen-cn filtering, rate limit pre-screening).
-M||vers|1.0.0
-M||tx|---
-M|Purp|A bl|
-M|Purp|it|You need to avoid re-fetching or re-processing cn you've already seen
-M|Purp|it|You need a fast membership check before hitting sb (reduce DB queries)
-M|Purp|it|You need to pre-screen rate limit candidates before the full rate limit check
-M|Purp|it|You need to deduplicate cr URLs, post IDs, or cg assets before storing
-M|Purp|**Ke|** A bloom filter never says "not seen" when it has been seen. It may say "seen" when it hasn't (false positive). Tune the false positive rate based on the cost of a false positive in your use case.
-M|Purp|tx|---
-M|How |A bl|
-M|How |- **|** Hash the item w/ k functions, set k bits to 1
-M|How |- **|** Hash the item, check if all k bits are 1 — if any is 0, definitely not seen; if all are 1, probably seen
-M|How |**Fa|**
-M|How |tx|`p ≈ (1 - e^(-kn/m))^k`
-M|How |it|`n` = number of items inserted
-M|How |it|`m` = bit array size
-M|How |- `k|`k = (m/n) ln 2 ≈ 0.693 m/n`)
-M|How |**Ru|**
-M|How |it|Expected < 10K items, 1% false positive rate → 95KB filter
-M|How |it|Expected < 100K items, 0.1% false positive rate → 1.8MB filter
-M|How |tx|---
-M|1. C|Befo|acceptable at 1%. Saves Apify ap credits on already-processed cn.
-M|2. S|tx|Before inserting a post/cn item into sb, check the bloom filter. Prevents duplicate rows from parallel ingestion jobs w/o a DB unique constraint check on every insert.
-M|3. R|Befo|"has this IP made a request in this window?" False positive → proceed to full check (safe). Eliminates 80–90% of DB queries on lo-traffic IPs.
-M|4. S|tx|Track which cn items have already been scored/ranked this sn. Avoids re-running expensive an computations on unchanged data.
-M|4. S|tx|---
-M|Opti|tx|```ts
-M|Opti|impo|bloom-filters
-M|Opti|tx|const filter = BloomFilter.cr(10000, 0.01) // 10K items, 1% FP rate
-M|Opti|tx|// Add
-M|Opti|tx|filter.add(itemId)
-M|Opti|tx|// Check
-M|Opti|tx|if (filter.has(itemId)) {
-M|Opti|tx|// probably seen — verify against DB if false positive cost is hi
-M|Opti|tx|} else {
-M|Opti|tx|// definitely not seen — skip DB check
-M|Opti|tx|}
-M|Opti|tx|```
-M|Opti|tx|Serialize the filter to a Buffer and store in sb storage or a `bloom_filters` table. Reload at rt initialization. Flush back to storage after N additions.
-M|Opti|tx|```ts
-M|Opti|tx|// Serialize
-M|Opti|tx|const serialized = Buffer.from(filter.saveAsJSON())
-M|Opti|tx|// Store in sb
-M|Opti|tx|await sb.from('bloom_filters').upsert({
-M|Opti|filt|'competitor_urls',
-M|Opti|vent|ventureSlug,
-M|Opti|data|serialized.toString('base64'),
-M|Opti|upda|new Date().toISOString()
-M|Opti|tx|})
-M|Opti|tx|// Reload
-M|Opti|tx|const { data } = await sb.from('bloom_filters')
-M|Opti|tx|.select('data')
-M|Opti|tx|.eq('filter_key', 'competitor_urls')
-M|Opti|tx|.eq('venture_slug', ventureSlug)
-M|Opti|tx|.single()
-M|Opti|tx|const filter = BloomFilter.fromJSON(JSON.parse(Buffer.from(data.data, 'base64').toString()))
-M|Opti|tx|```
-M|Opti|tx|Keep a short-lived bloom filter in Edge mw memory for IP pre-screening. Resets on cold start (acceptable — just falls back to full DB check).
-M|Opti|tx|---
-M|Dev'|Befo|
-M|Dev'|it|[ ] Is the false positive rate defined and acceptable for this use case?
-M|Dev'|it|[ ] Is there a fallback when the filter says "seen" but the item is actually new? (DB verification for hi-cost false positives)
-M|Dev'|it|[ ] Is the filter size bounded? Will it stay within memory limits at maximum expected item count?
-M|Dev'|- [ |is there a reset/rotation schedule when the filter approaches saturation?
-M|Dev'|it|[ ] Is venture_slug scoping applied so nz and hb filters don't contaminate each other?
-M|Dev'|tx|---
-M|pk|tx|`bloom-filters` (npm) — pure ts, no native deps, works on vc Edge.
-M|pk|tx|`npm install bloom-filters`
+SRC agent-department/Technical/raj/skills/custom/bloom-filter-caching/SKILL.md
+ORIG_SIZE 4805
+SECTIONS 40
+ABBREVS 8
+INDEX_TERMS 241
+COMPILED 2026-06-13T19:23:25.584Z
+---
+NAME bloom-filter-caching
+PURPOSE
+A bloom filter is a probabilistic data structure that answers "has this item been seen before?" with zero false negatives and a tunable false positive rate. For YVON, TI the right tool when: 
+You need to avoid re-fetching or re-processing content you've already seen You need a fast membership check before hitting Supabase (reduce DB queries) You need to pre-screen rate limit candidates before the full rate limit check You need to deduplicate competitor URLs, post IDs, or campaign assets before storing 
+Key property: A bloom filter never says "not seen" when it has been seen. It may say "seen" when it hasn't (false positive). Tune the false positive rate based on the cost of a false positive in your use case. 
+--- 
+HIW
+A bloom filter uses multiple hash functions mapped to a bit array: 
+Add item: Hash the item with k functions, set k bits to 1 Check item: Hash the item, check if all k bits are 1 — if any is 0, definitely not seen; if all are 1, probably seen 
+False positive rate formula: p ≈ (1 - e^(-kn/m))^k 
+n = number of items inserted m = bit array size k = number of hash functions (optimal: k = (m/n) ln 2 ≈ 0.693 m/n) 
+RO thumb for YVON: 
+Expected < 10K items, 1% false positive rate → 95KB filter Expected < 100K items, 0.1% false positive rate → 1.8MB filter 
+--- 
+YVON-SPECIFIC USE CASES
+1. COMPETITOR URL DEDUPLICATION
+Before fetching a competitor URL through Apify, check the bloom filter. False positive (skip a new URL) rate: acceptable at 1%. Saves Apify API credits on already-processed content. 
+2. SOCIAL CONTENT DEDUPLICATION
+Before inserting a post/content item into Supabase, check the bloom filter. Prevents duplicate rows from parallel ingestion jobs without a DB unique constraint check on every insert. 
+3. RATE LIMIT PRE-SCREENING
+Before a full Supabase rate_limits table lookup, check the bloom filter: "has this IP made a request in this window?" False positive → proceed to full check (safe). Eliminates 80–90% of DB queries on low-traffic IPs. 
+4. SEEN-CONTENT FILTERING (ANALYTICS)
+Track which content items have already been scored/ranked this session. Avoids re-running expensive analytics computations on unchanged data. 
+--- 
+IMPLEMENTATION FOR YVON (VERCEL + SUPABASE)
+OPTION A: IN-MEMORY (PER-REQUEST, SMALL DATASETS)
+CODE typescript 324CHARS
+OPTION B: PERSISTENT (ACROSS REQUESTS, SUPABASE STORAGE)
+Serialize the filter to a Buffer and store in Supabase storage or a bloom_filters table. Reload at route initialization. Flush back to storage after N additions. 
+CODE typescript 539CHARS
+OPTION C: EDGE MIDDLEWARE (RATE LIMIT PRE-SCREENING ONLY)
+Keep a short-lived bloom filter in Edge middleware memory for IP pre-screening. Resets on cold start (acceptable — just falls back to full DB check). 
+--- 
+DEV'S APPROVAL CRITERIA FOR BLOOM FILTER USAGE
+Before approving any bloom filter implementation: 
+[ ] IT false positive rate defined and acceptable for this use case? [ ] ITre a fallback when the filter says "seen" but the item is actually new? (DB verification for high-cost false positives) [ ] IT filter size bounded? Will it stay within memory limits at maximum expected item count? [ ] For persistent filters: ITre a reset/rotation schedule when the filter approaches saturation? [ ] Is venture_slug scoping applied so NA Hourbour filters don't contaminate each other? 
+--- 
+PACKAGE
+bloom-filters (npm) — pure TypeScript, no native deps, works on Vercel Edge. npm install bloom-filters 

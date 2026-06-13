@@ -1,152 +1,59 @@
-#MEM id=pletor-agent source=/root/yvon/agent-department/COO/diana/skills/workflow/pletor-agent/SKILL.md savings=9%
-M||tx|---
-M||name|pletor-ag
-M||desc|>-
-M||Use |calling a Pletor ag, submitting a job to Pletor, running im/vd/ad generation through Pletor, uploading assets to Pletor, checking the status of a Pletor run, downloading Pletor outputs, or listing available Pletor ag. Also trigger when the us says things like "use Pletor to...", "run the Pletor ag", "gn w/ Pletor", or "send this to Pletor". Always use this skill for any multi-step Pletor workflow — don't try to improvise the ap calls from memory.
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[co, operations, workflow, planning, sprint, milestones, process, automation]
-M||tx|---
-M|Plet|This|
-M|Plet|tx|discovering ag, uploading assets, creating runs, polling for completion,
-M|Plet|tx|and downloading outputs.
-M|Plet|**Ba|** `https://ap.pletor.ai/ap/public/v1`
-M|Plet|**Au|** `X-ap-Key: <us's ap key>`
-M|Plet|tx|---
-M|1. G|tx|Ask the us for their Pletor ap key if it hasn't been provided. Never hardcode or guess it.
-M|1. G|tx|```
-M|1. G|X-Ap|<USER_API_KEY>
-M|1. G|tx|```
-M|1. G|tx|---
-M|2. D|If t|
-M|2. D|tx|```bash
-M|2. D|curl|$PLETOR_API_KEY" \
-M|2. D|"htt|//ap.pletor.ai/ap/public/v1/ag/" \| jq .
-M|2. D|tx|```
-M|2. D|To f|
-M|2. D|tx|```bash
-M|2. D|curl|$PLETOR_API_KEY" \
-M|2. D|"htt|//ap.pletor.ai/ap/public/v1/ag/?visibility=PUBLIC&tags=social_media" \| jq .
-M|2. D|tx|```
-M|2. D|To f|
-M|2. D|tx|```bash
-M|2. D|curl|$PLETOR_API_KEY" \
-M|2. D|"htt|//ap.pletor.ai/ap/public/v1/ag/<agent_id>" \| jq .
-M|2. D|tx|```
-M|2. D|The |
-M|2. D|it|`id` — the ag UUID needed to cr a run
-M|2. D|it|`inputs[]` — each w/ `id`, `tp` (`text_input` or asset input), and `description`
-M|2. D|it|`outputs[]` — what the ag produces (e.g. images, vd)
-M|2. D|it|`estimated_cost` — cost in credits
-M|2. D|tx|**Always inspect the ag's `inputs` before building the run payload.**
-M|2. D|tx|---
-M|3. U|If a|
-M|3. U|tx|```bash
-M|3. U|tx|curl -s -X POST \
-M|3. U|-H "|$PLETOR_API_KEY" \
-M|3. U|tx|-F "file=@/path/to/local/file.jpg" \
-M|3. U|"htt|//ap.pletor.ai/ap/public/v1/assets/upload" \| jq .
-M|3. U|tx|```
-M|3. U|tx|The rp returns an `id` (asset UUID). Store it — you'll reference it in the run payload.
-M|3. U|tx|---
-M|4. C|POST|
-M|4. C|tx|```bash
-M|4. C|tx|curl -s -X POST \
-M|4. C|-H "|$PLETOR_API_KEY" \
-M|4. C|-H "|application/json" \
-M|4. C|tx|-d '{
-M|4. C|"age|"<agent_id>",
-M|4. C|"inp|[
-M|4. C|tx|{
-M|4. C|"id"|"<input_id_for_text>",
-M|4. C|"val|"Your text pm here"
-M|4. C|tx|},
-M|4. C|tx|{
-M|4. C|"id"|"<input_id_for_asset>",
-M|4. C|"val|{
-M|4. C|"ass|["<asset_uuid>"]
-M|4. C|tx|}
-M|4. C|tx|}
-M|4. C|tx|]
-M|4. C|tx|}' \
-M|4. C|"htt|//ap.pletor.ai/ap/public/v1/runs/" \| jq .
-M|4. C|tx|```
-M|4. C|**In|**
-M|4. C|- Te|`"value": "<string>"`
-M|4. C|- As|`"value": { "asset_ids": ["<uuid>", ...] }`
-M|4. C|it|Use the `id` from the ag's `inputs[]` array — not the ag ID itself
-M|4. C|tx|The rp returns a `run_id`. Store it for polling.
-M|4. C|tx|---
-M|5. P|Poll|
-M|5. P|tx|```bash
-M|5. P|tx|while true; do
-M|5. P|RESU|$PLETOR_API_KEY" \
-M|5. P|"htt|//ap.pletor.ai/ap/public/v1/runs/<run_id>")
-M|5. P|tx|STATUS=$(echo $RESULT \| jq -r '.status')
-M|5. P|echo|$STATUS"
-M|5. P|tx|if [ "$STATUS" = "done" ] \|\| [ "$STATUS" = "failed" ]; then
-M|5. P|tx|echo $RESULT \| jq .
-M|5. P|tx|break
-M|5. P|tx|fi
-M|5. P|tx|sleep 5
-M|5. P|tx|done
-M|5. P|tx|```
-M|5. P|Reco|5 seconds. Stop on `done` or `failed`.
-M|5. P|tx|---
-M|6. D|Extr|
-M|6. D|tx|```bash
-M|6. D|tx|ASSET_IDS=$(echo $RESULT \| jq -r '.outputs[].asset_ids[]')
-M|6. D|tx|for ASSET_ID in $ASSET_IDS; do
-M|6. D|curl|$PLETOR_API_KEY" \
-M|6. D|"htt|//ap.pletor.ai/ap/public/v1/assets/$ASSET_ID/download" \
-M|6. D|tx|-o "output_$ASSET_ID.jpg"
-M|6. D|echo|output_$ASSET_ID.jpg"
-M|6. D|tx|done
-M|6. D|tx|```
-M|6. D|Alte|
-M|6. D|tx|```bash
-M|6. D|curl|$PLETOR_API_KEY" \
-M|6. D|"htt|//ap.pletor.ai/ap/public/v1/assets/<asset_id>" \| jq .
-M|6. D|tx|```
-M|6. D|tx|---
-M|Endp|tx|\| Endpoint \| Method \| Purpose \|
-M|Endp|tx|\|---\|---\|---\|
-M|Endp|tx|\| `/ag/` \| GET \| List all ag \|
-M|Endp|tx|\| `/ag/{agent_id}` \| GET \| Get ag details + input sc \|
-M|Endp|tx|\| `/assets/` \| GET \| List all assets \|
-M|Endp|tx|\| `/assets/upload` \| POST \| Upload file (multipart/form-data) \|
-M|Endp|tx|\| `/assets/{asset_id}` \| GET \| Get asset metadata \|
-M|Endp|tx|\| `/assets/{asset_id}/download` \| GET \| Download file \|
-M|Endp|tx|\| `/runs/` \| POST \| cr and start a run \|
-M|Endp|tx|\| `/runs/` \| GET \| List all runs \|
-M|Endp|tx|\| `/runs/{run_id}` \| GET \| Get run status and results \|
-M|Endp|tx|\| `/runs/{run_id}` \| dl \| Cancel an ongoing run \|
-M|Endp|tx|---
-M|Erro|- **|Invalid or missing ap key — double-check `X-ap-Key` header
-M|Erro|- **|ag or asset ID not found — verify UUIDs from discovery step
-M|Erro|- **|Invalid input — re-check the ag's required `inputs` sc
-M|Erro|- **|Surface the er message from the run rp to the us
-M|Erro|tx|---
-M|Exam|tx|```bash
-M|Exam|tx|export PLETOR_API_KEY="your-key-here"
-M|Exam|BASE|//ap.pletor.ai/ap/public/v1"
-M|Exam|tx|AGENT_ID="uuid-of-your-ag"
-M|Exam|curl|$PLETOR_API_KEY" "$BASE/ag/$AGENT_ID" \| jq '.inputs'
-M|Exam|tx|RUN=$(curl -s -X POST \
-M|Exam|-H "|$PLETOR_API_KEY" \
-M|Exam|-H "|application/json" \
-M|Exam|-d "|\"$AGENT_ID\", \"inputs\": [{\"id\": \"<input_id>\", \"value\": \"A sunset over Paris\"}]}" \
-M|Exam|tx|"$BASE/runs/")
-M|Exam|tx|RUN_ID=$(echo $RUN \| jq -r '.id')
-M|Exam|tx|while true; do
-M|Exam|STAT|$PLETOR_API_KEY" "$BASE/runs/$RUN_ID" \| jq -r '.status')
-M|Exam|tx|[ "$STATUS" = "done" ] && break
-M|Exam|tx|sleep 5
-M|Exam|tx|done
-M|Exam|curl|$PLETOR_API_KEY" "$BASE/runs/$RUN_ID" \
-M|Exam|tx|\| jq -r '.outputs[].asset_ids[]' \
-M|Exam|| xa|$PLETOR_API_KEY" \
-M|Exam|tx|"$BASE/assets/{}/download" -o "result_{}.jpg"
-M|Exam|tx|```
+SRC agent-department/COO/diana/skills/workflow/pletor-agent/SKILL.md
+ORIG_SIZE 6268
+SECTIONS 53
+ABBREVS 0
+INDEX_TERMS 184
+COMPILED 2026-06-13T19:23:24.934Z
+---
+NAME pletor-agent
+PLETOR AGENT SKILL
+This skill handles end-to-end interaction with the Pletor Public API: discovering agents, uploading assets, creating runs, polling for completion, and downloading outputs. 
+Base URL: https://api.pletor.ai/api/public/v1 Auth header: X-Api-Key: <user's API key 
+--- 
+STEP-BY-STEP WORKFLOW
+1. GET THE API KEY
+Ask the user for their Pletor API key if it hasn't been provided. Never hardcode or guess it. 
+CODE  26CHARS
+--- 
+2. DISCOVER THE AGENT
+If the user hasn't specified an agent ID, list available agents and let them choose: 
+CODE bash 97CHARS
+CODE bash 133CHARS
+To filter by visibility or tag: 
+CODE bash 107CHARS
+To fetch a specific agent's details (inputs/outputs schema): 
+The response includes: 
+id — the agent UUID needed to create a run inputs[] — each with id, type (text_input or asset input), and description outputs[] — what the agent produces (e.g. images, video) estimated_cost — cost in credits 
+Always inspect the agent's inputs before building the run payload. 
+--- 
+3. UPLOAD ASSETS (IF NEEDED)
+If any input has type asset (e.g. product photo, logo), upload the file first: 
+CODE bash 154CHARS
+The response returns an id (asset UUID). Store it — you'll reference it in the run payload. 
+--- 
+4. CREATE THE RUN
+POST to /runs/ with the agent ID and all required inputs: 
+CODE bash 432CHARS
+Input format rules: 
+TEXT_INPUTS `"value": "<string>"`
+The response returns a run_id. Store it for polling. 
+--- 
+5. POLL FOR COMPLETION
+Poll until status is "completed" (or "failed"): 
+CODE bash 314CHARS
+RECOMMENDED_POLL_INTERVAL 5 seconds. Stop on `completed` or `failed`.
+--- 
+6. DOWNLOAD OUTPUTS
+Extract asset IDs from the completed run response, then download each output: 
+CODE bash 282CHARS
+CODE bash 107CHARS
+Alternatively, retrieve metadata first to get the filename: 
+--- 
+ENDPOINT QUICK REFERENCE
+Endpoint Method Purpose `/agents/` GET List all agents `/agents/{agent_id}` GET Get agent details + input schema `/assets/` GET List all assets `/assets/upload` POST Upload file (multipart/form-data) `/assets/{asset_id}` GET Get asset metadata `/assets/{asset_id}/download` GET Download file `/runs/` POST Create and start a run `/runs/` GET List all runs `/runs/{run_id}` GET Get run status and results `/runs/{run_id}` DELETE Cancel an ongoing run 
+--- 
+ERROR HANDLING
+401: Invalid or missing API key — double-check X-Api-Key header 404: Agent or asset ID not found — verify UUIDs from discovery step 422: Invalid input — re-check the agent's required inputs schema run status = "failed": Surface the error message from the run response to the user 
+--- 
+EXAMPLE: FULL TEXT-TO-IMAGE RUN (MINIMAL)
+CODE bash 829CHARS

@@ -1,153 +1,102 @@
-#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/lean-startup/references/metrics.md savings=3%
-M|Acti|tx|Metrics are the language of validated learning. The wrong metrics cr the illusion of progress while the startup drifts toward fl. The right metrics force honest conversations and drive real decisions. This guide covers how to select, im, and use metrics that actually matter.
-M|Vani|tx|Vanity metrics make you feel good but do not inform decisions. They go up and to the right even when the pd is failing.
-M|Vani|**Co|**
-M|Vani|it|Total registered us (includes dead accounts)
-M|Vani|it|Total page views (says nothing abt engagement qual)
-M|Vani|it|Total downloads (says nothing abt retention)
-M|Vani|it|Total rv w/o context (growing bc of more us, not better pd)
-M|Vani|it|sl media followers (does not correlate w/ business outcomes)
-M|Vani|it|Press mentions (feels good, rarely converts)
-M|Vani|**Wh|** Vanity metrics can be manipulated, misinterpreted, and used to justify continuing a failing st. A startup w/ 100,000 registered us and 500 active us is failing, but the first number gets reported to investors.
-M|Acti|tx|Actionable metrics directly inform decisions. If the metric changes, you change your behavior.
-M|Acti|**Pr|**
-M|Acti|it|Tied to a specific, repeatable action
-M|Acti|it|Measured per cohort, not in aggregate
-M|Acti|it|Have a clear cause-and-effect relationship w/ pd changes
-M|Acti|it|Can be independently verified
-M|Acti|**Ex|**
-M|Acti|tx|\| Vanity Version \| Actionable Version \| Why It Is Better \|
-M|Acti|tx|\|---------------\|-------------------\|-----------------\|
-M|Acti|tx|\| Total us \| Weekly new signups by acquisition channel \| Shows which channels work and whether growth is accelerating \|
-M|Acti|tx|\| Total rv \| rv per us by cohort \| Shows whether pd improvements increase monetization \|
-M|Acti|tx|\| Page views \| Pages per sn by us segment \| Shows engagement depth and cn effectiveness \|
-M|Acti|tx|\| App downloads \| Day-7 retention rate by cohort \| Shows whether us find lasting value \|
-M|Acti|tx|\| em subscribers \| em open rate by cg tp \| Shows cn relevance and audience engagement \|
-M|The |Ever|
-M|Acti|tx|A metric is actionable if it demonstrates clear cause and effect. When you make a pd change and the metric moves, you can attribute the change to your action.
-M|Acti|tst|** "If this metric drops by 20%, do I know what to do?" If the answer is no, the metric is not actionable.
-M|Acti|**Ex|** Onboarding completion rate is actionable. If it drops, you investigate and fix the onboarding flow. Total signups is less actionable bc it depends on mk spend, seasonality, and press coverage.
-M|Acce|tx|A metric is accessible if the entire team can understand it and access it easily.
-M|Acce|tst|** "Can every team member explain what this metric means and find the current value in under 60 seconds?"
-M|Acce|**Im|**
-M|Acce|it|Use simple, human-readable dashboards
-M|Acce|it|Display metrics on a shared screen or Slack channel
-M|Acce|it|Define every metric in a shared glossary
-M|Acce|it|Avoid jargon and complex calculations in primary dashboards
-M|Acce|it|rp metrics in absolute numbers alongside percentages (percentages w/o context mislead)
-M|Audi|tx|A metric is auditable if the data can be verified and traced to individual cs behavior.
-M|Audi|tst|** "Can I look at the underlying data and verify this number is correct? Can I talk to real cs whose behavior contributed to this metric?"
-M|Audi|**Im|**
-M|Audi|it|Ensure data pipelines are transparent and well-documented
-M|Audi|it|Maintain the ability to drill down from aggregate metrics to individual events
-M|Audi|it|Cross-check automated reports against manual spot checks periodically
-M|Audi|it|Keep raw event data accessible (do not only store aggregates)
-M|Step|tx|A cohort groups us by a shared exp within a defined time window.
-M|Step|**Co|**
-M|Step|- **|** us who signed up in the same week/month
-M|Step|- **|** us who done a specific action (e.g., made first purchase)
-M|Step|- **|** us acquired through the same mk channel
-M|Step|tx|Select the metric that best reflects the hypothesis you are testing.
-M|Step|tx|\| Goal \| Metric \| Measurement \|
-M|Step|tx|\|------\|--------\|-------------\|
-M|Step|tx|\| pd stickiness \| Retention rate \| % of us active in period N who return in period N+1 \|
-M|Step|tx|\| Monetization \| rv per us \| Total cohort rv divided by cohort size \|
-M|Step|tx|\| Engagement \| Core actions per us \| Average number of key actions per active us per period \|
-M|Step|tx|\| Growth \| Referral rate \| Number of invites sent that convert, per cohort member \|
-M|Step|**Re|**
-M|Step|tx|\| Signup Week \| Size \| Week 1 \| Week 2 \| Week 3 \| Week 4 \| Week 8 \| Week 12 \|
-M|Step|tx|\|------------\|------\|--------\|--------\|--------\|--------\|--------\|---------\|
-M|Step|tx|\| Jan 1-7 \| 200 \| 42% \| 28% \| 22% \| 18% \| 12% \| 9% \|
-M|Step|tx|\| Jan 8-14 \| 180 \| 45% \| 31% \| 25% \| 20% \| 14% \| 11% \|
-M|Step|tx|\| Jan 15-21 \| 220 \| 48% \| 35% \| 28% \| 23% \| 16% \| - \|
-M|Step|tx|\| Jan 22-28 \| 250 \| 50% \| 37% \| 30% \| 25% \| - \| - \|
-M|Step|tx|\| Feb 1-7 \| 230 \| 53% \| 39% \| 32% \| - \| - \| - \|
-M|Step|**Re|** How does a single cohort degrade over time? This is the retention curve. Steeper = worse retention.
-M|Step|**Re|** How do newer cohorts compare to older ones at the same age? Improving = pd is getting better. Declining = pd is getting worse.
-M|Step|**Th|** If newer cohorts retain better at the same age, your pd improvements are working. If they retain worse, something is going wrong despite growth.
-M|Step|tx|\| Pattern \| What It Means \| Action \|
-M|Step|tx|\|---------\|--------------\|--------\|
-M|Step|tx|\| Newer cohorts retain better \| pd improvements are working \| Continue current st; double down on winning changes \|
-M|Step|tx|\| Newer cohorts retain worse \| pd or acquisition qual is declining \| Investigate recent changes; audit acquisition channels \|
-M|Step|tx|\| Retention flattens at a certain week \| pd has a natural engagement ceiling \| Focus on deepening value for retained us \|
-M|Step|tx|\| Retention drops sharply in Week 1 \| Onboarding or first-use exp is broken \| Redesign activation flow \|
-M|Step|tx|\| Later cohorts are larger but retain worse \| Growth is outpacing pd qual \| Slow growth; fix retention before scaling \|
-M|Pira|Dave|
-M|Acqu|**Qu|** How do us find you?
-M|Acqu|tx|\| Metric \| Formula \| Good Benchmark \|
-M|Acqu|tx|\|--------\|---------\|----------------\|
-M|Acqu|tx|\| Visitor-to-signup rate \| Signups / Unique visitors \| 2-5% for B2C, 5-15% for B2B \|
-M|Acqu|tx|\| Cost per acquisition (CPA) \| mk spend / New signups \| Varies by industry; must be below LTV \|
-M|Acqu|tx|\| Channel mix \| % of signups by source \| No single channel > 50% (diversification) \|
-M|Acti|**Qu|** Do us have a great first exp?
-M|Acti|tx|\| Metric \| Formula \| Good Benchmark \|
-M|Acti|tx|\|--------\|---------\|----------------\|
-M|Acti|tx|\| Onboarding completion rate \| us completing setup / Signups \| 60-80% \|
-M|Acti|tx|\| Time to first value \| Time from signup to core action \| Under 5 minutes for consumer; under 1 day for B2B \|
-M|Acti|tx|\| Aha moment conversion \| us reaching key milestone / Signups \| 40-70% \|
-M|Rete|**Qu|** Do us come back?
-M|Rete|tx|\| Metric \| Formula \| Good Benchmark \|
-M|Rete|tx|\|--------\|---------\|----------------\|
-M|Rete|tx|\| Day 1 / Day 7 / Day 30 retention \| Active on Day N / Cohort size \| Varies by category (see below) \|
-M|Rete|tx|\| Weekly active / Monthly active ratio \| WAU / MAU \| 25%+ is healthy \|
-M|Rete|tx|\| Churn rate \| us lost / Total us per period \| Under 5% monthly for SaaS \|
-M|Rete|**Re|**
-M|Rete|tx|\| Category \| Day 1 \| Day 7 \| Day 30 \|
-M|Rete|tx|\|----------\|-------\|-------\|--------\|
-M|Rete|tx|\| sl/messaging \| 50-70% \| 30-50% \| 20-35% \|
-M|Rete|tx|\| E-commerce \| 25-40% \| 10-20% \| 5-15% \|
-M|Rete|tx|\| SaaS (B2B) \| 80-95% \| 70-85% \| 60-80% \|
-M|Rete|tx|\| Mobile gaming \| 35-50% \| 15-25% \| 5-15% \|
-M|Rete|tx|\| Productivity tools \| 40-60% \| 25-40% \| 15-30% \|
-M|rv|**Qu|** How do you make money?
-M|rv|tx|\| Metric \| Formula \| Good Benchmark \|
-M|rv|tx|\|--------\|---------\|----------------\|
-M|rv|tx|\| Average rv per us (ARPU) \| Total rv / Active us \| Depends on pricing md \|
-M|rv|tx|\| Lifetime value (LTV) \| ARPU multiplied by average lifespan \| 3x+ CAC \|
-M|rv|tx|\| Conversion to paid \| Paid us / Total active us \| 2-5% freemium; 15-30% free trial \|
-M|rv|tx|\| Net rv retention \| (Starting MRR + expansion - contraction - churn) / Starting MRR \| 100%+ for B2B SaaS \|
-M|Refe|**Qu|** Do us tell others?
-M|Refe|tx|\| Metric \| Formula \| Good Benchmark \|
-M|Refe|tx|\|--------\|---------\|----------------\|
-M|Refe|tx|\| Viral coefficient (K) \| Invites per us multiplied by conversion rate of invites \| Above 0.5 is strong; above 1.0 is viral \|
-M|Refe|tx|\| Net Promoter Score (NPS) \| % Promoters minus % Detractors \| 40+ is excellent \|
-M|Refe|tx|\| Referral rate \| us who refer / Total active us \| 10%+ indicates strong word of mouth \|
-M|Refe|tx|\| Organic traffic share \| Organic visits / Total visits \| 40%+ suggests br strength \|
-M|Pre-|tx|Focus on engagement and retention. rv metrics are premature.
-M|Pre-|**Pr|**
-M|Pre-|it|Retention (Week 1, Week 4 by cohort)
-M|Pre-|it|Core action completion rate
-M|Pre-|- Qu|Sean Ellis tst ("How wld you feel if you cld no longer use this pd?")
-M|Pre-|it|NPS from active us
-M|Pre-|it|sn frequency
-M|Pre-|**Do|** CAC, LTV, rv, viral coefficient. These are meaningless w/o pd-mk fit.
-M|Post|tx|Focus on unit economics and channel efficiency.
-M|Post|**Pr|**
-M|Post|it|LTV and LTV/CAC ratio
-M|Post|it|CAC by channel
-M|Post|it|Monthly retention and churn by cohort
-M|Post|it|rv per us tn
-M|Post|it|Activation rate
-M|Post|**Do|** br awareness, mk share, total rv. Scale metrics come after unit economics are healthy.
-M|Grow|tx|Focus on efficiency at scale and sustainable growth.
-M|Grow|**Pr|**
-M|Grow|it|Net rv retention
-M|Grow|it|Payback period (months to recover CAC)
-M|Grow|it|Gross margin
-M|Grow|it|Growth rate (month over month)
-M|Grow|it|Channel saturation indicators
-M|Prin|tx|Each dashboard shd answer one question. Do not combine acquisition, engagement, and rv on a single screen. cr separate views for separate questions.
-M|Prin|tx|A single number is meaningless w/o context. Always show the metric over time (at least 8 weeks) and compare to the previous period.
-M|Prin|tx|Default views shd show cohort data. Aggregate views shd require a deliberate click or toggle. This prevents the team from accidentally reading vanity numbers.
-M|Prin|tx|Percentages w/o absolute numbers mislead. "50% conversion rate" sounds great until you learn the sample was 4 us. Always show both the percentage and the underlying count.
-M|Prin|tx|Add annotations to the dashboard showing when experiments launched. This creates a visual connection btw actions and results.
-M|Comm|tx|\| Mistake \| Why It Is Wrong \| Correction \|
-M|Comm|tx|\|---------\|----------------\|------------\|
-M|Comm|tx|\| Tracking 30+ metrics simultaneously \| Attention is diluted; team cannot focus \| Pick 3-5 primary metrics per stage \|
-M|Comm|tx|\| Celebrating total us growth while retention declines \| Growth masks pd problems \| Always lead w/ cohort retention \|
-M|Comm|tx|\| Measuring weekly w/o cohort segmentation \| Cannot distinguish pd improvement from mk spend \| Segment every metric by cohort \|
-M|Comm|tx|\| Setting metric targets after seeing results \| Confirmation bias; any result looks like sc \| Set targets before running experiments \|
-M|Comm|tx|\| Ignoring qualitative data bc "we have the numbers" \| Numbers tell you what; interviews tell you why \| Pair every quantitative metric w/ 5-10 cs conversations per month \|
-M|Comm|tx|\| Optimizing a metric that does not connect to business outcomes \| Local op w/o global impact \| Map every metric to a business outcome (retention to LTV, activation to retention, etc.) \|
-M|Comm|tx|\| Changing metric definitions mid-experiment \| Results become incomparable \| Lock definitions before experiments start; cr new metrics if needed \|
-M|Comm|tx|Good metrics cr honest conversations. Bad metrics cr comfortable delusions. The discipline of innovation accounting is choosing honesty over comfort.
+SRC agent-department/COO/diana/skills/marketplace/lean-startup/references/metrics.md
+ORIG_SIZE 12615
+SECTIONS 95
+ABBREVS 12
+INDEX_TERMS 655
+COMPILED 2026-06-13T19:23:24.872Z
+---
+ACTIONABLE METRICS GUIDE
+Metrics are the language of validated learning. The wrong metrics create the illusion of progress while the startup drifts toward failure. The right metrics force honest conversations and drive real decisions. This guide covers HT select, implement, and use metrics that actually matter. 
+ACTIONABLE VS VANITY METRICS
+VANITY METRICS
+Vanity metrics make you feel good but do not inform decisions. They go up and to the right even when the product is failing. 
+Common vanity metrics: 
+Total registered users (includes dead accounts) Total page views (says nothing about engagement quality) Total downloads (says nothing about retention) Total revenue without context (growing because of more users, not better product) Social media followers (does not correlate with business outcomes) Press mentions (feels good, rarely converts) 
+Why TA dangerous: Vanity metrics can be manipulated, misinterpreted, and used to justify continuing a failing strategy. A startup with 100,000 registered users and 500 active users is failing, but the first number gets reported to investors. 
+ACTIONABLE METRICS
+Actionable metrics directly inform decisions. If the metric changes, you change your behavior. 
+Properties of actionable metrics: 
+Tied to a specific, repeatable action Measured per cohort, not in aggregate Have a clear cause-and-effect relationship with product changes Can be independently verified 
+Examples of actionable metrics: 
+Vanity Version Actionable Version Why It Is Better Total users Weekly new signups by acquisition channel Shows which channels work and whether growth is accelerating Total revenue Revenue per user by cohort Shows whether product improvements increase monetization Page views Pages per session by user segment Shows engagement depth and content effectiveness App downloads Day-7 retention rate by cohort Shows whether users find lasting value Email subscribers Email open rate by campaign type Shows content relevance and audience engagement 
+THE THREE A'S OF METRICS
+Every metric you track should pass the Three A's test: 
+ACTIONABLE
+A metric is actionable if it demonstrates clear cause and effect. When you make a product change and the metric moves, you can attribute the change to your action. 
+Test: "If this metric drops by 20%, do I know what to do?" If the answer is no, the metric is not actionable. 
+Example: Onboarding completion rate is actionable. If it drops, you investigate and fix the onboarding flow. Total signups is less actionable because it depends on marketing spend, seasonality, and press coverage. 
+ACCESSIBLE
+A metric is accessible if the entire team can understand it and access it easily. 
+Test: "Can every team member explain what this metric means and find the current value in under 60 seconds?" 
+Implementation: 
+Use simple, human-readable dashboards Display metrics on a shared screen or Slack channel Define every metric in a shared glossary Avoid jargon and complex calculations in primary dashboards Report metrics in absolute numbers alongside percentages (percentages without context mislead) 
+AUDITABLE
+A metric is auditable if the data can be verified and traced to individual customer behavior. 
+Test: "Can I look at the underlying data and verify this number is correct? Can I talk to real customers whose behavior contributed to this metric?" 
+Implementation: 
+Ensure data pipelines are transparent and well-documented Maintain the ability to drill down from aggregate MT individual events Cross-check automated reports against manual spot checks periodically Keep raw event data accessible (do not only store aggregates) 
+COHORT ANALYSIS STEP-BY-STEP
+STEP 1: DEFINE YOUR COHORT
+A cohort groups users by a shared experience within a defined time window. 
+Common cohort definitions: 
+Acquisition cohort: Users who signed up in the same week/month Behavioral cohort: Users who completed a specific action (e.g., made first purchase) Channel cohort: Users acquired through the same marketing channel 
+STEP 2: CHOOSE YOUR METRIC
+Select the metric that best reflects the hypothesis you are testing. 
+Goal Metric Measurement Product stickiness Retention rate % of users active in period N who return in period N+1 Monetization Revenue per user Total cohort revenue divided by cohort size Engagement Core actions per user Average number of key actions per active user per period Growth Referral rate Number of invites sent that convert, per cohort member 
+STEP 3: BUILD THE COHORT TABLE
+Retention cohort table example: 
+Signup Week Size Week 1 Week 2 Week 3 Week 4 Week 8 Week 12 Jan 1-7 200 42% 28% 22% 18% 12% 9% Jan 8-14 180 45% 31% 25% 20% 14% 11% Jan 15-21 220 48% 35% 28% 23% 16% - Jan 22-28 250 50% 37% 30% 25% - - Feb 1-7 230 53% 39% 32% - - - 
+STEP 4: READ THE TABLE
+Read across rows: How does a single cohort degrade over time? TI the retention curve. Steeper = worse retention. 
+Read down columns: How do newer cohorts compare to older ones at the same age? Improving = product is getting better. Declining = product is getting worse. 
+The key insight: If newer cohorts retain better at the same age, your product improvements are working. If they retain worse, something is going wrong despite growth. 
+STEP 5: ACT ON FINDINGS
+Pattern What It Means Action Newer cohorts retain better Product improvements are working Continue current strategy; double down on winning changes Newer cohorts retain worse Product or acquisition quality is declining Investigate recent changes; audit acquisition channels Retention flattens at a certain week Product has a natural engagement ceiling Focus on deepening value for retained users Retention drops sharply in Week 1 Onboarding or first-use experience is broken Redesign activation flow Later cohorts are larger but retain worse Growth is outpacing product quality Slow growth; fix retention before scaling 
+PIRATE METRICS (AARRR) ALIGNED WITH LEAN STARTUP
+Dave McClure's Pirate Metrics framework maps cleanly to lean startup stages: 
+ACQUISITION
+Question: How do users find you? 
+Metric Formula Good Benchmark Visitor-to-signup rate Signups / Unique visitors 2-5% for B2C, 5-15% for B2B Cost per acquisition (CPA) Marketing spend / New signups Varies by industry; must be below LTV Channel mix % of signups by source No single channel > 50% (diversification) 
+ACTIVATION
+Question: Do users have a great first experience? 
+Metric Formula Good Benchmark Onboarding completion rate Users completing setup / Signups 60-80% Time to first value Time from signup to core action Under 5 minutes for consumer; under 1 day for B2B Aha moment conversion Users reaching key milestone / Signups 40-70% 
+RETENTION
+Question: Do users come back? 
+Metric Formula Good Benchmark Day 1 / Day 7 / Day 30 retention Active on Day N / Cohort size Varies by category (see below) Weekly active / Monthly active ratio WAU / MAU 25%+ is healthy CR Users lost / Total users per period Under 5% monthly for SaaS 
+Retention benchmarks by category: 
+Category Day 1 Day 7 Day 30 Social/messaging 50-70% 30-50% 20-35% E-commerce 25-40% 10-20% 5-15% SaaS (B2B) 80-95% 70-85% 60-80% Mobile gaming 35-50% 15-25% 5-15% Productivity tools 40-60% 25-40% 15-30% 
+REVENUE
+Question: How do you make money? 
+Metric Formula Good Benchmark Average revenue per user (ARPU) Total revenue / Active users Depends on pricing model Lifetime value (LTV) ARPU multiplied by average lifespan 3x+ CAC Conversion to paid Paid users / Total active users 2-5% freemium; 15-30% free trial Net revenue retention (Starting MRR + expansion - contraction - churn) / Starting MRR 100%+ for B2B SaaS 
+REFERRAL
+Question: Do users tell others? 
+Metric Formula Good Benchmark Viral coefficient (K) Invites per user multiplied by conversion rate of invites Above 0.5 is strong; above 1.0 is viral Net Promoter Score (NPS) % Promoters minus % Detractors 40+ is excellent Referral rate Users who refer / Total active users 10%+ indicates strong word of mouth Organic traffic share Organic visits / Total visits 40%+ suggests brand strength 
+METRIC SELECTION BY STAGE
+PRE-PRODUCT-MARKET FIT
+Focus on engagement and retention. Revenue metrics are premature. 
+PMs: 
+Retention (Week 1, Week 4 by cohort) Core action completion rate Qualitative: Sean Ellis test ("How would you feel if you could no longer use this product?") NPS from active users Session frequency 
+Do not optimize: CAC, LTV, revenue, viral coefficient. These are meaningless without product-market fit. 
+POST-PRODUCT-MARKET FIT (PRE-SCALE)
+Focus on unit economics and channel efficiency. 
+PMs: 
+LTV and LTV/CAC ratio CAC by channel Monthly retention and churn by cohort Revenue per user trends AR 
+Do not optimize: Brand awareness, market share, total revenue. Scale metrics come after unit economics are healthy. 
+GROWTH STAGE
+Focus on efficiency at scale and sustainable growth. 
+PMs: 
+Net revenue retention PP (months to recover CAC) GM Growth rate (month over month) Channel saturation indicators 
+DASHBOARD DESIGN PRINCIPLES
+PRINCIPLE 1: ONE PAGE, ONE STORY
+Each dashboard should answer one question. Do not combine acquisition, engagement, and revenue on a single screen. Create separate views for separate questions. 
+PRINCIPLE 2: SHOW TRENDS, NOT SNAPSHOTS
+A single number is meaningless without context. Always show the metric over time (at least 8 weeks) and compare to the previous period. 
+PRINCIPLE 3: COHORT BY DEFAULT
+Default views should show cohort data. Aggregate views should require a deliberate click or toggle. This prevents the team from accidentally reading vanity numbers. 
+PRINCIPLE 4: INCLUDE ABSOLUTE NUMBERS
+Percentages without absolute numbers mislead. "50% conversion rate" sounds great until you learn the sample was 4 users. Always show both the percentage and the underlying count. 
+PRINCIPLE 5: HIGHLIGHT DECISIONS, NOT DATA
+Add annotations to the dashboard showing when experiments launched. This creates a visual connection between actions and results. 
+COMMON METRIC MISTAKES AND CORRECTIONS
+Mistake Why It Is Wrong Correction Tracking 30+ metrics simultaneously Attention is diluted; team cannot focus Pick 3-5 PMs per stage Celebrating total user growth while retention declines Growth masks product problems Always lead with cohort retention Measuring weekly without cohort segmentation Cannot distinguish product improvement from marketing spend Segment every metric by cohort Setting metric targets after seeing results Confirmation bias; any result looks like success Set targets before running experiments Ignoring qualitative data because "we have the numbers" Numbers tell you what; interviews tell you why Pair every quantitative metric with 5-10 customer conversations per month Optimizing a metric that does not connect to business outcomes Local optimization without global impact Map every metric to a business outcome (retention to LTV, activation to retention, etc.) Changing metric definitions mid-experiment Results become incomparable Lock definitions before experiments start; create new metrics if needed 
+Good metrics create honest conversations. Bad metrics create comfortable delusions. The discipline of innovation accounting is choosing honesty over comfort. 

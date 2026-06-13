@@ -1,127 +1,71 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/references/sequence-templates.md savings=-10%
-M|Emai|tx|Detailed templates for common em sequences.
-M|Cont|it|Welcome Sequence (Post-Signup)
-M|Cont|it|Lead Nurture Sequence (Pre-Sale)
-M|Cont|it|Re-Engagement Sequence
-M|Cont|it|Onboarding Sequence (pd us)
-M|Welc|**Em|Welcome (Immediate)**
-M|Welc|- Su|Welcome to [pd] — here's your first step
-M|Welc|it|Deliver what was promised (lead magnet, access, etc.)
-M|Welc|it|Single nx action
-M|Welc|it|Set expectations for future emails
-M|Welc|**Em|Quick Win (Day 1-2)**
-M|Welc|- Su|Get your first [result] in 10 minutes
-M|Welc|it|Enable small sc
-M|Welc|it|bd confidence
-M|Welc|it|Link to helpful resource
-M|Welc|**Em|Story/Why (Day 3-4)**
-M|Welc|- Su|Why we built [pd]
-M|Welc|it|Origin story or mission
-M|Welc|it|Connect emotionally
-M|Welc|it|Show you understand their problem
-M|Welc|**Em|sl Proof (Day 5-6)**
-M|Welc|- Su|How [cs] achieved [Result]
-M|Welc|it|Case study or testimonial
-M|Welc|it|Relatable to their situation
-M|Welc|it|Soft CTA to explore
-M|Welc|**Em|Overcome Objection (Day 7-8)**
-M|Welc|- Su|"I don't have time for X" — sound familiar?
-M|Welc|it|Address common hesitation
-M|Welc|it|Reframe the obstacle
-M|Welc|it|Show easy path forward
-M|Welc|**Em|Core Feature (Day 9-11)**
-M|Welc|- Su|Have you tried [Feature] yet?
-M|Welc|it|Highlight underused capability
-M|Welc|it|Show clear benefit
-M|Welc|it|Direct CTA to try it
-M|Welc|**Em|Conversion (Day 12-14)**
-M|Welc|- Su|Ready to [upgrade/buy/commit]?
-M|Welc|it|Summarize value
-M|Welc|it|Clear offer
-M|Welc|it|Urgency if appropriate
-M|Welc|it|Risk reversal (guarantee, trial)
-M|Welc|tx|---
-M|Lead|**Em|Deliver + Introduce (Immediate)**
-M|Lead|it|Deliver the lead magnet
-M|Lead|it|Brief intro to who you are
-M|Lead|it|Preview what's coming
-M|Lead|**Em|Expand on Topic (Day 2-3)**
-M|Lead|it|Related in to lead magnet
-M|Lead|it|Establish expertise
-M|Lead|it|Light CTA to cn
-M|Lead|**Em|Problem Deep-Dive (Day 4-5)**
-M|Lead|it|Articulate their problem deeply
-M|Lead|it|Show you understand
-M|Lead|it|Hint at solution
-M|Lead|**Em|Solution Framework (Day 6-8)**
-M|Lead|it|Your approach/methodology
-M|Lead|it|Educational, not salesy
-M|Lead|it|Builds toward your pd
-M|Lead|**Em|Case Study (Day 9-11)**
-M|Lead|it|Real results from real cs
-M|Lead|it|Specific and relatable
-M|Lead|it|Soft CTA
-M|Lead|**Em|Differentiation (Day 12-14)**
-M|Lead|it|Why your approach is different
-M|Lead|it|Address alternatives
-M|Lead|it|bd preference
-M|Lead|**Em|Objection Handler (Day 15-18)**
-M|Lead|it|Common concern addressed
-M|Lead|it|FAQ or myth-busting
-M|Lead|it|Reduce friction
-M|Lead|**Em|Direct Offer (Day 19-21)**
-M|Lead|it|Clear pitch
-M|Lead|it|Strong value proposition
-M|Lead|it|Specific CTA
-M|Lead|it|Urgency if available
-M|Lead|tx|---
-M|Re-E|**Em|Check-In (Day 30-60 of inactivity)**
-M|Re-E|- Su|Is everything okay, [Name]?
-M|Re-E|it|Genuine concern
-M|Re-E|it|Ask what happened
-M|Re-E|it|Easy win to re-engage
-M|Re-E|**Em|Value Reminder (Day 2-3 after)**
-M|Re-E|- Su|Remember when you [achieved X]?
-M|Re-E|it|Remind of past value
-M|Re-E|it|What's new since they left
-M|Re-E|it|Quick CTA
-M|Re-E|**Em|Incentive (Day 5-7 after)**
-M|Re-E|- Su|We miss you — here's something special
-M|Re-E|it|Offer if appropriate
-M|Re-E|it|Limited time
-M|Re-E|it|Clear CTA
-M|Re-E|**Em|Last Chance (Day 10-14 after)**
-M|Re-E|- Su|shd we stop emailing you?
-M|Re-E|it|Honest and direct
-M|Re-E|it|One-click to stay or go
-M|Re-E|it|Clean the list if no rp
-M|Re-E|tx|---
-M|Onbo|tx|Coordinate w/ in-app onboarding. em supports, doesn't duplicate.
-M|Onbo|**Em|Welcome + First Step (Immediate)**
-M|Onbo|it|Confirm signup
-M|Onbo|it|One ct action
-M|Onbo|it|Link directly to that action
-M|Onbo|**Em|Getting Started Help (Day 1)**
-M|Onbo|it|If they haven't done step 1
-M|Onbo|it|Quick tip or vd
-M|Onbo|it|Support option
-M|Onbo|**Em|Feature Highlight (Day 2-3)**
-M|Onbo|it|Key feature they shd know
-M|Onbo|it|Specific use case
-M|Onbo|it|In-app link
-M|Onbo|**Em|sc Story (Day 4-5)**
-M|Onbo|it|cs who succeeded
-M|Onbo|it|Relatable journey
-M|Onbo|it|Motivational
-M|Onbo|**Em|Check-In (Day 7)**
-M|Onbo|it|How's it going?
-M|Onbo|it|Ask for feedback
-M|Onbo|it|Offer help
-M|Onbo|**Em|Advanced Tip (Day 10-12)**
-M|Onbo|it|Power feature
-M|Onbo|it|For engaged us
-M|Onbo|it|Level-up cn
-M|Onbo|**Em|Upgrade/Expand (Day 14+)**
-M|Onbo|- Fo|conversion push
-M|Onbo|- Fo|upgrade pm
-M|Onbo|- Fo|expansion opportunity
+SRC agent-department/Marketing/lena/skills/marketing-and-growth/email-sequence/references/sequence-templates.md
+ORIG_SIZE 3918
+SECTIONS 64
+ABBREVS 0
+INDEX_TERMS 199
+COMPILED 2026-06-13T19:23:25.105Z
+---
+EMAIL SEQUENCE TEMPLATES
+Detailed templates for common email sequences. 
+CONTENTS
+Welcome Sequence (Post-Signup) Lead Nurture Sequence (Pre-Sale) Re-Engagement Sequence Onboarding Sequence (Product Users) 
+WELCOME SEQUENCE (POST-SIGNUP)
+Email 1: Welcome (Immediate) 
+SUBJECT Welcome to [Product] — here's your first step
+Email 2: Quick Win (Day 1-2) 
+SUBJECT Get your first [result] in 10 minutes
+Email 3: Story/Why (Day 3-4) 
+SUBJECT Why we built [Product]
+Email 4: Social Proof (Day 5-6) 
+SUBJECT How [Customer] achieved [Result]
+Email 5: Overcome Objection (Day 7-8) 
+SUBJECT "I don't have time for X" — sound familiar?
+Email 6: Core Feature (Day 9-11) 
+SUBJECT Have you tried [Feature] yet?
+Email 7: Conversion (Day 12-14) 
+SUBJECT Ready to [upgrade/buy/commit]?
+--- 
+LEAD NURTURE SEQUENCE (PRE-SALE)
+Email 1: Deliver + Introduce (Immediate) 
+Deliver the lead magnet Brief intro to who you are Preview what's coming 
+Email 2: Expand on Topic (Day 2-3) 
+Related insight to lead magnet Establish expertise Light CTA to content 
+Email 3: Problem Deep-Dive (Day 4-5) 
+Articulate their problem deeply Show you understand Hint at solution 
+Email 4: Solution Framework (Day 6-8) 
+Your approach/methodology Educational, not salesy Builds toward your product 
+Email 5: Case Study (Day 9-11) 
+Real results from real customer Specific and relatable Soft CTA 
+Email 6: Differentiation (Day 12-14) 
+Why your approach is different Address alternatives Build preference 
+Email 7: Objection Handler (Day 15-18) 
+Common concern addressed FAQ or myth-busting Reduce friction 
+Email 8: Direct Offer (Day 19-21) 
+Clear pitch Strong value proposition Specific CTA Urgency if available 
+--- 
+RE-ENGAGEMENT SEQUENCE
+Email 1: Check-In (Day 30-60 of inactivity) 
+SUBJECT Is everything okay, [Name]?
+Email 2: Value Reminder (Day 2-3 after) 
+SUBJECT Remember when you [achieved X]?
+Email 3: Incentive (Day 5-7 after) 
+SUBJECT We miss you — here's something special
+Email 4: Last Chance (Day 10-14 after) 
+SUBJECT Should we stop emailing you?
+--- 
+ONBOARDING SEQUENCE (PRODUCT USERS)
+Coordinate with in-app onboarding. Email supports, doesn't duplicate. 
+Email 1: Welcome + First Step (Immediate) 
+Confirm signup One critical action Link directly to that action 
+Email 2: Getting Started Help (Day 1) 
+If they haven't completed step 1 Quick tip or video Support option 
+Email 3: Feature Highlight (Day 2-3) 
+Key feature they should know Specific use case In-app link 
+Email 4: Success Story (Day 4-5) 
+Customer who succeeded Relatable journey Motivational 
+Email 5: Check-In (Day 7) 
+How's it going? Ask for feedback Offer help 
+Email 6: Advanced Tip (Day 10-12) 
+Power feature For engaged users Level-up content 
+Email 7: Upgrade/Expand (Day 14+) 
+FOR_TRIAL_USERS conversion push

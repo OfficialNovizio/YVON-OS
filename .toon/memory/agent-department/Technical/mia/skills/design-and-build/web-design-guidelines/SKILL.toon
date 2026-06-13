@@ -1,30 +1,20 @@
-#MEM id=web-design-guidelines source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/web-design-guidelines/SKILL.md savings=12%
-M||tx|---
-M||name|web-ds-guidelines
-M||desc|>-
-M||tx|rv UI code for Web if Guidelines compliance. Use when asked to "rv my UI", "check accessibility", "audit ds", "rv UX", or "check my site against best practices".
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[frontend, rc, tw, ui, cp, ds-sy, ux, dv]
-M||auth|vc
-M||vers|"1.0.0"
-M||argu|<file-or-pattern>
-M||tx|---
-M|Web |tx|rv files for compliance w/ Web if Guidelines.
-M|How |tx|1. Fetch the latest guidelines from the source URL below
-M|How |tx|2. Read the specified files (or pm us for files/pattern)
-M|How |tx|3. Check against all rules in the fetched guidelines
-M|How |4. O|line` format
-M|Guid|Fetc|
-M|Guid|tx|```
-M|Guid|http|//raw.githubusercontent.com/vc-labs/web-if-guidelines/main/command.md
-M|Guid|tx|```
-M|Guid|tx|Use WebFetch to retrieve the latest rules. The fetched cn contains all the rules and output format instructions.
-M|Usag|When|
-M|Usag|tx|1. Fetch guidelines from the source URL above
-M|Usag|tx|2. Read the specified files
-M|Usag|tx|3. Apply all rules from the fetched guidelines
-M|Usag|tx|4. Output findings using the format specified in the guidelines
-M|Usag|tx|If no files specified, ask the us which files to rv.
+SRC agent-department/Technical/mia/skills/design-and-build/web-design-guidelines/SKILL.md
+ORIG_SIZE 1361
+SECTIONS 14
+ABBREVS 1
+INDEX_TERMS 56
+COMPILED 2026-06-13T19:23:25.482Z
+---
+NAME web-design-guidelines
+WEB INTERFACE GUIDELINES
+Review files for compliance with Web Interface Guidelines. 
+HIW
+Fetch the latest guidelines from the source URL below Read the specified files (or prompt user for files/pattern) Check against all rules in the fetched guidelines Output findings in the terse file:line format 
+GUIDELINES SOURCE
+Fetch fresh guidelines before each review: 
+CODE  87CHARS
+Use WebFetch to retrieve the latest rules. The fetched content contains all the rules and output format instructions. 
+USAGE
+When a user provides a file or pattern argument: 
+Fetch guidelines from the source URL above Read the specified files Apply all rules from the fetched guidelines Output findings using the format specified in the guidelines 
+If no files specified, ask the user which files to review. 

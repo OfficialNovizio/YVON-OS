@@ -1,13 +1,16 @@
-#MEM id=felix source=/root/yvon/agent-department/Finance/felix/SESSION.md savings=14%
-M|Feli|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Feli|tx|> Always load this first. Load MEMORY.md for financial md, rp format, and fx's rules.
-M|Curr|- **|** 2026-03-23
-M|Curr|- **|** idle
-M|Curr|- **|** none
-M|Curr|- **|** hb pricing md al — mc is waiting on this
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|tx|\| 2026-03-23 \| Memory sy initialised \| File seeded w/ yv fi context \| — \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|hb pricing md rv — mc awaiting fx runway al
-M|Open|it|nz SS26 cg budget — not yet scoped, awaiting Alex brief
+SRC agent-department/Finance/felix/SESSION.md
+ORIG_SIZE 821
+SECTIONS 9
+ABBREVS 8
+INDEX_TERMS 66
+COMPILED 2026-06-13T19:23:24.943Z
+---
+FELIX — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for financial models, report format, and Felix's rules. 
+CURRENT STATUS
+LA: 2026-03-23 CT: idle WF Stark: none NSSW: Hourbour pricing model analysis — Marcus is waiting on this 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-03-23 Memory system initialised File seeded with YVON finance context — 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+Hourbour pricing model review — Marcus awaiting Felix runway analysis Novizio SS26 campaign budget — not yet scoped, awaiting Alex brief 

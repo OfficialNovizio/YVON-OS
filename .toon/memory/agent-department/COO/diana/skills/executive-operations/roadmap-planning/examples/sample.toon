@@ -1,41 +1,34 @@
-#MEM id=examples source=/root/yvon/agent-department/COO/diana/skills/executive-operations/roadmap-planning/examples/sample.md savings=12%
-M|Exam|**Co|** Annual planning, need to align roadmap w/ retention and enterprise expansion goals.
-M|Exam|**Ph|**
-M|Exam|- Bu|Reduce churn from 15% to 8%, increase enterprise deals from 2/quarter to 5/quarter
-M|Exam|- Cu|Onboarding confusion, enterprise SSO gap, mobile access issues
-M|Exam|- Te|Need to upgrade data pipeline for advanced reporting
-M|Exam|**Ph|**
-M|Exam|it|Wrote 12 epics w/ hypotheses (guided onboarding, enterprise SSO, mobile workflows, advanced reporting, etc.)
-M|Exam|- Es|Onboarding = M (3 weeks), SSO = M (4 weeks), Mobile = L (2 months)
-M|Exam|**Ph|**
-M|Exam|it|Used RICE framework (recommended by `prioritization-advisor.md`)
-M|Exam|- Sc|Onboarding (24,000), SSO (675), Mobile (2,000), Reporting (1,000)
-M|Exam|- St|Boosted SSO priority (ct for enterprise expansion)
-M|Exam|**Ph|**
-M|Exam|- Q1|Guided Onboarding, Enterprise SSO, Mobile Workflows
-M|Exam|- Q2|Advanced Reporting (depends on Data Pipeline in Q1), Slack Integration
-M|Exam|- Q3|Mobile App (depends on ap Redesign)
-M|Exam|**Ph|**
-M|Exam|- Pr|"Q1 focuses on retention (onboarding) and enterprise expansion (SSO)"
-M|Exam|- Fe|"Can we add pricing page redesign to Q2?" → Adjusted roadmap
-M|Exam|- Pu|Internal roadmap (Confluence), external roadmap (Now/nx/Later)
-M|Exam|**Ou|** Clear, aligned roadmap w/ st narrative.
-M|Exam|tx|---
-M|Exam|**Co|** PM creates roadmap alone, based on stakeholder requests.
-M|Exam|**Ph|** Skipped (no business goals reviewed)
-M|Exam|**Ph|** Listed features requested by sales, mk, CS
-M|Exam|**Ph|** Prioritized by "who shouted loudest"
-M|Exam|**Ph|** Threw features into Q1, Q2, Q3 w/ no rationale
-M|Exam|**Ph|** Presented feature list to execs
-M|Exam|**Wh|**
-M|Exam|it|No st narrative ("Why are we building this?")
-M|Exam|it|No cs problems framed
-M|Exam|it|No hypotheses or sc metrics
-M|Exam|it|Roadmap felt like random feature list
-M|Exam|**Fi|**
-M|Exam|- **|** rv business goals (reduce churn, increase enterprise)
-M|Exam|- **|** Turn feature requests into epics w/ hypotheses
-M|Exam|- **|** Prioritize by RICE (impact + effort), not politics
-M|Exam|- **|** Sequence logically by dependencies, business goals
-M|Exam|- **|** Present w/ narrative: "Q1 = Retention, Q2 = Enterprise Expansion"
-M|Exam|tx|---
+SRC agent-department/COO/diana/skills/executive-operations/roadmap-planning/examples/sample.md
+ORIG_SIZE 2522
+SECTIONS 27
+ABBREVS 0
+INDEX_TERMS 128
+COMPILED 2026-06-13T19:23:24.840Z
+---
+ROADMAP EXAMPLES
+EXAMPLE 1: GOOD ROADMAP PLANNING (SAAS PRODUCT)
+Context: Annual planning, need to align roadmap with retention and enterprise expansion goals. 
+Phase 1 - Gather Inputs: 
+BUSINESS_GOALS Reduce churn from 15% to 8%, increase enterprise deals from 2/quarter to 5/quarter
+Phase 2 - Define Epics: 
+Wrote 12 epics with hypotheses (guided onboarding, enterprise SSO, mobile workflows, advanced reporting, etc.) Estimated effort: Onboarding = M (3 weeks), SSO = M (4 weeks), Mobile = L (2 months) 
+Phase 3 - Prioritize: 
+Used RICE framework (recommended by prioritization-advisor.md) Scored: Onboarding (24,000), SSO (675), Mobile (2,000), Reporting (1,000) Strategic override: Boosted SSO priority (critical for enterprise expansion) 
+Phase 4 - Sequence: 
+Q1: Guided Onboarding, Enterprise SSO, Mobile Workflows Q2: Advanced Reporting (depends on Data Pipeline in Q1), Slack Integration Q3: Mobile App (depends on API Redesign) 
+Phase 5 - Communicate: 
+PRESENTED_TO_EXECS "Q1 focuses on retention (onboarding) and enterprise expansion (SSO)"
+Outcome: Clear, aligned roadmap with strategic narrative. 
+--- 
+EXAMPLE 2: BAD ROADMAP PLANNING (FEATURE LIST)
+Context: PM creates roadmap alone, based on stakeholder requests. 
+Phase 1 - Gather Inputs: Skipped (no business goals reviewed) 
+Phase 2 - Define Epics: Listed features requested by sales, marketing, CS 
+Phase 3 - Prioritize: Prioritized by "who shouted loudest" 
+Phase 4 - Sequence: Threw features into Q1, Q2, Q3 with no rationale 
+Phase 5 - Communicate: Presented feature list to execs 
+Why this failed: 
+No strategic narrative ("Why are we building this?") No customer problems framed No hypotheses or success metrics Roadmap felt like random feature list 
+Fix with roadmap planning workflow: 
+Phase 1: Review business goals (reduce churn, increase enterprise) Phase 2: Turn feature requests into epics with hypotheses Phase 3: Prioritize by RICE (impact + effort), not politics Phase 4: Sequence logically by dependencies, business goals Phase 5: Present with narrative: "Q1 = Retention, Q2 = Enterprise Expansion" 
+--- 

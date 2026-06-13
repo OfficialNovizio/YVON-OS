@@ -1,64 +1,48 @@
-#MEM id=signal-vs-noise source=/root/yvon/agent-department/Marketing/kai/skills/custom/signal-vs-noise/SKILL.md savings=11%
-M||tx|---
-M||name|signal-vs-noise
-M||desc|Step-by-step anomaly investigation playbook. Run whenever a metric moves > 15% WoW or contradicts the established tn. Forces platform-wide elimination before account-specific conclusions.
-M||vers|1.0.0
-M||tx|---
-M|Purp|Most|jumping to account-specific conclusions before ruling out platform-wide causes.
-M|Purp|tx|---
-M|When|it|Any metric moves > 15% WoW (up or down)
-M|When|it|A metric contradicts 3+ prior weeks of tn
-M|When|it|Stark asks "why did X happen?"
-M|When|it|ka is abt to call something a tn
-M|When|tx|---
-M|Step|Befo|
-M|Step|it|Is the date range correct? (GA4 defaults to last 28 days — check it)
-M|Step|it|Is this the same metric definition as prior periods? (GA4 changed sn definitions in 2023)
-M|Step|it|Is there a tracking gap? (Apify rate limits, ap downtime)
-M|Step|it|Is the sample size large enough? (< 100 sn or < 50 engagements = hi variance, not a signal)
-M|Step|Pull|
-M|Step|it|What is the normal range for this metric?
-M|Step|it|Is this movement outside the normal WoW variance — or within it?
-M|Step|it|A 15% drop that sits within normal variance is noise. A 5% drop for the 4th consecutive week is a signal.
-M|Step|Sear|`[platform] [metric] [month year] algorithm change` and `[platform] outage [date]`
-M|Step|Rule|Do not conclude an anomaly is account-specific until platform-wide causes are eliminated.
-M|Step|**Co|**
-M|Step|tx|\| Platform \| Common causes \|
-M|Step|tx|\|---------\|--------------\|
-M|Step|tx|\| Instagram \| Algorithm reach changes, Reels weighting shifts, hashtag suppression waves \|
-M|Step|tx|\| YouTube \| CTR policy changes, thumbnail policy updates, recommendation algorithm shifts \|
-M|Step|tx|\| LinkedIn \| Feed algorithm changes, nl feature boosts, engagement rate redefinitions \|
-M|Step|tx|\| GA4 \| Sampling threshold changes, referral spam spikes, bot traffic events \|
-M|Step|tx|Did anything change on the account in the same period?
-M|Step|it|New cn tp or posting frequency?
-M|Step|it|cg launch or pause?
-M|Step|it|Audience targeting change?
-M|Step|it|Website change (for GA4)?
-M|Step|tx|If yes → the anomaly may be account-caused, not platform-caused. Both can be true simultaneously.
-M|Step|tx|\| Classification \| Criteria \| Minimum data required \|
-M|Step|tx|\|---------------\|----------\|----------------------\|
-M|Step|tx|\| **Strong signal** \| 3+ consecutive periods in same direction \| 3 weeks \|
-M|Step|tx|\| **Early indicator** \| 1–2 periods, platform-wide eliminated \| 2 periods \|
-M|Step|tx|\| **Noise** \| Within normal variance OR platform-wide event confirmed \| n/a \|
-M|Step|tx|\| **Insufficient data** \| < 2 periods, can't eliminate platform-wide \| n/a \|
-M|Step|Ever|
-M|Step|it|"Strong signal (3+ consecutive periods, platform-wide eliminated)."
-M|Step|it|"Early indicator — need [N] more periods before classifying."
-M|Step|it|"Noise — within normal variance / platform-wide event confirmed."
-M|Step|it|"Insufficient data to classify."
-M|Step|tx|---
-M|Plat|**In|**
-M|Plat|- Tu|typically 10–20% lower engagement than Mon/Thu/Fri
-M|Plat|- Su|highest engagement window — deviation from this timing reads as a drop
-M|Plat|- Fi|algorithm suppresses reach — not a tn
-M|Plat|**Yo|**
-M|Plat|- Fi|views and CTR spike then normalise — never benchmark from week 1
-M|Plat|- Se|December and August see lower B2C engagement; January sees spikes
-M|Plat|**Li|**
-M|Plat|- Fi|algorithm amplifies or suppresses based on early engagement — timing affects total reach significantly
-M|Plat|- We|30–50% lower reach than weekday posts on hb's audience
-M|Plat|**GA|**
-M|Plat|it|Check sample rate on any rp w/ > 500K sn — sampling distorts conversion data
-M|Plat|- Di|often a tracking issue (UTM parameters missing), not real traffic
-M|Plat|tx|---
-M|Outp|tx|Every anomaly investigation ends w/ a named classification and a "so what" — the specific implication for the team. "Noise, continue monitoring" w/o a named trigger for action is not an acceptable conclusion.
+SRC agent-department/Marketing/kai/skills/custom/signal-vs-noise/SKILL.md
+ORIG_SIZE 4505
+SECTIONS 42
+ABBREVS 8
+INDEX_TERMS 291
+COMPILED 2026-06-13T19:23:25.041Z
+---
+NAME signal-vs-noise
+PURPOSE
+Most metric movements are noise. Calling noise a signal wastes execution resources. Calling signal noise allows a real problem to compound. This playbook makes the investigation repeatable and eliminates the most common analytical errors: jumping to account-specific conclusions before ruling out platform-wide causes. 
+--- 
+WT RUN
+Any metric moves 15% WoW (up or down) A metric contradicts 3+ prior weeks of trend Stark asks "why did X happen?" Kai is about to call something a trend 
+--- 
+THE INVESTIGATION SEQUENCE
+STEP 1 — CONFIRM THE DATA
+Before investigating the cause, confirm the data is correct: 
+IT date range correct? (GA4 defaults to last 28 days — check it) Is thIT same metric definition as prior periods? (GA4 changed session definitions in 2023) ITre a tracking gap? (Apify rate limits, API downtime) IT sample size large enough? (< 100 sessions or < 50 engagements = high variance, not a signal) 
+STEP 2 — CHECK THE BASELINE
+Pull from MEMORY-[venture].md → Baselines section: 
+What IT normal range for this metric? Is this movement outside the normal WoW variance — or within it? A 15% drop that sits within normal variance is noise. A 5% drop for the 4th consecutive week is a signal. 
+STEP 3 — WEBSEARCH (MANDATORY BEFORE ANY ACCOUNT-SPECIFIC CONCLUSION)
+SEARCH_FOR `[platform] [metric] [month year] algorithm change` and `[platform] outage [date]`
+RULE Do not conclude an anomaly is account-specific until platform-wide causes are eliminated.
+Common platform-wide events to check: 
+Platform Common causes Instagram Algorithm reach changes, Reels weighting shifts, hashtag suppression waves YouTube CTR policy changes, thumbnail policy updates, recommendation algorithm shifts LinkedIn Feed algorithm changes, newsletter feature boosts, engagement rate redefinitions GA4 Sampling threshold changes, referral spam spikes, bot traffic events 
+STEP 4 — CF CORRELATED ACCOUNT EVENTS
+Did anything change on the account in the same period? 
+New content type or posting frequency? Campaign launch or pause? Audience targeting change? Website change (for GA4)? 
+IY → the anomaly may be account-caused, not platform-caused. Both can be true simultaneously. 
+STEP 5 — CLASSIFY
+Classification Criteria Minimum data required **Strong signal** 3+ consecutive periods in same direction 3 weeks **Early indicator** 1–2 periods, platform-wide eliminated 2 periods **Noise** Within normal variance OR platform-wide event confirmed n/a **Insufficient data** < 2 periods, can't eliminate platform-wide n/a 
+STEP 6 — STATE CONFIDENCE LEVEL
+Every analysis must include one of: 
+"Strong signal (3+ consecutive periods, platform-wide eliminated)." "Early indicator — need [N] more periods before classifying." "Noise — within normal variance / platform-wide event confirmed." "Insufficient data to classify." 
+--- 
+PLATFORM-SPECIFIC NOISE PATTERNS
+Instagram: 
+Tuesday/Wednesday: typically 10–20% lower engagement than Mon/Thu/Fri Sunday 8–11pm local: highest engagement window — deviation from this timing reads as a drop First post after a long gap: algorithm suppresses reach — not a trend 
+YouTube: 
+First 24–48h: views and CTR spike then normalise — never benchmark from week 1 Seasonal: December and August see lower B2C engagement; January sees spikes 
+LinkedIn: 
+First 60 min after posting: algorithm amplifies or suppresses based on early engagement — timing affects total reach significantly Weekend posts: 30–50% lower reach than weekday posts on Hourbour's audience 
+GA4: 
+Check sample rate on any report with 500K sessions — sampling distorts conversion data Direct / none traffic spike: often a tracking issue (UTM parameters missing), not real traffic 
+--- 
+OUTPUT RULE
+Every anomaly investigation ends with a named classification and a "so what" — the specific implication for the team. "Noise, continue monitoring" without a named trigger for action is not an acceptable conclusion. 

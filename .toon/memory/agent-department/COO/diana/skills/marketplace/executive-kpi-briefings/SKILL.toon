@@ -1,20 +1,18 @@
-#MEM id=executive-kpi-briefings source=/root/yvon/agent-department/COO/diana/skills/marketplace/executive-kpi-briefings/SKILL.md savings=0%
-M||tx|---
-M||name|executive-kpi-briefings
-M||desc|Template pack for summarizing BI in for ELT/board stakeholders.
-M||tx|---
-M|When|it|Preparing weekly/monthly ELT updates w/ BI in.
-M|When|it|Translating dashboards into succinct decision memos.
-M|When|it|Coordinating follow-up actions after KPI reviews.
-M|Fram|tx|1. **hl & Signal** – lead w/ KPI delta, direction, and confidence.
-M|Fram|tx|2. **Driver al** – highlight top drivers, segments, or anomalies.
-M|Fram|tx|3. **Implications** – spell out impact on goals, cs, or investments.
-M|Fram|tx|4. **Actions & Owners** – list nx steps, DRIs, due dates, and guardrails.
-M|Fram|tx|5. **Appendix** – link to dashboard tabs, methodology, and deeper data.
-M|Temp|it|1-page KPI memo (hl, context, actions).
-M|Temp|it|Slide template for ELT/board readouts.
-M|Temp|it|Follow-up tracker w/ ownership + status fields.
-M|Tips|it|Keep narratives under 200 words unless deeper context is requested.
-M|Tips|it|Pair w/ `bd-exec-dashboard` and `plan-bi-roadmap` for consistent storytelling.
-M|Tips|it|Capture questions/decisions in a log to feed future prioritization.
-M|Tips|tx|---
+SRC agent-department/COO/diana/skills/marketplace/executive-kpi-briefings/SKILL.md
+ORIG_SIZE 1124
+SECTIONS 12
+ABBREVS 1
+INDEX_TERMS 94
+COMPILED 2026-06-13T19:23:24.842Z
+---
+NAME executive-kpi-briefings
+EXECUTIVE KPI BRIEFINGS SKILL
+WTU
+Preparing weekly/monthly ELT updates with BI insights. Translating dashboards into succinct decision memos. Coordinating follow-up actions after KPI reviews. 
+FRAMEWORK
+Headline & Signal – lead with KPI delta, direction, and confidence. Driver Analysis – highlight top drivers, segments, or anomalies. Implications – spell out impact on goals, customers, or investments. Actions & Owners – list next steps, DRIs, due dates, and guardrails. Appendix – link to dashboard tabs, methodology, and deeper data. 
+TEMPLATES
+1-page KPI memo (headline, context, actions). Slide template for ELT/board readouts. Follow-up tracker with ownership + status fields. 
+TIPS
+Keep narratives under 200 words unless deeper context is requested. Pair with build-exec-dashboard and plan-bi-roadmap for consistent storytelling. Capture questions/decisions in a log to feed future prioritization. 
+--- 

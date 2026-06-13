@@ -1,33 +1,31 @@
-#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/rio/skills/operating-system/triple-pass-protocol/SKILL.md savings=13%
-M||tx|---
-M||name|triple-pass-protocol
-M||desc|ro's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any cg recommendation or ad st is delivered. Stark never sees the process, only the final output.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|Ad budget mistakes are expensive and slow to reverse. A cg running on an untested assumption doesn't just underperform — it burns budget and generates misleading data. This protocol forces data validation and bias checking before any recommendation reaches Stark.
-M|Purp|tx|---
-M|Pass|Writ|audience spec, creative direction, budget allocation, ROAS target, and tst ds. Don't self-edit during generation.
-M|Pass|Stop|
-M|Pass|**Da|**
-M|Pass|it|Have I read actual ROAS/CPM data from ka before making this recommendation?
-M|Pass|it|Is the ROAS target based on real data, or is it an optimistic estimate?
-M|Pass|it|Are CPM benchmarks current (< 90 days)? Did I WebSearch to verify?
-M|Pass|**Of|**
-M|Pass|it|Have I reviewed the offer itself, not just the creative?
-M|Pass|it|Is the offer strong enough that cp doesn't need to carry all the weight?
-M|Pass|it|Can the first 3 seconds of this ad answer "why shd I care?"?
-M|Pass|**Te|**
-M|Pass|it|Am I recommending scaling w/ a single creative? (Always 2+ variants before scale)
-M|Pass|- Is|"We expect X ROAS bc Y"?
-M|Pass|it|Is the A/B tst clean — one variable changed at a time?
-M|Pass|**Au|**
-M|Pass|- Is|exclude bargain hunters; hb: exclude hi-net-worth)
-M|Pass|it|Is retargeting considered before prospecting? (Retargeting has higher intent)
-M|Pass|it|Is there an exclusion layer to prevent audience overlap?
-M|Pass|**Ka|**
-M|Pass|it|Is there anchoring on the wrong price reference?
-M|Pass|it|Is loss aversion framing appropriate for this funnel stage?
-M|Pass|it|Am I stacking more than 2 Cialdini principles? (max 2 — no manipulative lever stacking)
-M|Pass|tx|Address every issue found. If data is missing, get it before finalizing. Don't estimate where ROAS data shd be real.
-M|Pass|tx|---
-M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.
+SRC agent-department/Marketing/rio/skills/operating-system/triple-pass-protocol/SKILL.md
+ORIG_SIZE 2388
+SECTIONS 25
+ABBREVS 7
+INDEX_TERMS 180
+COMPILED 2026-06-13T19:23:25.224Z
+---
+NAME triple-pass-protocol
+PURPOSE
+Ad budget mistakes are expensive and slow to reverse. A campaign running on an untested assumption doesn't just underperform — it burns budget and generates misleading data. This protocol forces data validation and bias checking before any recommendation reaches Stark. 
+--- 
+THE THREE PASSES
+PASS 1 — GENERATE
+WRITE_THE_FULL_CAMPAIGN_RECOMMENDATION audience spec, creative direction, budget allocation, ROAS target, and test design. Don't self-edit during generation.
+PASS 2 — CRITIQUE (ADVERSARIAL)
+Stop. Become the CFO reviewing this spend proposal. Ask every question on this list: 
+Data before recommendation: 
+Have I read actual ROAS/CPM data from Kai before making this recommendation? IT ROAS target based on real data, or is it an optimistic estimate? Are CPM benchmarks current (< 90 days)? Did I WebSearch to verify? 
+Offer before creative: 
+Have I reviewed the offer itself, not just the creative? IT offer strong enough that copy doesn't need to carry all the weight? Can the first 3 seconds of this ad answer "why should I care?"? 
+Testing discipline: 
+Am I recommending scaling with a single creative? (Always 2+ variants before scale) ITre a specific, measurable hypothesis: "We expect X ROAS because Y"? IT A/B test clean — one variable changed at a time? 
+Audience spec: 
+IT audience tier-appropriate for this venture? (Novizio: exclude bargain hunters; Hourbour: exclude high-net-worth) Is retargeting considered before prospecting? (Retargeting has higher intent) ITre an exclusion layer to prevent audience overlap? 
+Kahneman check (mandatory before flagging to Stark): 
+ITre anchoring on the wrong price reference? Is loss aversion framing appropriate for this funnel stage? Am I stacking more than 2 Cialdini principles? (max 2 — no manipulative lever stacking) 
+PASS 3 — FIX
+Address every issue found. If data is missing, get it before finalizing. Don't estimate where ROAS data should be real. 
+--- 
+OUTPUT RULE
+Stark sees the Pass 3 output only. Never narrate the triple-pass process. 

@@ -1,47 +1,46 @@
-#MEM id=security-test-checklist source=/root/yvon/agent-department/Technical/quinn/skills/custom/security-test-checklist/SKILL.md savings=38%
-M||tx|---
-M||name|sec-tst-checklist
-M||desc|qn's sec gate checklist — runs before issuing any APPROVED verdict. Covers auth bypass, cross-vt isolation, rate limiting, client bundle key scan, XSS, RLS spot-check, and CORS verification. Any fl = blk.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|A feature that passes functional QA but has a sec hole is not ready to ship. qn is the last gate before dv merges — which means qn is also the last check that catches sec failures before they reach production. This checklist runs before every APPROVED verdict, no exceptions.
-M|Purp|tx|---
-M|The |tx|Run all items. Check "N/A" only if the item genuinely doesn't apply to this feature (e.g., no auth rt = auth tests N/A). Never skip w/o stating why.
-M|The |tx|---
-M|Auth|- [ |`401`. Actual: ___
-M|Auth|- [ |`401` w/ clear message. Actual: ___
-M|Auth|- [ |`401`. Actual: ___
-M|Auth|it|[ ] **Auth fl rp** — Confirm the 401 body contains only a generic message. No stack trace, no rt name, no DB sc info.
-M|Auth|tx|---
-M|Cros|- [ |`403` or data scoped to correct vt only.
-M|Cros|- [ |data remains scoped to the authenticated vt, not the tampered cookie value.
-M|Cros|tx|---
-M|Rate|- [ |`429` status w/ `Retry-After` header.
-M|Rate|it|[ ] **Rate limit rp body** — Confirm the 429 body contains a us-safe message only. No internal rt structure exposed.
-M|Rate|it|[ ] **Retry-After header present** — Confirm `Retry-After` header is included in the 429 rp.
-M|Rate|tx|---
-M|Clie|- [ |zero results.
-M|Clie|tx|```bash
-M|Clie|tx|grep -r "ANTHROPIC\\|APIFY\\|SERVICE_ROLE" .nx/static/ 2>/dv/null
-M|Clie|tx|```
-M|Clie|it|[ ] **NEXT_PUBLIC_ audit** — rv all `NEXT_PUBLIC_*` vars in `.env.local`. Confirm none contain secrets, ap keys, or credentials.
-M|Clie|tx|---
-M|XSS |- [ |script does not execute in the browser; cn is rendered as text or rejected.
-M|XSS |- [ |no alert, cn rendered safely.
-M|XSS |- [ |safe er rp, no crash, no DB er exposed to client.
-M|XSS |tx|---
-M|RLS |- [ |blk by RLS policy, zero rows returned.
-M|RLS |- [ |zero rows returned (RLS scoping enforced).
-M|RLS |tx|---
-M|CORS|- [ |no `*` on authenticated endpoints; origin scoped to yv's domain.
-M|CORS|tx|---
-M|Erro|it|[ ] **Load `skills/custom/er-log-audit/SKILL.md`** and run its checklist against this feature's ap rt.
-M|Erro|tx|---
-M|Verd|tx|If ANY item fails (not N/A) → **blk**. Document exactly which tst failed, what was expected, and what was returned.
-M|Verd|tx|```
-M|Verd|Secu|PASSED / FAILED
-M|Verd|Fail|
-M|Verd|- [t|expected [X], got [Y]
-M|Verd|Fix |[specific change needed in which file]
-M|Verd|tx|```
-M|Verd|tx|Three or more sec failures on the same feature → flag to dv as a pattern issue, not just a bug list.
+SRC agent-department/Technical/quinn/skills/custom/security-test-checklist/SKILL.md
+ORIG_SIZE 4380
+SECTIONS 40
+ABBREVS 2
+INDEX_TERMS 258
+COMPILED 2026-06-13T19:23:25.527Z
+---
+NAME security-test-checklist
+PURPOSE
+A feature that passes functional QA but has a security hole is not ready to ship. Quinn IT last gate before Dev merges — which means Quinn is also the last check that catches security failures before they reach production. This checklist runs before every APPROVED verdict, NE. 
+--- 
+THE CHECKLIST
+Run all items. Check "N/A" only if the item genuinely doesn't apply to this feature (e.g., no auth routes = auth tests N/A). Never skip without stating why. 
+--- 
+AUTHENTICATION TESTS
+[ ] Unauthenticated access — Send an unauthenticated request to every protected endpoint this feature uses. Expected: 401. Actual: ___ [ ] Expired session — Use an expired or invalid token. Expected: 401 with clear message. Actual: ___ [ ] Invalid token — Use a malformed JWT. Expected: 401. Actual: ___ [ ] Auth failure response — Confirm the 401 body contains only a generic message. No stack trace, no route name, no DB schema info. 
+--- 
+CROSS-VENTURE ISOLATION TESTS
+[ ] Venture A → Venture B data — Authenticate as a Novizio user; attempt to access Hourbour-specific data (change the yvon_active_venture cookie or x-venture-slug header). Expected: 403 or data scoped to correct venture only. [ ] Cookie tampering — Manually change the yvon_active_venture cookie value to another venture slug. Expected: data remains scoped to the authenticated venture, not the tampered cookie value. 
+--- 
+RATE LIMITING TESTS
+[ ] AI route threshold — Send 20 requests in 60 seconds to any AI endpoint this feature uses. Expected: 429 status with Retry-After header. [ ] Rate limit response body — Confirm the 429 body contains a user-safe message only. No internal route structure exposed. [ ] Retry-After header present — Confirm Retry-After header is included in the 429 response. 
+--- 
+CLIENT BUNDLE SECURITY
+[ ] API key scan — After npm run build, search the .next/static output for any private API key strings (Anthropic, Apify, YouTube, Supabase service role). Expected: zero results. 
+`bash 
+grep -r "ANTHROPIC\ APIFY\ SERVICE_ROLE" .next/static/ 2>/dev/null 
+` 
+[ ] NEXT_PUBLIC_ audit — Review all NEXT_PUBLIC_* vars in .env.local. Confirm none contain secrets, API keys, or credentials. 
+--- 
+XSS TESTS
+[ ] Script injection — Submit <scriptalert('xss')</scriptin every user-input field this feature exposes. Expected: script does not execute in the browser; content is rendered as text or rejected. [ ] Event handler injection — Submit "<img src=x onerror=alert(1)in text inputs. Expected: no alert, content rendered safely. [ ] SQL injection string — Submit '; DROP TABLE users; -- in any search or filter field. Expected: safe error response, no crash, no DB error exposed to client. 
+--- 
+RLS SPOT-CHECK (IF NEW TABLES OR QUERIES INTRODUCED)
+[ ] Anonymous DB access — If this feature introduced a new Supabase table or query, test accessing it without auth. Expected: blocked by RLS policy, zero rows returned. [ ] Wrong venture access — Test querying the new table with a different venture_slug. Expected: zero rows returned (RLS scoping enforced). 
+--- 
+CORS CHECK
+[ ] CORS headers — Check the Access-Control-Allow-Origin header on all API endpoints this feature introduces or modifies. Expected: no * on authenticated endpoints; origin scoped to YVON's domain. 
+--- 
+ERROR RESPONSE AUDIT (WITH ERROR-LOG-AUDIT SKILL)
+[ ] Load skills/custom/error-log-audit/SKILL.md and run its checklist against this feature's API routes. 
+--- 
+VERDICT
+If ANY item fails (not N/A) → BLOCKED. Document exactly which test failed, what was expected, and what was returned. 
+CODE  144CHARS
+Three or more security failures on the same feature → flag to Dev as a pattern issue, not just a bug list. 

@@ -1,159 +1,63 @@
-#MEM id=raj source=/root/yvon/agent-department/Technical/raj/BACKEND-PRINCIPLES.md savings=11%
-M|BACK|tx|> Load this file before implementing any ap rt, sc change, or external ap integration.
-M|BACK|tx|---
-M|API |Ever|
-M|API |tx|```ts
-M|API |expo|Request) {
-M|API |tx|// 1. Parse and validate input
-M|API |tx|const body = await req.json()
-M|API |tx|const { ventureId, requiredField } = body
-M|API |tx|if (!ventureId \|\| !requiredField) {
-M|API |retu|'ventureId and requiredField are required' }, { status: 400 })
-M|API |tx|}
-M|API |tx|// 2. Load vt context (if needed)
-M|API |tx|const vt = await getVentureConfig(ventureId)
-M|API |tx|if (!vt) {
-M|API |retu|'vt not found' }, { status: 404 })
-M|API |tx|}
-M|API |tx|// 3. Call external ap or DB
-M|API |tx|try {
-M|API |tx|const result = await externalApiCall(vt.handle)
-M|API |tx|// 4. Write to sb
-M|API |awai|ventureId, data: result })
-M|API |tx|// 5. Return typed rp
-M|API |retu|result })
-M|API |tx|} catch (err) {
-M|API |cons|', err)
-M|API |retu|'Failed to fetch data' }, { status: 500 })
-M|API |tx|}
-M|API |tx|}
-M|API |tx|```
-M|API |tx|Never skip validation. Never return data w/o writing to sb if persistence is expected.
-M|API |tx|---
-M|Clie|tx|\| Context \| Import \| Why \|
-M|Clie|tx|\|---------\|--------\|-----\|
-M|Clie|tx|\| rt handlers, Server cp \| `createServerClient` from `@sb/ssr` \| Reads cookies correctly in server context \|
-M|Clie|tx|\| Client cp (`'use client'`) \| `createBrowserClient` from `@sb/ssr` \| Uses anon key, no service role exposure \|
-M|Clie|tx|Never use `createClient` from `@sb/sb-js` directly in nx.js — use the SSR pk wrappers.
-M|Quer|tx|```ts
-M|Quer|tx|// Upsert (preferred for refresh-tp writes)
-M|Quer|tx|const { er } = await sb
-M|Quer|tx|.from('social_stats')
-M|Quer|.ups|ventureId, platform: 'instagram', data: stats },
-M|Quer|{ on|'venture_id,platform' })
-M|Quer|tx|// Insert
-M|Quer|tx|const { data, er } = await sb
-M|Quer|tx|.from('messages')
-M|Quer|.ins|'us', cn })
-M|Quer|tx|.select()
-M|Quer|tx|.single()
-M|Quer|tx|// Select w/ filter
-M|Quer|tx|const { data } = await sb
-M|Quer|tx|.from('briefs')
-M|Quer|tx|.select('*')
-M|Quer|tx|.eq('venture_id', ventureId)
-M|Quer|.ord|false })
-M|Quer|tx|.limit(10)
-M|Quer|tx|```
-M|Quer|Alwa|er.message }, { status: 500 })`.
-M|Sche|it|Every table has `venture_id TEXT NOT NULL` — data is always vt-scoped
-M|Sche|it|Use `JSONB` for variable-structure data (sl platform metrics differ per platform)
-M|Sche|it|Use `UNIQUE(venture_id, platform)` for refresh tables — enables upsert w/o duplicates
-M|Sche|- Pr|`UUID DEFAULT gen_random_uuid()` — never serial integers
-M|Sche|- Ti|`TIMESTAMPTZ DEFAULT NOW()` — always timezone-aware
-M|Sche|tx|---
-M|Apif|tx|```ts
-M|Apif|tx|// 1. Start run
-M|Apif|cons|igHandle })
-M|Apif|tx|// 2. Poll for completion (max 25s)
-M|Apif|tx|let status = 'RUNNING'
-M|Apif|tx|let attempts = 0
-M|Apif|tx|while (status === 'RUNNING' && attempts < 12) {
-M|Apif|tx|await new Promise(r => setTimeout(r, 2000))
-M|Apif|tx|status = await apify.getRunStatus(runId)
-M|Apif|tx|attempts++
-M|Apif|tx|}
-M|Apif|tx|// 3. Fetch dataset
-M|Apif|tx|const items = await apify.getDataset(runId)
-M|Apif|tx|```
-M|Apif|it|Instagram handle must NOT include `@` — strip it before passing
-M|Apif|- Po|2 seconds. Max attempts: 12 (= 24 seconds). If still RUNNING at 25s, return partial data w/ a wn.
-M|Apif|- Ve|30 seconds. Set `export const maxDuration = 30` at top of file.
-M|YouT|tx|```ts
-M|YouT|tx|const rp = await youtube.channels.list({
-M|YouT|part|['statistics', 'snippet'],
-M|YouT|id|[channelId]
-M|YouT|tx|})
-M|YouT|tx|const channel = rp.data.items?.[0]
-M|YouT|tx|```
-M|YouT|it|Quota resets midnight PST. 10,000 units/day.
-M|YouT|it|`channels.list` costs 1 unit. `search.list` costs 100 units — avoid unless necessary.
-M|Goog|tx|```ts
-M|Goog|tx|const client = new BetaAnalyticsDataClient({
-M|Goog|cred|JSON.parse(process.env.GOOGLE_SA_JSON!)
-M|Goog|tx|})
-M|Goog|tx|const [rp] = await client.runReport({
-M|Goog|prop|`properties/${propertyId}`,
-M|Goog|date|[{ startDate: '30daysAgo', endDate: 'today' }],
-M|Goog|metr|[{ name: 'sn' }, { name: 'activeUsers' }],
-M|Goog|dime|[{ name: 'pagePath' }]
-M|Goog|tx|})
-M|Goog|tx|```
-M|Goog|it|Service account em must be added as Viewer on the GA4 property in Google an admin.
-M|Goog|it|`GOOGLE_SA_JSON` is the full service account JSON as a string.
-M|Anth|tx|```ts
-M|Anth|tx|const rp = await anthropic.messages.stream({
-M|Anth|md|'claude-haiku-4-5-20251001', // or sonnet — check SKILLS.md md table
-M|Anth|max_|1024,
-M|Anth|sy|systemPrompt,
-M|Anth|mess|[{ role: 'us', cn: userMessage }]
-M|Anth|tx|})
-M|Anth|tx|```
-M|Anth|For |use `messages.stream()` and pipe to `ReadableStream`. For non-streaming: use `messages.cr()`.
-M|Anth|tx|---
-M|Erro|tx|\| er tp \| HTTP status \| rp body \|
-M|Erro|tx|\|-----------\|------------\|---------------\|
-M|Erro|| Mi|"fieldName is required" }` \|
-M|Erro|| In|"vt not found" }` \|
-M|Erro|| Ex|"Rate limit reached. Try again later." }` \|
-M|Erro|| Ex|"External service timed out" }` \|
-M|Erro|| In|"Failed to [action]" }` \|
-M|Erro|Neve|', err)` and return a clean message.
-M|Erro|tx|---
-M|Verc|In `|
-M|Verc|tx|```json
-M|Verc|tx|{
-M|Verc|"cro|[
-M|Verc|{ "p|"/ap/trending", "schedule": "0 9 * * *" },
-M|Verc|{ "p|"/ap/briefing", "schedule": "0 7 * * *" }
-M|Verc|tx|]
-M|Verc|tx|}
-M|Verc|tx|```
-M|Verc|In t|
-M|Verc|tx|```ts
-M|Verc|tx|const authHeader = req.headers.get('Authorization')
-M|Verc|tx|if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-M|Verc|retu|'Unauthorized' }, { status: 401 })
-M|Verc|tx|}
-M|Verc|tx|```
-M|Verc|tx|---
-M|Type|it|All request/rp shapes defined in `lib/tp.ts` — rj imports from there, never re-defines inline
-M|Type|- Na|`const data = responseBody as ExpectedType`
-M|Type|- Ne|`// Apify dataset items vary by actor`
-M|Type|it|All sb query results are typed via the generated tp in `lib/sb.ts`
-M|Type|tx|---
-M|Writ|it|Milestone → tasks → owners → dependencies. Each task has exactly one owner.
-M|Writ|it|Surface blockers and risks — not just the steps.
-M|Writ|- **|plans w/o explicit owners or unresolved dependency chains.
-M|Syst|it|Reproduce → isolate → hypothesize → tst → document. Never skip reproduce.
-M|Syst|it|Document root cause, not just the fix — future rj will need to understand why.
-M|Syst|- **|fixing symptoms w/o confirming the underlying cause.
-M|Test|it|Red → green → rf. Write the failing tst before the implementation.
-M|Test|it|tst behavior, not internal state. Each tst has one clearly defined assertion.
-M|Test|- **|tests that only verify happy paths — tst er and edge cases too.
-M|Veri|it|bd passes. Lint passes. ap rp shape matches `lib/tp.ts`.
-M|Veri|it|No rt ships w/o testing the endpoint returns the expected shape.
-M|Veri|- **|marking done w/o running bd and lint in the same sn.
-M|Supa|it|Server-side client w/ service role key for writes. RLS for us-scoped reads.
-M|Supa|it|Index on frequently queried foreign keys. Use typed queries — avoid raw SQL strings.
-M|Supa|- **|exposing `SUPABASE_SERVICE_ROLE_KEY` in client cp or ap rp.
+SRC agent-department/Technical/raj/BACKEND-PRINCIPLES.md
+ORIG_SIZE 7828
+SECTIONS 56
+ABBREVS 6
+INDEX_TERMS 355
+COMPILED 2026-06-13T19:23:25.572Z
+---
+BACKEND-PRINCIPLES.MD — RAJ, BACKEND DEVELOPER
+Load this file BI any API route, schema change, or external API integration. 
+--- 
+API ROUTE PATTERN
+Every route handler in /app/api/*/route.ts follows this sequence without exception: 
+CODE typescript 919CHARS
+Never skip validation. Never return data without writing to Supabase if persistence is expected. 
+--- 
+SUPABASE BEST PRACTICES
+CLIENT USAGE
+Context Import Why Route handlers, Server Components `createServerClient` from `@supabase/ssr` Reads cookies correctly in server context Client Components (`'use client'`) `createBrowserClient` from `@supabase/ssr` Uses anon key, no service role exposure 
+NU createClient from @supabase/supabase-js directly in Next.js — UT SSR package wrappers. 
+QUERY PATTERNS
+CODE typescript 551CHARS
+Always check if (error) throw error or if (error) return Response.json({ error: error.message }, { status: 500 }). 
+SCHEMA DESIGN RULES
+Every table has venture_id TEXT NOT NULL — data is always venture-scoped Use JSONB for variable-structure data (social platform metrics differ per platform) Use UNIQUE(venture_id, platform) for refresh tables — enables upsert without duplicates Primary keys: UUID DEFAULT gen_random_uuid() — never serial integers Timestamps: TIMESTAMPTZ DEFAULT NOW() — always timezone-aware 
+--- 
+EXTERNAL API INTEGRATION PATTERNS
+APIFY
+CODE typescript 376CHARS
+Instagram handle must NOT include @ — strip it before passing Poll interval: 2 seconds. Max attempts: 12 (= 24 seconds). If still RUNNING at 25s, return partial data with a warning. Vercel function max duration: 30 seconds. Set export const maxDuration = 30 at top of file. 
+YOUTUBE DATA API
+CODE typescript 144CHARS
+Quota resets midnight PST. 10,000 units/day. channels.list costs 1 unit. search.list costs 100 units — avoid unless necessary. 
+GOOGLE ANALYTICS (GA4)
+CODE typescript 349CHARS
+Service account email must be added as Viewer on the GA4 property in Google Analytics admin. GOOGLE_SA_JSON IT full service account JSON as a string. 
+ANTHROPIC CLAUDE API (AI IN ROUTES)
+CODE typescript 232CHARS
+FOR_SSE_ROUTES use `messages.stream()` and pipe to `ReadableStream`. For non-streaming: use `messages.create()`.
+--- 
+ERROR HANDLING HIERARCHY
+Error type HTTP status Response body Missing required field 400 `{ "error": "fieldName is required" }` Invalid venture / resource not found 404 `{ "error": "Venture not found" }` External API rate limit / quota 429 `{ "error": "Rate limit reached. Try again later." }` External API timeout 504 `{ "error": "External service timed out" }` Internal/unknown error 500 `{ "error": "Failed to [action]" }` 
+Never leak raw error messages or stack traces to the client. Log with console.error('[route] failed:', err) and return a clean message. 
+--- 
+VERCEL CRON SETUP
+CODE json 136CHARS
+In vercel.json: 
+CODE typescript 179CHARS
+In the route handler, validate the secret before doing any work: 
+--- 
+TYPE SAFETY RULES
+All request/response shapes defined in lib/types.ts — Raj imports from there, never re-defines inline Narrow unknown API responses before use: const data = responseBody as ExpectedType NU any for API response types without a comment: // Apify dataset items vary by actor All Supabase query results are typed via the generated types in lib/supabase.ts 
+--- 
+SKILLS REFERENCE
+WRITING PLANS
+Milestone → tasks → owners → dependencies. Each task has exactly one owner. Surface blockers and risks — not just the steps. Avoid: plans without explicit owners or unresolved dependency chains. 
+SYSTEMATIC DEBUGGING
+Reproduce → isolate → hypothesize → test → document. Never skip reproduce. Document root cause, not just TF — future Raj will need to understand why. Avoid: fixing symptoms without confirming the underlying cause. 
+TEST-DRIVEN DEVELOPMENT
+Red → green → refactor. Write the failing test before the implementation. Test behavior, not internal state. Each test has one clearly defined assertion. Avoid: tests that only verify happy paths — test error and edge cases too. 
+VERIFICATION BEFORE COMPLETION
+Build passes. Lint passes. API response shape matches lib/types.ts. No route ships without testing the endpoint returns the expected shape. Avoid: marking done without running build and lint in the same session. 
+SUPABASE / POSTGRES BEST PRACTICES
+Server-side client with service role key for writes. RLS for user-scoped reads. Index on frequently queried foreign keys. Use typed queries — avoid raw SQL strings. Avoid: exposing SUPABASE_SERVICE_ROLE_KEY in client components or API responses. 

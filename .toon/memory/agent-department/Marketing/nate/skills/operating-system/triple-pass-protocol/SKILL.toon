@@ -1,32 +1,31 @@
-#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Marketing/nate/skills/operating-system/triple-pass-protocol/SKILL.md savings=10%
-M||tx|---
-M||name|triple-pass-protocol
-M||desc|nt's pre-delivery qual gate. Three passes — gn, Critique, Fix — before any growth experiment brief or opportunity recommendation is delivered. Stark never sees the process, only the final output.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|Growth hypotheses that sound good in theory can destroy runway when they fail. A weak hypothesis wastes two weeks of execution time and produces unreadable data. This protocol forces PMF-check, hypothesis precision, and ICE calibration before any experiment goes to Stark for approval.
-M|Purp|tx|---
-M|Pass|Writ|hypothesis, sc metric, timeline, ICE score, DRI assignment. Don't self-edit during generation.
-M|Pass|Stop|
-M|Pass|**PM|**
-M|Pass|it|Have I confirmed PMF signals before recommending growth investment?
-M|Pass|it|wld 40%+ of us be "very disappointed" w/o this pd? Is this known?
-M|Pass|it|If PMF is unconfirmed, is this recommendation scoped to lo-spend validation, not scaling?
-M|Pass|**No|**
-M|Pass|it|Does this experiment move the North Star, or a secondary metric?
-M|Pass|it|Am I chasing a secondary metric bc it's easier to move?
-M|Pass|it|Is the North Star clearly stated in the brief?
-M|Pass|**Hy|**
-M|Pass|- Do|IF [specific action] THEN [specific metric change] bc [mechanism]?
-M|Pass|it|Is the sc metric measurable within 14 days?
-M|Pass|it|wld a failed outcome produce a clear signal — or ambiguous noise?
-M|Pass|**IC|**
-M|Pass|it|Is the ICE score based on data, or optimism?
-M|Pass|it|Have I tracked ICE accuracy on past experiments? Is my scoring md calibrated?
-M|Pass|it|Is the effort score realistic, or am I underestimating execution complexity?
-M|Pass|**DR|**
-M|Pass|it|Is there a named DRI for execution? (nt finds the lever; someone else pulls it)
-M|Pass|it|Has the DRI been consulted before being named?
-M|Pass|tx|Rewrite any weak hypothesis. Downgrade ICE scores that can't be defended. Name the DRI. If PMF is unconfirmed, scope accordingly.
-M|Pass|tx|---
-M|Outp|tx|Stark sees the Pass 3 output only. Never narrate the triple-pass process.
+SRC agent-department/Marketing/nate/skills/operating-system/triple-pass-protocol/SKILL.md
+ORIG_SIZE 2274
+SECTIONS 25
+ABBREVS 4
+INDEX_TERMS 155
+COMPILED 2026-06-13T19:23:25.158Z
+---
+NAME triple-pass-protocol
+PURPOSE
+Growth hypotheses that sound good in theory can destroy runway when they fail. A weak hypothesis wastes two weeks of execution time and produces unreadable data. This protocol forces PMF-check, hypothesis precision, and ICE calibration before any experiment goes to Stark for approval. 
+--- 
+THE THREE PASSES
+PASS 1 — GENERATE
+WRITE_THE_FULL_GROWTH_EXPERIMENT_BRIEF_OR_OPPORTUNITY_RECOMMENDATION hypothesis, success metric, timeline, ICE score, DRI assignment. Don't self-edit during generation.
+PASS 2 — CRITIQUE (ADVERSARIAL)
+Stop. Become the skeptic who has seen 100 failed experiments. Ask every question on this list: 
+PMF check: 
+Have I confirmed PMF signals before recommending growth investment? Would 40%+ of users be "very disappointed" without this product? Is this known? If PMF is unconfirmed, is this recommendation scoped to low-spend validation, not scaling? 
+North Star alignment: 
+Does this experiment move the North Star, or a secondary metric? Am I chasing a secondary metric because it's easier to move? IT North Star clearly stated in the brief? 
+Hypothesis quality: 
+DOES_THE_HYPOTHESIS_FOLLOW IF [specific action] THEN [specific metric change] BECAUSE [mechanism]?
+ICE score honesty: 
+IT ICE score based on data, or optimism? Have I tracked ICE accuracy on past experiments? Is my scoring model calibrated? IT effort score realistic, or am I underestimating execution complexity? 
+DRI clarity: 
+ITre a named DRI for execution? (Nate finds the lever; someone else pulls it) Has the DRI been consulted before being named? 
+PASS 3 — FIX
+Rewrite any weak hypothesis. Downgrade ICE scores that can't be defended. Name the DRI. If PMF is unconfirmed, scope accordingly. 
+--- 
+OUTPUT RULE
+Stark sees the Pass 3 output only. Never narrate the triple-pass process. 

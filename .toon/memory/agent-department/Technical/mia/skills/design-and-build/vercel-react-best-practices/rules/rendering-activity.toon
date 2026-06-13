@@ -1,20 +1,13 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-activity.md savings=4%
-M||tx|---
-M||titl|Use Activity cp for Show/Hide
-M||impa|md
-M||impa|preserves state/DOM
-M||tags|rendering, activity, visibility, state-preservation
-M||tx|---
-M|Use |tx|Use rc's `<Activity>` to preserve state/DOM for expensive cp that frequently toggle visibility.
-M|Use |**Us|**
-M|Use |tx|```tsx
-M|Use |tx|import { Activity } from 'rc'
-M|Use |func|Props) {
-M|Use |tx|return (
-M|Use |<Act|'hidden'}>
-M|Use |tx|<ExpensiveMenu />
-M|Use |tx|</Activity>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |tx|Avoids expensive re-renders and state loss.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-activity.md
+ORIG_SIZE 564
+SECTIONS 7
+ABBREVS 0
+INDEX_TERMS 25
+COMPILED 2026-06-13T19:23:25.460Z
+---
+TITLE Use Activity Component for Show/Hide
+USE ACTIVITY COMPONENT FOR SHOW/HIDE
+Use React's <Activityto preserve state/DOM for expensive components that frequently toggle visibility. 
+Usage: 
+CODE tsx 182CHARS
+Avoids expensive re-renders and state loss. 

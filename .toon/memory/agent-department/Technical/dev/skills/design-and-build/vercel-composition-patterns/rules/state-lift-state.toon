@@ -1,107 +1,20 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-lift-state.md savings=-8%
-M||tx|---
-M||titl|Lift State into pr cp
-M||impa|hi
-M||impa|enables state sharing outside cp boundaries
-M||tags|composition, state, context, pr
-M||tx|---
-M|Lift|tx|Move state management into dedicated pr cp. This allows sibling
-M|Lift|tx|cp outside the main UI to access and modify state w/o prop drilling
-M|Lift|tx|or awkward refs.
-M|Lift|**In|**
-M|Lift|tx|```tsx
-M|Lift|tx|fn ForwardMessageComposer() {
-M|Lift|tx|const [state, setState] = useState(initialState)
-M|Lift|tx|const forwardMessage = useForwardMessage()
-M|Lift|tx|return (
-M|Lift|tx|<Composer.Frame>
-M|Lift|tx|<Composer.Input />
-M|Lift|tx|<Composer.Footer />
-M|Lift|tx|</Composer.Frame>
-M|Lift|tx|)
-M|Lift|tx|}
-M|Lift|// P|How does this button access composer state?
-M|Lift|tx|fn ForwardMessageDialog() {
-M|Lift|tx|return (
-M|Lift|tx|<Dialog>
-M|Lift|tx|<ForwardMessageComposer />
-M|Lift|tx|<MessagePreview /> {/* Needs composer state */}
-M|Lift|tx|<DialogActions>
-M|Lift|tx|<CancelButton />
-M|Lift|tx|<ForwardButton /> {/* Needs to call submit */}
-M|Lift|tx|</DialogActions>
-M|Lift|tx|</Dialog>
-M|Lift|tx|)
-M|Lift|tx|}
-M|Lift|tx|```
-M|Lift|**In|**
-M|Lift|tx|```tsx
-M|Lift|tx|fn ForwardMessageDialog() {
-M|Lift|tx|const [input, setInput] = useState('')
-M|Lift|tx|return (
-M|Lift|tx|<Dialog>
-M|Lift|tx|<ForwardMessageComposer onInputChange={setInput} />
-M|Lift|tx|<MessagePreview input={input} />
-M|Lift|tx|</Dialog>
-M|Lift|tx|)
-M|Lift|tx|}
-M|Lift|tx|fn ForwardMessageComposer({ onInputChange }) {
-M|Lift|tx|const [state, setState] = useState(initialState)
-M|Lift|tx|useEffect(() => {
-M|Lift|tx|onInputChange(state.input) // Sync on every change 😬
-M|Lift|tx|}, [state.input])
-M|Lift|tx|}
-M|Lift|tx|```
-M|Lift|**In|**
-M|Lift|tx|```tsx
-M|Lift|tx|fn ForwardMessageDialog() {
-M|Lift|tx|const stateRef = useRef(null)
-M|Lift|tx|return (
-M|Lift|tx|<Dialog>
-M|Lift|tx|<ForwardMessageComposer stateRef={stateRef} />
-M|Lift|tx|<ForwardButton onPress={() => submit(stateRef.current)} />
-M|Lift|tx|</Dialog>
-M|Lift|tx|)
-M|Lift|tx|}
-M|Lift|tx|```
-M|Lift|**Co|**
-M|Lift|tx|```tsx
-M|Lift|func|{ children: rc.ReactNode }) {
-M|Lift|tx|const [state, setState] = useState(initialState)
-M|Lift|tx|const forwardMessage = useForwardMessage()
-M|Lift|tx|const inputRef = useRef(null)
-M|Lift|tx|return (
-M|Lift|tx|<Composer.pr
-M|Lift|tx|state={state}
-M|Lift|acti|setState, submit: forwardMessage }}
-M|Lift|tx|meta={{ inputRef }}
-M|Lift|tx|>
-M|Lift|tx|{children}
-M|Lift|tx|</Composer.pr>
-M|Lift|tx|)
-M|Lift|tx|}
-M|Lift|tx|fn ForwardMessageDialog() {
-M|Lift|tx|return (
-M|Lift|tx|<ForwardMessageProvider>
-M|Lift|tx|<Dialog>
-M|Lift|tx|<ForwardMessageComposer />
-M|Lift|tx|<MessagePreview /> {/* Custom cp can access state and actions */}
-M|Lift|tx|<DialogActions>
-M|Lift|tx|<CancelButton />
-M|Lift|tx|<ForwardButton /> {/* Custom cp can access state and actions */}
-M|Lift|tx|</DialogActions>
-M|Lift|tx|</Dialog>
-M|Lift|tx|</ForwardMessageProvider>
-M|Lift|tx|)
-M|Lift|tx|}
-M|Lift|tx|fn ForwardButton() {
-M|Lift|tx|const { actions } = use(Composer.Context)
-M|Lift|tx|return <Button onPress={actions.submit}>Forward</Button>
-M|Lift|tx|}
-M|Lift|tx|```
-M|Lift|tx|The ForwardButton lives outside the Composer.Frame but still has access to the
-M|Lift|tx|submit action bc it's within the pr. Even though it's a one-off
-M|Lift|tx|cp, it can still access the composer's state and actions from outside the
-M|Lift|tx|UI itself.
-M|Lift|**Ke|** cp that need shared state don't have to be visually
-M|Lift|tx|nested inside each other—they just need to be within the same pr.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-lift-state.md
+ORIG_SIZE 3224
+SECTIONS 14
+ABBREVS 0
+INDEX_TERMS 72
+COMPILED 2026-06-13T19:23:25.290Z
+---
+TITLE Lift State into Provider Components
+LIFT STATE INTO PROVIDER COMPONENTS
+Move state management into dedicated provider components. This allows sibling components outside the main UI to access and modify state without prop drilling or awkward refs. 
+Incorrect (state trapped inside component): 
+CODE tsx 591CHARS
+Incorrect (useEffect to sync state up): 
+CODE tsx 421CHARS
+Incorrect (reading state from ref on submit): 
+CODE tsx 228CHARS
+Correct (state lifted to provider): 
+CODE tsx 954CHARS
+The ForwardButton lives outside the Composer.Frame but still has access to the submit action because it's within the provider. Even though it's a one-off component, it can still access the composer's state and actions from outside the UI itself. 
+Key insight: Components that need shared state don't have to be visually nested inside each other—they just need to be within the same provider. 

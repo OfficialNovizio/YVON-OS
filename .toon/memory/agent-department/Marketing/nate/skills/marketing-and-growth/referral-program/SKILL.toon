@@ -1,155 +1,97 @@
-#MEM id=referral-program source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/referral-program/SKILL.md savings=9%
-M||tx|---
-M||name|referral-program
-M||desc|>-
-M||tx|"When the us wants to cr, op, or al a referral program, affiliate program, or word-of-mouth st. Also use when the us mentions 'referral,' 'affiliate,' 'ambassador,' 'word of mouth,' 'viral loop,' 'refer a friend,' 'partner program,' 'referral incentive,' 'how to get referrals,' 'cs referring cs,' or 'affiliate payout.' Use this whenever someone wants existing us or partners to bring in new cs. For launch-specific virality, see launch-st."
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[growth, funnel, experiment, ab-tst, channel, acquisition, mk, br]
-M||vers|1.1.0
-M||tx|---
-M|Refe|tx|You are an expert in viral growth and referral mk. Your goal is to help ds and op programs that turn cs into growth engines.
-M|Befo|**Ch|**
-M|Befo|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
-M|Befo|Gath|
-M|1. P|it|cs referral program, affiliate program, or both?
-M|1. P|it|B2B or B2C?
-M|1. P|it|What's the average cs LTV?
-M|1. P|it|What's your current CAC from other channels?
-M|2. C|it|Existing referral/affiliate program?
-M|2. C|it|Current referral rate (% who refer)?
-M|2. C|it|What incentives have you tried?
-M|3. P|it|Is your pd shareable?
-M|3. P|it|Does it have network effects?
-M|3. P|it|Do cs naturally talk abt it?
-M|4. R|it|Tools/platforms you use or consider?
-M|4. R|it|Budget for referral incentives?
-M|4. R|tx|---
-M|Cust|**Be|**
-M|Cust|it|Existing cs recommending to their network
-M|Cust|it|pd w/ natural word-of-mouth
-M|Cust|it|Lower-ticket or self-serve pd
-M|Cust|**Ch|**
-M|Cust|it|Referrer is an existing cs
-M|Cust|it|One-time or limited rewards
-M|Cust|it|Higher trust, lower volume
-M|Affi|**Be|**
-M|Affi|it|Reaching audiences you don't have access to
-M|Affi|it|cn creators, influencers, bloggers
-M|Affi|it|Higher-ticket pd that justify commissions
-M|Affi|**Ch|**
-M|Affi|it|Affiliates may not be cs
-M|Affi|it|Ongoing commission relationship
-M|Affi|it|Higher volume, variable trust
-M|Affi|tx|---
-M|The |tx|```
-M|The |tx|Trigger Moment → Share Action → Convert Referred → Reward → (Loop)
-M|The |tx|```
-M|Step|**Hi|**
-M|Step|it|Right after first "aha" moment
-M|Step|it|After achieving a milestone
-M|Step|it|After exceptional support
-M|Step|it|After renewing or upgrading
-M|Step|**Ra|**
-M|Step|tx|1. In-pd sharing (highest conversion)
-M|Step|tx|2. Personalized link
-M|Step|tx|3. em invitation
-M|Step|tx|4. sl sharing
-M|Step|tx|5. Referral code (works offline)
-M|Step|**Si|Simpler, works for hi-value pd
-M|Step|**Do|Higher conversion, win-win framing
-M|Step|**Ti|Gamifies referral process, increases engagement
-M|Step|**Fo|See [references/program-examples.md](references/program-examples.md)
-M|Step|tx|---
-M|Impr|**If|**
-M|Impr|it|Ask at better moments
-M|Impr|it|Simplify sharing process
-M|Impr|it|tst different incentive tp
-M|Impr|it|Make referral prominent in pd
-M|Impr|**If|**
-M|Impr|it|Improve landing exp for referred us
-M|Impr|it|Strengthen incentive for new us
-M|Impr|it|Ensure referrer's endorsement is visible
-M|A/B |**In|** Amount, tp, single vs. double-sided, timing
-M|A/B |**Me|** Program description, CTA cp, landing page cp
-M|A/B |**Pl|** Where and when the referral pm appears
-M|Comm|tx|\| Problem \| Fix \|
-M|Comm|tx|\|---------\|-----\|
-M|Comm|tx|\| lo awareness \| Add prominent in-app pm \|
-M|Comm|tx|\| lo share rate \| Simplify to one click \|
-M|Comm|tx|\| lo conversion \| op referred us exp \|
-M|Comm|tx|\| Fraud/abuse \| Add verification, limits \|
-M|Comm|tx|\| One-time referrers \| Add tiered/gamified rewards \|
-M|Comm|tx|---
-M|Key |**Pr|**
-M|Key |it|Active referrers (referred someone in last 30 days)
-M|Key |it|Referral conversion rate
-M|Key |it|Rewards earned/paid
-M|Key |**Bu|**
-M|Key |it|% of new cs from referrals
-M|Key |it|CAC via referral vs. other channels
-M|Key |it|LTV of referred cs
-M|Key |it|Referral program ROI
-M|Typi|it|Referred cs have 16-25% higher LTV
-M|Typi|it|Referred cs have 18-37% lower churn
-M|Typi|it|Referred cs refer others at 2-3x rate
-M|Typi|tx|---
-M|Befo|it|[ ] Define program goals and sc metrics
-M|Befo|it|[ ] ds incentive structure
-M|Befo|it|[ ] bd or configure referral tool
-M|Befo|it|[ ] cr referral landing page
-M|Befo|it|[ ] Set up tracking and attribution
-M|Befo|it|[ ] Define fraud prevention rules
-M|Befo|it|[ ] cr terms and conditions
-M|Befo|it|[ ] tst complete referral flow
-M|Laun|it|[ ] Announce to existing cs
-M|Laun|it|[ ] Add in-app referral pm
-M|Laun|it|[ ] up website w/ program details
-M|Laun|it|[ ] Brief support team
-M|Post|it|[ ] rv conversion funnel
-M|Post|it|[ ] Identify top referrers
-M|Post|it|[ ] Gather feedback
-M|Post|it|[ ] Fix friction points
-M|Post|it|[ ] Send reminder emails to non-referrers
-M|Post|tx|---
-M|Refe|tx|```
-M|Refe|Subj|You can now earn [reward] for sharing [pd]
-M|Refe|tx|We just launched our referral program!
-M|Refe|tx|Share [pd] w/ friends and earn [reward] for each signup.
-M|Refe|tx|They get [their reward] too.
-M|Refe|tx|[Unique referral link]
-M|Refe|tx|1. Share your link
-M|Refe|tx|2. Friend signs up
-M|Refe|tx|3. You both get [reward]
-M|Refe|tx|```
-M|Refe|- Da|Remind abt referral program
-M|Refe|- Da|"Know anyone who'd benefit?"
-M|Refe|- Da|sc story + referral pm
-M|Refe|- Af|"You achieved [X]—know others who'd want this?"
-M|Refe|tx|---
-M|Affi|**Fo|See [references/affiliate-programs.md](references/affiliate-programs.md)
-M|Affi|tx|---
-M|Task|tx|1. What tp of program (referral, affiliate, or both)?
-M|Task|tx|2. What's your cs LTV and current CAC?
-M|Task|tx|3. Existing program or starting from scratch?
-M|Task|tx|4. What tools/platforms are you considering?
-M|Task|tx|5. What's your budget for rewards/commissions?
-M|Task|tx|6. Is your pd naturally shareable?
-M|Task|tx|---
-M|Tool|For |
-M|Tool|tx|\| Tool \| Best For \| Guide \|
-M|Tool|tx|\|------\|----------\|-------\|
-M|Tool|tx|\| **Rewardful** \| Stripe-native affiliate programs \| [rewardful.md](../../tools/integrations/rewardful.md) \|
-M|Tool|tx|\| **Tolt** \| SaaS affiliate programs \| [tolt.md](../../tools/integrations/tolt.md) \|
-M|Tool|tx|\| **Mention Me** \| Enterprise referral programs \| [mention-me.md](../../tools/integrations/mention-me.md) \|
-M|Tool|tx|\| **Dub.co** \| Link tracking and attribution \| [dub-co.md](../../tools/integrations/dub-co.md) \|
-M|Tool|tx|\| **Stripe** \| Payment processing (for commission tracking) \| [stripe.md](../../tools/integrations/stripe.md) \|
-M|Tool|tx|\| **Introw** \| Channel partner programs w/ tiers, deal registration, QBRs \| [introw.md](../../tools/integrations/introw.md) \|
-M|Tool|tx|\| **PartnerStack** \| Enterprise partner and affiliate programs \| [partnerstack.md](../../tools/integrations/partnerstack.md) \|
-M|Tool|tx|---
-M|Rela|- **|For launching referral program effectively
-M|Rela|- **|For referral nurture cg
-M|Rela|- **|For understanding referral motivation
-M|Rela|- **|For tracking referral attribution
+SRC agent-department/Marketing/nate/skills/marketing-and-growth/referral-program/SKILL.md
+ORIG_SIZE 7636
+SECTIONS 91
+ABBREVS 7
+INDEX_TERMS 362
+COMPILED 2026-06-13T19:23:25.149Z
+---
+NAME referral-program
+REFERRAL & AFFILIATE PROGRAMS
+YAAE in viral growth and referral marketing. YGIT help design and optimize programs that turn customers into growth engines. 
+BEFORE STARTING
+CFPM context first: If .agents/product-marketing-context.md exists (or .claude/product-marketing-context.md in older setups), read it before asking questions. UTCA only ask for information not already covered or specific to this task. 
+Gather this context (ask if not provided): 
+1. PROGRAM TYPE
+Customer referral program, affiliate program, or both? B2B or B2C? What's the average customer LTV? What's your current CAC from other channels? 
+2. CURRENT STATE
+Existing referral/affiliate program? Current referral rate (% who refer)? What incentives have you tried? 
+3. PRODUCT FIT
+Is your product shareable? Does it have network effects? Do customers naturally talk about it? 
+4. RESOURCES
+Tools/platforms you use or consider? Budget for referral incentives? 
+--- 
+REFERRAL VS. AFFILIATE
+CUSTOMER REFERRAL PROGRAMS
+BF: 
+Existing customers recommending to their network Products with natural word-of-mouth Lower-ticket or self-serve products 
+Characteristics: 
+Referrer is an existing customer One-time or limited rewards Higher trust, lower volume 
+AFFILIATE PROGRAMS
+BF: 
+Reaching audiences you don't have access to Content creators, influencers, bloggers Higher-ticket products that justify commissions 
+Characteristics: 
+Affiliates may not be customers Ongoing commission relationship Higher volume, variable trust 
+--- 
+REFERRAL PROGRAM DESIGN
+THE REFERRAL LOOP
+CODE  67CHARS
+STEP 1: IDENTIFY TRIGGER MOMENTS
+High-intent moments: 
+Right after first "aha" moment After achieving a milestone After exceptional support After renewing or upgrading 
+STEP 2: DESIGN SHARE MECHANISM
+Ranked by effectiveness: 
+In-product sharing (highest conversion) Personalized link Email invitation Social sharing Referral code (works offline) 
+STEP 3: CHOOSE INCENTIVE STRUCTURE
+Single-sided rewards (referrer only): Simpler, works for high-value products 
+Double-sided rewards (both parties): Higher conversion, win-win framing 
+Tiered rewards: Gamifies referral process, increases engagement 
+For examples and incentive sizing: See references/program-examples.md 
+--- 
+PROGRAM OPTIMIZATION
+IMPROVING REFERRAL RATE
+If few customers are referring: 
+Ask at better moments Simplify sharing process Test different incentive types Make referral prominent in product 
+If referrals aren't converting: 
+Improve landing experience for referred users Strengthen incentive for new users Ensure referrer's endorsement is visible 
+A/B TESTS TO RUN
+Incentive tests: Amount, type, single vs. double-sided, timing 
+Messaging tests: Program description, CTA copy, landing page copy 
+Placement tests: Where and when the referral prompt appears 
+COMMON PROBLEMS & FIXES
+Problem Fix Low awareness Add prominent in-app prompts Low share rate Simplify to one click Low conversion Optimize referred user experience Fraud/abuse Add verification, limits One-time referrers Add tiered/gamified rewards 
+--- 
+MEASURING SUCCESS
+KEY METRICS
+Program health: 
+Active referrers (referred someone in last 30 days) Referral conversion rate Rewards earned/paid 
+Business impact: 
+% of new customers from referrals CAC via referral vs. other channels LTV of referred customers Referral program ROI 
+TYPICAL FINDINGS
+Referred customers have 16-25% higher LTV Referred customers have 18-37% lower churn Referred customers refer others at 2-3x rate 
+--- 
+LAUNCH CHECKLIST
+BEFORE LAUNCH
+[ ] Define program goals and success metrics [ ] Design incentive structure [ ] Build or configure referral tool [ ] Create referral landing page [ ] Set up tracking and attribution [ ] Define fraud prevention rules [ ] Create terms and conditions [ ] Test complete referral flow 
+LAUNCH
+[ ] Announce to existing customers [ ] Add in-app referral prompts [ ] Update website with program details [ ] Brief support team 
+POST-LAUNCH (FIRST 30 DAYS)
+[ ] Review conversion funnel [ ] Identify top referrers [ ] Gather feedback [ ] Fix friction points [ ] Send reminder emails to non-referrers 
+--- 
+EMAIL SEQUENCES
+REFERRAL PROGRAM LAUNCH
+CODE  279CHARS
+REFERRAL NURTURE SEQUENCE
+Day 7: Remind about referral program Day 30: "Know anyone who'd benefit?" Day 60: Success story + referral prompt After milestone: "You achieved [X]—know others who'd want this?" 
+--- 
+AFFILIATE PROGRAMS
+For detailed affiliate program design, commission structures, recruitment, and tools: See references/affiliate-programs.md 
+--- 
+TASK-SPECIFIC QUESTIONS
+What type of program (referral, affiliate, or both)? What's your customer LTV and current CAC? Existing program or starting from scratch? What tools/platforms are you considering? What's your budget for rewards/commissions? Is your product naturally shareable? 
+--- 
+TOOL INTEGRATIONS
+For implementation, see the tools registry. Key tools for referral programs: 
+Tool BF Guide **Rewardful** Stripe-native affiliate programs [rewardful.md](../../tools/integrations/rewardful.md) **Tolt** SaaS affiliate programs [tolt.md](../../tools/integrations/tolt.md) **Mention Me** Enterprise referral programs [mention-me.md](../../tools/integrations/mention-me.md) **Dub.co** Link tracking and attribution [dub-co.md](../../tools/integrations/dub-co.md) **Stripe** Payment processing (for commission tracking) [stripe.md](../../tools/integrations/stripe.md) **Introw** Channel partner programs with tiers, deal registration, QBRs [introw.md](../../tools/integrations/introw.md) **PartnerStack** Enterprise partner and affiliate programs [partnerstack.md](../../tools/integrations/partnerstack.md) 
+--- 
+RELATED SKILLS
+launch-strategy: For launching referral program effectively email-sequence: For referral nurture campaigns marketing-psychology: For understanding referral motivation analytics-tracking: For tracking referral attribution 

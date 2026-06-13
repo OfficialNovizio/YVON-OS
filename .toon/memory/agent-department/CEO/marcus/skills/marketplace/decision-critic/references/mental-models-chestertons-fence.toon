@@ -1,32 +1,26 @@
-#MEM id=references source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/references/mental-models-chestertons-fence.md savings=8%
-M||tx|---
-M||sour|wiki/concepts/Mental md/Chestertons Fence.md
-M||crea|2026-04-11
-M||revi|2026-07-11
-M||tx|---
-M|Prin|tx|Before removing or changing something, first understand why it exists.
-M|Prin|tx|> "Don't ever take a fence down until you know the reason it was put up." -- G.K. Chesterton
-M|Deci|tx|Use this md during **Decomposition** (Steps 1-2) to surface hidden assumptions abt existing systems.
-M|Veri|When|
-M|Veri|tx|1. What problem did the existing thing originally solve?
-M|Veri|tx|2. Are those original constraints still active?
-M|Veri|tx|3. What implicit dependencies exist that the proposer may not see?
-M|Veri|tx|4. Has anyone consulted the people who built it?
-M|Red |tx|\| Signal \| Risk \|
-M|Red |tx|\|--------\|------\|
-M|Red |tx|\| "This is legacy, remove it" \| Original constraints unknown \|
-M|Red |tx|\| "Nobody knows why this exists" \| Institutional knowledge gap \|
-M|Red |tx|\| "We don't need this anymore" \| Implicit dependencies unexamined \|
-M|Red |tx|\| "Let's start fresh" \| Second sy Effect risk \|
-M|Fail|it|Reintroducing bugs that were previously fixed
-M|Fail|it|Breaking implicit dependencies downstream
-M|Fail|it|Losing institutional knowledge permanently
-M|Fail|it|Triggering cascading failures in systems coupled to the removed cp
-M|Prac|Befo|
-M|Prac|it|[ ] Original purpose documented or discovered
-M|Prac|it|[ ] Current constraints compared to original constraints
-M|Prac|it|[ ] Downstream dependencies mapped
-M|Prac|it|[ ] Migration path defined (not just deletion)
-M|Rela|- Ga|complex systems evolved from simple ones
-M|Rela|- St|incremental migration respects existing behavior
-M|Rela|- Hy|changing observable behavior breaks unknown dependents
+SRC agent-department/CEO/marcus/skills/marketplace/decision-critic/references/mental-models-chestertons-fence.md
+ORIG_SIZE 1838
+SECTIONS 20
+ABBREVS 1
+INDEX_TERMS 156
+COMPILED 2026-06-13T19:23:24.774Z
+---
+SOURCE wiki/concepts/Mental Models/Chestertons Fence.md
+CHESTERTON'S FENCE
+PRINCIPLE
+Before removing or changing something, first understand why it exists. 
+"Don't ever take a fence down until you know the reason it was put up." -- G.K. Chesterton 
+DECISION CRITIC APPLICATION
+Use this model during Decomposition (Steps 1-2) to surface hidden assumptions about existing systems. 
+VERIFICATION QUESTIONS
+When a decision proposes removing, replacing, or deprecating something: 
+What problem did the existing thing originally solve? Are those original constraints still active? What implicit dependencies exist that the proposer may not see? Has anyone consulted the people who built it? 
+RED FLAGS IN DECISIONS
+Signal Risk "TI legacy, remove it" Original constraints unknown "Nobody knows why this exists" Institutional knowledge gap "We don't need this anymore" Implicit dependencies unexamined "Let's start fresh" Second System Effect risk 
+FAILURE MODES (FOR INVERSION ANALYSIS)
+Reintroducing bugs that were previously fixed Breaking implicit dependencies downstream Losing institutional knowledge permanently Triggering cascading failures in systems coupled to the removed component 
+PRACTICAL CHECKLIST
+Before accepting a "remove/replace" decision as VERIFIED: 
+[ ] Original purpose documented or discovered [ ] Current constraints compared to original constraints [ ] Downstream dependencies mapped [ ] Migration path defined (not just deletion) 
+RELATED MODELS
+Gall's Law: complex systems evolved from simple ones Strangler Fig Pattern: incremental migration respects existing behavior Hyrum's Law: changing observable behavior breaks unknown dependents 

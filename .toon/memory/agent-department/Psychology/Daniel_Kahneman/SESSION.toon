@@ -1,12 +1,16 @@
-#MEM id=Daniel_Kahneman source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/SESSION.md savings=8%
-M|Kahn|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Kahn|tx|> Always load this first. Load MEMORY.md for bias audit checklist, validation format, and role boundary.
-M|Curr|- **|** 2026-05-12
-M|Curr|- **|** idle
-M|Curr|- **|** none
-M|Curr|- **|** rv most recent ag output flagged for psychological audit
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|tx|\| 2026-05-12 \| MEMORY.md created and structured \| Full bias audit checklist + validation format established \| — \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|No audits requested yet — kh activates on demand only
+SRC agent-department/Psychology/Daniel_Kahneman/SESSION.md
+ORIG_SIZE 780
+SECTIONS 9
+ABBREVS 8
+INDEX_TERMS 57
+COMPILED 2026-06-13T19:23:25.234Z
+---
+KAHNEMAN — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for bias audit checklist, validation format, and role boundary. 
+CURRENT STATUS
+LA: 2026-05-12 CT: idle WF Stark: none NSSW: Review most recent agent output flagged for psychological audit 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-05-12 MEMORY.md created and structured Full bias audit checklist + validation format established — 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+No audits requested yet — Kahneman activates on demand only 

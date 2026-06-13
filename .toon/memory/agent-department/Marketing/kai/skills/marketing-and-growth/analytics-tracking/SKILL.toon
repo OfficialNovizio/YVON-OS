@@ -1,182 +1,98 @@
-#MEM id=analytics-tracking source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/SKILL.md savings=1%
-M||tx|---
-M||name|an-tracking
-M||desc|>-
-M||tx|When the us wants to set up, improve, or audit an tracking and measurement. Also use when the us mentions "set up tracking," "GA4," "Google an," "conversion tracking," "event tracking," "UTM parameters," "tag manager," "GTM," "an implementation," "tracking plan," "how do I measure this," "track conversions," "attribution," "Mixpanel," "Segment," "are my events firing," or "an isn't working." Use this whenever someone asks how to know if something is working or wants to measure mk results. For A/B tst measurement, see ab-tst-setup.
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[an, data, kpi, cr, tn, mk-gap, ga4, mk]
-M||vers|1.1.0
-M||tx|---
-M|Anal|tx|You are an expert in an implementation and measurement. Your goal is to help set up tracking that provides actionable in for mk and pd decisions.
-M|Init|**Ch|**
-M|Init|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
-M|Init|Befo|
-M|Init|tx|1. **Business Context** - What decisions will this data inform? What are key conversions?
-M|Init|tx|2. **Current State** - What tracking exists? What tools are in use?
-M|Init|tx|3. **tc Context** - What's the tech stack? Any privacy/compliance requirements?
-M|Init|tx|---
-M|1. T|it|Every event shd inform a decision
-M|1. T|it|Avoid vanity metrics
-M|1. T|it|qual > quantity of events
-M|2. S|it|What do you need to know?
-M|2. S|it|What actions will you take based on this data?
-M|2. S|it|Work backwards to what you need to track
-M|3. N|it|Naming conventions matter
-M|3. N|it|Establish patterns before implementing
-M|3. N|it|Document everything
-M|4. M|it|Validate implementation
-M|4. M|it|Monitor for issues
-M|4. M|it|Clean data > more data
-M|4. M|tx|---
-M|Stru|tx|```
-M|Stru|tx|Event Name \| Category \| Properties \| Trigger \| Notes
-M|Stru|tx|---------- \| -------- \| ---------- \| ------- \| -----
-M|Stru|tx|```
-M|Even|tx|\| tp \| Examples \|
-M|Even|tx|\|------\|----------\|
-M|Even|tx|\| Pageviews \| Automatic, enhanced w/ metadata \|
-M|Even|tx|\| us Actions \| Button clicks, form submissions, feature usage \|
-M|Even|tx|\| sy Events \| Signup done, purchase, subscription changed \|
-M|Even|tx|\| Custom Conversions \| Goal completions, funnel stages \|
-M|Even|**Fo|See [references/event-library.md](references/event-library.md)
-M|Even|tx|---
-M|Reco|tx|```
-M|Reco|tx|signup_completed
-M|Reco|tx|button_clicked
-M|Reco|tx|form_submitted
-M|Reco|tx|article_read
-M|Reco|tx|checkout_payment_completed
-M|Reco|tx|```
-M|Best|it|Lowercase w/ underscores
-M|Best|- Be|`cta_hero_clicked` vs. `button_clicked`
-M|Best|it|Include context in properties, not event name
-M|Best|it|Avoid spaces and special characters
-M|Best|it|Document decisions
-M|Best|tx|---
-M|Mark|tx|\| Event \| Properties \|
-M|Mark|tx|\|-------\|------------\|
-M|Mark|tx|\| cta_clicked \| button_text, location \|
-M|Mark|tx|\| form_submitted \| form_type \|
-M|Mark|tx|\| signup_completed \| method, source \|
-M|Mark|tx|\| demo_requested \| - \|
-M|Prod|tx|\| Event \| Properties \|
-M|Prod|tx|\|-------\|------------\|
-M|Prod|tx|\| onboarding_step_completed \| step_number, step_name \|
-M|Prod|tx|\| feature_used \| feature_name \|
-M|Prod|tx|\| purchase_completed \| plan, value \|
-M|Prod|tx|\| subscription_cancelled \| reason \|
-M|Prod|**Fo|See [references/event-library.md](references/event-library.md)
-M|Prod|tx|---
-M|Stan|tx|\| Category \| Properties \|
-M|Stan|tx|\|----------\|------------\|
-M|Stan|tx|\| Page \| page_title, page_location, page_referrer \|
-M|Stan|tx|\| us \| user_id, user_type, account_id, plan_type \|
-M|Stan|tx|\| cg \| source, md, cg, cn, term \|
-M|Stan|tx|\| pd \| product_id, product_name, category, price \|
-M|Best|it|Use consistent property names
-M|Best|it|Include relevant context
-M|Best|it|Don't duplicate automatic properties
-M|Best|it|Avoid PII in properties
-M|Best|tx|---
-M|Quic|tx|1. cr GA4 property and data stream
-M|Quic|tx|2. Install gtag.js or GTM
-M|Quic|tx|3. Enable enhanced measurement
-M|Quic|tx|4. Configure custom events
-M|Quic|tx|5. Mark conversions in Admin
-M|Cust|tx|```javascript
-M|Cust|tx|gtag('event', 'signup_completed', {
-M|Cust|'met|'em',
-M|Cust|'pla|'free'
-M|Cust|tx|});
-M|Cust|tx|```
-M|Cust|**Fo|See [references/ga4-implementation.md](references/ga4-implementation.md)
-M|Cust|tx|---
-M|Cont|tx|\| cp \| Purpose \|
-M|Cont|tx|\|-----------\|---------\|
-M|Cont|tx|\| Tags \| Code that executes (GA4, pixels) \|
-M|Cont|tx|\| Triggers \| When tags fire (page view, click) \|
-M|Cont|tx|\| Variables \| Dynamic values (click text, data layer) \|
-M|Data|tx|```javascript
-M|Data|tx|dataLayer.push({
-M|Data|'eve|'form_submitted',
-M|Data|'for|'contact',
-M|Data|'for|'footer'
-M|Data|tx|});
-M|Data|tx|```
-M|Data|**Fo|See [references/gtm-implementation.md](references/gtm-implementation.md)
-M|Data|tx|---
-M|Stan|tx|\| Parameter \| Purpose \| Example \|
-M|Stan|tx|\|-----------\|---------\|---------\|
-M|Stan|tx|\| utm_source \| Traffic source \| google, nl \|
-M|Stan|tx|\| utm_medium \| mk md \| cpc, em, sl \|
-M|Stan|tx|\| utm_campaign \| cg name \| spring_sale \|
-M|Stan|tx|\| utm_content \| Differentiate versions \| hero_cta \|
-M|Stan|tx|\| utm_term \| Paid search keywords \| running+shoes \|
-M|Nami|it|Lowercase everything
-M|Nami|it|Use underscores or hyphens consistently
-M|Nami|- Be|`blog_footer_cta`, not `cta1`
-M|Nami|it|Document all UTMs in a spreadsheet
-M|Nami|tx|---
-M|Test|tx|\| Tool \| Use For \|
-M|Test|tx|\|------\|---------\|
-M|Test|tx|\| GA4 DebugView \| Real-time event monitoring \|
-M|Test|tx|\| GTM Preview Mode \| tst triggers before publish \|
-M|Test|tx|\| Browser Extensions \| Tag Assistant, dataLayer Inspector \|
-M|Vali|it|[ ] Events firing on correct triggers
-M|Vali|it|[ ] Property values populating correctly
-M|Vali|it|[ ] No duplicate events
-M|Vali|it|[ ] Works across browsers and mobile
-M|Vali|it|[ ] Conversions recorded correctly
-M|Vali|it|[ ] No PII leaking
-M|Comm|tx|\| Issue \| Check \|
-M|Comm|tx|\|-------\|-------\|
-M|Comm|tx|\| Events not firing \| Trigger config, GTM loaded \|
-M|Comm|tx|\| Wrong values \| Variable path, data layer structure \|
-M|Comm|tx|\| Duplicate events \| Multiple containers, trigger firing twice \|
-M|Comm|tx|---
-M|Cons|it|Cookie consent required in EU/UK/CA
-M|Cons|it|No PII in an properties
-M|Cons|it|Data retention settings
-M|Cons|it|us deletion capabilities
-M|Impl|it|Use consent mode (wait for consent)
-M|Impl|it|IP anonymization
-M|Impl|it|Only collect what you need
-M|Impl|it|ig w/ consent management platform
-M|Impl|tx|---
-M|Trac|tx|```markdown
-M|Over|- To|GA4, GTM
-M|Over|- La|[Date]
-M|Even|tx|\| Event Name \| Description \| Properties \| Trigger \|
-M|Even|tx|\|------------\|-------------\|------------\|---------\|
-M|Even|tx|\| signup_completed \| us completes signup \| method, plan \| sc page \|
-M|Cust|tx|\| Name \| Scope \| Parameter \|
-M|Cust|tx|\|------\|-------\|-----------\|
-M|Cust|tx|\| user_type \| us \| user_type \|
-M|Conv|tx|\| Conversion \| Event \| Counting \|
-M|Conv|tx|\|------------\|-------\|----------\|
-M|Conv|tx|\| Signup \| signup_completed \| Once per sn \|
-M|Conv|tx|```
-M|Conv|tx|---
-M|Task|tx|1. What tools are you using (GA4, Mixpanel, etc.)?
-M|Task|tx|2. What key actions do you want to track?
-M|Task|tx|3. What decisions will this data inform?
-M|Task|tx|4. Who implements - dv team or mk?
-M|Task|tx|5. Are there privacy/consent requirements?
-M|Task|tx|6. What's already tracked?
-M|Task|tx|---
-M|Tool|For |
-M|Tool|tx|\| Tool \| Best For \| MCP \| Guide \|
-M|Tool||---|---:\|-------\|
-M|Tool|tx|\| **GA4** \| Web an, Google ecosystem \| ✓ \| [ga4.md](../../tools/integrations/ga4.md) \|
-M|Tool|tx|\| **Mixpanel** \| pd an, event tracking \| - \| [mixpanel.md](../../tools/integrations/mixpanel.md) \|
-M|Tool|tx|\| **Amplitude** \| pd an, cohort al \| - \| [amplitude.md](../../tools/integrations/amplitude.md) \|
-M|Tool|tx|\| **PostHog** \| Open-source an, sn replay \| - \| [posthog.md](../../tools/integrations/posthog.md) \|
-M|Tool|tx|\| **Segment** \| cs data platform, routing \| - \| [segment.md](../../tools/integrations/segment.md) \|
-M|Tool|tx|---
-M|Rela|- **|For experiment tracking
-M|Rela|- **|For organic traffic al
-M|Rela|- **|For conversion op (uses this data)
-M|Rela|- **|For pipeline metrics, CRM tracking, and rv attribution
+SRC agent-department/Marketing/kai/skills/marketing-and-growth/analytics-tracking/SKILL.md
+ORIG_SIZE 8466
+SECTIONS 92
+ABBREVS 8
+INDEX_TERMS 373
+COMPILED 2026-06-13T19:23:25.043Z
+---
+NAME analytics-tracking
+ANALYTICS TRACKING
+YAAE in analytics implementation and measurement. YGIT help set up tracking that provides actionable insights for marketing and product decisions. 
+INITIAL ASSESSMENT
+CFPM context first: If .agents/product-marketing-context.md exists (or .claude/product-marketing-context.md in older setups), read it before asking questions. UTCA only ask for information not already covered or specific to this task. 
+BI tracking, understand: 
+Business Context - What decisions will this data inform? What are key conversions? Current State - What tracking exists? What tools are in use? Technical Context - What's the tech stack? Any privacy/compliance requirements? 
+--- 
+CPS
+1. TRACK FOR DECISIONS, NOT DATA
+Every event should inform a decision Avoid vanity metrics Quality quantity of events 
+2. START WITH THE QUESTIONS
+What do you need to know? What actions will you take based on this data? Work backwards to what you need to track 
+3. NAME THINGS CONSISTENTLY
+Naming conventions matter Establish patterns BI Document everything 
+4. MAINTAIN DATA QUALITY
+Validate implementation Monitor for issues Clean data more data 
+--- 
+TRACKING PLAN FRAMEWORK
+STRUCTURE
+CODE  106CHARS
+EVENT TYPES
+Type Examples Pageviews Automatic, enhanced with metadata User Actions Button clicks, form submissions, feature usage System Events Signup completed, purchase, subscription changed Custom Conversions Goal completions, funnel stages 
+For comprehensive event lists: See references/event-library.md 
+--- 
+EVENT NAMING CONVENTIONS
+RECOMMENDED FORMAT: OBJECT-ACTION
+CODE  87CHARS
+BEST PRACTICES
+LOWERCASE_WITH_UNDERSCORES_BE_SPECIFIC `cta_hero_clicked` vs. `button_clicked`
+--- 
+ESSENTIAL EVENTS
+MARKETING SITE
+Event Properties cta_clicked button_text, location form_submitted form_type signup_completed method, source demo_requested - 
+PRODUCT/APP
+Event Properties onboarding_step_completed step_number, step_name feature_used feature_name purchase_completed plan, value subscription_cancelled reason 
+For full event library by business type: See references/event-library.md 
+--- 
+EVENT PROPERTIES
+STANDARD PROPERTIES
+Category Properties Page page_title, page_location, page_referrer User user_id, user_type, account_id, plan_type Campaign source, medium, campaign, content, term Product product_id, product_name, category, price 
+BEST PRACTICES
+Use consistent property names Include relevant context Don't duplicate automatic properties Avoid PII in properties 
+--- 
+GA4 IMPLEMENTATION
+QUICK SETUP
+Create GA4 property and data stream Install gtag.js or GTM Enable enhanced measurement Configure custom events Mark conversions in Admin 
+CUSTOM EVENT EXAMPLE
+CODE javascript 78CHARS
+For detailed GA4 implementation: See references/ga4-implementation.md 
+--- 
+GOOGLE TAG MANAGER
+CONTAINER STRUCTURE
+Component Purpose Tags Code that executes (GA4, pixels) Triggers When tags fire (page view, click) Variables Dynamic values (click text, data layer) 
+DATA LAYER PATTERN
+CODE javascript 104CHARS
+For detailed GTM implementation: See references/gtm-implementation.md 
+--- 
+UTM PARAMETER STRATEGY
+STANDARD PARAMETERS
+Parameter Purpose Example utm_source Traffic source google, newsletter utm_medium Marketing medium cpc, email, social utm_campaign Campaign name spring_sale utm_content Differentiate versions hero_cta utm_term Paid search keywords running+shoes 
+NAMING CONVENTIONS
+LOWERCASE_EVERYTHING_USE_UNDERSCORES_OR_HYPHENS_CONSISTENTLY_BE_SPECIFIC_BUT_CONCISE `blog_footer_cta`, not `cta1`
+--- 
+DEBUGGING AND VALIDATION
+TESTING TOOLS
+Tool Use For GA4 DebugView Real-time event monitoring GTM Preview Mode Test triggers before publish Browser Extensions Tag Assistant, dataLayer Inspector 
+VALIDATION CHECKLIST
+[ ] Events firing on correct triggers [ ] Property values populating correctly [ ] No duplicate events [ ] Works across browsers and mobile [ ] Conversions recorded correctly [ ] No PII leaking 
+COMMON ISSUES
+Issue Check Events not firing Trigger config, GTM loaded Wrong values Variable path, data layer structure Duplicate events Multiple containers, trigger firing twice 
+--- 
+PRIVACY AND COMPLIANCE
+CONSIDERATIONS
+Cookie consent required in EU/UK/CA No PII in analytics properties Data retention settings User deletion capabilities 
+IMPLEMENTATION
+Use consent mode (wait for consent) IP anonymization Only collect what you need Integrate with consent management platform 
+--- 
+OUTPUT FORMAT
+TRACKING PLAN DOCUMENT
+CODE markdown 524CHARS
+--- 
+TASK-SPECIFIC QUESTIONS
+What tools are you using (GA4, Mixpanel, etc.)? What key actions do you want to track? What decisions will this data inform? Who implements - dev team or marketing? Are there privacy/consent requirements? What's already tracked? 
+--- 
+TOOL INTEGRATIONS
+For implementation, see the tools registry. Key analytics tools: 
+Tool BF MCP Guide ------ ---------- :---: ------- **GA4** Web analytics, Google ecosystem ✓ [ga4.md](../../tools/integrations/ga4.md) **Mixpanel** Product analytics, event tracking - [mixpanel.md](../../tools/integrations/mixpanel.md) **Amplitude** Product analytics, cohort analysis - [amplitude.md](../../tools/integrations/amplitude.md) **PostHog** Open-source analytics, session replay - [posthog.md](../../tools/integrations/posthog.md) **Segment** Customer data platform, routing - [segment.md](../../tools/integrations/segment.md) 
+--- 
+RELATED SKILLS
+ab-test-setup: For experiment tracking seo-audit: For organic traffic analysis page-cro: For conversion optimization (uses this data) revops: For pipeline metrics, CRM tracking, and revenue attribution 

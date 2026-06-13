@@ -1,47 +1,19 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-flatmap-filter.md savings=2%
-M||tx|---
-M||titl|Use flatMap to Map and Filter in One Pass
-M||impa|lo-md
-M||impa|eliminates intermediate array
-M||tags|javascript, arrays, flatMap, filter, perf
-M||tx|---
-M|Use |**Im|lo-md (eliminates intermediate array)**
-M|Use |tx|Chaining `.map().filter(Boolean)` creates an intermediate array and iterates twice. Use `.flatMap()` to transform and filter in a single pass.
-M|Use |**In|**
-M|Use |tx|```ts
-M|Use |tx|const userNames = us
-M|Use |.map|null)
-M|Use |tx|.filter(Boolean)
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```ts
-M|Use |tx|const userNames = us.flatMap(us =>
-M|Use |user|[]
-M|Use |tx|)
-M|Use |tx|```
-M|Use |**Mo|**
-M|Use |tx|```ts
-M|Use |tx|// Extract valid emails from rp
-M|Use |tx|// Before
-M|Use |tx|const emails = rp
-M|Use |.map|null)
-M|Use |tx|.filter(Boolean)
-M|Use |tx|// After
-M|Use |tx|const emails = rp.flatMap(r =>
-M|Use |r.su|[]
-M|Use |tx|)
-M|Use |tx|// Parse and filter valid numbers
-M|Use |tx|// Before
-M|Use |tx|const numbers = strings
-M|Use |tx|.map(s => parseInt(s, 10))
-M|Use |tx|.filter(n => !isNaN(n))
-M|Use |tx|// After
-M|Use |tx|const numbers = strings.flatMap(s => {
-M|Use |tx|const n = parseInt(s, 10)
-M|Use |retu|[n]
-M|Use |tx|})
-M|Use |tx|```
-M|Use |**Wh|**
-M|Use |it|Transforming items while filtering some out
-M|Use |it|Conditional mapping where some inputs produce no output
-M|Use |it|Parsing/validating where invalid inputs shd be skipped
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-flatmap-filter.md
+ORIG_SIZE 1411
+SECTIONS 13
+ABBREVS 1
+INDEX_TERMS 48
+COMPILED 2026-06-13T19:23:25.319Z
+---
+TITLE Use flatMap to Map and Filter in One Pass
+USE FLATMAP TO MAP AND FILTER IN ONE PASS
+Impact: LOW-MEDIUM (eliminates intermediate array) 
+Chaining .map().filter(Boolean) creates an intermediate array and iterates twice. Use .flatMap() to transform and filter in a single pass. 
+Incorrect (2 iterations, intermediate array): 
+CODE typescript 92CHARS
+Correct (1 iteration, no intermediate array): 
+CODE typescript 77CHARS
+More examples: 
+CODE typescript 455CHARS
+WTU: 
+Transforming items while filtering some out Conditional mapping where some inputs produce no output Parsing/validating where invalid inputs should be skipped 

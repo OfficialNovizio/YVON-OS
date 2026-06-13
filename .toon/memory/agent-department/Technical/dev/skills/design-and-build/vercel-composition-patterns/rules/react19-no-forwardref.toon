@@ -1,30 +1,20 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/react19-no-forwardref.md savings=1%
-M||tx|---
-M||titl|rc 19 ap Changes
-M||impa|md
-M||impa|cleaner cp definitions and context usage
-M||tags|react19, refs, context, hooks
-M||tx|---
-M|Reac|tx|> **⚠️ rc 19+ only.** Skip this if you're on rc 18 or earlier.
-M|Reac|tx|In rc 19, `ref` is now a regular prop (no `forwardRef` wrapper needed), and `use()` replaces `useContext()`.
-M|Reac|**In|**
-M|Reac|tx|```tsx
-M|Reac|tx|const ComposerInput = forwardRef<TextInput, Props>((props, ref) => {
-M|Reac|tx|return <TextInput ref={ref} {...props} />
-M|Reac|tx|})
-M|Reac|tx|```
-M|Reac|**Co|**
-M|Reac|tx|```tsx
-M|Reac|func|Props & { ref?: rc.Ref<TextInput> }) {
-M|Reac|tx|return <TextInput ref={ref} {...props} />
-M|Reac|tx|}
-M|Reac|tx|```
-M|Reac|**In|**
-M|Reac|tx|```tsx
-M|Reac|tx|const value = useContext(MyContext)
-M|Reac|tx|```
-M|Reac|**Co|**
-M|Reac|tx|```tsx
-M|Reac|tx|const value = use(MyContext)
-M|Reac|tx|```
-M|Reac|tx|`use()` can also be called conditionally, unlike `useContext()`.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/react19-no-forwardref.md
+ORIG_SIZE 953
+SECTIONS 14
+ABBREVS 1
+INDEX_TERMS 34
+COMPILED 2026-06-13T19:23:25.288Z
+---
+TITLE React 19 API Changes
+REACT 19 API CHANGES
+⚠️ React 19+ only. Skip this if you're on React 18 or earlier. 
+In React 19, ref is now a regular prop (no forwardRef wrapper needed), and use() replaces useContext(). 
+Incorrect (forwardRef in React 19): 
+CODE tsx 116CHARS
+Correct (ref as a regular prop): 
+CODE tsx 130CHARS
+Incorrect (useContext in React 19): 
+CODE tsx 36CHARS
+Correct (use IO useContext): 
+CODE tsx 29CHARS
+use() can also be called conditionally, unlike useContext(). 

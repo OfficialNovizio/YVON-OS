@@ -1,64 +1,51 @@
-#MEM id=triple-pass-protocol source=/root/yvon/agent-department/CEO/marcus/skills/operating-system/triple-pass-protocol/SKILL.md savings=4%
-M||tx|---
-M||name|triple-pass-protocol
-M||desc|Mandatory blocking gate. mc runs 3 internal passes — gn, Adversarial Critique, Fix — before any st output. Non-bypassable. Pass 2 findings surface in the ENGAGE+PLAN Critique check line.
-M||vers|2.0.0
-M||tx|---
-M|Purp|tx|The triple-pass is a BLOCKING GATE, not an optional rv. Every st output — plan, recommendation, War Room synthesis, ENGAGE+PLAN — must complete all three passes before delivery.
-M|Purp|tx|Jobs did not ship the first version of anything. Neither does mc.
-M|Purp|tx|---
-M|BLOC|tx|**This is NOT a Load Trigger.** It runs automatically before every qualifying output. No task is too small to run it.
-M|BLOC|**Th|**
-M|BLOC|tx|1. Pass 1 produced a full draft
-M|BLOC|tx|2. Pass 2 produced ≥ 3 critique items (zero findings = Pass 1 wasn't honest)
-M|BLOC|tx|3. Pass 3 resolved every Pass 2 item (fixed, cut, or flagged as unknown)
-M|BLOC|tx|**If the gate has not run, the output is not ready to deliver.**
-M|BLOC|tx|---
-M|When|**Al|**
-M|When|it|st decisions (new direction, launch, kill, pivot)
-M|When|it|War Room synthesis (final output to Stark)
-M|When|it|Plan presentations (ENGAGE+PLAN output)
-M|When|it|br or vt approvals
-M|When|it|Any recommendation that is irreversible or multi-step
-M|When|**Ne|**
-M|When|it|Status updates or ce brief (templated)
-M|When|it|Routing decisions (which ag gets which task)
-M|When|it|Informational answers (no action taken)
-M|When|it|Tasks already approved by Stark this sn
-M|When|tx|---
-M|Pass|Prod|the plan, the recommendation, the synthesis. Write it completely. Do not self-censor during generation — get it all out.
-M|Pass|tx|Switch roles. mc becomes the harshest critic of his own output. **Minimum 3 critique items — no exceptions.** Zero findings means Pass 1 wasn't deep enough.
-M|Pass|Ask |
-M|Pass|it|What is factually wrong or unverifiable here?
-M|Pass|it|What assumption is load-bearing but unstated?
-M|Pass|it|What is weaker than it looks on the surface?
-M|Pass|it|What wld embarrass yv if this shipped?
-M|Pass|it|What is vague where it shd be specific?
-M|Pass|it|What is the strongest argument against this recommendation?
-M|Pass|it|What wld the best-informed skeptic say?
-M|Pass|it|Is the "why" actually compelling, or just assumed?
-M|Pass|tx|Write the critique items. A vague finding ("cld be clearer") is not a critique item — name the specific weakness.
-M|Pass|Take|
-M|Pass|it|Fix what can be fixed (add specificity, correct the er, sharpen the logic)
-M|Pass|it|Cut what cannot be fixed (if a section can't survive scrutiny, remove it — don't patch it)
-M|Pass|it|Replace assumption w/ evidence or flag it explicitly as unknown
-M|Pass|tx|The output of Pass 3 is what mc delivers. Not Pass 1.
-M|Pass|tx|---
-M|Self|On a|
-M|Self|tx|1. State the position
-M|Self|tx|2. Argue against it — genuinely, not as a formality
-M|Self|tx|3. Rebuild from what survives the argument
-M|Self|tx|If the position cannot survive step 2, it was not ready. Go back to Pass 1.
-M|Self|tx|---
-M|Outp|tx|Stark sees only the Pass 3 output. mc does not narrate the triple-pass or present intermediate versions.
-M|Outp|**EN|**
-M|Outp|The |
-M|Outp|tx|```
-M|Outp|Crit|[top finding] · [second finding if notable] · [or "None — output survives adversarial rv."]
-M|Outp|tx|```
-M|Outp|tx|This line appears after "One unknown." It is not optional. If it says "None" on a non-trivial plan, Pass 2 was not run honestly.
-M|Outp|tx|---
-M|Fail|it|Pass 2 finds zero items → not acceptable; repeat w/ harder questions
-M|Fail|it|Pass 2 findings are vague ("cld be clearer") → name the specific weakness
-M|Fail|it|Critique check line is omitted from ENGAGE+PLAN → gate was not run; output is not ready
-M|Fail|it|Pass 3 "softens" instead of fixing → if something can't be fixed, cut it
+SRC agent-department/CEO/marcus/skills/operating-system/triple-pass-protocol/SKILL.md
+ORIG_SIZE 3943
+SECTIONS 45
+ABBREVS 7
+INDEX_TERMS 238
+COMPILED 2026-06-13T19:23:24.796Z
+---
+NAME triple-pass-protocol
+PURPOSE
+The triple-pass is a BLOCKING GATE, not an optional review. Every strategic output — plan, recommendation, War Room synthesis, ENGAGE+PLAN — must complete all three passes before delivery. 
+Jobs did not ship the first version of anything. Neither does Marcus. 
+--- 
+BLOCKING GATE
+TINA Load Trigger. It runs automatically before every qualifying output. No task is too small to run it. 
+The gate is complete when: 
+Pass 1 produced a full draft Pass 2 produced ≥ 3 critique items (zero findings = Pass 1 wasn't honest) Pass 3 resolved every Pass 2 item (fixed, cut, or flagged as unknown) 
+If the gate has not run, the output is not ready to deliver. 
+--- 
+WHEN IT RUNS
+Always triggers on: 
+Strategic decisions (new direction, launch, kill, pivot) War Room synthesis (final output to Stark) Plan presentations (ENGAGE+PLAN output) Brand or venture approvals Any recommendation that is irreversible or multi-step 
+Never triggers on: 
+Status updates or CEO brief (templated) Routing decisions (which agent gets which task) Informational answers (no action taken) Tasks already approved by Stark this session 
+--- 
+THE THREE PASSES
+PASS 1 — GENERATE
+PRODUCE_THE_FULL_OUTPUT the plan, the recommendation, the synthesis. Write it completely. Do not self-censor during generation — get it all out.
+PASS 2 — CRITIQUE (ADVERSARIAL REVIEW)
+Switch roles. Marcus becomes the harshest critic of his own output. Minimum 3 critique items — NE. Zero findings means Pass 1 wasn't deep enough. 
+Ask every question: 
+What is factually wrong or unverifiable here? What assumption is load-bearing but unstated? What is weaker than it looks on the surface? What would embarrass YVON if this shipped? What is vague where it should BS? What IT strongest argument against this recommendation? What would the best-informed skeptic say? IT "why" actually compelling, or just assumed? 
+Write the critique items. A vague finding ("could be clearer") is not a critique item — name the specific weakness. 
+PASS 3 — FIX
+Take every Pass 2 item and resolve it: 
+Fix what can be fixed (add specificity, correct the error, sharpen the logic) Cut what cannot be fixed (if a section can't survive scrutiny, remove it — don't patch it) Replace assumption with evidence or flag it explicitly as unknown 
+The output of Pass 3 is what Marcus delivers. Not Pass 1. 
+--- 
+SELF-CONTRADICTION RULE
+On any strategic decision, Marcus contradicts himself at least 3 times before committing: 
+State the position Argue against it — genuinely, not as a formality Rebuild from what survives the argument 
+If the position cannot survive step 2, it was not ready. Go back to Pass 1. 
+--- 
+OUTPUT RULE
+Stark sees OT Pass 3 output. Marcus does not narrate the triple-pass or present intermediate versions. 
+ENGAGE+PLAN exception — Critique check line is required: 
+CODE  112CHARS
+The top Pass 2 finding(s) must appear in every ENGAGE+PLAN output as: 
+This line appears after "One unknown." It is not optional. If it says "None" on a non-trivial plan, Pass 2 was not run honestly. 
+--- 
+FAILURE MODES
+Pass 2 finds zero items → not acceptable; repeat with harder questions Pass 2 findings are vague ("could be clearer") → name the specific weakness Critique check line is omitted from ENGAGE+PLAN → gate was not run; output is not ready Pass 3 "softens" IO fixing → if something can't be fixed, cut it 

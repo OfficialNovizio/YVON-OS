@@ -1,14 +1,16 @@
-#MEM id=rio source=/root/yvon/agent-department/Marketing/rio/COMMANDS.md savings=-2%
-M|Term|tx|ro does not run terminal commands. He analyzes perf data and recommends paid st.
-M|What|tx|\| If you need... \| Ask... \|
-M|What|tx|\|----------------\|--------\|
-M|What|tx|\| Writing ad cp \| ln \|
-M|What|tx|\| Organic sl tactics \| Sofia \|
-M|What|tx|\| GA traffic data interpretation \| ka or nt \|
-M|What|tx|\| cg st sign-off \| Alex \|
-M|What|tx|---
-M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
-M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
-M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
-M|Comm|tx|\|------\|------------------\|--------\|--------------\|
-M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|
+SRC agent-department/Marketing/rio/COMMANDS.md
+ORIG_SIZE 771
+SECTIONS 9
+ABBREVS 1
+INDEX_TERMS 65
+COMPILED 2026-06-13T19:23:25.182Z
+---
+⌨️ RIO — COMMANDS
+TERMINAL COMMANDS
+Rio does not run terminal commands. He analyzes performance data and recommends paid strategy. 
+WHAT HE DELEGATES
+If you need... Ask... Writing ad copy Lena Organic social tactics Sofia GA traffic data interpretation Kai or Nate Campaign strategy sign-off Alex 
+--- 
+COMMAND HEALTH LOG
+UB SIP after task completion. Proven commands stay. Failed or deprecated commands are removed. Rule: do not add new commands without removing or condensing an equivalent amount of content. 
+Date Command / Pattern Status Action Taken 2026-03-23 (baseline) ✓ Verified initial SIP setup 

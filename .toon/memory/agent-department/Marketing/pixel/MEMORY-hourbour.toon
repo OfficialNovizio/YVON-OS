@@ -1,19 +1,20 @@
-#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/MEMORY-hourbour.md savings=21%
-M|Pixe|tx|> Load alongside MEMORY.md when active vt is hb.
-M|Pixe|tx|> hb-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|clean, modern, tech-forward — clarity over complexity
-M|Vent|- **|LinkedIn (1.91:1), YouTube (16:9), website
-M|Hour|tx|\| Platform \| Format \| Dimensions \| File size \|
-M|Hour|tx|\|----------\|--------\|------------\|-----------\|
-M|Hour|| Li|1 landscape \| 1200×628px \| < 5MB \|
-M|Hour|| Li|1 square \| 1080×1080px \| < 10MB per slide \|
-M|Hour|| Yo|9 wide \| 1280×720px \| < 2MB \|
-M|Hour|| Yo|9 \| 2560×1440px \| < 6MB \|
-M|Hour|| We|9 \| 1920×1080px \| < 3MB \|
-M|Hour|| Ap|19.5 \| 1284×2778px \| < 8MB \|
-M|Hour|Stan|
-M|Hour|tx|1. **Clarity check** — is the im clean and uncluttered? Does it communicate trust?
-M|Hour|tx|2. **br fit check** — does it look like a modern fintech pd, not a bank or stock photo?
-M|Hour|tx|3. **No-cliché check** — zero coins, piggy banks, cash stacks, or "businessman handshake" imagery?
-M|Reje|> Po|[date] — rejection reason — what pm tag caused it — fix.
-M|Neve|> Ea|[date] — hb-specific production er — rule.
+SRC agent-department/Marketing/pixel/MEMORY-hourbour.md
+ORIG_SIZE 1407
+SECTIONS 13
+ABBREVS 4
+INDEX_TERMS 108
+COMPILED 2026-06-13T19:23:25.160Z
+---
+PIXEL — HOURBOUR PRODUCTION MEMORY
+Load alongside MEMORY.md when active venture is Hourbour. Hourbour-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Production style: clean, modern, tech-forward — clarity over complexity Primary platforms: LinkedIn (1.91:1), YouTube (16:9), website 
+HOURBOUR PLATFORM SPECS
+Platform Format Dimensions File size LinkedIP 1.91:1 landscape 1200×628px < 5MB LinkedIn Carousel 1:1 square 1080×1080px < 10MB per slide YouTube Thumbnail 16:9 wide 1280×720px < 2MB YouTube Banner 16:9 2560×1440px < 6MB Website hero 16:9 1920×1080px < 3MB App store screenshot 9:19.5 1284×2778px < 8MB 
+HOURBOUR QC CRITERIA
+Standard 3-pass QC for every Hourbour batch: 
+Clarity check — IT image clean and uncluttered? Does it communicate trust? Brand fit check — does it look like a modern fintech product, not a bank or stock photo? No-cliché check — zero coins, piggy banks, cash stacks, or "businessman handshake" imagery? 
+REJECTION PATTERN LOG (HOURBOUR)
+Populated from batch runs. EE: [date] — rejection reason — what prompt tag caused it — fix. 
+NEVER AGAIN (HOURBOUR-SPECIFIC)
+EE: [date] — Hourbour-specific production error — rule. 

@@ -1,46 +1,24 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-dedup-props.md savings=3%
-M||tx|---
-M||titl|Avoid Duplicate Serialization in RSC Props
-M||impa|lo
-M||impa|reduces network payload by avoiding duplicate serialization
-M||tags|server, rsc, serialization, props, client-cp
-M||tx|---
-M|Avoi|**Im|lo (reduces network payload by avoiding duplicate serialization)**
-M|Avoi|tx|RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (`.toSorted()`, `.filter()`, `.map()`) in client, not server.
-M|Avoi|**In|**
-M|Avoi|tx|```tsx
-M|Avoi|// R|sends 6 strings (2 arrays × 3 items)
-M|Avoi|tx|<ClientList usernames={usernames} usernamesOrdered={usernames.toSorted()} />
-M|Avoi|tx|```
-M|Avoi|**Co|**
-M|Avoi|tx|```tsx
-M|Avoi|// R|send once
-M|Avoi|tx|<ClientList usernames={usernames} />
-M|Avoi|// C|transform there
-M|Avoi|tx|'use client'
-M|Avoi|tx|const sorted = useMemo(() => [...usernames].sort(), [usernames])
-M|Avoi|tx|```
-M|Avoi|**Ne|**
-M|Avoi|Dedu|
-M|Avoi|- `s|**hi impact** - array + all primitives fully duplicated
-M|Avoi|- `o|**lo impact** - array duplicated, but nested objects deduplicated by reference
-M|Avoi|tx|```tsx
-M|Avoi|tx|// string[] - duplicates everything
-M|Avoi|tx|usernames={['a','b']} sorted={usernames.toSorted()} // sends 4 strings
-M|Avoi|tx|// object[] - duplicates array structure only
-M|Avoi|user|1},{id:2}]} sorted={us.toSorted()} // sends 2 arrays + 2 unique objects (not 4)
-M|Avoi|tx|```
-M|Avoi|**Op|**
-M|Avoi|- Ar|`.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`
-M|Avoi|- Ob|`{...obj}`, `Object.assign()`, `structuredClone()`, `JSON.parse(JSON.stringify())`
-M|Avoi|**Mo|**
-M|Avoi|tx|```tsx
-M|Avoi|tx|// ❌ Bad
-M|Avoi|tx|<C us={us} active={us.filter(u => u.active)} />
-M|Avoi|tx|<C pd={pd} productName={pd.name} />
-M|Avoi|tx|// ✅ Good
-M|Avoi|tx|<C us={us} />
-M|Avoi|tx|<C pd={pd} />
-M|Avoi|tx|// Do filtering/destructuring in client
-M|Avoi|tx|```
-M|Avoi|**Ex|** Pass derived data when transformation is expensive or client doesn't need original.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-dedup-props.md
+ORIG_SIZE 2060
+SECTIONS 18
+ABBREVS 0
+INDEX_TERMS 78
+COMPILED 2026-06-13T19:23:25.336Z
+---
+TITLE Avoid Duplicate Serialization in RSC Props
+AVOID DUPLICATE SERIALIZATION IN RSC PROPS
+Impact: LOW (reduces network payload by avoiding duplicate serialization) 
+RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (.toSorted(), .filter(), .map()) in client, not server. 
+Incorrect (duplicates array): 
+CODE tsx 122CHARS
+Correct (sends 3 strings): 
+CODE tsx 161CHARS
+Nested deduplication behavior: 
+Deduplication works recursively. Impact varies by data type: 
+string[], number[], boolean[]: HIGH impact - array + all primitives fully duplicated object[]: LOW impact - array duplicated, but nested objects deduplicated by reference 
+CODE tsx 249CHARS
+Operations breaking deduplication (create new references): 
+ARRAYS `.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`
+More examples: 
+CODE tsx 212CHARS
+Exception: Pass derived data when transformation is expensive or client doesn't need original. 

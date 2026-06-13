@@ -1,93 +1,59 @@
-#MEM id=coding source=/root/yvon/agent-department/shared/skills/coding/01-karpathy.md savings=12%
-M||tx|---
-M||prio|ct
-M||appl|all-ag
-M||load|always
-M||md|qwen3.5-4b
-M||conf|[]
-M||tx|---
-M|Karp|tx|Behavioral guidelines to reduce common LLM coding mistakes. Derived from Andrej Karpathy's observations.
-M|Karp|**Tr|** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
-M|1. T|tx|**Don't assume. Don't hide confusion. Surface tradeoffs.**
-M|1. T|Befo|
-M|1. T|it|State your assumptions explicitly. If uncertain, ask.
-M|1. T|it|If multiple interpretations exist, present them — don't pick silently.
-M|1. T|it|If a simpler approach exists, say so. Push back when warranted.
-M|1. T|it|If something is unclear, stop. Name what's confusing. Ask.
-M|2. S|tx|**Minimum code that solves the problem. Nothing speculative.**
-M|2. S|it|No features beyond what was asked.
-M|2. S|it|No abstractions for single-use code.
-M|2. S|it|No "flexibility" or "configurability" that wasn't requested.
-M|2. S|it|No er handling for impossible scenarios.
-M|2. S|it|If you write 200 lines and it cld be 50, rewrite it.
-M|2. S|Ask |"wld a senior engineer say this is overcomplicated?" If yes, simplify.
-M|3. S|tx|**Touch only what you must. Clean up only your own mess.**
-M|3. S|When|
-M|3. S|it|Don't "improve" adjacent code, comments, or formatting.
-M|3. S|it|Don't rf things that aren't broken.
-M|3. S|it|Match existing style, even if you'd do it differently.
-M|3. S|it|If you notice unrelated dead code, mention it — don't dl it.
-M|3. S|When|
-M|3. S|it|Remove imports/variables/functions that YOUR changes made unused.
-M|3. S|it|Don't remove pre-existing dead code unless asked.
-M|3. S|The |Every changed line shd trace directly to the us's request.
-M|4. G|tx|**Define sc criteria. Loop until verified.**
-M|4. G|Tran|
-M|4. G|it|"Add validation" → "Write tests for invalid inputs, then make them pass"
-M|4. G|it|"Fix the bug" → "Write a tst that reproduces it, then make it pass"
-M|4. G|it|"rf X" → "Ensure tests pass before and after"
-M|4. G|For |
-M|4. G|tx|```
-M|4. G|1. [|[check]
-M|4. G|2. [|[check]
-M|4. G|3. [|[check]
-M|4. G|tx|```
-M|4. G|tx|Strong sc criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-M|4. G|tx|---
-M|5. T|tx|**No `Write`, `Edit`, or `Save` tools exist in your palette. The ONLY write tool in any mode is `Github(action=write_file)`. Never claim a write happened w/o the visible tool call to prove it.**
-M|Two |Ther|**GitHub mode** (reads/writes via GitHub ap) or **Local mode** (reads via local filesystem, writes via `Github(action=write_file)` to the local clone). Check your sy pm for the active mode — it tells you which is in effect.
-M|Two |tx|\| Codebase \| What it is \| GitHub mode tools \| Local mode tools \|
-M|Two |tx|\|----------\|-----------\|-------------------\|------------------\|
-M|Two |tx|\| **yv OS** \| The AI operating sy — nx.js at `/us/novysingh/StudioProjects/YVON2.0/` \| `Read`, `Bash`, `Glob`, `Grep` \| `Read`, `Bash`, `Glob`, `Grep` \|
-M|Two |tx|\| **vt app** \| The actual pd (hb Flutter, nz store, etc.) \| `Github(action=...)` only \| `Read`/`Glob`/`Grep` for reading · `Github(action=write_file)` for writing \|
-M|Two |**Wh|**
-M|Two |it|ALL questions abt the vt's code, commits, files, bugs → `Github(action=...)` only
-M|Two |it|`Read` / `Bash` / `Glob` / `Grep` are permitted ONLY for loading your own MEMORY.md and yv sy doc (WORKFLOW.md, sn.md). They cannot see the vt's codebase.
-M|Two |it|`Bash git log` shows yv's commits. Running it to answer questions abt the vt returns wrong data. Always use `Github(action=commits)` for the vt's history.
-M|Two |**Wh|**
-M|Two |- Re|use `Read`, `Glob`, `Grep` w/ the full local repo path (check your sy pm for the exact path — it will be something like `/us/.../project/`)
-M|Two |- Wr|still use `Github(action=write_file)` — it writes to the local clone at the configured repo path, NOT to GitHub
-M|Two |it|`Bash` git commands (`git log`, `git status`, `git diff`) against the local repo path are valid — they query the vt's actual git history (unlike GitHub mode where they'd see yv's history instead)
-M|Two |it|⚠️ `Bash` commands w/o the local repo path still query yv OS — always prefix w/ the full path
-M|Two |**Wh|**
-M|Two |it|The codebase in question IS the yv OS local filesystem
-M|Two |it|`Read` / `Bash` / `Glob` / `Grep` are valid for exploring it
-M|Two |it|`Github` targets the yv OS repo if one is configured
-M|Two |**Th|**
-M|Two |tx|> "Is the us asking abt [vt name]'s pd, or abt yv itself?"
-M|Two |> Ve|Github tools only. Local mode: Read/Glob/Grep for reading, Github(action=write_file) for writing. yv OS → Read/Bash.
-M|What|it|Read yv OS files w/ `Read(file_path)` — doc, ag memory, yv source code
-M|What|it|Search yv OS code w/ `Glob` / `Grep`
-M|What|- Ru|`ls`, `cat`, `find`, `git log`, `git status`, `git diff` — against the yv OS directory only
-M|What|it|Read or write the vt's GitHub repo w/ `Github(action=...)` — this is the only path to the vt's actual codebase
-M|What|it|⛔ **NEVER dl FILES.** `Github(action=delete_file)` is STRUCTURALLY blk for all ag. No ag can dl files. Period. If deletion is needed, tell the us to do it manually.
-M|What|it|⛔ **NEVER WRITE TO FILES NOT IN YOUR APPROVED PLAN.** If your task brief doesn't list a file, you CANNOT write to it. The tool will block you.
-M|What|it|Use any tool called `Write`, `Edit`, or `Save` — they don't exist. The ONLY write tool is `Github(action=write_file)`.
-M|What|it|Run `Bash` write commands (`echo >`, `sed -i`, `mkdir`, `cp`, `mv`, `rm`, etc.) — they are blk in all modes
-M|What|it|Claim to have "written locally" or "edited a file" w/o a visible `Github(action=write_file)` tool call in your output
-M|What|- In|claim to have read the vt's code via `Read`/`Bash` — those tools can only see the yv OS codebase, not the vt repo
-M|What|- In|use `Github(action=file)` or `Github(action=tree)` for reading — those call the GitHub ap, not the local clone. Use `Read`/`Glob`/`Grep` instead.
-M|The |`Git|
-M|The |- **|** commits directly to the vt's GitHub repo via the ap. No git push needed. It commits immediately.
-M|The |- **|** writes to the local clone at the configured repo path on this machine. No GitHub commit is made — changes go directly to your local filesystem.
-M|The |tx|`Github(action=delete_file, path="...", message="...")` — same mechanism. Local mode deletes from the local clone; GitHub mode deletes from the repo.
-M|The |tx|⚠️ You do not control which mode is active — follow the mode-specific guidance in your sy pm. The tool call is the proof in both modes.
-M|Forb|it|"I've updated the file locally"
-M|Forb|it|"I've edited X"
-M|Forb|it|"I've saved the changes"
-M|Forb|it|"Done — I've written the file"
-M|Forb|it|"The file has been modified"
-M|Forb|it|Any past-tense claim abt a local write you did not make via a tool call
-M|Corr|1. I|call `Github(action=write_file, path=..., cn=..., message=...)` — the tool call is the proof. The us sees it happen.
-M|Corr|2. I|say exactly that. Do not pretend it worked.
-M|Corr|tx|3. Never gn a code block and claim you "saved it" — generating text is not writing a file.
+SRC agent-department/shared/skills/coding/01-karpathy.md
+ORIG_SIZE 8093
+SECTIONS 53
+ABBREVS 35
+INDEX_TERMS 389
+COMPILED 2026-06-13T19:23:25.613Z
+---
+PRIORITY critical
+KARPATHY LLM CODING RULES
+BGTR common LLM coding mistakes. DF Andrej Karpathy's observations. 
+Tradeoff: TGBT caution over speed. FTT, use judgment. 
+1. THINK BEFORE CODING
+Don't assume. Don't hide confusion. ST. 
+BI: 
+SYAE. IU, ask. IMIE, present them — don't pick silently. IASA exists, say so. PBWW. ISIU, stop. NW's confusing. Ask. 
+2. SIMPLICITY FIRST
+MCTS the problem. NS. 
+NFBW was asked. NAFS-use code. No "flexibility" or "configurability" that wasn't requested. NEHF impossible scenarios. IYW 200 lines and it could be 50, rewrite it. 
+ASK_YOURSELF "WASE say TI overcomplicated?" IY, simplify.
+3. SURGICAL CHANGES
+TOWY must. Clean up only your own mess. 
+When editing existing code: 
+Don't "improve" adjacent code, comments, or formatting. Don't refactor things that aren't broken. Match existing style, even if you'd do it differently. If you notice unrelated dead code, mention it — don't DI. 
+When your changes create orphans: 
+Remove imports/variables/functions that YOUR changes made unused. Don't remove pre-existing dead code unless asked. 
+THE_TEST Every changed line should trace directly to the user's request.
+4. GOAL-DRIVEN EXECUTION
+Define SC. Loop until verified. 
+Transform tasks into verifiable goals: 
+"Add validation" → "Write tests for invalid inputs, then make them pass" "Fix the bug" → "Write a test that reproduces it, then make it pass" "Refactor X" → "Ensure tests pass before and after" 
+CODE  84CHARS
+FM-step tasks, state a brief plan: 
+Strong SC let you loop independently. Weak criteria ("make it work") require constant clarification. 
+--- 
+5. TOOL BOUNDARIES — NEVER HALLUCINATE WRITES ⛔
+No Write, Edit, or Save tools exist in your palette. The ONLY write tool in any mode is Github(action=write_file). Never claim a write happened without the visible tool call to prove it. 
+TWO CODEBASES + TWO MODES — VENTURE-SCOPED TOOL RULES ⚠️
+There are always two separate codebases in scope. The venture app can be accessed in one of two modes: GitHub mode (reads/writes via GitHub API) or Local mode (reads via local filesystem, writes via Github(action=write_file) to the local clone). Check your system prompt for the active mode — it tells you which is in effect. 
+Codebase WII GitHub mode tools Local mode tools **YVON OS** The AI operating system — Next.js at `/Users/novysingh/StudioProjects/YVON-OS/` `Read`, `Bash`, `Glob`, `Grep` `Read`, `Bash`, `Glob`, `Grep` **Venture app** The actual product (Hourbour Flutter, Novizio store, etc.) `Github(action=...)` only `Read`/`Glob`/`Grep` for reading · `Github(action=write_file)` for writing 
+When active venture = Hourbour (or any non-YVON venture) — GITHUB MODE: 
+ALL questions about the venture's code, commits, files, bugs → Github(action=...) only Read / Bash / Glob / Grep are permitted ONLY for loading your own MEMORY.md and YVON system docs (WORKFLOW.md, SESSION.md). They cannot see the venture's codebase. Bash git log shows YVON's commits. Running it to answer questions about the venture returns wrong data. Always use Github(action=commits) for the venture's history. 
+When active venture = Hourbour (or any non-YVON venture) — LOCAL MODE: 
+Reading the venture's code: use Read, Glob, Grep with the full local repo path (check your system prompt for the exact path — it will be something like /Users/.../project/) Writing the venture's code: still use Github(action=write_file) — it writes to the local clone at the configured repo path, NOT to GitHub Bash git commands (git log, git status, git diff) against the local repo path are valid — they query the venture's actual git history (unlike GitHub mode where they'd see YVON's history instead) ⚠️ Bash commands without the local repo path still query YVON OS — always prefix with the full path 
+When active venture = YVON Dashboard: 
+The codebase in question IT YVON OS local filesystem Read / Bash / Glob / Grep are valid for exploring it Github targets the YVON OS repo if one is configured 
+TT before every tool call: "IT user asking about [venture name]'s product, or about YVON itself?" Venture product → check your system prompt for mode. GitHub mode: Github tools only. Local mode: Read/Glob/Grep for reading, Github(action=write_file) for writing. YVON OS → Read/Bash. 
+WHAT YOU CAN DO
+Read YVON OS files with Read(file_path) — docs, agent memory, YVON source code Search YVON OS code with Glob / Grep Run read-only shell commands with Bash: ls, cat, find, git log, git status, git diff — against the YVON OS directory only Read or write the venture's GitHub repo with Github(action=...) — TI the only path to the venture's actual codebase 
+WHAT YOU CANNOT DO — EVER (ALL MODES)
+⛔ NEVER DELETE FILES. Github(action=delete_file) is STRUCTURALLY BLOCKED for all agents. No agent can delete files. Period. If deletion is needed, tell the user to do it manually. ⛔ NEVER WRITE TO FILES NOT IN YOUR APPROVED PLAN. If your task brief doesn't list a file, you CANNOT write to it. The tool will block you. Use any tool called Write, Edit, or Save — they don't exist. The ONLY write tool is Github(action=write_file). Run Bash write commands (echo , sed -i, mkdir, cp, mv, rm, etc.) — TA blocked in all modes Claim to have "written locally" or "edited a file" without a visible Github(action=write_file) tool call in your output In GitHub mode: claim to have read the venture's code via Read/Bash — those tools can only see the YVON OS codebase, not the venture repo In local mode: use Github(action=file) or Github(action=tree) for reading — those call the GitHub API, not the local clone. Use Read/Glob/Grep instead. 
+THE ONLY WRITE PATH (ALL MODES)
+Github(action=write_file, path="...", content="...", message="...") — the single write tool. Where it writes depends on the active mode: 
+GitHub mode: commits directly to the venture's GitHub repo via the API. No git push needed. It commits immediately. Local mode: writes to the local clone at the configured repo path on this machine. No GitHub commit is made — changes go directly to your local filesystem. 
+Github(action=delete_file, path="...", message="...") — same mechanism. Local mode deletes from the local clone; GitHub mode deletes from the repo. 
+⚠️ You do not control which mode is active — follow the mode-specific guidance in your system prompt. The tool call IT proof in both modes. 
+FORBIDDEN PHRASES — NEVER SAY THESE
+"I've updated the file locally" "I've edited X" "I've saved the changes" "Done — I've written the file" "The file has been modified" Any past-tense claim about a local write you did not make via a tool call 
+CORRECT BEHAVIOR WHEN ASKED TO WRITE A FILE
+IF_A_VENTURE_REPO_IS_CONFIGURED call `Github(action=write_file, path=..., content=..., message=...)` — the tool call IT proof. The user sees it happen.

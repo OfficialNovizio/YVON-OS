@@ -1,64 +1,34 @@
-#MEM id=production-pipeline source=/root/yvon/agent-department/Marketing/pixel/skills/custom/production-pipeline/SKILL.md savings=18%
-M||tx|---
-M||name|production-pipeline
-M||desc|>-
-M||YVON|gn plus QC plus Upscale plus Format plus Deliver. Batch management, platform export specs, and rejection handling.
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, yv]
-M||tx|---
-M|Prod|tx|px's 5-stage im production pipeline. Execute in order. Never skip a stage.
-M|Stag|**In|** Approved pm from at's pm Architecture
-M|Stag|**Pr|** Run generation w/ md-specific parameters. gn 4-8 variants per pm.
-M|Stag|**Ou|** Raw im set w/ seed metadata
-M|Stag|**Ba|**
-M|Stag|tx|```
-M|Stag|tx|\| Batch ID \| vt \| cg \| pm Count \| md \| Date \|
-M|Stag|tx|```
-M|Stag|**In|** Generated im set + at's 3 qual Criteria
-M|Stag|**Pr|** Evaluate each variant against at's qual bar
-M|Stag|**Ou|** Pass list (images approved) / Reject list (images + reason)
-M|Stag|**QC|**
-M|Stag|- Fa|no AI artifacts (blur, extra fingers, warped features)
-M|Stag|- Ba|matches Style Spec setting?
-M|Stag|- Co|aligns w/ br palette?
-M|Stag|- Co|as specified in pm?
-M|Stag|- No|nothing in "Avoid" list present?
-M|Stag|**If|** Flag to at w/ specific fl reasons. Do not proceed.
-M|Stag|**In|** QC-passed images at original resolution
-M|Stag|**Pr|** Apply AI upscaling to target resolution
-M|Stag|**Ou|** hi-resolution images (see Platform Specs below)
-M|Stag|**Ru|**
-M|Stag|it|Upscale before any other processing
-M|Stag|it|Check upscaled output at 100% to verify qual is acceptable
-M|Stag|- If|revert and try different upscale method
-M|Stag|**In|** Upscaled images
-M|Stag|**Pr|** Resize + compress per platform specs
-M|Stag|**Pl|**
-M|Stag|tx|\| Platform \| Format \| Dimensions \| Ratio \| Max Size \| Filename Pattern \|
-M|Stag|tx|\|----------\|--------\|------------\|-------\|----------\|-----------------\|
-M|Stag|| In|1 \| less than 30MB \| `{vt}_{cg}_{seq}_ig.jpg` \|
-M|Stag|| In|16 \| less than 30MB \| `{vt}_{cg}_{seq}_igr.jpg` \|
-M|Stag|| Li|1 \| less than 8MB \| `{vt}_{cg}_{seq}_li.jpg` \|
-M|Stag|| Ti|16 \| less than 287MB \| `{vt}_{cg}_{seq}_tt.jpg` \|
-M|Stag|| We|9 \| less than 500KB \| `{vt}_{cg}_{seq}_web.webp` \|
-M|Stag|| Pr|1 \| less than 1MB \| `{vt}_{cg}_{seq}_prod.webp` \|
-M|Stag|**In|** Formatted, named files
-M|Stag|**Pr|** Deliver assets to the destination (Opus for scheduling, ln for cp pairing, etc.)
-M|Stag|**Ou|** Delivery confirmation w/ file count and format summary
-M|Stag|**De|**
-M|Stag|tx|```
-M|Asse|tx|\| Format \| Count \| Status \|
-M|Asse|tx|\|--------\|-------\|--------\|
-M|Asse|**To|** [X] files
-M|Asse|**De|** [Where delivered]
-M|Asse|**Re|** [N] w/ reasons if any
-M|Asse|**Fe|** [pm architecture revision notes if qual was lo]
-M|Asse|tx|```
-M|Reje|When|
-M|Reje|tx|1. Log rejection reason w/ specific im reference
-M|Reje|2. C|pm issue (at's problem) vs md limitation (switch md) vs qual bar mismatch (clarify w/ at)
-M|Reje|3. I|at must revise pm architecture before nx generation
-M|Reje|4. T|if "hands" appears 3+ times, add hand-specific guidance to all future pm
+SRC agent-department/Marketing/pixel/skills/custom/production-pipeline/SKILL.md
+ORIG_SIZE 3629
+SECTIONS 28
+ABBREVS 1
+INDEX_TERMS 195
+COMPILED 2026-06-13T19:23:25.168Z
+---
+NAME production-pipeline
+PRODUCTION PIPELINE
+Pixel's 5-stage image production pipeline. Execute in order. Never skip a stage. 
+STAGE 1: GENERATE
+Input: Approved prompt from Atlas's Prompt Architecture Process: Run generation with model-specific parameters. Generate 4-8 variants per prompt. Output: Raw image set with seed metadata 
+Batch Table Entry: 
+CODE  64CHARS
+STAGE 2: QC
+Input: Generated image set + Atlas's 3 Quality Criteria Process: Evaluate each variant against Atlas's quality bar Output: Pass list (images approved) / Reject list (images + reason) 
+QC Checklist: 
+Face/hand quality: no AI artifacts (blur, extra fingers, warped features) Background consistency: matches Style Spec setting? Color harmony: aligns with brand palette? Composition rule followed: as specified in prompt? No unexpected elements: nothing in "Avoid" list present? 
+If all variants fail: Flag to Atlas with specific failure reasons. Do not proceed. 
+STAGE 3: UPSCALE
+Input: QC-passed images at original resolution Process: Apply AI upscaling to target resolution Output: High-resolution images (see Platform Specs below) 
+Rules: 
+Upscale before any other processing Check upscaled output at 100% to verify quality is acceptable If upscaling introduces artifacts: revert and try different upscale method 
+STAGE 4: FORMAT
+Input: Upscaled images Process: Resize + compress per platform specs 
+Platform Export Specs: 
+Platform Format Dimensions Ratio Max Size Filename Pattern Instagram Post JPEG 1080x1080 1:1 less than 30MB `{venture}_{campaign}_{seq}_ig.jpg` Instagram Story/Reel JPEG 1080x1920 9:16 less than 30MB `{venture}_{campaign}_{seq}_igr.jpg` LinkedIP JPEG 1200x627 1.91:1 less than 8MB `{venture}_{campaign}_{seq}_li.jpg` TikTok Cover JPEG 1080x1920 9:16 less than 287MB `{venture}_{campaign}_{seq}_tt.jpg` Website Hero WebP 1920x1080 16:9 less than 500KB `{venture}_{campaign}_{seq}_web.webp` Product Photo WebP 1200x1200 1:1 less than 1MB `{venture}_{campaign}_{seq}_prod.webp` 
+STAGE 5: DELIVER
+Input: Formatted, named files Process: Deliver assets to the destination (Opus for scheduling, Lena for copy pairing, etc.) Output: Delivery confirmation with file count and format summary 
+Delivery Report: 
+CODE  277CHARS
+REJECTION PROTOCOL
+When images are rejected: 
+LOG_REJECTION_REASON_WITH_SPECIFIC_IMAGE_REFERENCE_CATEGORIZE prompt issue (Atlas's problem) vs model limitation (switch model) vs quality bar mismatch (clarify with Atlas)

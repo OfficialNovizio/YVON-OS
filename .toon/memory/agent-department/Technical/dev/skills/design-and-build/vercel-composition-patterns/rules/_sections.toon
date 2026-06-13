@@ -1,15 +1,18 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/_sections.md savings=19%
-M|Sect|tx|This file defines all sections, their ordering, impact levels, and descriptions.
-M|Sect|tx|The section ID (in parentheses) is the filename prefix used to group rules.
-M|Sect|tx|---
-M|1. C|**Im|** hi
-M|1. C|**De|** Fundamental patterns for structuring cp to avoid prop
-M|1. C|tx|proliferation and enable flexible composition.
-M|2. S|**Im|** md
-M|2. S|**De|** Patterns for lifting state and managing shared context across
-M|2. S|tx|composed cp.
-M|3. I|**Im|** md
-M|3. I|**De|** Specific techniques for implementing compound cp and
-M|3. I|tx|context pr.
-M|4. R|**Im|** md
-M|4. R|**De|** rc 19+ only. Don't use `forwardRef`; use `use()` instead of `useContext()`.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/_sections.md
+ORIG_SIZE 829
+SECTIONS 11
+ABBREVS 3
+INDEX_TERMS 59
+COMPILED 2026-06-13T19:23:25.285Z
+---
+SECTIONS
+This file defines all sections, their ordering, impact levels, and descriptions. The section ID (in parentheses) IT filename prefix used to group rules. 
+--- 
+1. COMPONENT ARCHITECTURE (ARCHITECTURE)
+Impact: HIGH Description: Fundamental patterns for structuring components to avoid prop proliferation and enable flexible composition. 
+2. STATE MANAGEMENT (STATE)
+Impact: MEDIUM Description: Patterns for lifting state and managing shared context across composed components. 
+3. IMPLEMENTATION PATTERNS (PATTERNS)
+Impact: MEDIUM Description: Specific techniques for implementing compound components and context providers. 
+4. REACT 19 APIS (REACT19)
+Impact: MEDIUM Description: React 19+ only. Don't use forwardRef; UU() IO useContext(). 

@@ -1,82 +1,39 @@
-#MEM id=seo-copywriting source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/seo-copywriting/SKILL.md savings=6%
-M||tx|---
-M||name|seo-copywriting
-M||desc|ln's SEO copywriting framework for nz and hb. Covers keyword intent mapping, meta title and description templates, heading hierarchy, semantic SEO patterns, and balancing br voice w/ search op.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|nz and hb both have organic search potential. Fashion DTC depends heavily on discovery (editorial, Pinterest, Google Shopping). Fintech SaaS depends on intent-driven search ("time tracking app", "invoice software for freelancers"). ln writes br-voice cp that also ranks — these are not mutually exclusive, but they require a deliberate framework.
-M|Purp|**Ru|** br voice comes first. SEO is a constraint, not the driver. cp that reads like it was written for a bot converts no one.
-M|Purp|tx|---
-M|When|it|Any pd page, landing page, or collection page cp for nz
-M|When|it|Any feature page, pricing page, or onboarding em for hb
-M|When|it|Any long-form cn (blog post, editorial) for either vt
-M|When|it|When ka provides SEO data from `/ap/an` and rt to ln for cp
-M|When|tx|---
-M|Keyw|Befo|
-M|Keyw|tx|\| Intent tp \| What the us wants \| cp approach \| vt examples \|
-M|Keyw|tx|\|-------------\|--------------------\|--------------\|--------------------\|
-M|Keyw|tx|\| **Informational** \| Learn or discover \| Educate → inspire → soft CTA \| "how to style linen trousers" / "what is time blocking" \|
-M|Keyw|tx|\| **Commercial investigation** \| Compare options before buying \| Show differentiators + sl proof \| "best minimalist fashion brands UK" / "best freelancer invoicing tool" \|
-M|Keyw|tx|\| **Transactional** \| Ready to buy or sign up \| Clear CTA, benefit-led hl \| "linen blazer women" / "invoice app free trial" \|
-M|Keyw|tx|\| **Navigational** \| Find a specific br/pd \| br name in title + rich meta \| "nz summer collection" / "hb pricing" \|
-M|Keyw|tx|---
-M|Prod|tx|```
-M|Prod|[H1]|[Primary keyword] — [br differentiator]
-M|Prod|Exam|"Linen Trousers Women — Elevated Everyday Essentials"
-M|Prod|[Met|[Primary keyword] \| nz (max 60 chars)
-M|Prod|Exam|"Linen Trousers for Women \| nz"
-M|Prod|[Met|[Benefit] [keyword] [CTA]. (max 160 chars)
-M|Prod|Exam|"Discover effortless linen trousers designed for the everyday. Free UK delivery. Shop the SS26 edit at nz."
-M|Prod|[Bod|
-M|Prod|it|Use H2s for fabric, fit, styling (keyword-rich subheadings)
-M|Prod|it|First paragraph contains primary keyword naturally
-M|Prod|- No|if it sounds robotic, remove
-M|Prod|- Br|editorial, understated luxury. Not "buy now" — "add to your edit"
-M|Prod|tx|```
-M|Coll|tx|```
-M|Coll|H1|[Category keyword] — Collection (e.g., "Women's Linen Clothing — SS26 Collection")
-M|Coll|tx|200–300 word editorial description using semantic keywords (related terms, not just exact match)
-M|Coll|Incl|material, occasion, styling cues — these are the long-tail queries
-M|Coll|tx|```
-M|Coll|tx|---
-M|Feat|tx|```
-M|Feat|[H1]|[Primary keyword] — [unique value prop]
-M|Feat|Exam|"Time Tracking for Freelancers — Built for How You Actually Work"
-M|Feat|[Met|[Primary keyword] \| hb (max 60 chars)
-M|Feat|[Met|[Problem solved] + [unique mechanism] + [CTA]. (max 160 chars)
-M|Feat|[Bod|
-M|Feat|it|H2s address the specific pain point each feature solves
-M|Feat|it|Include the keyword in H1, first paragraph, one H2, and one alt text
-M|Feat|- Us|"No credit card required", sl proof
-M|Feat|- Vo|trustworthy, clear, working-professional tone. Not SaaS-generic.
-M|Feat|tx|```
-M|Blog|tx|```
-M|Blog|tx|Target informational + commercial investigation keywords
-M|Blog|Stru|Problem → Cause → Solution (their workflow) → How [pd] helps
-M|Blog|Word|1200–2000 words for informational, 600–1000 for commercial investigation
-M|Blog|Inte|2–3 links to hb feature pages per post
-M|Blog|tx|```
-M|Blog|tx|---
-M|Bran|When|
-M|Bran|tx|```
-M|Bran|Novi|
-M|Bran|Keyw|"cheap linen clothes women"    ← br prohibits "cheap"
-M|Bran|fix|target "affordable linen fashion women" or "linen clothing women" instead
-M|Bran|tx|→ Never use keywords that undermine the br positioning
-M|Bran|Hour|
-M|Bran|Keyw|"free invoice software"       ← hb may not have a free tier
-M|Bran|fix|target "invoice software free trial" if a trial exists
-M|Bran|tx|→ Never target keywords that make false promises
-M|Bran|tx|```
-M|Bran|**Ru|** kh framing check before any urgency or scarcity language in SEO cp.
-M|Bran|tx|---
-M|Chec|tx|```
-M|Chec|tx|□ Keyword intent classified (informational / commercial / transactional / navigational)
-M|Chec|tx|□ Primary keyword in H1, first paragraph, meta title
-M|Chec|tx|□ Meta title ≤ 60 characters
-M|Chec|tx|□ Meta description ≤ 160 characters w/ CTA
-M|Chec|tx|□ No keyword stuffing — read aloud tst passed
-M|Chec|tx|□ br voice preserved — does not read like generic SEO cp
-M|Chec|tx|□ No keywords that contradict br positioning or make false promises
-M|Chec|□ Ka|no manipulative urgency or loss framing
-M|Chec|tx|```
+SRC agent-department/Marketing/lena/skills/marketing-and-growth/seo-copywriting/SKILL.md
+ORIG_SIZE 5202
+SECTIONS 33
+ABBREVS 2
+INDEX_TERMS 181
+COMPILED 2026-06-13T19:23:25.106Z
+---
+NAME seo-copywriting
+SEO COPYWRITING
+PURPOSE
+NA Hourbour both have organic search potential. Fashion DTC depends heavily on discovery (editorial, Pinterest, Google Shopping). Fintech SaaS depends on intent-driven search ("time tracking app", "invoice software for freelancers"). Lena writes brand-voice copy that also ranks — these are not mutually exclusive, but they require a deliberate framework. 
+Rule: Brand voice comes first. SEO is a constraint, not the driver. Copy that reads like it was written for a bot converts no one. 
+--- 
+WHEN IT RUNS
+Any product page, landing page, or collection page copy for Novizio Any feature page, pricing page, or onboarding email for Hourbour Any long-form content (blog post, editorial) for either venture When Kai provides SEO data from /api/analytics and routes to Lena for copy 
+--- 
+KEYWORD INTENT FRAMEWORK
+Before writing any SEO-optimized copy, classify the keyword intent: 
+Intent type What the user wants Copy approach Venture examples **Informational** Learn or discover Educate → inspire → soft CTA "HT style linen trousers" / "what is time blocking" **Commercial investigation** Compare options before buying Show differentiators + social proof "best minimalist fashion brands UK" / "best freelancer invoicing tool" **Transactional** Ready to buy or sign up Clear CTA, benefit-led headline "linen blazer women" / "invoice app free trial" **Navigational** Find a specific brand/product Brand name in title + rich meta "Novizio summer collection" / "Hourbour pricing" 
+--- 
+NOVIZIO SEO PATTERNS
+PRODUCT PAGE COPY TEMPLATE
+CODE  688CHARS
+COLLECTION PAGE COPY
+CODE  260CHARS
+--- 
+HOURBOUR SEO PATTERNS
+FEATURE/LANDING PAGE TEMPLATE
+CODE  560CHARS
+BLOG / LONG-FORM CONTENT
+CODE  288CHARS
+--- 
+BRAND VOICE + SEO BALANCE RULE
+When the optimal keyword conflicts with the brand voice: 
+CODE  423CHARS
+Rule from venture FEEDBACK.md applies here too: Kahneman framing check before any urgency or scarcity language in SEO copy. 
+--- 
+CHECKLIST BEFORE DELIVERING SEO COPY
+CODE  461CHARS

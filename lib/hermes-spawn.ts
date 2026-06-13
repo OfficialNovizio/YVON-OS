@@ -106,6 +106,22 @@ export async function spawnHermesAgent(params: HermesSpawnParams): Promise<Herme
 
   const workdir = params.workdir || (repoMode === 'local' && localRepoPath ? localRepoPath : '/root/yvon')
   
+  // ─── Load YVON CONSTITUTION (hard rules for EVERY agent) ──────────────────
+  let constitutionCtx = ''
+  try {
+    const toonPath = join(workdir, '.toon', 'docs', 'CONSTITUTION.toon')
+    const constitution = await fs.readFile(toonPath, 'utf-8')
+    constitutionCtx = `\n\n## YVON CONSTITUTION — IMMUTABLE RULES\nYou are bound by these laws. Violations = session abort + Diana postmortem.\n\n${constitution.slice(0, 2000)}\n`
+  } catch {
+    try {
+      const mdPath = join(workdir, 'docs', 'CONSTITUTION.md')
+      const constitution = await fs.readFile(mdPath, 'utf-8')
+      constitutionCtx = `\n\n## YVON CONSTITUTION (raw — TOON not found)\n${constitution.slice(0, 2000)}\n`
+    } catch {
+      // No constitution available — degraded mode
+    }
+  }
+  
   // Build the full prompt with context
   const ventureCtx = ventureName ? `\nActive venture: ${ventureName}.` : ''
   const repoCtx = repoMode === 'local' && localRepoPath
@@ -116,13 +132,7 @@ export async function spawnHermesAgent(params: HermesSpawnParams): Promise<Herme
   
   const graphCtx = await loadGraphContext(workdir)
 
-  const fullPrompt = `${systemContext}${ventureCtx}${repoCtx}${graphCtx}\n\n## Task\n${task}
-
-## Instructions
-1. Use tools to inspect the codebase before making claims
-2. Make all necessary changes
-3. Run npx tsc --noEmit to verify TypeScript is clean
-4. Provide a summary of what you changed and why`
+  const fullPrompt = `${constitutionCtx}${systemContext}${ventureCtx}${repoCtx}${graphCtx}\n\n## Task\n${task}\n\n## Instructions\n1. Use tools to inspect the codebase before making claims\n2. Make all necessary changes\n3. Run npx tsc --noEmit to verify TypeScript is clean\n4. Provide a summary of what you changed and why`
 
   const toolCalls: Array<{ name: string; input: unknown; summary: string | null; isError: boolean }> = []
   let content = ''
@@ -180,6 +190,20 @@ export async function* spawnHermesAgentStream(params: HermesSpawnParams): AsyncG
 
   const workdir = params.workdir || (repoMode === 'local' && localRepoPath ? localRepoPath : '/root/yvon')
   
+  // ─── Load YVON CONSTITUTION ──────────────────────────────────────────────
+  let constitutionCtx = ''
+  try {
+    const toonPath = join(workdir, '.toon', 'docs', 'CONSTITUTION.toon')
+    const constitution = await fs.readFile(toonPath, 'utf-8')
+    constitutionCtx = `\n\n## YVON CONSTITUTION\n${constitution.slice(0, 2000)}\n`
+  } catch {
+    try {
+      const mdPath = join(workdir, 'docs', 'CONSTITUTION.md')
+      const constitution = await fs.readFile(mdPath, 'utf-8')
+      constitutionCtx = `\n\n## YVON CONSTITUTION\n${constitution.slice(0, 2000)}\n`
+    } catch {}
+  }
+  
   const ventureCtx = ventureName ? `\nActive venture: ${ventureName}.` : ''
   const repoCtx = repoMode === 'local' && localRepoPath
     ? `\nWorking on LOCAL repo at: ${localRepoPath}. Use Read/Glob/Grep/Bash directly on the filesystem.`
@@ -189,7 +213,7 @@ export async function* spawnHermesAgentStream(params: HermesSpawnParams): AsyncG
   
   const graphCtx = await loadGraphContext(workdir)
 
-  const fullPrompt = `${systemContext}${ventureCtx}${repoCtx}${graphCtx}\n\n## Task\n${task}\n\nProvide your response now.`
+  const fullPrompt = `${constitutionCtx}${systemContext}${ventureCtx}${repoCtx}${graphCtx}\n\n## Task\n${task}\n\n## Instructions`
 
   // Build the Hermes command
   const args = [

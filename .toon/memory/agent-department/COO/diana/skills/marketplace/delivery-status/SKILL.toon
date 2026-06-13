@@ -1,77 +1,39 @@
-#MEM id=delivery-status source=/root/yvon/agent-department/COO/diana/skills/marketplace/delivery-status/SKILL.md savings=8%
-M||tx|---
-M||name|ring:delivery-status
-M||desc|\|
-M||tx|Delivery status tracking and progress reporting. Analyzes repository against
-M||tx|delivery roadmap to calculate actual vs planned progress, identify delays,
-M||tx|and provide in on velocity and risk tn.
-M||tx|---
-M|When|- De|pre-dv-delivery-planning)
-M|When|it|Need to check progress against plan
-M|When|it|Stakeholders requesting status up
-M|When|it|Regular checkpoint (weekly/sprint end)
-M|Skip|- No|pre-dv-delivery-planning
-M|Skip|it|Planning phase only → execute tasks first
-M|Skip|it|No repository activity → nothing to al
-M|Sequ|**Ru|** ring:pre-dv-delivery-planning, ring:dv-cycle
-M|Sequ|tx|Every status rp must be grounded in repository evidence, not estimates or verbal updates. Status answers WHAT is actually done vs what was planned.
-M|Mand|tx|\| Phase \| Activities \|
-M|Mand|tx|\|-------\|------------\|
-M|Mand|tx|\| **1. Input Gathering** \| Load delivery-roadmap.md (required), tasks.md (required), subtasks.md (optional), current date \|
-M|Mand|tx|\| **2. Repository Scan** \| Scan ALL branches, commits, PRs, releases; bd activity timeline; identify task-related work \|
-M|Mand|tx|\| **3. Task Matching** \| Pattern matching (branches, commits, PRs) + semantic al (code cn vs scope) via specialized ag \|
-M|Mand|| **|al scope items found vs expected; calculate % done; determine status \|
-M|Mand|tx|\| **5. Variance al** \| Compare planned vs actual dates; identify delays/early completions; calculate ct path impact \|
-M|Mand|tx|\| **6. in Extraction** \| Velocity tn, bug rate, rv time, code patterns, risk indicators \|
-M|Mand|tx|\| **7. rp Generation** \| Save to `doc/pre-dv/{feature}/delivery-status-{date}.md`; include evidence links \|
-M|Mand|**Q1|Repository** — Which org/repo to al? (format: org/repo)
-M|Mand|**Q2|Roadmap Source** — Options: File path (local), GitHub URL (raw), Document link, Paste cn
-M|Mand|**Q3|Tasks File** — Same options as Q2 (REQUIRED — not optional)
-M|Mand|**Q4|Subtasks File** — Yes (w/ source options) or No (al at task level only)
-M|Mand|**Q5|al Date** — Today (auto-detect) or Custom date (accepts DD/MM/YYYY or YYYY-MM-DD)
-M|Repo|tx|```bash
-M|Scan|tx|git fetch --all && git branch -a
-M|Scan|git |"%H\|%an\|%ae\|%ad\|%s" --date=iso
-M|Find|tx|git branch -a \| grep -iE "T-[0-9]+\|task\|feature\|fix"
-M|Get |tx|gh pr list --state all --limit 100 --json number,title,state,mergedAt,headRefName
-M|Find|tx|git log --all --name-only --format="%H\|%ad\|%s" --date=iso \| grep -v "^$"
-M|Find|tx|```
-M|Task|1. *|** Search branch names, PR titles, commit messages for T-XXX patterns
-M|Task|2. *|** Dispatch specialized ag per task tp to al actual code changes vs task scope
-M|Task|3. *|** Count scope items found (endpoints, tests, migrations) vs expected
-M|Task|tx|\| Signal \| Weight \|
-M|Task|tx|\|--------\|--------\|
-M|Task|tx|\| PR merged to main \| hi (but validate scope completion) \|
-M|Task|tx|\| Feature branch active \| md \|
-M|Task|tx|\| Commits w/ task reference \| md \|
-M|Task|tx|\| Code changes matching scope \| hi \|
-M|Task|tx|\| tst files for task scope \| hi \|
-M|Stat|tx|\| Status \| Criteria \|
-M|Stat|tx|\|--------\|----------\|
-M|Stat|tx|\| ✅ Complete \| All scope items found; tests present; merged to main \|
-M|Stat|tx|\| 🔄 In Progress \| Active branch; partial scope found; open PR \|
-M|Stat|tx|\| ⏸️ Not Started \| No branch, no commits matching this task \|
-M|Stat|tx|\| ⚠️ At Risk \| Started but behind schedule per ct path \|
-M|Stat|tx|\| ❌ blk \| No progress for >3 days on ct path task \|
-M|Repo|tx|```markdown
-M|Exec|- Ov|🟢 On Track \| 🟡 At Risk \| 🔴 Behind
-M|Exec|- Pl|{date}
-M|Exec|- Re|{date} (if different)
-M|Task|tx|\| Task \| Status \| % Done \| Planned End \| Actual/fc \| Variance \| Evidence \|
-M|Task|tx|\|------\|--------\|--------\|-------------\|-----------------\|----------\|----------\|
-M|Task|tx|\| T-001 \| ✅ Complete \| 100% \| 2026-03-10 \| 2026-03-09 \| +1 day early \| [PR #42] \|
-M|Task|tx|\| T-002 \| 🔄 In Progress \| 65% \| 2026-03-20 \| 2026-03-22 \| -2 days late \| [branch] \|
-M|Peri|- Sp|✅ Done (2 complete, 1 partial)
-M|Peri|- Sp|🔄 In Progress
-M|in|- Ve|X tasks/sprint (planned Y)
-M|in|- Av|X days
-M|in|- Bu|X bugs per task
-M|Risk|it|[T-002 is on ct path, currently -2 days]
-M|Reco|it|[Action items w/ owners and dates]
-M|Reco|tx|```
-M|Evid|Ever|
-M|Evid|it|PR URL (merged)
-M|Evid|it|Commit hash w/ message
-M|Evid|it|File path showing relevant changes
-M|Evid|it|tst file path confirming coverage
-M|Evid|tx|Never rp completion w/o evidence links.
+SRC agent-department/COO/diana/skills/marketplace/delivery-status/SKILL.md
+ORIG_SIZE 4987
+SECTIONS 33
+ABBREVS 1
+INDEX_TERMS 227
+COMPILED 2026-06-13T19:23:24.842Z
+---
+NAME ring:delivery-status
+DESCRIPTION |
+Delivery status tracking and progress reporting. Analyzes repository against delivery roadmap to calculate actual vs planned progress, identify delays, and provide insights on velocity and risk trends. --- 
+DELIVERY STATUS TRACKING — EVIDENCE-BASED PROGRESS REPORTING
+WTU
+Delivery roadmap exists (from ring:pre-dev-delivery-planning) Need to check progress against plan Stakeholders requesting status update Regular checkpoint (weekly/sprint end) 
+SKIP WHEN
+No delivery roadmap → create one first with ring:pre-dev-delivery-planning Planning phase only → execute tasks first No repository activity → nothing to analyze 
+SEQUENCE
+Runs after: ring:pre-dev-delivery-planning, ring:dev-cycle 
+Every status report must be grounded in repository evidence, not estimates or verbal updates. Status answers WHAT is actually done vs what was planned. 
+MANDATORY WORKFLOW
+Phase Activities **1. Input Gathering** Load delivery-roadmap.md (required), tasks.md (required), subtasks.md (optional), current date **2. Repository Scan** Scan ALL branches, commits, PRs, releases; build activity timeline; identify task-related work **3. Task Matching** Pattern matching (branches, commits, PRs) + semantic analysis (code content vs scope) via specialized agents **4. Completion Calculation** Per task: analyze scope items found vs expected; calculate % done; determine status **5. Variance Analysis** Compare planned vs actual dates; identify delays/early completions; calculate critical path impact **6. Insights Extraction** Velocity trends, bug rate, review time, code patterns, risk indicators **7. Report Generation** Save to `docs/pre-dev/{feature}/delivery-status-{date}.md`; include evidence links 
+MANDATORY USER QUESTIONS
+Q1: Repository — Which org/repo to analyze? (format: org/repo) 
+Q2: Roadmap Source — Options: File path (local), GitHub URL (raw), Document link, Paste content 
+Q3: Tasks File — Same options as Q2 (REQUIRED — not optional) 
+Q4 (optional): Subtasks File — Yes (with source options) or No (analyze at task level only) 
+Q5: Analysis Date — Today (auto-detect) or Custom date (accepts DD/MM/YYYY or YYYY-MM-DD) 
+REPOSITORY SCAN WORKFLOW
+CODE bash 434CHARS
+TASK MATCHING STRATEGY
+Pattern matching: Search branch names, PR titles, commit messages for T-XXX patterns Semantic analysis: Dispatch specialized agent per task type to analyze actual code changes vs task scope Completion calculation: Count scope items found (endpoints, tests, migrations) vs expected 
+Signal Weight PR merged to main High (but validate scope completion) Feature branch active Medium Commits with task reference Medium Code changes matching scope High Test files for task scope High 
+STATUS CLASSIFICATION
+Status Criteria ✅ Complete All scope items found; tests present; merged to main 🔄 In Progress Active branch; partial scope found; open PR ⏸️ Not Started No branch, no commits matching this task ⚠️ At Risk Started but behind schedule per critical path ❌ Blocked No progress for >3 days on critical path task 
+REPORT STRUCTURE
+CODE markdown 885CHARS
+EVIDENCE STANDARDS
+Every completion claim must include at least one of: 
+PR URL (merged) Commit hash with message File path showing relevant changes Test file path confirming coverage 
+Never report completion without evidence links. 

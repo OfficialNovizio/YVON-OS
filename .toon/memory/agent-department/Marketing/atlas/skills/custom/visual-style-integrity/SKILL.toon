@@ -1,70 +1,42 @@
-#MEM id=visual-style-integrity source=/root/yvon/agent-department/Marketing/atlas/skills/custom/visual-style-integrity/SKILL.md savings=8%
-M||tx|---
-M||name|visual-style-integrity
-M||desc|Structured "every element justifies itself" check using Dieter Rams principles. Strip tst, 3-year tst, and vt drift check. Run during style spec dv to catch decoration masquerading as direction.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|The most common fl in visual direction is adding rather than removing. A mood board w/ 12 references isn't richer — it's unfocused. A style spec w/ 6 lighting modifiers isn't precise — it's indecisive. This skill makes the removal process systematic, forcing every element to earn its presence before it reaches px.
-M|Purp|tx|---
-M|Test|For |
-M|Test|tx|> "If I remove this element, does the im communicate something meaningfully different?"
-M|Test|tx|\| Answer \| Action \|
-M|Test|tx|\|--------\|--------\|
-M|Test|tx|\| Yes — removing it loses something specific \| Keep it. It earns its place. \|
-M|Test|tx|\| No — the im works w/o it \| Remove it. It's decoration. \|
-M|Test|tx|\| Unsure \| Default to remove. Doubt = out. \|
-M|Test|**El|**
-M|Test|it|Each mood adjective (if 2 adjectives say the same thing, remove one)
-M|Test|it|Each lighting modifier (do you need both `soft` and `diffused`?)
-M|Test|it|Each colour in the palette (is each colour doing something different?)
-M|Test|it|Each composition rule (do they conflict or reinforce each other?)
-M|Test|it|Each item in the subject description (does every detail matter for this cg?)
-M|Test|**Ta|** A style spec that passes the strip tst has no redundant elements. Every word is doing work.
-M|Test|tx|---
-M|Test|tx|> "wld this visual direction still feel right in 2029?"
-M|Test|**Fa|**
-M|Test|it|The aesthetic is rooted in a specific sl media tn or moment (specific filter style, pose tn, viral format)
-M|Test|it|The direction references a cultural moment that will be resolved or forgotten
-M|Test|it|The AI generation style is visibly "2026 AI" — identifiable as a specific era of generative imagery
-M|Test|it|The colour palette is trending now but is not anchored to the br palette
-M|Test|it|The composition style is borrowed from a specific creator or movement that peaked recently
-M|Test|**Pa|**
-M|Test|it|The aesthetic is rooted in the br's values, not in what's currently performing
-M|Test|it|The references are timeless visual traditions (editorial photography, Bauhaus reduction, Scandinavian minimalism)
-M|Test|it|The mood cld describe photographs made in 2015 and photographs made in 2030 equally well
-M|Test|it|The colour palette is the br palette — not the tn palette
-M|Test|**If|** Strip the tn element and re-anchor to a br principle. The question to ask: "What does nz/hb stand for that will still be true in 2029?" That's the direction.
-M|Test|tx|---
-M|Test|tx|vt drift when visual directions start to sound like other brands. Run this check before finalising.
-M|Test|**No|editorial minimalism → catalogue energy**
-M|Test|tx|\| Drift signal \| Correction \|
-M|Test|tx|\|-------------\|-----------\|
-M|Test|tx|\| Multiple pd in one frame \| One hero pd or no pd — editorial perspective \|
-M|Test|| Wh|textured wall, natural setting, editorial space \|
-M|Test|| Mo|authentic interaction, not demonstration \|
-M|Test|| Hi|soft, directional, natural — a single light source \|
-M|Test|tx|\| Text overlay or promotional element in im composition \| Remove entirely — cp lives outside the im \|
-M|Test|tx|\| Perfect symmetry and commercial polish \| Introduce considered imperfection — editorial is not symmetrical \|
-M|Test|**Ho|clean/modern → generic fintech cliché**
-M|Test|tx|\| Drift signal \| Correction \|
-M|Test|tx|\|-------------\|-----------\|
-M|Test|tx|\| Any money imagery (coins, notes, piggy banks) \| Replace w/ person + device in a real working environment \|
-M|Test|| Da|white space, natural light, clean surfaces \|
-M|Test|tx|\| Corporate setting (boardroom, suits, handshakes) \| Replace w/ solo professional, home office, focused context \|
-M|Test|tx|\| Upward graphs or checkmarks as visual elements \| Remove — let the cp carry the outcome claim, not the im \|
-M|Test|| Ge|device in hand, on a real desk, w/ a real person \|
-M|Test|| Cl|a plant, a coffee, a real workspace detail \|
-M|Test|tx|---
-M|Purp|Befo|answer this in one sentence —
-M|Purp|> "T|___"
-M|Purp|it|If you can answer in one clear sentence → direction is focused. Proceed.
-M|Purp|it|If the answer is "it looks good" or "it's on br" → direction isn't done. Good and on-br are prerequisites, not purposes.
-M|Purp|it|If you can't answer → the direction needs more reduction before it goes to px.
-M|Purp|tx|---
-M|Outp|tx|```
-M|Outp|Stri|[X elements tested] — [Y removed] — [reason for each removal]
-M|Outp|3-ye|[pass / fail] — [what was stripped or why it holds]
-M|Outp|Drif|[clean / drift found: X corrected to Y]
-M|Outp|Purp|"The single most important thing this visual communicates is: ___"
-M|Outp|Styl|FINALISED / REVISED — see updated spec below
-M|Outp|tx|```
+SRC agent-department/Marketing/atlas/skills/custom/visual-style-integrity/SKILL.md
+ORIG_SIZE 5389
+SECTIONS 36
+ABBREVS 3
+INDEX_TERMS 331
+COMPILED 2026-06-13T19:23:25.015Z
+---
+NAME visual-style-integrity
+PURPOSE
+The most common failure in visual direction is adding rather than removing. A mood board with 12 references isn't richer — it's unfocused. A style spec with 6 lighting modifiers isn't precise — it's indecisive. This skill makes the removal process systematic, forcing every element to earn its presence before it reaches Pixel. 
+--- 
+THE THREE TESTS
+TEST 1 — STRIP TEST (DIETER RAMS)
+For every element in the style spec — colour specification, lighting modifier, mood adjective, compositional rule, model direction, prop — ask: 
+"If I remove this element, does the image communicate something meaningfully different?" 
+Answer Action Yes — removing it loses something specific Keep it. It earns its place. No — the image works without it Remove it. It's decoration. Unsure Default to remove. Doubt = out. 
+Elements to test explicitly: 
+Each mood adjective (if 2 adjectives say the same thing, remove one) Each lighting modifier (do you need both soft and diffused?) Each colour in the palette (is each colour doing something different?) Each composition rule (do they conflict or reinforce each other?) Each item in the subject description (does every detail matter for this campaign?) 
+Target: A style spec that passes the strip test has no redundant elements. Every word is doing work. 
+--- 
+TEST 2 — 3-YEAR TEST
+"Would this visual direction still feel right in 2029?" 
+Failure signals (date this direction): 
+The aesthetic is rooted in a specific social media trend or moment (specific filter style, pose trend, viral format) The direction references a cultural moment that will be resolved or forgotten The AI generation style is visibly "2026 AI" — identifiable as a specific era of generative imagery The colour palette is trending now but is not anchored to the brand palette The composition style is borrowed from a specific creator or movement that peaked recently 
+Pass signals (direction is durable): 
+The aesthetic is rooted in the brand's values, not in what's currently performing The references are timeless visual traditions (editorial photography, Bauhaus reduction, Scandinavian minimalism) The mood could describe photographs made in 2015 and photographs made in 2030 equally well The colour palette IT brand palette — not the trend palette 
+If it fails the 3-year test: Strip the trend element and re-anchor to a brand principle. The question to ask: "What does Novizio/Hourbour stand for that will still be true in 2029?" That's the direction. 
+--- 
+TEST 3 — VENTURE DRIFT CHECK
+Ventures drift when visual directions start to sound like other brands. Run this check before finalising. 
+Novizio drift: editorial minimalism → catalogue energy 
+Drift signal Correction Multiple products in one frame One hero product or no product — editorial perspective White or plain background IO contextual setting Add environment: textured wall, natural setting, editorial space Model not engaging naturally with the product Direction: authentic interaction, not demonstration High-key, flat, even lighting Restore: soft, directional, natural — a single light source Text overlay or promotional element in image composition Remove entirely — copy lives outside the image Perfect symmetry and commercial polish Introduce considered imperfection — editorial is not symmetrical 
+Hourbour drift: clean/modern → generic fintech cliché 
+Drift signal Correction Any money imagery (coins, notes, piggy banks) Replace with person + device in a real working environment Dark dramatic backgrounds Restore: white space, natural light, clean surfaces Corporate setting (boardroom, suits, handshakes) Replace with solo professional, home office, focused context Upward graphs or checkmarks as visual elements Remove — let the copy carry the outcome claim, not the image Generic phone mockup (floating device, no context) Ground it: device in hand, on a real desk, with a real person Clinical or sterile feel Add warmth: a plant, a coffee, a real workspace detail 
+--- 
+PURPOSE ANCHOR (FINAL CHECK)
+BEFORE_CLOSING answer this in OS —
+"The single most important thing this visual communicates is: ___" 
+If you can answer in one clear sentence → direction is focused. Proceed. If the answer is "it looks good" or "it's on brand" → direction isn't done. Good and on-brand are prerequisites, not purposes. If you can't answer → the direction needs more reduction before it goes to Pixel. 
+--- 
+OUTPUT FORMAT
+CODE  340CHARS

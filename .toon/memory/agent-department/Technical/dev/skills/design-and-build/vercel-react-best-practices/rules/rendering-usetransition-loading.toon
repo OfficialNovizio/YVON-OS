@@ -1,60 +1,17 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-usetransition-loading.md savings=-2%
-M||tx|---
-M||titl|Use useTransition Over Manual Loading States
-M||impa|lo
-M||impa|reduces re-renders and improves code clarity
-M||tags|rendering, transitions, useTransition, loading, state
-M||tx|---
-M|Use |tx|Use `useTransition` instead of manual `useState` for loading states. This provides built-in `isPending` state and automatically manages transitions.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |tx|fn SearchResults() {
-M|Use |tx|const [query, setQuery] = useState('')
-M|Use |tx|const [results, setResults] = useState([])
-M|Use |tx|const [isLoading, setIsLoading] = useState(false)
-M|Use |cons|string) => {
-M|Use |tx|setIsLoading(true)
-M|Use |tx|setQuery(value)
-M|Use |tx|const data = await fetchResults(value)
-M|Use |tx|setResults(data)
-M|Use |tx|setIsLoading(false)
-M|Use |tx|}
-M|Use |tx|return (
-M|Use |tx|<>
-M|Use |tx|<input onChange={(e) => handleSearch(e.target.value)} />
-M|Use |tx|{isLoading && <Spinner />}
-M|Use |tx|<ResultsList results={results} />
-M|Use |tx|</>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |tx|import { useTransition, useState } from 'rc'
-M|Use |tx|fn SearchResults() {
-M|Use |tx|const [query, setQuery] = useState('')
-M|Use |tx|const [results, setResults] = useState([])
-M|Use |tx|const [isPending, startTransition] = useTransition()
-M|Use |cons|string) => {
-M|Use |tx|setQuery(value) // up input immediately
-M|Use |tx|startTransition(async () => {
-M|Use |tx|// Fetch and up results
-M|Use |tx|const data = await fetchResults(value)
-M|Use |tx|setResults(data)
-M|Use |tx|})
-M|Use |tx|}
-M|Use |tx|return (
-M|Use |tx|<>
-M|Use |tx|<input onChange={(e) => handleSearch(e.target.value)} />
-M|Use |tx|{isPending && <Spinner />}
-M|Use |tx|<ResultsList results={results} />
-M|Use |tx|</>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Be|**
-M|Use |- **|No need to manually manage `setIsLoading(true/false)`
-M|Use |- **|pnd state correctly resets even if the transition throws
-M|Use |- **|Keeps the UI responsive during updates
-M|Use |- **|New transitions automatically cancel pnd ones
-M|Use |Refe|[useTransition](https://rc.dv/reference/rc/useTransition)
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-usetransition-loading.md
+ORIG_SIZE 2074
+SECTIONS 11
+ABBREVS 4
+INDEX_TERMS 56
+COMPILED 2026-06-13T19:23:25.327Z
+---
+TITLE UUTransition Over Manual Loading States
+UUTRANSITION OVER MANUAL LOADING STATES
+UUTransition IO manual useState for loading states. This provides built-in isPending state and automatically manages transitions. 
+Incorrect (manual loading state): 
+CODE tsx 520CHARS
+Correct (useTransition with built-in pending state): 
+CODE tsx 631CHARS
+Benefits: 
+Automatic pending state: No need to manually manage setIsLoading(true/false) Error resilience: Pending state correctly resets even if the transition throws Better responsiveness: Keeps the UI responsive during updates Interrupt handling: New transitions automatically cancel pending ones 
+REFERENCE [useTransition](https://react.dev/reference/react/useTransition)

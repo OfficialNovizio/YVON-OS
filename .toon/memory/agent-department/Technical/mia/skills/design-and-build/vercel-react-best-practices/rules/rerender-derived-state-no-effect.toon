@@ -1,30 +1,15 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md savings=-4%
-M||tx|---
-M||titl|Calculate Derived State During Rendering
-M||impa|md
-M||impa|avoids redundant renders and state drift
-M||tags|rerender, derived-state, useEffect, state
-M||tx|---
-M|Calc|tx|If a value can be computed from current props/state, do not store it in state or up it in an effect. Derive it during render to avoid extra renders and state drift. Do not set state in effects solely in rp to prop changes; prefer derived values or keyed resets instead.
-M|Calc|**In|**
-M|Calc|tx|```tsx
-M|Calc|tx|fn Form() {
-M|Calc|tx|const [firstName, setFirstName] = useState('First')
-M|Calc|tx|const [lastName, setLastName] = useState('Last')
-M|Calc|tx|const [fullName, setFullName] = useState('')
-M|Calc|tx|useEffect(() => {
-M|Calc|tx|setFullName(firstName + ' ' + lastName)
-M|Calc|tx|}, [firstName, lastName])
-M|Calc|tx|return <p>{fullName}</p>
-M|Calc|tx|}
-M|Calc|tx|```
-M|Calc|**Co|**
-M|Calc|tx|```tsx
-M|Calc|tx|fn Form() {
-M|Calc|tx|const [firstName, setFirstName] = useState('First')
-M|Calc|tx|const [lastName, setLastName] = useState('Last')
-M|Calc|tx|const fullName = firstName + ' ' + lastName
-M|Calc|tx|return <p>{fullName}</p>
-M|Calc|tx|}
-M|Calc|tx|```
-M|Calc|Refe|[You Might Not Need an Effect](https://rc.dv/learn/you-might-not-need-an-effect)
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md
+ORIG_SIZE 1201
+SECTIONS 9
+ABBREVS 0
+INDEX_TERMS 48
+COMPILED 2026-06-13T19:23:25.467Z
+---
+TITLE Calculate Derived State During Rendering
+CALCULATE DERIVED STATE DURING RENDERING
+If a value can be computed from current props/state, do not store it in state or update it in an effect. Derive it during render to avoid extra renders and state drift. Do not set state in effects solely in response to prop changes; prefer derived values or keyed resets instead. 
+Incorrect (redundant state and effect): 
+CODE tsx 293CHARS
+Correct (derive during render): 
+CODE tsx 199CHARS
+REFERENCES [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)

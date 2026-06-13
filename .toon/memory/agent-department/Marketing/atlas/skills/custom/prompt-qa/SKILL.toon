@@ -1,81 +1,43 @@
-#MEM id=prompt-qa source=/root/yvon/agent-department/Marketing/atlas/skills/custom/prompt-qa/SKILL.md savings=11%
-M||tx|---
-M||name|pm-qa
-M||desc|yv-specific pre-handoff pm checklist. Run on every pm before it reaches px. Catches contradictory style tags, vt forbidden elements, missing Avoid list items, and platform dimension gaps. Reduces px's QC rejection rate.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|A pm w/ contradictory tags produces inconsistent batches. A pm missing the Avoid list produces images that technically pass the style spec but violate the br. This skill catches both — at the individual pm level, not the cg level. The triple-pass reviews overall direction qual; this skill checks the actual string px will use.
-M|Purp|tx|---
-M|Chec|Scan|
-M|Chec|tx|\| Tag A \| Incompatible w/ \| Why \|
-M|Chec|tx|\|-------\|------------------\|-----\|
-M|Chec|tx|\| `candid` \| `studio-lit` \| Candid = unposed/natural; studio-lit = controlled setup \|
-M|Chec|tx|\| `editorial` \| `catalogue` \| Editorial = conceptual; catalogue = commercial pd focus \|
-M|Chec|tx|\| `editorial` \| `pd shot` \| Same conflict as above \|
-M|Chec|tx|\| `raw` \| `polished` \| Contradictory finish \|
-M|Chec|tx|\| `minimal` \| `maximalist` \| Opposite compositional philosophies \|
-M|Chec|tx|\| `natural light` \| `neon` \| Conflicting light sources \|
-M|Chec|tx|\| `natural light` \| `studio flash` \| Conflicting light sources \|
-M|Chec|tx|\| `lifestyle` \| `pd shot` \| Different compositional register \|
-M|Chec|tx|\| `moody` \| `bright and airy` \| Contradictory mood \|
-M|Chec|tx|\| `documentary` \| `staged` \| Contradictory authenticity signals \|
-M|Chec|tx|\| `bokeh` \| `tack sharp everything` \| Contradictory depth of field \|
-M|Chec|tx|\| `close-up portrait` \| `wide establishing shot` \| Contradictory composition \|
-M|Chec|**Ru|** If a contradiction is found, resolve it — don't send both tags hoping the md will figure it out.
-M|Chec|tx|---
-M|Chec|**No|**
-M|Chec|it|Busy patterns or busy backgrounds
-M|Chec|- St|perfect poses, fake smiles, overly generic settings
-M|Chec|- Pr|sale banners, price text, "Buy Now" text within the im
-M|Chec|it|Harsh flash or hi-key flat lighting
-M|Chec|it|Catalogue-style white-background pd shots (unless pd-only cg is specifically approved)
-M|Chec|it|Any element that reads as fast fashion or disposable
-M|Chec|**Ho|**
-M|Chec|- Mo|coins, cash, piggy banks, dollar signs, stacks of notes
-M|Chec|it|Dark or dramatic backgrounds (unless explicitly br-approved for that cg)
-M|Chec|- Ge|suits in boardrooms, handshakes, stock-photo professionals
-M|Chec|- Cl|upward graph lines, padlocks, checkmarks in shields
-M|Chec|it|Overly clinical/sterile environments
-M|Chec|it|Generic phone mockups that cld belong to any SaaS br
-M|Chec|fix|** If any forbidden element is present in the pm or is likely to appear based on the style tags — add it to the Avoid list explicitly.
-M|Chec|tx|---
-M|Chec|Ever|
-M|Chec|tx|\| Requirement \| Standard \|
-M|Chec|tx|\|------------\|---------\|
-M|Chec|tx|\| Minimum items \| 3 specific items \|
-M|Chec|tx|\| Specificity \| Each item names something concrete — not "avoid bad qual" \|
-M|Chec|tx|\| vt-specific \| At least 1 item is specific to the vt's known fl patterns \|
-M|Chec|tx|\| cg-specific \| At least 1 item is specific to this cg's risk (what cld easily go wrong here?) \|
-M|Chec|**Re|** Avoid list is empty, has only generic items ("avoid blurry images"), or has fewer than 3 entries.
-M|Chec|tx|---
-M|Chec|Conf|
-M|Chec|tx|\| Platform \| vt \| Ratio \| Dimensions \|
-M|Chec|tx|\|---------\|---------\|-------\|-----------\|
-M|Chec|| In|1 or 4:5 \| 1080×1080 or 1080×1350 \|
-M|Chec|| In|16 \| 1080×1920 \|
-M|Chec|| Ti|16 \| 1080×1920 \|
-M|Chec|| Li|1 or 1.91:1 \| 1080×1080 or 1200×628 \|
-M|Chec|| Yo|9 \| 1280×720 \|
-M|Chec|fix|** If dimensions aren't specified, add them to the production brief before handoff. px shd not have to infer the target format.
-M|Chec|tx|---
-M|Ambi|Fina|"If this pm were given to three different AI md, wld they all produce images in the same aesthetic register?"
-M|Ambi|it|If yes → specific enough. Proceed.
-M|Ambi|it|If no → identify the ambiguous term (usually the mood or style tag) and replace w/ a more specific descriptor.
-M|Ambi|**Co|**
-M|Ambi|tx|\| Vague \| Replace w/ \|
-M|Ambi|tx|\|-------\|-------------\|
-M|Ambi|| `b|`soft, editorial, quiet confidence` \|
-M|Ambi|| `p|`clean workspace, natural light, focused` \|
-M|Ambi|| `m|`minimal, white space, geometric` \|
-M|Ambi|| `a|`Scandinavian editorial, muted palette` \|
-M|Ambi|| `l|`soft cashmere, clean neutrals, considered composition` \|
-M|Ambi|tx|---
-M|Outp|Afte|
-M|Outp|tx|```
-M|Outp|Chec|[none found / resolved: X replaced Y bc Z]
-M|Outp|Chec|[none present / removed: X from pm]
-M|Outp|Chec|[passed: N items / added: X]
-M|Outp|Chec|[confirmed: ratio X / added to brief]
-M|Outp|Ambi|[passed / resolved: X replaced w/ Y]
-M|Outp|Prom|READY FOR px / REVISED — see updated pm below
-M|Outp|tx|```
+SRC agent-department/Marketing/atlas/skills/custom/prompt-qa/SKILL.md
+ORIG_SIZE 5484
+SECTIONS 37
+ABBREVS 2
+INDEX_TERMS 314
+COMPILED 2026-06-13T19:23:25.014Z
+---
+NAME prompt-qa
+PURPOSE
+A prompt with contradictory tags produces inconsistent batches. A prompt missing the Avoid list produces images that technically pass the style spec but violate the brand. This skill catches both — at the individual prompt level, not the campaign level. The triple-pass reviews overall direction quality; this skill checks the actual string Pixel will use. 
+--- 
+THE FOUR CHECKS (RUN IN ORDER)
+CHECK 1 — CONTRADICTION DETECTOR
+Scan for known incompatible tag pairs. Any of these present together = rewrite before handoff: 
+Tag A Incompatible with Why `candid` `studio-lit` Candid = unposed/natural; studio-lit = controlled setup `editorial` `catalogue` Editorial = conceptual; catalogue = commercial product focus `editorial` `product shot` Same conflict as above `raw` `polished` Contradictory finish `minimal` `maximalist` Opposite compositional philosophies `natural light` `neon` Conflicting light sources `natural light` `studio flash` Conflicting light sources `lifestyle` `product shot` Different compositional register `moody` `bright and airy` Contradictory mood `documentary` `staged` Contradictory authenticity signals `bokeh` `tack sharp everything` Contradictory depth of field `close-up portrait` `wide establishing shot` Contradictory composition 
+Rule: If a contradiction is found, resolve it — don't send both tags hoping the model will figure it out. 
+--- 
+CHECK 2 — VENTURE FORBIDDEN ELEMENTS
+Novizio — forbidden in every prompt: 
+Busy patterns or busy backgrounds Stock-photo energy: perfect poses, fake smiles, overly generic settings Promotional overlays: sale banners, price text, "Buy Now" text within the image Harsh flash or high-key flat lighting Catalogue-style white-background product shots (unless product-only campaign is specifically approved) Any element that reads as fast fashion or disposable 
+Hourbour — forbidden in every prompt: 
+MONEY_IMAGERY coins, cash, piggy banks, dollar signs, stacks of notes
+Fix: If any forbidden element is present in the prompt or is likely to appear based on the style tags — add it to the Avoid list explicitly. 
+--- 
+CHECK 3 — AVOID LIST STANDARD
+Every prompt must have an Avoid list that meets this minimum: 
+Requirement Standard Minimum items 3 specific items Specificity Each item names something concrete — not "avoid bad quality" Venture-specific At least 1 item is specific to the venture's known failure patterns Campaign-specific At least 1 item is specific to this campaign's risk (what could easily go wrong here?) 
+Reject if: Avoid list is empty, has only generic items ("avoid blurry images"), or has fewer than 3 entries. 
+--- 
+CHECK 4 — PLATFORM DIMENSION AND FORMAT CHECK
+Confirm the prompt or production brief includes the correct output dimensions for the target platform: 
+Platform Venture Ratio Dimensions Instagram Feed Novizio 1:1 or 4:5 1080×1080 or 1080×1350 Instagram Stories / Reels Novizio 9:16 1080×1920 TikTok Novizio 9:16 1080×1920 LinkedIP Hourbour 1:1 or 1.91:1 1080×1080 or 1200×628 YouTube Thumbnail Hourbour 16:9 1280×720 
+Fix: If dimensions aren't specified, add them to the production brief before handoff. Pixel should not have to infer the target format. 
+--- 
+AMBIGUITY TEST
+FINAL_CHECK_BEFORE_HANDOFF "If this prompt were given to three different AI models, would they all produce images in the same aesthetic register?"
+IY → specific enough. Proceed. If no → identify the ambiguous term (usually the mood or style tag) and replace with a more specific descriptor. 
+Common vague terms and what to replace them with: 
+Vague Replace with `beautiful` Specific mood: `soft, editorial, quiet confidence` `professional` Specific setting: `clean workspace, natural light, focused` `modern` Specific aesthetic: `minimal, white space, geometric` `aesthetic` Specific register: `Scandinavian editorial, muted palette` `luxurious` Specific cues: `soft cashmere, clean neutrals, considered composition` 
+--- 
+OUTPUT
+After all 4 checks, deliver: 
+CODE  388CHARS

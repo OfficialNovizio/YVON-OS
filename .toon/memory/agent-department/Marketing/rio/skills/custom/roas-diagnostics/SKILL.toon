@@ -1,73 +1,52 @@
-#MEM id=roas-diagnostics source=/root/yvon/agent-department/Marketing/rio/skills/custom/roas-diagnostics/SKILL.md savings=4%
-M||tx|---
-M||name|roas-diagnostics
-M||desc|Structured 4-layer investigation when ROAS misses target for nz or hb. Run in order — creative fatigue first, attribution last. Prevents jumping to the wrong fix.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|When ROAS underperforms, the wrong diagnosis wastes time and budget. Replacing creative when the real issue is audience saturation spends money producing new assets that underperform for the same reason. This skill forces the right investigation order before any fix is recommended.
-M|Purp|tx|---
-M|YVON|tx|\| vt \| Platform \| Alert Below \| Target Range \|
-M|YVON|tx|\|---------\|---------\|------------\|-------------\|
-M|YVON|tx|\| nz \| Meta (FB+IG) \| 2.0× \| 3.0–4.0× \|
-M|YVON|tx|\| nz \| TikTok ad \| 1.8× \| 2.5–3.5× \|
-M|YVON|tx|\| hb \| LinkedIn ad \| 1.5× \| 2.5–3.5× \|
-M|YVON|tx|\| hb \| YouTube ad \| 1.5× \| 2.0–3.0× \|
-M|YVON|**Es|** ROAS misses target 2+ consecutive weeks → flag to mc and fx immediately.
-M|YVON|tx|---
-M|Laye|**Sy|**
-M|Laye|it|CTR dropping week-over-week
-M|Laye|it|Conversion rate holding stable or improving
-M|Laye|- Fr|> 3 in a 7-day window)
-M|Laye|tx|**Signals a creative problem**, not a targeting or offer problem. The audience has seen the ad enough times that it stopped working.
-M|Laye|**In|**
-M|Laye|1. H|2–4 weeks average fatigue; YouTube: 3–6 weeks)
-M|Laye|tx|2. Is CTR the primary metric declining — or ROAS overall?
-M|Laye|tx|3. Is frequency above 3 for Meta, above 2 for LinkedIn?
-M|Laye|**Fi|** Brief ln for 2+ new creative variants. Do not increase budget. Do not change audience.
-M|Laye|tx|---
-M|Laye|**Sy|**
-M|Laye|it|CPM rising (platform charging more to reach the same people)
-M|Laye|it|Reach declining despite same or increased budget
-M|Laye|it|Frequency rising even w/ fresh creative
-M|Laye|tx|**Signals the audience pool is exhausted** — the algorithm has shown the ad to everyone in the defined audience who is likely to engage.
-M|Laye|**In|**
-M|Laye|tx|1. Is CPM up > 20% WoW w/o a platform-wide event (WebSearch required)?
-M|Laye|tx|2. Has reach declined while budget held constant?
-M|Laye|3. I|Meta 500K for prospecting, LinkedIn 10K)
-M|Laye|**Fi|** Expand targeting (broader interest, new lookalike seed, wider age range). Pause the saturated audience for 2–4 weeks before returning.
-M|Laye|tx|---
-M|Laye|**Sy|**
-M|Laye|it|CTR holding or improving
-M|Laye|it|Click-through to site healthy
-M|Laye|it|Add-to-cart, trial signup, or purchase rate declining
-M|Laye|tx|**Signals the ad is working — the offer or landing page is not.** People click but don't convert.
-M|Laye|**In|**
-M|Laye|tx|1. Has the offer changed recently (price, free trial terms, shipping)?
-M|Laye|tx|2. Is the landing page aligned w/ the ad's promise? (Ad says "free trial" → landing page must reflect it immediately)
-M|Laye|tx|3. Is the CTA on the landing page specific and lo-friction?
-M|Laye|**Fi|** This is not a ro fix — brief mc on offer rv first. ro does not recommend creative or audience changes when the offer is the problem.
-M|Laye|tx|---
-M|Laye|**Sy|**
-M|Laye|it|ROAS looks poor in the ad platform
-M|Laye|it|Organic perf (ka's GA4 data) is strong simultaneously
-M|Laye|it|Sudden ROAS drop w/ no cg change
-M|Laye|tx|**Signals a measurement problem**, not a perf problem.
-M|Laye|**In|**
-M|Laye|tx|1. Are UTM parameters correct on all ad URLs? (Pull a sample from GA4 source/md rp)
-M|Laye|tx|2. Has iOS privacy up or browser policy changed? (WebSearch required)
-M|Laye|tx|3. Is there double-counting btw Meta px and GA4?
-M|Laye|4. C|is there an unexplained organic spike that cld indicate misattribution?
-M|Laye|**Fi|** Fix tracking before changing any cg variable. A tracking fix can make ROAS appear to double w/o spending an extra dollar.
-M|Laye|tx|---
-M|Diag|Afte|
-M|Diag|tx|```
-M|Diag|tx|LAYER CHECKED        SYMPTOMS PRESENT?   CONFIDENCE
-M|Diag|tx|Creative Fatigue     Yes / No / Partial  hi / md / lo
-M|Diag|tx|Audience Saturation  Yes / No / Partial  hi / md / lo
-M|Diag|tx|Offer Weakness       Yes / No / Partial  hi / md / lo
-M|Diag|tx|Attribution Issue    Yes / No / Partial  hi / md / lo
-M|Diag|PRIM|[layer]
-M|Diag|RECO|[specific action]
-M|Diag|ESCA|Yes / No → [who]
-M|Diag|tx|```
-M|Diag|**Ru|** Never recommend a fix until all 4 layers are checked. The primary diagnosis is the layer w/ the strongest signal — not the first one found.
+SRC agent-department/Marketing/rio/skills/custom/roas-diagnostics/SKILL.md
+ORIG_SIZE 4557
+SECTIONS 46
+ABBREVS 10
+INDEX_TERMS 266
+COMPILED 2026-06-13T19:23:25.195Z
+---
+NAME roas-diagnostics
+PURPOSE
+When ROAS underperforms, the wrong diagnosis wastes time and budget. Replacing creative when the real issue is audience saturation spends money producing new assets that underperform for the same reason. This skill forces the right investigation order before any fix is recommended. 
+--- 
+YVON ROAS THRESHOLDS
+Venture Platform Alert Below Target Range Novizio Meta (FB+IG) 2.0× 3.0–4.0× Novizio TikTok Ads 1.8× 2.5–3.5× Hourbour LinkedIn Ads 1.5× 2.5–3.5× Hourbour YouTube Ads 1.5× 2.0–3.0× 
+Escalation trigger: ROAS misses target 2+ consecutive weeks → flag to Marcus and Felix immediately. 
+--- 
+THE 4-LAYER INVESTIGATION (RUN IN THIS ORDER)
+LAYER 1 — CREATIVE FATIGUE
+Symptoms: 
+CTR dropping week-over-week Conversion rate holding stable or improving Frequency rising (Meta: 3 in a 7-day window) 
+Signals a creative problem, not a targeting or offer problem. The audience has seen the ad enough times that it stopped working. 
+Investigation: 
+How many weeks has this creative been running? (Meta: 2–4 weeks average fatigue; YouTube: 3–6 weeks) Is CTR the PM declining — or ROAS overall? Is frequency above 3 for Meta, above 2 for LinkedIn? 
+Fix if confirmed: Brief Lena for 2+ new creative variants. Do not increase budget. Do not change audience. 
+--- 
+LAYER 2 — AUDIENCE SATURATION
+Symptoms: 
+CPM rising (platform charging more to reach the same people) Reach declining despite same or increased budget Frequency rising even with fresh creative 
+Signals the audience pool is exhausted — the algorithm has shown the ad to everyone in the defined audience who is likely to engage. 
+Investigation: 
+Is CPM up 20% WoW without a platform-wide event (WebSearch required)? Has reach declined while budget held constant? IT audience size too small for the campaign duration? (Minimum: Meta 500K for prospecting, LinkedIn 10K) 
+Fix if confirmed: Expand targeting (broader interest, new lookalike seed, wider age range). PaUT saturated audience for 2–4 weeks before returning. 
+--- 
+LAYER 3 — OFFER WEAKNESS
+Symptoms: 
+CTR holding or improving Click-through to site healthy Add-to-cart, trial signup, or purchase rate declining 
+Signals the ad is working — the offer or landing page is not. People click but don't convert. 
+Investigation: 
+Has the offer changed recently (price, free trial terms, shipping)? IT landing page aligned with the ad's promise? (Ad says "free trial" → landing page must reflect it immediately) IT CTA on the landing page specific and low-friction? 
+Fix if confirmed: TINA Rio fix — brief Marcus on offer review first. Rio does not recommend creative or audience changes when the offer IT problem. 
+--- 
+LAYER 4 — ATTRIBUTION ISSUE
+Symptoms: 
+ROAS looks poor in the ad platform Organic performance (Kai's GA4 data) is strong simultaneously Sudden ROAS drop with no campaign change 
+Signals a measurement problem, not a performance problem. 
+Investigation: 
+Are UTM parameters correct on all ad URLs? (Pull a sample from GA4 source/medium report) Has iOS privacy update or browser policy changed? (WebSearch required) ITre double-counting between Meta pixel and GA4? Cross-check with Kai: ITre an unexplained organic spike that could indicate misattribution? 
+Fix if confirmed: Fix tracking before changing any campaign variable. A tracking fix can make ROAS appear to double without spending an extra dollar. 
+--- 
+DIAGNOSTIC OUTPUT FORMAT
+After running all 4 layers, deliver: 
+CODE  395CHARS
+Rule: Never recommend a fix until all 4 layers are checked. The primary diagnosis IT layer with the strongest signal — not the first one found. 

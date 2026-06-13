@@ -1,142 +1,60 @@
-#MEM id=mia source=/root/yvon/agent-department/Technical/mia/FRONTEND-PRINCIPLES.md savings=3%
-M|FRON|tx|> Load this file before building any new cp or page.
-M|FRON|tx|---
-M|Serv|tx|\| Situation \| Directive \| Reason \|
-M|Serv|tx|\|-----------\|-----------\|--------\|
-M|Serv|tx|\| Displaying data fetched on server \| None (Server cp) \| No hydration cost \|
-M|Serv|tx|\| Using `useState`, `useEffect`, event handlers \| `'use client'` \| Browser APIs required \|
-M|Serv|tx|\| Consuming SSE stream \| `'use client'` \| `EventSource` / streaming fetch \|
-M|Serv|tx|\| Reading from a cookie (vt switcher) \| None (Server cp) \| Cookies readable in RSC \|
-M|Serv|tx|> `'use client'` boundary shd be placed at the lowest level that needs it. Never mark a page wrapper as client just bc a child cp needs it.
-M|Comp|tx|```tsx
-M|Comp|tx|// 1. Directive (if needed)
-M|Comp|tx|'use client'
-M|Comp|tx|// 2. Imports — rc, then nx.js, then local
-M|Comp|tx|import { useState, useEffect } from 'rc'
-M|Comp|tx|import { AgentAvatar } from '@/cp/AgentAvatar'
-M|Comp|tx|import tp { AgentConfig } from '@/lib/tp'
-M|Comp|tx|// 3. Props tp
-M|Comp|tx|tp Props = {
-M|Comp|ag|AgentConfig
-M|Comp|vent|string
-M|Comp|tx|}
-M|Comp|tx|// 4. cp
-M|Comp|expo|Props) {
-M|Comp|tx|// state
-M|Comp|tx|// effects
-M|Comp|tx|// handlers
-M|Comp|tx|// render
-M|Comp|tx|}
-M|Comp|tx|```
-M|Comp|tx|---
-M|Desi|Neve|
-M|Desi|tx|```tsx
-M|Desi|tx|// ❌ Wrong
-M|Desi|tx|<div className="bg-[#1A1A2E] text-[#E2E8F0]">
-M|Desi|tx|// ✅ Correct
-M|Desi|tx|<div className="bg-[var(--color-navy)] text-[var(--color-text)]">
-M|Desi|tx|```
-M|Desi|**To|**
-M|Desi|tx|\| tk \| Value \| When to use \|
-M|Desi|tx|\|-------\|-------\|-------------\|
-M|Desi|tx|\| `var(--color-navy)` \| `#1A1A2E` \| Page/layout backgrounds \|
-M|Desi|tx|\| `var(--color-surface)` \| `#16213E` \| Card backgrounds \|
-M|Desi|tx|\| `var(--color-red)` \| `#E94560` \| CTAs, active states, accents \|
-M|Desi|tx|\| `var(--color-blue)` \| `#0F3460` \| Hover states, secondary accents \|
-M|Desi|tx|\| `var(--color-text)` \| `#E2E8F0` \| Primary text \|
-M|Desi|tx|\| `var(--color-muted)` \| `#A0AEC0` \| Labels, timestamps, secondary text \|
-M|Desi|Bord|max `rounded-lg` (8px). No `rounded-2xl` or larger — breaks the dashboard aesthetic.
-M|Desi|tx|---
-M|Stat|tx|\| State tp \| Where to store \| Why \|
-M|Stat|tx|\|-----------\|---------------\|-----\|
-M|Stat|tx|\| Server data (sl stats, ag list) \| Fetch in Server cp or via `useEffect` + local state \| Simple, no global store needed \|
-M|Stat|tx|\| UI state (active tab, modal open) \| `useState` in cp \| Ephemeral, not worth persisting \|
-M|Stat|tx|\| Active vt \| Cookie `yvon_active_venture` \| Survives navigation, accessible server-side \|
-M|Stat|tx|\| Conversation messages \| sb via ap rt \| Must persist across sn \|
-M|Stat|tx|\| us preferences \| `localStorage` \| Ephemeral, device-local only \|
-M|Stat|tx|No Zustand, Redux, or Jotai — this app is simple enough for local state + server data.
-M|Stat|tx|---
-M|SSE |Ever|
-M|SSE |tx|```tsx
-M|SSE |tx|const [cn, setContent] = useState('')
-M|SSE |tx|const [isStreaming, setIsStreaming] = useState(false)
-M|SSE |tx|async fn startStream() {
-M|SSE |tx|setIsStreaming(true)
-M|SSE |tx|setContent('')
-M|SSE |tx|const res = await fetch('/ap/claude', {
-M|SSE |meth|'POST',
-M|SSE |body|JSON.stringify({ message, ventureId })
-M|SSE |tx|})
-M|SSE |tx|const reader = res.body!.getReader()
-M|SSE |tx|const decoder = new TextDecoder()
-M|SSE |tx|while (true) {
-M|SSE |tx|const { done, value } = await reader.read()
-M|SSE |tx|if (done) break
-M|SSE |tx|const chunk = decoder.decode(value)
-M|SSE |tx|const lines = chunk.split('\n')
-M|SSE |tx|for (const line of lines) {
-M|SSE |if (|')) {
-M|SSE |tx|const data = line.slice(6)
-M|SSE |tx|if (data === '[DONE]') { setIsStreaming(false); break }
-M|SSE |tx|if (data === '[er]') { /* handle er */ break }
-M|SSE |tx|try {
-M|SSE |tx|setContent(prev => prev + data)
-M|SSE |tx|} catch { /* malformed chunk — skip */ }
-M|SSE |tx|}
-M|SSE |tx|}
-M|SSE |tx|}
-M|SSE |tx|}
-M|SSE |tx|```
-M|SSE |tx|Always check `data !== '[DONE]'` before processing. Always handle `[er]`. Never `JSON.parse` w/o try/catch.
-M|SSE |tx|---
-M|Resp|Mobi|
-M|Resp|tx|\| Breakpoint \| Width \| Layout \|
-M|Resp|tx|\|-----------\|-------\|--------\|
-M|Resp|tx|\| Default (mobile) \| < 640px \| 1 column, full width \|
-M|Resp|| `s|` \| ≥ 640px \| 2 columns \|
-M|Resp|| `l|` \| ≥ 1024px \| 3–4 columns, sidebars \|
-M|Resp|| `x|` \| ≥ 1280px \| Max-width container, centered \|
-M|Resp|tx|```tsx
-M|Resp|tx|// Standard page grid
-M|Resp|<div|grid-cols-2 lg:grid-cols-3 gap-4">
-M|Resp|tx|// Standard 2-panel layout (chat + sidebar)
-M|Resp|<div|grid-cols-[1fr_400px] gap-6">
-M|Resp|tx|```
-M|Resp|tx|Never use arbitrary breakpoint values (`min-[900px]`). Use the standard tw scale.
-M|Resp|tx|---
-M|Acce|Ever|
-M|Acce|it|[ ] All interactive elements reachable by keyboard (Tab / Enter / Space / Escape)
-M|Acce|it|[ ] All images and icon-only buttons have `aria-label`
-M|Acce|- [ |`role="log" aria-live="polite"` on chat feeds
-M|Acce|- [ |`role="dialog"` + `aria-modal="true"` + focus trap on open
-M|Acce|- [ |`<label>` paired w/ input via `htmlFor` / `id`
-M|Acce|- [ |text on `var(--color-surface)` must pass WCAG AA (4.5:1 for normal text)
-M|Acce|- [ |`aria-label="[Name] — [Role]"`
-M|Acce|tx|---
-M|Desi|1. *|** read Leo's ASCII wireframe and cp spec in Leo's MEMORY.md.
-M|Desi|2. *|** identify which tw classes correspond to Leo's spec.
-M|Desi|tx|3. **Any ambiguity → ask Leo** before guessing. Never silently deviate.
-M|Desi|4. *|** compare the rendered cp side-by-side w/ Leo's spec. qn checks this.
-M|Desi|tx|5. **mi implements. mi does not redesign.** If the spec is technically impossible in tw/nx.js, flag to dv + Leo together. Never find a workaround silently.
-M|Desi|tx|---
-M|Perf|it|No `framer-motion` — CSS transitions only (`transition-all duration-200`)
-M|Perf|it|No heavy chart libraries — use CSS bar charts w/ `div` widths as percentages
-M|Perf|- Im|always `nx/im` w/ explicit `width` and `height`
-M|Perf|it|No `useEffect` w/ empty `[]` that fetches data synchronously — fetch in Server cp where possible
-M|Perf|- Bu|if adding a new dependency, run `npm run bd` and check the bd output for size changes
-M|Perf|tx|---
-M|Veri|it|bd passes (`npm run bd` zero er). Lint passes. cp verified in browser.
-M|Veri|it|Responsive layout checked at mobile, tablet, and desktop breakpoints.
-M|Veri|- **|marking a cp done w/o browser verification.
-M|Syst|it|Reproduce → isolate → hypothesize → tst → document. Never skip the reproduce step.
-M|Syst|it|Document root cause, not just the fix.
-M|Syst|- **|applying a fix that works for the symptom w/o confirming the root cause.
-M|Verc|it|Server cp by default. `'use client'` only when interactivity or browser APIs are required.
-M|Verc|it|No secrets in client cp. No direct external ap calls — rt through `/app/ap/`.
-M|Verc|- **|unnecessary `useEffect` for data that a Server cp cld fetch.
-M|Verc|it|Parallel data fetching in Server cp. Use `Suspense` for slow or optional data.
-M|Verc|it|Collocate fetching w/ the cp that renders it.
-M|Verc|- **|prop-drilling fetched data through multiple cp layers.
-M|Web |- Co|1 for body text. Touch targets ≥ 44px.
-M|Web |it|Use CSS variable tk from `globals.css` — never hardcode color values.
-M|Web |- **|hover-only interactions on mobile; animating width/height — use transform and opacity.
+SRC agent-department/Technical/mia/FRONTEND-PRINCIPLES.md
+ORIG_SIZE 7535
+SECTIONS 53
+ABBREVS 4
+INDEX_TERMS 404
+COMPILED 2026-06-13T19:23:25.386Z
+---
+FRONTEND-PRINCIPLES.MD — MIA, FRONTEND UI DEVELOPER
+Load this file before building any new component or page. 
+--- 
+COMPONENT ARCHITECTURE
+SERVER VS CLIENT DECISION
+Situation Directive Reason Displaying data fetched on server None (Server Component) No hydration cost Using `useState`, `useEffect`, event handlers `'use client'` Browser APIs required Consuming SSE stream `'use client'` `EventSource` / streaming fetch Reading from a cookie (venture switcher) None (Server Component) Cookies readable in RSC 
+'use client' boundary should be placed at the lowest level that needs it. Never mark a page wrapper as client just because a child component needs it. 
+COMPONENT FILE STRUCTURE
+CODE tsx 442CHARS
+--- 
+DESIGN SYSTEM USAGE
+Never write a raw color value. Always use design tokens: 
+CODE tsx 137CHARS
+Token reference: 
+Token Value WTU `var(--color-navy)` `#1A1A2E` Page/layout backgrounds `var(--color-surface)` `#16213E` Card backgrounds `var(--color-red)` `#E94560` CTAs, active states, accents `var(--color-blue)` `#0F3460` Hover states, secondary accents `var(--color-text)` `#E2E8F0` Primary text `var(--color-muted)` `#A0AEC0` Labels, timestamps, secondary text 
+BORDER_RADIUS max `rounded-lg` (8px). No `rounded-2xl` or larger — breaks the dashboard aesthetic.
+--- 
+STATE MANAGEMENT RULES
+State type Where to store Why Server data (social stats, agents list) Fetch in Server Component or via `useEffect` + local state Simple, no global store needed UI state (active tab, modal open) `useState` in component Ephemeral, not worth persisting Active venture Cookie `yvon_active_venture` Survives navigation, accessible server-side Conversation messages Supabase via API route Must persist across sessions User preferences `localStorage` Ephemeral, device-local only 
+No Zustand, Redux, or Jotai — this app is simple enough for local state + server data. 
+--- 
+SSE CONSUMPTION PATTERN
+Every component that streams AI responses follows this pattern: 
+CODE tsx 883CHARS
+Always check data !== '[DONE]' before processing. Always handle [ERROR]. Never JSON.parse without try/catch. 
+--- 
+RESPONSIVE LAYOUT RULES
+Mobile-first. Default layout is single column. Scale up: 
+Breakpoint Width Layout Default (mobile) < 640px 1 column, full width `sm:` ≥ 640px 2 columns `lg:` ≥ 1024px 3–4 columns, sidebars `xl:` ≥ 1280px Max-width container, centered 
+CODE tsx 204CHARS
+NU arbitrary breakpoint values (min-[900px]). UT standard Tailwind scale. 
+--- 
+ACCESSIBILITY CHECKLIST
+Every component passes these before marking done: 
+[ ] All interactive elements reachable by keyboard (Tab / Enter / Space / Escape) [ ] All images and icon-only buttons have aria-label [ ] Live regions for dynamic content: role="log" aria-live="polite" on chat feeds [ ] Modals: role="dialog" + aria-modal="true" + focus trap on open [ ] Form inputs: <labelpaired with input via htmlFor / id [ ] Color contrast: text on var(--color-surface) must pass WCAG AA (4.5:1 for normal text) [ ] Agent avatars: aria-label="[Name] — [Role]" 
+--- 
+DESIGN FIDELITY PROTOCOL
+Before writing a single line: read Leo's ASCII wireframe and component spec in Leo's MEMORY.md. Map every element: identify which Tailwind classes correspond to Leo's spec. Any ambiguity → ask Leo before guessing. Never silently deviate. After building: compare the rendered component side-by-side with Leo's spec. Quinn checks this. Mia implements. Mia does not redesign. If the spec is technically impossible in Tailwind/Next.js, flag to Dev + Leo together. Never find a workaround silently. 
+--- 
+PERFORMANCE RULES
+No framer-motion — CSS transitions only (transition-all duration-200) No heavy chart libraries — use CSS bar charts with div widths as percentages Images: always next/image with explicit width and height No useEffect with empty [] that fetches data synchronously — fetch in Server Components where possible Bundle size check: if adding a new dependency, run npm run build and check the build output for size changes 
+--- 
+SKILLS REFERENCE
+VERIFICATION BEFORE COMPLETION
+Build passes (npm run build zero errors). Lint passes. Component verified in browser. Responsive layout checked at mobile, tablet, and desktop breakpoints. Avoid: marking a component done without browser verification. 
+SYSTEMATIC DEBUGGING
+Reproduce → isolate → hypothesize → test → document. Never skip the reproduce step. Document root cause, not just TF. Avoid: applying a fix that works for the symptom without confirming the root cause. 
+VERCEL + REACT BEST PRACTICES
+Server Components by default. 'use client' only when interactivity or browser APIs are required. No secrets in client components. No direct external API calls — route through /app/api/. Avoid: unnecessary useEffect for data that a Server Component could fetch. 
+VERCEL COMPOSITION PATTERNS
+Parallel data fetching in Server Components. Use Suspense for slow or optional data. Collocate fetching with the component that renders it. Avoid: prop-drilling fetched data through multiple component layers. 
+WEB DESIGN GUIDELINES
+Contrast ratio ≥ 4.5:1 for body text. Touch targets ≥ 44px. Use CSS variable tokens from globals.css — never hardcode color values. Avoid: hover-only interactions on mobile; animating width/height — use transform and opacity. 

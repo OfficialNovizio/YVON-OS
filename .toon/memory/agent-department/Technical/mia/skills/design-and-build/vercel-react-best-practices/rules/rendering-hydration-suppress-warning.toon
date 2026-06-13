@@ -1,24 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-hydration-suppress-warning.md savings=0%
-M||tx|---
-M||titl|Suppress Expected Hydration Mismatches
-M||impa|lo-md
-M||impa|avoids noisy hydration warnings for known differences
-M||tags|rendering, hydration, ssr, nx
-M||tx|---
-M|Supp|tx|In SSR frameworks (e.g., nx.js), some values are intentionally different on server vs client (random IDs, dates, locale/timezone formatting). For these *expected* mismatches, wrap the dynamic text in an element w/ `suppressHydrationWarning` to prevent noisy warnings. Do not use this to hide real bugs. Don’t overuse it.
-M|Supp|**In|**
-M|Supp|tx|```tsx
-M|Supp|tx|fn Timestamp() {
-M|Supp|tx|return <span>{new Date().toLocaleString()}</span>
-M|Supp|tx|}
-M|Supp|tx|```
-M|Supp|**Co|**
-M|Supp|tx|```tsx
-M|Supp|tx|fn Timestamp() {
-M|Supp|tx|return (
-M|Supp|tx|<span suppressHydrationWarning>
-M|Supp|tx|{new Date().toLocaleString()}
-M|Supp|tx|</span>
-M|Supp|tx|)
-M|Supp|tx|}
-M|Supp|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-hydration-suppress-warning.md
+ORIG_SIZE 872
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 49
+COMPILED 2026-06-13T19:23:25.463Z
+---
+TITLE Suppress Expected Hydration Mismatches
+SUPPRESS EXPECTED HYDRATION MISMATCHES
+In SSR frameworks (e.g., Next.js), some values are intentionally different on server vs client (random IDs, dates, locale/timezone formatting). For these expected mismatches, wrap the dynamic text in an element with suppressHydrationWarning to prevent noisy warnings. Do not use this to hide real bugs. Don’t overuse it. 
+Incorrect (known mismatch warnings): 
+CODE tsx 77CHARS
+Correct (suppress expected mismatch only): 
+CODE tsx 124CHARS

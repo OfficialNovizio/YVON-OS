@@ -1,24 +1,21 @@
-#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/MEMORY-hourbour.md savings=10%
-M|Kai |tx|> Load alongside MEMORY.md when active vt is hb.
-M|Kai |tx|> hb-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|Fintech SaaS subscription (B2C/B2B)
-M|Vent|- **|LinkedIn, YouTube, website (GA4)
-M|Vent|- **|LinkedIn ad, YouTube ad
-M|Vent|- **|Weekly active us after install
-M|Hour|tx|\| Metric \| Healthy Range \| Alert Threshold \|
-M|Hour|tx|\|--------\|--------------\|-----------------\|
-M|Hour|tx|\| LinkedIn engagement rate \| 2.5%–5% \| < 1.5% \|
-M|Hour|tx|\| LinkedIn post reach \| > 3× follower count \| < 1× follower count \|
-M|Hour|tx|\| YouTube pre-roll VTR \| > 30% \| < 20% \|
-M|Hour|tx|\| Trial-to-paid conversion \| > 8% \| < 4% \|
-M|Hour|tx|\| App DAU/MAU ratio \| > 0.25 \| < 0.15 \|
-M|Hour|tx|\| Churn rate (monthly) \| < 3% \| > 6% \|
-M|SaaS|it|MRR growth is the primary financial signal; monitor cohort MRR, not blended MRR
-M|SaaS|it|Trial-to-paid rate is the highest-leverage conversion metric — flag any drop immediately
-M|SaaS|it|DAU/MAU < 0.20 signals an activation problem, not an acquisition problem — fix before scaling
-M|Comp|- Ti|early-stage fintech/budgeting apps (similar MAU range)
-M|Comp|- Fl|never cite Mint, YNAB, or bank apps as direct cr w/o tier qualification
-M|Hour|it|LinkedIn organic reach peaks Tue–Thu, 8–10am local time
-M|Hour|- Fi|1
-M|Hour|it|YouTube pre-roll works for intent targeting — only run to fi-related cn viewers
-M|Neve|> Ea|[date] — hb-specific er — rule.
+SRC agent-department/Marketing/kai/MEMORY-hourbour.md
+ORIG_SIZE 1630
+SECTIONS 14
+ABBREVS 5
+INDEX_TERMS 110
+COMPILED 2026-06-13T19:23:25.027Z
+---
+KAI — HOURBOUR ANALYTICS MEMORY
+Load alongside MEMORY.md when active venture is Hourbour. Hourbour-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Model: Fintech SaaS subscription (B2C/B2B) Primary channels: LinkedIn, YouTube, website (GA4) Primary paid: LinkedIn Ads, YouTube Ads North Star: Weekly active users after install 
+HOURBOUR BASELINES
+Metric Healthy Range Alert Threshold LinkedIn engagement rate 2.5%–5% < 1.5% LinkedIP reach > 3× follower count < 1× follower count YouTube pre-roll VTR > 30% < 20% Trial-to-paid conversion > 8% < 4% App DAU/MAU ratio > 0.25 < 0.15 CR (monthly) < 3% > 6% 
+SAAS METRIC RULES
+MRR growth IT primary financial signal; monitor cohort MRR, not blended MRR Trial-to-paid rate IT highest-leverage conversion metric — flag any drop immediately DAU/MAU < 0.20 signals an activation problem, not an acquisition problem — fix before scaling 
+COMPETITOR TIER (HOURBOUR)
+TIER_MATCH early-stage fintech/budgeting apps (similar MAU range)
+HOURBOUR-SPECIFIC SIGNALS
+LinkedIn organic reach peaks Tue–Thu, 8–10am local time Finance content with specific numbers outperforms advice content by 2:1 YouTube pre-roll works for intent targeting — only run to finance-related content viewers 
+NEVER AGAIN (HOURBOUR-SPECIFIC)
+EE: [date] — Hourbour-specific error — rule. 

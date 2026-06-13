@@ -1,117 +1,73 @@
-#MEM id=finishing-a-development-branch source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/finishing-a-development-branch/SKILL.md savings=4%
-M||tx|---
-M||name|finishing-a-dv-branch
-M||desc|>-
-M||tx|Use when implementation is complete, all tests pass, and you need to decide how to ig the work - guides completion of dv work by presenting structured options for merge, PR, or cleanup
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, tc]
-M||tx|---
-M|Over|tx|Guide completion of dv work by presenting clear options and handling chosen workflow.
-M|Over|**Co|** Verify tests → Present options → Execute choice → Clean up.
-M|Over|**An|** "I'm using the finishing-a-dv-branch skill to complete this work."
-M|Step|**Be|**
-M|Step|tx|```bash
-M|Run |tx|npm tst / cargo tst / pytest / go tst ./...
-M|Run |tx|```
-M|Run |**If|**
-M|Run |tx|```
-M|Run |Test|
-M|Run |tx|[Show failures]
-M|Run |tx|Cannot proceed w/ merge/PR until tests pass.
-M|Run |tx|```
-M|Run |tx|Stop. Don't proceed to Step 2.
-M|Run |**If|** Continue to Step 2.
-M|Step|tx|```bash
-M|Try |tx|git merge-base HEAD main 2>/dv/null \|\| git merge-base HEAD master 2>/dv/null
-M|Try |tx|```
-M|Try |Or a|"This branch split from main - is that correct?"
-M|Step|Pres|
-M|Step|tx|```
-M|Step|tx|Implementation complete. What wld you like to do?
-M|Step|tx|1. Merge back to <base-branch> locally
-M|Step|tx|2. Push and cr a Pull Request
-M|Step|tx|3. Keep the branch as-is (I'll handle it later)
-M|Step|tx|4. Discard this work
-M|Step|tx|Which option?
-M|Step|tx|```
-M|Step|tx|**Don't add explanation** - keep options concise.
-M|Opti|tx|```bash
-M|Swit|tx|git checkout <base-branch>
-M|Pull|tx|git pull
-M|Merg|tx|git merge <feature-branch>
-M|Veri|tx|<tst command>
-M|If t|tx|git branch -d <feature-branch>
-M|If t|tx|```
-M|If t|Then|Cleanup worktree (Step 5)
-M|Opti|tx|```bash
-M|Push|tx|git push -u origin <feature-branch>
-M|Crea|tx|gh pr cr --title "<title>" --body "$(cat <<'EOF'
-M|Summ|tx|<2-3 bullets of what changed>
-M|Test|it|[ ] <verification steps>
-M|Test|tx|EOF
-M|Test|tx|)"
-M|Test|tx|```
-M|Test|Then|Cleanup worktree (Step 5)
-M|Opti|rp|"Keeping branch <name>. Worktree preserved at <path>."
-M|Opti|tx|**Don't cleanup worktree.**
-M|Opti|**Co|**
-M|Opti|tx|```
-M|Opti|This|
-M|Opti|it|Branch <name>
-M|Opti|- Al|<commit-list>
-M|Opti|it|Worktree at <path>
-M|Opti|tx|tp 'discard' to confirm.
-M|Opti|tx|```
-M|Opti|tx|Wait for exact confirmation.
-M|Opti|If c|
-M|Opti|tx|```bash
-M|Opti|tx|git checkout <base-branch>
-M|Opti|tx|git branch -D <feature-branch>
-M|Opti|tx|```
-M|Opti|Then|Cleanup worktree (Step 5)
-M|Step|**Fo|**
-M|Step|Chec|
-M|Step|tx|```bash
-M|Step|tx|git worktree list \| grep $(git branch --show-current)
-M|Step|tx|```
-M|Step|If y|
-M|Step|tx|```bash
-M|Step|tx|git worktree remove <worktree-path>
-M|Step|tx|```
-M|Step|**Fo|** Keep worktree.
-M|Quic|tx|\| Option \| Merge \| Push \| Keep Worktree \| Cleanup Branch \|
-M|Quic|tx|\|--------\|-------\|------\|---------------\|----------------\|
-M|Quic|tx|\| 1. Merge locally \| ✓ \| - \| - \| ✓ \|
-M|Quic|tx|\| 2. cr PR \| - \| ✓ \| ✓ \| - \|
-M|Quic|tx|\| 3. Keep as-is \| - \| - \| ✓ \| - \|
-M|Quic|tx|\| 4. Discard \| - \| - \| - \| ✓ (force) \|
-M|Comm|tx|**Skipping tst verification**
-M|Comm|- **|** Merge broken code, cr failing PR
-M|Comm|- **|** Always verify tests before offering options
-M|Comm|tx|**Open-ended questions**
-M|Comm|- **|** "What shd I do nx?" → ambiguous
-M|Comm|- **|** Present exactly 4 structured options
-M|Comm|tx|**Automatic worktree cleanup**
-M|Comm|- **|** Remove worktree when might need it (Option 2, 3)
-M|Comm|- **|** Only cleanup for Options 1 and 4
-M|Comm|tx|**No confirmation for discard**
-M|Comm|- **|** Accidentally dl work
-M|Comm|- **|** Require typed "discard" confirmation
-M|Red |**Ne|**
-M|Red |it|Proceed w/ failing tests
-M|Red |it|Merge w/o verifying tests on result
-M|Red |it|dl work w/o confirmation
-M|Red |it|Force-push w/o explicit request
-M|Red |**Al|**
-M|Red |it|Verify tests before offering options
-M|Red |it|Present exactly 4 options
-M|Red |it|Get typed confirmation for Option 4
-M|Red |it|Clean up worktree for Options 1 & 4 only
-M|Inte|**Ca|**
-M|Inte|it|**subagent-driven-dv** (Step 7) - After all tasks complete
-M|Inte|it|**executing-plans** (Step 5) - After all batches complete
-M|Inte|**Pa|**
-M|Inte|it|**using-git-worktrees** - Cleans up worktree created by that skill
+SRC agent-department/Technical/dev/skills/design-and-build/finishing-a-development-branch/SKILL.md
+ORIG_SIZE 4401
+SECTIONS 67
+ABBREVS 7
+INDEX_TERMS 144
+COMPILED 2026-06-13T19:23:25.281Z
+---
+NAME finishing-a-development-branch
+FINISHING A DEVELOPMENT BRANCH
+OVERVIEW
+Guide completion of development work by presenting clear options and handling chosen workflow. 
+CP: Verify tests → Present options → Execute choice → Clean up. 
+Announce at start: "I'm using the finishing-a-development-branch skill to complete this work." 
+THE PROCESS
+STEP 1: VERIFY TESTS
+Before presenting options, verify tests pass: 
+CODE bash 74CHARS
+CODE  123CHARS
+If tests fail: 
+Stop. Don't proceed to Step 2. 
+If tests pass: Continue to Step 2. 
+STEP 2: DETERMINE BASE BRANCH
+CODE bash 106CHARS
+OR_ASK "This branch split from main - is that correct?"
+STEP 3: PRESENT OPTIONS
+Present exactly these 4 options: 
+CODE  210CHARS
+Don't add explanation - keep options concise. 
+STEP 4: EXECUTE CHOICE
+OPTION 1: MERGE LOCALLY
+CODE bash 222CHARS
+THEN CW (Step 5)
+OPTION 2: PUSH AND CREATE PR
+CODE bash 205CHARS
+THEN CW (Step 5)
+OPTION 3: KEEP AS-IS
+REPORT "Keeping branch <name>. Worktree preserved at <path>."
+Don't CW. 
+OPTION 4: DISCARD
+CODE  124CHARS
+Confirm first: 
+Wait for exact confirmation. 
+CODE bash 58CHARS
+If confirmed: 
+THEN CW (Step 5)
+STEP 5: CW
+For Options 1, 2, 4: 
+CODE bash 54CHARS
+Check if in worktree: 
+CODE bash 36CHARS
+IY: 
+For Option 3: Keep worktree. 
+QUICK REFERENCE
+Option Merge Push Keep Worktree Cleanup Branch 1. Merge locally ✓ - - ✓ 2. Create PR - ✓ ✓ - 3. Keep as-is - - ✓ - 4. Discard - - - ✓ (force) 
+COMMON MISTAKES
+Skipping test verification 
+Problem: Merge broken code, create failing PR Fix: Always verify tests before offering options 
+Open-ended questions 
+Problem: "What should I do next?" → ambiguous Fix: Present exactly 4 structured options 
+Automatic worktree cleanup 
+Problem: Remove worktree when might need it (Option 2, 3) Fix: Only cleanup for Options 1 and 4 
+No confirmation for discard 
+Problem: Accidentally delete work Fix: Require typed "discard" confirmation 
+RED FLAGS
+Never: 
+Proceed with failing tests Merge without verifying tests on result Delete work without confirmation Force-push without explicit request 
+Always: 
+Verify tests before offering options Present exactly 4 options Get typed confirmation for Option 4 Clean up worktree for Options 1 & 4 only 
+INTEGRATION
+Called by: 
+subagent-driven-development (Step 7) - After all tasks complete executing-plans (Step 5) - After all batches complete 
+Pairs with: 
+using-git-worktrees - Cleans up worktree created by that skill 

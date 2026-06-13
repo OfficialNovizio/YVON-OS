@@ -1,27 +1,21 @@
-#MEM id=coding source=/root/yvon/agent-department/Technical/raj/skills/coding/02-general.md savings=3%
-M||tx|---
-M||prio|hi
-M||appl|dv
-M||load|always
-M||md|qwen3.5-4b
-M||conf|[]
-M||tx|---
-M|Lang|it|ts strict mode where applicable
-M|Lang|it|No `any` tp unless absolutely necessary — add a comment explaining why
-M|Lang|it|Prefer explicit return tp on all functions
-M|Lang|it|Use `const` by default; `let` only when reassignment is required
-M|Func|it|Keep functions small and single-purpose
-M|Func|it|Max 30 lines per fn; extract if longer
-M|Func|it|Name functions after what they return, not what they do internally
-M|Func|it|No side effects in pure functions
-M|Erro|it|Never swallow er silently
-M|Erro|it|Always log er context, not just the er message
-M|Erro|it|Use typed er where possible
-M|Comm|it|Comment the why, not the what
-M|Comm|it|If code needs a comment to be understood, consider simplifying it first
-M|Comm|it|Never leave TODO comments w/o a ticket reference
-M|File|it|One concern per file
-M|File|it|Keep files under 200 lines; split if larger
-M|File|it|Co-locate tests w/ implementation files
-M|Git|it|All br changes go to `dv` branch — never commit directly to `main`
-M|Git|- Co|`tp(scope): short description` (feat, fix, chore, doc)
+SRC agent-department/Technical/raj/skills/coding/02-general.md
+ORIG_SIZE 1180
+SECTIONS 15
+ABBREVS 0
+INDEX_TERMS 107
+COMPILED 2026-06-13T19:23:25.580Z
+---
+PRIORITY high
+GENERAL CODE STANDARDS
+LANGUAGE & TYPES
+TypeScript strict mode where applicable No any types unless absolutely necessary — add a comment explaining why Prefer explicit return types on all functions Use const by default; let only when reassignment is required 
+FUNCTIONS
+Keep functions small and single-purpose Max 30 lines per function; extract if longer Name functions after what they return, not what they do internally No side effects in pure functions 
+ERROR HANDLING
+Never swallow errors silently Always log error context, not just the error message Use typed errors where possible 
+COMMENTS
+Comment the why, not the what If code needs a comment to be understood, consider simplifying it first Never leave TODO comments without a ticket reference 
+FILE STRUCTURE
+One concern per file Keep files under 200 lines; split if larger Co-locate tests with implementation files 
+GIT
+All brand changes go to dev branch — never commit directly to main Commit messages: type(scope): short description (feat, fix, chore, docs) 

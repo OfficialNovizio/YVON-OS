@@ -34,3 +34,6 @@ Thumbs.db
 
 # Hermes runtime clone (aux-tools sidecar) — large, fetched via npm run hermes:setup
 hermes/vendor/
+
+# TOON build artifacts — auto-generated from .md sources (npm install / postinstall)
+.toon/

@@ -1,30 +1,18 @@
-#MEM id=agents source=/root/yvon/agent-department/CEO/marcus/skills/agents/03-prompting.md savings=4%
-M||tx|---
-M||prio|md
-M||appl|all-ag
-M||load|on-request
-M||md|qwen3.5-4b
-M||conf|[]
-M||tx|---
-M|Anat|tx|```
-M|Anat|tx|1. Role context (1 sentence)
-M|Anat|tx|2. Task description (what, not how)
-M|Anat|tx|3. Constraints (what NOT to do)
-M|Anat|tx|4. sc criteria (how you'll know it's done)
-M|Anat|tx|5. Output format (if specific format needed)
-M|Anat|tx|```
-M|Rule|it|Start w/ the goal, not the method
-M|Rule|it|State constraints before asking for output — not after
-M|Rule|it|Include one concrete example if the format is non-obvious
-M|Rule|it|Never use vague sc criteria ("make it better", "clean it up")
-M|Agen|tx|All inter-ag communication rt through mc.
-M|Agen|Marc|
-M|Agen|tx|```
-M|Agen|TASK|[one line description]
-M|Agen|ag|[target ag name]
-M|Agen|CONT|[relevant memory files to read]
-M|Agen|DONE|[specific verifiable criterion]
-M|Agen|tx|```
-M|Prom|it|❌ "Improve this code" → ✅ "Fix the N+1 query on line 42 so it uses a single JOIN"
-M|Prom|it|❌ "Make it look better" → ✅ "Match the Card cp's border-radius and shadow to the ds in Figma frame X"
-M|Prom|- ❌ |'NOT_FOUND' }` w/ 404 status when us ID doesn't exist"
+SRC agent-department/CEO/marcus/skills/agents/03-prompting.md
+ORIG_SIZE 1189
+SECTIONS 12
+ABBREVS 2
+INDEX_TERMS 77
+COMPILED 2026-06-13T19:23:24.754Z
+---
+PRIORITY medium
+PROMPT WRITING STANDARDS
+ANATOMY OF A GOOD PROMPT
+CODE  190CHARS
+RULES
+Start with the goal, not the method State constraints before asking for output — not after Include one concrete example if the format is non-obvious NU vague SC ("make it better", "clean it up") 
+AGENT COMMUNICATION PATTERN
+CODE  140CHARS
+All inter-agent communication routes through Marcus. Marcus formats tasks as: 
+PROMPT ANTI-PATTERNS
+❌ "Improve this code" → ✅ "Fix the N+1 query on line 42 so it uses a single JOIN" ❌ "Make it look better" → ✅ "Match the Card component's border-radius and shadow to the design in Figma frame X" ❌ "Handle errors" → ✅ "Return { error: 'NOT_FOUND' } with 404 status when user ID doesn't exist" 

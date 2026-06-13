@@ -1,97 +1,17 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-decouple-implementation.md savings=-8%
-M||tx|---
-M||titl|Decouple State Management from UI
-M||impa|md
-M||impa|enables swapping state implementations w/o changing UI
-M||tags|composition, state, architecture
-M||tx|---
-M|Deco|tx|The pr cp shd be the only place that knows how state is managed.
-M|Deco|tx|UI cp consume the context if—they don't know if state comes from
-M|Deco|tx|useState, Zustand, or a server sync.
-M|Deco|**In|**
-M|Deco|tx|```tsx
-M|Deco|func|{ channelId: string }) {
-M|Deco|tx|// UI cp knows abt global state implementation
-M|Deco|tx|const state = useGlobalChannelState(channelId)
-M|Deco|tx|const { submit, updateInput } = useChannelSync(channelId)
-M|Deco|tx|return (
-M|Deco|tx|<Composer.Frame>
-M|Deco|tx|<Composer.Input
-M|Deco|tx|value={state.input}
-M|Deco|tx|onChange={(text) => sync.updateInput(text)}
-M|Deco|tx|/>
-M|Deco|tx|<Composer.Submit onPress={() => sync.submit()} />
-M|Deco|tx|</Composer.Frame>
-M|Deco|tx|)
-M|Deco|tx|}
-M|Deco|tx|```
-M|Deco|**Co|**
-M|Deco|tx|```tsx
-M|Deco|tx|// pr handles all state management details
-M|Deco|tx|fn ChannelProvider({
-M|Deco|tx|channelId,
-M|Deco|tx|children,
-M|Deco|}|{
-M|Deco|chan|string
-M|Deco|chil|rc.ReactNode
-M|Deco|tx|}) {
-M|Deco|tx|const { state, up, submit } = useGlobalChannel(channelId)
-M|Deco|tx|const inputRef = useRef(null)
-M|Deco|tx|return (
-M|Deco|tx|<Composer.pr
-M|Deco|tx|state={state}
-M|Deco|tx|actions={{ up, submit }}
-M|Deco|tx|meta={{ inputRef }}
-M|Deco|tx|>
-M|Deco|tx|{children}
-M|Deco|tx|</Composer.pr>
-M|Deco|tx|)
-M|Deco|tx|}
-M|Deco|tx|// UI cp only knows abt the context if
-M|Deco|tx|fn ChannelComposer() {
-M|Deco|tx|return (
-M|Deco|tx|<Composer.Frame>
-M|Deco|tx|<Composer.Header />
-M|Deco|tx|<Composer.Input />
-M|Deco|tx|<Composer.Footer>
-M|Deco|tx|<Composer.Submit />
-M|Deco|tx|</Composer.Footer>
-M|Deco|tx|</Composer.Frame>
-M|Deco|tx|)
-M|Deco|tx|}
-M|Deco|tx|// Usage
-M|Deco|func|{ channelId: string }) {
-M|Deco|tx|return (
-M|Deco|tx|<ChannelProvider channelId={channelId}>
-M|Deco|tx|<ChannelComposer />
-M|Deco|tx|</ChannelProvider>
-M|Deco|tx|)
-M|Deco|tx|}
-M|Deco|tx|```
-M|Deco|**Di|**
-M|Deco|tx|```tsx
-M|Deco|tx|// Local state for ephemeral forms
-M|Deco|tx|fn ForwardMessageProvider({ children }) {
-M|Deco|tx|const [state, setState] = useState(initialState)
-M|Deco|tx|const forwardMessage = useForwardMessage()
-M|Deco|tx|return (
-M|Deco|tx|<Composer.pr
-M|Deco|tx|state={state}
-M|Deco|acti|setState, submit: forwardMessage }}
-M|Deco|tx|>
-M|Deco|tx|{children}
-M|Deco|tx|</Composer.pr>
-M|Deco|tx|)
-M|Deco|tx|}
-M|Deco|tx|// Global synced state for channels
-M|Deco|tx|fn ChannelProvider({ channelId, children }) {
-M|Deco|tx|const { state, up, submit } = useGlobalChannel(channelId)
-M|Deco|tx|return (
-M|Deco|tx|<Composer.pr state={state} actions={{ up, submit }}>
-M|Deco|tx|{children}
-M|Deco|tx|</Composer.pr>
-M|Deco|tx|)
-M|Deco|tx|}
-M|Deco|tx|```
-M|Deco|tx|The same `Composer.Input` cp works w/ both pr bc it only
-M|Deco|tx|depends on the context if, not the implementation.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-decouple-implementation.md
+ORIG_SIZE 2699
+SECTIONS 11
+ABBREVS 0
+INDEX_TERMS 48
+COMPILED 2026-06-13T19:23:25.290Z
+---
+TITLE Decouple State Management from UI
+DECOUPLE STATE MANAGEMENT FROM UI
+The provider component should be the only place that knows how state is managed. UI components consume the context interface—they don't know if state comes from useState, Zustand, or a server sync. 
+Incorrect (UI coupled to state implementation): 
+CODE tsx 460CHARS
+Correct (state management isolated in provider): 
+CODE tsx 875CHARS
+Different providers, same UI: 
+CODE tsx 629CHARS
+The same Composer.Input component works with both providers because it only depends on the context interface, not the implementation. 

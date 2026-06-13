@@ -1,160 +1,26 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-context-interface.md savings=-3%
-M||tx|---
-M||titl|Define Generic Context Interfaces for Dependency Injection
-M||impa|hi
-M||impa|enables dependency-injectable state across use-cases
-M||tags|composition, context, state, ts, dependency-injection
-M||tx|---
-M|Defi|Defi|
-M|Defi|tx|`state`, `actions`, and `meta`. This if is a contract that any pr
-M|Defi|tx|can im—enabling the same UI cp to work w/ completely different
-M|Defi|tx|state implementations.
-M|Defi|**Co|** Lift state, compose internals, make state
-M|Defi|tx|dependency-injectable.
-M|Defi|**In|**
-M|Defi|tx|```tsx
-M|Defi|tx|fn ComposerInput() {
-M|Defi|tx|// Tightly coupled to a specific hook
-M|Defi|tx|const { input, setInput } = useChannelComposerState()
-M|Defi|tx|return <TextInput value={input} onChangeText={setInput} />
-M|Defi|tx|}
-M|Defi|tx|```
-M|Defi|**Co|**
-M|Defi|tx|```tsx
-M|Defi|tx|// Define a GENERIC if that any pr can im
-M|Defi|tx|if ComposerState {
-M|Defi|inpu|string
-M|Defi|atta|Attachment[]
-M|Defi|isSu|boolean
-M|Defi|tx|}
-M|Defi|tx|if ComposerActions {
-M|Defi|up|(updater: (state: ComposerState) => ComposerState) => void
-M|Defi|subm|() => void
-M|Defi|tx|}
-M|Defi|tx|if ComposerMeta {
-M|Defi|inpu|rc.RefObject<TextInput>
-M|Defi|tx|}
-M|Defi|tx|if ComposerContextValue {
-M|Defi|stat|ComposerState
-M|Defi|acti|ComposerActions
-M|Defi|meta|ComposerMeta
-M|Defi|tx|}
-M|Defi|tx|const ComposerContext = createContext<ComposerContextValue \| null>(null)
-M|Defi|tx|```
-M|Defi|**UI|**
-M|Defi|tx|```tsx
-M|Defi|tx|fn ComposerInput() {
-M|Defi|tx|const {
-M|Defi|tx|state,
-M|Defi|acti|{ up },
-M|Defi|tx|meta,
-M|Defi|tx|} = use(ComposerContext)
-M|Defi|tx|// This cp works w/ ANY pr that implements the if
-M|Defi|tx|return (
-M|Defi|tx|<TextInput
-M|Defi|tx|ref={meta.inputRef}
-M|Defi|tx|value={state.input}
-M|Defi|onCh|text }))}
-M|Defi|tx|/>
-M|Defi|tx|)
-M|Defi|tx|}
-M|Defi|tx|```
-M|Defi|**Di|**
-M|Defi|tx|```tsx
-M|Defi|// P|Local state for ephemeral forms
-M|Defi|func|{ children: rc.ReactNode }) {
-M|Defi|tx|const [state, setState] = useState(initialState)
-M|Defi|tx|const inputRef = useRef(null)
-M|Defi|tx|const submit = useForwardMessage()
-M|Defi|tx|return (
-M|Defi|tx|<ComposerContext
-M|Defi|tx|value={{
-M|Defi|tx|state,
-M|Defi|acti|{ up: setState, submit },
-M|Defi|meta|{ inputRef },
-M|Defi|tx|}}
-M|Defi|tx|>
-M|Defi|tx|{children}
-M|Defi|tx|</ComposerContext>
-M|Defi|tx|)
-M|Defi|tx|}
-M|Defi|// P|Global synced state for channels
-M|Defi|func|Props) {
-M|Defi|tx|const { state, up, submit } = useGlobalChannel(channelId)
-M|Defi|tx|const inputRef = useRef(null)
-M|Defi|tx|return (
-M|Defi|tx|<ComposerContext
-M|Defi|tx|value={{
-M|Defi|tx|state,
-M|Defi|acti|{ up, submit },
-M|Defi|meta|{ inputRef },
-M|Defi|tx|}}
-M|Defi|tx|>
-M|Defi|tx|{children}
-M|Defi|tx|</ComposerContext>
-M|Defi|tx|)
-M|Defi|tx|}
-M|Defi|tx|```
-M|Defi|**Th|**
-M|Defi|tx|```tsx
-M|Defi|tx|// Works w/ ForwardMessageProvider (local state)
-M|Defi|tx|<ForwardMessageProvider>
-M|Defi|tx|<Composer.Frame>
-M|Defi|tx|<Composer.Input />
-M|Defi|tx|<Composer.Submit />
-M|Defi|tx|</Composer.Frame>
-M|Defi|tx|</ForwardMessageProvider>
-M|Defi|tx|// Works w/ ChannelProvider (global synced state)
-M|Defi|tx|<ChannelProvider channelId="abc">
-M|Defi|tx|<Composer.Frame>
-M|Defi|tx|<Composer.Input />
-M|Defi|tx|<Composer.Submit />
-M|Defi|tx|</Composer.Frame>
-M|Defi|tx|</ChannelProvider>
-M|Defi|tx|```
-M|Defi|**Cu|**
-M|Defi|tx|The pr boundary is what matters—not the visual nesting. cp that
-M|Defi|tx|need shared state don't have to be inside the `Composer.Frame`. They just need
-M|Defi|tx|to be within the pr.
-M|Defi|tx|```tsx
-M|Defi|tx|fn ForwardMessageDialog() {
-M|Defi|tx|return (
-M|Defi|tx|<ForwardMessageProvider>
-M|Defi|tx|<Dialog>
-M|Defi|tx|{/* The composer UI */}
-M|Defi|tx|<Composer.Frame>
-M|Defi|tx|<Composer.Input placeholder="Add a message, if you'd like." />
-M|Defi|tx|<Composer.Footer>
-M|Defi|tx|<Composer.Formatting />
-M|Defi|tx|<Composer.Emojis />
-M|Defi|tx|</Composer.Footer>
-M|Defi|tx|</Composer.Frame>
-M|Defi|tx|{/* Custom UI OUTSIDE the composer, but INSIDE the pr */}
-M|Defi|tx|<MessagePreview />
-M|Defi|tx|{/* Actions at the bottom of the dialog */}
-M|Defi|tx|<DialogActions>
-M|Defi|tx|<CancelButton />
-M|Defi|tx|<ForwardButton />
-M|Defi|tx|</DialogActions>
-M|Defi|tx|</Dialog>
-M|Defi|tx|</ForwardMessageProvider>
-M|Defi|tx|)
-M|Defi|tx|}
-M|Defi|tx|// This button lives OUTSIDE Composer.Frame but can still submit based on its context!
-M|Defi|tx|fn ForwardButton() {
-M|Defi|tx|const {
-M|Defi|acti|{ submit },
-M|Defi|tx|} = use(ComposerContext)
-M|Defi|tx|return <Button onPress={submit}>Forward</Button>
-M|Defi|tx|}
-M|Defi|tx|// This preview lives OUTSIDE Composer.Frame but can read composer's state!
-M|Defi|tx|fn MessagePreview() {
-M|Defi|tx|const { state } = use(ComposerContext)
-M|Defi|tx|return <Preview message={state.input} attachments={state.attachments} />
-M|Defi|tx|}
-M|Defi|tx|```
-M|Defi|tx|The `ForwardButton` and `MessagePreview` are not visually inside the composer
-M|Defi|tx|box, but they can still access its state and actions. This is the power of
-M|Defi|tx|lifting state into pr.
-M|Defi|tx|The UI is reusable bits you compose together. The state is dependency-injected
-M|Defi|tx|by the pr. Swap the pr, keep the UI.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/state-context-interface.md
+ORIG_SIZE 4974
+SECTIONS 20
+ABBREVS 2
+INDEX_TERMS 94
+COMPILED 2026-06-13T19:23:25.289Z
+---
+TITLE Define Generic Context Interfaces for Dependency Injection
+DEFINE GENERIC CONTEXT INTERFACES FOR DEPENDENCY INJECTION
+Define a generic interface for your component context with three parts: state, actions, and meta. This interface is a contract that any provider can implement—enabling the same UI components to work with completely different state implementations. 
+CP: Lift state, compose internals, make state dependency-injectable. 
+Incorrect (UI coupled to specific state implementation): 
+CODE tsx 186CHARS
+Correct (generic interface enables dependency injection): 
+CODE tsx 527CHARS
+UI components consume the interface, not the implementation: 
+CODE tsx 346CHARS
+Different providers implement the same interface: 
+CODE tsx 838CHARS
+The same composed UI works with both: 
+CODE tsx 380CHARS
+Custom UI outside the component can access state and actions: 
+The provider boundary is what matters—not the visual nesting. Components that need shared state don't have to be inside the Composer.Frame. They just need to be within the provider. 
+CODE tsx 1132CHARS
+The ForwardButton and MessagePreview are not visually inside the composer box, but they can still access its state and actions. TI the power of lifting state into providers. 
+The UI is reusable bits you compose together. The state is dependency-injected by the provider. Swap the provider, keep the UI. 

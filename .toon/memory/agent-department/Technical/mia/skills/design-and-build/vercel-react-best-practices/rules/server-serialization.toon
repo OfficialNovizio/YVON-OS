@@ -1,30 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/server-serialization.md savings=-1%
-M||tx|---
-M||titl|Minimize Serialization at RSC Boundaries
-M||impa|hi
-M||impa|reduces data transfer size
-M||tags|server, rsc, serialization, props
-M||tx|---
-M|Mini|tx|The rc Server/Client boundary serializes all object properties into strings and embeds them in the HTML rp and subsequent RSC requests. This serialized data directly impacts page weight and load time, so **size matters a lot**. Only pass fields that the client actually uses.
-M|Mini|**In|**
-M|Mini|tx|```tsx
-M|Mini|tx|async fn Page() {
-M|Mini|tx|const us = await fetchUser()  // 50 fields
-M|Mini|tx|return <Profile us={us} />
-M|Mini|tx|}
-M|Mini|tx|'use client'
-M|Mini|func|{ us: us }) {
-M|Mini|tx|return <div>{us.name}</div>  // uses 1 field
-M|Mini|tx|}
-M|Mini|tx|```
-M|Mini|**Co|**
-M|Mini|tx|```tsx
-M|Mini|tx|async fn Page() {
-M|Mini|tx|const us = await fetchUser()
-M|Mini|tx|return <Profile name={us.name} />
-M|Mini|tx|}
-M|Mini|tx|'use client'
-M|Mini|func|{ name: string }) {
-M|Mini|tx|return <div>{name}</div>
-M|Mini|tx|}
-M|Mini|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/server-serialization.md
+ORIG_SIZE 996
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 48
+COMPILED 2026-06-13T19:23:25.482Z
+---
+TITLE Minimize Serialization at RSC Boundaries
+MINIMIZE SERIALIZATION AT RSC BOUNDARIES
+The React Server/Client boundary serializes all object properties into strings and embeds them in the HTML response and subsequent RSC requests. This serialized data directly impacts page weight and load time, so size matters a lot. Only pass fields that the client actually uses. 
+Incorrect (serializes all 50 fields): 
+CODE tsx 216CHARS
+Correct (serializes only 1 field): 
+CODE tsx 187CHARS

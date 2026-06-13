@@ -1,109 +1,56 @@
-#MEM id=decision-critic source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/decision-critic/SKILL.md savings=8%
-M||tx|---
-M||name|decision-critic
-M||vers|1.0.0
-M||desc|Structured decision critic that systematically stress-tests reasoning before commitment surfacing hidden assumptions verifying claims and generating adversarial perspectives to improve decision qual.
-M||trig|
-M||it|"validate my thinking"
-M||it|"poke holes in this decision"
-M||it|"stress-tst this"
-M||it|"criticize this approach"
-M||md|claude-opus-4-6
-M||lice|MIT
-M||tx|---
-M|Deci|tx|When this skill activates, you become a structured decision critic. Your role is to systematically stress-tst reasoning before commitment, surfacing hidden assumptions, verifying claims, and generating adversarial perspectives.
-M|Trig|Acti|
-M|Trig|it|`Validate my thinking on...`
-M|Trig|it|`Poke holes in this decision`
-M|Trig|it|`Criticize this approach`
-M|Trig|it|`Stress-tst this tradeoff`
-M|Trig|it|Presents a decision rationale and asks for criticism
-M|Proc|tx|```
-M|Proc|tx|DECOMPOSITION (1-2)    Extract claims, assumptions, constraints, judgments
-M|Proc|tx|\|              Assign stable IDs (C1, A1, K1, J1)
-M|Proc|tx|v
-M|Proc|tx|VERIFICATION (3-4)     gn verification questions
-M|Proc|tx|\|              Answer independently (factored verification)
-M|Proc|v   |VERIFIED \| FAILED \| UNCERTAIN
-M|Proc|tx|CHALLENGE (5-6)        Contrarian perspective + alternative framing
-M|Proc|tx|\|
-M|Proc|tx|v
-M|Proc|SYNT|STAND \| REVISE \| ESCALATE
-M|Proc|tx|```
-M|deci|tx|```bash
-M|deci|tx|python3 .claude/skills/decision-critic/scripts/decision-critic.py \
-M|deci|tx|--step-number <1-7> \
-M|deci|tx|--total-steps 7 \
-M|deci|tx|--decision "<decision text>" \
-M|deci|tx|--context "<constraints and background>" \
-M|deci|tx|--thoughts "<your accumulated al, IDs, and status from all previous steps>"
-M|deci|tx|```
-M|deci|**Ex|
-M|deci|- 0|Successful completion
-M|deci|- 1|Invalid arguments or missing required parameters
-M|deci|- 2|al failed or incomplete
-M|deci|tx|\| Argument        \| Required \| Description                                                 \|
-M|deci|tx|\| --------------- \| -------- \| ----------------------------------------------------------- \|
-M|deci|tx|\| `--step-number` \| Yes      \| Current step (1-7)                                          \|
-M|deci|tx|\| `--total-steps` \| Yes      \| Always 7                                                    \|
-M|deci|tx|\| `--decision`    \| Step 1   \| The decision statement being criticized                     \|
-M|deci|tx|\| `--context`     \| Step 1   \| Constraints, background, sy context                     \|
-M|deci|tx|\| `--thoughts`    \| Yes      \| Your al inc all IDs and status from prior steps \|
-M|When|Use |
-M|When|it|Making a consequential decision that is hard to reverse
-M|When|it|Evaluating a plan, ADR, or ds before commitment
-M|When|it|You want structured adversarial feedback, not just a second opinion
-M|When|Use |
-M|When|it|You need st challenge on direction (whether, not how)
-M|When|it|The question is abt project scope or priorities, not tc reasoning
-M|Anti|tx|\| Avoid \| Why \| Instead \|
-M|Anti|tx|\|-------\|-----\|---------\|
-M|Anti|tx|\| Running critique after commitment \| Too late to change course \| Critique before finalizing decisions \|
-M|Anti|tx|\| Accepting STAND verdict w/o reading al \| Misses nuanced findings \| rv all UNCERTAIN and FAILED items \|
-M|Anti|tx|\| Skipping the inversion step \| Misses fl modes that forward reasoning overlooks \| Always run Steps 5-6 \|
-M|Anti|tx|\| Using for trivial decisions \| Wastes time on lo-stakes choices \| Reserve for consequential, hard-to-reverse decisions \|
-M|Veri|Afte|
-M|Veri|- [ |VERIFIED, FAILED, or UNCERTAIN
-M|Veri|it|[ ] Contrarian perspective generated (Step 5)
-M|Veri|- [ |STAND, REVISE, ESCALATE
-M|Veri|it|[ ] Inversion al covers at least 3 fl modes
-M|Refe|it|[Chesterton's Fence](references/mental-md-chestertons-fence.md) - Understand why something exists before removing or changing it
-M|Refe|it|[Gall's Law](references/mental-md-galls-law.md) - Complex working systems evolved from simple working systems
-M|Refe|it|[Boy Scout Rule](references/qual-boy-scout-rule.md) - Scope boundaries for incremental improvement decisions
-M|Refe|it|[Survivorship Bias](references/ct-thinking-survivorship-bias.md) - Avoid drawing conclusions from winners while ignoring failures
-M|Refe|it|[Systems Thinking](references/st-thinking-systems-thinking.md) - Trace second-order effects and feedback loops in decisions
-M|Acad|This|
-M|Acad|tx|1. **Chain-of-Verification** (Dhuliawala et al., 2023) - Factored verification prevents confirmation bias
-M|Acad|tx|2. **Self-Consistency** (Wang et al., 2023) - Multiple reasoning paths reveal disagreement
-M|Acad|tx|3. **Multi-Expert Prompting** (Wang et al., 2024) - Diverse perspectives catch blind spots
-M|Inve|Befo|
-M|Step|tx|Clearly articulate what sc looks like.
-M|Step|Exam|"Make the ag sy reliable and maintainable"
-M|Step|Flip|"How wld we ensure the ag sy fails?"
-M|Step|Brai|
-M|Step|it|Remove all validation gates
-M|Step|it|Allow circular ag delegation
-M|Step|it|Make handoffs implicit
-M|Step|it|Hide dependencies
-M|Step|it|Skip doc
-M|Step|it|No testing st
-M|Step|Conv|
-M|Step|- Fa|"No validation gates" → sc: "Automated validation at every phase"
-M|Step|- Fa|"Circular delegation" → sc: "Clear hierarchy preventing loops"
-M|Step|- Fa|"Implicit handoffs" → sc: "Explicit handoff protocol"
-M|Step|tx|Check if the decision being reviewed addresses each fl mode.
-M|Step|**Ou|
-M|Step|tx|```markdown
-M|Goal|tx|[What sc looks like]
-M|Inve|tx|[How to ensure fl]
-M|Fail|tx|1. [fl mode 1]
-M|Fail|tx|2. [fl mode 2]
-M|Fail|tx|3. [fl mode 3]
-M|Succ|tx|1. [sc criterion 1 - addresses fl mode 1]
-M|Succ|tx|2. [sc criterion 2 - addresses fl mode 2]
-M|Succ|tx|3. [sc criterion 3 - addresses fl mode 3]
-M|Deci|- [ |[Evidence]
-M|Deci|- [ |[Evidence]
-M|Deci|- [ |[Evidence]
-M|Deci|tx|```
-M|Deci|**Ap|Use inversion thinking as final check before approving plans or ADRs.
+SRC agent-department/CEO/marcus/skills/marketplace/decision-critic/SKILL.md
+ORIG_SIZE 6420
+SECTIONS 50
+ABBREVS 2
+INDEX_TERMS 307
+COMPILED 2026-06-13T19:23:24.772Z
+---
+NAME decision-critic
+"validate my thinking" "poke holes in this decision" "stress-test this" "criticize this approach" 
+MODEL claude-opus-4-6
+DECISION CRITIC
+When this skill activates, you become a structured decision critic. Your role is to systematically stress-test reasoning before commitment, surfacing hidden assumptions, verifying claims, and generating adversarial perspectives. 
+TRIGGERS
+Activate when the user: 
+Validate my thinking on... Poke holes in this decision Criticize this approach Stress-test this tradeoff Presents a decision rationale and asks for criticism 
+PROCESS
+CODE  471CHARS
+SCRIPTS
+DECISION-CRITIC.PY
+CODE bash 274CHARS
+Exit Codes: 
+0: Successful completion 1: Invalid arguments or missing required parameters 2: Analysis failed or incomplete 
+Argument Required Description `--step-number` Yes Current step (1-7) `--total-steps` Yes Always 7 `--decision` Step 1 The decision statement being criticized `--context` Step 1 Constraints, background, system context `--thoughts` Yes Your analysis including all IDs and status from prior steps 
+WTU
+Use this skill when: 
+Making a consequential decision that is hard to reverse Evaluating a plan, ADR, or design before commitment You want structured adversarial feedback, not just a second opinion 
+Use independent-thinker agent instead when: 
+You need strategic challenge on direction (whether, not how) The question is about project scope or priorities, not technical reasoning 
+ANTI-PATTERNS
+Avoid Why Instead Running critique after commitment Too late to change course Critique before finalizing decisions Accepting STAND verdict without reading analysis Misses nuanced findings Review all UNCERTAIN and FAILED items Skipping the inversion step Misses failure modes that forward reasoning overlooks Always run Steps 5-6 Using for trivial decisions Wastes time on low-stakes choices Reserve for consequential, hard-to-reverse decisions 
+VERIFICATION
+After execution: 
+[ ] All claims have status: VERIFIED, FAILED, or UNCERTAIN [ ] Contrarian perspective generated (Step 5) [ ] Final verdict is one of: STAND, REVISE, ESCALATE [ ] Inversion analysis covers at least 3 failure modes 
+REFERENCES
+Chesterton's Fence - Understand why something exists before removing or changing it Gall's Law - Complex working systems evolved from simple working systems Boy Scout Rule - Scope boundaries for incremental improvement decisions Survivorship Bias - Avoid drawing conclusions from winners while ignoring failures Systems Thinking - Trace second-order effects and feedback loops in decisions 
+ACADEMIC GROUNDING
+This workflow synthesizes three empirically-validated techniques: 
+Chain-of-Verification (Dhuliawala et al., 2023) - Factored verification prevents confirmation bias Self-Consistency (Wang et al., 2023) - Multiple reasoning paths reveal disagreement Multi-Expert Prompting (Wang et al., 2024) - Diverse perspectives catch blind spots 
+INVERSION THINKING PROTOCOL
+Before finalizing any decision, apply inversion to identify failure modes: 
+STEP 1: STATE THE GOAL
+Clearly articulate what success looks like. 
+EXAMPLE "Make the agent system reliable and maintainable"
+STEP 2: INVERT THE GOAL
+FLIP_IT_TO_IDENTIFY_FAILURE_MODES "How would we ensure the agent system fails?"
+STEP 3: LIST FAILURE SCENARIOS
+Brainstorm specific ways to achieve failure: 
+Remove all validation gates Allow circular agent delegation Make handoffs implicit Hide dependencies Skip documentation No testing strategy 
+STEP 4: REVERSE TO SC
+Convert each failure mode into a success criterion: 
+FAILURE "No validation gates" → Success: "Automated validation at every phase"
+STEP 5: VALIDATE DECISION AGAINST INVERTED CRITERIA
+Check if the decision being reviewed addresses each failure mode. 
+Output Template: 
+CODE markdown 538CHARS
+Application: Use inversion thinking as final check before approving plans or ADRs. 

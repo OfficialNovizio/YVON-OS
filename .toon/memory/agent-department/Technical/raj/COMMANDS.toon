@@ -1,26 +1,23 @@
-#MEM id=raj source=/root/yvon/agent-department/Technical/raj/COMMANDS.md savings=14%
-M|Term|tx|```bash
-M|Afte|tx|npx tsc --noEmit
-M|Chec|tx|npm run lint
-M|Chec|tx|```
-M|Chec|> No|Use `npx tsc --noEmit` in the Linux VM. `npm run bd` is Windows-only (SWC binary).
-M|Comm|it|rj runs `npx tsc --noEmit` after every rt he writes — never hands off to qn w/ ts er
-M|Comm|- If|read the er, fix the tp issue, run again
-M|Comm|it|`npm run lint` must also pass — pay attention to `no-unused-vars`, `@ts-eslint/no-explicit-any`
-M|Comm|tx|\| er \| Cause \| Fix \|
-M|Comm|tx|\|-------\|-------\|-----\|
-M|Comm|tx|\| `tp 'X' is not assignable to tp 'Y'` \| rp shape doesn't match the tp in `tp.ts` \| up tp or fix the data shape \|
-M|Comm|tx|\| `Property 'x' does not exist on tp` \| Accessing a field that isn't in the ts if \| Add field to tp or fix the access \|
-M|Comm|tx|\| `Cannot find md './sb'` \| Wrong import path \| Check relative path — use `@/lib/sb` \|
-M|Comm|tx|\| `'any' tp used` \| Untyped ap rp \| Add proper ts if in `tp.ts` \|
-M|What|tx|```bash
-M|Raj |tx|npm run dv        # dv/mi for visual verification
-M|Raj |tx|git push           # Requires dv's sign-off first
-M|Raj |tx|```
-M|Hand|tx|When rj's backend tasks are complete and `npx tsc --noEmit` + `npm run lint` both pass, rj logs the task in his MEMORY.md and notifies qn to begin her QA rv.
-M|Hand|tx|---
-M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
-M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
-M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
-M|Comm|tx|\|------\|------------------\|--------\|--------------\|
-M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|
+SRC agent-department/Technical/raj/COMMANDS.md
+ORIG_SIZE 1996
+SECTIONS 16
+ABBREVS 1
+INDEX_TERMS 137
+COMPILED 2026-06-13T19:23:25.573Z
+---
+⌨️ RAJ — COMMANDS
+TERMINAL COMMANDS
+CODE bash 162CHARS
+Note: Use npx tsc --noEmit in the Linux VM. npm run build is Windows-only (SWC binary). 
+COMMAND RULES
+Raj runs npx tsc --noEmit after every route he writes — never hands off to Quinn with TypeScript errors If TypeScript check fails on Raj's route: read the error, fix the type issue, run again npm run lint must also pass — pay attention to no-unused-vars, @typescript-eslint/no-explicit-any 
+COMMON BUILD ERRORS RAJ FIXES
+Error Cause Fix `Type 'X' is not assignable to type 'Y'` Response shape doesn't match the type in `types.ts` Update type or fix the data shape `Property 'x' does not exist on type` Accessing a field that isn't in the TypeScript interface Add field to type or fix the access `Cannot find module './supabase'` Wrong import path Check relative path — use `@/lib/supabase` `'any' type used` Untyped API response Add proper TypeScript interface in `types.ts` 
+WHAT RAJ DOES NOT RUN
+CODE bash 165CHARS
+HANDOFF TO QUINN
+When Raj's backend tasks are complete and npx tsc --noEmit + npm run lint both pass, Raj logs the task in his MEMORY.md and notifies Quinn to begin her QA review. 
+--- 
+COMMAND HEALTH LOG
+UB SIP after task completion. Proven commands stay. Failed or deprecated commands are removed. Rule: do not add new commands without removing or condensing an equivalent amount of content. 
+Date Command / Pattern Status Action Taken 2026-03-23 (baseline) ✓ Verified initial SIP setup 

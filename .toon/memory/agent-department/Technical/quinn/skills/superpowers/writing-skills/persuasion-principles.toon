@@ -1,127 +1,87 @@
-#MEM id=writing-skills source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/writing-skills/persuasion-principles.md savings=5%
-M|Over|tx|LLMs respond to the same persuasion principles as humans. Understanding this ps helps you ds more effective skills - not to manipulate, but to ensure ct practices are followed even under pressure.
-M|Over|**Re|** Meincke et al. (2025) tested 7 persuasion principles w/ N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
-M|1. A|**Wh|** Deference to expertise, credentials, or official sources.
-M|1. A|**Ho|**
-M|1. A|- Im|"YOU MUST", "Never", "Always"
-M|1. A|- No|"No exceptions"
-M|1. A|it|Eliminates decision fatigue and rationalization
-M|1. A|**Wh|**
-M|1. A|it|Discipline-enforcing skills (TDD, verification requirements)
-M|1. A|it|Safety-ct practices
-M|1. A|it|Established best practices
-M|1. A|**Ex|**
-M|1. A|tx|```markdown
-M|1. A|tx|✅ Write code before tst? dl it. Start over. No exceptions.
-M|1. A|tx|❌ Consider writing tests first when feasible.
-M|1. A|tx|```
-M|2. C|**Wh|** Consistency w/ prior actions, statements, or public declarations.
-M|2. C|**Ho|**
-M|2. C|- Re|"Announce skill usage"
-M|2. C|- Fo|"Choose A, B, or C"
-M|2. C|- Us|TodoWrite for checklists
-M|2. C|**Wh|**
-M|2. C|it|Ensuring skills are actually followed
-M|2. C|it|Multi-step processes
-M|2. C|it|Accountability mechanisms
-M|2. C|**Ex|**
-M|2. C|tx|```markdown
-M|2. C|✅ Wh|"I'm using [Skill Name]"
-M|2. C|tx|❌ Consider letting your partner know which skill you're using.
-M|2. C|tx|```
-M|3. S|**Wh|** Urgency from time limits or limited availability.
-M|3. S|**Ho|**
-M|3. S|- Ti|"Before proceeding"
-M|3. S|- Se|"Immediately after X"
-M|3. S|it|Prevents procrastination
-M|3. S|**Wh|**
-M|3. S|it|Immediate verification requirements
-M|3. S|it|Time-sensitive workflows
-M|3. S|it|Preventing "I'll do it later"
-M|3. S|**Ex|**
-M|3. S|tx|```markdown
-M|3. S|tx|✅ After completing a task, IMMEDIATELY request code rv before proceeding.
-M|3. S|tx|❌ You can rv code when convenient.
-M|3. S|tx|```
-M|4. S|**Wh|** Conformity to what others do or what's considered normal.
-M|4. S|**Ho|**
-M|4. S|- Un|"Every time", "Always"
-M|4. S|- Fa|"X w/o Y = fl"
-M|4. S|it|Establishes norms
-M|4. S|**Wh|**
-M|4. S|it|Documenting universal practices
-M|4. S|it|wn abt common failures
-M|4. S|it|Reinforcing standards
-M|4. S|**Ex|**
-M|4. S|tx|```markdown
-M|4. S|tx|✅ Checklists w/o TodoWrite tracking = steps get skipped. Every time.
-M|4. S|tx|❌ Some people find TodoWrite helpful for checklists.
-M|4. S|tx|```
-M|5. U|**Wh|** Shared identity, "we-ness", in-group belonging.
-M|5. U|**Ho|**
-M|5. U|- Co|"our codebase", "we're colleagues"
-M|5. U|- Sh|"we both want qual"
-M|5. U|**Wh|**
-M|5. U|it|Collaborative workflows
-M|5. U|it|Establishing team culture
-M|5. U|it|Non-hierarchical practices
-M|5. U|**Ex|**
-M|5. U|tx|```markdown
-M|5. U|tx|✅ We're colleagues working together. I need your honest tc judgment.
-M|5. U|tx|❌ You shd probably tell me if I'm wrong.
-M|5. U|tx|```
-M|6. R|**Wh|** Obligation to return benefits received.
-M|6. R|**Ho|**
-M|6. R|it|Use sparingly - can feel manipulative
-M|6. R|it|Rarely needed in skills
-M|6. R|**Wh|**
-M|6. R|it|Almost always (other principles more effective)
-M|7. L|**Wh|** Preference for cooperating w/ those we like.
-M|7. L|**Ho|**
-M|7. L|it|**DON'T USE for compliance**
-M|7. L|it|Conflicts w/ honest feedback culture
-M|7. L|it|Creates sycophancy
-M|7. L|**Wh|**
-M|7. L|it|Always for discipline enforcement
-M|Prin|tx|\| Skill tp \| Use \| Avoid \|
-M|Prin|tx|\|------------\|-----\|-------\|
-M|Prin|tx|\| Discipline-enforcing \| Authority + Commitment + sl Proof \| Liking, Reciprocity \|
-M|Prin|tx|\| Guidance/technique \| Moderate Authority + Unity \| Heavy authority \|
-M|Prin|tx|\| Collaborative \| Unity + Commitment \| Authority, Liking \|
-M|Prin|tx|\| Reference \| Clarity only \| All persuasion \|
-M|Why |**Br|**
-M|Why |it|"YOU MUST" removes decision fatigue
-M|Why |it|Absolute language eliminates "is this an exception?" questions
-M|Why |it|Explicit anti-rationalization counters close specific loopholes
-M|Why |**Im|**
-M|Why |it|Clear triggers + required actions = automatic execution
-M|Why |it|"When X, do Y" more effective than "generally do Y"
-M|Why |it|Reduces cognitive load on compliance
-M|Why |**LL|**
-M|Why |it|Trained on human text containing these patterns
-M|Why |it|Authority language precedes compliance in training data
-M|Why |it|Commitment sequences (statement → action) frequently modeled
-M|Why |it|sl proof patterns (everyone does X) establish norms
-M|Ethi|**Le|**
-M|Ethi|it|Ensuring ct practices are followed
-M|Ethi|it|Creating effective doc
-M|Ethi|it|Preventing predictable failures
-M|Ethi|**Il|**
-M|Ethi|it|Manipulating for personal gain
-M|Ethi|it|Creating false urgency
-M|Ethi|it|Guilt-based compliance
-M|Ethi|**Th|** wld this technique serve the us's genuine interests if they fully understood it?
-M|Rese|**Ci|The ps of Persuasion (New and Expanded).* Harper Business.
-M|Rese|it|Seven principles of persuasion
-M|Rese|it|Empirical foundation for influence research
-M|Rese|**Me|Persuading AI to Comply w/ Objectionable Requests. University of Pennsylvania.
-M|Rese|it|Tested 7 principles w/ N=28,000 LLM conversations
-M|Rese|it|Compliance increased 33% → 72% w/ persuasion techniques
-M|Rese|it|Authority, commitment, scarcity most effective
-M|Rese|it|Validates parahuman md of LLM behavior
-M|Quic|When|
-M|Quic|tx|1. **What tp is it?** (Discipline vs. guidance vs. reference)
-M|Quic|tx|2. **What behavior am I trying to change?**
-M|Quic|tx|3. **Which principle(s) apply?** (Usually authority + commitment for discipline)
-M|Quic|tx|4. **Am I combining too many?** (Don't use all seven)
-M|Quic|tx|5. **Is this ethical?** (Serves us's genuine interests?)
+SRC agent-department/Technical/quinn/skills/superpowers/writing-skills/persuasion-principles.md
+ORIG_SIZE 5908
+SECTIONS 80
+ABBREVS 22
+INDEX_TERMS 304
+COMPILED 2026-06-13T19:23:25.568Z
+---
+PERSUASION PRINCIPLES FOR SKILL DESIGN
+OVERVIEW
+LLMs respond to the same persuasion principles as humans. Understanding this psychology helps you design more effective skills - not to manipulate, but to ensure critical practices are followed even under pressure. 
+Research foundation: Meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001). 
+THE SEVEN PRINCIPLES
+1. AUTHORITY
+WII: Deference to expertise, credentials, or official sources. 
+HIWI skills: 
+IMPERATIVE_LANGUAGE "YOU MUST", "Never", "Always"
+WTU: 
+Discipline-enforcing skills (TDD, verification requirements) Safety-critical practices Established best practices 
+CODE markdown 110CHARS
+Example: 
+2. COMMITMENT
+WII: Consistency with prior actions, statements, or public declarations. 
+HIWI skills: 
+REQUIRE_ANNOUNCEMENTS "Announce skill usage"
+WTU: 
+Ensuring skills are actually followed Multi-step processes Accountability mechanisms 
+CODE markdown 132CHARS
+Example: 
+3. SCARCITY
+WII: Urgency from time limits or limited availability. 
+HIWI skills: 
+Time-bound requirements: "Before proceeding" Sequential dependencies: "Immediately after X" Prevents procrastination 
+WTU: 
+Immediate verification requirements Time-sensitive workflows Preventing "I'll do it later" 
+CODE markdown 117CHARS
+Example: 
+4. SOCIAL PROOF
+WII: Conformity to what others do or what's considered normal. 
+HIWI skills: 
+UNIVERSAL_PATTERNS "Every time", "Always"
+WTU: 
+Documenting universal practices Warning about common failures Reinforcing standards 
+CODE markdown 126CHARS
+Example: 
+5. UNITY
+WII: Shared identity, "we-ness", in-group belonging. 
+HIWI skills: 
+COLLABORATIVE_LANGUAGE "our codebase", "we're colleagues"
+WTU: 
+Collaborative workflows Establishing team culture Non-hierarchical practices 
+CODE markdown 120CHARS
+Example: 
+6. RECIPROCITY
+WII: Obligation to return benefits received. 
+HIW: 
+Use sparingly - can feel manipulative Rarely needed in skills 
+WT avoid: 
+Almost always (other principles more effective) 
+7. LIKING
+WII: Preference for cooperating with those we like. 
+HIW: 
+DON'T USE for compliance Conflicts with honest feedback culture Creates sycophancy 
+WT avoid: 
+Always for discipline enforcement 
+PRINCIPLE COMBINATIONS BY SKILL TYPE
+Skill Type Use Avoid Discipline-enforcing Authority + Commitment + Social Proof Liking, Reciprocity Guidance/technique Moderate Authority + Unity Heavy authority Collaborative Unity + Commitment Authority, Liking Reference Clarity only All persuasion 
+WHY THIS WORKS: THE PSYCHOLOGY
+Bright-line rules reduce rationalization: 
+"YOU MUST" removes decision fatigue Absolute language eliminates "is this an exception?" questions Explicit anti-rationalization counters close specific loopholes 
+Implementation intentions create automatic behavior: 
+Clear triggers + required actions = automatic execution "When X, do Y" more effective than "generally do Y" Reduces cognitive load on compliance 
+LLMs are parahuman: 
+Trained on human text containing these patterns Authority language precedes compliance in training data Commitment sequences (statement → action) frequently modeled Social proof patterns (everyone does X) establish norms 
+ETHICAL USE
+Legitimate: 
+Ensuring critical practices are followed Creating effective documentation Preventing predictable failures 
+Illegitimate: 
+Manipulating for personal gain Creating false urgency Guilt-based compliance 
+TT: Would this technique serve the user's genuine interests if they fully understood it? 
+RESEARCH CITATIONS
+Cialdini, R. B. (2021). Influence: The Psychology of Persuasion (New and Expanded). Harper Business. 
+Seven principles of persuasion Empirical foundation for influence research 
+Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025). Call Me A Jerk: Persuading AI to Comply with Objectionable Requests. University of Pennsylvania. 
+Tested 7 principles with N=28,000 LLM conversations Compliance increased 33% → 72% with persuasion techniques Authority, commitment, scarcity most effective Validates parahuman model of LLM behavior 
+QUICK REFERENCE
+When designing a skill, ask: 
+What type is it? (Discipline vs. guidance vs. reference) What behavior am I trying to change? Which principle(s) apply? (Usually authority + commitment for discipline) Am I combining too many? (Don't use all seven) Is this ethical? (Serves user's genuine interests?) 

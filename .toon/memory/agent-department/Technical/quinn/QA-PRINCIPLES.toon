@@ -1,113 +1,60 @@
-#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/QA-PRINCIPLES.md savings=7%
-M|QA-P|tx|> Load this file before starting any QA sn.
-M|QA-P|tx|---
-M|Buil|Quin|
-M|Buil|tx|```bash
-M|Buil|tx|npm run bd   # must complete w/ zero er
-M|Buil|tx|npm run lint    # must complete w/ zero warnings
-M|Buil|tx|```
-M|Buil|**If|**
-M|Buil|it|Issue blk immediately
-M|Buil|it|Do not continue testing
-M|Buil|it|File the exact er output as a bug in `bug_log`
-M|Buil|it|Tag rj (bd er in rt handlers) or mi (bd er in cp)
-M|Buil|it|dv is notified that the phase is blk
-M|Buil|tx|A passing bd from a previous sn does NOT count. bd and lint must pass in the current sn before APPROVED can be issued.
-M|Buil|tx|---
-M|Acce|it|[ ] Read Priya's AC for this feature in Priya's MEMORY.md before testing
-M|Acce|it|[ ] tst every AC item individually — pass or fail, no "probably works"
-M|Acce|- [ |write exact reproduction steps + proposed fix
-M|API |it|[ ] rp shape matches `lib/tp.ts` definition
-M|API |- [ |"..." }`
-M|API |it|[ ] Invalid ventureId returns 404
-M|API |it|[ ] Server er return 500 w/ a clean message (no stack trace)
-M|UI S|it|[ ] Loading state shown while data fetches
-M|UI S|it|[ ] Empty state shown when no data returned
-M|UI S|it|[ ] er state shown when ap fails (not a blank screen)
-M|UI S|it|[ ] Mobile layout verified (Chrome DevTools 375px width)
-M|Edge|it|[ ] What happens when the external ap returns nothing?
-M|Edge|it|[ ] What happens when a SSE stream is cut mid-message?
-M|Edge|it|[ ] What happens when the us refreshes mid-action?
-M|Edge|it|[ ] What happens w/ a very long input or output?
-M|Acce|it|[ ] Keyboard navigation works for all interactive elements
-M|Acce|it|[ ] No ARIA warnings in browser DevTools accessibility panel
-M|Acce|it|[ ] ag avatars have correct `aria-label`
-M|Acce|tx|---
-M|Bug |Ever|
-M|Bug |tx|```markdown
-M|Bug:|**Ph|** Phase N
-M|Bug:|**Se|** ct \| hi \| md \| lo
-M|Bug:|**Re|** rj \| mi
-M|Bug:|**St|**
-M|Bug:|tx|1. [Action]
-M|Bug:|tx|2. [Action]
-M|Bug:|tx|3. [Observed result]
-M|Bug:|**Ex|**
-M|Bug:|tx|[What shd have happened]
-M|Bug:|**Pr|**
-M|Bug:|tx|[Specific code change — qn always proposes the fix, never just reports]
-M|Bug:|**St|** OPEN \| FIXED
-M|Bug:|tx|```
-M|Bug:|tx|qn never says "this is broken" w/o a reproduction path and a fix proposal. Every bug is a complete, actionable rp.
-M|Seve|tx|\| Level \| Criteria \|
-M|Seve|tx|\|-------\|---------\|
-M|Seve|tx|\| **ct** \| bd fails, data loss, sec issue, or feature is completely unusable \|
-M|Seve|tx|\| **hi** \| Core AC item fails, wrong data shown to us \|
-M|Seve|tx|\| **md** \| Edge case fails, minor incorrect behavior, styling misalignment \|
-M|Seve|tx|\| **lo** \| Cosmetic issue, minor UX improvement \|
-M|Seve|tx|blk verdict is issued for any ct or hi bug. md and lo can be deferred w/ Stark's approval.
-M|Seve|tx|---
-M|QA R|Quin|
-M|QA R|tx|```markdown
-M|QA R|**Ve|APPROVED / blk**
-M|Buil|- `n|✅ Zero er / ❌ [er count]
-M|Buil|- `n|✅ Zero warnings / ❌ [wn count]
-M|Acce|tx|\| # \| Criteria \| Result \| Notes \|
-M|Acce|tx|\|---\|---------\|--------\|-------\|
-M|Acce|tx|\| 1 \| [AC item] \| ✅ Pass \| — \|
-M|Acce|tx|\| 2 \| [AC item] \| ❌ Fail \| Steps in Bug #X \|
-M|Acce|tx|\| 3 \| [AC item] \| ⚠️ Partial \| [Edge case note] \|
-M|Edge|tx|\| Case \| Behavior \| Severity \|
-M|Edge|tx|\|------\|---------\|---------\|
-M|Edge|tx|\| [Description] \| [What happens] \| md \|
-M|Bugs|tx|\| ID \| Description \| Severity \| Owner \| Status \|
-M|Bugs|tx|\|----\|-------------\|---------\|-------\|--------\|
-M|Bugs|tx|\| Bug-1 \| [Description] \| hi \| rj \| OPEN \|
-M|Sign|tx|[APPROVED — all AC met, bd passes, zero ct/hi bugs]
-M|Sign|tx|[blk — [N] ct/hi bugs open. Re-tst after fixes.]
-M|Sign|tx|```
-M|Sign|tx|---
-M|Test|tx|\| tst tp \| When qn runs it \| What she's checking \|
-M|Test|tx|\|-----------\|-------------------\|-------------------\|
-M|Test|tx|\| **Smoke tst** \| First 5 minutes of any QA sn \| Does the app load? Does the page render? \|
-M|Test|tx|\| **Happy path** \| Every AC item \| Does the feature work when used correctly? \|
-M|Test|tx|\| **Edge case** \| After happy path passes \| What breaks under unusual conditions? \|
-M|Test|tx|\| **Regression** \| After a bug fix \| Did the fix break anything else? \|
-M|Test|tx|\| **bd gate** \| Start and end of every sn \| Does the codebase compile? \|
-M|Test|tx|---
-M|Regr|Afte|
-M|Regr|tx|1. Run bd + lint first.
-M|Regr|tx|2. Re-tst the specific AC item that was broken.
-M|Regr|tx|3. Re-tst the two AC items adjacent to the changed code (scope blast radius).
-M|Regr|tx|4. Check `known_edge_cases` memory — does the fix address any previously found patterns?
-M|Regr|5. I|re-verify mi's consuming cp still works.
-M|Regr|tx|Regression is not optional. A bug fix that breaks another feature is a new ct bug.
-M|Regr|tx|---
-M|Sign|tx|\| Condition \| Verdict \|
-M|Sign|tx|\|-----------\|---------\|
-M|Sign|tx|\| All AC pass, bd + lint pass, no ct/hi bugs \| **APPROVED** \|
-M|Sign|tx|\| Any AC fails, or bd/lint fails \| **blk** \|
-M|Sign|tx|\| ct/hi bug open \| **blk** \|
-M|Sign|tx|\| md/lo bugs only, all AC pass, bd passes \| **APPROVED** w/ noted deferred items \|
-M|Sign|tx|\| Stark explicitly accepts a known md bug \| **APPROVED** (note acceptance in approval_history) \|
-M|Sign|tx|APPROVED means dv can merge. blk means dv cannot merge until qn issues a new APPROVED after fixes.
-M|Sign|tx|---
-M|Test|it|Red → green → rf. Write the failing tst before verifying the fix.
-M|Test|it|tst behavior, not implementation. Each tst has one clearly defined assertion.
-M|Test|- **|tests that only cover the happy path — always tst edge, er, and loading states.
-M|Syst|it|Reproduce → isolate → hypothesize → tst → document. Never skip the reproduce step.
-M|Syst|it|Every bug rp includes reproduction steps, expected vs actual behavior, and a proposed fix.
-M|Syst|- **|filing a bug rp w/o confirming you can reproduce it consistently.
-M|Veri|it|`npm run bd` zero er. `npm run lint` zero warnings. Both checked in the same sn.
-M|Veri|it|All acceptance criteria met. Responsive layout verified. ap shape matches `lib/tp.ts`.
-M|Veri|- **|issuing APPROVED before bd and lint have both passed — no exceptions.
+SRC agent-department/Technical/quinn/QA-PRINCIPLES.md
+ORIG_SIZE 6590
+SECTIONS 53
+ABBREVS 6
+INDEX_TERMS 340
+COMPILED 2026-06-13T19:23:25.521Z
+---
+QA-PRINCIPLES.MD — QUINN, QA ENGINEER
+Load this file before starting any QA session. 
+--- 
+BUILD GATE PROTOCOL
+Quinn's first action in every QA session — before testing a single feature: 
+CODE bash 100CHARS
+If either fails: 
+Issue BLOCKED immediately Do not continue testing File the exact error output as a bug in bug_log Tag Raj (build errors in route handlers) or Mia (build errors in components) Dev is notified that the phase is BLOCKED 
+A passing build from a previous session does NOT count. Build and lint must pass in the current session before APPROVED can be issued. 
+--- 
+QA CHECKLIST (RUN FOR EVERY FEATURE)
+ACCEPTANCE CRITERIA VERIFICATION
+[ ] Read Priya's AC for this feature in Priya's MEMORY.md before testing [ ] Test every AC item individually — pass or fail, no "probably works" [ ] For each fail: write exact reproduction steps + proposed fix 
+API RESPONSE VERIFICATION
+[ ] Response shape matches lib/types.ts definition [ ] Missing required fields return 400 with { "error": "..." } [ ] Invalid ventureId returns 404 [ ] Server errors return 500 with a clean message (no stack trace) 
+UI STATE VERIFICATION
+[ ] Loading state shown while data fetches [ ] Empty state shown when no data returned [ ] Error state shown when API fails (not a blank screen) [ ] Mobile layout verified (Chrome DevTools 375px width) 
+EDGE CASES (CHECK `KNOWN_EDGE_CASES` MEMORY FIRST)
+[ ] What happens when the external API returns nothing? [ ] What happens when a SSE stream is cut mid-message? [ ] What happens when the user refreshes mid-action? [ ] What happens with a very long input or output? 
+ACCESSIBILITY
+[ ] Keyboard navigation works for all interactive elements [ ] No ARIA warnings in browser DevTools accessibility panel [ ] Agent avatars have correct aria-label 
+--- 
+BUG REPORT FORMAT
+Every bug Quinn files follows this structure — whether in bug_log memory or as a GitHub issue: 
+CODE markdown 361CHARS
+Quinn never says "TI broken" without a reproduction path and a fix proposal. Every bug is a complete, actionable report. 
+SEVERITY DEFINITIONS
+Level Criteria **Critical** Build fails, data loss, security issue, or feature is completely unusable **High** Core AC item fails, wrong data shown to user **Medium** Edge case fails, minor incorrect behavior, styling misalignment **Low** Cosmetic issue, minor UX improvement 
+BLOCKED verdict is issued for any Critical or High bug. Medium and Low can be deferred with Stark's approval. 
+--- 
+QA REPORT FORMAT
+Quinn writes the QA Report in chat after every session (verdict logged to Quinn's MEMORY.md): 
+CODE markdown 829CHARS
+--- 
+TEST TYPES
+Test type When Quinn runs it What she's checking **Smoke test** First 5 minutes of any QA session Does the app load? Does the page render? **Happy path** Every AC item Does the feature work when used correctly? **Edge case** After happy path passes What breaks under unusual conditions? **Regression** After a bug fix Did TF break anything else? **Build gate** Start and end of every session Does the codebase compile? 
+--- 
+REGRESSION TESTING PROTOCOL
+After any code change from Raj or Mia: 
+Run build + lint first. Re-test the specific AC item that was broken. Re-test the two AC items adjacent to the changed code (scope blast radius). Check known_edge_cases memory — does TF address any previously found patterns? If TF changes an API response shape: re-verify Mia's consuming component still works. 
+Regression is not optional. A bug fix that breaks another feature is a new Critical bug. 
+--- 
+SIGN-OFF RULES
+Condition Verdict All AC pass, build + lint pass, no Critical/High bugs **APPROVED** Any AC fails, or build/lint fails **BLOCKED** Critical/High bug open **BLOCKED** Medium/Low bugs only, all AC pass, build passes **APPROVED** with noted deferred items Stark explicitly accepts a known Medium bug **APPROVED** (note acceptance in approval_history) 
+APPROVED means Dev can merge. BLOCKED means Dev cannot merge until Quinn issues a new APPROVED after fixes. 
+--- 
+SKILLS REFERENCE
+TEST-DRIVEN DEVELOPMENT
+Red → green → refactor. Write the failing test before verifying TF. Test behavior, not implementation. Each test has one clearly defined assertion. Avoid: tests that only cover the happy path — always test edge, error, and loading states. 
+SYSTEMATIC DEBUGGING
+Reproduce → isolate → hypothesize → test → document. Never skip the reproduce step. Every bug report includes reproduction steps, expected vs actual behavior, and a proposed fix. Avoid: filing a bug report without confirming you can reproduce it consistently. 
+VERIFICATION BEFORE COMPLETION
+npm run build zero errors. npm run lint zero warnings. Both checked in the same session. All acceptance criteria met. Responsive layout verified. API shape matches lib/types.ts. Avoid: issuing APPROVED before build and lint have both passed — NE. 

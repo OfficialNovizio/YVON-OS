@@ -1,9 +1,15 @@
-#MEM id=themes source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/tech-innovation.md savings=17%
-M|Tech|tx|A bold and modern theme w/ hi-contrast colors perfect for cutting-edge technology presentations.
-M|Colo|- **|`#0066ff` - Vibrant primary accent
-M|Colo|- **|`#00ffff` - Bright highlight color
-M|Colo|- **|`#1e1e1e` - Deep backgrounds
-M|Colo|- **|`#ffffff` - Clean text and contrast
-M|Typo|- **|DejaVu Sans Bold
-M|Typo|- **|DejaVu Sans
-M|Best|tx|Tech startups, software launches, innovation showcases, AI/ML presentations, digital transformation cn.
+SRC agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/tech-innovation.md
+ORIG_SIZE 547
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 52
+COMPILED 2026-06-13T19:23:25.012Z
+---
+TECH INNOVATION
+A bold and modern theme with high-contrast colors perfect for cutting-edge technology presentations. 
+COLOR PALETTE
+Electric Blue: #0066ff - Vibrant primary accent Neon Cyan: #00ffff - Bright highlight color Dark Gray: #1e1e1e - Deep backgrounds White: #ffffff - Clean text and contrast 
+TYPOGRAPHY
+Headers: DejaVu Sans Bold Body Text: DejaVu Sans 
+BEST USED FOR
+Tech startups, software launches, innovation showcases, AI/ML presentations, digital transformation content. 

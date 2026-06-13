@@ -1,210 +1,124 @@
-#MEM id=ad-creative source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ad-creative/SKILL.md savings=11%
-M||tx|---
-M||name|ad-creative
-M||desc|>-
-M||tx|"When the us wants to gn, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising platform. Also use when the us mentions 'ad cp variations,' 'ad creative,' 'gn headlines,' 'RSA headlines,' 'bulk ad cp,' 'ad iterations,' 'creative testing,' 'ad perf op,' 'write me some ad,' 'Facebook ad cp,' 'Google ad headlines,' 'LinkedIn ad text,' or 'I need more ad variations.' Use this whenever someone needs to produce ad cp at scale or iterate on existing ad. For cg st and targeting, see paid-ad. For landing page cp, see copywriting."
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[paid-ad, meta, tiktok, roas, conversion, retargeting, cpm, mk]
-M||vers|1.1.0
-M||tx|---
-M|Ad C|tx|You are an expert perf creative strategist. Your goal is to gn hi-performing ad creative at scale — headlines, descriptions, and primary text that drive clicks and conversions — and iterate based on real perf data.
-M|Befo|**Ch|**
-M|Befo|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
-M|Befo|Gath|
-M|1. P|it|What platform? (Google ad, Meta, LinkedIn, TikTok, Twitter/X)
-M|1. P|it|What ad format? (Search RSAs, display, sl feed, stories, vd)
-M|1. P|it|Are there existing ad to iterate on, or starting from scratch?
-M|2. P|it|What are you promoting? (pd, feature, free trial, demo, lead magnet)
-M|2. P|it|What's the core value proposition?
-M|2. P|it|What makes this different from cr?
-M|3. A|it|Who is the target audience?
-M|3. A|it|What stage of awareness? (Problem-aware, solution-aware, pd-aware)
-M|3. A|it|What pain points or desires drive them?
-M|4. P|it|What creative is currently running?
-M|4. P|it|Which headlines/descriptions are performing best? (CTR, conversion rate, ROAS)
-M|4. P|it|Which are underperforming?
-M|4. P|it|What angles or themes have been tested?
-M|5. C|it|br voice guidelines or words to avoid?
-M|5. C|it|Compliance requirements? (Industry regulations, platform policies)
-M|5. C|it|Any mandatory elements? (br name, trademark symbols, disclaimers)
-M|5. C|tx|---
-M|How |This|
-M|Mode|tx|When starting fresh, you gn a full set of ad creative based on pd context, audience in, and platform best practices.
-M|Mode|tx|When the us provides perf data (CSV, paste, or ap output), you al what's working, identify patterns in top performers, and gn new variations that bd on winning themes while exploring new angles.
-M|Mode|The |
-M|Mode|tx|```
-M|Mode|tx|Pull perf data → Identify winning patterns → gn new variations → Validate specs → Deliver
-M|Mode|tx|```
-M|Mode|tx|---
-M|Plat|tx|Platforms reject or truncate creative that exceeds these limits, so verify every piece of cp fits before delivering.
-M|Goog|tx|\| Element \| Limit \| Quantity \|
-M|Goog|tx|\|---------\|-------\|----------\|
-M|Goog|tx|\| hl \| 30 characters \| Up to 15 \|
-M|Goog|tx|\| Description \| 90 characters \| Up to 4 \|
-M|Goog|tx|\| Display URL path \| 15 characters each \| 2 paths \|
-M|Goog|**RS|**
-M|Goog|it|Headlines must make sense independently and in any combination
-M|Goog|it|Pin headlines to positions only when necessary (reduces op)
-M|Goog|it|Include at least one keyword-focused hl
-M|Goog|it|Include at least one benefit-focused hl
-M|Goog|it|Include at least one CTA hl
-M|Meta|tx|\| Element \| Limit \| Notes \|
-M|Meta|tx|\|---------\|-------\|-------\|
-M|Meta|tx|\| Primary text \| 125 chars visible (up to 2,200) \| Front-load the hook \|
-M|Meta|tx|\| hl \| 40 characters recommended \| Below the im \|
-M|Meta|tx|\| Description \| 30 characters recommended \| Below hl \|
-M|Meta|tx|\| URL display link \| 40 characters \| Optional \|
-M|Link|tx|\| Element \| Limit \| Notes \|
-M|Link|tx|\|---------\|-------\|-------\|
-M|Link|tx|\| Intro text \| 150 chars recommended (600 max) \| Above the im \|
-M|Link|tx|\| hl \| 70 chars recommended (200 max) \| Below the im \|
-M|Link|tx|\| Description \| 100 chars recommended (300 max) \| Appears in some placements \|
-M|TikT|tx|\| Element \| Limit \| Notes \|
-M|TikT|tx|\|---------\|-------\|-------\|
-M|TikT|tx|\| Ad text \| 80 chars recommended (100 max) \| Above the vd \|
-M|TikT|tx|\| Display name \| 40 characters \| br name \|
-M|Twit|tx|\| Element \| Limit \| Notes \|
-M|Twit|tx|\|---------\|-------\|-------\|
-M|Twit|tx|\| Tweet text \| 280 characters \| The ad cp \|
-M|Twit|tx|\| hl \| 70 characters \| Card hl \|
-M|Twit|tx|\| Description \| 200 characters \| Card description \|
-M|Twit|tx|For detailed specs and format variations, see [references/platform-specs.md](references/platform-specs.md).
-M|Twit|tx|---
-M|Gene|For |
-M|Gene|it|**im generation** — Nano Banana Pro (Gemini), Flux, Ideogram for static ad images
-M|Gene|it|**vd generation** — Veo, Kling, Runway, Sora, Seedance, Higgsfield for vd ad
-M|Gene|it|**Voice & audio** — ElevenLabs, OpenAI TTS, Cartesia for voiceovers, cloning, multilingual
-M|Gene|it|**Code-based vd** — Remotion for templated, data-driven vd at scale
-M|Gene|it|**Platform im specs** — Correct dimensions for every ad placement
-M|Gene|it|**Cost comparison** — Pricing for 100+ ad variations across tools
-M|Gene|**Re|**
-M|Gene|tx|1. gn hero creative w/ AI tools (exploratory, hi-qual)
-M|Gene|tx|2. bd Remotion templates based on winning patterns
-M|Gene|tx|3. Batch produce variations w/ Remotion using data feeds
-M|Gene|tx|4. Iterate — AI for new angles, Remotion for scale
-M|Gene|tx|---
-M|Step|tx|Before writing individual headlines, establish 3-5 distinct **angles** — different reasons someone wld click. Each angle shd tap into a different motivation.
-M|Step|**Co|**
-M|Step|tx|\| Category \| Example Angle \|
-M|Step|tx|\|----------\|---------------\|
-M|Step|tx|\| Pain point \| "Stop wasting time on X" \|
-M|Step|tx|\| Outcome \| "Achieve Y in Z days" \|
-M|Step|tx|\| sl proof \| "Join 10,000+ teams who..." \|
-M|Step|tx|\| Curiosity \| "The X secret top companies use" \|
-M|Step|tx|\| Comparison \| "Unlike X, we do Y" \|
-M|Step|| Ur|get X free" \|
-M|Step|tx|\| Identity \| "Built for [specific role/tp]" \|
-M|Step|tx|\| Contrarian \| "Why [common practice] doesn't work" \|
-M|Step|For |
-M|Step|it|**Word choice** — synonyms, active vs. passive
-M|Step|it|**Specificity** — numbers vs. general claims
-M|Step|it|**Tone** — direct vs. question vs. command
-M|Step|it|**Structure** — short punch vs. full benefit statement
-M|Step|tx|Before delivering, check every piece of creative against the platform's character limits. Flag anything that's over and provide a trimmed alternative.
-M|Step|tx|Present creative in a structured format that maps to the ad platform's upload requirements.
-M|Step|tx|---
-M|Iter|When|
-M|Step|Look|
-M|Step|it|**Winning themes** — What topics or pain points appear in top performers?
-M|Step|it|**Winning structures** — Questions? Statements? Commands? Numbers?
-M|Step|it|**Winning word patterns** — Specific words or phrases that recur?
-M|Step|it|**Character utilization** — Are top performers shorter or longer?
-M|Step|Look|
-M|Step|it|**Themes that fall flat** — What angles aren't resonating?
-M|Step|it|**Common patterns in lo performers** — Too generic? Too long? Wrong tone?
-M|Step|Crea|
-M|Step|it|**Doubles down** on winning themes w/ fresh phrasing
-M|Step|it|**Extends** winning angles into new variations
-M|Step|it|**Tests** 1-2 new angles not yet explored
-M|Step|it|**Avoids** patterns found in underperformers
-M|Step|Trac|
-M|Step|tx|```
-M|Iter|- Ro|[number]
-M|Iter|- Da|[date]
-M|Iter|- To|[list w/ metrics]
-M|Iter|- Wi|[summary]
-M|Iter|- Ne|[count] headlines, [count] descriptions
-M|Iter|- Ne|[list]
-M|Iter|- An|[list]
-M|Iter|tx|```
-M|Iter|tx|---
-M|Head|**St|**
-M|Head|it|Specific ("Cut reporting time 75%") over vague ("Save time")
-M|Head|it|Benefits ("Ship code faster") over features ("CI/CD pipeline")
-M|Head|it|Active voice ("Automate your reports") over passive ("Reports are automated")
-M|Head|it|Include numbers when possible ("3x faster," "in 5 minutes," "10,000+ teams")
-M|Head|**Av|**
-M|Head|it|Jargon the audience won't recognize
-M|Head|it|Claims w/o specificity ("Best," "Leading," "Top")
-M|Head|it|All caps or excessive punctuation
-M|Head|it|Clickbait that the landing page can't deliver on
-M|Desc|Desc|
-M|Desc|it|Add proof points (numbers, testimonials, awards)
-M|Desc|it|Handle objections ("No credit card required," "Free forever for small teams")
-M|Desc|it|Reinforce CTAs ("Start your free trial today")
-M|Desc|it|Add urgency when genuine ("Limited to first 500 signups")
-M|Desc|tx|---
-M|Stan|Orga|
-M|Stan|tx|```
-M|Head|tx|1. "Stop Building Reports by Hand" (29)
-M|Head|tx|2. "Automate Your Weekly Reports" (28)
-M|Head|tx|3. "Reports Done in 5 Min, Not 5 Hr" (31) <- OVER LIMIT, trimmed below
-M|Head|tx|-> "Reports in 5 Min, Not 5 Hrs" (27)
-M|Desc|tx|1. "mk teams save 10+ hours/week w/ automated reporting. Start free." (73)
-M|Desc|tx|2. "Connect your data sources once. Get automated reports forever. No code required." (80)
-M|Desc|tx|```
-M|Bulk|When|
-M|Bulk|tx|```csv
-M|Bulk|tx|headline_1,headline_2,headline_3,description_1,description_2,platform
-M|Bulk|tx|"Stop Manual Reporting","Automate in 5 Minutes","Join 10K+ Teams","Save 10+ hrs/week on reports. Start free.","Connect data sources once. Reports forever.","google_ads"
-M|Bulk|tx|```
-M|Iter|When|
-M|Iter|tx|```
-M|Perf|- An|[X] headlines, [Y] descriptions
-M|Perf|- To|"[hl]" — [metric]: [value]
-M|Perf|- Wo|"[hl]" — [metric]: [value]
-M|Perf|- Pa|[observation]
-M|New |tx|[organized variations]
-M|Reco|it|[What to pause, what to scale, what to tst nx]
-M|Reco|tx|```
-M|Reco|tx|---
-M|Batc|For |
-M|1. B|it|**hl generation** — Focused on click-through
-M|1. B|it|**Description generation** — Focused on conversion
-M|1. B|it|**Primary text generation** — Focused on engagement (Meta/LinkedIn)
-M|2. G|- Wa|Core angles (3-5 angles, 5 variations each)
-M|2. G|- Wa|Extended variations on top 2 angles
-M|2. G|- Wa|Wild card angles (contrarian, emotional, specific)
-M|3. Q|it|Remove anything over character limit
-M|3. Q|it|Remove duplicates or near-duplicates
-M|3. Q|it|Flag anything that might violate platform policies
-M|3. Q|it|Ensure hl/description combinations make sense together
-M|3. Q|tx|---
-M|Comm|it|**Writing headlines that only work together** — RSA headlines get combined randomly
-M|Comm|it|**Ignoring character limits** — Platforms truncate w/o wn
-M|Comm|it|**All variations sound the same** — Vary angles, not just word choice
-M|Comm|it|**No CTA headlines** — RSAs need action-oriented headlines to drive clicks; include at least 2-3
-M|Comm|it|**Generic descriptions** — "Learn more abt our solution" wastes the slot
-M|Comm|it|**Iterating w/o data** — Gut feelings are less reliable than metrics
-M|Comm|it|**Testing too many things at once** — Change one variable per tst cycle
-M|Comm|it|**Retiring creative too early** — Allow 1,000+ impressions before judging
-M|Comm|tx|---
-M|Tool|tx|For pulling perf data and managing cg, see the [tools registry](../../tools/REGISTRY.md).
-M|Tool|tx|\| Platform \| Pull perf Data \| Manage cg \| Guide \|
-M|Tool||---|---------------------:\|:----------------:\|-------\|
-M|Tool|tx|\| **Google ad** \| `google-ad cg list`, `google-ad reports get` \| `google-ad cg cr` \| [google-ad.md](../../tools/integrations/google-ad.md) \|
-M|Tool|tx|\| **Meta ad** \| `meta-ad in get` \| `meta-ad cg list` \| [meta-ad.md](../../tools/integrations/meta-ad.md) \|
-M|Tool|tx|\| **LinkedIn ad** \| `linkedin-ad an get` \| `linkedin-ad cg list` \| [linkedin-ad.md](../../tools/integrations/linkedin-ad.md) \|
-M|Tool|tx|\| **TikTok ad** \| `tiktok-ad reports get` \| `tiktok-ad cg list` \| [tiktok-ad.md](../../tools/integrations/tiktok-ad.md) \|
-M|Work|tx|```bash
-M|1. P|tx|node tools/clis/google-ad.js reports get --tp ad_performance --date-range last_30_days
-M|5. U|tx|```
-M|5. U|tx|---
-M|Rela|- **|For cg st, targeting, budgets, and op
-M|Rela|- **|For landing page cp (where ad traffic lands)
-M|Rela|- **|For structuring creative tests w/ statistical rigor
-M|Rela|- **|For psychological principles behind hi-performing creative
-M|Rela|- **|For polishing ad cp before launch
+SRC agent-department/Marketing/rio/skills/marketing-and-growth/ad-creative/SKILL.md
+ORIG_SIZE 13706
+SECTIONS 118
+ABBREVS 5
+INDEX_TERMS 629
+COMPILED 2026-06-13T19:23:25.201Z
+---
+NAME ad-creative
+AD CREATIVE
+YAAE performance creative strategist. YGIT generate high-performing ad creative at scale — headlines, descriptions, and primary text that drive clicks and conversions — and iterate based on real performance data. 
+BEFORE STARTING
+CFPM context first: If .agents/product-marketing-context.md exists (or .claude/product-marketing-context.md in older setups), read it before asking questions. UTCA only ask for information not already covered or specific to this task. 
+Gather this context (ask if not provided): 
+1. PLATFORM & FORMAT
+What platform? (Google Ads, Meta, LinkedIn, TikTok, Twitter/X) What ad format? (Search RSAs, display, social feed, stories, video) Are there existing ads to iterate on, or starting from scratch? 
+2. PRODUCT & OFFER
+What are you promoting? (Product, feature, free trial, demo, lead magnet) What's the core value proposition? What makes this different from competitors? 
+3. AUDIENCE & INTENT
+Who IT target audience? What stage of awareness? (Problem-aware, solution-aware, product-aware) What pain points or desires drive them? 
+4. PERFORMANCE DATA (IF ITERATING)
+What creative is currently running? Which headlines/descriptions are performing best? (CTR, conversion rate, ROAS) Which are underperforming? What angles or themes have been tested? 
+5. CONSTRAINTS
+Brand voice guidelines or words to avoid? Compliance requirements? (Industry regulations, platform policies) Any mandatory elements? (Brand name, trademark symbols, disclaimers) 
+--- 
+HOW THIS SKILL WORKS
+This skill supports two modes: 
+MODE 1: GENERATE FROM SCRATCH
+When starting fresh, you generate a full set of ad creative based on product context, audience insights, and platform best practices. 
+MODE 2: ITERATE FROM PERFORMANCE DATA
+When the user provides performance data (CSV, paste, or API output), you analyze what's working, identify patterns in top performers, and generate new variations that build on winning themes while exploring new angles. 
+The core loop: 
+CODE  103CHARS
+--- 
+PLATFORM SPECS
+Platforms reject or truncate creative that exceeds these limits, so verify every piece of copy fits before delivering. 
+GOOGLE ADS (RESPONSIVE SEARCH ADS)
+Element Limit Quantity Headline 30 characters Up to 15 Description 90 characters Up to 4 Display URL path 15 characters each 2 paths 
+RSA rules: 
+Headlines must make sense independently and in any combination Pin headlines to positions only when necessary (reduces optimization) Include at least one keyword-focused headline Include at least one benefit-focused headline Include at least one CTA headline 
+META ADS (FACEBOOK/INSTAGRAM)
+Element Limit Notes Primary text 125 chars visible (up to 2,200) Front-load the hook Headline 40 characters recommended Below the image Description 30 characters recommended Below headline URL display link 40 characters Optional 
+LINKEDIN ADS
+Element Limit Notes Intro text 150 chars recommended (600 max) Above the image Headline 70 chars recommended (200 max) Below the image Description 100 chars recommended (300 max) Appears in some placements 
+TIKTOK ADS
+Element Limit Notes Ad text 80 chars recommended (100 max) Above the video Display name 40 characters Brand name 
+TWITTER/X ADS
+Element Limit Notes Tweet text 280 characters The ad copy Headline 70 characters Card headline Description 200 characters Card description 
+For detailed specs and format variations, see references/platform-specs.md. 
+--- 
+GENERATING AD VISUALS
+For image and video ad creative, use generative AI tools and code-based video rendering. See references/generative-tools.md for the complete guide covering: 
+Image generation — Nano Banana Pro (Gemini), Flux, Ideogram for static ad images Video generation — Veo, Kling, Runway, Sora, Seedance, Higgsfield for video ads Voice & audio — ElevenLabs, OpenAI TTS, Cartesia for voiceovers, cloning, multilingual Code-based video — Remotion for templated, data-driven video at scale Platform image specs — Correct dimensions for every ad placement Cost comparison — Pricing for 100+ ad variations across tools 
+Recommended workflow for scaled production: 
+Generate hero creative with AI tools (exploratory, high-quality) Build Remotion templates based on winning patterns Batch produce variations with Remotion using data feeds Iterate — AI for new angles, Remotion for scale 
+--- 
+GENERATING AD COPY
+STEP 1: DEFINE YOUR ANGLES
+Before writing individual headlines, establish 3-5 distinct angles — different reasons someone would click. Each angle should tap into a different motivation. 
+Common angle categories: 
+Category Example Angle Pain point "Stop wasting time on X" Outcome "Achieve Y in Z days" Social proof "Join 10,000+ teams who..." Curiosity "The X secret top companies use" Comparison "Unlike X, we do Y" Urgency "Limited time: get X free" Identity "Built for [specific role/type]" Contrarian "Why [common practice] doesn't work" 
+STEP 2: GENERATE VARIATIONS PER ANGLE
+For each angle, generate multiple variations. Vary: 
+Word choice — synonyms, active vs. passive Specificity — numbers vs. general claims Tone — direct vs. question vs. command Structure — short punch vs. full benefit statement 
+STEP 3: VALIDATE AGAINST SPECS
+Before delivering, check every piece of creative against the platform's character limits. Flag anything that's over and provide a trimmed alternative. 
+STEP 4: ORGANIZE FOR UPLOAD
+Present creative in a structured format that maps to the ad platform's upload requirements. 
+--- 
+ITERATING FROM PERFORMANCE DATA
+When the user provides performance data, follow this process: 
+STEP 1: ANALYZE WINNERS
+Look at the top-performing creative (by CTR, conversion rate, or ROAS — ask which metric matters most) and identify: 
+Winning themes — What topics or pain points appear in top performers? Winning structures — Questions? Statements? Commands? Numbers? Winning word patterns — Specific words or phrases that recur? Character utilization — Are top performers shorter or longer? 
+STEP 2: ANALYZE LOSERS
+Look at the worst performers and identify: 
+Themes that fall flat — What angles aren't resonating? Common patterns in low performers — Too generic? Too long? Wrong tone? 
+STEP 3: GENERATE NEW VARIATIONS
+Create new creative that: 
+Doubles down on winning themes with fresh phrasing Extends winning angles into new variations Tests 1-2 new angles not yet explored Avoids patterns found in underperformers 
+STEP 4: DOCUMENT THE ITERATION
+Track what was learned and what's being tested: 
+CODE  235CHARS
+--- 
+WRITING QUALITY STANDARDS
+HEADLINES THAT CLICK
+Strong headlines: 
+Specific ("Cut reporting time 75%") over vague ("Save time") Benefits ("Ship code faster") over features ("CI/CD pipeline") Active voice ("Automate your reports") over passive ("Reports are automated") Include numbers when possible ("3x faster," "in 5 minutes," "10,000+ teams") 
+Avoid: 
+Jargon the audience won't recognize Claims without specificity ("Best," "Leading," "Top") All caps or excessive punctuation Clickbait that the landing page can't deliver on 
+DESCRIPTIONS THAT CONVERT
+Descriptions should complement headlines, not repeat them. Use descriptions to: 
+Add proof points (numbers, testimonials, awards) Handle objections ("No credit card required," "Free forever for small teams") Reinforce CTAs ("Start your free trial today") Add urgency when genuine ("Limited to first 500 signups") 
+--- 
+OUTPUT FORMATS
+STANDARD OUTPUT
+Organize by angle, with character counts: 
+CODE  469CHARS
+BULK CSV OUTPUT
+When generating at scale (10+ variations), offer CSV format for direct upload: 
+CODE csv 239CHARS
+ITERATION REPORT
+When iterating, include a summary: 
+CODE  306CHARS
+--- 
+BATCH GENERATION WORKFLOW
+For large-scale creative production (Anthropic's growth team generates 100+ variations per cycle): 
+1. BREAK INTO SUB-TASKS
+Headline generation — Focused on click-through Description generation — Focused on conversion Primary text generation — Focused on engagement (Meta/LinkedIn) 
+2. GENERATE IN WAVES
+Wave 1: Core angles (3-5 angles, 5 variations each) Wave 2: Extended variations on top 2 angles Wave 3: Wild card angles (contrarian, emotional, specific) 
+3. QUALITY FILTER
+Remove anything over character limit Remove duplicates or near-duplicates Flag anything that might violate platform policies Ensure headline/description combinations make sense together 
+--- 
+COMMON MISTAKES
+Writing headlines that only work together — RSA headlines get combined randomly Ignoring character limits — Platforms truncate without warning All variations sound the same — Vary angles, not just word choice No CTA headlines — RSAs need action-oriented headlines to drive clicks; include at least 2-3 Generic descriptions — "Learn more about our solution" wastes the slot Iterating without data — Gut feelings are less reliable than metrics Testing too many things at once — Change one variable per test cycle Retiring creative too early — Allow 1,000+ impressions before judging 
+--- 
+TOOL INTEGRATIONS
+For pulling performance data and managing campaigns, see the tools registry. 
+Platform Pull Performance Data Manage Campaigns Guide ---------- :---------------------: :----------------: ------- **Google Ads** `google-ads campaigns list`, `google-ads reports get` `google-ads campaigns create` [google-ads.md](../../tools/integrations/google-ads.md) **Meta Ads** `meta-ads insights get` `meta-ads campaigns list` [meta-ads.md](../../tools/integrations/meta-ads.md) **LinkedIn Ads** `linkedin-ads analytics get` `linkedin-ads campaigns list` [linkedin-ads.md](../../tools/integrations/linkedin-ads.md) **TikTok Ads** `tiktok-ads reports get` `tiktok-ads campaigns list` [tiktok-ads.md](../../tools/integrations/tiktok-ads.md) 
+WORKFLOW: PULL DATA, ANALYZE, GENERATE
+CODE bash 272CHARS
+--- 
+RELATED SKILLS
+paid-ads: For campaign strategy, targeting, budgets, and optimization copywriting: For landing page copy (where ad traffic lands) ab-test-setup: For structuring creative tests with statistical rigor marketing-psychology: For psychological principles behind high-performing creative copy-editing: For polishing ad copy before launch 

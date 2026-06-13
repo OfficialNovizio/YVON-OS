@@ -1,285 +1,144 @@
-#MEM id=seo-audit source=/root/yvon/agent-department/Marketing/kai/skills/marketing-and-growth/seo-audit/SKILL.md savings=-3%
-M||tx|---
-M||name|seo-audit
-M||desc|>-
-M||tx|When the us wants to audit, rv, or diagnose SEO issues on their site. Also use when the us mentions "SEO audit," "tc SEO," "why am I not ranking," "SEO issues," "on-page SEO," "meta tags rv," "SEO health check," "my traffic dropped," "lost rankings," "not showing up in Google," "site isn't ranking," "Google up hit me," "page speed," "core web vitals," "crawl er," or "indexing issues." Use this even if the us just says something vague like "my SEO is bad" or "help w/ SEO" — start w/ an audit. For building pages at scale to target keywords, see programmatic-seo. For adding structured data, see sc-markup. For AI search op, see ai-seo.
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[an, data, kpi, cr, tn, mk-gap, ga4, mk]
-M||vers|1.1.0
-M||tx|---
-M|SEO |tx|You are an expert in search engine op. Your goal is to identify SEO issues and provide actionable recommendations to improve organic search perf.
-M|Init|**Ch|**
-M|Init|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
-M|Init|Befo|
-M|Init|tx|1. **Site Context**
-M|Init|it|What tp of site? (SaaS, e-commerce, blog, etc.)
-M|Init|it|What's the primary business goal for SEO?
-M|Init|it|What keywords/topics are priorities?
-M|Init|tx|2. **Current State**
-M|Init|it|Any known issues or concerns?
-M|Init|it|Current organic traffic level?
-M|Init|it|Recent changes or migrations?
-M|Init|tx|3. **Scope**
-M|Init|it|Full site audit or specific pages?
-M|Init|it|tc + on-page, or one focus area?
-M|Init|it|Access to Search Console / an?
-M|Init|tx|---
-M|Sche|tx|**`web_fetch` and `curl` cannot reliably detect structured data / sc markup.**
-M|Sche|tx|Many CMS plugins (AIOSEO, Yoast, RankMath) inject JSON-LD via client-side JavaScript — it won't appear in static HTML or `web_fetch` output (which strips `<script>` tags during conversion).
-M|Sche|**To|**
-M|Sche|1. *|`document.querySelectorAll('script[tp="application/ld+json"]')`
-M|Sche|2. *|//search.google.com/tst/rich-results
-M|Sche|tx|3. **Screaming Frog export** — if the client provides one, use it (SF renders JavaScript)
-M|Sche|tx|Reporting "no sc found" based solely on `web_fetch` or `curl` leads to false audit findings — these tools can't see JS-injected sc.
-M|Prio|tx|1. **Crawlability & Indexation** (can Google find and index it?)
-M|Prio|tx|2. **tc Foundations** (is the site fast and functional?)
-M|Prio|tx|3. **On-Page op** (is cn optimized?)
-M|Prio|tx|4. **cn qual** (does it deserve to rank?)
-M|Prio|tx|5. **Authority & Links** (does it have credibility?)
-M|Prio|tx|---
-M|Craw|tx|**Robots.txt**
-M|Craw|it|Check for unintentional blocks
-M|Craw|it|Verify important pages allowed
-M|Craw|it|Check sitemap reference
-M|Craw|tx|**XML Sitemap**
-M|Craw|it|Exists and accessible
-M|Craw|it|Submitted to Search Console
-M|Craw|it|Contains only canonical, indexable URLs
-M|Craw|it|Updated regularly
-M|Craw|it|Proper formatting
-M|Craw|tx|**Site Architecture**
-M|Craw|it|Important pages within 3 clicks of homepage
-M|Craw|it|Logical hierarchy
-M|Craw|it|Internal linking structure
-M|Craw|it|No orphan pages
-M|Craw|tx|**Crawl Budget Issues** (for large sites)
-M|Craw|it|Parameterized URLs under control
-M|Craw|it|Faceted navigation handled properly
-M|Craw|it|Infinite scroll w/ pagination fallback
-M|Craw|it|sn IDs not in URLs
-M|Inde|tx|**Index Status**
-M|Inde|- si|domain.com check
-M|Inde|it|Search Console coverage rp
-M|Inde|it|Compare indexed vs. expected
-M|Inde|tx|**Indexation Issues**
-M|Inde|it|Noindex tags on important pages
-M|Inde|it|Canonicals pointing wrong direction
-M|Inde|it|Redirect chains/loops
-M|Inde|it|Soft 404s
-M|Inde|it|Duplicate cn w/o canonicals
-M|Inde|tx|**Canonicalization**
-M|Inde|it|All pages have canonical tags
-M|Inde|it|Self-referencing canonicals on unique pages
-M|Inde|it|HTTP → HTTPS canonicals
-M|Inde|it|www vs. non-www consistency
-M|Inde|it|Trailing slash consistency
-M|Site|tx|**Core Web Vitals**
-M|Site|- LC|< 2.5s
-M|Site|- IN|< 200ms
-M|Site|- CL|< 0.1
-M|Site|tx|**Speed Factors**
-M|Site|it|Server rp time (TTFB)
-M|Site|it|im op
-M|Site|it|JavaScript execution
-M|Site|it|CSS delivery
-M|Site|it|Caching headers
-M|Site|it|CDN usage
-M|Site|it|Font loading
-M|Site|tx|**Tools**
-M|Site|it|PageSpeed in
-M|Site|it|WebPageTest
-M|Site|it|Chrome DevTools
-M|Site|it|Search Console Core Web Vitals rp
-M|Mobi|it|Responsive ds (not separate m. site)
-M|Mobi|it|Tap target sizes
-M|Mobi|it|Viewport configured
-M|Mobi|it|No horizontal scroll
-M|Mobi|it|Same cn as desktop
-M|Mobi|it|Mobile-first indexing readiness
-M|Secu|it|HTTPS across entire site
-M|Secu|it|Valid SSL certificate
-M|Secu|it|No mixed cn
-M|Secu|it|HTTP → HTTPS redirects
-M|Secu|it|HSTS header (bonus)
-M|URL |it|Readable, descriptive URLs
-M|URL |it|Keywords in URLs where natural
-M|URL |it|Consistent structure
-M|URL |it|No unnecessary parameters
-M|URL |it|Lowercase and hyphen-separated
-M|URL |tx|---
-M|Titl|**Ch|**
-M|Titl|it|Unique titles for each page
-M|Titl|it|Primary keyword near beginning
-M|Titl|it|50-60 characters (visible in SERP)
-M|Titl|it|Compelling and click-worthy
-M|Titl|it|No br name placement (SERPs include br name above title already)
-M|Titl|**Co|**
-M|Titl|it|Duplicate titles
-M|Titl|it|Too long (truncated)
-M|Titl|it|Too short (wasted opportunity)
-M|Titl|it|Keyword stuffing
-M|Titl|it|Missing entirely
-M|Meta|**Ch|**
-M|Meta|it|Unique descriptions per page
-M|Meta|it|150-160 characters
-M|Meta|it|Includes primary keyword
-M|Meta|it|Clear value proposition
-M|Meta|it|Call to action
-M|Meta|**Co|**
-M|Meta|it|Duplicate descriptions
-M|Meta|it|Auto-generated garbage
-M|Meta|it|Too long/short
-M|Meta|it|No compelling reason to click
-M|Head|**Ch|**
-M|Head|it|One H1 per page
-M|Head|it|H1 contains primary keyword
-M|Head|it|Logical hierarchy (H1 → H2 → H3)
-M|Head|it|Headings describe cn
-M|Head|it|Not just for styling
-M|Head|**Co|**
-M|Head|it|Multiple H1s
-M|Head|it|Skip levels (H1 → H3)
-M|Head|it|Headings used for styling only
-M|Head|it|No H1 on page
-M|Cont|tx|**Primary Page cn**
-M|Cont|it|Keyword in first 100 words
-M|Cont|it|Related keywords naturally used
-M|Cont|it|Sufficient depth/length for topic
-M|Cont|it|Answers search intent
-M|Cont|it|Better than cr
-M|Cont|tx|**Thin cn Issues**
-M|Cont|it|Pages w/ little unique cn
-M|Cont|it|Tag/category pages w/ no value
-M|Cont|it|Doorway pages
-M|Cont|it|Duplicate or near-duplicate cn
-M|Imag|**Ch|**
-M|Imag|it|Descriptive file names
-M|Imag|it|Alt text on all images
-M|Imag|it|Alt text describes im
-M|Imag|it|Compressed file sizes
-M|Imag|it|Modern formats (WebP)
-M|Imag|it|Lazy loading implemented
-M|Imag|it|Responsive images
-M|Inte|**Ch|**
-M|Inte|it|Important pages well-linked
-M|Inte|it|Descriptive anchor text
-M|Inte|it|Logical link relationships
-M|Inte|it|No broken internal links
-M|Inte|it|Reasonable link count per page
-M|Inte|**Co|**
-M|Inte|it|Orphan pages (no internal links)
-M|Inte|it|Over-optimized anchor text
-M|Inte|it|Important pages buried
-M|Inte|it|Excessive footer/sidebar links
-M|Keyw|tx|**Per Page**
-M|Keyw|it|Clear primary keyword target
-M|Keyw|it|Title, H1, URL aligned
-M|Keyw|it|cn satisfies search intent
-M|Keyw|it|Not competing w/ other pages (cannibalization)
-M|Keyw|tx|**Site-Wide**
-M|Keyw|it|Keyword mapping document
-M|Keyw|it|No major gaps in coverage
-M|Keyw|it|No keyword cannibalization
-M|Keyw|it|Logical topical clusters
-M|Keyw|tx|---
-M|E-E-|tx|**exp**
-M|E-E-|it|First-hand exp demonstrated
-M|E-E-|it|Original in/data
-M|E-E-|it|Real examples and case studies
-M|E-E-|tx|**Expertise**
-M|E-E-|it|Author credentials visible
-M|E-E-|it|Accurate, detailed information
-M|E-E-|it|Properly sourced claims
-M|E-E-|tx|**Authoritativeness**
-M|E-E-|it|Recognized in the space
-M|E-E-|it|Cited by others
-M|E-E-|it|Industry credentials
-M|E-E-|tx|**Trustworthiness**
-M|E-E-|it|Accurate information
-M|E-E-|it|Transparent abt business
-M|E-E-|it|Contact information available
-M|E-E-|it|Privacy policy, terms
-M|E-E-|it|Secure site (HTTPS)
-M|Cont|it|Comprehensive coverage of topic
-M|Cont|it|Answers follow-up questions
-M|Cont|it|Better than top-ranking cr
-M|Cont|it|Updated and current
-M|User|it|Time on page
-M|User|it|Bounce rate in context
-M|User|it|Pages per sn
-M|User|it|Return visits
-M|User|tx|---
-M|SaaS|it|pd pages lack cn depth
-M|SaaS|it|Blog not integrated w/ pd pages
-M|SaaS|it|Missing comparison/alternative pages
-M|SaaS|it|Feature pages thin on cn
-M|SaaS|it|No glossary/educational cn
-M|E-co|it|Thin category pages
-M|E-co|it|Duplicate pd descriptions
-M|E-co|it|Missing pd sc
-M|E-co|it|Faceted navigation creating duplicates
-M|E-co|it|Out-of-stock pages mishandled
-M|Cont|it|Outdated cn not refreshed
-M|Cont|it|Keyword cannibalization
-M|Cont|it|No topical clustering
-M|Cont|it|Poor internal linking
-M|Cont|it|Missing author pages
-M|Loca|it|Inconsistent NAP
-M|Loca|it|Missing local sc
-M|Loca|it|No Google Business Profile op
-M|Loca|it|Missing location pages
-M|Loca|it|No local cn
-M|Loca|tx|---
-M|Audi|tx|**Executive Summary**
-M|Audi|it|Overall health assessment
-M|Audi|it|Top 3-5 priority issues
-M|Audi|it|Quick wins identified
-M|Audi|tx|**tc SEO Findings**
-M|Audi|For |
-M|Audi|- **|What's wrong
-M|Audi|- **|SEO impact (hi/md/lo)
-M|Audi|- **|How you found it
-M|Audi|- **|Specific recommendation
-M|Audi|- **|1-5 or hi/md/lo
-M|Audi|tx|**On-Page SEO Findings**
-M|Audi|tx|Same format as above
-M|Audi|tx|**cn Findings**
-M|Audi|tx|Same format as above
-M|Audi|tx|**Prioritized Action Plan**
-M|Audi|tx|1. ct fixes (blocking indexation/ranking)
-M|Audi|tx|2. hi-impact improvements
-M|Audi|tx|3. Quick wins (easy, immediate benefit)
-M|Audi|tx|4. Long-term recommendations
-M|Audi|tx|---
-M|Refe|- [A|Common AI writing patterns to avoid (em dashes, overused phrases, filler words)
-M|Refe|it|For AI search op (AEO, GEO, LLMO, AI Overviews), see the **ai-seo** skill
-M|Refe|tx|---
-M|Tool|tx|**Free Tools**
-M|Tool|it|Google Search Console (essential)
-M|Tool|it|Google PageSpeed in
-M|Tool|it|Bing Webmaster Tools
-M|Tool|it|Rich Results tst (**use this for sc validation — it renders JavaScript**)
-M|Tool|it|Mobile-Friendly tst
-M|Tool|it|sc Validator
-M|Tool|> **|** `web_fetch` strips `<script>` tags (inc JSON-LD) and cannot detect JS-injected sc. Use the browser tool, Rich Results tst, or Screaming Frog instead — they render JavaScript and capture dynamically-injected markup. See the sc Markup Detection Limitation section above.
-M|Tool|tx|**Paid Tools** (if available)
-M|Tool|it|Screaming Frog
-M|Tool|it|Ahrefs / Semrush
-M|Tool|it|Sitebulb
-M|Tool|it|ContentKing
-M|Tool|tx|---
-M|Task|tx|1. What pages/keywords matter most?
-M|Task|tx|2. Do you have Search Console access?
-M|Task|tx|3. Any recent changes or migrations?
-M|Task|tx|4. Who are your top organic cr?
-M|Task|tx|5. What's your current organic traffic baseline?
-M|Task|tx|---
-M|Rela|- **|For optimizing cn for AI search engines (AEO, GEO, LLMO)
-M|Rela|- **|For building SEO pages at scale
-M|Rela|- **|For page hierarchy, navigation ds, and URL structure
-M|Rela|- **|For implementing structured data
-M|Rela|- **|For optimizing pages for conversion (not just ranking)
-M|Rela|- **|For measuring SEO perf
+SRC agent-department/Marketing/kai/skills/marketing-and-growth/seo-audit/SKILL.md
+ORIG_SIZE 10848
+SECTIONS 138
+ABBREVS 13
+INDEX_TERMS 577
+COMPILED 2026-06-13T19:23:25.052Z
+---
+NAME seo-audit
+SEO AUDIT
+YAAE in search engine optimization. YGIT identify SEO issues and provide actionable recommendations to improve organic search performance. 
+INITIAL ASSESSMENT
+CFPM context first: If .agents/product-marketing-context.md exists (or .claude/product-marketing-context.md in older setups), read it before asking questions. UTCA only ask for information not already covered or specific to this task. 
+Before auditing, understand: 
+Site Context What type of site? (SaaS, e-commerce, blog, etc.) What's the primary business goal for SEO? What keywords/topics are priorities? 
+Current State Any known issues or concerns? Current organic traffic level? Recent changes or migrations? 
+Scope Full site audit or specific pages? Technical + on-page, or one focus area? Access to Search Console / analytics? 
+--- 
+AUDIT FRAMEWORK
+SCHEMA MARKUP DETECTION LIMITATION
+web_fetch and curl cannot reliably detect structured data / schema markup. 
+Many CMS plugins (AIOSEO, Yoast, RankMath) inject JSON-LD via client-side JavaScript — it won't appear in static HTML or web_fetch output (which strips <scripttags during conversion). 
+To accurately CF schema markup, use one of these methods: 
+Browser tool — render the page and run: document.querySelectorAll('script[type="application/ld+json"]') Google Rich Results Test — https://search.google.com/test/rich-results Screaming Frog export — if the client provides one, use it (SF renders JavaScript) 
+Reporting "no schema found" based solely on web_fetch or curl leads to false audit findings — these tools can't see JS-injected schema. 
+PRIORITY ORDER
+Crawlability & Indexation (can Google find and index it?) Technical Foundations (IT site fast and functional?) On-Page Optimization (is content optimized?) Content Quality (does it deserve to rank?) Authority & Links (does it have credibility?) 
+--- 
+TECHNICAL SEO AUDIT
+CRAWLABILITY
+Robots.txt 
+CF unintentional blocks Verify important pages allowed Check sitemap reference 
+XML Sitemap 
+Exists and accessible Submitted to Search Console Contains only canonical, indexable URLs Updated regularly Proper formatting 
+Site Architecture 
+Important pages within 3 clicks of homepage Logical hierarchy Internal linking structure No orphan pages 
+Crawl Budget Issues (for large sites) 
+Parameterized URLs under control Faceted navigation handled properly Infinite scroll with pagination fallback Session IDs not in URLs 
+INDEXATION
+Index Status 
+SITE domain.com check
+Indexation Issues 
+Noindex tags on important pages Canonicals pointing wrong direction Redirect chains/loops Soft 404s Duplicate content without canonicals 
+Canonicalization 
+All pages have canonical tags Self-referencing canonicals on unique pages HTTP → HTTPS canonicals www vs. non-www consistency Trailing slash consistency 
+SITE SPEED & CORE WEB VITALS
+Core Web Vitals 
+LCP (Largest Contentful Paint): < 2.5s INP (Interaction to Next Paint): < 200ms CLS (Cumulative Layout Shift): < 0.1 
+Speed Factors 
+Server response time (TTFB) Image optimization JavaScript execution CSS delivery Caching headers CDN usage Font loading 
+Tools 
+PageSpeed Insights WebPageTest Chrome DevTools Search Console Core Web Vitals report 
+MOBILE-FRIENDLINESS
+Responsive design (not separate m. site) Tap target sizes Viewport configured No horizontal scroll Same content as desktop Mobile-first indexing readiness 
+SECURITY & HTTPS
+HTTPS across entire site Valid SSL certificate No mixed content HTTP → HTTPS redirects HSTS header (bonus) 
+URL STRUCTURE
+Readable, descriptive URLs Keywords in URLs where natural Consistent structure No unnecessary parameters Lowercase and hyphen-separated 
+--- 
+ON-PAGE SEO AUDIT
+TITLE TAGS
+CF: 
+Unique titles for each page Primary keyword near beginning 50-60 characters (visible in SERP) Compelling and click-worthy No brand name placement (SERPs include brand name above title already) 
+Common issues: 
+Duplicate titles Too long (truncated) Too short (wasted opportunity) Keyword stuffing Missing entirely 
+META DESCRIPTIONS
+CF: 
+Unique descriptions per page 150-160 characters Includes primary keyword Clear value proposition Call to action 
+Common issues: 
+Duplicate descriptions Auto-generated garbage Too long/short No compelling reason to click 
+HEADING STRUCTURE
+CF: 
+One H1 per page H1 contains primary keyword Logical hierarchy (H1 → H2 → H3) Headings describe content Not just for styling 
+Common issues: 
+Multiple H1s Skip levels (H1 → H3) Headings used for styling only No H1 on page 
+CONTENT OPTIMIZATION
+Primary Page Content 
+Keyword in first 100 words Related keywords naturally used Sufficient depth/length for topic Answers search intent Better than competitors 
+Thin Content Issues 
+Pages with little unique content Tag/category pages with no value Doorway pages Duplicate or near-duplicate content 
+IMAGE OPTIMIZATION
+CF: 
+Descriptive file names Alt text on all images Alt text describes image Compressed file sizes Modern formats (WebP) Lazy loading implemented Responsive images 
+INTERNAL LINKING
+CF: 
+Important pages well-linked Descriptive anchor text Logical link relationships No broken internal links Reasonable link count per page 
+Common issues: 
+Orphan pages (no internal links) Over-optimized anchor text Important pages buried Excessive footer/sidebar links 
+KEYWORD TARGETING
+Per Page 
+Clear primary keyword target Title, H1, URL aligned Content satisfies search intent Not competing with other pages (cannibalization) 
+Site-Wide 
+Keyword mapping document No major gaps in coverage No keyword cannibalization Logical topical clusters 
+--- 
+CONTENT QUALITY ASSESSMENT
+E-E-A-T SIGNALS
+Experience 
+First-hand experience demonstrated Original insights/data Real examples and case studies 
+Expertise 
+Author credentials visible Accurate, detailed information Properly sourced claims 
+Authoritativeness 
+Recognized in the space Cited by others Industry credentials 
+Trustworthiness 
+Accurate information Transparent about business Contact information available Privacy policy, terms Secure site (HTTPS) 
+CONTENT DEPTH
+Comprehensive coverage of topic Answers follow-up questions Better than top-ranking competitors Updated and current 
+USER ENGAGEMENT SIGNALS
+Time on page Bounce rate in context Pages per session Return visits 
+--- 
+COMMON ISSUES BY SITE TYPE
+SAAS/PRODUCT SITES
+Product pages lack content depth Blog not integrated with product pages Missing comparison/alternative pages Feature pages thin on content No glossary/educational content 
+E-COMMERCE
+Thin category pages Duplicate product descriptions Missing product schema Faceted navigation creating duplicates Out-of-stock pages mishandled 
+CONTENT/BLOG SITES
+Outdated content not refreshed Keyword cannibalization No topical clustering Poor internal linking Missing author pages 
+LOCAL BUSINESS
+Inconsistent NAP Missing local schema No Google Business Profile optimization Missing location pages No local content 
+--- 
+OUTPUT FORMAT
+AUDIT REPORT STRUCTURE
+Executive Summary 
+Overall health assessment Top 3-5 priority issues Quick wins identified 
+Technical SEO Findings For each issue: 
+Issue: What's wrong Impact: SEO impact (High/Medium/Low) Evidence: How you found it Fix: Specific recommendation Priority: 1-5 or High/Medium/Low 
+On-Page SEO Findings Same format as above 
+Content Findings Same format as above 
+Prioritized Action Plan 
+Critical fixes (blocking indexation/ranking) High-impact improvements Quick wins (easy, immediate benefit) Long-term recommendations 
+--- 
+REFERENCES
+AI Writing Detection: Common AI writing patterns to avoid (em dashes, overused phrases, filler words) For AI search optimization (AEO, GEO, LLMO, AI Overviews), see the ai-seo skill 
+--- 
+TOOLS REFERENCED
+Free Tools 
+Google Search Console (essential) Google PageSpeed Insights Bing Webmaster Tools Rich Results Test (use this for schema validation — it renders JavaScript) Mobile-Friendly Test Schema Validator 
+Note on schema detection: web_fetch strips <scripttags (including JSON-LD) and cannot detect JS-injected schema. UT browser tool, Rich Results Test, or Screaming Frog instead — they render JavaScript and capture dynamically-injected markup. See the Schema Markup Detection Limitation section above. 
+Paid Tools (if available) 
+Screaming Frog Ahrefs / Semrush Sitebulb ContentKing 
+--- 
+TASK-SPECIFIC QUESTIONS
+What pages/keywords matter most? Do you have Search Console access? Any recent changes or migrations? Who are your top organic competitors? What's your current organic traffic baseline? 
+--- 
+RELATED SKILLS
+ai-seo: For optimizing content for AI search engines (AEO, GEO, LLMO) programmatic-seo: For building SEO pages at scale site-architecture: For page hierarchy, navigation design, and URL structure schema-markup: For implementing structured data page-cro: For optimizing pages for conversion (not just ranking) analytics-tracking: For measuring SEO performance 

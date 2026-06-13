@@ -1,209 +1,110 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/nate/skills/marketing-and-growth/churn-prevention/references/cancel-flow-patterns.md savings=-1%
-M|Canc|tx|Detailed cancel flow patterns by business tp, billing pr, and industry.
-M|Canc|tx|---
-M|B2C |tx|hi volume, lo touch. The flow must work w/o human intervention.
-M|B2C |**Fl|**
-M|B2C |tx|```
-M|B2C |tx|Cancel button → Exit survey (1 question) → Dynamic offer → Confirm → Post-cancel
-M|B2C |tx|```
-M|B2C |**Ch|**
-M|B2C |it|Fully automated, no human in the loop
-M|B2C |it|Quick — 2-3 screens maximum
-M|B2C |it|One offer + one fallback, not a menu of options
-M|B2C |it|Mobile-optimized (sig cancellations on mobile)
-M|B2C |it|Clear "continue cancelling" at every step
-M|B2C |**Ty|** 20-30%
-M|B2C |**Ex|**
-M|B2C |tx|1. "What's the main reason?" → 6 options
-M|B2C |tx|2. Selected "Too expensive" → "Get 25% off for 3 months (save $21.75)"
-M|B2C |tx|3. Declined → "Or switch to our Starter plan at $12/mo"
-M|B2C |tx|4. Declined → "We're sorry to see you go. Your access continues until [date]."
-M|B2C |tx|---
-M|B2B |tx|Lower volume, higher stakes. Personal outreach is worth the cost.
-M|B2B |**Fl|**
-M|B2B |tx|```
-M|B2B |tx|Cancel button → Exit survey → Offer (or rt to CS) → Confirm → Post-cancel
-M|B2B |tx|```
-M|B2B |**Ch|**
-M|B2B |it|rt accounts above MRR threshold to cs sc
-M|B2B |it|Show team impact ("Your 8 team members will lose access")
-M|B2B |it|Offer admin-to-admin call for enterprise accounts
-M|B2B |it|Longer consideration — allow "schedule a call" as a save option
-M|B2B |it|Require admin/owner role to cancel (not any team member)
-M|B2B |**Ty|** 30-45% (higher bc of personal touch)
-M|B2B |**MR|**
-M|B2B |tx|\| Account MRR \| Cancel Flow \|
-M|B2B |tx|\|-------------\|-------------\|
-M|B2B |tx|\| <$100/mo \| Automated flow w/ offers \|
-M|B2B |tx|\| $100-$500/mo \| Automated + flag for CS follow-up \|
-M|B2B |tx|\| $500-$2,000/mo \| rt to CS before cancel completes \|
-M|B2B |tx|\| $2,000+/mo \| Block self-serve cancel, require CS call \|
-M|B2B |tx|---
-M|Free|tx|us cancelling paid to return to free tier. Different ps — they're not leaving, they're downgrading.
-M|Free|**Fl|**
-M|Free|tx|```
-M|Free|tx|Cancel button → "Switch to Free?" pm → Exit survey (if still cancelling) → Offer → Confirm
-M|Free|tx|```
-M|Free|**Ch|**
-M|Free|it|Lead w/ the free tier as the first option (not a save offer)
-M|Free|it|Show what they keep on free vs. what they lose
-M|Free|it|The "save" is keeping them on free, not losing them entirely
-M|Free|it|Track free-tier us for future re-upgrade cg
-M|Free|tx|---
-M|Mont|it|More price-sensitive, shorter commitment
-M|Mont|it|Discount offers work well (20-30% for 2-3 months)
-M|Mont|it|Pause is effective (1-2 months)
-M|Mont|it|Suggest annual plan at a discount as an alternative
-M|Mont|**Of|**
-M|Mont|tx|1. Discount (if reason = price)
-M|Mont|tx|2. Pause (if reason = not using / temporary)
-M|Mont|tx|3. Annual plan switch (if engaged but price-sensitive)
-M|Annu|it|Higher commitment, often cancelling for stronger reasons
-M|Annu|it|Prorate refund expectations matter
-M|Annu|it|Longer save window (they've already paid)
-M|Annu|it|Personal outreach more justified (higher LTV at stake)
-M|Annu|**Of|**
-M|Annu|tx|1. Pause remainder of term (if temporary)
-M|Annu|tx|2. Plan adjustment + credit for nx renewal
-M|Annu|tx|3. Personal outreach from CS
-M|Annu|tx|4. Partial refund + downgrade (better than full refund + cancel)
-M|Annu|**Re|**
-M|Annu|it|Offer prorated refund if sig time remaining
-M|Annu|it|"Pause until renewal" if less than 3 months left
-M|Annu|it|Be generous — bad refund experiences cr vocal detractors
-M|Annu|tx|---
-M|The |Don'|
-M|The |tx|```
-M|The |tx|Cancel click → 15% off → Still cancelling → 25% off → Still cancelling → Let them go
-M|The |tx|```
-M|The |**Ru|**
-M|The |it|Maximum 2 discount offers per cancel sn
-M|The |it|Never exceed 30% (higher trains cancel-for-discount behavior)
-M|The |it|Time-limit discounts (2-3 months, then full price resumes)
-M|The |it|Track discount accepters — if they cancel again at full price, don't re-offer
-M|The |tx|Pause is often better than a discount bc it doesn't devalue your pd.
-M|The |**Im|**
-M|The |tx|\| Setting \| Recommendation \|
-M|The |tx|\|---------\|---------------\|
-M|The |tx|\| Pause duration options \| 1 month, 2 months, 3 months \|
-M|The |tx|\| Default selection \| 1 month (shortest) \|
-M|The |tx|\| Maximum pause \| 3 months (longer pauses rarely return) \|
-M|The |tx|\| During pause \| Keep data, remove access \|
-M|The |tx|\| Reactivation \| Auto-reactivate w/ 7-day advance em \|
-M|The |tx|\| Repeat pauses \| Allow 1 pause per 12-month period \|
-M|The |**Pa|**
-M|The |- Da|"Your pause ends in 7 days. We've been busy — here's what's new."
-M|The |- Da|"Welcome back tomorrow! Here's what's waiting for you."
-M|The |- Da|"You're back! Here's a quick tour of what's new."
-M|The |For |
-M|The |tx|```
-M|The |tx|┌─────────────────────────────────────────┐
-M|The |tx|│  Before you go, what abt right-sizing │
-M|The |tx|│  your plan?                             │
-M|The |tx|│                                         │
-M|The |│  C|Pro ($49/mo)                  │
-M|The |tx|│                                         │
-M|The |tx|│  ┌─────────────────────────────────┐    │
-M|The |tx|│  │ Switch to Starter ($19/mo)      │    │
-M|The |tx|│  │                                 │    │
-M|The |│  │|Projects, integrations  │    │
-M|The |│  │|Advanced an,     │    │
-M|The |tx|│  │         team features           │    │
-M|The |tx|│  │                                 │    │
-M|The |tx|│  │ [Switch to Starter]             │    │
-M|The |tx|│  └─────────────────────────────────┘    │
-M|The |tx|│                                         │
-M|The |tx|│  [No thanks, continue cancelling]       │
-M|The |tx|└─────────────────────────────────────────┘
-M|The |tx|```
-M|The |**Do|**
-M|The |it|Show exactly what they keep and what they lose
-M|The |it|Use checkmarks and X marks for scanability
-M|The |it|Preserve their data even on the lower plan
-M|The |it|If they downgrade, don't show upgrade pm for at least 30 days
-M|The |When|
-M|The |tx|1. **Ask which cr** (optional, don't force it)
-M|The |tx|2. **Show a comparison** if you have one (see cr-alternatives skill)
-M|The |tx|3. **Offer a migration credit** ("We'll match their price for 3 months")
-M|The |tx|4. **Request a feedback call** ("15 minutes to understand what we're missing")
-M|The |tx|This data is gold for pd and mk teams.
-M|The |tx|---
-M|Post|What|
-M|Post|it|Win-back potential
-M|Post|it|Word of mouth
-M|Post|it|rv sentiment
-M|Conf|tx|```
-M|Conf|tx|Your subscription has been can.
-M|Conf|What|
-M|Conf|it|Your access continues until [billing period end date]
-M|Conf|it|Your data will be preserved for 90 days
-M|Conf|it|You can reactivate anytime from your account settings
-M|Conf|tx|[Reactivate My Account]
-M|Conf|tx|We'd love to have you back. We'll keep improving based on feedback
-M|Conf|tx|from cs like you.
-M|Conf|tx|```
-M|Post|tx|\| Timing \| Action \|
-M|Post|tx|\|--------\|--------\|
-M|Post|tx|\| Immediately \| Confirmation em w/ access end date \|
-M|Post|tx|\| Day 1 \| (Nothing — don't be desperate) \|
-M|Post|tx|\| Day 7 \| NPS/satisfaction survey abt overall exp \|
-M|Post|tx|\| Day 30 \| "What's new" em w/ recent improvements \|
-M|Post|tx|\| Day 60 \| Address their specific cancel reason if resolved \|
-M|Post|tx|\| Day 90 \| Final win-back w/ special offer \|
-M|Post|**Fo|See the em-sequence skill.
-M|Post|tx|---
-M|Segm|tx|The most effective cancel flows use segmentation to show different offers to different cs.
-M|Segm|tx|\| Dimension \| Why It Matters \|
-M|Segm|tx|\|-----------\|---------------\|
-M|Segm|tx|\| Plan / MRR \| Higher-value cs get personal outreach \|
-M|Segm|tx|\| Tenure \| Long-term cs get more generous offers \|
-M|Segm|tx|\| Usage level \| hi-usage cs get different messaging than dormant ones \|
-M|Segm|tx|\| Billing interval \| Monthly vs. annual need different approaches \|
-M|Segm|tx|\| Previous saves \| Don't re-offer the same discount to a repeat canceller \|
-M|Segm|tx|\| Cancel reason \| Drives which offer to show (core mapping) \|
-M|Segm|**Ne|**
-M|Segm|it|They haven't activated. The save is onboarding, not discounts.
-M|Segm|- Of|Free onboarding call, setup help, extended trial
-M|Segm|- As|"What were you hoping to accomplish?" (learn what's missing)
-M|Segm|**En|**
-M|Segm|it|They love the pd but can't justify the cost.
-M|Segm|- Of|Discount, annual plan switch, downgrade
-M|Segm|it|hi save potential
-M|Segm|**Do|**
-M|Segm|it|They forgot abt you. A discount won't bring them back.
-M|Segm|- Of|Pause subscription, "what changed?" conversation
-M|Segm|it|lo save potential — focus on learning why
-M|Segm|**Po|**
-M|Segm|it|They're actively choosing something else.
-M|Segm|- Of|Competitive match, feedback call, roadmap preview
-M|Segm|it|md save potential — depends on reason
-M|Segm|tx|---
-M|Phas|it|[ ] Add cancel flow (survey + 1 offer + confirmation)
-M|Phas|it|[ ] Set up exit survey w/ 5-7 reason categories
-M|Phas|- [ |1 mapping)
-M|Phas|it|[ ] Track cancel reasons and save rate in an
-M|Phas|it|[ ] Enable pre-dunning card expiry emails
-M|Phas|it|[ ] Add fallback offers (primary + secondary per reason)
-M|Phas|it|[ ] im pause subscription option
-M|Phas|it|[ ] Set up dunning em sequence (4 emails over 10 days)
-M|Phas|it|[ ] Enable smart retries (Stripe Smart Retries or equivalent)
-M|Phas|it|[ ] Add MRR-based routing for hi-value accounts
-M|Phas|it|[ ] bd health score from usage signals
-M|Phas|it|[ ] Set up proactive intervention triggers
-M|Phas|it|[ ] A/B tst discount amounts and offer tp
-M|Phas|it|[ ] Segment flows by plan, tenure, and usage
-M|Phas|it|[ ] Post-cancel win-back sequence (coordinate w/ em-sequence skill)
-M|Phas|- [ |churn by channel, plan, tenure
-M|Phas|tx|---
-M|FTC |it|Cancellation must be as easy as signup
-M|FTC |it|Cannot require a phone call to cancel if signup was online
-M|FTC |it|Cannot add excessive steps to discourage cancellation
-M|FTC |it|Save offers are allowed but "continue cancelling" must be clear
-M|GDPR|it|Inform us abt data retention period post-cancel
-M|GDPR|it|Offer data export before account deletion
-M|GDPR|it|Honor deletion requests within 30 days
-M|GDPR|it|Don't use post-cancel data for mk w/o consent
-M|Gene|it|Always show a clear path to complete cancellation
-M|Gene|it|Never hide the cancel button (dark pattern)
-M|Gene|it|Process cancellation even if save flow has er
-M|Gene|it|Confirm cancellation w/ em receipt
+SRC agent-department/Marketing/nate/skills/marketing-and-growth/churn-prevention/references/cancel-flow-patterns.md
+ORIG_SIZE 10678
+SECTIONS 103
+ABBREVS 5
+INDEX_TERMS 523
+COMPILED 2026-06-13T19:23:25.136Z
+---
+CANCEL FLOW PATTERNS
+Detailed cancel flow patterns by business type, billing provider, and industry. 
+--- 
+CANCEL FLOW BY BUSINESS TYPE
+B2C / SELF-SERVE SAAS
+High volume, low touch. The flow must work without human intervention. 
+CODE  81CHARS
+Flow structure: 
+Characteristics: 
+Fully automated, no human in the loop Quick — 2-3 screens maximum One offer + one fallback, not a menu of options Mobile-optimized (significant cancellations on mobile) Clear "continue cancelling" at every step 
+Typical save rate: 20-30% 
+Example flow for a $29/mo productivity app: 
+"What's the main reason?" → 6 options Selected "Too expensive" → "Get 25% off for 3 months (save $21.75)" Declined → "Or switch to our Starter plan at $12/mo" Declined → "We're sorry to see you go. Your access continues until [date]." 
+--- 
+B2B / TEAM PLANS
+Lower volume, higher stakes. Personal outreach is worth the cost. 
+CODE  77CHARS
+Flow structure: 
+Characteristics: 
+Route accounts above MRR threshold to customer success Show team impact ("Your 8 team members will lose access") Offer admin-to-admin call for enterprise accounts Longer consideration — allow "schedule a call" as a save option Require admin/owner role to cancel (not any team member) 
+Typical save rate: 30-45% (higher because of personal touch) 
+MRR-based routing: 
+Account MRR Cancel Flow <$100/mo Automated flow with offers $100-$500/mo Automated + flag for CS follow-up $500-$2,000/mo Route to CS before cancel completes $2,000+/mo Block self-serve cancel, require CS call 
+--- 
+FREEMIUM / FREE-TO-PAID
+Users cancelling paid to RT free tier. Different psychology — they're not leaving, they're downgrading. 
+CODE  95CHARS
+Flow structure: 
+Characteristics: 
+Lead with the free tier as the first option (not a save offer) Show what they keep on free vs. what they lose The "save" is keeping them on free, not losing them entirely Track free-tier users for future re-upgrade campaigns 
+--- 
+CANCEL FLOW BY BILLING INTERVAL
+MONTHLY SUBSCRIBERS
+More price-sensitive, shorter commitment Discount offers work well (20-30% for 2-3 months) Pause is effective (1-2 months) Suggest annual plan at a discount as an alternative 
+Offer priority: 
+Discount (if reason = price) Pause (if reason = not using / temporary) Annual plan switch (if engaged but price-sensitive) 
+ANNUAL SUBSCRIBERS
+Higher commitment, often cancelling for stronger reasons Prorate refund expectations matter Longer save window (they've already paid) Personal outreach more justified (higher LTV at stake) 
+Offer priority: 
+Pause remainder of term (if temporary) Plan adjustment + credit for next renewal Personal outreach from CS Partial refund + downgrade (better than full refund + cancel) 
+Refund handling: 
+Offer prorated refund if significant time remaining "Pause until renewal" if less than 3 months left Be generous — bad refund experiences create vocal detractors 
+--- 
+SAVE OFFER PATTERNS
+THE DISCOUNT LADDER
+Don't lead with your biggest discount. Escalate: 
+CODE  85CHARS
+Rules: 
+Maximum 2 discount offers per cancel session Never exceed 30% (higher trains cancel-for-discount behavior) Time-limit discounts (2-3 months, then full price resumes) Track discount accepters — if they cancel again at full price, don't re-offer 
+THE PAUSE PLAYBOOK
+Pause is often better than a discount because it doesn't devalue your product. 
+Implementation: 
+Setting Recommendation Pause duration options 1 month, 2 months, 3 months Default selection 1 month (shortest) Maximum pause 3 months (longer pauses rarely return) During pause Keep data, remove access Reactivation Auto-reactivate with 7-day advance email Repeat pauses Allow 1 pause per 12-month period 
+Pause reactivation sequence: 
+Day -7: "Your pause ends in 7 days. We've been busy — here's what's new." Day -1: "Welcome back tomorrow! Here's what's WF you." Day 0: "You're back! Here's a quick tour of what's new." 
+THE DOWNGRADE PATH
+FM-plan products, downgrade IT strongest save: 
+CODE  792CHARS
+Downgrade best practices: 
+Show exactly what they keep and what they lose Use checkmarks and X marks for scanability Preserve their data even on the lower plan If they downgrade, don't show upgrade prompts for at least 30 days 
+THE COMPETITOR SWITCH HANDLER
+When the cancel reason is "switching to competitor": 
+Ask which competitor (optional, don't force it) Show a comparison if you have one (see competitor-alternatives skill) Offer a migration credit ("We'll match their price for 3 months") Request a feedback call ("15 minutes to understand what we're missing") 
+This data is gold for product and marketing teams. 
+--- 
+POST-CANCEL EXPERIENCE
+What happens after cancel matters for: 
+Win-back potential Word of mouth Review sentiment 
+CONFIRMATION PAGE
+CODE  330CHARS
+POST-CANCEL SEQUENCE
+Timing Action Immediately Confirmation email with access end date Day 1 (Nothing — don't be desperate) Day 7 NPS/satisfaction survey about overall experience Day 30 "What's new" email with recent improvements Day 60 Address their specific cancel reason if resolved Day 90 Final win-back with special offer 
+For detailed win-back email sequences: See the email-sequence skill. 
+--- 
+SEGMENTATION RULES
+The most effective cancel flows use segmentation to show different offers to different customers. 
+SEGMENTATION DIMENSIONS
+Dimension WIM Plan / MRR Higher-value customers get personal outreach Tenure Long-term customers get more generous offers Usage level High-usage customers get different messaging than dormant ones Billing interval Monthly vs. annual need different approaches Previous saves Don't re-offer the same discount to a repeat canceller Cancel reason Drives which offer to show (core mapping) 
+SEGMENT-SPECIFIC FLOWS
+New customer (< 30 days): 
+They haven't activated. The save is onboarding, not discounts. Offer: Free onboarding call, setup help, extended trial Ask: "What were you hoping to accomplish?" (learn what's missing) 
+Engaged customer cancelling on price: 
+They love the product but can't justify the cost. Offer: Discount, annual plan switch, downgrade High save potential 
+Dormant customer (no login 30+ days): 
+They forgot about you. A discount won't bring them back. Offer: Pause subscription, "what changed?" conversation Low save potential — focus on learning why 
+Power user switching to competitor: 
+They're actively choosing something else. Offer: Competitive match, feedback call, roadmap preview Medium save potential — depends on reason 
+--- 
+IMPLEMENTATION CHECKLIST
+PHASE 1: FOUNDATION (WEEK 1)
+[ ] Add cancel flow (survey + 1 offer + confirmation) [ ] Set up exit survey with 5-7 reason categories [ ] Map one offer per reason (simple 1:1 mapping) [ ] Track cancel reasons and save rate in analytics [ ] Enable pre-dunning card expiry emails 
+PHASE 2: OPTIMIZATION (WEEKS 2-4)
+[ ] Add fallback offers (primary + secondary per reason) [ ] Implement pause subscription option [ ] Set up dunning email sequence (4 emails over 10 days) [ ] Enable smart retries (Stripe Smart Retries or equivalent) [ ] Add MRR-based routing for high-value accounts 
+PHASE 3: ADVANCED (MONTH 2+)
+[ ] Build health score from usage signals [ ] Set up proactive intervention triggers [ ] A/B test discount amounts and offer types [ ] Segment flows by plan, tenure, and usage [ ] Post-cancel win-back sequence (coordinate with email-sequence skill) [ ] Cohort analysis: churn by channel, plan, tenure 
+--- 
+COMPLIANCE NOTES
+FTC CLICK-TO-CANCEL RULE (US)
+Cancellation must be as easy as signup Cannot require a phone call to cancel if signup was online Cannot add excessive steps to discourage cancellation Save offers are allowed but "continue cancelling" must be clear 
+GDPR / DATA RETENTION (EU)
+Inform users about data retention period post-cancel Offer data export before account deletion Honor deletion requests within 30 days Don't use post-cancel data for marketing without consent 
+GENERAL BEST PRACTICES
+Always show a clear path to complete cancellation Never hide the cancel button (dark pattern) Process cancellation even if save flow has errors Confirm cancellation with email receipt 

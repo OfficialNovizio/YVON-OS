@@ -1,27 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md savings=2%
-M||tx|---
-M||titl|Do not wrap a simple expression w/ a primitive result tp in useMemo
-M||impa|lo-md
-M||impa|wasted computation on every render
-M||tags|rerender, useMemo, op
-M||tx|---
-M|Do n|tx|When an expression is simple (few logical or arithmetical operators) and has a primitive result tp (boolean, number, string), do not wrap it in `useMemo`.
-M|Do n|tx|Calling `useMemo` and comparing hook dependencies may consume more resources than the expression itself.
-M|Do n|**In|**
-M|Do n|tx|```tsx
-M|Do n|func|Props) {
-M|Do n|tx|const isLoading = useMemo(() => {
-M|Do n|tx|return us.isLoading \|\| notifications.isLoading
-M|Do n|tx|}, [us.isLoading, notifications.isLoading])
-M|Do n|tx|if (isLoading) return <Skeleton />
-M|Do n|tx|// return some markup
-M|Do n|tx|}
-M|Do n|tx|```
-M|Do n|**Co|**
-M|Do n|tx|```tsx
-M|Do n|func|Props) {
-M|Do n|tx|const isLoading = us.isLoading \|\| notifications.isLoading
-M|Do n|tx|if (isLoading) return <Skeleton />
-M|Do n|tx|// return some markup
-M|Do n|tx|}
-M|Do n|tx|```
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md
+ORIG_SIZE 1018
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 37
+COMPILED 2026-06-13T19:23:25.332Z
+---
+TITLE Do not wrap a simple expression with a primitive result type in useMemo
+DO NOT WRAP A SIMPLE EXPRESSION WITH A PRIMITIVE RESULT TYPE IN USEMEMO
+When an expression is simple (few logical or arithmetical operators) and has a primitive result type (boolean, number, string), do not wrap it in useMemo. Calling useMemo and comparing hook dependencies may consume more resources than the expression itself. 
+Incorrect: 
+CODE tsx 251CHARS
+Correct: 
+CODE tsx 176CHARS

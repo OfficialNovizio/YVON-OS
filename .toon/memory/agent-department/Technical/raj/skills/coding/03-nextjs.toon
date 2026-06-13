@@ -1,26 +1,21 @@
-#MEM id=coding source=/root/yvon/agent-department/Technical/raj/skills/coding/03-nextjs.md savings=7%
-M||tx|---
-M||prio|hi
-M||appl|dv
-M||load|always
-M||md|qwen3.5-4b
-M||conf|[02-general.md]
-M||tx|---
-M|Rout|it|Use App Router — no Pages Router patterns
-M|Rout|it|Keep `page.tsx` files thin — logic goes in cp or server actions
-M|Rout|it|Use `loading.tsx` and `er.tsx` at every rt level
-M|Serv|it|Default to Server cp — only use `"use client"` when you need interactivity
-M|Serv|it|Never leak ap keys or secrets to client cp
-M|Serv|it|All ap calls go through server-side rt handlers — never call external APIs from client
-M|Data|it|Use `fetch()` w/ `cache` options in Server cp
-M|Data|it|Use rc Query or SWR for client-side data that changes
-M|Data|it|Never fetch in `useEffect` unless unavoidable
-M|perf|it|Use `nx/im` for all images — never plain `<img>`
-M|perf|it|Use `nx/font` for custom fonts
-M|perf|it|Lazy-load heavy cp w/ `dynamic()`
-M|API |it|All ap rt in `app/ap/[rt]/rt.ts`
-M|API |it|Always validate request body w/ Zod
-M|API |it|Return consistent `{ data, er }` shape
-M|sb|it|Use server-side sb client for mutations
-M|sb|it|Use RLS — never bypass row-level sec
-M|sb|it|All DB queries parameterized — no string interpolation
+SRC agent-department/Technical/raj/skills/coding/03-nextjs.md
+ORIG_SIZE 1227
+SECTIONS 15
+ABBREVS 0
+INDEX_TERMS 97
+COMPILED 2026-06-13T19:23:25.581Z
+---
+PRIORITY high
+NEXT.JS 15 STANDARDS
+ROUTING & PAGES
+Use App Router — no Pages Router patterns Keep page.tsx files thin — logic goes in components or server actions Use loading.tsx and error.tsx at every route level 
+SERVER VS CLIENT
+Default to Server Components — only use "use client" when you need interactivity Never leak API keys or secrets to client components All API calls go through server-side route handlers — never call external APIs from client 
+DATA FETCHING
+Use fetch() with cache options in Server Components Use React Query or SWR for client-side data that changes Never fetch in useEffect unless unavoidable 
+PERFORMANCE
+Use next/image for all images — never plain <img Use next/font for custom fonts Lazy-load heavy components with dynamic() 
+API ROUTES
+All API routes in app/api/[route]/route.ts Always validate request body with Zod Return consistent { data, error } shape 
+SUPABASE
+Use server-side Supabase client for mutations Use RLS — never bypass row-level security All DB queries parameterized — no string interpolation 

@@ -1,79 +1,40 @@
-#MEM id=requesting-code-review source=/root/yvon/agent-department/Technical/mia/skills/superpowers/requesting-code-review/SKILL.md savings=5%
-M||tx|---
-M||name|requesting-code-rv
-M||desc|>-
-M||tx|Use when completing tasks, implementing major features, or before merging to verify work meets requirements
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, productivity]
-M||tx|---
-M|Requ|Disp|code-reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your sn's history. This keeps the reviewer focused on the work pd, not your thought process, and preserves your own context for continued work.
-M|Requ|**Co|** rv early, rv often.
-M|When|**Ma|**
-M|When|it|After each task in subagent-driven dv
-M|When|it|After completing major feature
-M|When|it|Before merge to main
-M|When|**Op|**
-M|When|it|When stuck (fresh perspective)
-M|When|it|Before refactoring (baseline check)
-M|When|it|After fixing complex bug
-M|How |**1.|**
-M|How |tx|```bash
-M|How |tx|BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
-M|How |tx|HEAD_SHA=$(git rev-parse HEAD)
-M|How |tx|```
-M|How |**2.|**
-M|How |Use |code-reviewer tp, fill template at `code-reviewer.md`
-M|How |**Pl|**
-M|How |it|`{WHAT_WAS_IMPLEMENTED}` - What you just built
-M|How |it|`{PLAN_OR_REQUIREMENTS}` - What it shd do
-M|How |it|`{BASE_SHA}` - Starting commit
-M|How |it|`{HEAD_SHA}` - Ending commit
-M|How |it|`{DESCRIPTION}` - Brief summary
-M|How |**3.|**
-M|How |it|Fix ct issues immediately
-M|How |it|Fix Important issues before proceeding
-M|How |it|Note Minor issues for later
-M|How |it|Push back if reviewer is wrong (w/ reasoning)
-M|Exam|tx|```
-M|Exam|[Jus|Add verification fn]
-M|Exam|You|Let me request code rv before proceeding.
-M|Exam|tx|BASE_SHA=$(git log --oneline \| grep "Task 1" \| head -1 \| awk '{print $1}')
-M|Exam|tx|HEAD_SHA=$(git rev-parse HEAD)
-M|Exam|[Dis|code-reviewer subagent]
-M|Exam|WHAT|Verification and repair functions for conversation index
-M|Exam|PLAN|Task 2 from doc/superpowers/plans/dpl-plan.md
-M|Exam|BASE|a7981ec
-M|Exam|HEAD|3df7661
-M|Exam|DESC|Added verifyIndex() and repairIndex() w/ 4 issue tp
-M|Exam|[Sub|
-M|Exam|Stre|Clean architecture, real tests
-M|Exam|Issu|
-M|Exam|Impo|Missing progress indicators
-M|Exam|Mino|Magic number (100) for reporting interval
-M|Exam|Asse|Ready to proceed
-M|Exam|You|[Fix progress indicators]
-M|Exam|tx|[Continue to Task 3]
-M|Exam|tx|```
-M|Inte|**Su|**
-M|Inte|it|rv after EACH task
-M|Inte|it|Catch issues before they compound
-M|Inte|it|Fix before moving to nx task
-M|Inte|**Ex|**
-M|Inte|it|rv after each batch (3 tasks)
-M|Inte|it|Get feedback, apply, continue
-M|Inte|**Ad|**
-M|Inte|it|rv before merge
-M|Inte|it|rv when stuck
-M|Red |**Ne|**
-M|Red |it|Skip rv bc "it's simple"
-M|Red |it|Ignore ct issues
-M|Red |it|Proceed w/ unfixed Important issues
-M|Red |it|Argue w/ valid tc feedback
-M|Red |**If|**
-M|Red |it|Push back w/ tc reasoning
-M|Red |it|Show code/tests that prove it works
-M|Red |it|Request clarification
-M|Red |See |requesting-code-rv/code-reviewer.md
+SRC agent-department/Technical/mia/skills/superpowers/requesting-code-review/SKILL.md
+ORIG_SIZE 3089
+SECTIONS 34
+ABBREVS 3
+INDEX_TERMS 141
+COMPILED 2026-06-13T19:23:25.486Z
+---
+NAME requesting-code-review
+REQUESTING CODE REVIEW
+DISPATCH_SUPERPOWERS code-reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history. This keeps the reviewer focused on the work product, not your thought process, and preserves your own context for continued work.
+CP: Review early, review often. 
+WT REQUEST REVIEW
+Mandatory: 
+After each task in subagent-driven development After completing major feature Before merge to main 
+Optional but valuable: 
+When stuck (fresh perspective) Before refactoring (baseline check) After fixing complex bug 
+HT REQUEST
+CODE bash 82CHARS
+Get git SHAs: 
+Dispatch code-reviewer subagent: 
+USE_TASK_TOOL_WITH_SUPERPOWERS code-reviewer type, fill template at `code-reviewer.md`
+Placeholders: 
+{WHAT_WAS_IMPLEMENTED} - What you just built {PLAN_OR_REQUIREMENTS} - What it should do {BASE_SHA} - Starting commit {HEAD_SHA} - Ending commit {DESCRIPTION} - Brief summary 
+Act on feedback: 
+Fix Critical issues immediately Fix Important issues before proceeding Note Minor issues for later Push back if reviewer is wrong (with reasoning) 
+EXAMPLE
+CODE  783CHARS
+INTEGRATION WITH WORKFLOWS
+Subagent-Driven Development: 
+Review after EACH task Catch issues before they compound Fix before moving to next task 
+Executing Plans: 
+Review after each batch (3 tasks) Get feedback, apply, continue 
+Ad-Hoc Development: 
+Review before merge Review when stuck 
+RED FLAGS
+Never: 
+Skip review because "it's simple" Ignore Critical issues Proceed with unfixed Important issues Argue with valid technical feedback 
+If reviewer wrong: 
+Push back with technical reasoning Show code/tests that prove it works Request clarification 
+SEE_TEMPLATE_AT requesting-code-review/code-reviewer.md

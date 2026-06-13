@@ -1,82 +1,42 @@
-#MEM id=ice-scoring-framework source=/root/yvon/agent-department/Marketing/nate/skills/custom/ice-scoring-framework/SKILL.md savings=1%
-M||tx|---
-M||name|ice-scoring-framework
-M||desc|yv-calibrated ICE scoring for growth experiment prioritisation. Defines Impact, Confidence, and Effort scales anchored to nz and hb's business md. Load before scoring any experiment brief.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|ICE scoring w/o calibration is noise. "Impact 9" on a nz experiment means something specific — it moves purchase conversion. "Impact 9" on a hb experiment means something different — it moves trial-to-paid conversion. This skill anchors each dimension to yv's vt so scores are comparable across experiments and honest abt what they assume.
-M|Purp|tx|---
-M|ICE |tx|```
-M|ICE |tx|ICE = (Impact + Confidence + Effort) / 3
-M|ICE |tx|```
-M|ICE |Each|10 = lowest effort (easiest to run).
-M|ICE |**Pr|**
-M|ICE |tx|\| ICE Score \| Action \|
-M|ICE |tx|\|-----------\|--------\|
-M|ICE |tx|\| ≥ 7.0 \| Fast track — run in current sprint \|
-M|ICE |tx|\| 5.0–6.9 \| Queue — schedule in nx sprint \|
-M|ICE |tx|\| 3.0–4.9 \| Backlog — revisit when higher-scored experiments are done \|
-M|ICE |tx|\| < 3.0 \| Drop — effort exceeds expected return \|
-M|ICE |tx|---
-M|Impa|**No|**
-M|Impa|tx|\| Score \| What it moves \|
-M|Impa|tx|\|-------\|--------------\|
-M|Impa|tx|\| 9–10 \| Directly increases purchase conversion rate or average order value \|
-M|Impa|tx|\| 7–8 \| Increases add-to-cart rate or reduces cart abandonment \|
-M|Impa|tx|\| 5–6 \| Increases pd page engagement (time on page, scroll depth) \|
-M|Impa|tx|\| 3–4 \| Increases site traffic or sl engagement w/o direct conversion path \|
-M|Impa|tx|\| 1–2 \| br awareness only — no measurable conversion signal within 14 days \|
-M|Impa|**Ho|**
-M|Impa|tx|\| Score \| What it moves \|
-M|Impa|tx|\|-------\|--------------\|
-M|Impa|tx|\| 9–10 \| Directly increases trial-to-paid conversion or reduces monthly churn \|
-M|Impa|tx|\| 7–8 \| Increases activation rate (us reaching first key action within 7 days) \|
-M|Impa|tx|\| 5–6 \| Increases trial signups from landing page \|
-M|Impa|tx|\| 3–4 \| Increases traffic, leads, or trial starts w/o activation data \|
-M|Impa|tx|\| 1–2 \| br awareness only — no measurable subscription signal within 14 days \|
-M|Impa|tx|---
-M|Conf|tx|\| Score \| Evidence basis \|
-M|Conf|tx|\|-------\|---------------\|
-M|Conf|tx|\| 9–10 \| 3+ comparable experiments w/ consistent results (own data) \|
-M|Conf|tx|\| 7–8 \| 1–2 comparable experiments or strong analogous data from similar businesses \|
-M|Conf|| 5–|us interviews, surveys, or sn recordings — no direct conversion data \|
-M|Conf|tx|\| 3–4 \| Logical inference from related data (e.g., industry benchmarks, ka's tn data) \|
-M|Conf|tx|\| 1–2 \| Pure hypothesis — no supporting evidence beyond intuition \|
-M|Conf|**Ru|** Never round up Confidence. If evidence is thin, score it thin. A wrong hi-Confidence score burns 14 days on a bad bet.
-M|Conf|tx|---
-M|Effo|tx|\| Score \| Effort required \|
-M|Effo|tx|\|-------\|----------------\|
-M|Effo|tx|\| 9–10 \| < 1 day to im, nt or ln/ro executes w/o dv/rj \|
-M|Effo|tx|\| 7–8 \| 1–3 days, single DRI can execute (no tc dependency) \|
-M|Effo|tx|\| 5–6 \| 3–7 days, requires one dv/rj resource \|
-M|Effo|tx|\| 3–4 \| 1–2 weeks, cross-team coordination required \|
-M|Effo|tx|\| 1–2 \| > 2 weeks or major engineering lift \|
-M|Effo|**Co|**
-M|Effo|- "I|how long does a complete variant take?
-M|Effo|- "I|what's the actual implementation time?
-M|Effo|- "I|is it actually deployable in current state?
-M|Effo|tx|---
-M|Scor|For |
-M|Scor|tx|```
-M|Scor|Expe|[name]
-M|Scor|Impa|[score] — assumes [specific outcome and which funnel stage]
-M|Scor|Conf|[score] — based on [specific evidence or data source]
-M|Scor|Effo|[score] — assumes [who executes, estimated time, dependencies]
-M|Scor|ICE|[calculated average]
-M|Scor|tx|```
-M|Scor|**Ex|**
-M|Scor|tx|```
-M|Scor|Expe|Add size guide popup to nz PDP
-M|Scor|Impa|7 — assumes reducing size uncertainty increases ATC rate by 10–15%
-M|Scor|Conf|5 — based on 2 us interviews citing sizing as a hesitation; no split tst data
-M|Scor|Effo|8 — mi estimated 2 days for ds + implementation
-M|Scor|ICE|6.7 → Queue
-M|Scor|tx|```
-M|Scor|tx|---
-M|ICE |Afte|
-M|ICE |tx|\| If predicted Impact was... \| And actual was... \| up \|
-M|ICE |tx|\|---------------------------\|------------------\|--------\|
-M|ICE |tx|\| 8, actual 3 \| Overestimated \| Reduce confidence on similar hypotheses by 1–2 points \|
-M|ICE |tx|\| 5, actual 8 \| Underestimated \| Increase priority of similar experiments; refine anchor definitions \|
-M|ICE |tx|\| Consistent w/ prediction \| Well-calibrated \| No change needed \|
-M|ICE |tx|A scoring md that consistently over- or under-predicts is the problem — not the experiments.
+SRC agent-department/Marketing/nate/skills/custom/ice-scoring-framework/SKILL.md
+ORIG_SIZE 4800
+SECTIONS 36
+ABBREVS 2
+INDEX_TERMS 253
+COMPILED 2026-06-13T19:23:25.131Z
+---
+NAME ice-scoring-framework
+PURPOSE
+ICE scoring without calibration is noise. "Impact 9" on a Novizio experiment means something specific — it moves purchase conversion. "Impact 9" on a Hourbour experiment means something different — it moves trial-to-paid conversion. This skill anchors each dimension to YVON's ventures so scores are comparable across experiments and honest about what they assume. 
+--- 
+ICE SCORE FORMULA
+CODE  41CHARS
+Each dimension scored 1–10. Effort is inverse: 10 = lowest effort (easiest to run). 
+Priority thresholds: 
+ICE Score Action ≥ 7.0 Fast track — run in current sprint 5.0–6.9 Queue — schedule in next sprint 3.0–4.9 Backlog — revisit when higher-scored experiments are done < 3.0 Drop — effort exceeds expected return 
+--- 
+IMPACT SCALE — VENTURE CALIBRATED
+Novizio (Fashion E-commerce) — Impact anchors: 
+Score What it moves 9–10 Directly increases purchase conversion rate or average order value 7–8 Increases add-to-cart rate or reduces cart abandonment 5–6 Increases product page engagement (time on page, scroll depth) 3–4 Increases site traffic or social engagement without direct conversion path 1–2 Brand awareness only — no measurable conversion signal within 14 days 
+Hourbour (SaaS Subscription) — Impact anchors: 
+Score What it moves 9–10 Directly increases trial-to-paid conversion or reduces monthly churn 7–8 Increases AR (users reaching first key action within 7 days) 5–6 Increases trial signups from landing page 3–4 Increases traffic, leads, or trial starts without activation data 1–2 Brand awareness only — no measurable subscription signal within 14 days 
+--- 
+CONFIDENCE SCALE
+Score Evidence basis 9–10 3+ comparable experiments with consistent results (own data) 7–8 1–2 comparable experiments or strong analogous data from similar businesses 5–6 Qualitative evidence: user interviews, surveys, or session recordings — no direct conversion data 3–4 Logical inference from related data (e.g., industry benchmarks, Kai's trend data) 1–2 Pure hypothesis — no supporting evidence beyond intuition 
+Rule: Never round up Confidence. If evidence is thin, score it thin. A wrong high-Confidence score burns 14 days on a bad bet. 
+--- 
+EFFORT SCALE (INVERSE — HIGHER = LOWER EFFORT = BETTER)
+Score Effort required 9–10 < 1 day to implement, Nate or Lena/Rio executes without Dev/Raj 7–8 1–3 days, single DRI can execute (no technical dependency) 5–6 3–7 days, requires one Dev/Raj resource 3–4 1–2 weeks, cross-team coordination required 1–2 > 2 weeks or major engineering lift 
+Common underestimation patterns: 
+"It's just a quick copy change" → check with Lena: how long does a complete variant take? "It's just a design tweak" → check with Mia: what's the actual implementation time? "It's already built" → check with Dev/Raj: is it actually deployable in current state? 
+--- 
+SCORING PROTOCOL
+For every experiment, state scores AND assumptions: 
+CODE  250CHARS
+CODE  294CHARS
+Example: 
+--- 
+ICE CALIBRATION LOG
+After every experiment resolves, compare predicted vs actual impact: 
+If predicted Impact was... And actual was... Update 8, actual 3 Overestimated Reduce confidence on similar hypotheses by 1–2 points 5, actual 8 Underestimated Increase priority of similar experiments; refine anchor definitions Consistent with prediction Well-calibrated No change needed 
+A scoring model that consistently over- or under-predicts IT problem — not the experiments. 

@@ -1,44 +1,25 @@
-#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/COMMANDS.md savings=11%
-M|Term|tx|These are the two commands qn runs on every single QA sn. Both must pass.
-M|Term|tx|```bash
-M|REQU|tx|npx tsc --noEmit
-M|REQU|tx|npm run lint
-M|REQU|tx|```
-M|REQU|> No|Use `npx tsc --noEmit` in the Linux VM (SWC binary is Windows-only, `npm run bd` won't work here).
-M|REQU|tx|> `npm run bd` must still pass on vc or a Windows machine before final dpl.
-M|Comm|it|qn runs BOTH commands, in this order, every time
-M|Comm|it|`npx tsc --noEmit` failing → qn stops, reads the er, adds it to her ❌ Bugs section w/ the fix proposal, issues blk
-M|Comm|it|`npm run lint` failing → qn stops, identifies which file and rule, adds to ❌ section, issues blk
-M|Comm|it|qn **never** issues APPROVED w/ a failing ts check or failing lint — no exceptions, no matter the reason
-M|Comm|it|qn does not attempt to fix the code herself — she proposes the fix for rj or mi to im
-M|How |tx|\| er Pattern \| Cause \| Assign To \|
-M|How |tx|\|--------------\|-------\|-----------\|
-M|How |tx|\| `tp X is not assignable to tp Y` \| ap rt rp doesn't match tp.ts \| rj \|
-M|How |tx|\| `Property X does not exist on tp` \| Wrong tp assumption in cp \| mi (if in cp) or rj (if in rt) \|
-M|How |tx|\| `Cannot find md` \| Missing import \| Whoever wrote the file w/ the bad import \|
-M|How |tx|\| `Expected N arguments but got M` \| fn call signature mismatch \| Whoever wrote the calling code \|
-M|How |tx|\| ESLint Rule \| Cause \| Assign To \|
-M|How |tx|\|-------------\|-------\|-----------\|
-M|How |tx|\| `@ts-eslint/no-explicit-any` \| `any` tp used \| rj (ap rt) or mi (cp) \|
-M|How |tx|\| `rc-hooks/exhaustive-deps` \| Missing dependency in useEffect/useCallback \| mi \|
-M|How |tx|\| `no-unused-vars` \| Imported but unused variable \| Whoever wrote the file \|
-M|How |tx|\| `@nx/nx/no-img-element` \| Used `<img>` instead of nx.js `<im>` \| mi \|
-M|Quin|Quin|
-M|Quin|tx|```markdown
-M|✅ Wo|- [i|[how verified — e.g. "sb query confirmed message saved"]
-M|⚠️ E|- [s|[what happens] → [recommended fix]
-M|❌ Bu|- [b|[steps to reproduce]
-M|❌ Bu|fix|[specific code change w/ snippet]
-M|❌ Bu|→ As|[rj / mi]
-M|🔧 B|- np|PASS / FAIL — [er if failed]
-M|🔧 B|- np|PASS / FAIL — [rule + file if failed]
-M|🏁 V|tx|APPROVED — ready for dv to merge
-M|🏁 V|tx|— or —
-M|🏁 V|tx|blk — [reason] — return to [dv / rj / mi] for fixes before retest
-M|🏁 V|tx|```
-M|🏁 V|tx|---
-M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
-M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
-M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
-M|Comm|tx|\|------\|------------------\|--------\|--------------\|
-M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|
+SRC agent-department/Technical/quinn/COMMANDS.md
+ORIG_SIZE 3148
+SECTIONS 18
+ABBREVS 7
+INDEX_TERMS 175
+COMPILED 2026-06-13T19:23:25.518Z
+---
+⌨️ QUINN — COMMANDS
+TERMINAL COMMANDS
+These are the two commands Quinn runs on every single QA session. Both must pass. 
+CODE bash 109CHARS
+Note: Use npx tsc --noEmit in the Linux VM (SWC binary is Windows-only, npm run build won't work here). npm run build must still pass on Vercel or a Windows machine before final deployment. 
+COMMAND RULES
+Quinn runs BOTH commands, in this order, every time npx tsc --noEmit failing → Quinn stops, reads the error, adds it to her ❌ Bugs section with TF proposal, issues BLOCKED npm run lint failing → Quinn stops, identifies which file and rule, adds to ❌ section, issues BLOCKED Quinn never issues APPROVED with a failing TypeScript check or failing lint — NE, no matter the reason Quinn does not attempt to fix the code herself — she proposes TF for Raj or Mia to implement 
+HT READ BUILD ERRORS
+Error Pattern Cause Assign To `Type X is not assignable to type Y` API route response doesn't match types.ts Raj `Property X does not exist on type` Wrong type assumption in component Mia (if in component) or Raj (if in route) `Cannot find module` Missing import Whoever wrote the file with the bad import `Expected N arguments but got M` Function call signature mismatch Whoever wrote the calling code 
+HT READ LINT ERRORS
+ESLint Rule Cause Assign To `@typescript-eslint/no-explicit-any` `any` type used Raj (API routes) or Mia (components) `react-hooks/exhaustive-deps` Missing dependency in useEffect/useCallback Mia `no-unused-vars` Imported but unused variable Whoever wrote the file `@next/next/no-img-element` Used `<img>` IO Next.js `<Image>` Mia 
+QUINN'S QA REPORT OUTPUT FORMAT
+Quinn appends this to her MEMORY.md Completed Tasks and delivers the verdict in chat: 
+CODE markdown 617CHARS
+--- 
+COMMAND HEALTH LOG
+UB SIP after task completion. Proven commands stay. Failed or deprecated commands are removed. Rule: do not add new commands without removing or condensing an equivalent amount of content. 
+Date Command / Pattern Status Action Taken 2026-03-23 (baseline) ✓ Verified initial SIP setup 

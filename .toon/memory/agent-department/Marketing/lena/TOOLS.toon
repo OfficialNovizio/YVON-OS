@@ -1,34 +1,26 @@
-#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/TOOLS.md savings=1%
-M|Memo|tx|ln never accesses sb directly. All memory reads and writes go through `/ap/settings`.
-M|Memo|**Re|**
-M|Memo|tx|```
-M|Memo|tx|GET /ap/settings?tp=memory&agentId=ln-br&ventureId=<activeVentureId>
-M|Memo|tx|```
-M|Memo|Also|
-M|Memo|tx|```
-M|Memo|tx|GET /ap/settings?tp=memory&agentId=sofia-sl&ventureId=<activeVentureId>
-M|Memo|tx|```
-M|Memo|**Wr|**
-M|Memo|tx|```
-M|Memo|tx|POST /ap/settings
-M|Memo|Body|{ tp: "memory", agentId: "ln-br", ventureId: "<id>", key: "<key>", value: "<value>" }
-M|Memo|tx|```
-M|Memo|**Ke|**
-M|Memo|it|`current_status` — always overwrite
-M|Memo|it|`recent_tasks` — prepend + trim to 5
-M|Memo|it|`recent_errors` — append + trim to 5
-M|Memo|it|`recent_discussions` — append + trim to 5
-M|Memo|**Ke|**
-M|Memo|it|`approved_voice_*` — only when Stark or Alex explicitly approves a voice change
-M|Memo|it|`banned_phrases` — add immediately when Stark rejects a phrase; never remove w/o approval
-M|Memo|it|`content_backlog` — up whenever a piece is requested or delivered
-M|Memo|it|`active_content_themes` — only when Alex revises cn pillars
-M|Memo|tx|---
-M|Vent|tx|```
-M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
-M|Vent|tx|```
-M|Vent|tx|---
-M|Futu|tx|\| Tool \| Purpose \| Status \|
-M|Futu|tx|\|------\|---------\|--------\|
-M|Futu|tx|\| Notion MCP \| Store br voice guide and cn calendar in a shared doc \| Planned \|
-M|Futu|tx|\| Google doc MCP \| Export cn calendar to a shared Drive document \| Planned \|
+SRC agent-department/Marketing/lena/TOOLS.md
+ORIG_SIZE 1479
+SECTIONS 19
+ABBREVS 1
+INDEX_TERMS 93
+COMPILED 2026-06-13T19:23:25.068Z
+---
+TOOLS.MD — LENA, BRAND VOICE & CONTENT WRITER
+MEMORY (VIA /API/SETTINGS)
+Lena never accesses Supabase directly. All memory reads and writes go through /api/settings. 
+CODE  77CHARS
+Read at SS: 
+CODE  79CHARS
+Also load Sofia's posting format requirements: 
+CODE  118CHARS
+Write after task completion: 
+Keys written every session: 
+current_status — always overwrite recent_tasks — prepend + trim to 5 recent_errors — append + trim to 5 recent_discussions — append + trim to 5 
+Keys written only when confirmed: 
+approved_voice_* — only when Stark or Alex explicitly approves a voice change banned_phrases — add immediately when Stark rejects a phrase; never remove without approval content_backlog — update whenever a piece is requested or delivered active_content_themes — only when Alex revises content pillars 
+--- 
+VENTURE CONTEXT
+CODE  45CHARS
+--- 
+FUTURE TOOLS
+Tool Purpose Status Notion MCP Store brand voice guide and content calendar in a shared doc Planned Google Docs MCP Export content calendar to a shared Drive document Planned 

@@ -1,115 +1,27 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-hoist-static-io.md savings=-1%
-M||tx|---
-M||titl|Hoist Static I/O to md Level
-M||impa|hi
-M||impa|avoids repeated file/network I/O per request
-M||tags|server, io, perf, nx.js, rt-handlers, og-im
-M||tx|---
-M|Hois|**Im|hi (avoids repeated file/network I/O per request)**
-M|Hois|tx|When loading static assets (fonts, logos, images, config files) in rt handlers or server functions, hoist the I/O operation to md level. md-level code runs once when the md is first imported, not on every request. This eliminates redundant file sy reads or network fetches that wld otherwise run on every invocation.
-M|Hois|**In|**
-M|Hois|tx|```ts
-M|Hois|tx|// app/ap/og/rt.tsx
-M|Hois|tx|import { ImageResponse } from 'nx/og'
-M|Hois|expo|Request) {
-M|Hois|tx|// Runs on EVERY request - expensive!
-M|Hois|tx|const fontData = await fetch(
-M|Hois|tx|new URL('./fonts/Inter.ttf', import.meta.url)
-M|Hois|tx|).then(res => res.arrayBuffer())
-M|Hois|tx|const logoData = await fetch(
-M|Hois|tx|new URL('./images/logo.png', import.meta.url)
-M|Hois|tx|).then(res => res.arrayBuffer())
-M|Hois|tx|return new ImageResponse(
-M|Hois|<div|'Inter' }}>
-M|Hois|tx|<img src={logoData} />
-M|Hois|tx|Hello World
-M|Hois|tx|</div>,
-M|Hois|{ fo|[{ name: 'Inter', data: fontData }] }
-M|Hois|tx|)
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|**Co|**
-M|Hois|tx|```ts
-M|Hois|tx|// app/ap/og/rt.tsx
-M|Hois|tx|import { ImageResponse } from 'nx/og'
-M|Hois|// M|runs ONCE when md is first imported
-M|Hois|tx|const fontData = fetch(
-M|Hois|tx|new URL('./fonts/Inter.ttf', import.meta.url)
-M|Hois|tx|).then(res => res.arrayBuffer())
-M|Hois|tx|const logoData = fetch(
-M|Hois|tx|new URL('./images/logo.png', import.meta.url)
-M|Hois|tx|).then(res => res.arrayBuffer())
-M|Hois|expo|Request) {
-M|Hois|tx|// Await the already-started promises
-M|Hois|tx|const [font, logo] = await Promise.all([fontData, logoData])
-M|Hois|tx|return new ImageResponse(
-M|Hois|<div|'Inter' }}>
-M|Hois|tx|<img src={logo} />
-M|Hois|tx|Hello World
-M|Hois|tx|</div>,
-M|Hois|{ fo|[{ name: 'Inter', data: font }] }
-M|Hois|tx|)
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|**Co|**
-M|Hois|tx|```ts
-M|Hois|tx|// app/ap/og/rt.tsx
-M|Hois|tx|import { ImageResponse } from 'nx/og'
-M|Hois|tx|import { readFileSync } from 'fs'
-M|Hois|tx|import { join } from 'path'
-M|Hois|tx|// Synchronous read at md level - blocks only during md init
-M|Hois|tx|const fontData = readFileSync(
-M|Hois|tx|join(process.cwd(), 'public/fonts/Inter.ttf')
-M|Hois|tx|)
-M|Hois|tx|const logoData = readFileSync(
-M|Hois|tx|join(process.cwd(), 'public/images/logo.png')
-M|Hois|tx|)
-M|Hois|expo|Request) {
-M|Hois|tx|return new ImageResponse(
-M|Hois|<div|'Inter' }}>
-M|Hois|tx|<img src={logoData} />
-M|Hois|tx|Hello World
-M|Hois|tx|</div>,
-M|Hois|{ fo|[{ name: 'Inter', data: fontData }] }
-M|Hois|tx|)
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|**In|**
-M|Hois|tx|```ts
-M|Hois|impo|fs/promises'
-M|Hois|expo|Data) {
-M|Hois|tx|const config = JSON.parse(
-M|Hois|tx|await fs.readFile('./config.json', 'utf-8')
-M|Hois|tx|)
-M|Hois|tx|const template = await fs.readFile('./template.html', 'utf-8')
-M|Hois|tx|return render(template, data, config)
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|**Co|**
-M|Hois|tx|```ts
-M|Hois|impo|fs/promises'
-M|Hois|tx|const configPromise = fs
-M|Hois|tx|.readFile('./config.json', 'utf-8')
-M|Hois|tx|.then(JSON.parse)
-M|Hois|tx|const templatePromise = fs.readFile('./template.html', 'utf-8')
-M|Hois|expo|Data) {
-M|Hois|tx|const [config, template] = await Promise.all([
-M|Hois|tx|configPromise,
-M|Hois|tx|templatePromise,
-M|Hois|tx|])
-M|Hois|tx|return render(template, data, config)
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|When|
-M|Hois|it|Loading fonts for OG im generation
-M|Hois|it|Loading static logos, icons, or watermarks
-M|Hois|it|Reading cfg files that don't change at runtime
-M|Hois|it|Loading em templates or other static templates
-M|Hois|it|Any static asset that's the same across all requests
-M|Hois|When|
-M|Hois|it|Assets that vary per request or us
-M|Hois|it|Files that may change during runtime (use caching w/ TTL instead)
-M|Hois|it|Large files that wld consume too much memory if kept loaded
-M|Hois|it|Sensitive data that shouldn't persist in memory
-M|Hois|With|//vc.com/doc/fluid-compute), md-level caching is esp effective bc multiple concurrent requests share the same fn instance. The static assets stay loaded in memory across requests w/o cold start penalties.
-M|Hois|tx|In traditional serverless, each cold start re-executes md-level code, but subsequent warm invocations reuse the loaded assets until the instance is recycled.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/server-hoist-static-io.md
+ORIG_SIZE 4423
+SECTIONS 21
+ABBREVS 2
+INDEX_TERMS 133
+COMPILED 2026-06-13T19:23:25.337Z
+---
+TITLE Hoist Static I/O to Module Level
+HOIST STATIC I/O TO MODULE LEVEL
+Impact: HIGH (avoids repeated file/network I/O per request) 
+When loading static assets (fonts, logos, images, config files) in route handlers or server functions, hoist the I/O operation to module level. Module-level code runs once when the module is first imported, not on every request. This eliminates redundant file system reads or network fetches that would otherwise run on every invocation. 
+Incorrect (reads font file on every request): 
+CODE typescript 573CHARS
+Correct (loads once at module initialization): 
+CODE typescript 662CHARS
+Correct (synchronous fs at module level): 
+CODE typescript 592CHARS
+Incorrect (reads config on every call): 
+CODE typescript 275CHARS
+Correct (hoists config and template to module level): 
+CODE typescript 371CHARS
+WTU this pattern: 
+Loading fonts for OG image generation Loading static logos, icons, or watermarks Reading configuration files that don't change at runtime Loading email templates or other static templates Any static asset that's the same across all requests 
+When not to use this pattern: 
+Assets that vary per request or user Files that may change during runtime (use caching with TTL instead) Large files that would consume too much memory if kept loaded Sensitive data that shouldn't persist in memory 
+With Vercel's Fluid Compute, module-level caching is especially effective because multiple concurrent requests share the same function instance. The static assets stay loaded in memory across requests without cold start penalties. 
+In traditional serverless, each cold start re-executes module-level code, but subsequent warm invocations reUT loaded assets until the instance is recycled. 

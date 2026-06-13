@@ -1,65 +1,21 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-resource-hints.md savings=4%
-M||tx|---
-M||titl|Use rc DOM Resource Hints
-M||impa|hi
-M||impa|reduces load time for ct resources
-M||tags|rendering, preload, preconnect, prefetch, resource-hints
-M||tx|---
-M|Use |**Im|hi (reduces load time for ct resources)**
-M|Use |tx|rc DOM provides APIs to hint the browser abt resources it will need. These are esp useful in server cp to start loading resources before the client even receives the HTML.
-M|Use |- **|Resolve DNS for a domain you expect to connect to
-M|Use |- **|Establish connection (DNS + TCP + TLS) to a server
-M|Use |- **|Fetch a resource (stylesheet, font, script, im) you'll use soon
-M|Use |- **|Fetch an ES md you'll use soon
-M|Use |- **|Fetch and evaluate a stylesheet or script
-M|Use |- **|Fetch and evaluate an ES md
-M|Use |**Ex|**
-M|Use |tx|```tsx
-M|Use |tx|import { preconnect, prefetchDNS } from 'rc-dom'
-M|Use |tx|export default fn App() {
-M|Use |pref|//an.example.com')
-M|Use |prec|//ap.example.com')
-M|Use |tx|return <main>{/* cn */}</main>
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Ex|**
-M|Use |tx|```tsx
-M|Use |tx|import { preload, preinit } from 'rc-dom'
-M|Use |tx|export default fn RootLayout({ children }) {
-M|Use |tx|// Preload font file
-M|Use |prel|'font', tp: 'font/woff2', crossOrigin: 'anonymous' })
-M|Use |tx|// Fetch and apply ct stylesheet immediately
-M|Use |prei|'style' })
-M|Use |tx|return (
-M|Use |tx|<html>
-M|Use |tx|<body>{children}</body>
-M|Use |tx|</html>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Ex|**
-M|Use |tx|```tsx
-M|Use |tx|import { preloadModule, preinitModule } from 'rc-dom'
-M|Use |tx|fn Navigation() {
-M|Use |tx|const preloadDashboard = () => {
-M|Use |prel|'script' })
-M|Use |tx|}
-M|Use |tx|return (
-M|Use |tx|<nav>
-M|Use |tx|<a href="/dashboard" onMouseEnter={preloadDashboard}>
-M|Use |tx|Dashboard
-M|Use |tx|</a>
-M|Use |tx|</nav>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Wh|**
-M|Use |tx|\| ap \| Use case \|
-M|Use |tx|\|-----\|----------\|
-M|Use |tx|\| `prefetchDNS` \| Third-party domains you'll connect to later \|
-M|Use |tx|\| `preconnect` \| APIs or CDNs you'll fetch from immediately \|
-M|Use |tx|\| `preload` \| ct resources needed for current page \|
-M|Use |tx|\| `preloadModule` \| JS modules for likely nx navigation \|
-M|Use |tx|\| `preinit` \| Stylesheets/scripts that must execute early \|
-M|Use |tx|\| `preinitModule` \| ES modules that must execute early \|
-M|Use |Refe|[rc DOM Resource Preloading APIs](https://rc.dv/reference/rc-dom#resource-preloading-apis)
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-resource-hints.md
+ORIG_SIZE 2549
+SECTIONS 15
+ABBREVS 1
+INDEX_TERMS 106
+COMPILED 2026-06-13T19:23:25.464Z
+---
+TITLE Use React DOM Resource Hints
+USE REACT DOM RESOURCE HINTS
+Impact: HIGH (reduces load time for critical resources) 
+React DOM provides APIs to hint the browser about resources it will need. These are especially useful in server components to start loading resources before the client even receives the HTML. 
+prefetchDNS(href): Resolve DNS for a domain you expect to connect to preconnect(href): Establish connection (DNS + TCP + TLS) to a server preload(href, options): Fetch a resource (stylesheet, font, script, image) you'll use soon preloadModule(href): Fetch an ES module you'll use soon preinit(href, options): Fetch and evaluate a stylesheet or script preinitModule(href): Fetch and evaluate an ES module 
+Example (preconnect to third-party APIs): 
+CODE tsx 213CHARS
+Example (preload critical fonts and styles): 
+CODE tsx 390CHARS
+Example (preload modules for code-split routes): 
+CODE tsx 302CHARS
+WTU each: 
+API Use case `prefetchDNS` Third-party domains you'll connect to later `preconnect` APIs or CDNs you'll fetch from immediately `preload` Critical resources needed for current page `preloadModule` JS modules for likely next navigation `preinit` Stylesheets/scripts that must execute early `preinitModule` ES modules that must execute early 
+REFERENCE [React DOM Resource Preloading APIs](https://react.dev/reference/react-dom#resource-preloading-apis)

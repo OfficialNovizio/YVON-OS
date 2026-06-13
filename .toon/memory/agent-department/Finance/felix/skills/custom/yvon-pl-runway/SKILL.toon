@@ -1,99 +1,25 @@
-#MEM id=yvon-pl-runway source=/root/yvon/agent-department/Finance/felix/skills/custom/yvon-pl-runway/SKILL.md savings=-3%
-M||tx|---
-M||name|yv-pl-runway
-M||desc|>-
-M||tx|yv P&L and Runway Protocol for fx. Dual-vt P&L tracking, runway calculation w/ escalation triggers, and investor summary template.
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[fi, pl, runway, cac, ltv, mrr, margin, roi]
-M||tx|---
-M|YVON|tx|fx's structured financial tracking and reporting for yv and both vt.
-M|Hour|tx|```
-M|Hour|tx|rv
-M|Hour|tx|Subscription rv (MRR x 12)    $
-M|Hour|tx|One-time rv                     $
-M|Hour|tx|Total rv                        $
-M|Hour|tx|COGS (Cost of Goods Sold)
-M|Hour|tx|Hosting / Infrastructure             $
-M|Hour|tx|Third-party APIs / Services          $
-M|Hour|tx|Support / cs sc           $
-M|Hour|tx|Total COGS                           $
-M|Hour|tx|Gross Profit = rv - COGS
-M|Hour|tx|Gross Margin = Gross Profit / rv
-M|Hour|tx|OpEx (Operating Expenses)
-M|Hour|tx|Team (salaries, contractors)         $
-M|Hour|tx|Tools and Software                   $
-M|Hour|tx|mk and ad                    $
-M|Hour|tx|Legal and Professional               $
-M|Hour|tx|Other                                $
-M|Hour|tx|Total OpEx                           $
-M|Hour|tx|Operating Income = Gross Profit - OpEx
-M|Hour|tx|```
-M|Novi|tx|```
-M|Novi|tx|rv
-M|Novi|tx|pd Sales                        $
-M|Novi|tx|Shipping Income                      $
-M|Novi|tx|Total rv                        $
-M|Novi|tx|COGS
-M|Novi|tx|pd Cost (wholesale/mfg)         $
-M|Novi|tx|Shipping and Fulfillment             $
-M|Novi|tx|Packaging                            $
-M|Novi|tx|Payment Processing                   $
-M|Novi|tx|Total COGS                           $
-M|Novi|tx|Gross Profit = rv - COGS
-M|Novi|tx|Gross Margin = Gross Profit / rv
-M|Novi|tx|OpEx
-M|Novi|tx|mk and ad                    $
-M|Novi|tx|Team and Contributors                $
-M|Novi|tx|Photography / cn Production     $
-M|Novi|tx|Returns and Refunds                  $
-M|Novi|tx|Platform / E-commerce Tools          $
-M|Novi|tx|Total OpEx                           $
-M|Novi|tx|Operating Income = Gross Profit - OpEx
-M|Novi|tx|```
-M|Part|tx|```
-M|Part|tx|yv Consolidated -- {Month Year}
-M|Part|tx|\| vt \| rv \| Gross Margin % \| Operating Income \|
-M|Part|tx|\|---------\|---------\|---------------\|-----------------\|
-M|Part|tx|\| hb\| $       \| %             \| $               \|
-M|Part|tx|\| nz \| $       \| %             \| $               \|
-M|Part|tx|\| TOTAL   \| $       \| %             \| $               \|
-M|Part|tx|```
-M|Part|tx|```
-M|Part|tx|Runway = Current Cash / \|Net Monthly Burn\|
-M|Part|tx|Net Burn = Total OpEx - Total Operating Income
-M|Part|tx|```
-M|Esca|tx|\| Runway \| Level \| Action \|
-M|Esca|tx|\|--------\|-------\|--------\|
-M|Esca|tx|\| More than 12 months \| Stable \| Continue normal operations \|
-M|Esca|tx|\| 6 to 12 months \| Watch \| Flag to dn, rv discretionary spend \|
-M|Esca|tx|\| 4 to 6 months \| Alert \| Surface to mc immediately, cost rv required \|
-M|Esca|| 2 |reduce burn, accelerate rv \|
-M|Esca|| Le|survival mode \|
-M|Part|tx|```
-M|Part|tx|Investor Brief -- yv -- {Month / Quarter Year}
-M|Part|tx|hl Numbers
-M|Part|- To|$X (up/down Y% vs last month)
-M|Part|- Gr|X% (up/down vs last month)
-M|Part|- Ne|$X/month
-M|Part|- Ru|X months
-M|Part|- Ca|$X
-M|Part|tx|By vt
-M|Part|- Ho|MRR $X, NRR X%, Active us X (tn)
-M|Part|- No|rv $X, AOV $X, Orders X (tn)
-M|Part|This|Key Change
-M|Part|it|[Winner]
-M|Part|it|[Loser]
-M|Part|Next|Focus
-M|Part|it|[Priority 1]
-M|Part|it|[Priority 2]
-M|Part|tx|Asks / Blockers
-M|Part|it|[Anything needing investor attention]
-M|Part|tx|```
-M|Mont|1. *|** Close prior month P&L for both vt
-M|Mont|2. *|** Calculate runway, up fx's tracking sheet
-M|Mont|3. *|** If runway changed category, alert mc
-M|Mont|4. *|** rv discretionary spend against budget
-M|Mont|5. *|** Consolidate view sent to mc
+SRC agent-department/Finance/felix/skills/custom/yvon-pl-runway/SKILL.md
+ORIG_SIZE 3701
+SECTIONS 19
+ABBREVS 0
+INDEX_TERMS 89
+COMPILED 2026-06-13T19:23:24.949Z
+---
+NAME yvon-pl-runway
+YVON P&L + RUNWAY PROTOCOL
+Felix's structured financial tracking and reporting for YVON and both ventures. 
+PART A: P&L PER VENTURE
+HOURBOUR (SAAS FINTECH)
+CODE  702CHARS
+NOVIZIO (FASHION E-COMMERCE)
+CODE  703CHARS
+PART B: CONSOLIDATED MONTHLY VIEW
+CODE  317CHARS
+PART C: RUNWAY CALCULATION
+CODE  90CHARS
+ESCALATION TRIGGERS
+Runway Level Action More than 12 months Stable Continue normal operations 6 to 12 months Watch Flag to Diana, review discretionary spend 4 to 6 months Alert Surface to Marcus immediately, cost review required 2 to 4 months Critical Urgent action: reduce burn, accelerate revenue Less than 2 months Emergency All hands: survival mode 
+PART D: INVESTOR SUMMARY TEMPLATE (1-PAGE)
+CODE  478CHARS
+MONTHLY FINANCE CADENCE
+Week 1: Close prior month P&L for both ventures Week 1: Calculate runway, update Felix's tracking sheet Week 1: If runway changed category, alert Marcus Week 2: Review discretionary spend against budget End of Month: Consolidate view sent to Marcus 

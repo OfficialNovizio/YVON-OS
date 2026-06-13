@@ -1,19 +1,20 @@
-#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/MEMORY-novizio.md savings=18%
-M|Pixe|tx|> Load alongside MEMORY.md when active vt is nz.
-M|Pixe|tx|> nz-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|editorial, natural, authentic — not commercial or stock
-M|Vent|- **|Instagram (1:1, 4:5, 9:16), TikTok (9:16), website banners
-M|Novi|tx|\| Platform \| Format \| Dimensions \| File size \|
-M|Novi|tx|\|----------\|--------\|------------\|-----------\|
-M|Novi|| In|1 square \| 1080×1080px \| < 8MB \|
-M|Novi|| In|5 portrait \| 1080×1350px \| < 8MB \|
-M|Novi|| In|16 vertical \| 1080×1920px \| < 650MB (vd) \|
-M|Novi|| In|16 vertical \| 1080×1920px \| < 8MB \|
-M|Novi|| Ti|16 vertical \| 1080×1920px \| < 650MB (vd) \|
-M|Novi|| We|9 wide \| 1920×1080px \| < 3MB \|
-M|Novi|Stan|
-M|Novi|tx|1. **Lighting check** — is it natural, soft, directional? No harsh shadows or over-lit studio?
-M|Novi|tx|2. **Background check** — is it clean and neutral? No busy patterns or promotional clutter?
-M|Novi|tx|3. **Energy check** — does the im feel editorial (magazine spread) or commercial (catalogue)?
-M|Reje|> Po|[date] — rejection reason — what pm tag caused it — fix.
-M|Neve|> Ea|[date] — nz-specific production er — rule.
+SRC agent-department/Marketing/pixel/MEMORY-novizio.md
+ORIG_SIZE 1437
+SECTIONS 13
+ABBREVS 2
+INDEX_TERMS 97
+COMPILED 2026-06-13T19:23:25.160Z
+---
+PIXEL — NOVIZIO PRODUCTION MEMORY
+Load alongside MEMORY.md when active venture is Novizio. Novizio-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Production style: editorial, natural, authentic — not commercial or stock Primary platforms: Instagram (1:1, 4:5, 9:16), TikTok (9:16), website banners 
+NOVIZIO PLATFORM SPECS
+Platform Format Dimensions File size Instagram Feed 1:1 square 1080×1080px < 8MB Instagram Feed 4:5 portrait 1080×1350px < 8MB Instagram Reels 9:16 vertical 1080×1920px < 650MB (video) Instagram Stories 9:16 vertical 1080×1920px < 8MB TikTok 9:16 vertical 1080×1920px < 650MB (video) Website banner 16:9 wide 1920×1080px < 3MB 
+NOVIZIO QC CRITERIA
+Standard 3-pass QC for every Novizio batch: 
+Lighting check — is it natural, soft, directional? No harsh shadows or over-lit studio? Background check — is it clean and neutral? No busy patterns or promotional clutter? Energy check — does the image feel editorial (magazine spread) or commercial (catalogue)? 
+REJECTION PATTERN LOG (NOVIZIO)
+Populated from batch runs. EE: [date] — rejection reason — what prompt tag caused it — fix. 
+NEVER AGAIN (NOVIZIO-SPECIFIC)
+EE: [date] — Novizio-specific production error — rule. 

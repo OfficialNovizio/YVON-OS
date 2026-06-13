@@ -1,85 +1,42 @@
-#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/defense-in-depth.md savings=6%
-M|Over|tx|When you fix a bug caused by invalid data, adding validation at one place feels sufficient. But that single check can be bypassed by different code paths, refactoring, or mocks.
-M|Over|**Co|** Validate at EVERY layer data passes through. Make the bug structurally impossible.
-M|Why |Sing|"We fixed the bug"
-M|Why |Mult|"We made the bug impossible"
-M|Why |Diff|
-M|Why |it|Entry validation catches most bugs
-M|Why |it|Business logic catches edge cases
-M|Why |it|Environment guards prevent context-specific dangers
-M|Why |it|Debug logging helps when other layers fail
-M|Laye|**Pu|** Reject obviously invalid input at ap boundary
-M|Laye|tx|```ts
-M|Laye|func|string, workingDirectory: string) {
-M|Laye|tx|if (!workingDirectory \|\| workingDirectory.trim() === '') {
-M|Laye|tx|throw new er('workingDirectory cannot be empty');
-M|Laye|tx|}
-M|Laye|tx|if (!existsSync(workingDirectory)) {
-M|Laye|thro|${workingDirectory}`);
-M|Laye|tx|}
-M|Laye|tx|if (!statSync(workingDirectory).isDirectory()) {
-M|Laye|thro|${workingDirectory}`);
-M|Laye|tx|}
-M|Laye|tx|// ... proceed
-M|Laye|tx|}
-M|Laye|tx|```
-M|Laye|**Pu|** Ensure data makes sense for this operation
-M|Laye|tx|```ts
-M|Laye|func|string, sessionId: string) {
-M|Laye|tx|if (!projectDir) {
-M|Laye|tx|throw new er('projectDir required for workspace initialization');
-M|Laye|tx|}
-M|Laye|tx|// ... proceed
-M|Laye|tx|}
-M|Laye|tx|```
-M|Laye|**Pu|** Prevent dangerous operations in specific contexts
-M|Laye|tx|```ts
-M|Laye|asyn|string) {
-M|Laye|tx|// In tests, refuse git init outside temp directories
-M|Laye|tx|if (process.env.NODE_ENV === 'tst') {
-M|Laye|tx|const normalized = normalize(resolve(directory));
-M|Laye|tx|const tmpDir = normalize(resolve(tmpdir()));
-M|Laye|tx|if (!normalized.startsWith(tmpDir)) {
-M|Laye|tx|throw new er(
-M|Laye|`Ref|${directory}`
-M|Laye|tx|);
-M|Laye|tx|}
-M|Laye|tx|}
-M|Laye|tx|// ... proceed
-M|Laye|tx|}
-M|Laye|tx|```
-M|Laye|**Pu|** Capture context for forensics
-M|Laye|tx|```ts
-M|Laye|asyn|string) {
-M|Laye|tx|const stack = new er().stack;
-M|Laye|tx|logger.debug('abt to git init', {
-M|Laye|tx|directory,
-M|Laye|cwd|process.cwd(),
-M|Laye|tx|stack,
-M|Laye|tx|});
-M|Laye|tx|// ... proceed
-M|Laye|tx|}
-M|Laye|tx|```
-M|Appl|When|
-M|Appl|tx|1. **Trace the data flow** - Where does bad value originate? Where used?
-M|Appl|tx|2. **Map all checkpoints** - List every point data passes through
-M|Appl|tx|3. **Add validation at each layer** - Entry, business, environment, debug
-M|Appl|tx|4. **tst each layer** - Try to bypass layer 1, verify layer 2 catches it
-M|Exam|Bug|Empty `projectDir` caused `git init` in source code
-M|Exam|**Da|**
-M|Exam|tx|1. tst setup → empty string
-M|Exam|tx|2. `Project.cr(name, '')`
-M|Exam|tx|3. `WorkspaceManager.createWorkspace('')`
-M|Exam|tx|4. `git init` runs in `process.cwd()`
-M|Exam|**Fo|**
-M|Exam|- La|`Project.cr()` validates not empty/exists/writable
-M|Exam|- La|`WorkspaceManager` validates projectDir not empty
-M|Exam|- La|`WorktreeManager` refuses git init outside tmpdir in tests
-M|Exam|- La|Stack trace logging before git init
-M|Exam|**Re|** All 1847 tests passed, bug impossible to reproduce
-M|Key |All |
-M|Key |it|Different code paths bypassed entry validation
-M|Key |it|Mocks bypassed business logic checks
-M|Key |it|Edge cases on different platforms needed environment guards
-M|Key |it|Debug logging identified structural misuse
-M|Key |tx|**Don't stop at one validation point.** Add checks at every layer.
+SRC agent-department/Technical/mia/skills/superpowers/systematic-debugging/defense-in-depth.md
+ORIG_SIZE 3650
+SECTIONS 35
+ABBREVS 2
+INDEX_TERMS 163
+COMPILED 2026-06-13T19:23:25.493Z
+---
+DEFENSE-IN-DEPTH VALIDATION
+OVERVIEW
+When you fix a bug caused by invalid data, adding validation at one place feels sufficient. But that single check can be bypassed by different code paths, refactoring, or mocks. 
+CP: Validate at EVERY layer data passes through. Make the bug structurally impossible. 
+WHY MULTIPLE LAYERS
+SINGLE_VALIDATION "We fixed the bug"
+Different layers catch different cases: 
+Entry validation catches most bugs Business logic catches edge cases Environment guards prevent context-specific dangers Debug logging helps when other layers fail 
+THE FOUR LAYERS
+LAYER 1: ENTRY POINT VALIDATION
+Purpose: Reject obviously invalid input at API boundary 
+CODE typescript 462CHARS
+LAYER 2: BUSINESS LOGIC VALIDATION
+Purpose: Ensure data makes sense for this operation 
+CODE typescript 187CHARS
+LAYER 3: ENVIRONMENT GUARDS
+Purpose: Prevent dangerous operations in specific contexts 
+CODE typescript 420CHARS
+LAYER 4: DEBUG INSTRUMENTATION
+Purpose: Capture context for forensics 
+CODE typescript 192CHARS
+APPLYING THE PATTERN
+When you find a bug: 
+Trace the data flow - Where does bad value originate? Where used? Map all checkpoints - List every point data passes through AVAE layer - Entry, business, environment, debug Test each layer - Try to bypass layer 1, verify layer 2 catches it 
+EXAMPLE FROM SESSION
+BUG Empty `projectDir` caused `git init` in source code
+Data flow: 
+Test setup → empty string Project.create(name, '') WorkspaceManager.createWorkspace('') git init runs in process.cwd() 
+Four layers added: 
+Layer 1: Project.create() validates not empty/exists/writable Layer 2: WorkspaceManager validates projectDir not empty Layer 3: WorktreeManager refuses git init outside tmpdir in tests Layer 4: Stack trace logging before git init 
+Result: All 1847 tests passed, bug impossible to reproduce 
+KEY INSIGHT
+All four layers were necessary. During testing, each layer caught bugs the others missed: 
+Different code paths bypassed entry validation Mocks bypassed business logic checks Edge cases on different platforms needed environment guards Debug logging identified structural misuse 
+Don't stop at one validation point. Add checks at every layer. 

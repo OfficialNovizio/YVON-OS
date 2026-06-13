@@ -1,9 +1,15 @@
-#MEM id=themes source=/root/yvon/agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/arctic-frost.md savings=15%
-M|Arct|tx|A cool and crisp winter-inspired theme that conveys clarity, precision, and professionalism.
-M|Colo|- **|`#d4e4f7` - Light backgrounds and highlights
-M|Colo|- **|`#4a6fa5` - Primary accent color
-M|Colo|- **|`#c0c0c0` - Metallic accent elements
-M|Colo|- **|`#fafafa` - Clean backgrounds and text
-M|Typo|- **|DejaVu Sans Bold
-M|Typo|- **|DejaVu Sans
-M|Best|tx|Healthcare presentations, technology solutions, winter sports, clean tech, pharmaceutical cn.
+SRC agent-department/Marketing/atlas/skills/creative-visual/theme-factory/themes/arctic-frost.md
+ORIG_SIZE 544
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 50
+COMPILED 2026-06-13T19:23:25.007Z
+---
+ARCTIC FROST
+A cool and crisp winter-inspired theme that conveys clarity, precision, and professionalism. 
+COLOR PALETTE
+Ice Blue: #d4e4f7 - Light backgrounds and highlights Steel Blue: #4a6fa5 - Primary accent color Silver: #c0c0c0 - Metallic accent elements Crisp White: #fafafa - Clean backgrounds and text 
+TYPOGRAPHY
+Headers: DejaVu Sans Bold Body Text: DejaVu Sans 
+BEST USED FOR
+Healthcare presentations, technology solutions, winter sports, clean tech, pharmaceutical content. 

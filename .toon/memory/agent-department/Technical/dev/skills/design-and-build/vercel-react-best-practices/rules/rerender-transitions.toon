@@ -1,33 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-transitions.md savings=4%
-M||tx|---
-M||titl|Use Transitions for Non-ur Updates
-M||impa|md
-M||impa|maintains UI responsiveness
-M||tags|rerender, transitions, startTransition, perf
-M||tx|---
-M|Use |tx|Mark frequent, non-ur state updates as transitions to maintain UI responsiveness.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |tx|fn ScrollTracker() {
-M|Use |tx|const [scrollY, setScrollY] = useState(0)
-M|Use |tx|useEffect(() => {
-M|Use |tx|const handler = () => setScrollY(window.scrollY)
-M|Use |wind|true })
-M|Use |tx|return () => window.removeEventListener('scroll', handler)
-M|Use |tx|}, [])
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |tx|import { startTransition } from 'rc'
-M|Use |tx|fn ScrollTracker() {
-M|Use |tx|const [scrollY, setScrollY] = useState(0)
-M|Use |tx|useEffect(() => {
-M|Use |tx|const handler = () => {
-M|Use |tx|startTransition(() => setScrollY(window.scrollY))
-M|Use |tx|}
-M|Use |wind|true })
-M|Use |tx|return () => window.removeEventListener('scroll', handler)
-M|Use |tx|}, [])
-M|Use |tx|}
-M|Use |tx|```
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-transitions.md
+ORIG_SIZE 1055
+SECTIONS 8
+ABBREVS 0
+INDEX_TERMS 21
+COMPILED 2026-06-13T19:23:25.333Z
+---
+TITLE Use Transitions for Non-Urgent Updates
+USE TRANSITIONS FOR NON-URGENT UPDATES
+Mark frequent, non-urgent state updates as transitions to maintain UI responsiveness. 
+Incorrect (blocks UI on every scroll): 
+CODE tsx 284CHARS
+Correct (non-blocking updates): 
+CODE tsx 362CHARS

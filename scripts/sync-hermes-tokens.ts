@@ -218,15 +218,19 @@ async function main() {
       continue
     }
 
-    const provider = session.billing_provider || session.source || 'unknown'
+    const source = session.source || 'unknown'
+    const isCLI = source === 'cli'
+    const isCron = source === 'cron'
+    const agentId = isCron ? 'cron' : isCLI ? 'yvon-agent' : DEFAULT_AGENT_ID
+    const route = isCron ? 'hermes-cron' : isCLI ? 'hermes-agent' : DEFAULT_ROUTE
     const model = session.model || 'unknown'
     const inputTokens = session.input_tokens || 0
     const outputTokens = session.output_tokens || 0
     const cost = session.actual_cost_usd || session.estimated_cost_usd || estimateCost(model, inputTokens, outputTokens)
 
     const payload = {
-      agent_id: DEFAULT_AGENT_ID,
-      route: DEFAULT_ROUTE,
+      agent_id: agentId,
+      route: route,
       model,
       input_tokens: inputTokens,
       output_tokens: outputTokens,

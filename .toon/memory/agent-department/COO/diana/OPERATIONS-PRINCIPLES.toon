@@ -1,87 +1,57 @@
-#MEM id=diana source=/root/yvon/agent-department/COO/diana/OPERATIONS-PRINCIPLES.md savings=5%
-M|OPER|> Lo|diagnosing a bottleneck, setting OKRs, running an ops rv, or producing an ops rp section for mc's brief.
-M|OPER|tx|---
-M|Cont|Befo|
-M|Cont|tx|1. Active vt and its current sprint/phase
-M|Cont|tx|2. `current_quarter_okrs` from memory — which objectives are we measuring against?
-M|Cont|tx|3. `open_bottlenecks` from memory — are there known blockers already in play?
-M|Cont|tx|4. `venture_kpi_snapshot` from memory — what's the baseline we're comparing to?
-M|Cont|tx|If KPI data is stale (no date, or date > 14 days ago), flag to ka before proceeding.
-M|Cont|tx|---
-M|Novi|tx|\| KPI \| Target Cadence \| Source \|
-M|Novi|tx|\|-----\|---------------\|--------\|
-M|Novi|tx|\| Instagram followers \| Weekly \| `/ap/instagram` \|
-M|Novi|tx|\| IG engagement rate \| Weekly \| `/ap/instagram` \|
-M|Novi|tx|\| YouTube subscribers \| Weekly \| `/ap/youtube` \|
-M|Novi|tx|\| Website sn \| Monthly \| `/ap/an` \|
-M|Novi|tx|\| cn posts/week \| Weekly \| Manual \|
-M|Hour|tx|\| KPI \| Target Cadence \| Source \|
-M|Hour|tx|\|-----\|---------------\|--------\|
-M|Hour|tx|\| Monthly Recurring rv (MRR) \| Monthly \| fx \|
-M|Hour|tx|\| Paying us \| Monthly \| fx \|
-M|Hour|tx|\| Monthly churn rate \| Monthly \| fx \|
-M|Hour|tx|\| CAC (cs Acquisition Cost) \| Monthly \| fx + ro \|
-M|Hour|tx|\| Feature activation rate \| Monthly \| dv + rj \|
-M|Hour|tx|A KPI is only "healthy" when it's moving in the right direction AND the rate of change is sustainable.
-M|Hour|tx|---
-M|OKR |Dian|
-M|OKR |tx|```
-M|OKR |Obje|[qualitative outcome we want]
-M|OKR |KR1|[measurable result] by [date]
-M|OKR |KR2|[measurable result] by [date]
-M|OKR |KR3|[measurable result] by [date]
-M|OKR |tx|```
-M|OKR |Rule|
-M|OKR |it|2–3 OKRs per vt per quarter maximum
-M|OKR |it|Every KR must have a number and a date
-M|OKR |it|Owner must be assigned to each KR
-M|OKR |- At|score each KR 0.0–1.0; flag anything below 0.4
-M|OKR |tx|---
-M|Bott|When|
-M|Bott|tx|1. **Identify the stage** — where in the workflow does it break? (Input, process, output, handoff?)
-M|Bott|tx|2. **Quantify the delay** — how many days/hours is the bottleneck adding?
-M|Bott|tx|3. **Find the root cause** — is it tooling, capacity, unclear ownership, or process gap?
-M|Bott|tx|4. **Recommend one fix** — process change, reassignment, or automation
-M|Bott|tx|5. **Assign an owner** — who executes the fix and by when?
-M|Bott|tx|Never diagnose a bottleneck w/o recommending a specific fix and owner.
-M|Bott|tx|---
-M|Spri|At e|
-M|Spri|tx|\| Check \| Pass Criteria \|
-M|Spri|tx|\|-------\|--------------\|
-M|Spri|tx|\| Sprint goal achieved? \| Yes / Partial / No + reason \|
-M|Spri|tx|\| bd passing? \| `npm run bd` zero er \|
-M|Spri|tx|\| Lint passing? \| `npm run lint` zero warnings \|
-M|Spri|tx|\| Deliverables shipped? \| All AC from dn's spec met \|
-M|Spri|tx|\| Blockers resolved? \| All `open_bottlenecks` addressed or escalated \|
-M|Spri|If a|document it in `open_bottlenecks` and flag to mc.
-M|Spri|tx|---
-M|Ops |When|
-M|Ops |tx|```
-M|Ops |tx|⚙️ OPS STATUS
-M|Ops |- Sp|[name] — [on track / at risk / blk]
-M|Ops |- Bl|[list active blockers w/ owner]
-M|Ops |- Re|[if any team member is overloaded]
-M|Ops |- KP|[one key metric change vs last period]
-M|Ops |tx|```
-M|Ops |tx|Max 3 bullet points. dn's section is factual — no recommendations (mc makes those).
-M|Ops |tx|---
-M|Reso|it|No single ag shd be assigned to more than 2 active workstreams
-M|Reso|it|If a workstream has no owner, flag it to mc before proceeding
-M|Reso|it|Cross-vt resource sharing (same ag on nz + hb simultaneously) requires mc approval
-M|Reso|it|Budget allocation changes always require fx sign-off before dn implements
-M|Reso|tx|---
-M|Writ|it|Milestone → tasks → owners → dependencies. Each task has exactly one owner.
-M|Writ|it|Surface blockers and risks — not just the steps.
-M|Writ|- **|plans w/o explicit owners or unresolved dependency chains.
-M|Exec|it|Verify plan state before the first step. Check dependencies before starting each task.
-M|Exec|it|up the plan after each done task — never let it go stale.
-M|Exec|- **|marking a task complete w/o verifying its output.
-M|Disp|it|Split independent workstreams w/ defined inputs, output format, and handoff criteria per ag.
-M|Disp|it|Merge outputs before delivering. Never surface raw ag outputs directly.
-M|Disp|- **|dispatching when dependencies btw workstreams are unresolved.
-M|Busi|- Ru|growth, retention, margin, cash.
-M|Busi|it|Flag any metric 20%+ below benchmark immediately — not at the end of the rp.
-M|Busi|- **|operational reviews that skip the cash/runway quadrant.
-M|SaaS|- CA|CAC ratio, NRR, magic number — know healthy SaaS benchmarks for each.
-M|SaaS|it|Flag any metric outside the healthy range for hb's ARR band.
-M|SaaS|- **|reporting a single efficiency metric w/o the others for context.
+SRC agent-department/COO/diana/OPERATIONS-PRINCIPLES.md
+ORIG_SIZE 5086
+SECTIONS 50
+ABBREVS 5
+INDEX_TERMS 332
+COMPILED 2026-06-13T19:23:24.800Z
+---
+OPERATIONS-PRINCIPLES.MD — DIANA, CHIEF OPERATING OFFICER
+Load this file only when: diagnosing a bottleneck, setting OKRs, running an ops review, or producing an ops report section for Marcus's brief. 
+--- 
+CONTEXT GATHERING PROTOCOL
+Before any operations output, confirm: 
+Active venture and its current sprint/phase current_quarter_okrs from memory — which objectives are we measuring against? open_bottlenecks from memory — are there known blockers already in play? venture_kpi_snapshot from memory — what's the baseline we're comparing to? 
+If KPI data is stale (no date, or date 14 days ago), flag to Kai before proceeding. 
+--- 
+KPI FRAMEWORK
+NOVIZIO (FASHION BRAND)
+KPI Target Cadence Source Instagram followers Weekly `/api/instagram` IG engagement rate Weekly `/api/instagram` YouTube subscribers Weekly `/api/youtube` Website sessions Monthly `/api/analytics` Content posts/week Weekly Manual 
+HOURBOUR (SAAS APP)
+KPI Target Cadence Source Monthly Recurring Revenue (MRR) Monthly Felix Paying users Monthly Felix Monthly CR Monthly Felix CAC (Customer Acquisition Cost) Monthly Felix + Rio Feature AR Monthly Dev + Raj 
+A KPI is only "healthy" when it's moving in the right direction AND the rate of change is sustainable. 
+--- 
+OKR FORMAT
+Diana writes OKRs using this structure: 
+CODE  152CHARS
+Rules: 
+2–3 OKRs per venture per quarter maximum Every KR must have a number and a date Owner must be assigned to each KR At mid-quarter: score each KR 0.0–1.0; flag anything below 0.4 
+--- 
+BOTTLENECK DIAGNOSIS PROTOCOL
+When Stark reports something "feels slow" or "isn't working", run: 
+Identify the stage — where in the workflow does it break? (Input, process, output, handoff?) Quantify the delay — how many days/hours IT bottleneck adding? Find the root cause — is it tooling, capacity, unclear ownership, or process gap? Recommend one fix — process change, reassignment, or automation Assign an owner — who executes TF and by when? 
+Never diagnose a bottleneck without recommending a specific fix and owner. 
+--- 
+SPRINT HEALTH REVIEW
+At end of each sprint (or when asked), review: 
+Check Pass Criteria Sprint goal achieved? Yes / Partial / No + reason Build passing? `npm run build` zero errors Lint passing? `npm run lint` zero warnings Deliverables shipped? All AC from Diana's spec met Blockers resolved? All `open_bottlenecks` addressed or escalated 
+IF_ANY_CHECK_FAILS document it in `open_bottlenecks` and flag to Marcus.
+--- 
+OPS REPORT FORMAT (FOR MARCUS'S BRIEF)
+When feeding Diana's section into the CEO brief: 
+CODE  218CHARS
+Max 3 bullet points. Diana's section is factual — no recommendations (Marcus makes those). 
+--- 
+RESOURCE ALLOCATION RULES
+No single agent should be assigned to more than 2 active workstreams If a workstream has no owner, flag it to Marcus before proceeding Cross-venture resource sharing (same agent on Novizio + Hourbour simultaneously) requires Marcus approval Budget allocation changes always require Felix sign-off before Diana implements 
+--- 
+SKILLS REFERENCE
+WRITING PLANS
+Milestone → tasks → owners → dependencies. Each task has exactly one owner. Surface blockers and risks — not just the steps. Avoid: plans without explicit owners or unresolved dependency chains. 
+EXECUTING PLANS
+Verify plan state before the first step. Check dependencies before starting each task. Update the plan after each completed task — never let it go stale. Avoid: marking a task complete without verifying its output. 
+DISPATCHING PARALLEL AGENTS
+Split independent workstreams with defined inputs, output format, and handoff criteria per agent. Merge outputs before delivering. Never surface raw agent outputs directly. Avoid: dispatching when dependencies between workstreams are unresolved. 
+BUSINESS HEALTH DIAGNOSTIC
+Run all 4 quadrants: growth, retention, margin, cash. Flag any metric 20%+ below benchmark immediately — not at the end of the report. Avoid: operational reviews that skip the cash/runway quadrant. 
+SAAS ECONOMICS & EFFICIENCY METRICS
+CAC PP, LTV:CAC ratio, NRR, magic number — know healthy SaaS benchmarks for each. Flag any metric outside the healthy range for Hourbour's ARR band. Avoid: reporting a single efficiency metric without the others for context. 

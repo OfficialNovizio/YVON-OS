@@ -1,73 +1,34 @@
-#MEM id=webapp-testing source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/webapp-testing/SKILL.md savings=10%
-M||tx|---
-M||name|webapp-testing
-M||desc|>-
-M||tx|Toolkit for interacting w/ and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.
-M||vers|1.0.0
-M||lice|Complete terms in LICENSE.txt
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, tc]
-M||tx|---
-M|Web |tx|To tst local web applications, write native Python Playwright scripts.
-M|Web |**He|
-M|Web |it|`scripts/with_server.py` - Manages server lifecycle (supports multiple servers)
-M|Web |tx|**Always run scripts w/ `--help` first** to see usage. DO NOT read the source until you try running the script first and find that a customized solution is abslutely necessary. These scripts can be very large and thus pollute your context window. They exist to be called directly as black-box scripts rather than ingested into your context window.
-M|Deci|tx|```
-M|Deci|tx|us task → Is it static HTML?
-M|Deci|tx|├─ Yes → Read HTML file directly to identify selectors
-M|Deci|tx|│         ├─ sc → Write Playwright script using selectors
-M|Deci|tx|│         └─ Fails/Incomplete → Treat as dynamic (below)
-M|Deci|tx|│
-M|Deci|tx|└─ No (dynamic webapp) → Is the server already running?
-M|Deci|├─ N|python scripts/with_server.py --help
-M|Deci|tx|│        Then use the helper + write simplified Playwright script
-M|Deci|tx|│
-M|Deci|└─ Y|
-M|Deci|tx|1. Navigate and wait for networkidle
-M|Deci|tx|2. Take screenshot or inspect DOM
-M|Deci|tx|3. Identify selectors from rendered state
-M|Deci|tx|4. Execute actions w/ discovered selectors
-M|Deci|tx|```
-M|Exam|To s|
-M|Exam|**Si|**
-M|Exam|tx|```bash
-M|Exam|tx|python scripts/with_server.py --server "npm run dv" --port 5173 -- python your_automation.py
-M|Exam|tx|```
-M|Exam|**Mu|**
-M|Exam|tx|```bash
-M|Exam|tx|python scripts/with_server.py \
-M|Exam|tx|--server "cd backend && python server.py" --port 3000 \
-M|Exam|tx|--server "cd frontend && npm run dv" --port 5173 \
-M|Exam|tx|-- python your_automation.py
-M|Exam|tx|```
-M|Exam|To c|
-M|Exam|tx|```python
-M|Exam|tx|from playwright.sync_api import sync_playwright
-M|Exam|with|
-M|Exam|tx|browser = p.chromium.launch(headless=True) # Always launch chromium in headless mode
-M|Exam|tx|page = browser.new_page()
-M|Exam|page|//localhost:5173') # Server already running and ready
-M|Exam|page|Wait for JS to execute
-M|... |tx|browser.close()
-M|... |tx|```
-M|Reco|1. *|
-M|Reco|tx|```python
-M|Reco|tx|page.screenshot(path='/tmp/inspect.png', full_page=True)
-M|Reco|tx|cn = page.cn()
-M|Reco|tx|page.locator('button').all()
-M|Reco|tx|```
-M|Reco|tx|2. **Identify selectors** from inspection results
-M|Reco|tx|3. **Execute actions** using discovered selectors
-M|Comm|tx|❌ **Don't** inspect the DOM before waiting for `networkidle` on dynamic apps
-M|Comm|tx|✅ **Do** wait for `page.wait_for_load_state('networkidle')` before inspection
-M|Best|it|**Use bundled scripts as black boxes** - To accomplish a task, consider whether one of the scripts available in `scripts/` can help. These scripts handle common, complex workflows reliably w/o cluttering the context window. Use `--help` to see usage, then invoke directly.
-M|Best|it|Use `sync_playwright()` for synchronous scripts
-M|Best|it|Always close the browser when done
-M|Best|- Us|`text=`, `role=`, CSS selectors, or IDs
-M|Best|- Ad|`page.wait_for_selector()` or `page.wait_for_timeout()`
-M|Refe|- **|
-M|Refe|it|`element_discovery.py` - Discovering buttons, links, and inputs on a page
-M|Refe|- `s|// URLs for local HTML
-M|Refe|it|`console_logging.py` - Capturing console logs during automation
+SRC agent-department/Technical/dev/skills/design-and-build/webapp-testing/SKILL.md
+ORIG_SIZE 4064
+SECTIONS 28
+ABBREVS 2
+INDEX_TERMS 179
+COMPILED 2026-06-13T19:23:25.339Z
+---
+NAME webapp-testing
+WEB APPLICATION TESTING
+To test local web applications, write native Python Playwright scripts. 
+Helper Scripts Available: 
+scripts/with_server.py - Manages server lifecycle (supports multiple servers) 
+Always run scripts with --help first to see usage. DO NOT read the source until you try running the script first and find that a customized solution is abslutely necessary. These scripts can be very large and thus pollute your context window. They exist to be called directly as black-box scripts rather than ingested into your context window. 
+DECISION TREE: CHOOSING YOUR APPROACH
+CODE  677CHARS
+EXAMPLE: USING WITH_SERVER.PY
+To start a server, run --help first, then UT helper: 
+CODE bash 94CHARS
+Single server: 
+CODE bash 175CHARS
+Multiple servers (e.g., backend + frontend): 
+CODE python 402CHARS
+To create an automation script, include only Playwright logic (servers are managed automatically): 
+RECONNAISSANCE-THEN-ACTION PATTERN
+Inspect rendered DOM: 
+`python page.screenshot(path='/tmp/inspect.png', full_page=True) content = page.content() page.locator('button').all() ` 
+Identify selectors from inspection results 
+Execute actions using discovered selectors 
+COMMON PITFALL
+❌ Don't inspect the DOM before WF networkidle on dynamic apps ✅ Do wait for page.wait_for_load_state('networkidle') before inspection 
+BEST PRACTICES
+Use bundled scripts as black boxes - To accomplish a task, consider whether one of the scripts available in scripts/ can help. These scripts handle common, complex workflows reliably without cluttering the context window. Use --help to see usage, then invoke directly. Use sync_playwright() for synchronous scripts Always close the browser when done Use descriptive selectors: text=, role=, CSS selectors, or IDs Add appropriate waits: page.wait_for_selector() or page.wait_for_timeout() 
+REFERENCE FILES
+examples/ - Examples showing common patterns: element_discovery.py - Discovering buttons, links, and inputs on a page static_html_automation.py - Using file:// URLs for local HTML console_logging.py - Capturing console logs during automation 

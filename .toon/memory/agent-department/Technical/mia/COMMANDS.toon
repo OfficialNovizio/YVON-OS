@@ -1,31 +1,26 @@
-#MEM id=mia source=/root/yvon/agent-department/Technical/mia/COMMANDS.md savings=14%
-M|Term|tx|```bash
-M|Afte|tx|npx tsc --noEmit
-M|Chec|tx|npm run lint
-M|Chec|tx|```
-M|Chec|> No|Use `npx tsc --noEmit` in the Linux VM. `npm run bd` is Windows-only (SWC binary).
-M|Comm|it|mi runs `npx tsc --noEmit` after every cp she builds
-M|Comm|- If|read the er, fix the tp, run again
-M|Comm|- `n|missing `key` props in lists, unused imports, `@ts-eslint/no-explicit-any`
-M|Comm|tx|\| er \| Cause \| Fix \|
-M|Comm|tx|\|-------\|-------\|-----\|
-M|Comm|tx|\| `'use client'` er \| Using hooks in a Server cp \| Add `'use client'` at the top of the file \|
-M|Comm|tx|\| Missing `key` in list \| Mapping w/o key prop \| Add `key={item.id}` to the mapped element \|
-M|Comm|tx|\| tp mismatch on ap rp \| rp shape doesn't match contract \| Check ap contracts in dv's MEMORY.md, up cp's expected tp \|
-M|Comm|tx|\| tw class not applying \| Using a dynamic class string \| Use full class names — tw purges dynamic strings \|
-M|Desi|Befo|
-M|Desi|tx|1. Does this use `var(--color-*)` tk? No hardcoded hex values?
-M|Desi|tx|2. Is this responsive (mobile-first)?
-M|Desi|tx|3. Are interactive elements keyboard-accessible?
-M|Desi|tx|4. Does this match the dark cyberpunk style of the rest of the dashboard?
-M|What|tx|```bash
-M|Thes|tx|git push        # Requires dv's sign-off
-M|Thes|tx|npm run dv     # mi may use this locally for visual verification only
-M|Thes|tx|```
-M|Hand|tx|When mi's frontend tasks are complete and `npx tsc --noEmit` + `npm run lint` both pass, mi logs the task in her MEMORY.md and notifies qn to begin her QA rv.
-M|Hand|tx|---
-M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
-M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
-M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
-M|Comm|tx|\|------\|------------------\|--------\|--------------\|
-M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|
+SRC agent-department/Technical/mia/COMMANDS.md
+ORIG_SIZE 2284
+SECTIONS 19
+ABBREVS 1
+INDEX_TERMS 161
+COMPILED 2026-06-13T19:23:25.385Z
+---
+⌨️ MIA — COMMANDS
+TERMINAL COMMANDS
+CODE bash 188CHARS
+Note: Use npx tsc --noEmit in the Linux VM. npm run build is Windows-only (SWC binary). 
+COMMAND RULES
+Mia runs npx tsc --noEmit after every component she builds If TypeScript check fails on her component: read the error, fix the type, run again npm run lint must pass — watch for: missing key props in lists, unused imports, @typescript-eslint/no-explicit-any 
+COMMON BUILD ERRORS MIA FIXES
+Error Cause Fix `'use client'` error Using hooks in a Server Component Add `'use client'` at the top of the file Missing `key` in list Mapping without key prop Add `key={item.id}` to the mapped element Type mismatch on API response Response shape doesn't match contract Check API contracts in Dev's MEMORY.md, update component's expected type Tailwind class not applying Using a dynamic class string Use full class names — Tailwind purges dynamic strings 
+DESIGN RULE ENFORCEMENT
+Before committing any component, Mia asks herself: 
+Does this use var(--color-*) tokens? No hardcoded hex values? Is this responsive (mobile-first)? Are interactive elements keyboard-accessible? Does this match the dark cyberpunk style of the rest of the dashboard? 
+WHAT MIA DOES NOT RUN
+CODE bash 151CHARS
+HANDOFF TO QUINN
+When Mia's frontend tasks are complete and npx tsc --noEmit + npm run lint both pass, Mia logs the task in her MEMORY.md and notifies Quinn to begin her QA review. 
+--- 
+COMMAND HEALTH LOG
+UB SIP after task completion. Proven commands stay. Failed or deprecated commands are removed. Rule: do not add new commands without removing or condensing an equivalent amount of content. 
+Date Command / Pattern Status Action Taken 2026-03-23 (baseline) ✓ Verified initial SIP setup 

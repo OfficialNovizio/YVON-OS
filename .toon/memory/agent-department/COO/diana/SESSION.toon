@@ -1,12 +1,16 @@
-#MEM id=diana source=/root/yvon/agent-department/COO/diana/SESSION.md savings=10%
-M|Dian|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Dian|tx|> Always load this first. Load MEMORY.md for operational KPIs, workflow rules, and process decisions.
-M|Curr|- **|** 2026-03-23
-M|Curr|- **|** idle
-M|Curr|- **|** none
-M|Curr|- **|** Cross-vt resource check — flag any allocation conflicts btw nz and hb
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|tx|\| 2026-03-23 \| Memory sy initialised \| File seeded w/ yv ops context \| — \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|None currently
+SRC agent-department/COO/diana/SESSION.md
+ORIG_SIZE 724
+SECTIONS 9
+ABBREVS 9
+INDEX_TERMS 56
+COMPILED 2026-06-13T19:23:24.800Z
+---
+DIANA — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for operational KPIs, workflow rules, and process decisions. 
+CURRENT STATUS
+LA: 2026-03-23 CT: idle WF Stark: none NSSW: Cross-venture resource check — flag any allocation conflicts between NA Hourbour 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-03-23 Memory system initialised File seeded with YVON ops context — 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+None currently 

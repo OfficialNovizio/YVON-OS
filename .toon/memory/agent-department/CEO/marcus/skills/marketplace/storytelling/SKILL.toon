@@ -1,24 +1,19 @@
-#MEM id=storytelling source=/root/yvon/agent-department/CEO/marcus/skills/marketplace/storytelling/SKILL.md savings=-1%
-M||tx|---
-M||name|storytelling
-M||desc|Use when crafting narratives that connect pd value to cs pain through clear setup-conflict-resolution arcs.
-M||tx|---
-M|When|it|Need cohesive narrative for cg, pd launches, or decks.
-M|When|it|Translating tc capabilities into relatable cs stories.
-M|When|it|Coaching spokespeople or SDRs on better pitch storytelling.
-M|Fram|tx|1. **Audience & Conflict** – identify who the hero is (cs persona) and what obstacle they face.
-M|Fram|tx|2. **Story Arc (SCAR)** – Situation → Complication → Action → Resolution.
-M|Fram|tx|3. **Characterization** – give personas motives, stakes, and quotes.
-M|Fram|tx|4. **Sensory Detail** – use vivid language, specific metrics, and concrete examples.
-M|Fram|tx|5. **Moral/CTA** – tie resolution back to pd value and explicit nx step.
-M|Temp|it|Narrative outline (hook, scene, rising tension, turn, resolution, CTA).
-M|Temp|- Pi|
-M|Temp|tx|```
-M|Temp|tx|"Most {persona}s today face {pain}. When {trigger}, {impact}. We worked w/ {cs} to {action}, leading to {result}."
-M|Temp|tx|```
-M|Temp|it|Story inventory tracker to log cs, industry, proof points.
-M|Tips|it|Record cs interviews to capture natural phrasing for quotes.
-M|Tips|it|Swap metaphors/analogies per persona so stories feel tailored.
-M|Tips|it|Reinforce numbers w/ vivid imagery (e.g., "saved hours = extra sprints delivered").
-M|Tips|it|Align every story w/ the current positioning doc to avoid mixed messages.
-M|Tips|tx|---
+SRC agent-department/CEO/marcus/skills/marketplace/storytelling/SKILL.md
+ORIG_SIZE 1463
+SECTIONS 13
+ABBREVS 1
+INDEX_TERMS 113
+COMPILED 2026-06-13T19:23:24.780Z
+---
+NAME storytelling
+STORYTELLING SKILL
+WTU
+Need cohesive narrative for campaigns, product launches, or decks. Translating technical capabilities into relatable customer stories. Coaching spokespeople or SDRs on better pitch storytelling. 
+FRAMEWORK
+Audience & Conflict – identify who the hero is (customer persona) and what obstacle they face. Story Arc (SCAR) – Situation → Complication → Action → Resolution. Characterization – give personas motives, stakes, and quotes. Sensory Detail – use vivid language, specific metrics, and concrete examples. Moral/CTA – tie resolution back to product value and explicit next step. 
+TEMPLATES
+CODE  123CHARS
+Narrative outline (hook, scene, rising tension, turn, resolution, CTA). Pitch script template: Story inventory tracker to log customer, industry, proof points. 
+TIPS
+Record customer interviews to capture natural phrasing for quotes. Swap metaphors/analogies per persona so stories feel tailored. Reinforce numbers with vivid imagery (e.g., "saved hours = extra sprints delivered"). Align every story with the current positioning doc to avoid mixed messages. 
+--- 

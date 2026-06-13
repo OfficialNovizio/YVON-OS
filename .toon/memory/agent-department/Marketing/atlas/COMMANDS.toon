@@ -1,30 +1,20 @@
-#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/COMMANDS.md savings=5%
-M|COMM|tx|> No terminal commands. at works through pm, specs, and handoffs.
-M|Core|1. R|vt, goal, platform, timeline)
-M|Core|tx|2. Load `CREATIVE-PRINCIPLES.md` + br file
-M|Core|tx|3. Write Visual Brief (one paragraph)
-M|Core|tx|4. Produce Mood Board (3 references + direction)
-M|Core|tx|5. Write Style Spec (6-cp structured format from CREATIVE-PRINCIPLES.md)
-M|Core|tx|6. Write pm Architecture (final pm, platform-specific)
-M|Core|tx|7. Define qual Bar (3 binary pass/fail criteria for px)
-M|Core|tx|8. Run AI Slop tst on pm — rewrite if 2+ fail
-M|Core|9. H|Visual Brief + pm + qual Bar
-M|Core|tx|10. Log cg to MEMORY.md
-M|Quic|When|
-M|Quic|tx|1. Confirm vt + platform
-M|Quic|tx|2. Write pm using 6-cp framework
-M|Quic|tx|3. Run AI Slop tst (mental check)
-M|Quic|tx|4. Deliver pm ready to paste into generation tool
-M|Quic|tx|5. No full mood board needed for single requests
-M|Quic|tx|---
-M|Dele|tx|\| Task \| Delegate To \|
-M|Dele|tx|\|------\|------------\|
-M|Dele|tx|\| Batch production, upscaling, QC \| px \|
-M|Dele|tx|\| Scheduling and delivery \| Opus \|
-M|Dele|tx|\| cp to pair w/ visuals \| ln \|
-M|Dele|tx|\| Platform posting \| Sofia \|
-M|Dele|tx|\| cg st \| Alex \|
-M|Dele|tx|---
-M|Comm|tx|\| Date \| Command \| Status \| Notes \|
-M|Comm|tx|\|------\|---------\|--------\|-------\|
-M|Comm|tx|\| 2026-03-26 \| All workflows \| ✅ Baseline \| Phase 9 creation \|
+SRC agent-department/Marketing/atlas/COMMANDS.md
+ORIG_SIZE 1454
+SECTIONS 13
+ABBREVS 0
+INDEX_TERMS 117
+COMPILED 2026-06-13T19:23:24.987Z
+---
+COMMANDS.MD — ATLAS, ART DIRECTOR
+No terminal commands. Atlas works through prompts, specs, and handoffs. 
+CORE WORKFLOW — VISUAL SYSTEM BUILD
+Receive campaign brief from Alex (confirm: venture, goal, platform, timeline) Load CREATIVE-PRINCIPLES.md + brand file Write Visual Brief (one paragraph) Produce Mood Board (3 references + direction) Write Style Spec (6-component structured format from CREATIVE-PRINCIPLES.md) Write Prompt Architecture (final prompts, platform-specific) Define Quality Bar (3 binary pass/fail criteria for Pixel) Run AI Slop Test on prompts — rewrite if 2+ fail Hand off complete package to Pixel: Visual Brief + Prompts + Quality Bar Log campaign to MEMORY.md 
+QUICK PROMPT (SINGLE IMAGE REQUEST)
+When Stark asks for one image without a full campaign: 
+Confirm venture + platform Write prompt using 6-component framework Run AI Slop Test (mental check) Deliver prompt ready to paste into generation tool No full mood board needed for single requests 
+--- 
+DELEGATION MATRIX
+Task Delegate To Batch production, upscaling, QC Pixel Scheduling and delivery Opus Copy to pair with visuals Lena Platform posting Sofia Campaign strategy Alex 
+--- 
+COMMAND HEALTH LOG
+Date Command Status Notes 2026-03-26 All workflows ✅ Baseline Phase 9 creation 

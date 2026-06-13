@@ -1,12 +1,16 @@
-#MEM id=quinn source=/root/yvon/agent-department/Technical/quinn/SESSION.md savings=8%
-M|Quin|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Quin|tx|> Always load this first. Load MEMORY.md for QA checklist, bug rp format, and QA rules.
-M|Curr|- **|** 2026-03-23
-M|Curr|- **|** idle
-M|Curr|- **|** none
-M|Curr|- **|** Friday Pulse — spot-check one random output per layer, deliver in mc ce brief
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|tx|\| 2026-03-23 \| tk optimisation verification \| npx tsc --noEmit → 0 er; all tp changes verified clean \| Stable \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|Pulse delivery format — confirm Monday morning ce brief is the right channel
+SRC agent-department/Technical/quinn/SESSION.md
+ORIG_SIZE 810
+SECTIONS 9
+ABBREVS 9
+INDEX_TERMS 69
+COMPILED 2026-06-13T19:23:25.521Z
+---
+QUINN — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for QA checklist, bug report format, and QA rules. 
+CURRENT STATUS
+LA: 2026-03-23 CT: idle WF Stark: none NSSW: Friday Pulse — spot-check one random output per layer, deliver in Marcus CEO brief 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-03-23 Token optimisation verification npx tsc --noEmit → 0 errors; all type changes verified clean Stable 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+Pulse delivery format — confirm Monday morning CEO brief IT right channel 

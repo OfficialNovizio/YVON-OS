@@ -1,80 +1,25 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-request-idle-callback.md savings=2%
-M||tx|---
-M||titl|Defer Non-ct Work w/ requestIdleCallback
-M||impa|md
-M||impa|keeps UI responsive during background tasks
-M||tags|javascript, perf, idle, scheduling, an
-M||tx|---
-M|Defe|**Im|md (keeps UI responsive during background tasks)**
-M|Defe|tx|Use `requestIdleCallback()` to schedule non-ct work during browser idle periods. This keeps the main thread free for us interactions and animations, reducing jank and improving perceived perf.
-M|Defe|**In|**
-M|Defe|tx|```ts
-M|Defe|func|string) {
-M|Defe|tx|const results = searchItems(query)
-M|Defe|tx|setResults(results)
-M|Defe|tx|// These block the main thread immediately
-M|Defe|tx|an.track('search', { query })
-M|Defe|tx|saveToRecentSearches(query)
-M|Defe|tx|prefetchTopResults(results.slice(0, 3))
-M|Defe|tx|}
-M|Defe|tx|```
-M|Defe|**Co|**
-M|Defe|tx|```ts
-M|Defe|func|string) {
-M|Defe|tx|const results = searchItems(query)
-M|Defe|tx|setResults(results)
-M|Defe|tx|// Defer non-ct work to idle periods
-M|Defe|tx|requestIdleCallback(() => {
-M|Defe|tx|an.track('search', { query })
-M|Defe|tx|})
-M|Defe|tx|requestIdleCallback(() => {
-M|Defe|tx|saveToRecentSearches(query)
-M|Defe|tx|})
-M|Defe|tx|requestIdleCallback(() => {
-M|Defe|tx|prefetchTopResults(results.slice(0, 3))
-M|Defe|tx|})
-M|Defe|tx|}
-M|Defe|tx|```
-M|Defe|**Wi|**
-M|Defe|tx|```ts
-M|Defe|tx|// Ensure an fires within 2 seconds even if browser stays busy
-M|Defe|tx|requestIdleCallback(
-M|Defe|() =|location.pathname }),
-M|Defe|{ ti|2000 }
-M|Defe|tx|)
-M|Defe|tx|```
-M|Defe|**Ch|**
-M|Defe|tx|```ts
-M|Defe|func|Item[]) {
-M|Defe|tx|let index = 0
-M|Defe|func|IdleDeadline) {
-M|Defe|tx|// Process items while we have idle time (aim for <50ms chunks)
-M|Defe|tx|while (index < items.length && deadline.timeRemaining() > 0) {
-M|Defe|tx|processItem(items[index])
-M|Defe|tx|index++
-M|Defe|tx|}
-M|Defe|tx|// Schedule nx chunk if more items remain
-M|Defe|tx|if (index < items.length) {
-M|Defe|tx|requestIdleCallback(processChunk)
-M|Defe|tx|}
-M|Defe|tx|}
-M|Defe|tx|requestIdleCallback(processChunk)
-M|Defe|tx|}
-M|Defe|tx|```
-M|Defe|**Wi|**
-M|Defe|tx|```ts
-M|Defe|cons|() => void) => setTimeout(cb, 1))
-M|Defe|tx|scheduleIdleWork(() => {
-M|Defe|tx|// Non-ct work
-M|Defe|tx|})
-M|Defe|tx|```
-M|Defe|**Wh|**
-M|Defe|it|an and telemetry
-M|Defe|it|Saving state to localStorage/IndexedDB
-M|Defe|it|Prefetching resources for likely nx actions
-M|Defe|it|Processing non-ur data transformations
-M|Defe|it|Lazy initialization of non-ct features
-M|Defe|**Wh|**
-M|Defe|it|us-initiated actions that need immediate feedback
-M|Defe|it|Rendering updates the us is waiting for
-M|Defe|it|Time-sensitive operations
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/js-request-idle-callback.md
+ORIG_SIZE 2647
+SECTIONS 19
+ABBREVS 2
+INDEX_TERMS 82
+COMPILED 2026-06-13T19:23:25.321Z
+---
+TITLE Defer Non-Critical Work with requestIdleCallback
+DEFER NON-CRITICAL WORK WITH REQUESTIDLECALLBACK
+Impact: MEDIUM (keeps UI responsive during background tasks) 
+Use requestIdleCallback() to schedule non-critical work during browser idle periods. This keeps the main thread free for user interactions and animations, reducing jank and improving perceived performance. 
+Incorrect (blocks main thread during user interaction): 
+CODE typescript 257CHARS
+Correct (defers non-critical work to idle time): 
+CODE typescript 370CHARS
+With timeout for required work: 
+CODE typescript 180CHARS
+Chunking large tasks: 
+CODE typescript 470CHARS
+With fallback for unsupported browsers: 
+CODE typescript 147CHARS
+WTU: 
+Analytics and telemetry Saving state to localStorage/IndexedDB Prefetching resources for likely next actions Processing non-urgent data transformations Lazy initialization of non-critical features 
+When NOT to use: 
+User-initiated actions that need immediate feedback Rendering updates the user is WF Time-sensitive operations 

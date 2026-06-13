@@ -1,91 +1,15 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/architecture-avoid-boolean-props.md savings=-12%
-M||tx|---
-M||titl|Avoid Boolean Prop Proliferation
-M||impa|ct
-M||impa|prevents unmaintainable cp variants
-M||tags|composition, props, architecture
-M||tx|---
-M|Avoi|tx|Don't add boolean props like `isThread`, `isEditing`, `isDMThread` to customize
-M|Avoi|tx|cp behavior. Each boolean doubles possible states and creates
-M|Avoi|tx|unmaintainable conditional logic. Use composition instead.
-M|Avoi|**In|**
-M|Avoi|tx|```tsx
-M|Avoi|tx|fn Composer({
-M|Avoi|tx|onSubmit,
-M|Avoi|tx|isThread,
-M|Avoi|tx|channelId,
-M|Avoi|tx|isDMThread,
-M|Avoi|tx|dmId,
-M|Avoi|tx|isEditing,
-M|Avoi|tx|isForwarding,
-M|Avoi|}|Props) {
-M|Avoi|tx|return (
-M|Avoi|tx|<form>
-M|Avoi|tx|<Header />
-M|Avoi|tx|<Input />
-M|Avoi|tx|{isDMThread ? (
-M|Avoi|tx|<AlsoSendToDMField id={dmId} />
-M|Avoi|)|isThread ? (
-M|Avoi|tx|<AlsoSendToChannelField id={channelId} />
-M|Avoi|)|null}
-M|Avoi|tx|{isEditing ? (
-M|Avoi|tx|<EditActions />
-M|Avoi|)|isForwarding ? (
-M|Avoi|tx|<ForwardActions />
-M|Avoi|)|(
-M|Avoi|tx|<DefaultActions />
-M|Avoi|tx|)}
-M|Avoi|tx|<Footer onSubmit={onSubmit} />
-M|Avoi|tx|</form>
-M|Avoi|tx|)
-M|Avoi|tx|}
-M|Avoi|tx|```
-M|Avoi|**Co|**
-M|Avoi|tx|```tsx
-M|Avoi|tx|// Channel composer
-M|Avoi|tx|fn ChannelComposer() {
-M|Avoi|tx|return (
-M|Avoi|tx|<Composer.Frame>
-M|Avoi|tx|<Composer.Header />
-M|Avoi|tx|<Composer.Input />
-M|Avoi|tx|<Composer.Footer>
-M|Avoi|tx|<Composer.Attachments />
-M|Avoi|tx|<Composer.Formatting />
-M|Avoi|tx|<Composer.Emojis />
-M|Avoi|tx|<Composer.Submit />
-M|Avoi|tx|</Composer.Footer>
-M|Avoi|tx|</Composer.Frame>
-M|Avoi|tx|)
-M|Avoi|tx|}
-M|Avoi|tx|// Thread composer - adds "also send to channel" field
-M|Avoi|func|{ channelId: string }) {
-M|Avoi|tx|return (
-M|Avoi|tx|<Composer.Frame>
-M|Avoi|tx|<Composer.Header />
-M|Avoi|tx|<Composer.Input />
-M|Avoi|tx|<AlsoSendToChannelField id={channelId} />
-M|Avoi|tx|<Composer.Footer>
-M|Avoi|tx|<Composer.Formatting />
-M|Avoi|tx|<Composer.Emojis />
-M|Avoi|tx|<Composer.Submit />
-M|Avoi|tx|</Composer.Footer>
-M|Avoi|tx|</Composer.Frame>
-M|Avoi|tx|)
-M|Avoi|tx|}
-M|Avoi|tx|// Edit composer - different footer actions
-M|Avoi|tx|fn EditComposer() {
-M|Avoi|tx|return (
-M|Avoi|tx|<Composer.Frame>
-M|Avoi|tx|<Composer.Input />
-M|Avoi|tx|<Composer.Footer>
-M|Avoi|tx|<Composer.Formatting />
-M|Avoi|tx|<Composer.Emojis />
-M|Avoi|tx|<Composer.CancelEdit />
-M|Avoi|tx|<Composer.SaveEdit />
-M|Avoi|tx|</Composer.Footer>
-M|Avoi|tx|</Composer.Frame>
-M|Avoi|tx|)
-M|Avoi|tx|}
-M|Avoi|tx|```
-M|Avoi|tx|Each variant is explicit abt what it renders. We can share internals w/o
-M|Avoi|tx|sharing a single monolithic parent.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/architecture-avoid-boolean-props.md
+ORIG_SIZE 2267
+SECTIONS 9
+ABBREVS 0
+INDEX_TERMS 51
+COMPILED 2026-06-13T19:23:25.286Z
+---
+TITLE Avoid Boolean Prop Proliferation
+AVOID BOOLEAN PROP PROLIFERATION
+Don't add boolean props like isThread, isEditing, isDMThread to customize component behavior. Each boolean doubles possible states and creates unmaintainable conditional logic. Use composition instead. 
+Incorrect (boolean props create exponential complexity): 
+CODE tsx 528CHARS
+Correct (composition eliminates conditionals): 
+CODE tsx 1073CHARS
+Each variant is explicit about what it renders. We can share internals without sharing a single monolithic parent. 

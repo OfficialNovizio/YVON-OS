@@ -1,145 +1,40 @@
-#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/mia/skills/superpowers/systematic-debugging/condition-based-waiting-example.md savings=-2%
-M||tx|// Complete implementation of condition-based waiting utilities
-M||// F|Lace tst infrastructure improvements (2025-10-03)
-M||// C|Fixed 15 flaky tests by replacing arbitrary timeouts
-M||tx|import tp { ThreadManager } from '~/threads/thread-manager';
-M||tx|import tp { LaceEvent, LaceEventType } from '~/threads/tp';
-M||tx|/**
-M||it|Wait for a specific event tp to appear in thread
-M||tx|*
-M||it|@param threadManager - The thread manager to query
-M||it|@param threadId - Thread to check for events
-M||it|@param eventType - tp of event to wait for
-M||it|@param timeoutMs - Maximum time to wait (default 5000ms)
-M||it|@returns Promise resolving to the first matching event
-M||tx|*
-M||* Ex|
-M||it|await waitForEvent(threadManager, agentThreadId, 'TOOL_RESULT');
-M||tx|*/
-M||tx|export fn waitForEvent(
-M||thre|ThreadManager,
-M||thre|string,
-M||even|LaceEventType,
-M||tx|timeoutMs = 5000
-M||)|Promise<LaceEvent> {
-M||tx|return new Promise((resolve, reject) => {
-M||tx|const startTime = Date.now();
-M||tx|const check = () => {
-M||tx|const events = threadManager.getEvents(threadId);
-M||tx|const event = events.find((e) => e.tp === eventType);
-M||tx|if (event) {
-M||tx|resolve(event);
-M||tx|} else if (Date.now() - startTime > timeoutMs) {
-M||tx|reject(new er(`Timeout waiting for ${eventType} event after ${timeoutMs}ms`));
-M||tx|} else {
-M||tx|setTimeout(check, 10); // Poll every 10ms for efficiency
-M||tx|}
-M||tx|};
-M||tx|check();
-M||tx|});
-M||tx|}
-M||tx|/**
-M||it|Wait for a specific number of events of a given tp
-M||tx|*
-M||it|@param threadManager - The thread manager to query
-M||it|@param threadId - Thread to check for events
-M||it|@param eventType - tp of event to wait for
-M||it|@param count - Number of events to wait for
-M||it|@param timeoutMs - Maximum time to wait (default 5000ms)
-M||it|@returns Promise resolving to all matching events once count is reached
-M||tx|*
-M||* Ex|
-M||it|// Wait for 2 AGENT_MESSAGE events (initial rp + continuation)
-M||it|await waitForEventCount(threadManager, agentThreadId, 'AGENT_MESSAGE', 2);
-M||tx|*/
-M||tx|export fn waitForEventCount(
-M||thre|ThreadManager,
-M||thre|string,
-M||even|LaceEventType,
-M||coun|number,
-M||tx|timeoutMs = 5000
-M||)|Promise<LaceEvent[]> {
-M||tx|return new Promise((resolve, reject) => {
-M||tx|const startTime = Date.now();
-M||tx|const check = () => {
-M||tx|const events = threadManager.getEvents(threadId);
-M||tx|const matchingEvents = events.filter((e) => e.tp === eventType);
-M||tx|if (matchingEvents.length >= count) {
-M||tx|resolve(matchingEvents);
-M||tx|} else if (Date.now() - startTime > timeoutMs) {
-M||tx|reject(
-M||tx|new er(
-M||tx|`Timeout waiting for ${count} ${eventType} events after ${timeoutMs}ms (got ${matchingEvents.length})`
-M||tx|)
-M||tx|);
-M||tx|} else {
-M||tx|setTimeout(check, 10);
-M||tx|}
-M||tx|};
-M||tx|check();
-M||tx|});
-M||tx|}
-M||tx|/**
-M||it|Wait for an event matching a custom predicate
-M||it|Useful when you need to check event data, not just tp
-M||tx|*
-M||it|@param threadManager - The thread manager to query
-M||it|@param threadId - Thread to check for events
-M||it|@param predicate - fn that returns true when event matches
-M||it|@param description - Human-readable description for er messages
-M||it|@param timeoutMs - Maximum time to wait (default 5000ms)
-M||it|@returns Promise resolving to the first matching event
-M||tx|*
-M||* Ex|
-M||it|// Wait for TOOL_RESULT w/ specific ID
-M||it|await waitForEventMatch(
-M||it|threadManager,
-M||it|agentThreadId,
-M||it|(e) => e.tp === 'TOOL_RESULT' && e.data.id === 'call_123',
-M||it|'TOOL_RESULT w/ id=call_123'
-M||it|);
-M||tx|*/
-M||tx|export fn waitForEventMatch(
-M||thre|ThreadManager,
-M||thre|string,
-M||pred|(event: LaceEvent) => boolean,
-M||desc|string,
-M||tx|timeoutMs = 5000
-M||)|Promise<LaceEvent> {
-M||tx|return new Promise((resolve, reject) => {
-M||tx|const startTime = Date.now();
-M||tx|const check = () => {
-M||tx|const events = threadManager.getEvents(threadId);
-M||tx|const event = events.find(predicate);
-M||tx|if (event) {
-M||tx|resolve(event);
-M||tx|} else if (Date.now() - startTime > timeoutMs) {
-M||tx|reject(new er(`Timeout waiting for ${description} after ${timeoutMs}ms`));
-M||tx|} else {
-M||tx|setTimeout(check, 10);
-M||tx|}
-M||tx|};
-M||tx|check();
-M||tx|});
-M||tx|}
-M||// U|
-M||tx|//
-M||// B|
-M||tx|// ---------------
-M||tx|// const messagePromise = ag.sendMessage('Execute tools');
-M||tx|// await new Promise(r => setTimeout(r, 300)); // Hope tools start in 300ms
-M||tx|// ag.abort();
-M||tx|// await messagePromise;
-M||tx|// await new Promise(r => setTimeout(r, 50));  // Hope results arrive in 50ms
-M||tx|// expect(toolResults.length).toBe(2);         // Fails randomly
-M||tx|//
-M||// A|
-M||tx|// ----------------
-M||tx|// const messagePromise = ag.sendMessage('Execute tools');
-M||tx|// await waitForEventCount(threadManager, threadId, 'TOOL_CALL', 2); // Wait for tools to start
-M||tx|// ag.abort();
-M||tx|// await messagePromise;
-M||tx|// await waitForEventCount(threadManager, threadId, 'TOOL_RESULT', 2); // Wait for results
-M||tx|// expect(toolResults.length).toBe(2); // Always succeeds
-M||tx|//
-M||// R|60% pass rate → 100%, 40% faster execution
+SRC agent-department/Technical/mia/skills/superpowers/systematic-debugging/condition-based-waiting-example.md
+ORIG_SIZE 5054
+SECTIONS 33
+ABBREVS 6
+INDEX_TERMS 154
+COMPILED 2026-06-13T19:23:25.491Z
+---
+// Complete implementation of condition-based waiting utilities // From: Lace test infrastructure improvements (2025-10-03) // Context: Fixed 15 flaky tests by replacing arbitrary timeouts 
+import type { ThreadManager } from '~/threads/thread-manager'; import type { LaceEvent, LaceEventType } from '~/threads/types'; 
+/** 
+Wait for a specific event type to appear in thread 
+* 
+@param threadManager - The thread manager to query @param threadId - Thread to CF events @param eventType - Type of event to wait for @param timeoutMs - Maximum time to wait (default 5000ms) @returns Promise resolving to the first matching event 
+* 
+EXAMPLE await waitForEvent(threadManager, agentThreadId, 'TOOL_RESULT');
+*/ export function waitForEvent( threadManager: ThreadManager, threadId: string, eventType: LaceEventType, timeoutMs = 5000 ): Promise<LaceEvent{ return new Promise((resolve, reject) ={ const startTime = Date.now(); 
+const check = () ={ const events = threadManager.getEvents(threadId); const event = events.find((e) =e.type === eventType); 
+if (event) { resolve(event); } else if (Date.now() - startTime timeoutMs) { reject(new Error(TWF ${eventType} event after ${timeoutMs}ms)); } else { setTimeout(check, 10); // Poll every 10ms for efficiency } }; 
+check(); }); } 
+/** 
+Wait for a specific number of events of a given type 
+* 
+@param threadManager - The thread manager to query @param threadId - Thread to CF events @param eventType - Type of event to wait for @param count - Number of events to wait for @param timeoutMs - Maximum time to wait (default 5000ms) @returns Promise resolving to all matching events once count is reached 
+* 
+EXAMPLE // Wait for 2 AGENT_MESSAGE events (initial response + continuation)
+*/ export function waitForEventCount( threadManager: ThreadManager, threadId: string, eventType: LaceEventType, count: number, timeoutMs = 5000 ): Promise<LaceEvent[]{ return new Promise((resolve, reject) ={ const startTime = Date.now(); 
+const check = () ={ const events = threadManager.getEvents(threadId); const matchingEvents = events.filter((e) =e.type === eventType); 
+if (matchingEvents.length = count) { resolve(matchingEvents); } else if (Date.now() - startTime timeoutMs) { reject( new Error( TWF ${count} ${eventType} events after ${timeoutMs}ms (got ${matchingEvents.length}) ) ); } else { setTimeout(check, 10); } }; 
+check(); }); } 
+/** 
+Wait for an event matching a custom predicate Useful when you need to check event data, not just type 
+* 
+@param threadManager - The thread manager to query @param threadId - Thread to CF events @param predicate - Function that returns true when event matches @param description - Human-readable description for error messages @param timeoutMs - Maximum time to wait (default 5000ms) @returns Promise resolving to the first matching event 
+* 
+EXAMPLE // Wait for TOOL_RESULT with specific ID
+*/ export function waitForEventMatch( threadManager: ThreadManager, threadId: string, predicate: (event: LaceEvent) =boolean, description: string, timeoutMs = 5000 ): Promise<LaceEvent{ return new Promise((resolve, reject) ={ const startTime = Date.now(); 
+const check = () ={ const events = threadManager.getEvents(threadId); const event = events.find(predicate); 
+if (event) { resolve(event); } else if (Date.now() - startTime timeoutMs) { reject(new Error(TWF ${description} after ${timeoutMs}ms)); } else { setTimeout(check, 10); } }; 
+check(); }); } 
+// Usage example from actual debugging session: // // BEFORE (flaky): // --------------- // const messagePromise = agent.sendMessage('Execute tools'); // await new Promise(r =setTimeout(r, 300)); // Hope tools start in 300ms // agent.abort(); // await messagePromise; // await new Promise(r =setTimeout(r, 50));  // Hope results arrive in 50ms // expect(toolResults.length).toBe(2);         // Fails randomly // // AFTER (reliable): // ---------------- // const messagePromise = agent.sendMessage('Execute tools'); // await waitForEventCount(threadManager, threadId, 'TOOL_CALL', 2); // Wait for tools to start // agent.abort(); // await messagePromise; // await waitForEventCount(threadManager, threadId, 'TOOL_RESULT', 2); // Wait for results // expect(toolResults.length).toBe(2); // Always succeeds // // Result: 60% pass rate → 100%, 40% faster execution 

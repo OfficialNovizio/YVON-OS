@@ -1,160 +1,98 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/ab-test-setup/references/sample-size-guide.md savings=6%
-M|Samp|tx|Reference for calculating sample sizes and tst duration.
-M|Cont|it|Sample Size Fundamentals (required inputs, what these mean)
-M|Cont|it|Sample Size Quick Reference Tables
-M|Cont|it|Duration Calculator (formula, examples, minimum duration rules, maximum duration guidelines)
-M|Cont|it|Online Calculators
-M|Cont|it|Adjusting for Multiple Variants
-M|Cont|it|Common Sample Size Mistakes
-M|Cont|it|When Sample Size Requirements Are Too hi
-M|Cont|it|Sequential Testing
-M|Cont|it|Quick Decision Framework
-M|Requ|1. *|Your current rate
-M|Requ|2. *|Smallest change worth detecting
-M|Requ|3. *|Usually 95% (α = 0.05)
-M|Requ|4. *|Usually 80% (β = 0.20)
-M|What|**Ba|If your page converts at 5%, that's your baseline.
-M|What|**MD|The smallest improvement you care abt detecting. Set this based on:
-M|What|it|Business impact (is a 5% lift meaningful?)
-M|What|it|Implementation cost (worth the effort?)
-M|What|it|Realistic expectations (what have past tests shown?)
-M|What|**St|Means there's less than 5% chance the observed difference is due to random chance.
-M|What|**St|Means if there's a real effect of size MDE, you have 80% chance of detecting it.
-M|What|tx|---
-M|Conv|tx|\| Lift to Detect \| Sample per Variant \| Total Sample \|
-M|Conv|tx|\|----------------\|-------------------\|--------------\|
-M|Conv|tx|\| 5% (1% → 1.05%) \| 1,500,000 \| 3,000,000 \|
-M|Conv|tx|\| 10% (1% → 1.1%) \| 380,000 \| 760,000 \|
-M|Conv|tx|\| 20% (1% → 1.2%) \| 97,000 \| 194,000 \|
-M|Conv|tx|\| 50% (1% → 1.5%) \| 16,000 \| 32,000 \|
-M|Conv|tx|\| 100% (1% → 2%) \| 4,200 \| 8,400 \|
-M|Conv|tx|\| Lift to Detect \| Sample per Variant \| Total Sample \|
-M|Conv|tx|\|----------------\|-------------------\|--------------\|
-M|Conv|tx|\| 5% (3% → 3.15%) \| 480,000 \| 960,000 \|
-M|Conv|tx|\| 10% (3% → 3.3%) \| 120,000 \| 240,000 \|
-M|Conv|tx|\| 20% (3% → 3.6%) \| 31,000 \| 62,000 \|
-M|Conv|tx|\| 50% (3% → 4.5%) \| 5,200 \| 10,400 \|
-M|Conv|tx|\| 100% (3% → 6%) \| 1,400 \| 2,800 \|
-M|Conv|tx|\| Lift to Detect \| Sample per Variant \| Total Sample \|
-M|Conv|tx|\|----------------\|-------------------\|--------------\|
-M|Conv|tx|\| 5% (5% → 5.25%) \| 280,000 \| 560,000 \|
-M|Conv|tx|\| 10% (5% → 5.5%) \| 72,000 \| 144,000 \|
-M|Conv|tx|\| 20% (5% → 6%) \| 18,000 \| 36,000 \|
-M|Conv|tx|\| 50% (5% → 7.5%) \| 3,100 \| 6,200 \|
-M|Conv|tx|\| 100% (5% → 10%) \| 810 \| 1,620 \|
-M|Conv|tx|\| Lift to Detect \| Sample per Variant \| Total Sample \|
-M|Conv|tx|\|----------------\|-------------------\|--------------\|
-M|Conv|tx|\| 5% (10% → 10.5%) \| 130,000 \| 260,000 \|
-M|Conv|tx|\| 10% (10% → 11%) \| 34,000 \| 68,000 \|
-M|Conv|tx|\| 20% (10% → 12%) \| 8,700 \| 17,400 \|
-M|Conv|tx|\| 50% (10% → 15%) \| 1,500 \| 3,000 \|
-M|Conv|tx|\| 100% (10% → 20%) \| 400 \| 800 \|
-M|Conv|tx|\| Lift to Detect \| Sample per Variant \| Total Sample \|
-M|Conv|tx|\|----------------\|-------------------\|--------------\|
-M|Conv|tx|\| 5% (20% → 21%) \| 60,000 \| 120,000 \|
-M|Conv|tx|\| 10% (20% → 22%) \| 16,000 \| 32,000 \|
-M|Conv|tx|\| 20% (20% → 24%) \| 4,000 \| 8,000 \|
-M|Conv|tx|\| 50% (20% → 30%) \| 700 \| 1,400 \|
-M|Conv|tx|\| 100% (20% → 40%) \| 200 \| 400 \|
-M|Conv|tx|---
-M|Form|tx|```
-M|Form|tx|Duration (days) = (Sample per variant × Number of variants) / (Daily traffic × % exposed)
-M|Form|tx|```
-M|Exam|**Sc|hi-traffic page**
-M|Exam|- Ne|10,000 per variant (2 variants = 20,000 total)
-M|Exam|- Da|5,000 visitors
-M|Exam|it|100% exposed to tst
-M|Exam|- Du|20,000 / 5,000 = **4 days**
-M|Exam|**Sc|md-traffic page**
-M|Exam|- Ne|30,000 per variant (60,000 total)
-M|Exam|- Da|2,000 visitors
-M|Exam|it|100% exposed
-M|Exam|- Du|60,000 / 2,000 = **30 days**
-M|Exam|**Sc|lo-traffic w/ partial exposure**
-M|Exam|- Ne|15,000 per variant (30,000 total)
-M|Exam|- Da|500 visitors
-M|Exam|it|50% exposed to tst
-M|Exam|- Ef|250
-M|Exam|- Du|30,000 / 250 = **120 days** (too long!)
-M|Mini|Even|
-M|Mini|- **|To capture day-of-week variation
-M|Mini|- **|If B2B (weekday vs. weekend patterns)
-M|Mini|- **|If e-commerce (beginning/end of month)
-M|Maxi|Avoi|
-M|Maxi|it|Novelty effects wear off
-M|Maxi|it|External factors intervene
-M|Maxi|it|Opportunity cost of other tests
-M|Maxi|tx|---
-M|Reco|tx|**Evan Miller's Calculator**
-M|Reco|http|//www.evanmiller.org/ab-testing/sample-size.html
-M|Reco|it|Simple if
-M|Reco|it|Bookmark-worthy
-M|Reco|tx|**Optimizely's Calculator**
-M|Reco|http|//www.optimizely.com/sample-size-calculator/
-M|Reco|it|Business-friendly language
-M|Reco|it|Duration estimates
-M|Reco|tx|**AB tst Guide Calculator**
-M|Reco|http|//www.abtestguide.com/calc/
-M|Reco|it|Includes Bayesian option
-M|Reco|it|Multiple tst tp
-M|Reco|tx|**VWO Duration Calculator**
-M|Reco|http|//vwo.com/tools/ab-tst-duration-calculator/
-M|Reco|it|Duration-focused
-M|Reco|it|Good for planning
-M|Reco|tx|---
-M|Adju|With|
-M|Adju|tx|\| Variants \| Multiplier \|
-M|Adju|tx|\|----------\|------------\|
-M|Adju|tx|\| 2 (A/B) \| 1x \|
-M|Adju|tx|\| 3 (A/B/C) \| ~1.5x \|
-M|Adju|tx|\| 4 (A/B/C/D) \| ~2x \|
-M|Adju|tx|\| 5+ \| Consider reducing variants \|
-M|Adju|**Wh|
-M|Adju|it|A vs B
-M|Adju|it|A vs C
-M|Adju|it|B vs C (sometimes)
-M|Adju|tx|Apply Bonferroni correction or use tools that handle this automatically.
-M|Adju|tx|---
-M|1. U|**Pr|Not enough sample to detect realistic effects
-M|1. U|fix|Be realistic abt MDE, get more traffic, or don't tst
-M|2. O|**Pr|Waiting for sample size when you already have significance
-M|2. O|fix|This is actually fine—you committed to sample size, honor it
-M|3. W|**Pr|Using wrong conversion rate for calculation
-M|3. W|fix|Use the specific metric and page, not site-wide averages
-M|4. I|**Pr|Calculating for full traffic, then analyzing segments
-M|4. I|fix|If you plan segment al, calculate sample for smallest segment
-M|5. T|**Pr|Dividing traffic too many ways
-M|5. T|fix|Prioritize ruthlessly, run fewer concurrent tests
-M|5. T|tx|---
-M|When|Opti|
-M|When|1. *|Accept only detecting larger effects (20%+ lift)
-M|When|2. *|Use 90% instead of 95% (risky, document it)
-M|When|3. *|tst only the most promising variant
-M|When|4. *|tst across multiple similar pages
-M|When|5. *|tst earlier in funnel where traffic is higher
-M|When|6. *|Make decision based on qualitative data instead
-M|When|7. *|Accept longer duration (weeks/months)
-M|When|tx|---
-M|Sequ|If y|
-M|What|tx|Statistical method that adjusts for multiple looks at data.
-M|When|it|hi-risk changes
-M|When|it|Need to stop bad variants early
-M|When|it|Time-sensitive decisions
-M|Tool|it|Optimizely (Stats Accelerator)
-M|Tool|it|VWO (SmartStats)
-M|Tool|it|PostHog (Bayesian approach)
-M|Trad|it|More flexibility to stop early
-M|Trad|it|Slightly larger sample size requirement
-M|Trad|it|More complex al
-M|Trad|tx|---
-M|Can |tx|```
-M|Can |Dail|_____
-M|Can |Base|_____
-M|Can |MDE |_____
-M|Can |Samp|_____ (from tables above)
-M|Can |Days|Sample / Daily traffic = _____
-M|Can |If d|Consider alternatives
-M|Can |If d|Acceptable for hi-impact tests
-M|Can |If d|Likely feasible
-M|Can |If d|Easy to run, consider running longer anyway
-M|Can |tx|```
+SRC agent-department/Marketing/rio/skills/marketing-and-growth/ab-test-setup/references/sample-size-guide.md
+ORIG_SIZE 7453
+SECTIONS 91
+ABBREVS 9
+INDEX_TERMS 327
+COMPILED 2026-06-13T19:23:25.198Z
+---
+SAMPLE SIZE GUIDE
+Reference for calculating sample sizes and test duration. 
+CONTENTS
+Sample Size Fundamentals (required inputs, what these mean) Sample Size Quick Reference Tables Duration Calculator (formula, examples, minimum duration rules, maximum duration guidelines) Online Calculators Adjusting FMple Variants Common Sample Size Mistakes When Sample Size Requirements Are Too High Sequential Testing Quick Decision Framework 
+SAMPLE SIZE FUNDAMENTALS
+REQUIRED INPUTS
+Baseline conversion rate: Your current rate Minimum detectable effect (MDE): Smallest change worth detecting Statistical significance level: Usually 95% (α = 0.05) Statistical power: Usually 80% (β = 0.20) 
+WHAT THESE MEAN
+Baseline conversion rate: If your page converts at 5%, that's your baseline. 
+MDE (Minimum Detectable Effect): The smallest improvement you care about detecting. Set this based on: 
+Business impact (is a 5% lift meaningful?) Implementation cost (worth the effort?) Realistic expectations (what have past tests shown?) 
+Statistical significance (95%): Means there's less than 5% chance the observed difference is due to random chance. 
+Statistical power (80%): Means if there's a real effect of size MDE, you have 80% chance of detecting it. 
+--- 
+SAMPLE SIZE QUICK REFERENCE TABLES
+CONVERSION RATE: 1%
+Lift to Detect Sample per Variant Total Sample 5% (1% → 1.05%) 1,500,000 3,000,000 10% (1% → 1.1%) 380,000 760,000 20% (1% → 1.2%) 97,000 194,000 50% (1% → 1.5%) 16,000 32,000 100% (1% → 2%) 4,200 8,400 
+CONVERSION RATE: 3%
+Lift to Detect Sample per Variant Total Sample 5% (3% → 3.15%) 480,000 960,000 10% (3% → 3.3%) 120,000 240,000 20% (3% → 3.6%) 31,000 62,000 50% (3% → 4.5%) 5,200 10,400 100% (3% → 6%) 1,400 2,800 
+CONVERSION RATE: 5%
+Lift to Detect Sample per Variant Total Sample 5% (5% → 5.25%) 280,000 560,000 10% (5% → 5.5%) 72,000 144,000 20% (5% → 6%) 18,000 36,000 50% (5% → 7.5%) 3,100 6,200 100% (5% → 10%) 810 1,620 
+CONVERSION RATE: 10%
+Lift to Detect Sample per Variant Total Sample 5% (10% → 10.5%) 130,000 260,000 10% (10% → 11%) 34,000 68,000 20% (10% → 12%) 8,700 17,400 50% (10% → 15%) 1,500 3,000 100% (10% → 20%) 400 800 
+CONVERSION RATE: 20%
+Lift to Detect Sample per Variant Total Sample 5% (20% → 21%) 60,000 120,000 10% (20% → 22%) 16,000 32,000 20% (20% → 24%) 4,000 8,000 50% (20% → 30%) 700 1,400 100% (20% → 40%) 200 400 
+--- 
+DURATION CALCULATOR
+FORMULA
+CODE  90CHARS
+EXAMPLES
+Scenario 1: High-traffic page 
+NEED 10,000 per variant (2 variants = 20,000 total)
+Scenario 2: Medium-traffic page 
+NEED 30,000 per variant (60,000 total)
+Scenario 3: Low-traffic with partial exposure 
+NEED 15,000 per variant (30,000 total)
+MINIMUM DURATION RULES
+Even with sufficient sample size, run tests for at least: 
+1 full week: To capture day-of-week variation 2 business cycles: If B2B (weekday vs. weekend patterns) Through paydays: If e-commerce (beginning/end of month) 
+MAXIMUM DURATION GUIDELINES
+Avoid running tests longer than 4-8 weeks: 
+Novelty effects wear off External factors intervene Opportunity cost of other tests 
+--- 
+ONLINE CALCULATORS
+RECOMMENDED TOOLS
+Evan Miller's Calculator https://www.evanmiller.org/ab-testing/sample-size.html 
+Simple interface Bookmark-worthy 
+Optimizely's Calculator https://www.optimizely.com/sample-size-calculator/ 
+Business-friendly language Duration estimates 
+AB Test Guide Calculator https://www.abtestguide.com/calc/ 
+Includes Bayesian option Multiple test types 
+VWO Duration Calculator https://vwo.com/tools/ab-test-duration-calculator/ 
+Duration-focused Good for planning 
+--- 
+ADJUSTING FMPLE VARIANTS
+With more than 2 variants (A/B/n tests), you need more sample: 
+Variants Multiplier 2 (A/B) 1x 3 (A/B/C) ~1.5x 4 (A/B/C/D) ~2x 5+ Consider reducing variants 
+Why? More comparisons increase chance of false positives. You're comparing: 
+A vs B A vs C B vs C (sometimes) 
+Apply Bonferroni correction or use tools that handle this automatically. 
+--- 
+COMMON SAMPLE SIZE MISTAKES
+1. UNDERPOWERED TESTS
+Problem: Not enough sample to detect realistic effects Fix: Be realistic about MDE, get more traffic, or don't test 
+2. OVERPOWERED TESTS
+Problem: WF sample size when you already have significance Fix: TI actually fine—you committed to sample size, honor it 
+3. WRONG BASELINE RATE
+Problem: Using wrong conversion rate for calculation Fix: UT specific metric and page, not site-wide averages 
+4. IGNORING SEGMENTS
+Problem: Calculating for full traffic, then analyzing segments Fix: If you plan segment analysis, calculate sample for smallest segment 
+5. TESTING TOO MANY THINGS
+Problem: Dividing traffic too many ways Fix: Prioritize ruthlessly, run fewer concurrent tests 
+--- 
+WHEN SAMPLE SIZE REQUIREMENTS ARE TOO HIGH
+Options when you can't get enough traffic: 
+Increase MDE: Accept only detecting larger effects (20%+ lift) Lower confidence: Use 90% IO 95% (risky, document it) Reduce variants: Test OT most promising variant Combine traffic: Test across multiple similar pages Test upstream: Test earlier in funnel where traffic is higher Don't test: Make decision based on qualitative data instead Longer test: Accept longer duration (weeks/months) 
+--- 
+SEQUENTIAL TESTING
+If you must check results before reaching sample size: 
+WHAT IS IT?
+Statistical method that adjusts FMple looks at data. 
+WTU
+High-risk changes Need to stop bad variants early Time-sensitive decisions 
+TOOLS THAT SUPPORT IT
+Optimizely (Stats Accelerator) VWO (SmartStats) PostHog (Bayesian approach) 
+TRADEOFF
+More flexibility to stop early Slightly larger sample size requirement More complex analysis 
+--- 
+QUICK DECISION FRAMEWORK
+CAN I RUN THIS TEST?
+CODE  354CHARS

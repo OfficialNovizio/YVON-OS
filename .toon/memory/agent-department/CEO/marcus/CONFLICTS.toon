@@ -1,2 +1,10 @@
-#MEM id=marcus source=/root/yvon/agent-department/CEO/marcus/CONFLICTS.md savings=36%
-M|Agen|tx|> Inherits from project root CONFLICTS.md. Add ag-specific conflicts here only.
+SRC agent-department/CEO/marcus/CONFLICTS.md
+ORIG_SIZE 140
+SECTIONS 3
+ABBREVS 1
+INDEX_TERMS 12
+COMPILED 2026-06-13T19:23:24.741Z
+---
+AGENT: MARCUS — CONFLICT RESOLUTIONS
+IFPR CONFLICTS.md. Add agent-specific conflicts here only. 
+(NONE YET)

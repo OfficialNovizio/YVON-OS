@@ -1,201 +1,58 @@
-#MEM id=finances source=/root/yvon/agent-department/Finance/felix/skills/marketplace/finances/SKILL.md savings=7%
-M||tx|---
-M||name|finances
-M||desc|"Use this skill when the us needs to bd a financial md, calculate unit economics, understand MRR/ARR/churn, or figure out their quit number. Covers SaaS metrics, CAC/LTV, burn rate, cash flow modeling, and making unit economics legible for non-fi founders."
-M||tx|---
-M|SaaS|tx|A SaaS business is a math machine. If you don't know your numbers, you're guessing. This skill makes unit economics legible — MRR, CAC, LTV, churn, burn rate — clear enough to make decisions, rigorous enough to be trusted.
-M|Core|it|A SaaS business is a math machine. If you don't know your numbers, you're guessing.
-M|Core|it|Unit economics tell the truth abt your business long before your bank account does.
-M|Core|it|The only financial md that matters for a solo founder is one that fits on a single spreadsheet and gets updated monthly.
-M|Core|it|rv is vanity. Margin is sanity. Cash flow is reality.
-M|Core|- Ev|"shd I spend more here?" or "Is this working?"
-M|The |Befo|
-M|The |tx|```
-M|The |Mont|
-M|The |Rent|$______
-M|The |Insu|$______
-M|The |Food|$______
-M|The |Debt|$______
-M|The |Ever|$______
-M|The |Safe|$______
-M|The |= Mo|$______
-M|The |Requ|
-M|The |tx|Monthly nut ÷ 0.70 = $______
-M|The |tx|(0.70 accounts for taxes, SaaS costs, and variance)
-M|The |At y|
-M|The |tx|Required MRR ÷ Price = cs needed
-M|The |Time|
-M|The |tx|cs needed ÷ realistic monthly growth rate = months to quit
-M|The |tx|```
-M|The |**Re|If you need 500+ cs at $29/mo to quit, that's an 18-36 month journey. Plan accordingly.
-M|Pers|tx|```
-M|Pers|Runw|
-M|Pers|Curr|$______
-M|Pers|Mont|$______
-M|Pers|Savi|______
-M|Pers|Hard|Date you MUST have rv or go back to employment.
-M|Pers|Star|
-M|Pers|Doma|$100-500
-M|Pers|LLC |$50-500
-M|Pers|Tool|$0-200/mo
-M|Pers|Paid|$500-1,000
-M|Pers|Lega|$500-2,000
-M|Pers|= To|$______
-M|Pers|Mont|
-M|Pers|Host|$______
-M|Pers|SaaS|$______
-M|Pers|Emai|$______
-M|Pers|Paym|$______
-M|Pers|= Mo|$______
-M|Pers|tx|```
-M|The |tx|**Monthly Recurring rv (MRR)**
-M|The |tx|```
-M|The |tx|MRR = Sum of all active monthly subscription amounts
-M|The |MRR |
-M|The |New |rv from new cs this month
-M|The |Expa|rv from upgrades/seat additions
-M|The |Cont|rv lost from downgrades
-M|The |Chur|rv lost from cancellations
-M|The |Net |New + Expansion - Contraction - Churned
-M|The |tx|```
-M|The |tx|**Annual Recurring rv (ARR)**
-M|The |tx|```
-M|The |tx|ARR = MRR × 12
-M|The |tx|(Only use this once MRR is relatively stable. Don't annualize your first month.)
-M|The |tx|```
-M|The |tx|**cs Acquisition Cost (CAC)**
-M|The |tx|```
-M|The |tx|CAC = Total acquisition spend ÷ New cs acquired (in same period)
-M|The |Incl|Ad spend, outreach tools, cn costs, your time (value it at $0
-M|The |tx|for solo founder or at your opportunity cost — be consistent).
-M|The |By c|
-M|The |SEO |cn costs ÷ SEO-attributed signups
-M|The |Paid|Ad spend ÷ Paid-attributed signups
-M|The |Outr|Tool costs ÷ Outreach-attributed signups
-M|The |tx|```
-M|The |tx|**Lifetime Value (LTV)**
-M|The |tx|```
-M|The |Simp|
-M|The |tx|LTV = ARPU ÷ Monthly churn rate
-M|The |Exam|
-M|The |tx|ARPU = $49/mo, Monthly churn = 5%
-M|The |tx|LTV = $49 ÷ 0.05 = $980
-M|The |With|
-M|The |tx|LTV = (ARPU × Gross margin %) ÷ Monthly churn rate
-M|The |tx|```
-M|The |**LT|CAC Ratio**
-M|The |tx|```
-M|The |LTV|CAC = LTV ÷ CAC
-M|The |Benc|
-M|The |< 1|1   You lose money on every cs. Stop spending.
-M|The |1-3|1   Unsustainable. Improve retention or reduce CAC.
-M|The |3|1     Healthy target for most SaaS.
-M|The |> 5|1   You're probably underinvesting in growth.
-M|The |tx|```
-M|The |tx|**CAC Payback Period**
-M|The |tx|```
-M|The |tx|Payback = CAC ÷ (ARPU × Gross margin %)
-M|The |Exam|
-M|The |tx|CAC = $150, ARPU = $49/mo, Gross margin = 85%
-M|The |tx|Payback = $150 ÷ ($49 × 0.85) = 3.6 months
-M|The |Benc|
-M|The |< 6 |Excellent for solo founder
-M|The |6-12|Acceptable
-M|The |> 12|Dangerous w/o funding
-M|The |tx|```
-M|The |tx|**Churn Rate**
-M|The |tx|```
-M|The |Logo|
-M|The |tx|cs lost this month ÷ cs at start of month
-M|The |Reve|
-M|The |tx|MRR lost this month ÷ MRR at start of month
-M|The |Net |
-M|The |tx|(MRR at start + Expansion - Contraction - Churn) ÷ MRR at start
-M|The |tx|NRR > 100% means existing cs grow faster than they churn.
-M|The |Benc|
-M|The |Logo|Acceptable early stage
-M|The |Logo|Good
-M|The |Reve|Target
-M|The |NRR |Excellent (expansion rv working)
-M|The |tx|```
-M|Unit|Buil|
-M|Unit|tx|```
-M|Unit|tx|\| Metric                    \| Month 1 \| Month 2 \| Month 3 \| ... \|
-M|Unit|tx|\|---------------------------\|---------\|---------\|---------\|-----\|
-M|Unit|tx|\| New cs             \|         \|         \|         \|     \|
-M|Unit|tx|\| Churned cs         \|         \|         \|         \|     \|
-M|Unit|tx|\| Total cs (end)     \|         \|         \|         \|     \|
-M|Unit|tx|\| MRR                       \|         \|         \|         \|     \|
-M|Unit|tx|\| Net new MRR               \|         \|         \|         \|     \|
-M|Unit|tx|\| rv (collected)       \|         \|         \|         \|     \|
-M|Unit|tx|\| COGS (hosting, APIs, etc) \|         \|         \|         \|     \|
-M|Unit|tx|\| Gross profit              \|         \|         \|         \|     \|
-M|Unit|tx|\| Gross margin %            \|         \|         \|         \|     \|
-M|Unit|tx|\| Total acquisition spend   \|         \|         \|         \|     \|
-M|Unit|tx|\| CAC                       \|         \|         \|         \|     \|
-M|Unit|tx|\| LTV                       \|         \|         \|         \|     \|
-M|Unit|| LT|CAC                   \|         \|         \|         \|     \|
-M|Unit|tx|\| Payback (months)          \|         \|         \|         \|     \|
-M|Unit|tx|\| Operating expenses        \|         \|         \|         \|     \|
-M|Unit|tx|\| Net profit/loss           \|         \|         \|         \|     \|
-M|Unit|tx|\| Cash balance              \|         \|         \|         \|     \|
-M|Unit|tx|\| Runway (months)           \|         \|         \|         \|     \|
-M|Unit|tx|```
-M|Reve|Map |
-M|Reve|tx|```
-M|Reve|Prim|
-M|Reve|Mont|$X/mo × estimated cs = $______
-M|Reve|Annu|$Y/yr × estimated cs = $______
-M|Reve|Seco|
-M|Reve|Usag|Estimated average overage/cs = $______
-M|Reve|One-|$Z × new cs/month = $______
-M|Reve|Cons|Hours/month × rate = $______
-M|Reve|Reve|
-M|Reve|Recu|____% (target >80%)
-M|Reve|One-|____% (keep <20%)
-M|Reve|Serv|____% (keep <10% — doesn't scale)
-M|Reve|tx|```
-M|Esse|Trac|
-M|Esse|**Gr|**
-M|Esse|it|MRR (absolute and growth rate)
-M|Esse|it|New signups this week
-M|Esse|it|Activation rate (signups → activated)
-M|Esse|it|Conversion rate (activated → paying)
-M|Esse|**Re|**
-M|Esse|it|Monthly logo churn rate
-M|Esse|it|Monthly rv churn rate
-M|Esse|it|Net rv retention
-M|Esse|**Ec|**
-M|Esse|it|CAC by channel
-M|Esse|- LT|CAC ratio
-M|Esse|it|Gross margin %
-M|Esse|it|Cash runway (months)
-M|Esse|**Le|**
-M|Esse|it|Traffic to mk site
-M|Esse|it|Trial starts
-M|Esse|it|Feature adoption rates
-M|Esse|it|Support ticket volume (rising = problems ahead)
-M|Fina|Don'|
-M|Fina|tx|```
-M|Fina|Cons|
-M|Fina|Pre-|add 5-15 cs/month
-M|Fina|$1K-|10-20% MRR growth/month
-M|Fina|$5K-|5-15% MRR growth/month
-M|Fina|$20K|3-8% MRR growth/month
-M|Fina|3-mo|
-M|Fina|tx|Current MRR × (1 + monthly growth rate)^3 = projected MRR
-M|Fina|Brea|
-M|Fina|tx|Monthly opex ÷ ARPU = cs needed to break even
-M|Fina|tx|cs needed ÷ monthly new cs = months to break even
-M|Fina|tx|```
-M|When|Red |
-M|When|- LT|CAC < 1 after 3+ months of trying to improve it
-M|When|it|Monthly churn > 10% w/ no clear fix
-M|When|it|CAC increasing month over month despite optimizations
-M|When|it|Activation rate < 20% (pd-mk fit problem)
-M|When|it|rv plateaus for 3+ months despite active effort
-M|When|it|Cash runway < 3 months w/ no path to profitability
-M|Rela|it|**accounting** — Bookkeeping, tax prep, and financial operations
-M|Rela|it|**pricing** — Set prices that support healthy unit economics
-M|Rela|it|**an** — Track the pd metrics that feed financial md
-M|Rela|it|**ad** — CAC tracking and paid acquisition budgeting
+SRC agent-department/Finance/felix/skills/marketplace/finances/SKILL.md
+ORIG_SIZE 8680
+SECTIONS 52
+ABBREVS 7
+INDEX_TERMS 201
+COMPILED 2026-06-13T19:23:24.974Z
+---
+NAME finances
+SAAS FINANCIAL MODELING & METRICS
+A SaaS business is a math machine. If you don't know your numbers, you're guessing. This skill makes unit economics legible — MRR, CAC, LTV, churn, burn rate — clear enough to make decisions, rigorous enough to be trusted. 
+CPS
+A SaaS business is a math machine. If you don't know your numbers, you're guessing. Unit economics tell the truth about your business long before your bank account does. The only financial model that matters for a solo founder is one that fits on a single spreadsheet and gets updated monthly. Revenue is vanity. Margin is sanity. Cash flow is reality. Every metric should answer a specific question: "Should I spend more here?" or "Is this working?" 
+THE QUIT NUMBER
+Before building anything, calculate what it takes to replace your income: 
+CODE  534CHARS
+Reality check: If you need 500+ customers at $29/mo to quit, that's an 18-36 month journey. Plan accordingly. 
+PERSONAL CONSTRAINT BUDGET
+CODE  692CHARS
+CORE SAAS METRICS
+THE METRICS THAT MATTER (AND OTSE)
+CODE  336CHARS
+Monthly Recurring Revenue (MRR) 
+CODE  96CHARS
+Annual Recurring Revenue (ARR) 
+CODE  388CHARS
+Customer Acquisition Cost (CAC) 
+CODE  191CHARS
+Lifetime Value (LTV) 
+CODE  242CHARS
+LTV:CAC Ratio 
+CODE  265CHARS
+CAC PP 
+CODE  501CHARS
+CR 
+UNIT ECONOMICS CALCULATION
+Build this table monthly: 
+CODE  1320CHARS
+REVENUE MIX MODEL
+Map your revenue sources: 
+CODE  510CHARS
+ESSENTIAL METRICS DASHBOARD
+Track weekly, review monthly: 
+Growth metrics: 
+MRR (absolute and growth rate) New signups this week AR (signups → activated) Conversion rate (activated → paying) 
+Retention metrics: 
+Monthly logo CR Monthly revenue CR Net revenue retention 
+Economics metrics: 
+CAC_BY_CHANNEL_LTV CAC ratio
+Leading indicators (predict future revenue): 
+Traffic to marketing site Trial starts Feature adoption rates Support ticket volume (rising = problems ahead) 
+FINANCIAL FORECASTING (SIMPLE)
+Don't build a complex model. Use this: 
+CODE  480CHARS
+WHEN THE NUMBERS SAY STOP
+Red flags that mean pivot or stop: 
+LTV CAC < 1 after 3+ months of trying to improve it
+RELATED SKILLS
+accounting — Bookkeeping, tax prep, and financial operations pricing — Set prices that support healthy unit economics analytics — Track the product metrics that feed financial models ads — CAC tracking and paid acquisition budgeting 

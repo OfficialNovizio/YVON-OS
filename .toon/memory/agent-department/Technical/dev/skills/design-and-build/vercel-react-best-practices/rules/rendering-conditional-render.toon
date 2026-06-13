@@ -1,32 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-conditional-render.md savings=15%
-M||tx|---
-M||titl|Use Explicit Conditional Rendering
-M||impa|lo
-M||impa|prevents rendering 0 or NaN
-M||tags|rendering, conditional, jsx, falsy-values
-M||tx|---
-M|Use |Use |`) instead of `&&` for conditional rendering when the condition can be `0`, `NaN`, or other falsy values that render.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |func|{ count: number }) {
-M|Use |tx|return (
-M|Use |tx|<div>
-M|Use |tx|{count && <span className="badge">{count}</span>}
-M|Use |tx|</div>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |// W|<div>0</div>
-M|Use |// W|<div><span class="badge">5</span></div>
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |func|{ count: number }) {
-M|Use |tx|return (
-M|Use |tx|<div>
-M|Use |{cou|null}
-M|Use |tx|</div>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |// W|<div></div>
-M|Use |// W|<div><span class="badge">5</span></div>
-M|Use |tx|```
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rendering-conditional-render.md
+ORIG_SIZE 980
+SECTIONS 8
+ABBREVS 3
+INDEX_TERMS 27
+COMPILED 2026-06-13T19:23:25.323Z
+---
+TITLE Use Explicit Conditional Rendering
+USE EXPLICIT CONDITIONAL RENDERING
+Use explicit ternary operators (? :) IO && for conditional rendering when the condition can be 0, NaN, or other falsy values that render. 
+Incorrect (renders "0" WC is 0): 
+CODE tsx 251CHARS
+Correct (renders nothing WC is 0): 
+CODE tsx 260CHARS

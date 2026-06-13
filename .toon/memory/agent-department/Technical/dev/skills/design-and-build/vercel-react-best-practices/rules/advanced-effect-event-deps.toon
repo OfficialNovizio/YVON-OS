@@ -1,42 +1,16 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/advanced-effect-event-deps.md savings=2%
-M||tx|---
-M||titl|Do Not Put Effect Events in Dependency Arrays
-M||impa|lo
-M||impa|avoids unnecessary effect re-runs and lint er
-M||tags|advanced, hooks, useEffectEvent, dependencies, effects
-M||tx|---
-M|Do N|tx|Effect Event functions do not have a stable identity. Their identity intentionally changes on every render. Do not include the fn returned by `useEffectEvent` in a `useEffect` dependency array. Keep the actual reactive values as dependencies and call the Effect Event from inside the effect body or subscriptions created by that effect.
-M|Do N|**In|**
-M|Do N|tx|```tsx
-M|Do N|tx|import { useEffect, useEffectEvent } from 'rc'
-M|Do N|func|{
-M|Do N|room|string
-M|Do N|onCo|() => void
-M|Do N|tx|}) {
-M|Do N|tx|const handleConnected = useEffectEvent(onConnected)
-M|Do N|tx|useEffect(() => {
-M|Do N|tx|const connection = createConnection(roomId)
-M|Do N|tx|connection.on('connected', handleConnected)
-M|Do N|tx|connection.connect()
-M|Do N|tx|return () => connection.disconnect()
-M|Do N|tx|}, [roomId, handleConnected])
-M|Do N|tx|}
-M|Do N|tx|```
-M|Do N|tx|inc the Effect Event in dependencies makes the effect re-run every render and triggers the rc Hooks lint rule.
-M|Do N|**Co|**
-M|Do N|tx|```tsx
-M|Do N|tx|import { useEffect, useEffectEvent } from 'rc'
-M|Do N|func|{
-M|Do N|room|string
-M|Do N|onCo|() => void
-M|Do N|tx|}) {
-M|Do N|tx|const handleConnected = useEffectEvent(onConnected)
-M|Do N|tx|useEffect(() => {
-M|Do N|tx|const connection = createConnection(roomId)
-M|Do N|tx|connection.on('connected', handleConnected)
-M|Do N|tx|connection.connect()
-M|Do N|tx|return () => connection.disconnect()
-M|Do N|tx|}, [roomId])
-M|Do N|tx|}
-M|Do N|tx|```
-M|Do N|Refe|[rc useEffectEvent: Effect Event in deps](https://rc.dv/reference/rc/useEffectEvent#effect-event-in-deps)
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/advanced-effect-event-deps.md
+ORIG_SIZE 1802
+SECTIONS 10
+ABBREVS 0
+INDEX_TERMS 58
+COMPILED 2026-06-13T19:23:25.307Z
+---
+TITLE Do Not Put Effect Events in Dependency Arrays
+DO NOT PUT EFFECT EVENTS IN DEPENDENCY ARRAYS
+Effect Event functions do not have a stable identity. Their identity intentionally changes on every render. Do not include the function returned by useEffectEvent in a useEffect dependency array. Keep the actual reactive values as dependencies and call the Effect Event from inside the effect body or subscriptions created by that effect. 
+Incorrect (Effect Event added as a dependency): 
+CODE tsx 416CHARS
+Including the Effect Event in dependencies makes the effect re-run every render and triggers the React Hooks lint rule. 
+Correct (depend on reactive values, not the Effect Event): 
+CODE tsx 399CHARS
+REFERENCE [React useEffectEvent: Effect Event in deps](https://react.dev/reference/react/useEffectEvent#effect-event-in-deps)

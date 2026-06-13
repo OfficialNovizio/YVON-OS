@@ -1,74 +1,55 @@
-#MEM id=postmortem source=/root/yvon/agent-department/COO/diana/skills/marketplace/postmortem/SKILL.md savings=-5%
-M||tx|---
-M||name|postmortem
-M||desc|Blameless post-mortem incident al w/ timeline, root cause, and action items. Use after outages, sec incidents, project failures, or any event you want to prevent recurring.
-M||user|true
-M||tx|---
-M|Blam|tx|Conduct a thorough, blameless al of an incident to understand what happened and prevent recurrence.
-M|Inst|tx|Work through each section systematically. Focus on systems and processes, not individuals. The goal is learning, not blame.
-M|Exec|**In|[One-line description]
-M|Exec|**Da|[When it occurred]
-M|Exec|**Du|[How long]
-M|Exec|**Se|[ct/hi/md/lo]
-M|Exec|tx|**Summary**
-M|Exec|[2-3|what happened, impact, resolution]
-M|Exec|tx|---
-M|Time|tx|All times in [timezone].
-M|Time|tx|\| Time \| Event \| Actor \|
-M|Time|tx|\|------\|-------\|-------\|
-M|Time|| HH|MM \| [What happened] \| [Who/what did it] \|
-M|Time|| HH|MM \| [Detection] \| [How it was noticed] \|
-M|Time|| HH|MM \| [rp action] \| [Who responded] \|
-M|Time|| HH|MM \| [Resolution] \| [What fixed it] \|
-M|Time|tx|**Key Moments**
-M|Time|- **|[What initiated the incident]
-M|Time|- **|[How/when we knew something was wrong]
-M|Time|- **|[When bleeding was stopped]
-M|Time|- **|[When fully resolved]
-M|Time|tx|---
-M|Impa|tx|**cs Impact**
-M|Impa|- Us|[number]
-M|Impa|- Du|[time]
-M|Impa|- Sy|[what us saw]
-M|Impa|tx|**Business Impact**
-M|Impa|- Re|[if applicable]
-M|Impa|- SL|[yes/no, details]
-M|Impa|tx|---
-M|Root|tx|**Root Cause**
-M|Root|tx|[The fundamental reason this happened—not the trigger, but why the trigger caused an incident]
-M|Root|tx|**Trigger**
-M|Root|tx|[The immediate cause—what set things in motion]
-M|Root|tx|**Contributing Factors**
-M|Root|tx|\| Factor \| How It Contributed \|
-M|Root|tx|\|--------\|-------------------\|
-M|Root|tx|\| [factor] \| [explanation] \|
-M|Root|tx|**Why Wasn't This Caught?**
-M|Root|it|Why didn't tests catch it?
-M|Root|it|Why didn't monitoring alert earlier?
-M|Root|tx|---
-M|What|tx|\| What Worked \| Why It Helped \|
-M|What|tx|\|-------------\|---------------\|
-M|What|tx|\| [thing] \| [explanation] \|
-M|What|tx|---
-M|What|tx|\| What Failed \| Impact \|
-M|What|tx|\|-------------\|--------\|
-M|What|tx|\| [thing] \| [impact] \|
-M|What|tx|---
-M|Acti|tx|**Immediate** (This week)
-M|Acti|tx|\| Action \| Owner \| Due \|
-M|Acti|tx|\|--------\|-------\|-----\|
-M|Acti|tx|\| [action] \| [owner] \| [date] \|
-M|Acti|tx|**Short-term** (This month)
-M|Acti|tx|\| Action \| Owner \| Due \|
-M|Acti|tx|\|--------\|-------\|-----\|
-M|Acti|tx|\| [action] \| [owner] \| [date] \|
-M|Acti|tx|---
-M|Less|tx|1. [lesson]
-M|Less|tx|2. [lesson]
-M|Less|tx|3. [lesson]
-M|Less|tx|---
-M|Guid|- **|"The dp script didn't validate" not "Alice deployed w/o checking"
-M|Guid|- **|Include everything, even embarrassing delays
-M|Guid|- **|"Add memory alerting" not "Improve monitoring"
-M|Guid|- **|Unowned actions don't happen
-M|Guid|tx|$ARGUMENTS
+SRC agent-department/COO/diana/skills/marketplace/postmortem/SKILL.md
+ORIG_SIZE 2738
+SECTIONS 49
+ABBREVS 0
+INDEX_TERMS 156
+COMPILED 2026-06-13T19:23:24.894Z
+---
+NAME postmortem
+BLAMELESS POST-MORTEM
+Conduct a thorough, blameless analysis of an incident to understand what happened and prevent recurrence. 
+INSTRUCTIONS
+Work through each section systematically. Focus on systems and processes, not individuals. The goal is learning, not blame. 
+OUTPUT FORMAT
+EXECUTIVE SUMMARY
+Incident: [One-line description] Date/Time: [When it occurred] Duration: [How long] Severity: [Critical/High/Medium/Low] 
+Summary [2-3 sentence overview: what happened, impact, resolution] 
+--- 
+TIMELINE
+All times in [timezone]. 
+Time Event Actor HH:MM [What happened] [Who/what did it] HH:MM [Detection] [How it was noticed] HH:MM [Response action] [Who responded] HH:MM [Resolution] [What fixed it] 
+Key Moments 
+Trigger: [What initiated the incident] Detection: [How/when we knew something was wrong] Mitigation: [When bleeding was stopped] Resolution: [When fully resolved] 
+--- 
+IMPACT
+Customer Impact 
+USERS_AFFECTED [number]
+Business Impact 
+REVENUE_IMPACT [if applicable]
+--- 
+ROOT CAUSE ANALYSIS
+Root Cause [The fundamental reason this happened—not the trigger, but why the trigger caused an incident] 
+Trigger [The immediate cause—what set things in motion] 
+Contributing Factors 
+Factor How It Contributed [factor] [explanation] 
+Why Wasn't This Caught? 
+Why didn't tests catch it? Why didn't monitoring alert earlier? 
+--- 
+WHAT WENT WELL
+What Worked Why It Helped [thing] [explanation] 
+--- 
+WHAT WENT POORLY
+What Failed Impact [thing] [impact] 
+--- 
+ACTION ITEMS
+Immediate (This week) 
+Action Owner Due [action] [owner] [date] 
+Short-term (This month) 
+Action Owner Due [action] [owner] [date] 
+--- 
+LESSONS LEARNED
+[lesson] [lesson] [lesson] 
+--- 
+GUIDELINES
+Blameless: "The deploy script didn't validate" not "Alice deployed without checking" Thorough timeline: Include everything, even embarrassing delays Specific actions: "Add memory alerting" not "Improve monitoring" Assigned owners: Unowned actions don't happen 
+$ARGUMENTS 

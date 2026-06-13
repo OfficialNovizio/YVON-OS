@@ -1,14 +1,14 @@
-#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/TOOLS.md savings=2%
-M|Memo|tx|```
-M|Memo|tx|GET /ap/settings?tp=memory&agentId=px-production&ventureId=<activeVentureId>
-M|Memo|POST|current_status, recent_tasks, production_log
-M|Memo|tx|```
-M|Vent|tx|```
-M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
-M|Vent|tx|```
-M|Futu|tx|\| Tool \| Purpose \| Status \|
-M|Futu|tx|\|------\|---------\|--------\|
-M|Futu|tx|\| Midjourney MCP \| Primary batch generation pipeline \| Planned \|
-M|Futu|tx|\| DALL-E ap (`/ap/im-gn`) \| Alternative / fallback generation \| Planned \|
-M|Futu|tx|\| Replicate MCP \| Upscaling pipeline (Real-ESRGAN) \| Planned \|
-M|Futu|tx|\| Stable Diffusion MCP \| Local generation for large batches \| Planned \|
+SRC agent-department/Marketing/pixel/TOOLS.md
+ORIG_SIZE 680
+SECTIONS 7
+ABBREVS 0
+INDEX_TERMS 37
+COMPILED 2026-06-13T19:23:25.165Z
+---
+TOOLS.MD — PIXEL, PRODUCTION MANAGER
+MEMORY (VIA /API/SETTINGS)
+CODE  155CHARS
+VENTURE CONTEXT
+CODE  45CHARS
+FUTURE GENERATION TOOLS
+Tool Purpose Status Midjourney MCP Primary batch generation pipeline Planned DALL-E API (`/api/image-generate`) Alternative / fallback generation Planned Replicate MCP Upscaling pipeline (Real-ESRGAN) Planned Stable Diffusion MCP Local generation for large batches Planned 

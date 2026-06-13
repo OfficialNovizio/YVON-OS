@@ -1,83 +1,54 @@
-#MEM id=audience-architecture source=/root/yvon/agent-department/Marketing/rio/skills/custom/audience-architecture/SKILL.md savings=9%
-M||tx|---
-M||name|audience-architecture
-M||desc|yv-specific layered audience stack for nz (Meta + TikTok) and hb (LinkedIn + YouTube). Defines cold/lookalike/retargeting layers, exclusion rules, seed sources, and retargeting windows. Load before building or reviewing any audience targeting brief.
-M||vers|1.0.0
-M||tx|---
-M|Purp|Gene|vt-specific exclusion rules and the correct layering sequence. Running cold and retargeting simultaneously to the same us creates message confusion. Seeding a lookalike from fewer than 100 purchasers produces an unreliable signal. This skill makes the audience architecture explicit and yv-specific.
-M|Purp|tx|---
-M|Laye|**Me|**
-M|Laye|- In|fashion, luxury fashion, sustainable fashion, street style, editorial fashion
-M|Laye|- De|22–45, all genders unless pd-specific
-M|Laye|- Ex|past purchasers (all time), website visitors (last 180 days), bargain/discount interests (coupon apps, sale alerts, fast fashion)
-M|Laye|- Mi|500K before launching cold cg
-M|Laye|**Ti|**
-M|Laye|- In|fashion, style, lifestyle, luxury
-M|Laye|- Be|vd completion rate > 75% on fashion cn
-M|Laye|- Ex|past purchasers if px data available
-M|Laye|- Mi|200K
-M|Laye|**Cr|** Aspirational, editorial. Esteem and aspiration triggers. Never urgency or discount framing.
-M|Laye|tx|---
-M|Laye|**Se|**
-M|Laye|tx|1. Purchaser em list — highest-qual seed
-M|Laye|tx|2. Add-to-cart us (last 90 days) — second best
-M|Laye|tx|3. Top 25% engagement audience (Instagram profile engagers) — if purchase list < 100 us
-M|Laye|**Mi|** 100 us. Below this threshold, the lookalike signal is unreliable — do not run.
-M|Laye|**Lo|**
-M|Laye|- 1%|most similar to seed — highest intent, smallest audience
-M|Laye|- 1–|broader pool — more volume, slightly lower intent
-M|Laye|it|Run both tiers as separate ad sets to identify which converts better
-M|Laye|**Ex|** Exclude actual purchasers and current website visitors from lookalike audiences.
-M|Laye|**Cr|** sl proof angle, pd qual story. Still br-first, not discount-first.
-M|Laye|tx|---
-M|Laye|**Wi|**
-M|Laye|tx|\| Audience \| Window \| Creative angle \|
-M|Laye|tx|\|---------\|--------\|---------------\|
-M|Laye|tx|\| Checkout abandoners \| 7 days \| pd-specific, minimal friction CTA \|
-M|Laye|tx|\| Add-to-cart, no purchase \| 14 days \| pd benefit reminder \|
-M|Laye|tx|\| pd page visitors \| 14 days \| br credibility + pd \|
-M|Laye|tx|\| vd viewers (75%+ completion) \| 30 days \| nx step in funnel \|
-M|Laye|tx|\| Instagram/TikTok engagers \| 30 days \| br story continuation \|
-M|Laye|**Ru|** Retargeting always shows different creative from cold. If they've seen the br, do not show the awareness ad again.
-M|Laye|tx|---
-M|Laye|**Li|**
-M|Laye|- Jo|freelancer, independent consultant, contractor, agency owner, self-employed, founder (< 10 employees)
-M|Laye|- Co|1–10, 11–50
-M|Laye|- Ge|English-speaking markets first (US, UK, CA, AU)
-M|Laye|- Ex|enterprise job titles (VP, Director at 500+ companies), students, job seekers
-M|Laye|- Mi|10K before launching on LinkedIn
-M|Laye|**Yo|**
-M|Laye|- Cu|us who searched cr terms (Toggl, Harvest, Clockify, FreshBooks time tracking)
-M|Laye|- In|small business software, freelance tools
-M|Laye|- Ex|existing trial us if matched via em
-M|Laye|**Cr|** Safety and trust triggers. "Always know where your hours went." Professional, not enthusiastic.
-M|Laye|tx|---
-M|Laye|tx|hb's audience is too small for meaningful lookalike. Skip straight to retargeting after cold.
-M|Laye|**Re|**
-M|Laye|tx|\| Audience \| Window \| Creative angle \|
-M|Laye|tx|\|---------\|--------\|---------------\|
-M|Laye|tx|\| Pricing page visitors \| 7 days \| Specific outcome + sl proof \|
-M|Laye|tx|\| Trial sign-ups — not activated \| 7 days \| Activation reminder, specific first step \|
-M|Laye|tx|\| Trial sign-ups — active but not converting \| 14 days \| Value proof, what they'll lose at trial end \|
-M|Laye|tx|\| Trial expired, not converted \| 30 days \| Win-back offer or extended trial \|
-M|Laye|tx|\| Active paying cs \| Excluded from all prospecting \|
-M|Laye|**Wi|** 60–90 days for lapsed trials. Different message entirely — acknowledge the gap.
-M|Laye|tx|---
-M|Univ|tx|1. **Never cold-target and retarget the same us simultaneously.** Audiences must be mutually exclusive — always add exclusion layers.
-M|Univ|tx|2. **Never run lookalike from fewer than 100 seed us.** The signal is too weak to be reliable.
-M|Univ|tx|3. **Exclude active paying cs from all prospecting and retargeting** — they're not a prospect.
-M|Univ|4. *|**
-M|Univ|- Me|500K
-M|Univ|- Ti|200K
-M|Univ|- Li|10K
-M|Univ|- Yo|1K
-M|Univ|tx|Below these thresholds, the platform can't optimise — CPMs rise and delivery stalls.
-M|Univ|5. *|** Never target discount or bargain-oriented interest segments. Conflicts w/ the br positioning.
-M|Univ|6. *|** Never target enterprise (500+ employee companies). pd is designed for solo/small team operators.
-M|Univ|tx|---
-M|Reta|tx|\| Intent level \| Window \| Signal \|
-M|Reta|tx|\|-------------\|--------\|--------\|
-M|Reta|tx|\| Very hi (checkout abandon, trial signup) \| 7 days \| Strongest buying signal \|
-M|Reta|tx|\| hi (pd/pricing page) \| 14 days \| Clear consideration \|
-M|Reta|tx|\| md (homepage, feature pages, vd) \| 30 days \| Early interest \|
-M|Reta|tx|\| Win-back (lapsed, churned) \| 60–90 days \| Re-engagement message required \|
+SRC agent-department/Marketing/rio/skills/custom/audience-architecture/SKILL.md
+ORIG_SIZE 5893
+SECTIONS 48
+ABBREVS 0
+INDEX_TERMS 298
+COMPILED 2026-06-13T19:23:25.194Z
+---
+NAME audience-architecture
+PURPOSE
+GENERIC_AUDIENCE_TARGETING_FAILS_BECAUSE_IT_IGNORES_TWO_THINGS venture-specific exclusion rules and the correct layering sequence. Running cold and retargeting simultaneously to the same user creates message confusion. Seeding a lookalike from fewer than 100 purchasers produces an unreliable signal. This skill makes the audience architecture explicit and YVON-specific.
+--- 
+NOVIZIO — META (FB + IG) AND TIKTOK
+LAYER 1: COLD (TOP OF FUNNEL — AWARENESS)
+Meta: 
+INTEREST_TARGETING fashion, luxury fashion, sustainable fashion, street style, editorial fashion
+TikTok: 
+INTEREST fashion, style, lifestyle, luxury
+Creative brief to Lena/Atlas: Aspirational, editorial. Esteem and aspiration triggers. Never urgency or discount framing. 
+--- 
+LAYER 2: LOOKALIKE (MID FUNNEL — CONSIDERATION)
+Seed sources (in priority order): 
+Purchaser email list — highest-quality seed Add-to-cart users (last 90 days) — second best Top 25% engagement audience (Instagram profile engagers) — if purchase list < 100 users 
+Minimum seed size: 100 users. Below this threshold, the lookalike signal is unreliable — do not run. 
+Lookalike tiers: 
+1% lookalike: most similar to seed — highest intent, smallest audience 1–3% lookalike: broader pool — more volume, slightly lower intent Run both tiers as separate ad sets to identify which converts better 
+Exclusions: Exclude actual purchasers and current website visitors from lookalike audiences. 
+Creative brief: Social proof angle, product quality story. Still brand-first, not discount-first. 
+--- 
+LAYER 3: RETARGETING (BOTTOM OF FUNNEL — DECISION)
+Window tiers (highest intent first): 
+Audience Window Creative angle Checkout abandoners 7 days Product-specific, minimal friction CTA Add-to-cart, no purchase 14 days Product benefit reminder Product page visitors 14 days Brand credibility + product Video viewers (75%+ completion) 30 days Next step in funnel Instagram/TikTok engagers 30 days Brand story continuation 
+Rule: Retargeting always shows different creative from cold. If they've seen the brand, do not show the awareness ad again. 
+--- 
+HOURBOUR — LINKEDIN AND YOUTUBE
+LAYER 1: COLD (TOP OF FUNNEL — AWARENESS)
+LinkedIn: 
+JOB_TITLES freelancer, independent consultant, contractor, agency owner, self-employed, founder (< 10 employees)
+YouTube: 
+CUSTOM_INTENT_AUDIENCE users who searched competitor terms (Toggl, Harvest, Clockify, FreshBooks time tracking)
+Creative brief: Safety and trust triggers. "Always know where your hours went." Professional, not enthusiastic. 
+--- 
+LAYER 2: RETARGETING (BOTTOM OF FUNNEL — HOURBOUR IS DIRECT RESPONSE, NO LOOKALIKE PHASE)
+Hourbour's audience is too small for meaningful lookalike. Skip straight to retargeting after cold. 
+Retargeting tiers: 
+Audience Window Creative angle Pricing page visitors 7 days Specific outcome + social proof Trial sign-ups — not activated 7 days Activation reminder, specific first step Trial sign-ups — active but not converting 14 days Value proof, what they'll lose at trial end Trial expired, not converted 30 days Win-back offer or extended trial Active paying customers Excluded from all prospecting 
+Win-back window: 60–90 days for lapsed trials. Different message entirely — acknowledge the gap. 
+--- 
+UNIVERSAL EXCLUSION RULES (ALL VENTURES, ALL PLATFORMS)
+Never cold-target and retarget the same user simultaneously. Audiences must be mutually exclusive — always add exclusion layers. Never run lookalike from fewer than 100 seed users. The signal is too weak to be reliable. Exclude active paying customers from all prospecting and retargeting — they're not a prospect. Minimum audience size before launching: Meta cold: 500K TikTok cold: 200K LinkedIn: 10K YouTube custom intent: 1K 
+Below these thresholds, the platform can't optimise — CPMs rise and delivery stalls. 
+Novizio: Never target discount or bargain-oriented interest segments. Conflicts with the brand positioning. Hourbour: Never target enterprise (500+ employee companies). Product is designed for solo/small team operators. 
+--- 
+RETARGETING WINDOW REFERENCE
+Intent level Window Signal Very high (checkout abandon, trial signup) 7 days Strongest buying signal High (product/pricing page) 14 days Clear consideration Medium (homepage, feature pages, video) 30 days Early interest Win-back (lapsed, churned) 60–90 days Re-engagement message required 

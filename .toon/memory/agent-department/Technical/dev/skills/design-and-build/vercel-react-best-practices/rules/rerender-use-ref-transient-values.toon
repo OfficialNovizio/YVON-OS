@@ -1,63 +1,14 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-use-ref-transient-values.md savings=-4%
-M||tx|---
-M||titl|Use useRef for Transient Values
-M||impa|md
-M||impa|avoids unnecessary re-renders on frequent updates
-M||tags|rerender, useref, state, perf
-M||tx|---
-M|Use |tx|When a value changes frequently and you don't want a re-render on every up (e.g., mouse trackers, intervals, transient flags), store it in `useRef` instead of `useState`. Keep cp state for UI; use refs for temporary DOM-adjacent values. Updating a ref does not trigger a re-render.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |tx|fn Tracker() {
-M|Use |tx|const [lastX, setLastX] = useState(0)
-M|Use |tx|useEffect(() => {
-M|Use |cons|MouseEvent) => setLastX(e.clientX)
-M|Use |tx|window.addEventListener('mousemove', onMove)
-M|Use |tx|return () => window.removeEventListener('mousemove', onMove)
-M|Use |tx|}, [])
-M|Use |tx|return (
-M|Use |tx|<div
-M|Use |tx|style={{
-M|Use |posi|'fixed',
-M|Use |top|0,
-M|Use |left|lastX,
-M|Use |widt|8,
-M|Use |heig|8,
-M|Use |back|'black',
-M|Use |tx|}}
-M|Use |tx|/>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |tx|fn Tracker() {
-M|Use |tx|const lastXRef = useRef(0)
-M|Use |tx|const dotRef = useRef<HTMLDivElement>(null)
-M|Use |tx|useEffect(() => {
-M|Use |cons|MouseEvent) => {
-M|Use |tx|lastXRef.current = e.clientX
-M|Use |tx|const node = dotRef.current
-M|Use |tx|if (node) {
-M|Use |tx|node.style.transform = `translateX(${e.clientX}px)`
-M|Use |tx|}
-M|Use |tx|}
-M|Use |tx|window.addEventListener('mousemove', onMove)
-M|Use |tx|return () => window.removeEventListener('mousemove', onMove)
-M|Use |tx|}, [])
-M|Use |tx|return (
-M|Use |tx|<div
-M|Use |tx|ref={dotRef}
-M|Use |tx|style={{
-M|Use |posi|'fixed',
-M|Use |top|0,
-M|Use |left|0,
-M|Use |widt|8,
-M|Use |heig|8,
-M|Use |back|'black',
-M|Use |tran|'translateX(0px)',
-M|Use |tx|}}
-M|Use |tx|/>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-use-ref-transient-values.md
+ORIG_SIZE 1742
+SECTIONS 8
+ABBREVS 3
+INDEX_TERMS 43
+COMPILED 2026-06-13T19:23:25.334Z
+---
+TITLE UURef for Transient Values
+UUREF FOR TRANSIENT VALUES
+When a value changes frequently and you don't want a re-render on every update (e.g., mouse trackers, intervals, transient flags), store it in useRef IO useState. Keep component state for UI; use refs for temporary DOM-adjacent values. Updating a ref does not trigger a re-render. 
+Incorrect (renders every update): 
+CODE tsx 451CHARS
+Correct (no re-render for tracking): 
+CODE tsx 682CHARS

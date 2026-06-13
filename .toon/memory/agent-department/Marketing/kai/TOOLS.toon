@@ -1,37 +1,28 @@
-#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/TOOLS.md savings=1%
-M|Memo|tx|ka never accesses sb directly for memory. All memory reads and writes go through `/ap/settings`.
-M|Memo|**Re|**
-M|Memo|tx|```
-M|Memo|tx|GET /ap/settings?tp=memory&agentId=ka-analyst&ventureId=<activeVentureId>
-M|Memo|tx|```
-M|Memo|**Wr|**
-M|Memo|tx|```
-M|Memo|tx|POST /ap/settings
-M|Memo|Body|{ tp: "memory", agentId: "ka-analyst", ventureId: "<id>", key: "<key>", value: "<value>" }
-M|Memo|tx|```
-M|Memo|**Ke|**
-M|Memo|it|`current_status` — always overwrite
-M|Memo|it|`recent_tasks` — prepend + trim to 5
-M|Memo|it|`recent_errors` — append + trim to 5
-M|Memo|it|`recent_discussions` — append + trim to 5
-M|Memo|**Ke|**
-M|Memo|it|`last_data_pull_date` — after every successful data pull
-M|Memo|it|`baseline_*` — only at quarter start or Stark-explicit reset
-M|Memo|it|`tracked_anomalies` — add new anomalies; remove when resolved
-M|Memo|tx|---
-M|Anal|Kai |
-M|Anal|tx|```
-M|Anal|tx|GET /ap/instagram?ventureId=<activeVentureId>      — IG followers, engagement
-M|Anal|tx|GET /ap/youtube?ventureId=<activeVentureId>        — YT subscribers, views
-M|Anal|tx|GET /ap/linkedin?ventureId=<activeVentureId>       — LI followers, reach
-M|Anal|tx|GET /ap/an?ventureId=<activeVentureId>      — GA4 sn, bounce rate, top pages
-M|Anal|tx|```
-M|Anal|tx|---
-M|Vent|tx|```
-M|Vent|tx|GET /ap/vt?ventureId=<activeVentureId>
-M|Vent|tx|```
-M|Vent|tx|---
-M|Futu|tx|\| Tool \| Purpose \| Status \|
-M|Futu|tx|\|------\|---------\|--------\|
-M|Futu|tx|\| Google an ap (direct) \| Pull granular GA4 cohort and funnel reports \| Planned \|
-M|Futu|tx|\| Looker Studio MCP \| Produce formatted data visualizations \| Planned \|
+SRC agent-department/Marketing/kai/TOOLS.md
+ORIG_SIZE 1652
+SECTIONS 21
+ABBREVS 1
+INDEX_TERMS 88
+COMPILED 2026-06-13T19:23:25.032Z
+---
+TOOLS.MD — KAI, LEAD ANALYST
+MEMORY (VIA /API/SETTINGS)
+Kai never accesses Supabase directly for memory. All memory reads and writes go through /api/settings. 
+CODE  78CHARS
+Read at SS: 
+CODE  119CHARS
+Write after task completion: 
+Keys written every session: 
+current_status — always overwrite recent_tasks — prepend + trim to 5 recent_errors — append + trim to 5 recent_discussions — append + trim to 5 
+Keys written only when confirmed: 
+last_data_pull_date — after every successful data pull baseline_* — only at quarter start or Stark-explicit reset tracked_anomalies — add new anomalies; remove when resolved 
+--- 
+ANALYTICS DATA ROUTES (READ-ONLY)
+Kai pulls live data via API routes — never directly from external APIs: 
+CODE  320CHARS
+--- 
+VENTURE CONTEXT
+CODE  45CHARS
+--- 
+FUTURE TOOLS
+Tool Purpose Status Google Analytics API (direct) Pull granular GA4 cohort and funnel reports Planned Looker Studio MCP Produce formatted data visualizations Planned 

@@ -1,23 +1,21 @@
-#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/MEMORY-hourbour.md savings=10%
-M|Atla|tx|> Load alongside MEMORY.md when active vt is hb.
-M|Atla|tx|> hb-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|clean, modern, tech-forward — clarity and trust, not clinical
-M|Vent|- **|financial clarity for people who want control, not complexity
-M|Hour|tx|\| Element \| Rule \|
-M|Hour|tx|\|---------\|------\|
-M|Hour|tx|\| Lighting \| Bright, even — conveys clarity and openness \|
-M|Hour|tx|\| Background \| White or light grey preferred; data-viz on dark only if br-spec'd \|
-M|Hour|tx|\| UI/pd \| App screenshots preferred — show real functionality, not abstract mockups \|
-M|Hour|tx|\| People \| Professionals in natural work environments — not stock "business handshake" \|
-M|Hour|tx|\| Data viz \| Graphs/charts welcome — make numbers beautiful and legible \|
-M|Hour|tx|\| Colour palette \| br primary colours + white space; avoid colour overload \|
-M|What|it|Stock imagery of coins, piggy banks, cash stacks, or gold bars — clichéd fintech visuals
-M|What|it|Dark moody backgrounds (unless specific br-approved cg)
-M|What|it|Overly abstract or illustrative styles that obscure the pd
-M|What|it|Complicated layouts that feel as dense as a bank statement
-M|Prom|- Le|setting description → UI element → lighting → mood adjectives
-M|Prom|- Us|"clean studio light", "minimal white background", "app UI on device"
-M|Prom|- Fo|"candid professional at desk", "natural light office" — not "businessman"
-M|Prom|- Te|"Stripe-era fintech aesthetic" for instant hb register
-M|Prov|> Po|[date] — cg — visual approach — QC pass rate.
-M|Neve|> Ea|[date] — hb-specific visual er — rule.
+SRC agent-department/Marketing/atlas/MEMORY-hourbour.md
+ORIG_SIZE 1828
+SECTIONS 14
+ABBREVS 2
+INDEX_TERMS 131
+COMPILED 2026-06-13T19:23:24.989Z
+---
+ATLAS — HOURBOUR VISUAL MEMORY
+Load alongside MEMORY.md when active venture is Hourbour. Hourbour-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Aesthetic: clean, modern, tech-forward — clarity and trust, not clinical Positioning: financial clarity for people who want control, not complexity 
+HOURBOUR VISUAL SYSTEM
+Element Rule Lighting Bright, even — conveys clarity and openness Background White or light grey preferred; data-viz on dark only if brand-spec'd UI/Product App screenshots preferred — show real functionality, not abstract mockups People Professionals in natural work environments — not stock "business handshake" Data viz Graphs/charts welcome — make numbers beautiful and legible Colour palette Brand primary colours + white space; avoid colour overload 
+WHAT TO ALWAYS AVOID (HOURBOUR)
+Stock imagery of coins, piggy banks, cash stacks, or gold bars — clichéd fintech visuals Dark moody backgrounds (unless specific brand-approved campaign) Overly abstract or illustrative styles that obscure the product Complicated layouts that feel as dense as a bank statement 
+PROMPT ARCHITECTURE NOTES (HOURBOUR)
+LEAD_PROMPT_WITH setting description → UI element → lighting → mood adjectives
+PROVEN DIRECTIONS (HOURBOUR)
+Populated from campaigns. EE: [date] — campaign — visual approach — QC pass rate. 
+NEVER AGAIN (HOURBOUR-SPECIFIC)
+EE: [date] — Hourbour-specific visual error — rule. 

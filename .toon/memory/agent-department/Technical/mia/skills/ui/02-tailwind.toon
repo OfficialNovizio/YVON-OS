@@ -1,27 +1,18 @@
-#MEM id=ui source=/root/yvon/agent-department/Technical/mia/skills/ui/02-tailwind.md savings=15%
-M||tx|---
-M||prio|hi
-M||appl|ui
-M||load|always
-M||md|qwen3.5-4b
-M||conf|[]
-M||tx|---
-M|Clas|Foll|
-M|Clas|tx|1. Layout (display, position, z-index)
-M|Clas|tx|2. Box md (w, h, m, p)
-M|Clas|tx|3. Typography (font, text, leading)
-M|Clas|tx|4. Visual (bg, border, shadow, opacity)
-M|Clas|tx|5. Interactive (hover, focus, active)
-M|Clas|6. R|, md:, lg:)
-M|Nami|- Us|`@apply` in globals.css
-M|Nami|it|Never use arbitrary values `[17px]` when a standard tk works
-M|Nami|- Da|always use `dark:` prefix, never manual class switching
-M|Do N|it|Never use `\!important` — fix specificity properly
-M|Do N|it|Never use inline styles — always tw or CSS modules
-M|Do N|it|Don't mix tw w/ styled-cp or emotion
-M|Comp|tx|```tsx
-M|Comp|tx|// ✅ Good — readable, ordered
-M|Comp|<div|shadow-md transition-shadow">
-M|Comp|tx|// ❌ Bad — arbitrary values, no order
-M|Comp|<div|shadow-md flex shadow-sm px-6 bg-white gap-4 py-4 rounded-xl items-center">
-M|Comp|tx|```
+SRC agent-department/Technical/mia/skills/ui/02-tailwind.md
+ORIG_SIZE 1119
+SECTIONS 12
+ABBREVS 2
+INDEX_TERMS 52
+COMPILED 2026-06-13T19:23:25.517Z
+---
+PRIORITY high
+TAILWIND CSS CONVENTIONS
+CLASS ORDER
+Follow Prettier Tailwind plugin order: 
+Layout (display, position, z-index) Box model (w, h, m, p) Typography (font, text, leading) Visual (bg, border, shadow, opacity) Interactive (hover, focus, active) Responsive (sm:, md:, lg:) 
+NAMING CONVENTIONS
+USE_SEMANTIC_CLASS_EXTRACTION_FOR_REPEATED_PATTERNS `@apply` in globals.css
+DO NOT
+NU \!important — fix specificity properly NU inline styles — always Tailwind or CSS modules Don't mix Tailwind with styled-components or emotion 
+COMPONENT PATTERNS
+CODE tsx 283CHARS

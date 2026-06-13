@@ -1,43 +1,17 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/advanced-event-handler-refs.md savings=-1%
-M||tx|---
-M||titl|Store Event Handlers in Refs
-M||impa|lo
-M||impa|stable subscriptions
-M||tags|advanced, hooks, refs, event-handlers, op
-M||tx|---
-M|Stor|tx|Store callbacks in refs when used in effects that shouldn't re-subscribe on callback changes.
-M|Stor|**In|**
-M|Stor|tx|```tsx
-M|Stor|func|string, handler: (e) => void) {
-M|Stor|tx|useEffect(() => {
-M|Stor|tx|window.addEventListener(event, handler)
-M|Stor|tx|return () => window.removeEventListener(event, handler)
-M|Stor|tx|}, [event, handler])
-M|Stor|tx|}
-M|Stor|tx|```
-M|Stor|**Co|**
-M|Stor|tx|```tsx
-M|Stor|func|string, handler: (e) => void) {
-M|Stor|tx|const handlerRef = useRef(handler)
-M|Stor|tx|useEffect(() => {
-M|Stor|tx|handlerRef.current = handler
-M|Stor|tx|}, [handler])
-M|Stor|tx|useEffect(() => {
-M|Stor|tx|const listener = (e) => handlerRef.current(e)
-M|Stor|tx|window.addEventListener(event, listener)
-M|Stor|tx|return () => window.removeEventListener(event, listener)
-M|Stor|tx|}, [event])
-M|Stor|tx|}
-M|Stor|tx|```
-M|Stor|**Al|use `useEffectEvent` if you're on latest rc:**
-M|Stor|tx|```tsx
-M|Stor|tx|import { useEffectEvent } from 'rc'
-M|Stor|func|string, handler: (e) => void) {
-M|Stor|tx|const onEvent = useEffectEvent(handler)
-M|Stor|tx|useEffect(() => {
-M|Stor|tx|window.addEventListener(event, onEvent)
-M|Stor|tx|return () => window.removeEventListener(event, onEvent)
-M|Stor|tx|}, [event])
-M|Stor|tx|}
-M|Stor|tx|```
-M|Stor|`use|it creates a stable fn reference that always calls the latest version of the handler.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/advanced-event-handler-refs.md
+ORIG_SIZE 1483
+SECTIONS 11
+ABBREVS 1
+INDEX_TERMS 46
+COMPILED 2026-06-13T19:23:25.307Z
+---
+TITLE Store Event Handlers in Refs
+STORE EVENT HANDLERS IN REFS
+Store callbacks in refs when used in effects that shouldn't re-subscribe on callback changes. 
+Incorrect (re-subscribes on every render): 
+CODE tsx 212CHARS
+Correct (stable subscription): 
+CODE tsx 362CHARS
+Alternative: UUEffectEvent if you're on latest React: 
+CODE tsx 286CHARS
+useEffectEvent provides a cleaner API for the same pattern: it creates a stable function reference that always calls the latest version of the handler. 

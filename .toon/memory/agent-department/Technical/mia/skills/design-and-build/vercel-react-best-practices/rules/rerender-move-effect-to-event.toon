@@ -1,34 +1,15 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-move-effect-to-event.md savings=-4%
-M||tx|---
-M||titl|Put Interaction Logic in Event Handlers
-M||impa|md
-M||impa|avoids effect re-runs and duplicate side effects
-M||tags|rerender, useEffect, events, side-effects, dependencies
-M||tx|---
-M|Put |tx|If a side effect is triggered by a specific us action (submit, click, drag), run it in that event handler. Do not md the action as state + effect; it makes effects re-run on unrelated changes and can duplicate the action.
-M|Put |**In|**
-M|Put |tx|```tsx
-M|Put |tx|fn Form() {
-M|Put |tx|const [submitted, setSubmitted] = useState(false)
-M|Put |tx|const theme = useContext(ThemeContext)
-M|Put |tx|useEffect(() => {
-M|Put |tx|if (submitted) {
-M|Put |tx|post('/ap/register')
-M|Put |tx|showToast('Registered', theme)
-M|Put |tx|}
-M|Put |tx|}, [submitted, theme])
-M|Put |tx|return <button onClick={() => setSubmitted(true)}>Submit</button>
-M|Put |tx|}
-M|Put |tx|```
-M|Put |**Co|**
-M|Put |tx|```tsx
-M|Put |tx|fn Form() {
-M|Put |tx|const theme = useContext(ThemeContext)
-M|Put |tx|fn handleSubmit() {
-M|Put |tx|post('/ap/register')
-M|Put |tx|showToast('Registered', theme)
-M|Put |tx|}
-M|Put |tx|return <button onClick={handleSubmit}>Submit</button>
-M|Put |tx|}
-M|Put |tx|```
-M|Put |Refe|[shd this code move to an event handler?](https://rc.dv/learn/removing-effect-dependencies#shd-this-code-move-to-an-event-handler)
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-move-effect-to-event.md
+ORIG_SIZE 1268
+SECTIONS 9
+ABBREVS 0
+INDEX_TERMS 44
+COMPILED 2026-06-13T19:23:25.471Z
+---
+TITLE Put Interaction Logic in Event Handlers
+PUT INTERACTION LOGIC IN EVENT HANDLERS
+If a side effect is triggered by a specific user action (submit, click, drag), run it in that event handler. Do not model the action as state + effect; it makes effects re-run on unrelated changes and can duplicate the action. 
+Incorrect (event modeled as state + effect): 
+CODE tsx 320CHARS
+Correct (do it in the handler): 
+CODE tsx 212CHARS
+REFERENCE [Should this code move to an event handler?](https://react.dev/learn/removing-effect-dependencies#should-this-code-move-to-an-event-handler)

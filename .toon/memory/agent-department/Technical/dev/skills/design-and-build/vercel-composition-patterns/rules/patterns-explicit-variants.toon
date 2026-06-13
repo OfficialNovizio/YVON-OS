@@ -1,84 +1,20 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/patterns-explicit-variants.md savings=-7%
-M||tx|---
-M||titl|cr Explicit cp Variants
-M||impa|md
-M||impa|self-documenting code, no hidden conditionals
-M||tags|composition, variants, architecture
-M||tx|---
-M|Crea|tx|Instead of one cp w/ many boolean props, cr explicit variant
-M|Crea|tx|cp. Each variant composes the pieces it needs. The code documents
-M|Crea|tx|itself.
-M|Crea|**In|**
-M|Crea|tx|```tsx
-M|Crea|tx|// What does this cp actually render?
-M|Crea|tx|<Composer
-M|Crea|tx|isThread
-M|Crea|tx|isEditing={false}
-M|Crea|tx|channelId='abc'
-M|Crea|tx|showAttachments
-M|Crea|tx|showFormatting={false}
-M|Crea|tx|/>
-M|Crea|tx|```
-M|Crea|**Co|**
-M|Crea|tx|```tsx
-M|Crea|tx|// Immediately clear what this renders
-M|Crea|tx|<ThreadComposer channelId="abc" />
-M|Crea|tx|// Or
-M|Crea|tx|<EditMessageComposer messageId="xyz" />
-M|Crea|tx|// Or
-M|Crea|tx|<ForwardMessageComposer messageId="123" />
-M|Crea|tx|```
-M|Crea|tx|Each implementation is unique, explicit and self-contained. Yet they can each
-M|Crea|tx|use shared parts.
-M|Crea|**Im|**
-M|Crea|tx|```tsx
-M|Crea|func|{ channelId: string }) {
-M|Crea|tx|return (
-M|Crea|tx|<ThreadProvider channelId={channelId}>
-M|Crea|tx|<Composer.Frame>
-M|Crea|tx|<Composer.Input />
-M|Crea|tx|<AlsoSendToChannelField channelId={channelId} />
-M|Crea|tx|<Composer.Footer>
-M|Crea|tx|<Composer.Formatting />
-M|Crea|tx|<Composer.Emojis />
-M|Crea|tx|<Composer.Submit />
-M|Crea|tx|</Composer.Footer>
-M|Crea|tx|</Composer.Frame>
-M|Crea|tx|</ThreadProvider>
-M|Crea|tx|)
-M|Crea|tx|}
-M|Crea|func|{ messageId: string }) {
-M|Crea|tx|return (
-M|Crea|tx|<EditMessageProvider messageId={messageId}>
-M|Crea|tx|<Composer.Frame>
-M|Crea|tx|<Composer.Input />
-M|Crea|tx|<Composer.Footer>
-M|Crea|tx|<Composer.Formatting />
-M|Crea|tx|<Composer.Emojis />
-M|Crea|tx|<Composer.CancelEdit />
-M|Crea|tx|<Composer.SaveEdit />
-M|Crea|tx|</Composer.Footer>
-M|Crea|tx|</Composer.Frame>
-M|Crea|tx|</EditMessageProvider>
-M|Crea|tx|)
-M|Crea|tx|}
-M|Crea|func|{ messageId: string }) {
-M|Crea|tx|return (
-M|Crea|tx|<ForwardMessageProvider messageId={messageId}>
-M|Crea|tx|<Composer.Frame>
-M|Crea|tx|<Composer.Input placeholder="Add a message, if you'd like." />
-M|Crea|tx|<Composer.Footer>
-M|Crea|tx|<Composer.Formatting />
-M|Crea|tx|<Composer.Emojis />
-M|Crea|tx|<Composer.Mentions />
-M|Crea|tx|</Composer.Footer>
-M|Crea|tx|</Composer.Frame>
-M|Crea|tx|</ForwardMessageProvider>
-M|Crea|tx|)
-M|Crea|tx|}
-M|Crea|tx|```
-M|Crea|Each|
-M|Crea|it|What pr/state it uses
-M|Crea|it|What UI elements it includes
-M|Crea|it|What actions are available
-M|Crea|tx|No boolean prop combinations to reason abt. No impossible states.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-composition-patterns/rules/patterns-explicit-variants.md
+ORIG_SIZE 2395
+SECTIONS 14
+ABBREVS 1
+INDEX_TERMS 51
+COMPILED 2026-06-13T19:23:25.288Z
+---
+TITLE Create Explicit Component Variants
+CREATE EXPLICIT COMPONENT VARIANTS
+IO one component with many boolean props, create explicit variant components. Each variant composes the pieces it needs. The code documents itself. 
+Incorrect (one component, many modes): 
+CODE tsx 150CHARS
+Correct (explicit variants): 
+CODE tsx 171CHARS
+Each implementation is unique, explicit and self-contained. Yet they can each use shared parts. 
+Implementation: 
+CODE tsx 1281CHARS
+Each variant is explicit about: 
+What provider/state it uses What UI elements it includes What actions are available 
+No boolean prop combinations to reason about. No impossible states. 

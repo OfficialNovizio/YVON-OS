@@ -1,125 +1,72 @@
-#MEM id=using-git-worktrees source=/root/yvon/agent-department/Technical/dev/skills/superpowers/using-git-worktrees/SKILL.md savings=9%
-M||tx|---
-M||name|using-git-worktrees
-M||desc|>-
-M||tx|Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees w/ smart directory selection and safety verification
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, productivity]
-M||tx|---
-M|Over|tx|Git worktrees cr isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously w/o switching.
-M|Over|**Co|** Systematic directory selection + safety verification = reliable isolation.
-M|Over|**An|** "I'm using the using-git-worktrees skill to set up an isolated workspace."
-M|Dire|Foll|
-M|1. C|tx|```bash
-M|Chec|tx|ls -d .worktrees 2>/dv/null     # Preferred (hidden)
-M|Chec|tx|ls -d worktrees 2>/dv/null      # Alternative
-M|Chec|tx|```
-M|Chec|**If|** Use that directory. If both exist, `.worktrees` wins.
-M|2. C|tx|```bash
-M|2. C|tx|grep -i "worktree.*director" CLAUDE.md 2>/dv/null
-M|2. C|tx|```
-M|2. C|**If|** Use it w/o asking.
-M|3. A|If n|
-M|3. A|tx|```
-M|3. A|tx|No worktree directory found. Where shd I cr worktrees?
-M|3. A|tx|1. .worktrees/ (project-local, hidden)
-M|3. A|tx|2. ~/.config/superpowers/worktrees/<project-name>/ (global location)
-M|3. A|tx|Which wld you prefer?
-M|3. A|tx|```
-M|For |**MU|**
-M|For |tx|```bash
-M|Chec|tx|git check-ignore -q .worktrees 2>/dv/null \|\| git check-ignore -q worktrees 2>/dv/null
-M|Chec|tx|```
-M|Chec|**If|**
-M|Chec|Per |
-M|Chec|tx|1. Add appropriate line to .gitignore
-M|Chec|tx|2. Commit the change
-M|Chec|tx|3. Proceed w/ worktree creation
-M|Chec|**Wh|** Prevents accidentally committing worktree contents to repository.
-M|For |tx|No .gitignore verification needed - outside project entirely.
-M|1. D|tx|```bash
-M|1. D|tx|project=$(basename "$(git rev-parse --show-toplevel)")
-M|1. D|tx|```
-M|2. C|tx|```bash
-M|Dete|tx|case $LOCATION in
-M|Dete|tx|.worktrees\|worktrees)
-M|Dete|tx|path="$LOCATION/$BRANCH_NAME"
-M|Dete|tx|;;
-M|Dete|tx|~/.config/superpowers/worktrees/*)
-M|Dete|tx|path="~/.config/superpowers/worktrees/$project/$BRANCH_NAME"
-M|Dete|tx|;;
-M|Dete|tx|esac
-M|Crea|tx|git worktree add "$path" -b "$BRANCH_NAME"
-M|Crea|tx|cd "$path"
-M|Crea|tx|```
-M|3. R|Auto|
-M|3. R|tx|```bash
-M|Node|tx|if [ -f pk.json ]; then npm install; fi
-M|Rust|tx|if [ -f Cargo.toml ]; then cargo bd; fi
-M|Pyth|tx|if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-M|Pyth|tx|if [ -f pyproject.toml ]; then poetry install; fi
-M|Go|tx|if [ -f go.mod ]; then go mod download; fi
-M|Go|tx|```
-M|4. V|Run |
-M|4. V|tx|```bash
-M|Exam|tx|npm tst
-M|Exam|tx|cargo tst
-M|Exam|tx|pytest
-M|Exam|tx|go tst ./...
-M|Exam|tx|```
-M|Exam|**If|** rp failures, ask whether to proceed or investigate.
-M|Exam|**If|** rp ready.
-M|5. R|tx|```
-M|5. R|tx|Worktree ready at <full-path>
-M|5. R|tx|Tests passing (<N> tests, 0 failures)
-M|5. R|tx|Ready to im <feature-name>
-M|5. R|tx|```
-M|Quic|tx|\| Situation \| Action \|
-M|Quic|tx|\|-----------\|--------\|
-M|Quic|tx|\| `.worktrees/` exists \| Use it (verify ignored) \|
-M|Quic|tx|\| `worktrees/` exists \| Use it (verify ignored) \|
-M|Quic|tx|\| Both exist \| Use `.worktrees/` \|
-M|Quic|tx|\| Neither exists \| Check CLAUDE.md → Ask us \|
-M|Quic|tx|\| Directory not ignored \| Add to .gitignore + commit \|
-M|Quic|tx|\| Tests fail during baseline \| rp failures + ask \|
-M|Quic|tx|\| No pk.json/Cargo.toml \| Skip dependency install \|
-M|Skip|- **|** Worktree contents get tracked, pollute git status
-M|Skip|- **|** Always use `git check-ignore` before creating project-local worktree
-M|Assu|- **|** Creates inconsistency, violates project conventions
-M|Assu|- **|** Follow priority: existing > CLAUDE.md > ask
-M|Proc|- **|** Can't distinguish new bugs from pre-existing issues
-M|Proc|- **|** rp failures, get explicit permission to proceed
-M|Hard|- **|** Breaks on projects using different tools
-M|Hard|- **|** Auto-detect from project files (pk.json, etc.)
-M|Exam|tx|```
-M|Exam|You|I'm using the using-git-worktrees skill to set up an isolated workspace.
-M|Exam|tx|[Check .worktrees/ - exists]
-M|Exam|tx|[Verify ignored - git check-ignore confirms .worktrees/ is ignored]
-M|Exam|[Cre|git worktree add .worktrees/auth -b feature/auth]
-M|Exam|tx|[Run npm install]
-M|Exam|tx|[Run npm tst - 47 passing]
-M|Exam|tx|Worktree ready at /us/jesse/myproject/.worktrees/auth
-M|Exam|tx|Tests passing (47 tests, 0 failures)
-M|Exam|tx|Ready to im auth feature
-M|Exam|tx|```
-M|Red |**Ne|**
-M|Red |it|cr worktree w/o verifying it's ignored (project-local)
-M|Red |it|Skip baseline tst verification
-M|Red |it|Proceed w/ failing tests w/o asking
-M|Red |it|Assume directory location when ambiguous
-M|Red |it|Skip CLAUDE.md check
-M|Red |**Al|**
-M|Red |- Fo|existing > CLAUDE.md > ask
-M|Red |it|Verify directory is ignored for project-local
-M|Red |it|Auto-detect and run project setup
-M|Red |it|Verify clean tst baseline
-M|Inte|**Ca|**
-M|Inte|it|**brainstorming** (Phase 4) - REQUIRED when ds is approved and implementation follows
-M|Inte|it|**subagent-driven-dv** - REQUIRED before executing any tasks
-M|Inte|it|**executing-plans** - REQUIRED before executing any tasks
-M|Inte|it|Any skill needing isolated workspace
-M|Inte|**Pa|**
-M|Inte|it|**finishing-a-dv-branch** - REQUIRED for cleanup after work complete
+SRC agent-department/Technical/dev/skills/superpowers/using-git-worktrees/SKILL.md
+ORIG_SIZE 5789
+SECTIONS 66
+ABBREVS 1
+INDEX_TERMS 205
+COMPILED 2026-06-13T19:23:25.362Z
+---
+NAME using-git-worktrees
+USING GIT WORKTREES
+OVERVIEW
+Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching. 
+CP: Systematic directory selection + safety verification = reliable isolation. 
+Announce at start: "I'm using the using-git-worktrees skill to set up an isolated workspace." 
+DIRECTORY SELECTION PROCESS
+Follow this priority order: 
+1. CHECK EXISTING DIRECTORIES
+CODE bash 127CHARS
+If found: Use that directory. If both exist, .worktrees wins. 
+2. CHECK CLAUDE.MD
+CODE bash 51CHARS
+If preference specified: Use it without asking. 
+3. ASK USER
+If no directory exists and no CLAUDE.md preference: 
+CODE  196CHARS
+SAFETY VERIFICATION
+FOR PROJECT-LOCAL DIRECTORIES (.WORKTREES OR WORKTREES)
+MUST verify directory is ignored before creating worktree: 
+CODE bash 167CHARS
+If NOT ignored: 
+Per Jesse's rule "Fix broken things immediately": 
+Add appropriate line to .gitignore Commit the change Proceed with worktree creation 
+Why critical: Prevents accidentally committing worktree contents to repository. 
+FOR GLOBAL DIRECTORY (~/.CONFIG/SUPERPOWERS/WORKTREES)
+No .gitignore verification needed - outside project entirely. 
+CREATION STEPS
+1. DETECT PROJECT NAME
+CODE bash 55CHARS
+2. CREATE WORKTREE
+CODE bash 308CHARS
+3. RUN PROJECT SETUP
+Auto-detect and run appropriate setup: 
+CODE bash 284CHARS
+4. VERIFY CLEAN BASELINE
+Run tests to ensure worktree starts clean: 
+CODE bash 86CHARS
+If tests fail: Report failures, ask whether to proceed or investigate. 
+If tests pass: Report ready. 
+5. REPORT LOCATION
+CODE  102CHARS
+QUICK REFERENCE
+Situation Action `.worktrees/` exists Use it (verify ignored) `worktrees/` exists Use it (verify ignored) Both exist Use `.worktrees/` Neither exists Check CLAUDE.md → Ask user Directory not ignored Add to .gitignore + commit Tests fail during baseline Report failures + ask No package.json/Cargo.toml Skip dependency install 
+COMMON MISTAKES
+SKIPPING IGNORE VERIFICATION
+Problem: Worktree contents get tracked, pollute git status Fix: Always use git check-ignore before creating project-local worktree 
+ASSUMING DIRECTORY LOCATION
+Problem: Creates inconsistency, violates project conventions Fix: Follow priority: existing CLAUDE.md ask 
+PROCEEDING WITH FAILING TESTS
+Problem: Can't distinguish new bugs from pre-existing issues Fix: Report failures, get explicit permission to proceed 
+HARDCODING SETUP COMMANDS
+Problem: Breaks on projects using different tools Fix: Auto-detect from project files (package.json, etc.) 
+EXAMPLE WORKFLOW
+CODE  417CHARS
+RED FLAGS
+Never: 
+Create worktree without verifying it's ignored (project-local) Skip baseline test verification Proceed with failing tests without asking Assume directory location when ambiguous Skip CLAUDE.md check 
+Always: 
+FOLLOW_DIRECTORY_PRIORITY existing > CLAUDE.md > ask
+INTEGRATION
+Called by: 
+brainstorming (Phase 4) - REQUIRED when design is approved and implementation follows subagent-driven-development - REQUIRED before executing any tasks executing-plans - REQUIRED before executing any tasks Any skill needing isolated workspace 
+Pairs with: 
+finishing-a-development-branch - REQUIRED for cleanup after work complete 

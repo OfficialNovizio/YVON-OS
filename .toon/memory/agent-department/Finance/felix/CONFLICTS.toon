@@ -1,2 +1,10 @@
-#MEM id=felix source=/root/yvon/agent-department/Finance/felix/CONFLICTS.md savings=35%
-M|Agen|tx|> Inherits from project root CONFLICTS.md. Add ag-specific conflicts here only.
+SRC agent-department/Finance/felix/CONFLICTS.md
+ORIG_SIZE 139
+SECTIONS 3
+ABBREVS 1
+INDEX_TERMS 12
+COMPILED 2026-06-13T19:23:24.939Z
+---
+AGENT: FELIX — CONFLICT RESOLUTIONS
+IFPR CONFLICTS.md. Add agent-specific conflicts here only. 
+(NONE YET)

@@ -1,86 +1,51 @@
-#MEM id=examples source=/root/yvon/agent-department/Finance/felix/skills/executive-operations/saas-revenue-growth-metrics/examples/healthy-saas.md savings=1%
-M|Exam|**Co|** ProjectHub (mid-mk project management SaaS)
-M|Exam|**St|** Growth stage, Series B funded
-M|Exam|**Cu|** 200 accounts, 20,000 us
-M|Exam|**Pe|** Monthly snapshot
-M|Exam|tx|---
-M|MRR/|tx|```
-M|MRR/|Star|$2,000,000
-M|MRR/|+ Ne|$100,000 (10 new accounts)
-M|MRR/|+ Ex|$80,000 (upsells + usage growth)
-M|MRR/|- Ch|$30,000 (5 accounts churned)
-M|MRR/|- Co|$10,000 (3 accounts downgraded)
-M|MRR/|Endi|$2,140,000
-M|MRR/|MRR |7% MoM
-M|MRR/|ARR|$25.7M
-M|MRR/|tx|```
-M|ARPA|tx|```
-M|ARPA|tx|ARPA = $2,140,000 / 200 accounts = $10,700/month
-M|ARPA|tx|ARPU = $2,140,000 / 20,000 us = $107/month
-M|ARPA|tx|Average seats per account = 100 us
-M|ARPA|tx|```
-M|Reve|tx|```
-M|Reve|New |$100K (5% of total)
-M|Reve|Expa|$80K (4% of total)
-M|Reve|Chur|$30K (1.5% of total)
-M|Reve|Cont|$10K (0.5% of total)
-M|Reve|tx|```
-M|Reve|tx|---
-M|Chur|tx|```
-M|Chur|Logo|5 / 200 = 2.5% monthly (~26% annual)
-M|Chur|Reve|$30K / $2M = 1.5% monthly (~17% annual)
-M|Chur|tx|```
-M|Chur|al|** rv churn < logo churn = losing smaller cs, which is healthy.
-M|NRR|tx|```
-M|NRR|Star|$24M
-M|NRR|Expa|$960K (annual)
-M|NRR|Chur|$360K (annual)
-M|NRR|Cont|$120K (annual)
-M|NRR|Endi|$24.48M
-M|NRR|tx|NRR = $24.48M / $24M = 102%
-M|NRR|tx|```
-M|Quic|tx|```
-M|Quic|tx|Gains = $100K + $80K = $180K
-M|Quic|tx|Losses = $30K + $10K = $40K
-M|Quic|tx|Quick Ratio = $180K / $40K = 4.5
-M|Quic|tx|```
-M|Quic|tx|---
-M|✅ St|**St|**
-M|✅ St|it|7% MoM MRR growth
-M|✅ St|- He|5% new + 4% expansion
-M|✅ St|**Ex|**
-M|✅ St|it|2.5% logo churn (below 5% threshold)
-M|✅ St|it|1.5% rv churn (better than logo)
-M|✅ St|it|102% NRR (growing w/o new logos)
-M|✅ St|**Ef|**
-M|✅ St|it|$80K expansion MRR (4% of base)
-M|✅ St|it|Expansion-driven NRR
-M|✅ St|- Av|$400/month
-M|✅ St|**Su|**
-M|✅ St|it|Quick Ratio 4.5 (gains far exceed losses)
-M|✅ St|it|rv churn declining (was 2% six months ago)
-M|✅ St|it|Newer cohorts retain better than older cohorts
-M|📊 O|**Ex|**
-M|📊 O|it|NRR at 102% is good, but room to grow to 110-120%
-M|📊 O|it|Only 40% of cs have expanded (cld push to 60%)
-M|📊 O|- Cr|30% of cs don't use integrations add-on
-M|📊 O|**AR|**
-M|📊 O|it|$107/us is solid for mid-mk, but enterprise segment shows $200/us potential
-M|📊 O|it|cld introduce premium tier for advanced features
-M|📊 O|**Re|**
-M|📊 O|it|2.5% logo churn is acceptable but not excellent
-M|📊 O|it|al shows 70% of churn happens in first 90 days (onboarding problem)
-M|📊 O|- Fi|Improve onboarding, aim for <2% logo churn
-M|📊 O|tx|---
-M|Acti|tx|1. **Scale acquisition aggressively** — Unit economics are strong (see `saas-economics-efficiency-metrics` for CAC/LTV)
-M|Acti|tx|2. **Improve onboarding** — Reduce early churn from 5% to 3% in first 90 days
-M|Acti|tx|3. **Expand cross-sell** — Push integrations add-on to 30% of base w/o it (potential +$30K MRR)
-M|Acti|tx|4. **tst premium tier** — 20 enterprise cs show willingness to pay 2x for advanced features
-M|Acti|tx|5. **Monitor cohort retention** — Continue tracking that new cohorts retain better than old
-M|Acti|tx|---
-M|Coho|tx|\| Cohort \| Month 6 Retention \| Month 12 Retention \|
-M|Coho|tx|\|--------\|-------------------\|---------------------\|
-M|Coho|tx|\| 12 months ago \| 85% \| 78% \|
-M|Coho|tx|\| 6 months ago \| 88% \| TBD \|
-M|Coho|tx|\| Current \| 92% (on track) \| TBD \|
-M|Coho|al|** Newer cohorts retaining better = pd improvements working. Safe to scale acquisition.
+SRC agent-department/Finance/felix/skills/executive-operations/saas-revenue-growth-metrics/examples/healthy-saas.md
+ORIG_SIZE 3404
+SECTIONS 44
+ABBREVS 1
+INDEX_TERMS 171
+COMPILED 2026-06-13T19:23:24.970Z
+---
+EXAMPLE: HEALTHY SAAS METRICS
+Company: ProjectHub (mid-market project management SaaS) Stage: Growth stage, Series B funded Customer Base: 200 accounts, 20,000 users Period: Monthly snapshot 
+--- 
+REVENUE METRICS
+MRR/ARR
+CODE  268CHARS
+ARPA/ARPU
+CODE  133CHARS
+REVENUE COMPONENTS
+CODE  135CHARS
+--- 
+RETENTION & EXPANSION METRICS
+CR
+CODE  104CHARS
+Analysis: Revenue churn < logo churn = losing smaller customers, which is healthy. 
+NRR
+CODE  146CHARS
+QUICK RATIO
+CODE  90CHARS
+--- 
+ANALYSIS
+✅ STRENGTHS
+Strong growth: 
+7% MoM MRR growth Healthy mix: 5% new + 4% expansion 
+Excellent retention: 
+2.5% logo churn (below 5% threshold) 1.5% revenue churn (better than logo) 102% NRR (growing without new logos) 
+Efficient expansion: 
+$80K expansion MRR (4% of base) Expansion-driven NRR Average expansion per account: $400/month 
+Sustainable growth: 
+Quick Ratio 4.5 (gains far exceed losses) Revenue churn declining (was 2% six months ago) Newer cohorts retain better than older cohorts 
+📊 OPPORTUNITIES
+Expansion room: 
+NRR at 102% is good, but room to grow to 110-120% Only 40% of customers have expanded (could push to 60%) Cross-sell opportunity: 30% of customers don't use integrations add-on 
+ARPU optimization: 
+$107/user is solid for mid-market, but enterprise segment shows $200/user potential Could introduce premium tier for advanced features 
+Reduce churn: 
+2.5% logo churn is acceptable but not excellent Analysis shows 70% of churn happens in first 90 days (onboarding problem) Fix: Improve onboarding, aim for <2% logo churn 
+--- 
+ACTIONS RECOMMENDED
+Scale acquisition aggressively — Unit economics are strong (see saas-economics-efficiency-metrics for CAC/LTV) Improve onboarding — Reduce early churn from 5% to 3% in first 90 days Expand cross-sell — Push integrations add-on to 30% of base without it (potential +$30K MRR) Test premium tier — 20 enterprise customers show willingness to pay 2x for advanced features Monitor cohort retention — Continue tracking that new cohorts retain better than old 
+--- 
+COHORT RETENTION TREND (POSITIVE SIGNAL)
+Cohort Month 6 Retention Month 12 Retention 12 months ago 85% 78% 6 months ago 88% TBD Current 92% (on track) TBD 
+Analysis: Newer cohorts retaining better = product improvements working. Safe to scale acquisition. 

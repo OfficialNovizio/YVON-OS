@@ -1,79 +1,36 @@
-#MEM id=systematic-debugging source=/root/yvon/agent-department/Technical/raj/skills/superpowers/systematic-debugging/condition-based-waiting.md savings=-3%
-M|Over|tx|Flaky tests often guess at timing w/ arbitrary delays. This creates race conditions where tests pass on fast machines but fail under load or in CI.
-M|Over|**Co|** Wait for the actual condition you care abt, not a guess abt how long it takes.
-M|When|tx|```dot
-M|When|tx|digraph when_to_use {
-M|When|tx|"tst uses setTimeout/sleep?" [shape=diamond];
-M|When|tx|"Testing timing behavior?" [shape=diamond];
-M|When|tx|"Document WHY timeout needed" [shape=box];
-M|When|tx|"Use condition-based waiting" [shape=box];
-M|When|tx|"tst uses setTimeout/sleep?" -> "Testing timing behavior?" [label="yes"];
-M|When|tx|"Testing timing behavior?" -> "Document WHY timeout needed" [label="yes"];
-M|When|tx|"Testing timing behavior?" -> "Use condition-based waiting" [label="no"];
-M|When|tx|}
-M|When|tx|```
-M|When|**Us|**
-M|When|it|Tests have arbitrary delays (`setTimeout`, `sleep`, `time.sleep()`)
-M|When|it|Tests are flaky (pass sometimes, fail under load)
-M|When|it|Tests timeout when run in parallel
-M|When|it|Waiting for async operations to complete
-M|When|**Do|**
-M|When|it|Testing actual timing behavior (debounce, throttle intervals)
-M|When|it|Always document WHY if using arbitrary timeout
-M|Core|tx|```ts
-M|Core|// ❌|Guessing at timing
-M|Core|tx|await new Promise(r => setTimeout(r, 50));
-M|Core|tx|const result = getResult();
-M|Core|tx|expect(result).toBeDefined();
-M|Core|// ✅|Waiting for condition
-M|Core|tx|await waitFor(() => getResult() !== undefined);
-M|Core|tx|const result = getResult();
-M|Core|tx|expect(result).toBeDefined();
-M|Core|tx|```
-M|Quic|tx|\| Scenario \| Pattern \|
-M|Quic|tx|\|----------\|---------\|
-M|Quic|tx|\| Wait for event \| `waitFor(() => events.find(e => e.tp === 'DONE'))` \|
-M|Quic|tx|\| Wait for state \| `waitFor(() => machine.state === 'ready')` \|
-M|Quic|tx|\| Wait for count \| `waitFor(() => items.length >= 5)` \|
-M|Quic|tx|\| Wait for file \| `waitFor(() => fs.existsSync(path))` \|
-M|Quic|tx|\| Complex condition \| `waitFor(() => obj.ready && obj.value > 10)` \|
-M|Impl|Gene|
-M|Impl|tx|```ts
-M|Impl|tx|async fn waitFor<T>(
-M|Impl|cond|() => T \| undefined \| null \| false,
-M|Impl|desc|string,
-M|Impl|tx|timeoutMs = 5000
-M|Impl|)|Promise<T> {
-M|Impl|tx|const startTime = Date.now();
-M|Impl|tx|while (true) {
-M|Impl|tx|const result = condition();
-M|Impl|tx|if (result) return result;
-M|Impl|tx|if (Date.now() - startTime > timeoutMs) {
-M|Impl|tx|throw new er(`Timeout waiting for ${description} after ${timeoutMs}ms`);
-M|Impl|tx|}
-M|Impl|tx|await new Promise(r => setTimeout(r, 10)); // Poll every 10ms
-M|Impl|tx|}
-M|Impl|tx|}
-M|Impl|tx|```
-M|Impl|tx|See `condition-based-waiting-example.ts` in this directory for complete implementation w/ domain-specific helpers (`waitForEvent`, `waitForEventCount`, `waitForEventMatch`) from actual debugging sn.
-M|Comm|**❌ |** `setTimeout(check, 1)` - wastes CPU
-M|Comm|fix|** Poll every 10ms
-M|Comm|**❌ |** Loop forever if condition never met
-M|Comm|fix|** Always include timeout w/ clear er
-M|Comm|**❌ |** Cache state before loop
-M|Comm|fix|** Call getter inside loop for fresh data
-M|When|tx|```ts
-M|When|tx|// Tool ticks every 100ms - need 2 ticks to verify partial output
-M|When|awai|wait for condition
-M|When|awai|wait for timed behavior
-M|When|tx|// 200ms = 2 ticks at 100ms intervals - documented and justified
-M|When|tx|```
-M|When|**Re|**
-M|When|tx|1. First wait for triggering condition
-M|When|tx|2. Based on known timing (not guessing)
-M|When|tx|3. Comment explaining WHY
-M|Real|From|
-M|Real|it|Fixed 15 flaky tests across 3 files
-M|Real|- Pa|60% → 100%
-M|Real|- Ex|40% faster
-M|Real|it|No more race conditions
+SRC agent-department/Technical/raj/skills/superpowers/systematic-debugging/condition-based-waiting.md
+ORIG_SIZE 3516
+SECTIONS 29
+ABBREVS 6
+INDEX_TERMS 152
+COMPILED 2026-06-13T19:23:25.598Z
+---
+CONDITION-BASED WAITING
+OVERVIEW
+Flaky tests often guess at timing with arbitrary delays. This creates race conditions where tests pass on fast machines but fail under load or in CI. 
+CP: Wait for the actual condition you care about, not a guess AH long it takes. 
+WTU
+CODE dot 454CHARS
+UW: 
+Tests have arbitrary delays (setTimeout, sleep, time.sleep()) Tests are flaky (pass sometimes, fail under load) Tests timeout when run in parallel WF async operations to complete 
+Don't UW: 
+Testing actual timing behavior (debounce, throttle intervals) Always document WHY if using arbitrary timeout 
+CORE PATTERN
+CODE typescript 274CHARS
+QUICK PATTERNS
+Scenario Pattern Wait for event `waitFor(() => events.find(e => e.type === 'DONE'))` Wait for state `waitFor(() => machine.state === 'ready')` Wait for count `waitFor(() => items.length >= 5)` Wait for file `waitFor(() => fs.existsSync(path))` Complex condition `waitFor(() => obj.ready && obj.value > 10)` 
+IMPLEMENTATION
+CODE typescript 455CHARS
+Generic polling function: 
+See condition-based-waiting-example.ts in this directory for complete implementation with domain-specific helpers (waitForEvent, waitForEventCount, waitForEventMatch) from actual debugging session. 
+COMMON MISTAKES
+❌ Polling too fast: setTimeout(check, 1) - wastes CPU ✅ Fix: Poll every 10ms 
+❌ No timeout: Loop forever if condition never met ✅ Fix: Always include timeout with clear error 
+❌ Stale data: Cache state before loop ✅ Fix: Call getter inside loop for fresh data 
+WHEN ARBITRARY TIMEOUT IS CORRECT
+CODE typescript 284CHARS
+Requirements: 
+First wait for triggering condition Based on known timing (not guessing) Comment explaining WHY 
+REAL-WORLD IMPACT
+From debugging session (2025-10-03): 
+Fixed 15 flaky tests across 3 files Pass rate: 60% → 100% Execution time: 40% faster No more race conditions 

@@ -1,15 +1,16 @@
-#MEM id=atlas source=/root/yvon/agent-department/Marketing/atlas/SESSION.md savings=17%
-M|Atla|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Atla|tx|> Always load this first. Load MEMORY.md for ag rules, creative principles, and cg visual log.
-M|Curr|- **|** 2026-05-20
-M|Curr|- **|** idle
-M|Curr|- **|** nz SS26 cg brief before any new visual direction is produced
-M|Curr|- **|** Confirm active vt + load ds.md before any art direction work
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|tx|\| 2026-05-20 \| Creative Studio Overhaul \| Art-directed platform tiles (IG/TT/LI/YT/X) visual language, cn tp chips per platform, aspect ratio sy. gn-shot-list pm engineering (framing/lighting/direction/pacing/tip sc). \| tst shot list output qual in browser \|
-M|Last|| 20|at assigns top/bottom/outerwear/footwear/accessory + heroItem per scene from active clothing line. pm sc for outfit visual coherence. \| Run migration 021, tst Outfit Builder w/ real clothing_items \|
-M|Last|| 20|scenes + dual im/motion pm + timeline + platform fit + no-sound tst. Framing spec per scene for Krea.ai passthrough. \| tst storyline generation end-to-end \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|nz SS26 cg brief — at cannot produce visual direction w/o it
-M|Open|it|Confirm shot list qual after migration 023 is live and history is testable
+SRC agent-department/Marketing/atlas/SESSION.md
+ORIG_SIZE 1668
+SECTIONS 9
+ABBREVS 9
+INDEX_TERMS 119
+COMPILED 2026-06-13T19:23:24.991Z
+---
+ATLAS — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for agent rules, creative principles, and campaign visual log. 
+CURRENT STATUS
+LA: 2026-05-20 CT: idle WF Stark: Novizio SS26 campaign brief before any new visual direction is produced NSSW: Confirm active venture + load DESIGN.md before any art direction work 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-05-20 Creative Studio Overhaul Art-directed platform tiles (IG/TT/LI/YT/X) visual language, content type chips per platform, aspect ratio system. Generate-shot-list prompt engineering (framing/lighting/direction/pacing/tip schema). Test shot list output quality in browser 2026-05-16 Creative Studio — Outfit Builder generate-outfits action design: Atlas assigns top/bottom/outerwear/footwear/accessory + heroItem per scene from active clothing line. Prompt schema for outfit visual coherence. RM 021, test Outfit Builder with real clothing_items 2026-05-16 Creative Studio Session 3 — Storyline generate-storyline design: scenes + dual image/motion prompts + timeline + platform fit + no-sound test. Framing spec per scene for Krea.ai passthrough. Test storyline generation end-to-end 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+Novizio SS26 campaign brief — Atlas cannot produce visual direction without it Confirm shot list quality after migration 023 is live and history is testable 

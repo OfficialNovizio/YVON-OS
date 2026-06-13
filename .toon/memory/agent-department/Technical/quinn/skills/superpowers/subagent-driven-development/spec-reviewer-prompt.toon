@@ -1,39 +1,11 @@
-#MEM id=subagent-driven-development source=/root/yvon/agent-department/Technical/quinn/skills/superpowers/subagent-driven-development/spec-reviewer-prompt.md savings=10%
-M|Spec|tx|Use this template when dispatching a spec compliance reviewer subagent.
-M|Spec|**Pu|** Verify implementer built what was requested (nothing more, nothing less)
-M|Spec|tx|```
-M|Spec|Task|
-M|Spec|desc|"rv spec compliance for Task N"
-M|Spec|pm|\|
-M|Spec|tx|You are reviewing whether an implementation matches its specification.
-M|What|tx|[FULL TEXT of task requirements]
-M|What|tx|[From implementer's rp]
-M|CRIT|tx|The implementer finished suspiciously quickly. Their rp may be incomplete,
-M|CRIT|tx|inaccurate, or optimistic. You MUST verify everything independently.
-M|CRIT|**DO|**
-M|CRIT|it|Take their word for what they implemented
-M|CRIT|it|Trust their claims abt completeness
-M|CRIT|it|Accept their interpretation of requirements
-M|CRIT|**DO|**
-M|CRIT|it|Read the actual code they wrote
-M|CRIT|it|Compare actual implementation to requirements line by line
-M|CRIT|it|Check for missing pieces they claimed to im
-M|CRIT|it|Look for extra features they didn't mention
-M|Your|Read|
-M|Your|**Mi|**
-M|Your|it|Did they im everything that was requested?
-M|Your|it|Are there requirements they skipped or missed?
-M|Your|it|Did they claim something works but didn't actually im it?
-M|Your|**Ex|**
-M|Your|it|Did they bd things that weren't requested?
-M|Your|it|Did they over-engineer or add unnecessary features?
-M|Your|it|Did they add "nice to haves" that weren't in spec?
-M|Your|**Mi|**
-M|Your|it|Did they interpret requirements differently than intended?
-M|Your|it|Did they solve the wrong problem?
-M|Your|it|Did they im the right feature but wrong way?
-M|Your|tx|**Verify by reading code, not by trusting rp.**
-M|Your|rp|
-M|Your|it|✅ Spec compliant (if everything matches after code inspection)
-M|Your|- ❌ |[list specifically what's missing or extra, w/ file:line references]
-M|Your|tx|```
+SRC agent-department/Technical/quinn/skills/superpowers/subagent-driven-development/spec-reviewer-prompt.md
+ORIG_SIZE 1999
+SECTIONS 4
+ABBREVS 0
+INDEX_TERMS 22
+COMPILED 2026-06-13T19:23:25.536Z
+---
+SPEC COMPLIANCE REVIEWER PROMPT TEMPLATE
+Use this template when dispatching a spec compliance reviewer subagent. 
+Purpose: Verify implementer built what was requested (nothing more, nothing less) 
+CODE  1783CHARS

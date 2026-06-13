@@ -1,88 +1,57 @@
-#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/GROWTH-PRINCIPLES.md savings=7%
-M|GROW|> Lo|designing a growth experiment, analyzing a funnel, prioritizing growth bets, or doing a growth rv.
-M|GROW|tx|---
-M|Cont|Befo|
-M|Cont|tx|1. Active vt (nz or hb)
-M|Cont|tx|2. `funnel_benchmarks` from memory — what are the current conversion baselines?
-M|Cont|tx|3. `active_experiments` from memory — what's already running? Don't ds conflicting tests.
-M|Cont|tx|4. `top_growth_levers` from memory — what's been proven to work?
-M|Cont|tx|5. ka's latest data — baselines must be current before designing experiments
-M|Cont|tx|Never ds an experiment w/o a confirmed baseline. Hypothesis w/o data is noise.
-M|Cont|tx|---
-M|AARR|Nate|
-M|AARR|tx|\| Stage \| nz \| hb \|
-M|AARR|tx|\|-------\|---------\|---------\|
-M|AARR|tx|\| **Acquisition** \| IG followers → website visitors \| App installs \|
-M|AARR|tx|\| **Activation** \| First purchase \| First sn after install \|
-M|AARR|tx|\| **Retention** \| Repeat purchase (30-day) \| Weekly active us \|
-M|AARR|tx|\| **rv** \| AOV, repeat cs rv \| MRR, upgrade rate \|
-M|AARR|tx|\| **Referral** \| UGC, tags, word-of-mouth \| Referral invites sent \|
-M|AARR|tx|Different vt = different bottlenecks. Diagnose before prescribing.
-M|AARR|tx|---
-M|Expe|Ever|
-M|Expe|tx|```
-M|Expe|EXPE|[name]
-M|Expe|vt|[nz / hb]
-M|Expe|Funn|[Acquisition / Activation / Retention / rv / Referral]
-M|Expe|Hypo|
-M|Expe|tx|If we [change X], then [metric Y] will [improve by Z%] bc [reason].
-M|Expe|Vari|[exactly one thing being tested]
-M|Expe|Cont|[current state]
-M|Expe|Vari|[proposed change]
-M|Expe|Prim|[single number that determines winner]
-M|Expe|Seco|[1–2 supporting metrics to watch]
-M|Expe|Min |[days — usually 7–14]
-M|Expe|Min |[sn / us needed for significance]
-M|Expe|Succ|[e.g., +15% conversion rate]
-M|Expe|Owne|[who executes this — mi/rj for pd, ro for ad, Sofia for sl]
-M|Expe|tx|```
-M|Expe|tx|One variable per experiment. Compound tests are uninterpretable.
-M|Expe|tx|---
-M|ICE |When|
-M|ICE |tx|\| Factor \| Question \| Score 1–10 \|
-M|ICE |tx|\|--------\|---------\|-----------\|
-M|ICE |tx|\| **Impact** \| How much will this move the North Star if it works? \| \|
-M|ICE |tx|\| **Confidence** \| How likely is this to work based on evidence? \| \|
-M|ICE |tx|\| **Ease** \| How quickly/cheaply can we run this? \| \|
-M|ICE |tx|**ICE Score** = (Impact + Confidence + Ease) / 3
-M|ICE |tx|Run highest ICE experiments first. Revisit scoring monthly — confidence changes as you learn.
-M|ICE |tx|---
-M|Hour|Rete|fix retention before scaling acquisition.
-M|Hour|Key |
-M|Hour|it|**D1 retention** — did they use the app the day after install?
-M|Hour|it|**D7 retention** — still active 1 week in?
-M|Hour|it|**D30 churn** — churned within first month?
-M|Hour|Rete|
-M|Hour|tx|1. Onboarding flow simplification (fewer steps to first value)
-M|Hour|tx|2. Push notification timing and cp
-M|Hour|tx|3. "Aha moment" acceleration (what's the earliest sign a us will retain?)
-M|Hour|tx|4. Paywall timing (too early = churn; too late = lost rv)
-M|Hour|tx|Flag to Priya if retention levers require pd changes.
-M|Hour|tx|---
-M|Novi|tx|nz's primary lever is acquisition + first purchase. Retention is repeat purchase.
-M|Novi|Key |
-M|Novi|it|**IG → Website CTR** — are sl posts driving traffic?
-M|Novi|it|**PDP → ATC rate** — is the pd page convincing?
-M|Novi|it|**ATC → Purchase rate** — is checkout friction too hi?
-M|Novi|it|**30-day repeat purchase rate** — are cs coming back?
-M|Novi|Grow|
-M|Novi|tx|1. Improve IG CTA clarity (link in bio, story link sticker)
-M|Novi|tx|2. pd page sl proof (reviews, UGC imagery)
-M|Novi|tx|3. Checkout simplification (fewer form fields, guest checkout)
-M|Novi|tx|4. Post-purchase em sequence (trigger within 24h)
-M|Novi|tx|---
-M|Mark|it|Validate channel-mk fit before brainstorming. Rank ideas by ICE score (Impact × Confidence × Ease).
-M|Mark|it|Each idea includes a distribution assumption — not just the concept.
-M|Mark|- **|generating ideas w/o knowing the target segment and budget constraint.
-M|Free|it|Tool must solve a problem the ICP already has. Acquisition → activation in ≤ 2 steps.
-M|Free|it|SEO value + viral loop are the two signals a tool must have to justify bd cost.
-M|Free|- **|tools that require sign-up before delivering value.
-M|Refe|it|Double-sided reward. Trigger the referral ask at the highest satisfaction moment.
-M|Refe|it|Referral mechanics must be visible in the pd — not buried in settings.
-M|Refe|- **|launching referral programs before pd-mk fit is confirmed.
-M|Acqu|- Sc|reach, targeting precision, cost, scalability, time-to-results.
-M|Acqu|it|Start w/ 2 channels max. Add channels only when the first 2 are at benchmark.
-M|Acqu|- **|spreading spend across 5+ channels before any single channel is optimized.
-M|SaaS|- Tr|MRR, ARR, MoM growth rate, NRR, churn, expansion MRR, contraction MRR.
-M|SaaS|- Di|new, expansion, or retention problem.
-M|SaaS|- **|growth recommendations that don't specify which metric they are designed to move.
+SRC agent-department/Marketing/nate/GROWTH-PRINCIPLES.md
+ORIG_SIZE 5340
+SECTIONS 50
+ABBREVS 3
+INDEX_TERMS 307
+COMPILED 2026-06-13T19:23:25.119Z
+---
+GROWTH-PRINCIPLES.MD — NATE, GROWTH ANALYST
+Load this file only when: designing a growth experiment, analyzing a funnel, prioritizing growth bets, or doing a growth review. 
+--- 
+CONTEXT GATHERING PROTOCOL
+Before any growth output, confirm: 
+Active venture (NO Hourbour) funnel_benchmarks from memory — what are the current conversion baselines? active_experiments from memory — what's already running? Don't design conflicting tests. top_growth_levers from memory — what's been proven to work? Kai's latest data — baselines must be current before designing experiments 
+Never design an experiment without a confirmed baseline. Hypothesis without data is noise. 
+--- 
+AARRR GROWTH FRAMEWORK
+Nate maps every growth opportunity to a funnel stage: 
+Stage Novizio Hourbour **Acquisition** IG followers → website visitors App installs **Activation** First purchase First session after install **Retention** Repeat purchase (30-day) Weekly active users **Revenue** AOV, repeat customer revenue MRR, upgrade rate **Referral** UGC, tags, word-of-mouth Referral invites sent 
+Different ventures = different bottlenecks. Diagnose before prescribing. 
+--- 
+EXPERIMENT DESIGN PROTOCOL
+Every experiment Nate designs uses this format: 
+CODE  635CHARS
+One variable per experiment. Compound tests are uninterpretable. 
+--- 
+ICE SCORING (PRIORITIZATION)
+When multiple experiments are in the backlog, score each: 
+Factor Question Score 1–10 **Impact** How much will this move the North Star if it works? **Confidence** How likely is this to work based on evidence? **Ease** How quickly/cheaply can we run this? 
+ICE Score = (Impact + Confidence + Ease) / 3 
+Run highest ICE experiments first. Revisit scoring monthly — confidence changes as you learn. 
+--- 
+HOURBOUR SAAS RETENTION PLAYBOOK
+Retention is Hourbour's most critical lever. SaaS rule: fix retention before scaling acquisition. 
+Key retention signals: 
+D1 retention — did they UT app the day after install? D7 retention — still active 1 week in? D30 churn — churned within first month? 
+Retention levers to test: 
+Onboarding flow simplification (fewer steps to first value) Push notification timing and copy "Aha moment" acceleration (what's the earliest sign a user will retain?) Paywall timing (too early = churn; too late = lost revenue) 
+Flag to Priya if retention levers require product changes. 
+--- 
+NOVIZIO E-COMMERCE GROWTH PLAYBOOK
+Novizio's primary lever is acquisition + first purchase. Retention is repeat purchase. 
+Key funnel metrics: 
+IG → Website CTR — are social posts driving traffic? PDP → ATC rate — IT product page convincing? ATC → Purchase rate — is checkout friction too high? 30-day repeat purchase rate — are customers coming back? 
+Growth levers: 
+Improve IG CTA clarity (link in bio, story link sticker) Product page social proof (reviews, UGC imagery) Checkout simplification (fewer form fields, guest checkout) Post-purchase email sequence (trigger within 24h) 
+--- 
+SKILLS REFERENCE
+MARKETING IDEAS
+Validate channel-market fit before brainstorming. Rank ideas by ICE score (Impact × Confidence × Ease). Each idea includes a distribution assumption — not just the concept. Avoid: generating ideas without knowing the target segment and budget constraint. 
+FREE TOOL STRATEGY
+Tool must solve a problem the ICP already has. Acquisition → activation in ≤ 2 steps. SEO value + viral loop are the two signals a tool must have to justify build cost. Avoid: tools that require sign-up before delivering value. 
+REFERRAL PROGRAM
+Double-sided reward. Trigger the referral ask at the highest satisfaction moment. Referral mechanics must be visible in the product — not buried in settings. Avoid: launching referral programs before product-market fit is confirmed. 
+ACQUISITION CHANNEL ADVISOR
+SCORE_EACH_CHANNEL_BY reach, targeting precision, cost, scalability, time-to-results.
+SAAS REVENUE GROWTH METRICS
+TRACK MRR, ARR, MoM growth rate, NRR, churn, expansion MRR, contraction MRR.

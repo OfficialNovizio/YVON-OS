@@ -1,34 +1,21 @@
-#MEM id=code-review source=/root/yvon/agent-department/Technical/dev/skills/code-review/03-build-graph.md savings=28%
-M||tx|---
-M||prio|md
-M||appl|dv
-M||load|on-request
-M||md|qwen3.5-4b
-M||conf|[]
-M||sour|github.com/tirth8205/code-rv-graph
-M||tx|---
-M|Buil|tx|Setup and maintenance commands for the code-rv-graph knowledge graph.
-M|Inst|tx|```bash
-M|Inst|tx|pip install code-rv-graph
-M|or|tx|uv add code-rv-graph
-M|or|tx|```
-M|Init|tx|```bash
-M|Buil|tx|uv run code-rv-graph bd
-M|Chec|tx|uv run code-rv-graph status
-M|Chec|tx|```
-M|Main|tx|```bash
-M|Incr|tx|uv run code-rv-graph up
-M|Star|tx|uv run code-rv-graph serve
-M|Gene|tx|uv run code-rv-graph wiki
-M|Gene|tx|```
-M|Auto|Add |
-M|Auto|tx|```bash
-M|Auto|tx|#\!/bin/bash
-M|Run |tx|uv run code-rv-graph up
-M|Run |tx|echo "Graph updated — ready for rv"
-M|Run |tx|```
-M|Mult|tx|```bash
-M|Regi|tx|uv run code-rv-graph register ./brands/nz/workspace
-M|Regi|tx|uv run code-rv-graph register ./brands/hb/workspace
-M|List|tx|uv run code-rv-graph repos
-M|List|tx|```
+SRC agent-department/Technical/dev/skills/code-review/03-build-graph.md
+ORIG_SIZE 1249
+SECTIONS 15
+ABBREVS 0
+INDEX_TERMS 30
+COMPILED 2026-06-13T19:23:25.275Z
+---
+PRIORITY medium
+BUILD & MAINTAIN CODE GRAPH
+Setup and maintenance commands for the code-review-graph knowledge graph. 
+INSTALL
+CODE bash 60CHARS
+INITIAL SETUP
+CODE bash 154CHARS
+MAINTENANCE COMMANDS
+CODE bash 236CHARS
+AUTOMATION
+CODE bash 126CHARS
+Add to scripts/pre-session.sh: 
+MULTI-REPO SETUP (YVON WITH MULTIPLE BRANDS)
+CODE bash 210CHARS

@@ -1,80 +1,22 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/async-suspense-boundaries.md savings=-5%
-M||tx|---
-M||titl|st Suspense Boundaries
-M||impa|hi
-M||impa|faster initial paint
-M||tags|async, suspense, streaming, layout-shift
-M||tx|---
-M|Stra|tx|Instead of awaiting data in async cp before returning JSX, use Suspense boundaries to show the wrapper UI faster while data loads.
-M|Stra|**In|**
-M|Stra|tx|```tsx
-M|Stra|tx|async fn Page() {
-M|Stra|tx|const data = await fetchData() // Blocks entire page
-M|Stra|tx|return (
-M|Stra|tx|<div>
-M|Stra|tx|<div>Sidebar</div>
-M|Stra|tx|<div>Header</div>
-M|Stra|tx|<div>
-M|Stra|tx|<DataDisplay data={data} />
-M|Stra|tx|</div>
-M|Stra|tx|<div>Footer</div>
-M|Stra|tx|</div>
-M|Stra|tx|)
-M|Stra|tx|}
-M|Stra|tx|```
-M|Stra|tx|The entire layout waits for data even though only the middle section needs it.
-M|Stra|**Co|**
-M|Stra|tx|```tsx
-M|Stra|tx|fn Page() {
-M|Stra|tx|return (
-M|Stra|tx|<div>
-M|Stra|tx|<div>Sidebar</div>
-M|Stra|tx|<div>Header</div>
-M|Stra|tx|<div>
-M|Stra|tx|<Suspense fallback={<Skeleton />}>
-M|Stra|tx|<DataDisplay />
-M|Stra|tx|</Suspense>
-M|Stra|tx|</div>
-M|Stra|tx|<div>Footer</div>
-M|Stra|tx|</div>
-M|Stra|tx|)
-M|Stra|tx|}
-M|Stra|tx|async fn DataDisplay() {
-M|Stra|tx|const data = await fetchData() // Only blocks this cp
-M|Stra|tx|return <div>{data.cn}</div>
-M|Stra|tx|}
-M|Stra|tx|```
-M|Stra|tx|Sidebar, Header, and Footer render immediately. Only DataDisplay waits for data.
-M|Stra|**Al|**
-M|Stra|tx|```tsx
-M|Stra|tx|fn Page() {
-M|Stra|tx|// Start fetch immediately, but don't await
-M|Stra|tx|const dataPromise = fetchData()
-M|Stra|tx|return (
-M|Stra|tx|<div>
-M|Stra|tx|<div>Sidebar</div>
-M|Stra|tx|<div>Header</div>
-M|Stra|tx|<Suspense fallback={<Skeleton />}>
-M|Stra|tx|<DataDisplay dataPromise={dataPromise} />
-M|Stra|tx|<DataSummary dataPromise={dataPromise} />
-M|Stra|tx|</Suspense>
-M|Stra|tx|<div>Footer</div>
-M|Stra|tx|</div>
-M|Stra|tx|)
-M|Stra|tx|}
-M|Stra|func|{ dataPromise: Promise<Data> }) {
-M|Stra|tx|const data = use(dataPromise) // Unwraps the promise
-M|Stra|tx|return <div>{data.cn}</div>
-M|Stra|tx|}
-M|Stra|func|{ dataPromise: Promise<Data> }) {
-M|Stra|tx|const data = use(dataPromise) // Reuses the same promise
-M|Stra|tx|return <div>{data.summary}</div>
-M|Stra|tx|}
-M|Stra|tx|```
-M|Stra|tx|Both cp share the same promise, so only one fetch occurs. Layout renders immediately while both cp wait together.
-M|Stra|**Wh|**
-M|Stra|it|ct data needed for layout decisions (affects positioning)
-M|Stra|it|SEO-ct cn above the fold
-M|Stra|it|Small, fast queries where suspense overhead isn't worth it
-M|Stra|it|When you want to avoid layout shift (loading → cn jump)
-M|Stra|**Tr|** Faster initial paint vs potential layout shift. Choose based on your UX priorities.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/async-suspense-boundaries.md
+ORIG_SIZE 2510
+SECTIONS 16
+ABBREVS 2
+INDEX_TERMS 92
+COMPILED 2026-06-13T19:23:25.443Z
+---
+TITLE Strategic Suspense Boundaries
+STRATEGIC SUSPENSE BOUNDARIES
+IO awaiting data in async components before returning JSX, use Suspense boundaries to show the wrapper UI faster while data loads. 
+Incorrect (wrapper blocked by data fetching): 
+CODE tsx 254CHARS
+The entire layout waits for data even though OT middle section needs it. 
+Correct (wrapper shows immediately, data streams in): 
+CODE tsx 375CHARS
+Sidebar, Header, and Footer render immediately. Only DataDisplay waits for data. 
+Alternative (share promise across components): 
+CODE tsx 705CHARS
+Both components share the same promise, so only one fetch occurs. Layout renders immediately while both components wait together. 
+When NOT to use this pattern: 
+Critical data needed for layout decisions (affects positioning) SEO-critical content above the fold Small, fast queries where suspense overhead isn't worth it When you want to avoid layout shift (loading → content jump) 
+Trade-off: Faster initial paint vs potential layout shift. Choose based on your UX priorities. 

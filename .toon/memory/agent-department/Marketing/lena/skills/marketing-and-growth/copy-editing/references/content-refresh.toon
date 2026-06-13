@@ -1,25 +1,17 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/lena/skills/marketing-and-growth/copy-editing/references/content-refresh.md savings=10%
-M|Cont|tx|cp editing isn't just for new cn. Existing pages and posts decay over time — outdated stats, stale examples, drifted br voice, and missed SEO opportunities. A cn refresh applies the same editing rigor to cn that's already published.
-M|When|it|**Traffic declining** on a page that used to perform well
-M|When|it|**Stats or data** are more than 12 months old
-M|When|it|**pd has changed** — features, pricing, or positioning no longer match
-M|When|it|**cr updated** their version of the same cn
-M|When|it|**AI search visibility** matters — outdated cn gets cited less (see ai-seo skill)
-M|Cont|tx|1. **Freshness pass** — up all dates, stats, and examples. Replace "in 2024" w/ current data. Remove references to deprecated features or tools.
-M|Cont|tx|2. **Accuracy pass** — Verify all claims are still true. Check that linked resources still exist. Confirm pricing and feature descriptions match current state.
-M|Cont|tx|3. **Voice pass** — Does the tone match your current br voice? Older cn often reflects an earlier stage of the company.
-M|Cont|4. *|[date]" prominently.
-M|Cont|tx|5. **Proof pass** — Can you add newer testimonials, case studies, or data points that didn't exist when this was first published?
-M|Cont|tx|6. **Structure pass** — Add comparison tables, FAQ sections, or other scannable formats that make the cn easier to consume.
-M|Refr|tx|\| Signal \| Action \|
-M|Refr|tx|\|--------\|--------\|
-M|Refr|tx|\| Core message still valid, details outdated \| Refresh (up facts, stats, examples) \|
-M|Refr|tx|\| br voice has evolved significantly \| Refresh + voice rewrite \|
-M|Refr|tx|\| Topic angle or audience has shifted \| Full rewrite \|
-M|Refr|tx|\| Page structure doesn't match current search intent \| Full rewrite \|
-M|Refr|tx|\| Just needs updated stats and links \| Light refresh \|
-M|Refr|- **|Every quarter, or when pricing/features change
-M|Refr|- **|Every 6 months
-M|Refr|- **|Every 3-6 months (cr change fast)
-M|Refr|- **|Annually, unless traffic drops sooner
-M|Refr|- **|Only when traffic data suggests an opportunity
+SRC agent-department/Marketing/lena/skills/marketing-and-growth/copy-editing/references/content-refresh.md
+ORIG_SIZE 2298
+SECTIONS 10
+ABBREVS 2
+INDEX_TERMS 175
+COMPILED 2026-06-13T19:23:25.093Z
+---
+CONTENT REFRESH EDITING
+Copy editing isn't just for new content. Existing pages and posts decay over time — outdated stats, stale examples, drifted brand voice, and missed SEO opportunities. A content refresh applies the same editing rigor to content that's already published. 
+WT REFRESH
+Traffic declining on a page that used to perform well Stats or data are more than 12 months old Product has changed — features, pricing, or positioning no longer match Competitors updated their version of the same content AI search visibility matters — outdated content gets cited less (see ai-seo skill) 
+CONTENT REFRESH CHECKLIST
+Freshness pass — Update all dates, stats, and examples. Replace "in 2024" with current data. Remove references to deprecated features or tools. Accuracy pass — Verify all claims are still true. Check that linked resources still exist. Confirm pricing and feature descriptions match current state. Voice pass — Does the tone match your current brand voice? Older content often reflects an earlier stage of the company. SEO pass — Has search intent shifted for this topic? Are there new keywords or questions to address? Add "LU: [date]" prominently. Proof pass — Can you add newer testimonials, case studies, or data points that didn't exist when this was first published? Structure pass — Add comparison tables, FAQ sections, or other scannable formats that make the content easier to consume. 
+REFRESH VS. REWRITE
+Signal Action Core message still valid, details outdated Refresh (update facts, stats, examples) Brand voice has evolved significantly Refresh + voice rewrite Topic angle or audience has shifted Full rewrite Page structure doesn't match current search intent Full rewrite Just needs updated stats and links Light refresh 
+REFRESH CADENCE
+Pricing and product pages: Every quarter, or when pricing/features change High-traffic blog posts: Every 6 months Comparison and alternatives pages: Every 3-6 months (competitors change fast) Evergreen guides: Annually, unless traffic drops sooner Low-traffic pages: Only when traffic data suggests an opportunity 

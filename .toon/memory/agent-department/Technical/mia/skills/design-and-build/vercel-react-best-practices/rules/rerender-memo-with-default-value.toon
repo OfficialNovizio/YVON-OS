@@ -1,26 +1,16 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-memo-with-default-value.md savings=16%
-M||tx|---
-M||titl|Extract Default Non-primitive Parameter Value from Memoized cp to Constant
-M||impa|md
-M||impa|restores memoization by using a constant for default value
-M||tags|rerender, memo, op
-M||tx|---
-M|Extr|tx|When memoized cp has a default value for some non-primitive optional parameter, such as an array, fn, or object, calling the cp w/o that parameter results in broken memoization. This is bc new value instances are created on every rerender, and they do not pass strict equality comparison in `memo()`.
-M|Extr|tx|To address this issue, extract the default value into a constant.
-M|Extr|**In|**
-M|Extr|tx|```tsx
-M|Extr|cons|{ onClick?: () => void }) {
-M|Extr|tx|// ...
-M|Extr|tx|})
-M|Extr|tx|// Used w/o optional onClick
-M|Extr|tx|<UserAvatar />
-M|Extr|tx|```
-M|Extr|**Co|**
-M|Extr|tx|```tsx
-M|Extr|tx|const NOOP = () => {};
-M|Extr|cons|{ onClick?: () => void }) {
-M|Extr|tx|// ...
-M|Extr|tx|})
-M|Extr|tx|// Used w/o optional onClick
-M|Extr|tx|<UserAvatar />
-M|Extr|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-memo-with-default-value.md
+ORIG_SIZE 1173
+SECTIONS 10
+ABBREVS 2
+INDEX_TERMS 55
+COMPILED 2026-06-13T19:23:25.470Z
+---
+TITLE Extract Default Non-primitive Parameter Value from Memoized Component to Constant
+--- 
+EXTRACT DEFAULT NON-PRIMITIVE PARAMETER VALUE FROM MEMOIZED COMPONENT TO CONSTANT
+When memoized component has a default value for some non-primitive optional parameter, such as an array, function, or object, calling the component without that parameter results in broken memoization. TI because new value instances are created on every rerender, and they do not pass strict equality comparison in memo(). 
+To address TIsue, extract the default value into a constant. 
+Incorrect (onClick has different values on every rerender): 
+CODE tsx 157CHARS
+Correct (stable default value): 
+CODE tsx 177CHARS

@@ -1,2 +1,10 @@
-#MEM id=lena source=/root/yvon/agent-department/Marketing/lena/CONFLICTS.md savings=35%
-M|Agen|tx|> Inherits from project root CONFLICTS.md. Add ag-specific conflicts here only.
+SRC agent-department/Marketing/lena/CONFLICTS.md
+ORIG_SIZE 138
+SECTIONS 3
+ABBREVS 1
+INDEX_TERMS 12
+COMPILED 2026-06-13T19:23:25.060Z
+---
+AGENT: LENA — CONFLICT RESOLUTIONS
+IFPR CONFLICTS.md. Add agent-specific conflicts here only. 
+(NONE YET)

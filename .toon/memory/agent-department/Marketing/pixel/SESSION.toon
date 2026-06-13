@@ -1,15 +1,16 @@
-#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/SESSION.md savings=23%
-M|Pixe|tx|> Rolling short-term memory. Capped at 3 sn — oldest drops when 4th is added.
-M|Pixe|tx|> Always load this first. Load MEMORY.md for proven pm structures, production log, and standing rules.
-M|Curr|- **|** 2026-05-20
-M|Curr|- **|** idle
-M|Curr|- **|** at shoot list approval before nx production batch
-M|Curr|- **|** Confirm at has approved pm + active vt confirmed before any batch starts
-M|Last|tx|\| Date \| Task \| Outcome \| nx Step \|
-M|Last|tx|\|------\|------\|---------\|-----------\|
-M|Last|| 20|ASPECT_TO_PX passthrough to Krea width/height. Shot list sc integration (framing/lighting/tip fields → Krea pm). \| tst Krea dimensions w/ shoot mode output \|
-M|Last|| 20|garment assignment sc (top/bottom/outerwear/footwear/accessory/heroItem). Hero star badge logic. Regenerate flow. \| Run migration 021, tst Outfit Builder \|
-M|Last|| 20|im pm (static) + motion pm (vd/animated) per scene. Platform fit chips output. \| tst storyline generation flow \|
-M|Open|tx|> Unresolved questions, blockers, or decisions pnd Stark input.
-M|Open|it|Awaiting nz SS26 cg brief → at → px production batch
-M|Open|it|Confirm Krea.ai ap key is set and dimension passthrough is live
+SRC agent-department/Marketing/pixel/SESSION.md
+ORIG_SIZE 1558
+SECTIONS 9
+ABBREVS 9
+INDEX_TERMS 110
+COMPILED 2026-06-13T19:23:25.162Z
+---
+PIXEL — SESSION MEMORY
+Rolling short-term memory. CA 3 sessions — oldest drops when 4th is added. ALTF. Load MEMORY.md for proven prompt structures, production log, and standing rules. 
+CURRENT STATUS
+LA: 2026-05-20 CT: idle WF Stark: Atlas shoot list approval before next production batch NSSW: Confirm Atlas has approved prompts + active venture confirmed before any batch starts 
+LAST 3 SESSIONS
+Date Task Outcome Next Step 2026-05-20 Creative Studio Overhaul — production pipeline Prompt optimisation for shoot mode assets: ASPECT_TO_PX passthrough to Krea width/height. Shot list schema integration (framing/lighting/tip fields → Krea prompt). Test Krea dimensions with shoot mode output 2026-05-16 Outfit Builder — prompt optimisation Outfit generation prompts: garment assignment schema (top/bottom/outerwear/footwear/accessory/heroItem). Hero star badge logic. Regenerate flow. RM 021, test Outfit Builder 2026-05-16 Creative Studio Session 3 — image/motion prompts Dual prompt production: image prompt (static) + motion prompt (video/animated) per scene. Platform fit chips output. Test storyline generation flow 
+OPEN ITEMS
+UQ, blockers, or decisions pending SI. 
+Awaiting Novizio SS26 campaign brief → Atlas → Pixel production batch Confirm Krea.ai API key is set and dimension passthrough is live 

@@ -1,36 +1,16 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-dependencies.md savings=-8%
-M||tx|---
-M||titl|Narrow Effect Dependencies
-M||impa|lo
-M||impa|minimizes effect re-runs
-M||tags|rerender, useEffect, dependencies, op
-M||tx|---
-M|Narr|tx|Specify primitive dependencies instead of objects to minimize effect re-runs.
-M|Narr|**In|**
-M|Narr|tx|```tsx
-M|Narr|tx|useEffect(() => {
-M|Narr|tx|console.log(us.id)
-M|Narr|tx|}, [us])
-M|Narr|tx|```
-M|Narr|**Co|**
-M|Narr|tx|```tsx
-M|Narr|tx|useEffect(() => {
-M|Narr|tx|console.log(us.id)
-M|Narr|tx|}, [us.id])
-M|Narr|tx|```
-M|Narr|**Fo|**
-M|Narr|tx|```tsx
-M|Narr|// I|runs on width=767, 766, 765...
-M|Narr|tx|useEffect(() => {
-M|Narr|tx|if (width < 768) {
-M|Narr|tx|enableMobileMode()
-M|Narr|tx|}
-M|Narr|tx|}, [width])
-M|Narr|// C|runs only on boolean transition
-M|Narr|tx|const isMobile = width < 768
-M|Narr|tx|useEffect(() => {
-M|Narr|tx|if (isMobile) {
-M|Narr|tx|enableMobileMode()
-M|Narr|tx|}
-M|Narr|tx|}, [isMobile])
-M|Narr|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rerender-dependencies.md
+ORIG_SIZE 824
+SECTIONS 10
+ABBREVS 1
+INDEX_TERMS 28
+COMPILED 2026-06-13T19:23:25.466Z
+---
+TITLE Narrow Effect Dependencies
+NARROW EFFECT DEPENDENCIES
+Specify primitive dependencies IO objects to minimize effect re-runs. 
+Incorrect (re-runs on any user field change): 
+CODE tsx 52CHARS
+Correct (re-runs only when id changes): 
+CODE tsx 55CHARS
+For derived state, compute outside effect: 
+CODE tsx 275CHARS

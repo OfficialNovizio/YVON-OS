@@ -1,35 +1,17 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-hoist-regexp.md savings=3%
-M||tx|---
-M||titl|Hoist RegExp Creation
-M||impa|lo-md
-M||impa|avoids recreation
-M||tags|javascript, regexp, op, memoization
-M||tx|---
-M|Hois|tx|Don't cr RegExp inside render. Hoist to md scope or memoize w/ `useMemo()`.
-M|Hois|**In|**
-M|Hois|tx|```tsx
-M|Hois|func|Props) {
-M|Hois|tx|const regex = new RegExp(`(${query})`, 'gi')
-M|Hois|tx|const parts = text.split(regex)
-M|Hois|tx|return <>{parts.map((part, i) => ...)}</>
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|**Co|**
-M|Hois|tx|```tsx
-M|Hois|tx|const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-M|Hois|func|Props) {
-M|Hois|tx|const regex = useMemo(
-M|Hois|tx|() => new RegExp(`(${escapeRegex(query)})`, 'gi'),
-M|Hois|tx|[query]
-M|Hois|tx|)
-M|Hois|tx|const parts = text.split(regex)
-M|Hois|tx|return <>{parts.map((part, i) => ...)}</>
-M|Hois|tx|}
-M|Hois|tx|```
-M|Hois|**Wa|**
-M|Hois|Glob|
-M|Hois|tx|```ts
-M|Hois|tx|const regex = /foo/g
-M|Hois|tx|regex.tst('foo')  // true, lastIndex = 3
-M|Hois|tx|regex.tst('foo')  // false, lastIndex = 0
-M|Hois|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/js-hoist-regexp.md
+ORIG_SIZE 1028
+SECTIONS 11
+ABBREVS 0
+INDEX_TERMS 30
+COMPILED 2026-06-13T19:23:25.457Z
+---
+TITLE Hoist RegExp Creation
+HOIST REGEXP CREATION
+Don't create RegExp inside render. Hoist to module scope or memoize with useMemo(). 
+Incorrect (new RegExp every render): 
+CODE tsx 174CHARS
+Correct (memoize or hoist): 
+CODE tsx 273CHARS
+Warning (global regex has mutable state): 
+Global regex (/g) has mutable lastIndex state: 
+CODE typescript 106CHARS

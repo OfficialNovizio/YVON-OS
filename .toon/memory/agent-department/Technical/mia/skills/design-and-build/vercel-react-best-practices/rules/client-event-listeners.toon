@@ -1,62 +1,15 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/client-event-listeners.md savings=-6%
-M||tx|---
-M||titl|Deduplicate Global Event Listeners
-M||impa|lo
-M||impa|single listener for N cp
-M||tags|client, swr, event-listeners, subscription
-M||tx|---
-M|Dedu|tx|Use `useSWRSubscription()` to share global event listeners across cp instances.
-M|Dedu|**In|**
-M|Dedu|tx|```tsx
-M|Dedu|func|string, callback: () => void) {
-M|Dedu|tx|useEffect(() => {
-M|Dedu|cons|KeyboardEvent) => {
-M|Dedu|tx|if (e.metaKey && e.key === key) {
-M|Dedu|tx|callback()
-M|Dedu|tx|}
-M|Dedu|tx|}
-M|Dedu|tx|window.addEventListener('keydown', handler)
-M|Dedu|tx|return () => window.removeEventListener('keydown', handler)
-M|Dedu|tx|}, [key, callback])
-M|Dedu|tx|}
-M|Dedu|tx|```
-M|Dedu|tx|When using the `useKeyboardShortcut` hook multiple times, each instance will register a new listener.
-M|Dedu|**Co|**
-M|Dedu|tx|```tsx
-M|Dedu|tx|import useSWRSubscription from 'swr/subscription'
-M|Dedu|tx|// md-level Map to track callbacks per key
-M|Dedu|tx|const keyCallbacks = new Map<string, Set<() => void>>()
-M|Dedu|func|string, callback: () => void) {
-M|Dedu|tx|// Register this callback in the Map
-M|Dedu|tx|useEffect(() => {
-M|Dedu|tx|if (!keyCallbacks.has(key)) {
-M|Dedu|tx|keyCallbacks.set(key, new Set())
-M|Dedu|tx|}
-M|Dedu|tx|keyCallbacks.get(key)!.add(callback)
-M|Dedu|tx|return () => {
-M|Dedu|tx|const set = keyCallbacks.get(key)
-M|Dedu|tx|if (set) {
-M|Dedu|tx|set.dl(callback)
-M|Dedu|tx|if (set.size === 0) {
-M|Dedu|tx|keyCallbacks.dl(key)
-M|Dedu|tx|}
-M|Dedu|tx|}
-M|Dedu|tx|}
-M|Dedu|tx|}, [key, callback])
-M|Dedu|tx|useSWRSubscription('global-keydown', () => {
-M|Dedu|cons|KeyboardEvent) => {
-M|Dedu|tx|if (e.metaKey && keyCallbacks.has(e.key)) {
-M|Dedu|tx|keyCallbacks.get(e.key)!.forEach(cb => cb())
-M|Dedu|tx|}
-M|Dedu|tx|}
-M|Dedu|tx|window.addEventListener('keydown', handler)
-M|Dedu|tx|return () => window.removeEventListener('keydown', handler)
-M|Dedu|tx|})
-M|Dedu|tx|}
-M|Dedu|tx|fn Profile() {
-M|Dedu|tx|// Multiple shortcuts will share the same listener
-M|Dedu|tx|useKeyboardShortcut('p', () => { /* ... */ })
-M|Dedu|tx|useKeyboardShortcut('k', () => { /* ... */ })
-M|Dedu|tx|// ...
-M|Dedu|tx|}
-M|Dedu|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/client-event-listeners.md
+ORIG_SIZE 1969
+SECTIONS 9
+ABBREVS 1
+INDEX_TERMS 29
+COMPILED 2026-06-13T19:23:25.448Z
+---
+TITLE Deduplicate Global Event Listeners
+DEDUPLICATE GLOBAL EVENT LISTENERS
+UUSWRSubscription() to share global event listeners across component instances. 
+Incorrect (N instances = N listeners): 
+CODE tsx 339CHARS
+When using the useKeyboardShortcut hook multiple times, each instance will register a new listener. 
+Correct (N instances = 1 listener): 
+CODE tsx 1128CHARS

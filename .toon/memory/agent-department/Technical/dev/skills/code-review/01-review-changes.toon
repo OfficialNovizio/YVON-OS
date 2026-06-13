@@ -1,37 +1,26 @@
-#MEM id=code-review source=/root/yvon/agent-department/Technical/dev/skills/code-review/01-review-changes.md savings=3%
-M||tx|---
-M||prio|hi
-M||appl|dv
-M||load|on-request
-M||md|qwen3.5-4b
-M||conf|[]
-M||sour|github.com/tirth8205/code-rv-graph
-M||tx|---
-M|Code|tx|Skill for reviewing code changes using the code-rv-graph knowledge graph.
-M|Code|tx|Achieves 6.8× fewer tk on reviews by reading only what matters.
-M|Step|tx|```
-M|Step|tx|get_minimal_context(task="<describe what changed>")
-M|Step|tx|```
-M|Step|tx|~100 tk. Gives full picture. Do this BEFORE reading any files.
-M|Step|tx|```
-M|Step|tx|query_graph(target="<specific fn/class>", detail_level="minimal")
-M|Step|tx|```
-M|Step|tx|Never use broad `list_*` calls. Target specific nodes.
-M|Step|tx|```
-M|Step|tx|detect_changes()
-M|Step|tx|```
-M|Step|tx|Returns risk-scored change al. Read the `risk_level` field first.
-M|Revi|it|[ ] Does this change break any callers? (check `edge` nodes)
-M|Revi|it|[ ] Are tests affected? (check tst coverage nodes)
-M|Revi|it|[ ] Are there orphaned imports/functions created by this change?
-M|Revi|it|[ ] Does the change match the stated sc criteria?
-M|Revi|it|[ ] Is the diff minimal — no unrelated changes?
-M|Toke|it|Max 5 tool calls per rv
-M|Toke|it|Max 800 tk of graph context
-M|Toke|it|`next_tool_suggestions` tells you optimal nx step — follow it
-M|Outp|tx|```
-M|Outp|RISK|[lo/md/hi]
-M|Outp|CHAN|[list of affected nodes]
-M|Outp|CONC|[numbered list, or "none"]
-M|Outp|VERD|[ap / request changes]
-M|Outp|tx|```
+SRC agent-department/Technical/dev/skills/code-review/01-review-changes.md
+ORIG_SIZE 1434
+SECTIONS 20
+ABBREVS 3
+INDEX_TERMS 90
+COMPILED 2026-06-13T19:23:25.274Z
+---
+PRIORITY high
+CODE REVIEW — CHANGE ANALYSIS
+Skill for reviewing code changes using the code-review-graph knowledge graph. Achieves 6.8× fewer tokens on reviews by reading only what matters. 
+PROTOCOL
+STEP 1 — GET MINIMAL CONTEXT (ALWAYS FIRST)
+CODE  52CHARS
+~100 tokens. Gives full picture. Do this BEFORE reading any files. 
+STEP 2 — QUERY ONLY WHAT YOU NEED
+CODE  72CHARS
+NU broad list_* calls. Target specific nodes. 
+STEP 3 — ANALYSE IMPACT
+CODE  17CHARS
+Returns risk-scored change analysis. Read the risk_level field first. 
+REVIEW CHECKLIST
+[ ] Does this change break any callers? (check edge nodes) [ ] Are tests affected? (check test coverage nodes) [ ] Are there orphaned imports/functions created by this change? [ ] Does the change match the stated SC? [ ] IT diff minimal — no unrelated changes? 
+TOKEN BUDGET
+Max 5 tool calls per review Max 800 tokens of graph context next_tool_suggestions tells you optimal next step — follow it 
+OUTPUT FORMAT
+CODE  132CHARS

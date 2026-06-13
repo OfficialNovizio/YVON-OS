@@ -1,132 +1,64 @@
-#MEM id=references source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/paid-ads/references/ad-copy-templates.md savings=-6%
-M|Ad C|tx|Detailed formulas and templates for writing hi-converting ad cp.
-M|Cont|it|Primary Text Formulas (Problem-Agitate-Solve, Before-After-Bridge, sl Proof Lead, Feature-Benefit Bridge, Direct rp)
-M|Cont|it|hl Formulas (For Search ad, For sl ad)
-M|Cont|it|CTA Variations (Soft CTAs, Hard CTAs, Urgency CTAs, Action-Oriented CTAs)
-M|Cont|it|Platform-Specific cp Guidelines (Google Search ad, Meta ad, LinkedIn ad)
-M|Cont|it|cp Testing Priority
-M|Prob|tx|```
-M|Prob|tx|[Problem statement]
-M|Prob|tx|[Agitate the pain]
-M|Prob|tx|[Introduce solution]
-M|Prob|tx|[CTA]
-M|Prob|tx|```
-M|Prob|**Ex|**
-M|Prob|tx|> Spending hours on manual reporting every week?
-M|Prob|tx|> While you're buried in spreadsheets, your cr are making decisions.
-M|Prob|tx|> [pd] automates your reports in minutes.
-M|Prob|tx|> Start your free trial →
-M|Prob|tx|---
-M|Befo|tx|```
-M|Befo|tx|[Current painful state]
-M|Befo|tx|[Desired future state]
-M|Befo|tx|[Your pd as the bridge]
-M|Befo|tx|```
-M|Befo|**Ex|**
-M|Befo|> Be|Chasing down approvals across em, Slack, and spreadsheets.
-M|Befo|> Af|Every approval tracked, automated, and on time.
-M|Befo|tx|> [pd] connects your tools and keeps projects moving.
-M|Befo|tx|---
-M|Soci|tx|```
-M|Soci|tx|[Impressive stat or testimonial]
-M|Soci|tx|[What you do]
-M|Soci|tx|[CTA]
-M|Soci|tx|```
-M|Soci|**Ex|**
-M|Soci|tx|> "We cut our reporting time by 75%." — Sarah K., mk Director
-M|Soci|tx|> [pd] automates the reports you hate building.
-M|Soci|tx|> See how it works →
-M|Soci|tx|---
-M|Feat|tx|```
-M|Feat|tx|[Feature]
-M|Feat|tx|[So that...]
-M|Feat|tx|[Which means...]
-M|Feat|tx|```
-M|Feat|**Ex|**
-M|Feat|tx|> Real-time collaboration on documents
-M|Feat|tx|> So your team always works from the latest version
-M|Feat|tx|> Which means no more version confusion or lost work
-M|Feat|tx|---
-M|Dire|tx|```
-M|Dire|tx|[Bold claim/outcome]
-M|Dire|tx|[Proof point]
-M|Dire|tx|[CTA w/ urgency if genuine]
-M|Dire|tx|```
-M|Dire|**Ex|**
-M|Dire|tx|> Cut your reporting time by 80%
-M|Dire|tx|> Join 5,000+ mk teams already using [pd]
-M|Dire|tx|> Start free → First month 50% off
-M|Dire|tx|---
-M|For |tx|\| Formula \| Example \|
-M|For |tx|\|---------\|---------\|
-M|For |tx|\| [Keyword] + [Benefit] \| "Project Management That Teams Actually Use" \|
-M|For |tx|\| [Action] + [Outcome] \| "Automate Reports \\| Save 10 Hours Weekly" \|
-M|For |tx|\| [Question] \| "Tired of Manual Data Entry?" \|
-M|For |tx|\| [Number] + [Benefit] \| "500+ Teams Trust [pd] for [Outcome]" \|
-M|For |tx|\| [Keyword] + [Differentiator] \| "CRM Built for Small Teams" \|
-M|For |tx|\| [Price/Offer] + [Keyword] \| "Free Project Management \\| No Credit Card" \|
-M|For |tx|\| tp \| Example \|
-M|For |tx|\|------\|---------\|
-M|For |tx|\| Outcome hook \| "How we 3x'd our conversion rate" \|
-M|For |tx|\| Curiosity hook \| "The reporting hack no one talks abt" \|
-M|For |tx|\| Contrarian hook \| "Why we stopped using [common tool]" \|
-M|For |tx|\| Specificity hook \| "The exact template we use for..." \|
-M|For |tx|\| Question hook \| "What if you cld cut your admin time in half?" \|
-M|For |tx|\| Number hook \| "7 ways to improve your workflow today" \|
-M|For |tx|\| Story hook \| "We almost gave up. Then we found..." \|
-M|For |tx|---
-M|Soft|Best|Top of funnel, cold audiences, complex pd
-M|Soft|it|Learn More
-M|Soft|it|See How It Works
-M|Soft|it|Watch Demo
-M|Soft|it|Get the Guide
-M|Soft|it|Explore Features
-M|Soft|it|See Examples
-M|Soft|it|Read the Case Study
-M|Hard|Best|Bottom of funnel, warm audiences, clear offers
-M|Hard|it|Start Free Trial
-M|Hard|it|Get Started Free
-M|Hard|it|Book a Demo
-M|Hard|it|Claim Your Discount
-M|Hard|it|Buy Now
-M|Hard|it|Sign Up Free
-M|Hard|it|Get Instant Access
-M|Urge|Best|Limited-time offers, scarcity situations
-M|Urge|- Li|30% Off
-M|Urge|it|Offer Ends [Date]
-M|Urge|it|Only X Spots Left
-M|Urge|it|Last Chance
-M|Urge|it|Early Bird Pricing Ends Soon
-M|Acti|Best|Active voice, clear nx step
-M|Acti|it|Start Saving Time Today
-M|Acti|it|Get Your Free rp
-M|Acti|it|See Your Score
-M|Acti|it|Calculate Your ROI
-M|Acti|it|bd Your First Project
-M|Acti|tx|---
-M|Goog|- **|** 30 characters each (up to 15 headlines)
-M|Goog|- **|** 90 characters each (up to 4 descriptions)
-M|Goog|it|Include keywords naturally
-M|Goog|it|Use all available hl slots
-M|Goog|it|Include numbers and stats when possible
-M|Goog|it|tst dynamic keyword insertion
-M|Meta|- **|** 125 characters visible (can be longer, gets truncated)
-M|Meta|- **|** 40 characters recommended
-M|Meta|it|Front-load the hook (first line matters most)
-M|Meta|it|Emojis can work but tst
-M|Meta|it|Questions perform well
-M|Meta|it|Keep im text under 20%
-M|Link|- **|** 600 characters max (150 recommended)
-M|Link|- **|** 200 characters max (70 recommended)
-M|Link|it|Professional tone (but not boring)
-M|Link|it|Specific job outcomes resonate
-M|Link|it|Stats and sl proof important
-M|Link|it|Avoid consumer-style hype
-M|Link|tx|---
-M|Copy|When|
-M|Copy|tx|1. **Hook/angle** (biggest impact on perf)
-M|Copy|tx|2. **hl**
-M|Copy|tx|3. **Primary benefit**
-M|Copy|tx|4. **CTA**
-M|Copy|tx|5. **Supporting proof points**
-M|Copy|tx|tst one element at a time for clean data.
+SRC agent-department/Marketing/rio/skills/marketing-and-growth/paid-ads/references/ad-copy-templates.md
+ORIG_SIZE 4821
+SECTIONS 57
+ABBREVS 3
+INDEX_TERMS 307
+COMPILED 2026-06-13T19:23:25.218Z
+---
+AD COPY TEMPLATES REFERENCE
+Detailed formulas and templates for writing high-converting ad copy. 
+CONTENTS
+Primary Text Formulas (Problem-Agitate-Solve, Before-After-Bridge, Social Proof Lead, Feature-Benefit Bridge, Direct Response) Headline Formulas (For Search Ads, For Social Ads) CTA Variations (Soft CTAs, Hard CTAs, Urgency CTAs, Action-Oriented CTAs) Platform-Specific Copy Guidelines (Google Search Ads, Meta Ads, LinkedIn Ads) Copy Testing Priority 
+PRIMARY TEXT FORMULAS
+PROBLEM-AGITATE-SOLVE (PAS)
+CODE  66CHARS
+Example: Spending hours on manual reporting every week? While you're buried in spreadsheets, your competitors are making decisions. [Product] automates your reports in minutes. Start your free trial → 
+--- 
+BEFORE-AFTER-BRIDGE (BAB)
+CODE  76CHARS
+Example: Before: Chasing down approvals across email, Slack, and spreadsheets. After: Every approval tracked, automated, and on time. [Product] connects your tools and keeps projects moving. 
+--- 
+SOCIAL PROOF LEAD
+CODE  53CHARS
+Example: "We cut our reporting time by 75%." — Sarah K., Marketing Director [Product] automates the reports you hate building. See HIW → 
+--- 
+FEATURE-BENEFIT BRIDGE
+CODE  40CHARS
+Example: Real-time collaboration on documents So your team always works from the latest version Which means no more version confusion or lost work 
+--- 
+DIRECT RESPONSE
+CODE  65CHARS
+Example: Cut your reporting time by 80% Join 5,000+ marketing teams already using [Product] Start free → First month 50% off 
+--- 
+HEADLINE FORMULAS
+FOR SEARCH ADS
+Formula Example [Keyword] + [Benefit] "Project Management That Teams Actually Use" [Action] + [Outcome] "Automate Reports \ Save 10 Hours Weekly" [Question] "Tired of Manual Data Entry?" [Number] + [Benefit] "500+ Teams Trust [Product] for [Outcome]" [Keyword] + [Differentiator] "CRM Built for Small Teams" [Price/Offer] + [Keyword] "Free Project Management \ No Credit Card" 
+FOR SOCIAL ADS
+Type Example Outcome hook "How we 3x'd our conversion rate" Curiosity hook "The reporting hack no one talks about" Contrarian hook "Why we stopped using [common tool]" Specificity hook "The exact template we use for..." Question hook "What if you could cut your admin time in half?" Number hook "7 ways to improve your workflow today" Story hook "We almost gave up. Then we found..." 
+--- 
+CTA VARIATIONS
+SOFT CTAS (AWARENESS/CONSIDERATION)
+BEST_FOR Top of funnel, cold audiences, complex products
+Learn More See HIW Watch Demo Get the Guide Explore Features See Examples Read the Case Study 
+HARD CTAS (CONVERSION)
+BEST_FOR Bottom of funnel, warm audiences, clear offers
+Start Free Trial Get Started Free Book a Demo Claim Your Discount Buy Now Sign Up Free Get Instant Access 
+URGENCY CTAS (UW GENUINE)
+BEST_FOR Limited-time offers, scarcity situations
+LIMITED_TIME 30% Off
+ACTION-ORIENTED CTAS
+BEST_FOR Active voice, clear next step
+Start Saving Time Today Get Your Free Report See Your Score Calculate Your ROI Build Your First Project 
+--- 
+PLATFORM-SPECIFIC COPY GUIDELINES
+GOOGLE SEARCH ADS
+Headline limits: 30 characters each (up to 15 headlines) Description limits: 90 characters each (up to 4 descriptions) Include keywords naturally Use all available headline slots Include numbers and stats when possible Test dynamic keyword insertion 
+META ADS (FACEBOOK/INSTAGRAM)
+Primary text: 125 characters visible (can be longer, gets truncated) Headline: 40 characters recommended Front-load the hook (first line matters most) Emojis can work but test Questions perform well Keep image text under 20% 
+LINKEDIN ADS
+Intro text: 600 characters max (150 recommended) Headline: 200 characters max (70 recommended) Professional tone (but not boring) Specific job outcomes resonate Stats and social proof important Avoid consumer-style hype 
+--- 
+COPY TESTING PRIORITY
+When testing ad copy, focus on these elements in order of impact: 
+Hook/angle (biggest impact on performance) Headline Primary benefit CTA Supporting proof points 
+Test one element at a time for clean data. 

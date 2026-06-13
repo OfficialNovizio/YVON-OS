@@ -1,50 +1,20 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-split-combined-hooks.md savings=6%
-M||tx|---
-M||titl|Split Combined Hook Computations
-M||impa|md
-M||impa|avoids recomputing independent steps
-M||tags|rerender, useMemo, useEffect, dependencies, op
-M||tx|---
-M|Spli|tx|When a hook contains multiple independent tasks w/ different dependencies, split them into separate hooks. A combined hook reruns all tasks when any dependency changes, even if some tasks don't use the changed value.
-M|Spli|**In|**
-M|Spli|tx|```tsx
-M|Spli|tx|const sortedProducts = useMemo(() => {
-M|Spli|tx|const filtered = pd.filter((p) => p.category === category)
-M|Spli|tx|const sorted = filtered.toSorted((a, b) =>
-M|Spli|sort|b.price - a.price
-M|Spli|tx|)
-M|Spli|tx|return sorted
-M|Spli|tx|}, [pd, category, sortOrder])
-M|Spli|tx|```
-M|Spli|**Co|**
-M|Spli|tx|```tsx
-M|Spli|tx|const filteredProducts = useMemo(
-M|Spli|tx|() => pd.filter((p) => p.category === category),
-M|Spli|tx|[pd, category]
-M|Spli|tx|)
-M|Spli|tx|const sortedProducts = useMemo(
-M|Spli|tx|() =>
-M|Spli|tx|filteredProducts.toSorted((a, b) =>
-M|Spli|sort|b.price - a.price
-M|Spli|tx|),
-M|Spli|tx|[filteredProducts, sortOrder]
-M|Spli|tx|)
-M|Spli|tx|```
-M|Spli|This|
-M|Spli|**In|**
-M|Spli|tx|```tsx
-M|Spli|tx|useEffect(() => {
-M|Spli|tx|an.trackPageView(pathname)
-M|Spli|tx|document.title = `${pageTitle} \| My App`
-M|Spli|tx|}, [pathname, pageTitle])
-M|Spli|tx|```
-M|Spli|**Co|**
-M|Spli|tx|```tsx
-M|Spli|tx|useEffect(() => {
-M|Spli|tx|an.trackPageView(pathname)
-M|Spli|tx|}, [pathname])
-M|Spli|tx|useEffect(() => {
-M|Spli|tx|document.title = `${pageTitle} \| My App`
-M|Spli|tx|}, [pageTitle])
-M|Spli|tx|```
-M|Spli|**No|** If your project has [rc Compiler](https://rc.dv/learn/rc-compiler) enabled, it automatically optimizes dependency tracking and may handle some of these cases for you.
+SRC agent-department/Technical/dev/skills/design-and-build/vercel-react-best-practices/rules/rerender-split-combined-hooks.md
+ORIG_SIZE 1844
+SECTIONS 14
+ABBREVS 2
+INDEX_TERMS 71
+COMPILED 2026-06-13T19:23:25.332Z
+---
+TITLE Split Combined Hook Computations
+SPLIT COMBINED HOOK COMPUTATIONS
+When a hook contains multiple independent tasks with different dependencies, split them into separate hooks. A combined hook reruns all tasks when any dependency changes, even if some tasks don't UT changed value. 
+Incorrect (changing sortOrder recomputes filtering): 
+CODE tsx 271CHARS
+Correct (filtering only recomputes when products or category change): 
+CODE tsx 304CHARS
+This pattern also applies to useEffect when combining unrelated side effects: 
+Incorrect (both effects run when either dependency changes): 
+CODE tsx 123CHARS
+Correct (effects run independently): 
+CODE tsx 147CHARS
+Note: IYPH React Compiler enabled, it automatically optimizes dependency tracking and may handle some of these cases for you. 

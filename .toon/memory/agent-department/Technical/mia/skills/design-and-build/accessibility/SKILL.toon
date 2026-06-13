@@ -1,93 +1,48 @@
-#MEM id=accessibility source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/accessibility/SKILL.md savings=9%
-M||tx|---
-M||name|accessibility
-M||desc|mi's WCAG 2.1 AA compliance framework for yv. Covers contrast ratios for the glass sy, semantic HTML patterns, focus management, keyboard navigation, and screen reader support. Run before any screen ships.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|yv's glass morphism sy creates accessibility risk by default — semi-transparent backgrounds make contrast unpredictable, and layered visual effects can obscure focus indicators. This skill ensures mi's UI ships accessible, not just beautiful.
-M|Purp|**Th|** WCAG 2.1 AA minimum. Not optional — legal standard in most markets.
-M|Purp|tx|---
-M|When|it|Any new screen or cp bd
-M|When|it|Any change to the glass sy (opacity, color, blur)
-M|When|it|Before any screen is marked complete
-M|When|it|When qn raises an accessibility finding in QA Pulse
-M|When|tx|---
-M|Cont|tx|The glass sy uses semi-transparent backgrounds. Contrast must be calculated against the **rendered background**, not the CSS value.
-M|YVON|tx|\| Container \| Background (rendered) \| Text color \| Min ratio \| Status \|
-M|YVON|tx|\|-----------\|----------------------\|------------\|-----------\|--------\|
-M|YVON|| V1|1 \| ✅ Black on near-white passes \|
-M|YVON|| V2|1 \| ✅ White on navy passes \|
-M|YVON|| V3|1 \| ✅ Light on dark passes \|
-M|YVON|| V4|1 \| ⚠️ Verify — iridescent shifts w/ viewport \|
-M|YVON|**To|** Use browser DevTools → Accessibility panel to check computed contrast on rendered elements.
-M|YVON|**Ru|** Light containers (V1, V4) → PURE BLACK text. Dark containers (V2, V3) → PURE WHITE. No muted variants.
-M|Inte|Butt|1 contrast against their adjacent background (WCAG 1.4.11).
-M|Inte|tx|---
-M|Sema|YVON|
-M|Sema|tx|```tsx
-M|Sema|tx|// ✅ Correct — semantic landmark regions
-M|Sema|tx|<main>
-M|Sema|tx|<section aria-labelledby="an-heading">
-M|Sema|tx|<h2 id="an-heading">an Overview</h2>
-M|Sema|tx|</section>
-M|Sema|tx|</main>
-M|Sema|tx|// ✅ Correct — interactive elements
-M|Sema|tx|<button onClick={handleTab} aria-selected={isActive} role="tab">Overview</button>
-M|Sema|tx|<a href="/an">View rp</a>  // navigation = anchor, not button
-M|Sema|tx|// ❌ Wrong — clickable div
-M|Sema|tx|<div onClick={handleTab}>Overview</div>  // not keyboard accessible
-M|Sema|tx|```
-M|ARIA|tx|\| cp \| ARIA pattern \|
-M|ARIA|tx|\|-----------\|-------------\|
-M|ARIA|tx|\| Tab sy (ce dashboard) \| `role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected` \|
-M|ARIA|tx|\| KPI cards \| `<article>` or `<section>` w/ `aria-label="[metric name] KPI"` \|
-M|ARIA|| St|[value]"` or `<span role="status">` \|
-M|ARIA|tx|\| Loading states \| `aria-busy="true"` on loading container \|
-M|ARIA|tx|\| War Room messages \| `role="log"` on message list, `aria-live="polite"` \|
-M|ARIA|tx|\| Modal / overlay \| `role="dialog"`, `aria-modal="true"`, focus trap \|
-M|ARIA|tx|---
-M|Focu|tx|Every interactive element must have a visible focus indicator. yv's glass sy often removes or obscures default focus rings.
-M|Focu|tx|```css
-M|Focu|tx|/* globals.css — add to focus rule */
-M|Focu||focus-visible {
-M|Focu|outl|2px solid var(--color-accent-primary);
-M|Focu|outl|2px;
-M|Focu|bord|4px;
-M|Focu|tx|}
-M|Focu|/* N|none w/o a custom focus style */
-M|Focu|tx|```
-M|Focu|**Fo|
-M|Focu|tx|```tsx
-M|Focu|tx|// Trap focus inside modal on open, return to trigger on close
-M|Focu|tx|useEffect(() => { if (isOpen) modalRef.current?.focus() }, [isOpen])
-M|Focu|tx|```
-M|Focu|tx|---
-M|Keyb|All |
-M|Keyb|tx|```
-M|Keyb|tx|Tab / Shift+Tab   → navigate interactive elements in DOM order
-M|Keyb|tx|Enter / Space     → activate buttons, checkboxes
-M|Keyb|tx|Arrow keys        → navigate within tab lists, dropdowns, menus
-M|Keyb|tx|Escape            → close modals, dropdowns, overlays
-M|Keyb|tx|```
-M|Keyb|tx|**DOM order = visual order.** If glass card layout uses CSS Grid w/ visual reordering, DOM order must still be logical for screen readers.
-M|Keyb|tx|---
-M|Scre|tx|```
-M|Scre|□ Ev|alt="")
-M|Scre|tx|□ Icons w/o text labels have aria-label
-M|Scre|tx|□ Dynamic cn updates use aria-live="polite"
-M|Scre|tx|□ er messages are associated w/ their input via aria-describedby
-M|Scre|□ Pa|up <title> per page)
-M|Scre|tx|```
-M|Scre|tx|---
-M|Acce|Befo|
-M|Acce|tx|```
-M|Acce|□ Al|1 contrast on rendered glass background
-M|Acce|tx|□ All interactive elements are reachable and operable by keyboard
-M|Acce|tx|□ No click-only interactions (divs, spans w/ onClick w/o role/tabindex)
-M|Acce|tx|□ Focus indicators visible on all focusable elements
-M|Acce|tx|□ Images have meaningful alt text
-M|Acce|□ Se|main, nav, header, section w/ labels
-M|Acce|tx|□ Dynamic updates announced via aria-live
-M|Acce|tx|□ Tested at 200% zoom — no cn lost or clipped
-M|Acce|tx|□ Tab order matches visual reading order
-M|Acce|tx|```
+SRC agent-department/Technical/mia/skills/design-and-build/accessibility/SKILL.md
+ORIG_SIZE 5273
+SECTIONS 42
+ABBREVS 2
+INDEX_TERMS 221
+COMPILED 2026-06-13T19:23:25.396Z
+---
+NAME accessibility
+ACCESSIBILITY — WCAG 2.1 AA
+PURPOSE
+YVON's glass morphism system creates accessibility risk by default — semi-transparent backgrounds make contrast unpredictable, and layered visual effects can obscure focus indicators. This skill ensures Mia's UI ships accessible, not just beautiful. 
+The standard: WCAG 2.1 AA minimum. Not optional — legal standard in most markets. 
+--- 
+WHEN IT RUNS
+Any new screen or component build Any change to the glass system (opacity, color, blur) Before any screen is marked complete When Quinn raises an accessibility finding in QA Pulse 
+--- 
+CONTRAST RATIOS — GLASS SYSTEM
+The glass system uses semi-transparent backgrounds. Contrast must be calculated against the rendered background, not the CSS value. 
+YVON GLASS CONTRAST REQUIREMENTS
+Container Background (rendered) Text color Min ratio Status V1 Clear Ice ~#f2f5f8 (white frosted) `#000000` 4.5:1 ✅ Black on near-white passes V2 Azure Tint ~#1a3a6b (blue gradient) `#ffffff` 4.5:1 ✅ White on navy passes V3 Obsidian ~#1a1f2e (dark smoke) `#f1f5fb` 4.5:1 ✅ Light on dark passes V4 Prism ~#e8e0f0 (iridescent light) `#2a1240` (plum) 4.5:1 ⚠️ Verify — iridescent shifts with viewport 
+Tool: Use browser DevTools → Accessibility panel to check computed contrast on rendered elements. 
+Rule from feedback.md: Light containers (V1, V4) → PURE BLACK text. Dark containers (V2, V3) → PURE WHITE. No muted variants. 
+INTERACTIVE ELEMENTS
+Buttons, links, and focus rings require 3:1 contrast against their adjacent background (WCAG 1.4.11). 
+--- 
+SEMANTIC HTML PATTERNS
+YVON uses React + Next.js App Router. Semantic HTML is mandatory — glass cards are <divvisually but must UT correct semantic element: 
+CODE tsx 460CHARS
+ARIA PATTERNS FOR YVON COMPONENTS
+Component ARIA pattern Tab system (CEO dashboard) `role="tablist"`, `role="tab"`, `role="tabpanel"`, `aria-selected` KPI cards `<article>` or `<section>` with `aria-label="[metric name] KPI"` Status badges `aria-label="Status: [value]"` or `<span role="status">` Loading states `aria-busy="true"` on loading container War Room messages `role="log"` on message list, `aria-live="polite"` Modal / overlay `role="dialog"`, `aria-modal="true"`, focus trap 
+--- 
+FOCUS MANAGEMENT
+Every interactive element must have a visible focus indicator. YVON's glass system often removes or obscures default focus rings. 
+CODE css 212CHARS
+CODE tsx 132CHARS
+Focus trap is required for modals, drawers, and dropdown menus. UT focus-trap-react pattern or implement manually: 
+--- 
+KEYBOARD NAVIGATION
+All screens must be fully navigable by keyboard: 
+CODE  230CHARS
+DOM order = visual order. If glass card layout uses CSS Grid with visual reordering, DOM order must still be logical for screen readers. 
+--- 
+SCREEN READER SUPPORT
+CODE  290CHARS
+--- 
+ACCESSIBILITY CHECKLIST
+Before marking any screen complete: 
+CODE  495CHARS

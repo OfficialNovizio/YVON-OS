@@ -1,515 +1,196 @@
-#MEM id=skills source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/02-kahneman.md savings=4%
-M||tx|---
-M||name|consumer-ps-deep
-M||vers|1.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[ps, behavioral, framing, system1, bias, lever, debiasing, skills]
-M||vari|B — Deep Strategist
-M||purp|Full st reasoning for cg, repositioning, website architecture,
-M||bran|nz, hb (and future sub-brands)
-M||auto|BRAND_MEMORY.md + STRATEGY_LOG.md + LEVER_TRACKER.md + PROPOSAL_TEMPLATE.md before every sn
-M||trig|[cg st, br repositioning, website redesign, new pd launch, hi-stakes decision, full psychological audit, A/B tst ds, deep framing al]
-M||outp|[A/B variants w/ hypotheses + metrics, scored audit, st log entry, LEVER_TRACKER up, BRAND_MEMORY append, proposal if results exist]
-M||call|[principles.md, tools.md, BRAND_MEMORY.md, STRATEGY_LOG.md, LEVER_TRACKER.md, PROPOSAL_TEMPLATE.md]
-M||sour|principles.md v1.0 — if cn diverges, principles.md is canonical. Run skills-sync after any edit to principles.md.
-M||prer|PROPOSAL_TEMPLATE.md must exist before Phase 7 proposal trigger will work. cr it in memory/brands/[name]/ before first deep sn.
-M||tx|---
-M|CONS|tx|> Slow is smooth. Smooth is fast.
-M|CONS|tx|> This variant is for decisions that matter — cg st, br repositioning,
-M|CONS|tx|> website redesigns, new pd launches, and any cn that will run at scale.
-M|CONS|tx|> Claude reasons fully before producing anything. No shortcuts.
-M|CONS|tx|---
-M|MAND|Befo|
-M|MAND|tx|1. `BRAND_MEMORY.md` — full br context for the relevant br
-M|MAND|tx|2. `STRATEGY_LOG.md` — ALL previous entries for this br/surface
-M|MAND|tx|3. `LEVER_TRACKER.md` — current Triple Cap status across all surfaces
-M|MAND|tx|4. `PROPOSAL_TEMPLATE.md` — check if any pnd proposal awaits results
-M|MAND|**If|** STOP. Flag which file is missing and why it's needed
-M|MAND|tx|before proceeding. Do not approximate or assume br context.
-M|MAND|tx|**Starting w/o full context is the single most common fl mode
-M|MAND|tx|in br st. This skill is designed to prevent it.**
-M|MAND|tx|---
-M|PHAS|Afte|
-M|PHAS|tx|```
-M|PHAS|br|[name]
-M|PHAS|Curr|[how audience actually sees it now]
-M|PHAS|Desi|[where Stark wants it to be]
-M|PHAS|Gap|[what needs to shift and how large that gap is]
-M|PHAS|Life|[0→1 / growing / scaling / repositioning]
-M|PHAS|Bigg|[one sentence]
-M|PHAS|tx|```
-M|PHAS|tx|This synthesis is NOT shown to the us unless asked.
-M|PHAS|tx|It is the lens through which all layer reasoning happens.
-M|PHAS|tx|---
-M|PHAS|tx|> Run after Phase 1 br synthesis. br context is now loaded — answer this precisely.
-M|PHAS|tx|**This is the kh identity question. Every cg targets one sy primarily.**
-M|PHAS|tx|\| Dimension \| sy 1 \| sy 2 \|
-M|PHAS|tx|\|---\|---\|---\|
-M|PHAS|tx|\| Decision speed \| Milliseconds — automatic, emotional \| Minutes — deliberate, evaluative \|
-M|PHAS|tx|\| Audience state \| Passive scrolling, emotional receptivity \| Active research, comparison mode \|
-M|PHAS|tx|\| cn goal \| cr feeling, bd desire, encode memory \| Resolve objection, justify decision, explain value \|
-M|PHAS|tx|\| Primary layers \| L1, L2, L6, L7 \| L3, L4 \|
-M|PHAS|tx|\| Funnel stage \| Discovery, awareness, br-building \| Consideration, decision, post-purchase \|
-M|PHAS|**St|**
-M|PHAS|- Pr|sy 1 / sy 2 / Transition (S1→S2)
-M|PHAS|- Wh|[one sentence based on br lifecycle stage and cn goal]
-M|PHAS|- La|[list layers in activation order for this cg]
-M|PHAS|tx|This routing decision locks in before Phase 2. Do not revise it based on what's convenient later.
-M|PHAS|tx|---
-M|PHAS|tx|**Read all previous entries for this br + surface.**
-M|PHAS|Prod|
-M|PHAS|**Wh|**
-M|PHAS|tx|List all levers used, in order, for this surface.
-M|PHAS|**Wh|**
-M|PHAS|tx|For each successful entry — identify the psychological mechanism that drove sc.
-M|PHAS|tx|Not just "it got engagement" — WHY did that lever connect w/ this audience at that time?
-M|PHAS|**Wh|**
-M|PHAS|tx|For each failed entry — diagnose the fl.
-M|PHAS|tx|Was it the wrong lever for the lifecycle stage?
-M|PHAS|tx|Wrong timing? Wrong surface? Execution fl vs st fl?
-M|PHAS|tx|This distinction matters — a good st executed badly is different from a bad st.
-M|PHAS|**Pa|**
-M|PHAS|tx|What does the audience consistently respond to?
-M|PHAS|tx|What do they consistently ignore?
-M|PHAS|tx|What has never been tested that the ps layers suggest wld work?
-M|PHAS|**Tr|**
-M|PHAS|tx|Which levers are approaching or at cap?
-M|PHAS|tx|Which levers have been underused?
-M|PHAS|tx|---
-M|PHAS|tx|Unlike Variant A, all 8 layers are considered for every piece of work.
-M|PHAS|tx|Claude determines which are PRIMARY (drive the cn) and which are SECONDARY
-M|PHAS|tx|(inform but don't lead). A piece of cn can have 1 primary and up to 2 secondary layers.
-M|PHAS|tx|---
-M|L1 —|tx|*The subconscious filter. Everything passes through here first.*
-M|L1 —|**Fu|**
-M|L1 —|tx|sy 1 (fast, automatic, emotional) fires before sy 2 (slow, deliberate, logical).
-M|L1 —|tx|95% of purchasing decisions are driven at the sy 1 level.
-M|L1 —|tx|This means the feeling of the cn must be right before the logic of the cn matters.
-M|L1 —|**Pr|**
-M|L1 —|tx|cn that is easy to process feels more true and more trustworthy.
-M|L1 —|This|sentence length, visual hierarchy, word choice complexity,
-M|L1 —|tx|layout breathing room, and font legibility.
-M|L1 —|tx|Simple does not mean cheap. Apple's entire br is built on fluency as luxury.
-M|L1 —|**Ha|**
-M|L1 —|tx|One strong signal colors all other signals.
-M|L1 —|tx|A single premium element (photography qual, typeface, first sentence)
-M|L1 —|tx|elevates the perceived qual of everything around it.
-M|L1 —|tx|The inverse is equally true — one cheap signal contaminates everything.
-M|L1 —|**Th|**
-M|L1 —|tx|Audiences form accurate br impressions in under 100ms.
-M|L1 —|tx|The br's visual and verbal identity must be consistent enough to
-M|L1 —|tx|carry the right impression in that window — every single time.
-M|L1 —|**Pa|**
-M|L1 —|tx|Breaking expected format forces attention at the neurological level.
-M|L1 —|tx|But pattern interrupts must be br-congruent — breaking format while
-M|L1 —|tx|staying true to br identity. Random disruption reads as cheap. Intentional
-M|L1 —|tx|disruption reads as confident.
-M|L1 —|**De|**
-M|L1 —|tx|*What does someone feel abt this br in the first 2 seconds —
-M|L1 —|tx|and is that feeling the exact feeling the br needs them to have?*
-M|L1 —|**Ru|** Search current examples in this category where
-M|L1 —|tx|perception and pricing are misaligned — brands that charge premium
-M|L1 —|tx|but feel mid-tier, or charge mid-tier but feel premium. Extract the
-M|L1 —|tx|specific signals causing the misalignment.
-M|L1 —|tx|---
-M|L2 —|tx|*The engine of purchase. Built on identity, not pd.*
-M|L2 —|**Fu|**
-M|L2 —|Jobs|people hire pd to make progress in their lives.
-M|L2 —|tx|The progress is emotional and sl as much as functional.
-M|L2 —|tx|A fashion br is never hired to "cover the body." It's hired to signal belonging,
-M|L2 —|tx|attract attention, mark a transition, or claim an identity.
-M|L2 —|**Id|**
-M|L2 —|tx|People buy who they want to become, not what they currently need.
-M|L2 —|tx|The aspiration gap — the distance btw current self and desired self —
-M|L2 —|tx|is the psychological space where br desire lives.
-M|L2 —|tx|cn that narrows this gap w/ the br as the vehicle creates desire.
-M|L2 —|tx|cn that ignores this gap and focuses on pd features creates comparison.
-M|L2 —|**Th|**
-M|L2 —|tx|Desire built on false aspiration collapses when the pd fails to deliver.
-M|L2 —|tx|Desire built on authentic br truth compounds — each purchase reinforces identity,
-M|L2 —|tx|each reinforcement deepens loyalty, each deepened loyalty produces advocacy.
-M|L2 —|**JT|**
-M|L2 —|it|"I want to feel like I belong to a world I admire" → sl identity desire
-M|L2 —|it|"I want to feel like myself more fully" → authentic self desire
-M|L2 —|it|"I want to signal that I've arrived / I'm different / I know something others don't" → status desire
-M|L2 —|it|"I want to feel good in my own skin" → self-validation desire
-M|L2 —|**De|**
-M|L2 —|tx|*Who does the cs become — in their own mind and in others' eyes —
-M|L2 —|tx|the moment they're associated w/ this br?*
-M|L2 —|tx|That answer is the cn. Write it as if you're describing the person, not the pd.
-M|L2 —|tx|---
-M|L3 —|tx|*The mechanics of the yes. Use w/ precision, never w/ excess.*
-M|L3 —|**Fu|**
-M|L3 —|**Re|**
-M|L3 —|tx|Give value unconditionally before asking for anything.
-M|L3 —|In f|education (how to style), behind-the-scenes access, early information.
-M|L3 —|tx|The psychological debt created by genuine generosity precedes purchase naturally.
-M|L3 —|wn|forced or transactional reciprocity (gimmicky freebies) creates the opposite effect.
-M|L3 —|**Co|**
-M|L3 —|tx|Once someone takes a small action, they are psychologically motivated to stay consistent.
-M|L3 —|tx|Wishlists, follows, shares, saves — each micro-commitment increases purchase likelihood.
-M|L3 —|In f|"save this for later" activates commitment before the cs is ready to buy.
-M|L3 —|**So|**
-M|L3 —|tx|People follow what people like them do.
-M|L3 —|tx|Most powerful when the proof-giver is perceived as a peer, not a celebrity.
-M|L3 —|tx|Micro-sl proof (a cs in the same city, same lifestyle) outperforms
-M|L3 —|tx|macro-sl proof (millions of cs) for fashion DTC brands.
-M|L3 —|wn|sl proof before a br has traction reads as desperate. Time it correctly.
-M|L3 —|**Au|**
-M|L3 —|tx|Signals of expertise, craft, or knowledge elevate perceived qual.
-M|L3 —|In f|material sourcing stories, process transparency, designer credibility,
-M|L3 —|tx|editorial placement. Authority must feel earned not claimed.
-M|L3 —|**Li|**
-M|L3 —|Peop|
-M|L3 —|tx|shared values, genuine personality, aesthetic resonance, humor, and familiarity.
-M|L3 —|In f|br voice is the primary liking mechanism. Get it wrong and
-M|L3 —|tx|no amount of scarcity or sl proof will compensate.
-M|L3 —|**Sc|**
-M|L3 —|tx|Scarcity is the most powerful lever in fashion — and the most abused.
-M|L3 —|tx|Real scarcity (limited production, seasonal drops) creates genuine urgency.
-M|L3 —|tx|Fake scarcity (artificial countdown timers, manufactured stock alerts) destroys trust permanently.
-M|L3 —|Rule|only use scarcity as a lever when scarcity is actually true.
-M|L3 —|**Un|**
-M|L3 —|tx|Shared identity. "We are the same kind of people."
-M|L3 —|tx|The most powerful long-term loyalty lever.
-M|L3 —|In f|aesthetic tribes, subculture alignment, shared values.
-M|L3 —|tx|Unity takes the longest to bd and produces the most durable loyalty.
-M|L3 —|**Co|**
-M|L3 —|tx|Maximum 2 Cialdini principles active in a single piece of cn.
-M|L3 —|tx|Mixing more than 2 creates psychological noise and reads as manipulative.
-M|L3 —|tx|---
-M|L4 —|tx|*How decisions actually get made. Often contrary to what people say.*
-M|L4 —|**Fu|**
-M|L4 —|**Lo|**
-M|L4 —|tx|Losses feel ~ twice as painful as equivalent gains feel good.
-M|L4 —|tx|"Don't miss your chance" outperforms "here's your opportunity" at the neurological level.
-M|L4 —|Appl|frame CTAs and urgency cn around what is lost by not acting,
-M|L4 —|tx|not what is gained by acting.
-M|L4 —|**An|**
-M|L4 —|tx|The first number or value seen sets the reference frame for all subsequent evaluation.
-M|L4 —|In f|showing a higher-priced item first makes the target item feel
-M|L4 —|tx|like the reasonable choice. Never introduce your lowest price first.
-M|L4 —|**De|**
-M|L4 —|tx|When 3 options exist, the middle option appears most rational.
-M|L4 —|tx|In pd tiers, collections, or bundle offers — structure so the
-M|L4 —|tx|preferred cs choice is positioned as the clear "smart middle."
-M|L4 —|**Pa|**
-M|L4 —|tx|More options produce more anxiety and less decision-making.
-M|L4 —|tx|Edit ruthlessly. A curated selection of 6 pd converts better than
-M|L4 —|tx|a sprawling grid of 60 — particularly for premium and aspirational brands.
-M|L4 —|**Pe|**
-M|L4 —|tx|People remember experiences by their peak moment and their ending —
-M|L4 —|tx|not the average. The unboxing exp, the post-purchase em,
-M|L4 —|tx|the thank you note — these ending moments are disproportionately
-M|L4 —|tx|powerful in shaping br memory and repeat purchase intent.
-M|L4 —|**Me|**
-M|L4 —|tx|People categorize purchases differently based on framing.
-M|L4 —|tx|A $300 jacket purchased as a "wardrobe investment" feels different from
-M|L4 —|tx|the same jacket purchased as an "impulse buy." cn can shift which
-M|L4 —|tx|mental account the purchase is placed in — dramatically affecting willingness to pay.
-M|L4 —|**De|**
-M|L4 —|tx|*What mental account does the cs put this purchase in —
-M|L4 —|tx|and is the cn framing it to land in the most favorable one?*
-M|L4 —|tx|---
-M|L5 —|tx|*Being thought of first. Being remembered always.*
-M|L5 —|**Fu|**
-M|L5 —|**Me|**
-M|L5 —|tx|Brands grow by being thought of first in the buying moment.
-M|L5 —|tx|Mental availability is built through consistent, distinctive, repeated signals —
-M|L5 —|tx|not through targeting only in-mk buyers.
-M|L5 —|Appl|some cn must reach people who are NOT currently buying,
-M|L5 —|tx|so the br is mentally available when they are ready.
-M|L5 —|**Di|**
-M|L5 —|tx|One repeatable visual or verbal signature builds recognition faster than
-M|L5 —|tx|varied creative ever will. This feels counterintuitive but is empirically established.
-M|L5 —|The |a color, a phrase, a layout approach, a photo style, a tone.
-M|L5 —|tx|Once identified — protect it. Repeat it. Never abandon it for novelty.
-M|L5 —|**Em|**
-M|L5 —|tx|The brain stores emotionally charged experiences in long-term memory.
-M|L5 —|tx|Neutral cn is processed and forgotten. Emotional cn is stored.
-M|L5 —|tx|Stories encode emotionally. Specifications do not.
-M|L5 —|Rule|lead w/ story, close w/ fact — never the reverse.
-M|L5 —|**Ju|**
-M|L5 —|tx|Every strong br maps to one consistent personality archetype.
-M|L5 —|tx|This archetype shd inform voice, visual aesthetic, cn topics, and
-M|L5 —|tx|the kind of cs the br attracts.
-M|L5 —|Fash|
-M|L5 —|- Re|Supreme, Vivienne Westwood, Rick Owens
-M|L5 —|- Cr|Comme des Garçons, Maison Margiela
-M|L5 —|- Lo|Chanel, ag Provocateur, Valentine
-M|L5 —|- He|Nike, Under Armour, Gymshark
-M|L5 —|- Sa|Eileen Fisher, Cos, Muji
-M|L5 —|- Ex|Patagonia, Arc'teryx, Salehe Bembury collabs
-M|L5 —|- Ru|Louis Vuitton, Hermès, Brunello Cucinelli
-M|L5 —|- In|Sézane, Jacquemus in early days, Rouje
-M|L5 —|**De|**
-M|L5 —|tx|*If this br were a person walking into a room —
-M|L5 —|tx|who are they, how do they dress, how do they speak,
-M|L5 —|tx|and who notices them first?*
-M|L5 —|tx|---
-M|L6 —|tx|*Getting seen. Being remembered. Getting shared.*
-M|L6 —|**Fu|**
-M|L6 —|**Cu|**
-M|L6 —|tx|The brain is physiologically motivated to close open information loops.
-M|L6 —|tx|Introducing a gap btw what the audience knows and what they want to know
-M|L6 —|tx|creates forward momentum. They must keep reading/watching/clicking to close the gap.
-M|L6 —|Appl|hooks that imply information w/o revealing it.
-M|L6 —|tx|"We changed one thing abt how we make this. Nobody noticed for 6 months."
-M|L6 —|**Ze|**
-M|L6 —|tx|Unfinished things are remembered more vividly than done things.
-M|L6 —|Appl|serialized cn, cliffhangers, "part 2" mechanics,
-M|L6 —|tx|cg that run across multiple posts before resolving.
-M|L6 —|tx|The audience's need for closure keeps them engaged and returning.
-M|L6 —|**Vo|**
-M|L6 —|tx|The isolated item — the one that doesn't fit the pattern — is remembered.
-M|L6 —|Appl|in a feed of highly produced fashion cn, raw authenticity stands out.
-M|L6 —|tx|In a feed of raw authenticity, hi production stands out.
-M|L6 —|Alwa|what is the norm in this space? Then consider breaking it intentionally.
-M|L6 —|**Em|**
-M|L6 —|tx|hi-arousal emotions spread. lo-arousal emotions stay contained.
-M|L6 —|tx|Awe, excitement, outrage, and inspiration spread 3x more than sadness or contentment.
-M|L6 —|Appl|identify what hi-arousal emotion this br can authentically gn
-M|L6 —|tx|and bd spread mechanics around it. Do not manufacture emotion — find what's real.
-M|L6 —|**Pa|**
-M|L6 —|tx|The first 2-3 seconds of any cn are the spread/scroll decision point.
-M|L6 —|tx|Breaking the expected format in this window forces neurological attention.
-M|L6 —|tx|Expected formats are platform-specific and change — research what's current.
-M|L6 —|**Pa|**
-M|L6 —|tx|cn spreads fastest when the audience plays a role in it.
-M|L6 —|tx|Tags, challenges, duets, UGC pm, opinions requested — any mechanic
-M|L6 —|tx|that gives the audience a reason to engage rather than just consume.
-M|L6 —|**De|**
-M|L6 —|tx|*Why wld someone share this w/ a specific person they know?
-M|L6 —|tx|Who is that person and what does sharing this say abt the sharer?*
-M|L6 —|tx|If you can't answer — it won't spread.
-M|L6 —|tx|---
-M|L7 —|tx|*Belonging. Status. Identity. The deepest purchase drivers in fashion.*
-M|L7 —|**Fu|**
-M|L7 —|**In|**
-M|L7 —|tx|Every strong br community knows who it's for — and implicitly, who it's not for.
-M|L7 —|tx|This is not exclusion for its own sake — it's identity clarity.
-M|L7 —|tx|A br that tries to be for everyone signals no identity at all.
-M|L7 —|Appl|name the tribe. Give it markers. Make membership feel meaningful.
-M|L7 —|**Tr|**
-M|L7 —|tx|Language, references, aesthetics, and behaviors that mark belonging.
-M|L7 —|In f|how you describe fit, fabric, construction. What you reference.
-M|L7 —|tx|What you refuse to do. What you celebrate. What you reject.
-M|L7 —|tx|Tribe members recognize each other through these signals — the br's job
-M|L7 —|tx|is to cr and protect them.
-M|L7 —|**St|**
-M|L7 —|tx|Fashion is one of the most status-laden consumer categories.
-M|L7 —|Stat|overt (luxury logos), covert (quiet luxury), counter-status
-M|L7 —|tx|(deliberately anti-status, which is itself a status signal).
-M|L7 —|tx|The br must know which status register it operates in — and be consistent.
-M|L7 —|tx|Mixing registers confuses the audience and erodes perceived value.
-M|L7 —|**Cu|**
-M|L7 —|tx|cn that is psychologically sound but culturally out of sync still fails.
-M|L7 —|tx|The cultural moment shifts constantly. A br that felt aspirational in 2022
-M|L7 —|tx|might feel tone-deaf in 2026 w/ identical cn.
-M|L7 —|Appl|research the current cultural conversation in this category before
-M|L7 —|tx|every major cg. Adjust tone, reference points, and imagery accordingly.
-M|L7 —|**Ca|**
-M|L7 —|tx|When a br addresses issues that matter to its audience, emotional bonds deepen.
-M|L7 —|tx|This only works when the alignment is authentic — performative cause mk
-M|L7 —|tx|is immediately identified and damages trust more than no stance at all.
-M|L7 —|**De|**
-M|L7 —|tx|*What does it say abt a person that they wear/use/follow this br?
-M|L7 —|tx|Is that what this br wants it to say? Is it what the target cs wants it to say?*
-M|L7 —|tx|---
-M|L8 —|tx|*The same cn at the wrong time fails. Timing is a psychological variable.*
-M|L8 —|**Fu|**
-M|L8 —|**Co|**
-M|L8 —|tx|Different moments in the cs journey require completely different psychological approaches.
-M|L8 —|tx|\| Touchpoint \| Psychological state \| What works \|
-M|L8 —|tx|\|---\|---\|---\|
-M|L8 —|tx|\| First discovery \| Curious, skeptical \| L1 (perception) + L2 (desire hook) \|
-M|L8 —|tx|\| Consideration \| Evaluating, comparing \| L3 (sl proof + authority) + L4 (anchoring) \|
-M|L8 —|tx|\| Decision \| Ready but hesitant \| L3 (scarcity + commitment) + L4 (loss aversion) \|
-M|L8 —|tx|\| Post-purchase \| Justifying, excited \| L4 (peak-end rule) + L5 (identity reinforcement) \|
-M|L8 —|tx|\| Loyalty \| Belonging \| L7 (tribal) + L3 (unity) \|
-M|L8 —|tx|\| Re-engagement \| Lapsed, possibly skeptical \| L6 (curiosity gap) + L2 (aspirational gap) \|
-M|L8 —|**Pl|**
-M|L8 —|tx|Psychological receptivity varies by platform, time of day, and day of week.
-M|L8 —|tx|Research current platform-specific timing data at runtime — do not rely on
-M|L8 —|tx|static guidelines as these shift w/ algorithm changes.
-M|L8 —|**Cu|**
-M|L8 —|tx|Certain cultural moments cr heightened psychological receptivity for specific levers.
-M|L8 —|tx|Map major br cn to cultural moments — not just commercial holidays
-M|L8 —|tx|but micro-cultural moments relevant to the br's tribe.
-M|L8 —|**De|**
-M|L8 —|tx|*Where is this person in their relationship w/ this br right now —
-M|L8 —|tx|and what psychological state are they in at the moment this cn reaches them?*
-M|L8 —|tx|---
-M|PHAS|Afte|
-M|PHAS|**Pr|** [layer name + specific principle]
-M|PHAS|*Rea|[why this layer is primary for this br at this stage on this surface]*
-M|PHAS|**Se|** [up to 2, w/ principles]
-M|PHAS|*Rea|[why these complement w/o conflicting]*
-M|PHAS|**La|**
-M|PHAS|tx|[This shows the reasoning is intentional, not random]
-M|PHAS|tx|---
-M|PHAS|tx|Always produce exactly 2 variants. Each must tst a genuinely different
-M|PHAS|tx|psychological lever — not tonal rewrites of the same approach.
-M|PHAS|**Va|**
-M|PHAS|Prim|[layer + principle — be specific]
-M|PHAS|Psyc|[what this lever is betting on abt this audience]
-M|PHAS|cn|[the actual output]
-M|PHAS|Pred|[what psychological reaction this shd trigger]
-M|PHAS|Meas|[what metric confirms the hypothesis]
-M|PHAS|**Va|**
-M|PHAS|Prim|[layer + principle — be specific]
-M|PHAS|Psyc|[what this lever is betting on — different bet from A]
-M|PHAS|cn|[the actual output]
-M|PHAS|Pred|[what psychological reaction this shd trigger]
-M|PHAS|Meas|[what metric confirms the hypothesis]
-M|PHAS|**Ru|**
-M|PHAS|Whic|[A or B]
-M|PHAS|Reas|[based on lifecycle stage, what's been tried, and what the br needs most now]
-M|PHAS|Samp|[realistic estimate]
-M|PHAS|tx|---
-M|PHAS|tx|Claude scores the output before delivering. Not pass/fail — scored.
-M|PHAS|tx|\| Dimension \| Score (1-5) \| Notes \|
-M|PHAS|tx|\|---\|---\|---\|
-M|PHAS|tx|\| sy 1 filter pass \| \| Does it land in 2 seconds? \|
-M|PHAS|tx|\| Lever intentionality \| \| Is the lever explicit and correct? \|
-M|PHAS|tx|\| br memory alignment \| \| Consistent w/ br Memory File? \|
-M|PHAS|tx|\| Perception impact \| \| Does it move toward desired perception? \|
-M|PHAS|tx|\| Distinctiveness \| \| wld someone know it's this br w/o a logo? \|
-M|PHAS|tx|\| Spread potential \| \| Why wld someone share this? \|
-M|PHAS|tx|\| Triple Cap compliance \| \| Lever not at cap? \|
-M|PHAS|tx|\| Variant differentiation \| \| Are A and B genuinely different psychological bets? \|
-M|PHAS|**Mi|4/5 across all dimensions.**
-M|PHAS|tx|If any dimension scores 3 or below — revise that element before delivering.
-M|PHAS|tx|If any dimension scores 1-2 — do not deliver. Rebuild from that layer.
-M|PHAS|tx|---
-M|PHAS|tx|Claude generates the following entries. Stark pastes them, or MCP filesystem tool writes them if configured.
-M|7A —|tx|```
-M|7A —|tx|---
-M|7A —|Date|[auto]
-M|7A —|br|[br name]
-M|7A —|Surf|[sl / website / pd / em / ad / cg]
-M|7A —|Skil|B — Deep Strategist
-M|7A —|Goal|[acquire / retain / deepen loyalty]
-M|7A —|Bran|[0→1 / growing / scaling / repositioning]
-M|7A —|Touc|[first discovery / consideration / decision / post-purchase / loyalty / re-engagement]
-M|7A —|Laye|
-M|7A —|Prim|[layer + principle]
-M|7A —|Seco|[layer(s) + principle(s)]
-M|7A —|Deli|[layers + reasons]
-M|7A —|Vari|
-M|7A —|Prim|[name]
-M|7A —|Hypo|[one sentence]
-M|7A —|Meas|[metric]
-M|7A —|Vari|
-M|7A —|Prim|[name]
-M|7A —|Hypo|[one sentence]
-M|7A —|Meas|[metric]
-M|7A —|Run |[A or B + reason]
-M|7A —|Outp|
-M|7A —|Syst|X/5
-M|7A —|Leve|X/5
-M|7A —|Bran|X/5
-M|7A —|Perc|X/5
-M|7A —|Dist|X/5
-M|7A —|Spre|X/5
-M|7A —|Trip|X/5
-M|7A —|Vari|X/5
-M|7A —|Trip|[lever name — count X/3 per surface]
-M|7A —|Resu|[pnd]
-M|7A —|Diag|[fill when results come in]
-M|7A —|Mech|[fill when results come in]
-M|7A —|Next|[fill when results come in]
-M|7A —|tx|---
-M|7A —|tx|```
-M|7B —|Add |
-M|7B —|tx|```
-M|7B —|tx|\| [N] \| [YYYY-MM-DD] \| [primary lever name] \| L[1-8] \| [ACTIVE / CAPPED] \|
-M|7B —|tx|```
-M|7B —|tx|up Cap Status Summary. If count = 3 → mark CAPPED, alert in output.
-M|7C —|Add |
-M|7C —|tx|```
-M|7C —|[YYY|[what was learned abt audience sy targeting, layer perf, or archetype fit this sn]
-M|7C —|tx|```
-M|7D —|tx|```
-M|7D —|[YYY|[br] / [surface] / [primary lever] — [outcome: pnd]
-M|7D —|tx|```
-M|7E —|**Co|** Previous STRATEGY_LOG entry has Results field filled (not pnd).
-M|7E —|**Pr|**
-M|7E —|it|gn full proposal from PROPOSAL_TEMPLATE.md
-M|7E —|- Se|`[br] st Proposal — [Date] — Action Required`
-M|7E —|it|Write to sb via yv dashboard
-M|7E —|**Fa|**
-M|7E —|it|Write proposal to STRATEGY_LOG.md marked `PROPOSAL_PENDING`
-M|7E —|it|Include in nx mc ce brief under "kh Proposal Ready"
-M|7E —|- Al|"Proposal ready — MCP unavailable, saved to STRATEGY_LOG"
-M|7E —|Trig|`@kh results --br "[name]" --surface "[surface]" --date "[date]"`
-M|7E —|tx|---
-M|PROP|A pr|
-M|PROP|tx|1. A previous st Log entry has Results field filled (not pnd)
-M|PROP|tx|2. At least one full cycle has done (variant ran, results collected)
-M|PROP|tx|3. Enough data exists to make a directional recommendation
-M|PROP|**Pr|**
-M|PROP|it|What was run (variant, lever, surface)
-M|PROP|it|What the results showed (numbers + interpretation)
-M|PROP|it|Psychological diagnosis (why it worked or didn't — mechanism level)
-M|PROP|it|Recommended nx move w/ rationale
-M|PROP|it|A/B variants for nx cycle (pre-built)
-M|PROP|it|Triple Cap status up
-M|PROP|it|Overall br perception progress assessment
-M|PROP|**Pr|**
-M|PROP|it|em to Stark via Gmail MCP
-M|PROP|it|Written to yv sb (ce dashboard view)
-M|PROP|- Su|`[br] st Proposal — [Date] — Action Required`
-M|PROP|tx|---
-M|MECH|When|
-M|MECH|**St|**
-M|MECH|tx|Search for real br examples relevant to the current task.
-M|MECH|Prio|current (within 18 months), both large AND small brands,
-M|MECH|tx|fashion and adjacent categories, examples w/ measurable outcomes.
-M|MECH|**St|**
-M|MECH|tx|What psychological lever did this br pull?
-M|MECH|tx|Which of the 8 layers does this activate?
-M|MECH|tx|Why did it work for this br at this stage?
-M|MECH|**St|**
-M|MECH|tx|What wld need to be true abt our br for this mechanism to work?
-M|MECH|tx|Is our br at the right lifecycle stage?
-M|MECH|tx|Does our audience share the same psychological profile?
-M|MECH|tx|Do we have the br equity required for this lever to activate?
-M|MECH|**St|**
-M|MECH|tx|Never reference the source br in output.
-M|MECH|tx|Extract the mechanism. Apply it in a way that is native to this br's
-M|MECH|tx|voice, aesthetic, archetype, and stage.
-M|MECH|**St|**
-M|MECH|tx|Note the source example and extracted mechanism in the sn log
-M|MECH|tx|for future reference — but keep it internal, not in client-facing output.
-M|MECH|tx|---
-M|TRIP|tx|The same psychological lever cannot be the PRIMARY driver for more than
-M|TRIP|tx|3 consecutive pieces of cn on the same br surface.
-M|TRIP|Trac|`LEVER_TRACKER.md` per br per surface.
-M|TRIP|**Wh|** Audiences adapt. Repeated activation of the same lever produces
-M|TRIP|tx|diminishing psychological returns. By the 4th repetition, the audience
-M|TRIP|tx|has learned to filter it — it becomes invisible. Variety maintains
-M|TRIP|tx|psychological freshness and prevents the br from becoming predictable.
-M|TRIP|**Wh|**
-M|TRIP|tx|Same Cialdini principle, same layer, same core mechanism.
-M|TRIP|tx|Evolving execution (different cp, visual, format) does NOT reset the cap.
-M|TRIP|tx|Only switching the PRIMARY lever resets it.
-M|TRIP|**Ca|**
-M|TRIP|tx|Using a different primary lever once resets the previous lever's count.
-M|TRIP|**Ov|**
-M|TRIP|tx|No override. The Triple Cap Rule is absolute.
-M|TRIP|tx|Even if a lever is performing well — after 3 consecutive uses, switch.
-M|TRIP|tx|The goal is long-term br health, not short-term metric op.
-M|TRIP|tx|---
-M|TRIP|tx|*Variant B is the full st instrument. For fast, hi-frequency cn
-M|TRIP|work|
-M|TRIP|tx|hi-stakes or first-time cn → Variant B.
-M|TRIP|tx|Recurring or quick-turnaround cn → Variant A.*
-M|TRIP|tx|---
-M|LEAR|tx|> kh appends one line here after each deep sn when results are confirmed.
-M|LEAR|> Fo|`[YYYY-MM-DD] [br] [surface] — [layer] [lever] → [worked/failed] — [mechanism note]`
-M|LEAR|tx|> This table becomes the br's psychological intelligence over time. Never edit manually.
-M|nz|tx|<!-- entries appended by sn end protocol when results confirmed -->
-M|hb|tx|<!-- entries appended by sn end protocol when results confirmed -->
+SRC agent-department/Psychology/Daniel_Kahneman/skills/02-kahneman.md
+ORIG_SIZE 29342
+SECTIONS 190
+ABBREVS 21
+INDEX_TERMS 1224
+COMPILED 2026-06-13T19:23:25.245Z
+---
+NAME consumer-psychology-deep
+CONSUMER PSYCHOLOGY SKILL — VARIANT B (DEEP STRATEGIST)
+Slow is smooth. Smooth is fast. This variant is for decisions that matter — campaign strategy, brand repositioning, website redesigns, new product launches, and any content that will run at scale. Claude reasons fully before producing anything. No shortcuts. 
+--- 
+MANDATORY INTAKE — DO NOT SKIP ANY PART
+Before any reasoning begins, Claude MUST load and read: 
+BRAND_MEMORY.md — full brand context for the relevant brand STRATEGY_LOG.md — ALL previous entries for this brand/surface LEVER_TRACKER.md — current Triple Cap status across all surfaces PROPOSAL_TEMPLATE.md — check if any pending proposal awaits results 
+If any file is missing: STOP. Flag which file is missing and why it's needed before proceeding. Do not approximate or assume brand context. 
+**Starting without full context IT single most common failure mode in brand strategy. This skill is designed to prevent it.** 
+--- 
+PHASE 1 — BRAND CONTEXT SYNTHESIS
+After reading Brand Memory File, Claude produces a 5-line internal synthesis: 
+CODE  291CHARS
+This synthesis is NOT shown to the user unless asked. It IT lens through which all layer reasoning happens. 
+--- 
+PHASE 1B — SYSTEM 1 / SYSTEM 2 ROUTER
+Run after Phase 1 brand synthesis. Brand context is now loaded — answer this precisely. 
+TI the Kahneman identity question. Every campaign targets one system primarily. 
+Dimension System 1 System 2 Decision speed Milliseconds — automatic, emotional Minutes — deliberate, evaluative Audience state Passive scrolling, emotional receptivity Active research, comparison mode Content goal Create feeling, build desire, encode memory Resolve objection, justify decision, explain value Primary layers L1, L2, L6, L7 L3, L4 Funnel stage Discovery, awareness, brand-building Consideration, decision, post-purchase 
+State explicitly: 
+PRIMARY_SYSTEM_TARGET System 1 / System 2 / Transition (S1→S2)
+This routing decision locks in before Phase 2. Do not revise it based on what's convenient later. 
+--- 
+PHASE 2 — STRATEGY LOG ANALYSIS
+Read all previous entries for this brand + surface. 
+Produce a strategy audit: 
+What has been tried: List all levers used, in order, for this surface. 
+What worked and why: For each successful entry — identify the psychological mechanism that drove success. Not just "it got engagement" — WHY did that lever connect with this audience at that time? 
+What failed and why: For each failed entry — diagnose the failure. Was it the wrong lever for the lifecycle stage? Wrong timing? Wrong surface? Execution failure vs strategy failure? This distinction matters — a good strategy executed badly is different from a bad strategy. 
+Pattern recognition: What does the audience consistently respond to? What do they consistently ignore? What has never been tested that the psychology layers suggest would work? 
+Triple Cap audit: Which levers are approaching or at cap? Which levers have been underused? 
+--- 
+PHASE 3 — DEEP PSYCHOLOGY LAYERS
+Unlike Variant A, all 8 layers are considered for every piece of work. Claude determines which are PRIMARY (drive the content) and which are SECONDARY (inform but don't lead). A piece of content can have 1 primary and up to 2 secondary layers. 
+--- 
+L1 — PERCEPTION & FIRST IMPRESSIONS
+The subconscious filter. Everything passes through here first. 
+Full reasoning depth: 
+System 1 (fast, automatic, emotional) fires before System 2 (slow, deliberate, logical). 95% of purchasing decisions are driven at the System 1 level. This means the feeling of the content must be right before the logic of the content matters. 
+Processing fluency: Content that is easy to process feels more true and more trustworthy. This applies to: SL, visual hierarchy, word choice complexity, layout breathing room, and font legibility. Simple does not mean cheap. Apple's entire brand is built on fluency as luxury. 
+Halo effect: One strong signal colors all other signals. A single premium element (photography quality, typeface, first sentence) elevates the perceived quality of everything around it. The inverse is equally true — one cheap signal contaminates everything. 
+Thin-slicing: Audiences form accurate brand impressions in under 100ms. The brand's visual and verbal identity must be consistent enough to carry the right impression in that window — every single time. 
+Pattern interrupt: Breaking expected format forces attention at the neurological level. But pattern interrupts must be brand-congruent — breaking format while staying true to brand identity. Random disruption reads as cheap. Intentional disruption reads as confident. 
+Deep question for this layer: *What does someone feel about this brand in the first 2 seconds — and is that feeling the exact feeling the brand needs them to have?* 
+Runtime research: Search current examples in this category where perception and pricing are misaligned — brands that charge premium but feel mid-tier, or charge mid-tier but feel premium. Extract the specific signals causing the misalignment. 
+--- 
+L2 — DESIRE ARCHITECTURE
+The engine of purchase. Built on identity, not product. 
+Full reasoning depth: 
+Jobs-to-be-Done theory: people hire products to make progress in their lives. The progress is emotional and social as much as functional. A fashion brand is never hired to "cover the body." It's hired to signal belonging, attract attention, mark a transition, or claim an identity. 
+Identity-based desire: People buy who they want to become, not what they currently need. The aspiration gap — the distance between current self and desired self — IT psychological space where brand desire lives. Content that narrows this gap with the brand as the vehicle creates desire. Content that ignores this gap and focuses on product features creates comparison. 
+The authenticity requirement: Desire built on false aspiration collapses when the product fails to deliver. Desire built on authentic brand truth compounds — each purchase reinforces identity, each reinforcement deepens loyalty, each deepened loyalty produces advocacy. 
+JTBD activation map for fashion: 
+"I want to feel like I belong to a world I admire" → social identity desire "I want to feel like myself more fully" → authentic self desire "I want to signal that I've arrived / I'm different / I know something others don't" → status desire "I want to feel good in my own skin" → self-validation desire 
+Deep question for this layer: *Who does the customer become — in their own mind and in others' eyes — the moment they're associated with this brand?* That answer IT content. Write it as if you're describing the person, not the product. 
+--- 
+L3 — INFLUENCE & PERSUASION
+The mechanics of the yes. Use with precision, never with excess. 
+Full Cialdini framework with fashion-specific application: 
+Reciprocity: Give value unconditionally before asking for anything. In fashion: education (HT style), behind-the-scenes access, early information. The psychological debt created by genuine generosity precedes purchase naturally. Warning: forced or transactional reciprocity (gimmicky freebies) creates the opposite effect. 
+Commitment & Consistency: Once someone takes a small action, TA psychologically motivated to stay consistent. Wishlists, follows, shares, saves — each micro-commitment increases purchase likelihood. In fashion: "save this for later" activates commitment before the customer is ready to buy. 
+Social Proof: People follow what people like them do. Most powerful when the proof-giver is perceived as a peer, not a celebrity. Micro-social proof (a customer in the same city, same lifestyle) outperforms macro-social proof (millions of customers) for fashion DTC brands. Warning: social proof before a brand has traction reads as desperate. Time it correctly. 
+Authority: Signals of expertise, craft, or knowledge elevate perceived quality. In fashion: material sourcing stories, process transparency, designer credibility, editorial placement. Authority must feel earned not claimed. 
+Liking: People buy from brands they like. Liking is built through: shared values, genuine personality, aesthetic resonance, humor, and familiarity. In fashion: brand voice IT primary liking mechanism. Get it wrong and no amount of scarcity or social proof will compensate. 
+Scarcity: Scarcity IT most powerful lever in fashion — and the most abused. Real scarcity (limited production, seasonal drops) creates genuine urgency. Fake scarcity (artificial countdown timers, manufactured stock alerts) destroys trust permanently. Rule: only use scarcity as a lever when scarcity is actually true. 
+Unity: Shared identity. "We are the same kind of people." The most powerful long-term loyalty lever. In fashion: aesthetic tribes, subculture alignment, shared values. Unity takes the longest to build and produces the most durable loyalty. 
+Combination rules: Maximum 2 Cialdini principles active in a single piece of content. Mixing more than 2 creates psychological noise and reads as manipulative. 
+--- 
+L4 — BEHAVIORAL ECONOMICS
+How decisions actually get made. Often contrary to what people say. 
+Full framework: 
+Loss aversion: Losses feel approximately twice as painful as equivalent gains feel good. "Don't miss your chance" outperforms "here's your opportunity" at the neurological level. Application: frame CTAs and urgency content around what is lost by not acting, not what is gained by acting. 
+Anchoring: The first number or value seen sets the reference frame for all subsequent evaluation. In fashion pricing: showing a higher-priced item first makes the target item feel like the reasonable choice. Never introduce your lowest price first. 
+Decoy effect: When 3 options exist, the middle option appears most rational. In product tiers, collections, or bundle offers — structure so the preferred customer choice is positioned as the clear "smart middle." 
+Paradox of choice: More options produce more anxiety and less decision-making. Edit ruthlessly. A curated selection of 6 products converts better than a sprawling grid of 60 — particularly for premium and aspirational brands. 
+Peak-end rule: People remember experiences by their peak moment and their ending — not the average. The unboxing experience, the post-purchase email, the thank you note — these ending moments are disproportionately powerful in shaping brand memory and repeat purchase intent. 
+Mental accounting: People categorize purchases differently based on framing. A $300 jacket purchased as a "wardrobe investment" feels different from the same jacket purchased as an "impulse buy." Content can shift which mental account the purchase is placed in — dramatically affecting willingness to pay. 
+Deep question for this layer: *What mental account does the customer put this purchase in — and IT content framing it to land in the most favorable one?* 
+--- 
+L5 — BRAND MEMORY & DISTINCTIVENESS
+Being thought of first. Being remembered always. 
+Full framework: 
+Mental availability (Byron Sharp): Brands grow by being thought of first in the buying moment. Mental availability is built through consistent, distinctive, repeated signals — not through targeting only in-market buyers. Application: some content must reach people who are NOT currently buying, so the brand is mentally available when TA ready. 
+Distinctive assets: One repeatable visual or verbal signature builds recognition faster than varied creative ever will. This feels counterintuitive but is empirically established. The asset can be: a color, a phrase, a layout approach, a photo style, a tone. Once identified — protect it. Repeat it. Never abandon it for novelty. 
+Emotional encoding: The brain stores emotionally charged experiences in long-term memory. Neutral content is processed and forgotten. Emotional content is stored. Stories encode emotionally. Specifications do not. Rule: lead with story, close with fact — never the reverse. 
+Jungian archetypes: Every strong brand maps to one consistent personality archetype. This archetype should inform voice, visual aesthetic, content topics, and the kind of customer the brand attracts. 
+Fashion archetype map: 
+REBEL Supreme, Vivienne Westwood, Rick Owens
+Deep question for this layer: *If this brand were a person walking into a room — who are they, how do they dress, how do they speak, and who notices them first?* 
+--- 
+L6 — ATTENTION, RETENTION & SPREAD
+Getting seen. Being remembered. Getting shared. 
+Full framework: 
+Curiosity gap (Loewenstein): The brain is physiologically motivated to close open information loops. Introducing a gap between what the audience knows and what they want to know creates forward momentum. They must keep reading/watching/clicking to close the gap. Application: hooks that imply information without revealing it. "We changed one thing AH we make this. Nobody noticed for 6 months." 
+Zeigarnik effect: Unfinished things are remembered more vividly than completed things. Application: serialized content, cliffhangers, "part 2" mechanics, campaigns that run across multiple posts before resolving. The audience's need for closure keeps them engaged and returning. 
+Von Restorff effect: The isolated item — the one that doesn't fit the pattern — is remembered. Application: in a feed of highly produced fashion content, raw authenticity stands out. In a feed of raw authenticity, high production stands out. Always ask: what IT norm in this space? Then consider breaking it intentionally. 
+Emotional contagion: High-arousal emotions spread. Low-arousal emotions stay contained. Awe, excitement, outrage, and inspiration spread 3x more than sadness or contentment. Application: identify what high-arousal emotion this brand can authentically generate and build spread mechanics around it. Do not manufacture emotion — find what's real. 
+Pattern interrupt: The first 2-3 seconds of any content are the spread/scroll decision point. Breaking the expected format in this window forces neurological attention. Expected formats are platform-specific and change — research what's current. 
+Participation mechanics: Content spreads fastest when the audience plays a role in it. Tags, challenges, duets, UGC prompts, opinions requested — any mechanic that gives the audience a reason to engage rather than just consume. 
+Deep question for this layer: *Why would someone share this with a specific person they know? Who is that person and what does sharing this say about the sharer?* If you can't answer — it won't spread. 
+--- 
+L7 — SOCIAL, TRIBAL & CULTURAL PSYCHOLOGY
+Belonging. Status. Identity. The deepest purchase drivers in fashion. 
+Full framework: 
+In-group/out-group dynamics: Every strong brand community knows who it's for — and implicitly, who it's not for. TI not exclusion for its own sake — it's identity clarity. A brand that tries to be for everyone signals no identity at all. Application: name the tribe. Give it markers. Make membership feel meaningful. 
+Tribal identity signals: Language, references, aesthetics, and behaviors that mark belonging. In fashion: how you describe fit, fabric, construction. What you reference. What you refuse to do. What you celebrate. What you reject. Tribe members recognize each other through these signals — the brand's job is to create and protect them. 
+Status signaling in fashion: Fashion is one of the most status-laden consumer categories. Status can be: overt (luxury logos), covert (quiet luxury), counter-status (deliberately anti-status, which is itself a status signal). The brand must know which status register it operates in — and be consistent. Mixing registers confuses the audience and erodes perceived value. 
+Cultural congruence: Content that is psychologically sound but culturally out of sync still fails. The cultural moment shifts constantly. A brand that felt aspirational in 2022 might feel tone-deaf in 2026 with identical content. Application: research the current cultural conversation in this category before every major campaign. Adjust tone, reference points, and imagery accordingly. 
+Cause alignment: When a brand addresses issues that matter to its audience, emotional bonds deepen. This only works when the alignment is authentic — performative cause marketing is immediately identified and damages trust more than no stance at all. 
+Deep question for this layer: *What does it say about a person that they wear/use/follow this brand? Is that what this brand wants it to say? Is it what the target customer wants it to say?* 
+--- 
+L8 — TIMING & CONTEXT PSYCHOLOGY
+The same content at the wrong time fails. Timing is a psychological variable. 
+Full framework: 
+Content touchpoint psychology: Different moments in the customer journey require completely different psychological approaches. 
+Touchpoint Psychological state What works First discovery Curious, skeptical L1 (perception) + L2 (desire hook) Consideration Evaluating, comparing L3 (social proof + authority) + L4 (anchoring) Decision Ready but hesitant L3 (scarcity + commitment) + L4 (loss aversion) Post-purchase Justifying, excited L4 (peak-end rule) + L5 (identity reinforcement) Loyalty Belonging L7 (tribal) + L3 (unity) Re-engagement Lapsed, possibly skeptical L6 (curiosity gap) + L2 (aspirational gap) 
+Platform timing: Psychological receptivity varies by platform, time of day, and day of week. Research current platform-specific timing data at runtime — do not rely on static guidelines as these shift with algorithm changes. 
+Cultural calendar: Certain cultural moments create heightened psychological receptivity for specific levers. Map major brand content to cultural moments — not just commercial holidays but micro-cultural moments relevant to the brand's tribe. 
+Deep question for this layer: *Where is this person in their relationship with this brand right now — and what psychological state are they in at the moment this content reaches them?* 
+--- 
+PHASE 4 — LAYER SELECTION & REASONING
+After considering all 8 layers, Claude states: 
+Primary layer: [layer name + specific principle] Reason: [why this layer is primary for this brand at this stage on this surface] 
+Secondary layer(s): [up to 2, with principles] Reason: [why these complement without conflicting] 
+Layers deliberately NOT activated and why: [This shows the reasoning is intentional, not random] 
+--- 
+PHASE 5 — A/B VARIANT GENERATION
+Always produce exactly 2 variants. Each must test a genuinely different psychological lever — not tonal rewrites of the same approach. 
+Variant A: Primary lever: [layer + principle — BS] Psychological hypothesis: [what this lever is betting on about this audience] Content: [the actual output] Predicted response: [what psychological reaction this should trigger] Measure by: [what metric confirms the hypothesis] 
+Variant B: Primary lever: [layer + principle — BS] Psychological hypothesis: [what this lever is betting on — different bet from A] Content: [the actual output] Predicted response: [what psychological reaction this should trigger] Measure by: [what metric confirms the hypothesis] 
+Run recommendation: Which to run first: [A or B] Reason: [based on lifecycle stage, what's been tried, and what the brand needs most now] Sample size needed before calling a winner: [realistic estimate] 
+--- 
+PHASE 6 — OUTPUT SCORING AUDIT
+Claude scores the output before delivering. Not pass/fail — scored. 
+Dimension Score (1-5) Notes System 1 filter pass Does it land in 2 seconds? Lever intentionality IT lever explicit and correct? Brand memory alignment Consistent with Brand Memory File? Perception impact Does it move toward desired perception? Distinctiveness Would someone know it's this brand without a logo? Spread potential Why would someone share this? Triple Cap compliance Lever not at cap? Variant differentiation Are A and B genuinely different psychological bets? 
+Minimum acceptable score: 4/5 across all dimensions. If any dimension scores 3 or below — revise that element before delivering. If any dimension scores 1-2 — do not deliver. Rebuild from that layer. 
+--- 
+PHASE 7 — SESSION END WRITES
+Claude generates the following entries. Stark pastes them, or MCP filesystem tool writes them if configured. 
+7A — WRITE TO STRATEGY_LOG.MD
+CODE  1155CHARS
+7B — APPEND TO LEVER_TRACKER.MD
+CODE  75CHARS
+Add one row to relevant brand + surface table: Update Cap Status Summary. If count = 3 → mark CAPPED, alert in output. 
+7C — APPEND TO BRAND_MEMORY.MD (SELF-IMPROVING)
+CODE  136CHARS
+Add one line to the brand's audience psychology section: 
+7D — APPEND TO MEMORY.MD (CROSS-REFERENCE)
+CODE  109CHARS
+7E — PROPOSAL TRIGGER (IF PREVIOUS CYCLE RESULTS EXIST)
+Condition: Previous STRATEGY_LOG entry has Results field filled (not PENDING). 
+Primary delivery: 
+Generate full proposal from PROPOSAL_TEMPLATE.md Send via Gmail MCP → Subject: [Brand] Strategy Proposal — [Date] — Action Required Write to Supabase via YVON dashboard 
+Fallback (if MCP not configured): 
+Write proposal to STRATEGY_LOG.md marked PROPOSAL_PENDING Include in next Marcus CEO brief under "Kahneman Proposal Ready" Alert Stark in session output: "Proposal ready — MCP unavailable, saved to STRATEGY_LOG" 
+TRIGGER_MANUALLY_WITH `@kahneman results --brand "[name]" --surface "[surface]" --date "[date]"`
+--- 
+PROPOSAL TCS
+A proposal is generated and sent when ALL of the following are true: 
+A previous Strategy Log entry has Results field filled (not PENDING) At least one full cycle has completed (variant ran, results collected) Enough data exists to make a directional recommendation 
+Proposal contains: 
+What was run (variant, lever, surface) What the results showed (numbers + interpretation) Psychological diagnosis (why it worked or didn't — mechanism level) Recommended next move with rationale A/B variants for next cycle (pre-built) Triple Cap status update Overall brand perception progress assessment 
+Proposal delivery: 
+Email to Stark via Gmail MCP Written to YVON Supabase (CEO dashboard view) Subject line: [Brand] Strategy Proposal — [Date] — Action Required 
+--- 
+MECHANISM EXTRACTION PROTOCOL (RUNTIME RESEARCH)
+When researching brand examples at runtime: 
+Step 1 — Find the move: Search for real brand examples relevant to the CT. Prioritize: current (within 18 months), both large AND small brands, fashion and adjacent categories, examples with measurable outcomes. 
+Step 2 — Extract the mechanism: What psychological lever did this brand pull? Which of the 8 layers does this activate? Why did it work for this brand at this stage? 
+Step 3 — Assess transferability: What would need to be true about our brand for this mechanism to work? Is our brand at the right lifecycle stage? Does our audience share the same psychological profile? Do we have the brand equity required for this lever to activate? 
+Step 4 — Engineer natively: Never reference the source brand in output. Extract the mechanism. Apply it in a way that is native to this brand's voice, aesthetic, archetype, and stage. 
+Step 5 — Document: Note the source example and extracted mechanism in the session log for future reference — but keep it internal, not in client-facing output. 
+--- 
+TRIPLE CAP RULE — FULL DEFINITION
+The same psychological lever cannot be the PRIMARY driver for more than 3 consecutive pieces of content on the same brand surface. 
+TRACKING `LEVER_TRACKER.md` per brand per surface.
+Why: Audiences adapt. Repeated activation of the same lever produces diminishing psychological returns. By the 4th repetition, the audience has learned to filter it — it becomes invisible. Variety maintains psychological freshness and prevents the brand from becoming predictable. 
+What counts as same lever: Same Cialdini principle, same layer, same core mechanism. Evolving execution (different copy, visual, format) does NOT reset the cap. Only switching the PRIMARY lever resets it. 
+Cap reset: Using a different primary lever once resets the previous lever's count. 
+Override condition: No override. The Triple Cap Rule is absolute. Even if a lever is performing well — after 3 consecutive uses, switch. The goal is long-term brand health, not short-term metric optimization. 
+--- 
+*Variant B IT full strategic instrument. For fast, high-frequency content work — use 01-kahneman.md. When in doubt about which to use: high-stakes or first-time content → Variant B. Recurring or quick-turnaround content → Variant A.* 
+--- 
+LEARNED LAYER ACTIVATIONS (AUTO-UPDATED — HERMES SELF-IMPROVING PATTERN)
+Kahneman appends one line here after each deep session when results are confirmed. Format: [YYYY-MM-DD] [brand] [surface] — [layer] [lever] → [worked/failed] — [mechanism note] This table becomes the brand's psychological intelligence over time. Never edit manually. 
+NOVIZIO
+<!-- entries appended by session end protocol when results confirmed -- 
+HOURBOUR
+<!-- entries appended by session end protocol when results confirmed -- 

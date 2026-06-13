@@ -1,76 +1,43 @@
-#MEM id=cohort-analysis source=/root/yvon/agent-department/Marketing/kai/skills/custom/cohort-analysis/SKILL.md savings=4%
-M||tx|---
-M||name|cohort-al
-M||desc|ka's cohort retention al framework for hb (SaaS) and nz (e-commerce). Covers cohort table structure, churn calculation, trial-to-paid funnel, LTV projection from cohort data, and sb query templates.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|hb's North Star is MRR + trial-to-paid conversion. Flat averages hide cohort-level decay. A 10% average churn rate can mask a 30% churn rate in the first 30 days w/ 2% thereafter — those two businesses have completely different interventions. This skill ensures ka never reports a flat average when cohort data is available.
-M|Purp|tx|---
-M|When|it|Any al of hb retention, churn, or LTV
-M|When|it|Monthly hb health rv
-M|When|it|When fx md runway and needs cohort-based LTV inputs
-M|When|it|When nt designs a churn-prevention experiment and needs baseline cohort data
-M|When|tx|---
-M|Coho|tx|Group us by the week they converted from trial to paid.
-M|Coho|tx|```sql
-M|Coho|-- S|trial-to-paid cohorts (replace table names w/ actual sc)
-M|Coho|tx|SELECT
-M|Coho|tx|DATE_TRUNC('week', trial_started_at) AS cohort_week,
-M|Coho|tx|COUNT(*) AS trial_starts,
-M|Coho|tx|COUNT(CASE WHEN converted_at IS NOT NULL THEN 1 END) AS conversions,
-M|Coho|tx|ROUND(100.0 * COUNT(CASE WHEN converted_at IS NOT NULL THEN 1 END) / COUNT(*), 1) AS conversion_rate_pct
-M|Coho|tx|FROM hourbour_users
-M|Coho|tx|GROUP BY cohort_week
-M|Coho|tx|ORDER BY cohort_week DESC
-M|Coho|tx|LIMIT 12;
-M|Coho|tx|```
-M|Rete|tx|For each cohort, measure what % of paying us remain active at M1, M2, M3, M6.
-M|Rete|tx|```
-M|Rete|tx|Cohort Week \| M0 (100%) \| M1 \| M2 \| M3 \| M6
-M|Rete|tx|2026-W20    \| 100       \| 72 \| 61 \| 55 \| 48
-M|Rete|tx|2026-W19    \| 100       \| 68 \| 57 \| 51 \| —
-M|Rete|tx|```
-M|Rete|**Re|** If M1 retention drops below 65%, the onboarding is broken — not the pd. rt to nt.
-M|Rete|**Re|** If M1 is strong but M3 drops sharply, the pd has a value cliff — rt to mc.
-M|Rete|tx|---
-M|LTV |tx|Do not use flat churn rate for LTV. Use the cohort retention curve.
-M|LTV |tx|```
-M|LTV |tx|LTV = ARPU × Σ(retention_rate_at_month_n) for n = 1 to 24
-M|LTV |tx|= ARPU × (M1 + M2 + M3 + ... + M24)
-M|LTV |tx|```
-M|LTV |tx|If only 6 months of data exist, project M7–M24 using the M3→M6 decay slope.
-M|LTV |tx|Flag the projection as estimated beyond the data window.
-M|LTV |**Al|**
-M|LTV |tx|```
-M|LTV |LTV |$[lo] – $[hi]
-M|LTV |Base|[n] months of cohort data (M1–M6)
-M|LTV |Proj|linear decay from M3→M6 slope
-M|LTV |Conf|[lo \| MED \| hi] depending on cohort sample size
-M|LTV |tx|```
-M|LTV |tx|---
-M|Novi|For |
-M|Novi|tx|```
-M|Novi|tx|Cohort Month \| Orders \| Repeat 60d \| Repeat 90d \| AOV avg
-M|Novi|tx|2026-04      \| 142    \| 18%        \| 24%        \| £84
-M|Novi|tx|2026-03      \| 98     \| 22%        \| 31%        \| £91
-M|Novi|tx|```
-M|Novi|**Ke|**
-M|Novi|- **|** below 15% = weak retention
-M|Novi|- **|** if AOV drops over time for a cohort, pd-mk fit is weakening
-M|Novi|- **|** which acquisition month generates the most lifetime rv?
-M|Novi|tx|---
-M|Outp|Ever|
-M|Outp|tx|```
-M|Outp|tx|COHORT rp — [vt] — [date]
-M|Outp|1. D|[earliest cohort] to [latest cohort] — [n] months
-M|Outp|2. C|Trial-to-paid [X%] — [vs prior 4-week avg: +/-X%]
-M|Outp|3. M|[X%] — [RED/AMBER/GREEN vs 65% threshold]
-M|Outp|4. L|$[lo]–$[hi] — [confidence level]
-M|Outp|5. K|[one in — what the cohort data says that a flat average hides]
-M|Outp|6. R|[who needs to act on this: nt (onboarding) / mc (st) / fx (md up)]
-M|Outp|tx|```
-M|Outp|tx|---
-M|Anti|it|Never rp a single churn rate w/o breaking it by cohort week
-M|Anti|it|Never extrapolate beyond 2× the data window (6 months of data → max 12-month projection)
-M|Anti|it|Never rp hb cohort data to the nz sn context (vt isolation rule)
-M|Anti|it|Never give fx a point estimate for LTV — always a range w/ confidence level
+SRC agent-department/Marketing/kai/skills/custom/cohort-analysis/SKILL.md
+ORIG_SIZE 4010
+SECTIONS 37
+ABBREVS 6
+INDEX_TERMS 172
+COMPILED 2026-06-13T19:23:25.037Z
+---
+NAME cohort-analysis
+COHORT ANALYSIS
+PURPOSE
+Hourbour's North Star is MRR + trial-to-paid conversion. Flat averages hide cohort-level decay. A 10% average CR can mask a 30% CR in the first 30 days with 2% thereafter — those two businesses have completely different interventions. This skill ensures Kai never reports a flat average when cohort data is available. 
+--- 
+WHEN IT RUNS
+Any analysis of Hourbour retention, churn, or LTV Monthly Hourbour health review When Felix models runway and needs cohort-based LTV inputs When Nate designs a churn-prevention experiment and needs baseline cohort data 
+--- 
+HOURBOUR COHORT FRAMEWORK
+COHORT DEFINITION
+Group users by the week they converted from trial to paid. 
+CODE sql 421CHARS
+RETENTION CURVE (MONTHS 0–6)
+For each cohort, measure what % of paying users remain active at M1, M2, M3, M6. 
+CODE  131CHARS
+Red flag: If M1 retention drops below 65%, the onboarding is broken — not the product. Route to Nate. Red flag: If M1 is strong but M3 drops sharply, the product has a value cliff — route to Marcus. 
+--- 
+LTV PROJECTION FROM COHORT DATA
+Do not use flat CR for LTV. UT cohort retention curve. 
+CODE  98CHARS
+If only 6 months of data exist, project M7–M24 using the M3→M6 decay slope. Flag the projection as estimated beyond the data window. 
+CODE  187CHARS
+Always give Felix a range, not a point estimate: 
+--- 
+NOVIZIO COHORT FRAMEWORK
+For Novizio (e-commerce), cohorts are by first purchase month: 
+CODE  166CHARS
+Key metrics: 
+Repeat purchase rate at 60 days: below 15% = weak retention AOV trend: if AOV drops over time for a cohort, product-market fit is weakening Cohort GMV: which acquisition month generates the most lifetime revenue? 
+--- 
+OUTPUT FORMAT
+Every cohort report to MO Felix uses this structure: 
+CODE  479CHARS
+--- 
+ANTI-PATTERNS
+Never report a single CR without breaking it by cohort week Never extrapolate beyond 2× the data window (6 months of data → max 12-month projection) Never report Hourbour cohort data to the Novizio session context (venture isolation rule) Never give Felix a point estimate for LTV — always a range with confidence level 

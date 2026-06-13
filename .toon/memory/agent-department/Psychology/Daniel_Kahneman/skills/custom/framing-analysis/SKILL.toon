@@ -1,72 +1,48 @@
-#MEM id=framing-analysis source=/root/yvon/agent-department/Psychology/Daniel_Kahneman/skills/custom/framing-analysis/SKILL.md savings=7%
-M||tx|---
-M||name|framing-al
-M||desc|kh's systematic framing effect detection protocol. Covers gain vs. loss framing audit, reference point manipulation, choice architecture rv, and specific reframes. Used before any cp, cg, or financial recommendation goes to Stark.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|The framing effect is one of the most reliably exploited cognitive biases — and one of the easiest to accidentally weaponize against the very cs you're trying to serve. This skill gives kh a structured protocol for detecting and correcting framing distortions in yv ag outputs before they reach Stark or go to mk.
-M|Purp|tx|---
-M|When|it|Any cp from ln that uses "only", "limited", "last chance", "don't miss", "lose"
-M|When|it|Any financial projection from fx that leads w/ the positive scenario
-M|When|it|Any A/B tst recommendation from ro or nt that frames one variant in terms of gain and the other in terms of loss
-M|When|it|Any st brief from mc that selectively frames risks vs. opportunities
-M|When|it|Any request containing "framing check" or "@kh framing"
-M|When|tx|---
-M|The |For |
-M|Poin|tx|Is the same outcome described in both positive (gain) and negative (loss) terms before a recommendation is made?
-M|Poin|tx|```
-M|Poin|Gain|"85% of cs keep their purchase"
-M|Poin|Loss|"15% of cs return"
-M|Poin|tx|→ Functionally identical. If the recommendation changes based on framing, the decision is biased.
-M|Poin|→ Au|does this recommendation hold if framed the opposite way?
-M|Poin|tx|```
-M|Poin|**Co|** Any recommendation that is not robust to its inverse framing shd be flagged 🔴.
-M|Poin|tx|What reference point is being used, and is it the most honest one?
-M|Poin|tx|```
-M|Poin|Prob|"rv up 12% vs last month" (seasonal lo comparison)
-M|Poin|Hone|"rv up 12% MoM — down 8% vs same period last year"
-M|Poin|tx|```
-M|Poin|**Au|** Has the comparison reference been chosen to make the data look better than a neutral baseline wld?
-M|Poin|tx|Is scarcity language ("only 3 left", "ending tonight") backed by a real constraint?
-M|Poin|tx|```
-M|Poin|Real|Inventory count is genuinely limited → permitted
-M|Poin|Manu|"Only available until midnight" when midnight resets → 🔴 Trust debt
-M|Poin|tx|```
-M|Poin|**Au|** If a cs discovered the scarcity was not real, wld they feel deceived?
-M|Poin|tx|What happens if the cs does nothing? Is the default option genuinely the best option for the cs, or for rv?
-M|Poin|tx|```
-M|Poin|tx|Pre-checked upsell at checkout → examine who benefits from the default
-M|Poin|tx|Default to annual billing → is this disclosed clearly before the "start trial" click?
-M|Poin|tx|```
-M|Poin|**Au|** Does the default option require the cs to take an action to avoid an undesired outcome?
-M|Poin|tx|Is negative information as salient as positive information in the output?
-M|Poin|tx|```
-M|Poin|Red |4 bullet points of benefits, 1 footnote of risks
-M|Poin|Red |ROI projection in hl, CAC risk in footnote
-M|Poin|tx|```
-M|Poin|**Au|** If risks and benefits were equally prominent, wld the recommendation still be made?
-M|Poin|tx|Does a financial md lead w/ a scenario that anchors subsequent expectations upward?
-M|Poin|tx|```
-M|Poin|Red |"Best case: £200k rv" presented before "Base case: £110k"
-M|Poin|Corr|Always present base case first. Anchors set by best case inflate expectations.
-M|Poin|tx|```
-M|Poin|**Au|** wld presenting the base case first change the risk appetite behind the decision?
-M|Poin|tx|---
-M|Outp|tx|```
-M|Outp|tx|FRAMING al — [ag audited] — [cn tp]
-M|Outp|POIN|[CLEAN \| DISTORTED] — [finding if distorted]
-M|Outp|POIN|[CLEAN \| DISTORTED] — [finding if distorted]
-M|Outp|POIN|[CLEAN \| N/A \| DISTORTED] — [finding if distorted]
-M|Outp|POIN|[CLEAN \| N/A \| DISTORTED] — [finding if distorted]
-M|Outp|POIN|[CLEAN \| DISTORTED] — [finding if distorted]
-M|Outp|POIN|[CLEAN \| N/A \| DISTORTED] — [finding if distorted]
-M|Outp|CORR|
-M|Outp|tx|[Point n] — [exact reframe, not "consider revising"]
-M|Outp|VERD|🟢 Clean / 🟡 Caution / 🔴 Block
-M|Outp|tx|```
-M|Outp|🔴 B|any Point 3 real-vs-manufactured scarcity fl, any Point 6 anchor that changes a budget decision, Point 5 asymmetry on a hi-stakes financial md.
-M|Outp|tx|---
-M|Anti|it|Never audit only the hl — framing distortions hide in footnotes, defaults, and comparison baselines
-M|Anti|it|Never issue 🟢 w/ an unresolved distortion bc "it's minor" — name it 🟡 and note it explicitly
-M|Anti|it|Never confuse persuasion (acceptable) w/ deception (not acceptable) — scarcity is fine when real
-M|Anti|it|Never issue corrections that are vague ("consider more balanced framing") — provide the exact reframe
+SRC agent-department/Psychology/Daniel_Kahneman/skills/custom/framing-analysis/SKILL.md
+ORIG_SIZE 5027
+SECTIONS 42
+ABBREVS 3
+INDEX_TERMS 225
+COMPILED 2026-06-13T19:23:25.249Z
+---
+NAME framing-analysis
+FRAMING ANALYSIS
+PURPOSE
+The framing effect is one of the most reliably exploited cognitive biases — and one of the easiest to accidentally weaponize against the very customer you're trying to serve. This skill gives Kahneman a structured protocol for detecting and correcting framing distortions in YVON agent outputs before they reach Stark or go to market. 
+--- 
+WHEN IT RUNS
+Any copy from Lena that uses "only", "limited", "last chance", "don't miss", "lose" Any financial projection from Felix that leads with the positive scenario Any A/B test recommendation from Rio or Nate that frames one variant in terms of gain and the other in terms of loss Any strategic brief from Marcus that selectively frames risks vs. opportunities Any request containing "framing check" or "@kahneman framing" 
+--- 
+THE 6-POINT FRAMING AUDIT
+For any content, recommendation, or decision: 
+POINT 1 — GAIN VS. LOSS FRAMING
+IT same outcome described in both positive (gain) and negative (loss) terms before a recommendation is made? 
+CODE  265CHARS
+Correction rule: Any recommendation that is not robust to its inverse framing should be flagged 🔴. 
+POINT 2 — REFERENCE POINT MANIPULATION
+What reference point is being used, and is it the most honest one? 
+CODE  139CHARS
+Audit question: Has the comparison reference been chosen to make the data look better than a neutral baseline would? 
+POINT 3 — SCARCITY AND LOSS AVERSION IN COPY
+Is scarcity language ("only 3 left", "ending tonight") backed by a real constraint? 
+CODE  160CHARS
+Audit question: If a customer discovered the scarcity was not real, would they feel deceived? 
+POINT 4 — DEFAULT EFFECT
+What happens if the customer does nothing? IT default option genuinely the best option for the customer, or for revenue? 
+CODE  157CHARS
+Audit question: Does the default option require the customer to take an action to avoid an undesired outcome? 
+POINT 5 — ASYMMETRIC SALIENCE
+Is negative information as salient as positive information in the output? 
+CODE  118CHARS
+Audit question: If risks and benefits were equally prominent, would the recommendation still be made? 
+POINT 6 — ANCHORING IN FINANCIAL PROJECTIONS
+Does a financial model lead with a scenario that anchors subsequent expectations upward? 
+CODE  164CHARS
+Audit question: Would presenting the base case first change the risk appetite behind the decision? 
+--- 
+OUTPUT FORMAT
+CODE  591CHARS
+🔴 Block conditions: any Point 3 real-vs-manufactured scarcity failure, any Point 6 anchor that changes a budget decision, Point 5 asymmetry on a high-stakes financial model. 
+--- 
+ANTI-PATTERNS
+Never audit OT headline — framing distortions hide in footnotes, defaults, and comparison baselines Never issue 🟢 with an unresolved distortion because "it's minor" — name it 🟡 and note it explicitly Never confuse persuasion (acceptable) with deception (not acceptable) — scarcity is fine when real Never issue corrections that are vague ("consider more balanced framing") — provide the exact reframe 

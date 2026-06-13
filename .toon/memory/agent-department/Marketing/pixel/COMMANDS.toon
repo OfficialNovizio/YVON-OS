@@ -1,18 +1,14 @@
-#MEM id=pixel source=/root/yvon/agent-department/Marketing/pixel/COMMANDS.md savings=-3%
-M|Core|1. R|pm + qual bar + platform specs
-M|Core|tx|2. Run pre-production checklist (PRODUCTION-PRINCIPLES.md)
-M|Core|tx|3. Submit batch to generation tool
-M|Core|tx|4. QC all outputs against at's 3 criteria
-M|Core|tx|5. Upscale passed images (hero images first)
-M|Core|tx|6. Export + rename per platform spec
-M|Core|tx|7. Compile QC summary
-M|Core|tx|8. Deliver to Opus w/ summary + flagged items
-M|Dele|tx|\| Task \| Delegate To \|
-M|Dele|tx|\|------\|------------\|
-M|Dele|tx|\| pm rework after lo pass rate \| at \|
-M|Dele|tx|\| Scheduling delivered assets \| Opus \|
-M|Dele|tx|\| Platform posting \| Sofia \|
-M|Dele|tx|\| cp to pair w/ assets \| ln \|
-M|Comm|tx|\| Date \| Command \| Status \|
-M|Comm|tx|\|------\|---------\|--------\|
-M|Comm|tx|\| 2026-03-26 \| All workflows \| ✅ Phase 9 baseline \|
+SRC agent-department/Marketing/pixel/COMMANDS.md
+ORIG_SIZE 787
+SECTIONS 7
+ABBREVS 0
+INDEX_TERMS 44
+COMPILED 2026-06-13T19:23:25.159Z
+---
+COMMANDS.MD — PIXEL, PRODUCTION MANAGER
+CORE WORKFLOW — PRODUCTION RUN
+RECEIVE_ATLAS_HANDOFF prompts + quality bar + platform specs
+DELEGATION MATRIX
+Task Delegate To Prompt rework after low pass rate Atlas Scheduling delivered assets Opus Platform posting Sofia Copy to pair with assets Lena 
+COMMAND HEALTH LOG
+Date Command Status 2026-03-26 All workflows ✅ Phase 9 baseline 

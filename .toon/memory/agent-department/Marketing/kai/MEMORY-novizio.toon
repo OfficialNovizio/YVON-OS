@@ -1,24 +1,21 @@
-#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/MEMORY-novizio.md savings=11%
-M|Kai |tx|> Load alongside MEMORY.md when active vt is nz.
-M|Kai |tx|> nz-specific context only — universal rules live in MEMORY.md.
-M|Vent|- **|DTC fashion e-commerce (B2C)
-M|Vent|- **|Instagram, TikTok, website (GA4)
-M|Vent|- **|Meta ad (Instagram focus), TikTok ad
-M|Vent|- **|rv from new cs per month
-M|Novi|tx|\| Metric \| Healthy Range \| Alert Threshold \|
-M|Novi|tx|\|--------\|--------------\|-----------------\|
-M|Novi|tx|\| Instagram engagement rate \| 3.5%–6% \| < 2.5% \|
-M|Novi|tx|\| Instagram Reel reach \| ≥2× follower count / 48h \| < 1× follower count \|
-M|Novi|tx|\| TikTok engagement rate \| 4%–8% \| < 3% \|
-M|Novi|tx|\| Website bounce rate (GA4) \| < 55% \| > 70% \|
-M|Novi|tx|\| em open rate \| > 25% \| < 18% \|
-M|Novi|tx|\| Cart abandonment rate \| < 65% \| > 75% \|
-M|Seas|- **|2× baseline traffic and conversion — plan ahead, benchmark separately
-M|Seas|- **|post-holiday drop; engagement recovers before rv
-M|Seas|- **|organic reach spikes — capitalise on trending moments
-M|Comp|- Ti|DTC fashion brands w/ similar follower count (within 5×)
-M|Comp|- Fl|never cite Nike, Zara (14M+) as gap benchmarks for early-stage br
-M|Novi|it|Instagram saves are a stronger purchase-intent signal than likes for fashion
-M|Novi|it|cn abt craft/materials outperforms lifestyle cn by ~40% avg engagement
-M|Novi|- UG|1 over polished creative
-M|Neve|> Ea|[date] — nz-specific er — rule.
+SRC agent-department/Marketing/kai/MEMORY-novizio.md
+ORIG_SIZE 1598
+SECTIONS 14
+ABBREVS 1
+INDEX_TERMS 120
+COMPILED 2026-06-13T19:23:25.027Z
+---
+KAI — NOVIZIO ANALYTICS MEMORY
+Load alongside MEMORY.md when active venture is Novizio. Novizio-specific context only — universal rules live in MEMORY.md. 
+VENTURE CONTEXT
+Model: DTC fashion e-commerce (B2C) Primary channels: Instagram, TikTok, website (GA4) Primary paid: Meta Ads (Instagram focus), TikTok Ads North Star: Revenue from new customers per month 
+NOVIZIO BASELINES
+Metric Healthy Range Alert Threshold Instagram engagement rate 3.5%–6% < 2.5% Instagram Reel reach ≥2× follower count / 48h < 1× follower count TikTok engagement rate 4%–8% < 3% Website bounce rate (GA4) < 55% > 70% Email open rate > 25% < 18% Cart abandonment rate < 65% > 75% 
+SEASONALITY
+December: 2× baseline traffic and conversion — plan ahead, benchmark separately January: post-holiday drop; engagement recovers before revenue Fashion weeks (Feb/Sep): organic reach spikes — capitalise on trending moments 
+COMPETITOR TIER (NOVIZIO)
+TIER_MATCH DTC fashion brands with similar follower count (within 5×)
+NOVIZIO-SPECIFIC SIGNALS
+Instagram saves are a stronger purchase-intent signal than likes for fashion Content about craft/materials outperforms lifestyle content by ~40% avg engagement UGC-style content on Meta converts 2:1 over polished creative 
+NEVER AGAIN (NOVIZIO-SPECIFIC)
+EE: [date] — Novizio-specific error — rule. 

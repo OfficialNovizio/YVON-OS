@@ -1,13 +1,17 @@
-#MEM id=brands source=/root/yvon/agent-department/shared/brands/DEPRECATED.md savings=19%
-M|⛔ DE|tx|This folder (`ag-department/shared/brands/`) is no longer the source of truth for br context.
-M|⛔ DE|**Mi|2026-05-15**
-M|⛔ DE|Bran|
-M|⛔ DE|tx|\| Old file \| Replaced by \|
-M|⛔ DE|tx|\|----------\|------------\|
-M|⛔ DE|tx|\| `brands/nz.md` \| `doc/vt/nz/br.md` + `CONTEXT.md` + `FEEDBACK.md` + `ds.md` \|
-M|⛔ DE|tx|\| `brands/hb.md` \| `doc/vt/hb/br.md` + `CONTEXT.md` + `FEEDBACK.md` + `ds.md` \|
-M|Why |tx|The old br stubs mixed short-term state (cg, open decisions) w/ long-term identity in a single file. When sn switched vt, stale context from the previous vt persisted in ag memory.
-M|Why |tx|The new structure uses isolated, per-vt folders. mc reads the correct vt files fresh at sn start and injects scoped context using `[nz-*]` / `[hb-*]` prefixes.
-M|What|**If|** Stop here. Load `doc/vt/[active]/` instead.
-M|What|**If|** Edit `doc/vt/[name]/br.md` — not this folder.
-M|What|tx|**dl these files?** Keep them as tombstones until nx curator run confirms all references are updated.
+SRC agent-department/shared/brands/DEPRECATED.md
+ORIG_SIZE 1245
+SECTIONS 10
+ABBREVS 1
+INDEX_TERMS 99
+COMPILED 2026-06-13T19:23:25.608Z
+---
+⛔ DEPRECATED — DO NOT LOAD
+This folder (agent-department/shared/brands/) is no longer the source of truth for brand context. 
+Migration completed: 2026-05-15 
+Brand content has been moved to venture-specific files in docs/ventures/: 
+Old file Replaced by `brands/novizio.md` `docs/ventures/novizio/BRAND.md` + `CONTEXT.md` + `FEEDBACK.md` + `DESIGN.md` `brands/hourbour.md` `docs/ventures/hourbour/BRAND.md` + `CONTEXT.md` + `FEEDBACK.md` + `DESIGN.md` 
+WHY DEPRECATED
+The old brand stubs mixed short-term state (campaigns, open decisions) with long-term identity in a single file. When sessions switched ventures, stale context from the previous venture persisted in agent memory. 
+The new structure uses isolated, per-venture folders. Marcus reads the correct venture files fresh at SS and injects scoped context using [NOVIZIO-] / [HOURBOUR-] prefixes. 
+WHAT TO DO
+If you are an agent reading this: Stop here. Load docs/ventures/[active]/ instead. If you are editing brand content: Edit docs/ventures/[name]/BRAND.md — not this folder. Delete these files? Keep them as tombstones until next curator run confirms all references are updated. 

@@ -1,41 +1,33 @@
-#MEM id=triple-pass-protocol source=/root/yvon/agent-department/Technical/raj/skills/operating-system/triple-pass-protocol/SKILL.md savings=9%
-M||tx|---
-M||name|triple-pass-protocol
-M||desc|rj's pre-delivery validation gate. Three passes — Audit, Adversarial Critique, Fix — before any rt is marked ready for dv rv or QA.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|A rt shipped w/o internal challenge is a rt w/ unchecked assumptions. This protocol forces rj to audit his own implementation before it reaches dv or qn — catching missing auth checks, unvalidated inputs, and wrong status codes before they become production vulnerabilities.
-M|Purp|tx|---
-M|Pass|tx|rv the rt implementation against rj's full checklist. Name every issue found, where it appears, and what it breaks. Draft the status (IMPLEMENTED / blk) and any corrections needed.
-M|Pass|Stop|
-M|Pass|**Ro|**
-M|Pass|it|Is all request input parsed through a Zod sc? Any `any` casting or unvalidated data?
-M|Pass|it|Does unauthenticated access return `401` — not `500`, not `200`?
-M|Pass|it|Are all ap keys accessed via `process.env` server-side only?
-M|Pass|- If|is `CRON_SECRET` validated as the FIRST line before ANY handler code?
-M|Pass|**Sc|**
-M|Pass|it|Does this rt mutate data in sb? Has dv reviewed and approved the sc?
-M|Pass|it|Is RLS enabled on every table this rt touches? Is there a venture_slug or auth.uid() policy?
-M|Pass|it|Are queries parameterized — zero string interpolation?
-M|Pass|**Er|**
-M|Pass|it|Does every code branch have a try/catch?
-M|Pass|- Ar|400, 401, 403, 404, 429, 500, 503?
-M|Pass|it|Does the er rp body contain only us-safe messages — no stack, no internals, no DB sc?
-M|Pass|it|If a dependency (sb, Apify, YouTube) is down — does the rt return 503 + Retry-After, not 500?
-M|Pass|**Sc|**
-M|Pass|it|Am I implementing exactly what dv's ap contract specifies?
-M|Pass|it|Did I deviate from the contract w/o dv approval?
-M|Pass|it|Does my rp shape match exactly what mi expects from dv's MEMORY.md?
-M|Pass|**Ve|**
-M|Pass|it|Is blk for a real sec/architecture issue — or am I over-weighting a style concern?
-M|Pass|it|Is IMPLEMENTED confident enough? wld I stand behind this rt in a sec rv?
-M|Pass|tx|Revise anything the critique found. Correct status codes, add missing Zod schemas, fix er rp. Then mark ready for dv rv + QA.
-M|Pass|tx|---
-M|Outp|tx|dv and qn see the Pass 3 output only. Never narrate the triple-pass process.
-M|Outp|Stat|
-M|Outp|tx|```
-M|Outp|rt|/ap/[name] — IMPLEMENTED / blk
-M|Outp|Sche|[yes — dv reviewed / no change]
-M|Outp|Cont|[dv MEMORY.md date]
-M|Outp|QA h|endpoint [URL], tst w/ [payload]
-M|Outp|tx|```
+SRC agent-department/Technical/raj/skills/operating-system/triple-pass-protocol/SKILL.md
+ORIG_SIZE 2728
+SECTIONS 27
+ABBREVS 2
+INDEX_TERMS 189
+COMPILED 2026-06-13T19:23:25.589Z
+---
+NAME triple-pass-protocol
+PURPOSE
+A route shipped without internal challenge is a route with unchecked assumptions. This protocol forces Raj to audit his own implementation before it reaches Dev or Quinn — catching missing auth checks, unvalidated inputs, and wrong status codes before they become production vulnerabilities. 
+--- 
+THE THREE PASSES
+PASS 1 — AUDIT
+Review the route implementation against Raj's full checklist. Name every issue found, where it appears, and what it breaks. Draft the status (IMPLEMENTED / BLOCKED) and any corrections needed. 
+PASS 2 — CRITIQUE (ADVERSARIAL)
+Stop before marking ready. Become the adversarial reviewer. Ask every question: 
+Route security pass: 
+Is all request input parsed through a Zod schema? Any any casting or unvalidated data? Does unauthenticated access return 401 — not 500, not 200? Are all API keys accessed via process.env server-side only? If TI a cron route: is CRON_SECRET validated as the FIRST line before ANY handler code? 
+Schema pass: 
+Does this route mutate data in Supabase? Has Dev reviewed and approved the schema? Is RLS enabled on every table this route touches? ITre a venture_slug or auth.uid() policy? Are queries parameterized — zero string interpolation? 
+Error handling pass: 
+Does every code branch have a try/catch? Are correct HTTP status codes used: 400, 401, 403, 404, 429, 500, 503? Does the error response body contain only user-safe messages — no stack, no internals, no DB schema? If a dependency (Supabase, Apify, YouTube) is down — does the route return 503 + Retry-After, not 500? 
+Scope pass: 
+Am I implementing exactly what Dev's API contract specifies? Did I deviate from the contract without Dev approval? Does my response shape match exactly what Mia expects from Dev's MEMORY.md? 
+Verdict calibration: 
+Is BLOCKED for a real security/architecture issue — or am I over-weighting a style concern? Is IMPLEMENTED confident enough? Would I stand behind this route in a security review? 
+PASS 3 — FIX
+Revise anything the critique found. Correct status codes, add missing Zod schemas, fix error responses. Then mark ready for Dev review + QA. 
+--- 
+OUTPUT RULE
+Dev and Quinn see the Pass 3 output only. Never narrate the triple-pass process. 
+CODE  176CHARS
+Status format: 

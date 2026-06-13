@@ -1,85 +1,50 @@
-#MEM id=video-production source=/root/yvon/agent-department/Marketing/pixel/skills/custom/video-production/SKILL.md savings=2%
-M||tx|---
-M||name|vd-production
-M||desc|px's vd batch management for Kling and Runway. Covers vd QC criteria (motion stability, subject consistency, no flickering), platform format specs, batch sizing, and delivery format. Load when running any vd generation batch.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|vd generation has different fl modes, different platform specs, and different delivery requirements than im production. This skill separates vd production from im production so px can run vd batches w/ the same systematic discipline as im batches.
-M|Purp|tx|---
-M|Supp|tx|\| Tool \| Best for \| yv use case \|
-M|Supp|tx|\|------\|----------\|---------------\|
-M|Supp|tx|\| Kling 3.0 \| hi-qual sl vd, pd motion, lifestyle \| nz Instagram Reels, TikTok \|
-M|Supp|tx|\| Runway Gen-3 \| Fast iteration, creative motion, transitions \| Both vt, short-form testing \|
-M|Supp|**Pr|** Load `../../../at/skills/pm-systems/kling-3-prompter/SKILL.md` — at writes the pm, px executes.
-M|Supp|tx|---
-M|Crit|tx|\| Check \| Pass \| Fail \|
-M|Crit|tx|\|-------\|------\|------\|
-M|Crit|tx|\| Subject movement \| Smooth, continuous, natural \| Jitter, stutter, teleporting \|
-M|Crit|tx|\| Camera movement \| Consistent direction if specified \| Random drift or jump cut \|
-M|Crit|tx|\| Background stability \| Static or consistent motion \| Background morphing or flickering \|
-M|Crit|**Co|** Too many motion descriptors in the pm (e.g., `slow zoom + pan left + subject walking`). Reduce to one motion instruction.
-M|Crit|tx|---
-M|Crit|tx|\| Check \| Pass \| Fail \|
-M|Crit|tx|\|-------\|------\|------\|
-M|Crit|tx|\| Face stability \| Same face throughout clip \| Face morphing mid-clip \|
-M|Crit|tx|\| Proportion stability \| Subject proportions consistent frame to frame \| Limbs or body changing size \|
-M|Crit|tx|\| Clothing consistency \| Clothing details stay consistent \| Pattern or colour shifting \|
-M|Crit|**Co|** Long duration clips (>5 seconds) w/ complex subjects. Shorten the clip or simplify the subject.
-M|Crit|tx|---
-M|Crit|tx|\| Check \| Pass \| Fail \|
-M|Crit|tx|\|-------\|------\|------\|
-M|Crit|tx|\| Light source \| Single consistent light source throughout \| Shadow direction changing mid-clip \|
-M|Crit|tx|\| Colour temperature \| Consistent warm/cool throughout \| Visible colour shift btw frames \|
-M|Crit|tx|\| Exposure \| No sudden brightness jumps \| Flickering brightness \|
-M|Crit|tx|---
-M|Crit|nz|**
-M|Crit|it|No promotional text appearing in vd (even for one frame)
-M|Crit|it|No flat, catalogue-style lighting — must be directional
-M|Crit|it|Motion must feel editorial, not commercial (avoid fast cuts or hype energy)
-M|Crit|hb|**
-M|Crit|it|No money imagery appearing in any frame
-M|Crit|it|Device UI must be legible if shown — blurry or generic UI is a reject
-M|Crit|it|Tone must be calm and purposeful — avoid ur or hype motion styles
-M|Crit|tx|---
-M|Batc|tx|\| Batch size \| When to use \| Approval required \|
-M|Batc|tx|\|-----------\|------------\|------------------\|
-M|Batc|tx|\| 3–5 clips \| Style tst, new direction validation \| at approval \|
-M|Batc|tx|\| 10–15 clips \| cg cn run \| at approval \|
-M|Batc|tx|\| 20+ clips \| Full cn library \| Stark approval \|
-M|Batc|**Ru|** Always run a 3-clip tst batch before committing to a full vd run. vd generation is significantly more expensive than im generation — waste is higher.
-M|Batc|tx|---
-M|Plat|tx|\| Platform \| vt \| Ratio \| Resolution \| Max duration \|
-M|Plat|tx|\|---------\|---------\|-------\|-----------\|-------------\|
-M|Plat|| In|16 \| 1080×1920 \| 90 sec (keep ≤ 30s for best reach) \|
-M|Plat|| Ti|16 \| 1080×1920 \| 60 sec (keep ≤ 15s for best reach) \|
-M|Plat|| In|5 or 1:1 \| 1080×1350 / 1080×1080 \| 60 sec \|
-M|Plat|| Li|9 or 1:1 \| 1920×1080 / 1080×1080 \| 30 sec optimal \|
-M|Plat|| Yo|16 \| 1080×1920 \| 60 sec \|
-M|Plat|**Fi|** MP4, H.264, AAC audio if applicable.
-M|Plat|**Fr|** 24fps for editorial/nz feel; 30fps for clean/hb feel.
-M|Plat|tx|---
-M|Vide|tx|```
-M|Vide|Stag|BRIEF CONFIRM   — at's vd pm received, platform spec confirmed
-M|Vide|Stag|tst BATCH      — gn 3 clips, run full QC criteria
-M|Vide|Stag|rv          — Pass all 4 criteria? Proceed. Fail? Apply pm-variation-engine
-M|Vide|Stag|FULL BATCH      — Approved style generates full run
-M|Vide|Stag|FORMAT          — Export at platform spec (ratio, resolution, frame rate, file format)
-M|Vide|Stag|DELIVER         — Named files ready for Stark rv
-M|Vide|tx|```
-M|Vide|tx|**Never skip Stage 2.** A failed full batch wastes 5–10× more generation time than a failed tst batch.
-M|Vide|tx|---
-M|Vide|File|
-M|Vide|tx|```
-M|Vide|tx|[vt]-[cg]-[platform]-[clip##]-[ratio].[ext]
-M|Vide|Exam|
-M|Vide|tx|nz-summer26-reels-clip01-9x16.mp4
-M|Vide|tx|hb-launch-linkedin-clip01-16x9.mp4
-M|Vide|tx|```
-M|Vide|Deli|
-M|Vide|tx|```
-M|Vide|tx|[vt]/[cg]/vd/
-M|Vide|tx|raw/          ← unedited generation output (keep for 14 days)
-M|Vide|tx|qc-pass/      ← passed QC, not yet formatted
-M|Vide|tx|formatted/    ← platform-ready, named correctly
-M|Vide|reje|clip01-REJECT-flickering.mp4
-M|Vide|tx|```
+SRC agent-department/Marketing/pixel/skills/custom/video-production/SKILL.md
+ORIG_SIZE 5198
+SECTIONS 44
+ABBREVS 2
+INDEX_TERMS 251
+COMPILED 2026-06-13T19:23:25.173Z
+---
+NAME video-production
+PURPOSE
+Video generation has different failure modes, different platform specs, and different delivery requirements than image production. This skill separates video production from image production so Pixel can run video batches with the same systematic discipline as image batches. 
+--- 
+SUPPORTED TOOLS
+Tool BF YVON use case Kling 3.0 High-quality social video, product motion, lifestyle Novizio Instagram Reels, TikTok Runway Gen-3 Fast iteration, creative motion, transitions Both ventures, short-form testing 
+Prompt format for Kling: Load ../../../atlas/skills/prompt-systems/kling-3-prompter/SKILL.md — Atlas writes the prompt, Pixel executes. 
+--- 
+VIDEO QC CRITERIA
+CRITERION 1 — MOTION STABILITY
+Check Pass Fail Subject movement Smooth, continuous, natural Jitter, stutter, teleporting Camera movement Consistent direction if specified Random drift or jump cut Background stability Static or consistent motion Background morphing or flickering 
+Common failure cause: Too many motion descriptors in the prompt (e.g., slow zoom + pan left + subject walking). Reduce to one motion instruction. 
+--- 
+CRITERION 2 — SUBJECT CONSISTENCY
+Check Pass Fail Face stability Same face throughout clip Face morphing mid-clip Proportion stability Subject proportions consistent frame to frame Limbs or body changing size Clothing consistency Clothing details stay consistent Pattern or colour shifting 
+Common failure cause: Long duration clips (5 seconds) with complex subjects. Shorten the clip or simplify the subject. 
+--- 
+CRITERION 3 — LIGHTING AND COLOUR CONSISTENCY
+Check Pass Fail Light source Single consistent light source throughout Shadow direction changing mid-clip Colour temperature Consistent warm/cool throughout Visible colour shift between frames Exposure No sudden brightness jumps Flickering brightness 
+--- 
+CRITERION 4 — BRAND COMPLIANCE (VENTURE-SPECIFIC)
+Novizio: 
+No promotional text appearing in video (even for one frame) No flat, catalogue-style lighting — must be directional Motion must feel editorial, not commercial (avoid fast cuts or hype energy) 
+Hourbour: 
+No money imagery appearing in any frame Device UI must be legible if shown — blurry or generic UI is a reject Tone must be calm and purposeful — avoid urgent or hype motion styles 
+--- 
+BATCH SIZING — VIDEO
+Batch size WTU Approval required 3–5 clips Style test, new direction validation Atlas approval 10–15 clips Campaign content run Atlas approval 20+ clips Full content library Stark approval 
+Rule: Always run a 3-clip test batch before committing to a full video run. Video generation is significantly more expensive than image generation — waste is higher. 
+--- 
+PLATFORM FORMAT SPECS
+Platform Venture Ratio Resolution Max duration Instagram Reels Novizio 9:16 1080×1920 90 sec (keep ≤ 30s for best reach) TikTok Novizio 9:16 1080×1920 60 sec (keep ≤ 15s for best reach) Instagram Feed (video) Novizio 4:5 or 1:1 1080×1350 / 1080×1080 60 sec LinkedIn Hourbour 16:9 or 1:1 1920×1080 / 1080×1080 30 sec optimal YouTube Shorts Hourbour 9:16 1080×1920 60 sec 
+File format: MP4, H.264, AAC audio if applicable. Frame rate: 24fps for editorial/Novizio feel; 30fps for clean/Hourbour feel. 
+--- 
+VIDEO PRODUCTION PIPELINE
+CODE  460CHARS
+Never skip Stage 2. A failed full batch wastes 5–10× more generation time than a failed test batch. 
+--- 
+VIDEO DELIVERY FORMAT
+CODE  146CHARS
+File naming for video: 
+CODE  273CHARS
+Delivery folder structure: 

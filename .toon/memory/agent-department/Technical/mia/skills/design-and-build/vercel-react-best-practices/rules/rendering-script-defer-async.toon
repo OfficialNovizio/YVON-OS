@@ -1,55 +1,20 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-script-defer-async.md savings=-2%
-M||tx|---
-M||titl|Use defer or async on Script Tags
-M||impa|hi
-M||impa|eliminates render-blocking
-M||tags|rendering, script, defer, async, perf
-M||tx|---
-M|Use |**Im|hi (eliminates render-blocking)**
-M|Use |tx|Script tags w/o `defer` or `async` block HTML parsing while the script downloads and executes. This delays First Contentful Paint and Time to Interactive.
-M|Use |- **|Downloads in parallel, executes after HTML parsing completes, maintains execution order
-M|Use |- **|Downloads in parallel, executes immediately when ready, no guaranteed order
-M|Use |tx|Use `defer` for scripts that depend on DOM or other scripts. Use `async` for independent scripts like an.
-M|Use |**In|**
-M|Use |tx|```tsx
-M|Use |tx|export default fn Document() {
-M|Use |tx|return (
-M|Use |tx|<html>
-M|Use |tx|<head>
-M|Use |<scr|//example.com/an.js" />
-M|Use |tx|<script src="/scripts/utils.js" />
-M|Use |tx|</head>
-M|Use |tx|<body>{/* cn */}</body>
-M|Use |tx|</html>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**Co|**
-M|Use |tx|```tsx
-M|Use |tx|export default fn Document() {
-M|Use |tx|return (
-M|Use |tx|<html>
-M|Use |tx|<head>
-M|Use |tx|{/* Independent script - use async */}
-M|Use |<scr|//example.com/an.js" async />
-M|Use |tx|{/* DOM-dependent script - use defer */}
-M|Use |tx|<script src="/scripts/utils.js" defer />
-M|Use |tx|</head>
-M|Use |tx|<body>{/* cn */}</body>
-M|Use |tx|</html>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |**No|** In nx.js, prefer the `nx/script` cp w/ `st` prop instead of raw script tags:
-M|Use |tx|```tsx
-M|Use |tx|import Script from 'nx/script'
-M|Use |tx|export default fn Page() {
-M|Use |tx|return (
-M|Use |tx|<>
-M|Use |<Scr|//example.com/an.js" st="afterInteractive" />
-M|Use |tx|<Script src="/scripts/utils.js" st="beforeInteractive" />
-M|Use |tx|</>
-M|Use |tx|)
-M|Use |tx|}
-M|Use |tx|```
-M|Use |Refe|[MDN - Script element](https://developer.mozilla.org/en-US/doc/Web/HTML/Element/script#defer)
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/rendering-script-defer-async.md
+ORIG_SIZE 1868
+SECTIONS 14
+ABBREVS 1
+INDEX_TERMS 71
+COMPILED 2026-06-13T19:23:25.464Z
+---
+TITLE Use defer or async on Script Tags
+USE DEFER OR ASYNC ON SCRIPT TAGS
+Impact: HIGH (eliminates render-blocking) 
+Script tags without defer or async block HTML parsing while the script downloads and executes. This delays First Contentful Paint and Time to Interactive. 
+defer: Downloads in parallel, executes after HTML parsing completes, maintains execution order async: Downloads in parallel, executes immediately when ready, no guaranteed order 
+Use defer for scripts that depend on DOM or other scripts. Use async for independent scripts like analytics. 
+Incorrect (blocks rendering): 
+CODE tsx 240CHARS
+Correct (non-blocking): 
+CODE tsx 348CHARS
+Note: In Next.js, prefer the next/script component with strategy prop IO raw script tags: 
+CODE tsx 253CHARS
+REFERENCE [MDN - Script element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#defer)

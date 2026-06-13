@@ -1,14 +1,16 @@
-#MEM id=nate source=/root/yvon/agent-department/Marketing/nate/COMMANDS.md savings=-5%
-M|Term|tx|nt does not run terminal commands. He analyzes data and designs experiments.
-M|What|tx|\| If you need... \| Ask... \|
-M|What|tx|\|----------------\|--------\|
-M|What|tx|\| Raw metric interpretation \| ka \|
-M|What|tx|\| cr context for growth ideas \| Zara \|
-M|What|tx|\| Executing paid experiments \| ro \|
-M|What|tx|\| Building experiment tracking features \| dv or rj \|
-M|What|tx|---
-M|Comm|tx|> Updated by SIP after task completion. Proven commands stay. Failed or deprecated commands are removed.
-M|Comm|> Ru|do not add new commands w/o removing or condensing an equivalent amount of cn.
-M|Comm|tx|\| Date \| Command / Pattern \| Status \| Action Taken \|
-M|Comm|tx|\|------\|------------------\|--------\|--------------\|
-M|Comm|tx|\| 2026-03-23 \| (baseline) \| ✓ Verified \| initial SIP setup \|
+SRC agent-department/Marketing/nate/COMMANDS.md
+ORIG_SIZE 782
+SECTIONS 9
+ABBREVS 1
+INDEX_TERMS 68
+COMPILED 2026-06-13T19:23:25.117Z
+---
+⌨️ NATE — COMMANDS
+TERMINAL COMMANDS
+Nate does not run terminal commands. He analyzes data and designs experiments. 
+WHAT HE DELEGATES
+If you need... Ask... Raw metric interpretation Kai Competitor context for growth ideas Zara Executing paid experiments Rio Building experiment tracking features Dev or Raj 
+--- 
+COMMAND HEALTH LOG
+UB SIP after task completion. Proven commands stay. Failed or deprecated commands are removed. Rule: do not add new commands without removing or condensing an equivalent amount of content. 
+Date Command / Pattern Status Action Taken 2026-03-23 (baseline) ✓ Verified initial SIP setup 

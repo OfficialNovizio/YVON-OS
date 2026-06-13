@@ -1,25 +1,16 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/server-parallel-nested-fetching.md savings=-2%
-M||tx|---
-M||titl|Parallel Nested Data Fetching
-M||impa|ct
-M||impa|eliminates server-side waterfalls
-M||tags|server, rsc, parallel-fetching, promise-chaining
-M||tx|---
-M|Para|tx|When fetching nested data in parallel, chain dependent fetches within each item's promise so a slow item doesn't block the rest.
-M|Para|**In|**
-M|Para|tx|```tsx
-M|Para|tx|const chats = await Promise.all(
-M|Para|tx|chatIds.map(id => getChat(id))
-M|Para|tx|)
-M|Para|tx|const chatAuthors = await Promise.all(
-M|Para|tx|chats.map(chat => getUser(chat.author))
-M|Para|tx|)
-M|Para|tx|```
-M|Para|tx|If one `getChat(id)` out of 100 is extremely slow, the authors of the other 99 chats can't start loading even though their data is ready.
-M|Para|**Co|**
-M|Para|tx|```tsx
-M|Para|tx|const chatAuthors = await Promise.all(
-M|Para|tx|chatIds.map(id => getChat(id).then(chat => getUser(chat.author)))
-M|Para|tx|)
-M|Para|tx|```
-M|Para|tx|Each item independently chains `getChat` → `getUser`, so a slow chat doesn't block author fetches for the others.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/server-parallel-nested-fetching.md
+ORIG_SIZE 992
+SECTIONS 10
+ABBREVS 0
+INDEX_TERMS 53
+COMPILED 2026-06-13T19:23:25.481Z
+---
+TITLE Parallel Nested Data Fetching
+PARALLEL NESTED DATA FETCHING
+When fetching nested data in parallel, chain dependent fetches within each item's promise so a slow item doesn't block the rest. 
+Incorrect (a single slow item blocks all nested fetches): 
+CODE tsx 152CHARS
+If one getChat(id) out of 100 is extremely slow, the authors of the other 99 chats can't start loading even though their data is ready. 
+Correct (each item chains its own nested fetch): 
+CODE tsx 109CHARS
+Each item independently chains getChat → getUser, so a slow chat doesn't block author fetches for the others. 

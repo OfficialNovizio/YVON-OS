@@ -1,81 +1,40 @@
-#MEM id=using-superpowers source=/root/yvon/agent-department/Technical/dev/skills/superpowers/using-superpowers/SKILL.md savings=3%
-M||tx|---
-M||name|using-superpowers
-M||desc|>-
-M||tx|Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY rp inc clarifying questions
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[dv, nx, ts, architecture, vc, ap-rt, bd, productivity]
-M||tx|---
-M||tx|<SUBAGENT-STOP>
-M||tx|If you were dispatched as a subagent to execute a specific task, skip this skill.
-M||tx|</SUBAGENT-STOP>
-M||tx|<EXTREMELY-IMPORTANT>
-M||tx|If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
-M||tx|IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
-M||tx|This is not negotiable. This is not optional. You cannot rationalize your way out of this.
-M||tx|</EXTREMELY-IMPORTANT>
-M|Inst|Supe|
-M|Inst|tx|1. **us's explicit instructions** (CLAUDE.md, GEMINI.md, ag.md, direct requests) — highest priority
-M|Inst|tx|2. **Superpowers skills** — override default sy behavior where they conflict
-M|Inst|tx|3. **Default sy pm** — lowest priority
-M|Inst|tx|If CLAUDE.md, GEMINI.md, or ag.md says "don't use TDD" and a skill says "always use TDD," follow the us's instructions. The us is in control.
-M|How |**In|** Use the `Skill` tool. When you invoke a skill, its cn is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
-M|How |**In|** Use the `skill` tool. Skills are auto-discovered from installed plugins. The `skill` tool works the same as Claude Code's `Skill` tool.
-M|How |**In|** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at sn start and activates the full cn on demand.
-M|How |**In|** Check your platform's doc for how skills are loaded.
-M|Plat|Skil|see `references/copilot-tools.md` (Copilot CLI), `references/codex-tools.md` (Codex) for tool equivalents. Gemini CLI us get the tool mapping loaded automatically via GEMINI.md.
-M|The |tx|**Invoke relevant or requested skills BEFORE any rp or action.** Even a 1% chance a skill might apply means that you shd invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
-M|The |tx|```dot
-M|The |tx|digraph skill_flow {
-M|The |tx|"us message received" [shape=doublecircle];
-M|The |tx|"abt to EnterPlanMode?" [shape=doublecircle];
-M|The |tx|"Already brainstormed?" [shape=diamond];
-M|The |tx|"Invoke brainstorming skill" [shape=box];
-M|The |tx|"Might any skill apply?" [shape=diamond];
-M|The |tx|"Invoke Skill tool" [shape=box];
-M|The |"Ann|'Using [skill] to [purpose]'" [shape=box];
-M|The |tx|"Has checklist?" [shape=diamond];
-M|The |tx|"cr TodoWrite todo per item" [shape=box];
-M|The |tx|"Follow skill exactly" [shape=box];
-M|The |tx|"Respond (inc clarifications)" [shape=doublecircle];
-M|The |tx|"abt to EnterPlanMode?" -> "Already brainstormed?";
-M|The |tx|"Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
-M|The |tx|"Already brainstormed?" -> "Might any skill apply?" [label="yes"];
-M|The |tx|"Invoke brainstorming skill" -> "Might any skill apply?";
-M|The |tx|"us message received" -> "Might any skill apply?";
-M|The |tx|"Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
-M|The |tx|"Might any skill apply?" -> "Respond (inc clarifications)" [label="definitely not"];
-M|The |"Inv|'Using [skill] to [purpose]'";
-M|The |"Ann|'Using [skill] to [purpose]'" -> "Has checklist?";
-M|The |tx|"Has checklist?" -> "cr TodoWrite todo per item" [label="yes"];
-M|The |tx|"Has checklist?" -> "Follow skill exactly" [label="no"];
-M|The |tx|"cr TodoWrite todo per item" -> "Follow skill exactly";
-M|The |tx|}
-M|The |tx|```
-M|Red |Thes|
-M|Red |tx|\| Thought \| Reality \|
-M|Red |tx|\|---------\|---------\|
-M|Red |tx|\| "This is just a simple question" \| Questions are tasks. Check for skills. \|
-M|Red |tx|\| "I need more context first" \| Skill check comes BEFORE clarifying questions. \|
-M|Red |tx|\| "Let me explore the codebase first" \| Skills tell you HOW to explore. Check first. \|
-M|Red |tx|\| "I can check git/files quickly" \| Files lack conversation context. Check for skills. \|
-M|Red |tx|\| "Let me gather information first" \| Skills tell you HOW to gather information. \|
-M|Red |tx|\| "This doesn't need a formal skill" \| If a skill exists, use it. \|
-M|Red |tx|\| "I remember this skill" \| Skills evolve. Read current version. \|
-M|Red |tx|\| "This doesn't count as a task" \| Action = task. Check for skills. \|
-M|Red |tx|\| "The skill is overkill" \| Simple things become complex. Use it. \|
-M|Red |tx|\| "I'll just do this one thing first" \| Check BEFORE doing anything. \|
-M|Red |tx|\| "This feels productive" \| Undisciplined action wastes time. Skills prevent this. \|
-M|Red |tx|\| "I know what that means" \| Knowing the concept ≠ using the skill. Invoke it. \|
-M|Skil|When|
-M|Skil|tx|1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-M|Skil|tx|2. **Implementation skills second** (frontend-ds, mcp-builder) - these guide execution
-M|Skil|tx|"Let's bd X" → brainstorming first, then implementation skills.
-M|Skil|tx|"Fix this bug" → debugging first, then domain-specific skills.
-M|Skil|**Ri|Follow exactly. Don't adapt away discipline.
-M|Skil|**Fl|Adapt principles to context.
-M|Skil|tx|The skill itself tells you which.
-M|User|tx|Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+SRC agent-department/Technical/dev/skills/superpowers/using-superpowers/SKILL.md
+ORIG_SIZE 5575
+SECTIONS 34
+ABBREVS 14
+INDEX_TERMS 242
+COMPILED 2026-06-13T19:23:25.364Z
+---
+NAME using-superpowers
+<SUBAGENT-STOP If you were dispatched as a subagent to execute a specific task, skip this skill. </SUBAGENT-STOP 
+<EXTREMELY-IMPORTANT If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill. 
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT. 
+TI not negotiable. TI not optional. You cannot rationalize your way out of this. </EXTREMELY-IMPORTANT 
+INSTRUCTION PRIORITY
+Superpowers skills override default system prompt behavior, but user instructions always take precedence: 
+User's explicit instructions (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority Superpowers skills — override default system behavior where they conflict Default system prompt — lowest priority 
+If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control. 
+HT ACCESS SKILLS
+In Claude Code: UT Skill tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. NU the Read tool on skill files. 
+In Copilot CLI: UT skill tool. Skills are auto-discovered from installed plugins. The skill tool works the same as Claude Code's Skill tool. 
+In Gemini CLI: Skills activate via the activate_skill tool. Gemini loads skill metadata at SS and activates the full content on demand. 
+In other environments: Check your platform's documentation for how skills are loaded. 
+PLATFORM ADAPTATION
+Skills use Claude Code tool names. Non-CC platforms: see references/copilot-tools.md (Copilot CLI), references/codex-tools.md (Codex) for tool equivalents. Gemini CLI users get the tool mapping loaded automatically via GEMINI.md. 
+USING SKILLS
+THE RULE
+Invoke relevant or requested skills BEFORE any response or action. Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it. 
+CODE dot 1375CHARS
+RED FLAGS
+These thoughts mean STOP—you're rationalizing: 
+Thought Reality "TI just a simple question" Questions are tasks. CF skills. "I need more context first" Skill check comes BEFORE clarifying questions. "Let me explore the codebase first" Skills tell you HT explore. Check first. "I can check git/files quickly" Files lack conversation context. CF skills. "Let me gather information first" Skills tell you HT gather information. "This doesn't need a formal skill" If a skill exists, use it. "I remember this skill" Skills evolve. Read current version. "This doesn't count as a task" Action = task. CF skills. "The skill is overkill" Simple things become complex. Use it. "I'll just do this one thing first" Check BEFORE doing anything. "This feels productive" Undisciplined action wastes time. Skills prevent this. "I know what that means" Knowing the concept ≠ using the skill. Invoke it. 
+SKILL PRIORITY
+When multiple skills could apply, use this order: 
+Process skills first (brainstorming, debugging) - these determine HT approach the task Implementation skills second (frontend-design, mcp-builder) - these guide execution 
+"Let's build X" → brainstorming first, then implementation skills. "Fix this bug" → debugging first, then domain-specific skills. 
+SKILL TYPES
+Rigid (TDD, debugging): Follow exactly. Don't adapt away discipline. 
+Flexible (patterns): Adapt principles to context. 
+The skill itself tells you which. 
+USER INSTRUCTIONS
+Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows. 

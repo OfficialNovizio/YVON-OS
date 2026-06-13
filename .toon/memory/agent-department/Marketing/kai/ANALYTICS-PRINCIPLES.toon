@@ -1,82 +1,50 @@
-#MEM id=kai source=/root/yvon/agent-department/Marketing/kai/ANALYTICS-PRINCIPLES.md savings=2%
-M|ANAL|> Lo|producing any data al, writing the ce brief data section, diagnosing a metric anomaly, or establishing baselines.
-M|ANAL|tx|---
-M|Cont|Befo|
-M|Cont|tx|1. Active vt (nz or hb)
-M|Cont|tx|2. `last_data_pull_date` from memory — if > 14 days ago, flag data may be stale
-M|Cont|tx|3. `baseline_*` keys from memory — what are we comparing against?
-M|Cont|tx|4. `tracked_anomalies` from memory — are there known issues to account for?
-M|Cont|tx|If data is stale, flag it before producing al. Never present stale data as current.
-M|Cont|tx|---
-M|Soci|tx|\| Metric \| Definition \| Measured By \|
-M|Soci|tx|\|--------\|-----------\|------------\|
-M|Soci|tx|\| Followers \| Total follower count at time of pull \| `/ap/instagram`, `/ap/youtube`, `/ap/linkedin` \|
-M|Soci|tx|\| Follower growth (%) \| (current - baseline) / baseline × 100 \| ka calculates from memory baseline \|
-M|Soci|tx|\| Engagement rate (IG) \| (likes + comments + saves) / reach × 100 \| Use **reach**, not followers as denominator \|
-M|Soci|tx|\| Views (YT) \| Total views in period \| `/ap/youtube` \|
-M|Soci|tx|\| Subscriber growth (%) \| Same formula as follower growth \| ka calculates \|
-M|Web |tx|\| Metric \| Definition \|
-M|Web |tx|\|--------\|-----------\|
-M|Web |tx|\| sn \| Unique visit sn in period \|
-M|Web |tx|\| Bounce rate \| sn where us left w/o interaction \|
-M|Web |tx|\| Top pages \| Pages w/ highest sn count \|
-M|Web |tx|\| Traffic sources \| Direct / organic / sl / paid breakdown \|
-M|Web |tx|\| New us % \| sn from first-time visitors \|
-M|Web |tx|---
-M|Anom|tx|An anomaly is a metric change > 20% in either direction within a single week.
-M|Anom|When|
-M|Anom|tx|1. **Confirm it's real** — check if the data pull was clean (no ap er, no caching issue)
-M|Anom|tx|2. **Time it** — when exactly did the spike/drop occur?
-M|Anom|tx|3. **Hypothesize** — what happened on that date? (Viral post? Algorithm change? cg start?)
-M|Anom|4. *|Good anomaly (viral, cg sc) / Bad anomaly (bot followers, algorithm penalty) / Unexplained
-M|Anom|5. *|mc + Alex if sig (> 20%); dn for ops context
-M|Anom|tx|6. **Track it** — add to `tracked_anomalies` in memory; resolve when explained
-M|Anom|tx|---
-M|Tren|tx|A tn is meaningful when it persists for 3+ consecutive data pulls.
-M|Tren|Kai'|
-M|Tren|tx|1. **Direction** — up / down / flat
-M|Tren|tx|2. **Rate** — percentage change per period
-M|Tren|tx|3. **Duration** — how many periods has this been true?
-M|Tren|tx|4. **Comparison** — above or below industry benchmark?
-M|Tren|tx|5. **Interpretation** — what does this mean in plain language?
-M|Tren|Exam|"IG followers up 2.1% week-over-week for 4 consecutive weeks. Above fashion benchmark (1.5% WoW). Likely driven by Reel series that started on March 1."
-M|Tren|tx|---
-M|CEO |Kai'|
-M|CEO |tx|```
-M|CEO |tx|📊 DATA SNAPSHOT — [vt] — [Date]
-M|CEO |tx|sl
-M|CEO |• IG|[followers] ([+/-X%] WoW) \| ER: [X%]
-M|CEO |• YT|[subscribers] ([+/-X%] WoW) \| Views: [X]
-M|CEO |• LI|[followers] ([+/-X%] WoW)
-M|CEO |tx|WEB
-M|CEO |sn|[X] ([+/-X%] vs last month)
-M|CEO |• Bo|[X%]
-M|CEO |• To|[page name] ([X] sn)
-M|CEO |tx|NOTABLE
-M|CEO |it|[One key tn or anomaly, 1 sentence]
-M|CEO |it|[One platform comparison or concern, 1 sentence]
-M|CEO |tx|```
-M|CEO |tx|Max 10 lines. No al in this section — just facts. mc adds the interpretation.
-M|CEO |tx|---
-M|Plat|tx|\| Platform \| Metric \| Industry Benchmark \|
-M|Plat|tx|\|----------\|--------\|--------------------\|
-M|Plat|tx|\| Instagram (Fashion) \| Engagement rate \| 1.5–3.0% \|
-M|Plat|tx|\| Instagram (Fintech) \| Engagement rate \| 1.0–2.0% \|
-M|Plat|tx|\| YouTube \| Avg view duration \| > 40% of vd length \|
-M|Plat|tx|\| LinkedIn \| Post engagement rate \| 1–5% \|
-M|Plat|tx|\| Website (SaaS) \| Bounce rate \| < 55% \|
-M|Plat|tx|\| Website (E-commerce) \| Bounce rate \| < 45% \|
-M|Plat|tx|Flag to mc/Alex when yv is below benchmark for 2+ consecutive periods.
-M|Plat|tx|---
-M|Anal|- Ev|noun + verb (e.g., `button_clicked`, `form_submitted`). Consistent across vt.
-M|Anal|it|GA4 custom dimensions per vt. UTM all external links — no untagged traffic.
-M|Anal|- **|tracking events w/o a decision attached — only instrument what will inform a choice.
-M|A/B |it|One variable per tst. Define the sc metric before the tst starts — no post-hoc interpretation.
-M|A/B |it|Minimum 2-week run or 500 conversions per variant — whichever comes first.
-M|A/B |- **|stopping a tst early when results look promising — significance requires the full window.
-M|SaaS|- Tr|MRR, ARR, MoM growth rate, NRR, churn rate, expansion MRR, contraction MRR.
-M|SaaS|it|Cohort-based retention is more actionable than aggregate churn.
-M|SaaS|- **|reporting MRR growth w/o separating new, expansion, contraction, and churn cp.
-M|Busi|- Ru|growth, retention, margin, cash.
-M|Busi|it|Flag any metric 20%+ below benchmark immediately — not at the end of the sn.
-M|Busi|- **|presenting data w/o period-over-period context or benchmark comparison.
+SRC agent-department/Marketing/kai/ANALYTICS-PRINCIPLES.md
+ORIG_SIZE 5120
+SECTIONS 43
+ABBREVS 4
+INDEX_TERMS 298
+COMPILED 2026-06-13T19:23:25.025Z
+---
+ANALYTICS-PRINCIPLES.MD — KAI, LEAD ANALYST
+Load this file only when: producing any data analysis, writing the CEO brief data section, diagnosing a metric anomaly, or establishing baselines. 
+--- 
+CONTEXT GATHERING PROTOCOL
+Before any analysis output, confirm: 
+Active venture (NO Hourbour) last_data_pull_date from memory — if 14 days ago, flag data may be stale baseline_* keys from memory — what are we comparing against? tracked_anomalies from memory — are there known issues to account for? 
+If data is stale, flag it before producing analysis. Never present stale data as current. 
+--- 
+METRIC DEFINITIONS
+SOCIAL METRICS
+Metric Definition Measured By Followers Total follower count at time of pull `/api/instagram`, `/api/youtube`, `/api/linkedin` Follower growth (%) (current - baseline) / baseline × 100 Kai calculates from memory baseline Engagement rate (IG) (likes + comments + saves) / reach × 100 Use **reach**, not followers as denominator Views (YT) Total views in period `/api/youtube` Subscriber growth (%) Same formula as follower growth Kai calculates 
+WEB ANALYTICS (GA4)
+Metric Definition Sessions Unique visit sessions in period Bounce rate Sessions where user left without interaction Top pages Pages with highest session count Traffic sources Direct / organic / social / paid breakdown New users % Sessions from first-time visitors 
+--- 
+ANOMALY DETECTION PROTOCOL
+An anomaly is a metric change 20% in either direction within a single week. 
+When an anomaly is detected: 
+Confirm it's real — check if the data pull was clean (no API error, no caching issue) Time it — when exactly did the spike/drop occur? Hypothesize — what happened on that date? (Viral post? Algorithm change? Campaign start?) Classify: Good anomaly (viral, campaign success) / Bad anomaly (bot followers, algorithm penalty) / Unexplained Flag to: Marcus + Alex if significant (20%); Diana for ops context Track it — add to tracked_anomalies in memory; resolve when explained 
+--- 
+TREND ANALYSIS FRAMEWORK
+A trend is meaningful when it persists for 3+ consecutive data pulls. 
+Kai's trend analysis always includes: 
+Direction — up / down / flat Rate — percentage change per period Duration — how many periods has this been true? Comparison — above or below industry benchmark? Interpretation — what does this mean in plain language? 
+EXAMPLE "IG followers up 2.1% week-over-week for 4 consecutive weeks. Above fashion benchmark (1.5% WoW). Likely driven by Reel series that started on March 1."
+--- 
+CEO BRIEFING DATA FORMAT
+Kai's data section in Marcus's morning brief follows this exact structure: 
+CODE  373CHARS
+Max 10 lines. No analysis in this section — just facts. Marcus adds the interpretation. 
+--- 
+PLATFORM BENCHMARKS (REFERENCE)
+Platform Metric Industry Benchmark Instagram (Fashion) Engagement rate 1.5–3.0% Instagram (Fintech) Engagement rate 1.0–2.0% YouTube Avg view duration > 40% of video length LinkedIP engagement rate 1–5% Website (SaaS) Bounce rate < 55% Website (E-commerce) Bounce rate < 45% 
+Flag to Marcus/Alex when YVON is below benchmark for 2+ consecutive periods. 
+--- 
+SKILLS REFERENCE
+ANALYTICS TRACKING
+EVENT_NAMING noun + verb (e.g., `button_clicked`, `form_submitted`). Consistent across ventures.
+A/B TEST SETUP
+One variable per test. Define the success metric before TT starts — no post-hoc interpretation. Minimum 2-week run or 500 conversions per variant — whichever comes first. Avoid: stopping a test early when results look promising — significance requires the full window. 
+SAAS REVENUE GROWTH METRICS
+TRACK MRR, ARR, MoM growth rate, NRR, CR, expansion MRR, contraction MRR.
+BUSINESS HEALTH DIAGNOSTIC
+Run all 4 quadrants: growth, retention, margin, cash. Flag any metric 20%+ below benchmark immediately — not at the end of the session. Avoid: presenting data without period-over-period context or benchmark comparison. 

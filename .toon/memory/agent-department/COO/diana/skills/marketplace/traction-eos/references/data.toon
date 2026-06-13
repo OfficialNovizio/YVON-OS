@@ -1,163 +1,85 @@
-#MEM id=references source=/root/yvon/agent-department/COO/diana/skills/marketplace/traction-eos/references/data.md savings=1%
-M|Data|tx|The Data cp replaces gut-feeling management w/ objective, weekly numbers. When everyone in the leadership team looks at the same 5-15 metrics every week, problems surface weeks earlier, accountability becomes automatic, and decision-making improves dramatically. This guide covers how to ds a Scorecard, choose the right metrics, avoid common mistakes, and connect data to your Level 10 meetings.
-M|The |tx|A Scorecard is a one-page document that tracks 5-15 activity-based numbers weekly. It is reviewed in every Level 10 meeting. If a number is off track, it drops to the Issues List for IDS.
-M|Scor|tx|1. **Weekly cadence.** Monthly financials are too slow. By the time you see a monthly miss, you have lost four weeks of correction time. Weekly numbers give you early wn.
-M|Scor|tx|2. **Activity-based metrics.** Measure what people do (calls made, demos given), not just what happened (rv, churn). Activities are leading indicators you can influence. Results are lagging indicators you can only observe.
-M|Scor|tx|3. **5-15 numbers.** Fewer than 5 means blind spots. More than 15 means noise. Most companies land on 8-12.
-M|Scor|tx|4. **Every number has an owner.** One person is accountable for each metric. Not a department. A name.
-M|Scor|tx|5. **Every number has a goal.** A number w/o a goal is just a data point. The goal creates the standard for red/green tracking.
-M|The |Ask |"If I went on vacation for four weeks w/ no phone or em, what 5-15 numbers wld I want to see when I got back to know exactly how the business performed?"
-M|The |tx|This question forces you to identify the vital few numbers that genuinely indicate business health.
-M|Metr|tx|\| Category \| What to Measure \| Example Metrics \|
-M|Metr|tx|\|----------\|----------------\|-----------------\|
-M|Metr|tx|\| **rv** \| Money coming in \| Weekly rv, new deal value, average deal size \|
-M|Metr|tx|\| **Pipeline** \| Future rv \| New leads generated, qualified opportunities, proposals sent \|
-M|Metr|tx|\| **Sales Activity** \| Effort going in \| Calls made, demos done, meetings booked \|
-M|Metr|tx|\| **cs Health** \| Retention and satisfaction \| Churn rate, NPS, support tickets resolved, renewal rate \|
-M|Metr|tx|\| **Operations** \| Delivery qual \| On-time delivery %, defect rate, utilization rate \|
-M|Metr|tx|\| **Financial** \| Cash and profitability \| Cash balance, AR over 60 days, gross margin \|
-M|Metr|tx|\| **People** \| Team health \| Open positions, employee satisfaction score, training hours \|
-M|Lead|tx|Understanding the difference btw leading and lagging indicators is ct to building an effective Scorecard.
-M|Lead|tx|\| tp \| Definition \| rp Time \| Examples \|
-M|Lead|tx|\|------\|-----------\|--------------\|---------\|
-M|Lead|tx|\| **Leading** \| Measures input activities that drive future results \| Can be corrected this week \| Calls made, proposals sent, cn published \|
-M|Lead|tx|\| **Lagging** \| Measures output results that have already occurred \| Can only be observed, not changed retroactively \| rv, churn, profit margin \|
-M|Lead|tx|**The ideal Scorecard is 70% leading indicators and 30% lagging indicators.** Leading indicators let you course-correct before lagging indicators go red.
-M|Buil|Grea|
-M|Buil|tx|```
-M|Buil|tx|Outbound emails (leading)
-M|Buil|tx|→ Meetings booked (leading)
-M|Buil|tx|→ Demos given (leading)
-M|Buil|tx|→ Proposals sent (leading)
-M|Buil|tx|→ Deals closed (lagging)
-M|Buil|tx|→ rv (lagging)
-M|Buil|tx|```
-M|Buil|tx|When rv drops, you can trace back through the chain to find where the breakdown occurred. Was it fewer emails? Lower meeting conversion? Longer sales cycles? The Scorecard tells you.
-M|The |Each|
-M|The |it|Reports the number weekly in the Level 10 meeting
-M|The |it|Explains when the number is off track
-M|The |it|Owns the plan to get it back on track
-M|The |it|Drops it to the Issues List when help is needed
-M|The |tx|**Ownership does not mean they do all the work.** The VP of Sales owns the "demos done" metric even though individual reps give the demos. Ownership means accountability for the result.
-M|Assi|tx|\| Metric \| Owner \| Why \|
-M|Assi|tx|\|--------\|-------\|-----\|
-M|Assi|tx|\| Weekly rv \| Head of Sales \| Directly manages the rv-generating team \|
-M|Assi|tx|\| New leads \| Head of mk \| Responsible for lead generation st \|
-M|Assi|tx|\| On-time delivery \| Head of Operations \| Manages delivery team and processes \|
-M|Assi|tx|\| Cash balance \| Head of fi \| Manages cash flow and collections \|
-M|Assi|tx|\| Employee satisfaction \| Head of People/Integrator \| Responsible for culture and retention \|
-M|Sett|Goal|
-M|Sett|- **|** What have you averaged over the past 13 weeks?
-M|Sett|- **|** What does the 1-Year Plan require?
-M|Sett|- **|** What is realistically achievable w/ current resources?
-M|Goal|tx|\| Metric \| 13-Week Average \| 1-Year Plan Requires \| Goal \|
-M|Goal|tx|\|--------\|----------------\|---------------------\|------\|
-M|Goal|tx|\| Weekly rv \| $42K \| $60K/week by Q4 \| $45K (Q1), $50K (Q2), $55K (Q3), $60K (Q4) \|
-M|Goal|tx|\| New leads \| 80 \| 120/week \| 90 (Q1), 100 (Q2), 110 (Q3), 120 (Q4) \|
-M|Goal|tx|\| Demos done \| 15 \| 25/week \| 18 (Q1), 20 (Q2), 22 (Q3), 25 (Q4) \|
-M|Goal|tx|Goals can be updated quarterly during the Quarterly sn. Do not change them mid-quarter unless the business md fundamentally changes.
-M|How |Each|
-M|How |- **|** Number meets or exceeds the goal
-M|How |- **|** Number misses the goal
-M|How |When|
-M|How |1. *|** The issue is understood and a correction is underway
-M|How |2. *|** The issue needs the team's input to solve
-M|Trac|tx|\| Metric \| Owner \| Goal \| W1 \| W2 \| W3 \| W4 \| W5 \| W6 \| W7 \| W8 \| W9 \| W10 \| W11 \| W12 \| W13 \|
-M|Trac|tx|\|--------\|-------\|------\|----\|----\|----\|----\|----\|----\|----\|----\|----\|----\|-----\|-----\|-----\|
-M|Trac|tx|\| rv \| Pat \| $50K \| G \| G \| R \| G \| G \| G \| R \| G \| G \| G \| G \| G \| G \|
-M|Trac|tx|\| Leads \| Alex \| 100 \| G \| R \| R \| G \| G \| G \| G \| G \| G \| R \| G \| G \| G \|
-M|Trac|tx|\| Demos \| Jordan \| 20 \| G \| G \| G \| G \| R \| G \| G \| G \| G \| G \| G \| R \| G \|
-M|Trac|tx|**The 13-week trailing view** is essential. It shows tn, not just snapshots. Three consecutive red weeks on the same metric is a systemic issue that must be IDS'd.
-M|Sale|tx|\| Metric \| Owner \| Goal \| Frequency \|
-M|Sale|tx|\|--------\|-------\|------\|-----------\|
-M|Sale|tx|\| New qualified leads \| SDR Manager \| 50/week \| Weekly \|
-M|Sale|tx|\| Discovery calls done \| Sales Manager \| 25/week \| Weekly \|
-M|Sale|tx|\| Proposals sent \| Sales Manager \| 10/week \| Weekly \|
-M|Sale|tx|\| Deals closed \| Sales Manager \| 5/week \| Weekly \|
-M|Sale|tx|\| New rv booked \| VP Sales \| $75K/week \| Weekly \|
-M|Sale|tx|\| Pipeline value \| VP Sales \| $500K+ \| Weekly \|
-M|Sale|tx|\| Win rate \| VP Sales \| >25% \| Weekly \|
-M|Mark|tx|\| Metric \| Owner \| Goal \| Frequency \|
-M|Mark|tx|\|--------\|-------\|------\|-----------\|
-M|Mark|tx|\| Website visitors \| mk Manager \| 5,000/week \| Weekly \|
-M|Mark|tx|\| cn pieces published \| cn Lead \| 3/week \| Weekly \|
-M|Mark|tx|\| MQLs generated \| Demand Gen Lead \| 100/week \| Weekly \|
-M|Mark|tx|\| em open rate \| em Manager \| >25% \| Weekly \|
-M|Mark|tx|\| sl engagement \| sl Lead \| 500 interactions/week \| Weekly \|
-M|Mark|tx|\| Cost per lead \| VP mk \| <$50 \| Weekly \|
-M|Oper|tx|\| Metric \| Owner \| Goal \| Frequency \|
-M|Oper|tx|\|--------\|-------\|------\|-----------\|
-M|Oper|tx|\| Projects delivered on time \| Project Manager \| >90% \| Weekly \|
-M|Oper|tx|\| cs satisfaction (CSAT) \| Support Lead \| >4.5/5 \| Weekly \|
-M|Oper|tx|\| Support tickets resolved \| Support Lead \| <24hr avg \| Weekly \|
-M|Oper|tx|\| Utilization rate \| Operations Manager \| 75-85% \| Weekly \|
-M|Oper|tx|\| qual issues \| QA Lead \| <3/week \| Weekly \|
-M|Oper|tx|\| Capacity available \| Operations Manager \| >15% buffer \| Weekly \|
-M|Fina|tx|\| Metric \| Owner \| Goal \| Frequency \|
-M|Fina|tx|\|--------\|-------\|------\|-----------\|
-M|Fina|tx|\| Cash balance \| Controller \| >$300K \| Weekly \|
-M|Fina|tx|\| AR over 60 days \| AR Manager \| <$50K \| Weekly \|
-M|Fina|tx|\| Weekly cash burn \| CFO \| <$40K \| Weekly \|
-M|Fina|tx|\| Invoices sent within 48hr \| AR Manager \| 100% \| Weekly \|
-M|Fina|tx|\| Payroll accuracy \| Payroll Lead \| 100% \| Weekly \|
-M|Comm|tx|\| Mistake \| Why It Hurts \| Fix \|
-M|Comm|tx|\|---------\|-------------\|-----\|
-M|Comm|tx|\| **Too many metrics (>15)** \| Information overload, no focus \| Cut to the vital few that indicate health \|
-M|Comm|| **|activities and inputs \|
-M|Comm|tx|\| **No owner assigned** \| "Someone will handle it" means nobody does \| One name per metric, no exceptions \|
-M|Comm|tx|\| **Goals too easy** \| Scorecard is always green, masks problems \| Set goals that require effort but are achievable \|
-M|Comm|tx|\| **Goals too hard** \| Scorecard is always red, creates learned helplessness \| Base goals on 13-week average plus realistic stretch \|
-M|Comm|tx|\| **Not reviewed weekly** \| Data goes stale, accountability disappears \| Scorecard is agenda item #2 in every Level 10 meeting \|
-M|Comm|tx|\| **Monthly instead of weekly** \| Lose 4 weeks of correction time \| Convert monthly metrics to weekly proxies \|
-M|Comm|tx|\| **Vanity metrics** \| Numbers that look good but do not drive the business \| Replace w/ metrics tied to rv or cs outcomes \|
-M|Comm|tx|\| **No trending view** \| See this week but miss the pattern \| Always show 13 trailing weeks \|
-M|Comm|tx|\| **Changing metrics too often** \| No baseline for comparison \| Lock metrics for at least one full quarter \|
-M|When|**Ac|
-M|When|it|You need early wn signals
-M|When|it|You want to influence behavior
-M|When|it|The sales cycle is long (weeks or months)
-M|When|it|You are building new processes
-M|When|**Re|
-M|When|it|You need to confirm the activities are producing outcomes
-M|When|it|You are reporting to a board or investors
-M|When|it|The metric is a business health vital sign (cash, churn, rv)
-M|Bala|tx|```
-M|Bala|tx|LEADING (Activities)          LAGGING (Results)
-M|Bala|tx|├── Calls made                ├── rv
-M|Bala|tx|├── Demos given               ├── Profit margin
-M|Bala|tx|├── Proposals sent            ├── cs churn
-M|Bala|tx|├── cn published         ├── NPS score
-M|Bala|tx|├── Candidates interviewed    └── Cash balance
-M|Bala|tx|└── Tickets resolved
-M|Bala|tx|```
-M|Bala|tx|A healthy Scorecard has both tp in roughly a 70/30 split favoring leading indicators.
-M|How |The |
-M|Scor|tx|1. **Display the Scorecard** so all attendees can see it (projector, shared screen, or printed)
-M|Scor|tx|2. **Go metric by metric.** The owner reads the number and states "on track" or "off track."
-M|Scor|tx|3. **No discussion during rv.** If a number is off track, the owner simply states the number and says "dropping to Issues List."
-M|Scor|4. *|5 minutes.** This is a quick scan, not a deep dive. Deep dives happen during IDS.
-M|Scor|tx|5. **Pattern recognition.** If the same metric is red three weeks in a row, it is automatically the top issue for IDS.
-M|From|When|
-M|From|tx|```
-M|From|tx|Scorecard rv → Metric is red → Owner drops to Issues List
-M|From|tx|→ During IDS, team identifies root cause
-M|From|tx|→ Action items assigned (who, what, by when)
-M|From|→ Ne|check if action item is complete
-M|From|tx|→ Check if metric returned to green
-M|From|tx|```
-M|From|tx|This weekly cycle ensures no problem goes unaddressed for more than one week. The Scorecard is the early wn sy. The Level 10 meeting is the rp mechanism.
-M|Week|it|[ ] Brainstorm 20-30 possible metrics w/ the leadership team
-M|Week|it|[ ] Apply the vacation tst to narrow to 5-15
-M|Week|it|[ ] Assign one owner per metric
-M|Week|it|[ ] Set goals based on 13-week historical average plus 10% stretch
-M|Week|it|[ ] cr a simple spreadsheet w/ 13 trailing weeks
-M|Week|it|[ ] Commit to reviewing it in the nx Level 10 meeting
-M|Week|it|[ ] Remove metrics that are always green (too easy or not meaningful)
-M|Week|it|[ ] Replace metrics that nobody understands
-M|Week|it|[ ] Adjust goals that were set too hi or too lo
-M|Week|it|[ ] Ensure every department has at least one metric on the Scorecard
-M|Mont|it|[ ] Everyone can recite the Scorecard metrics from memory
-M|Mont|it|[ ] The team looks forward to Scorecard rv (it creates clarity)
-M|Mont|it|[ ] Off-track metrics are solved quickly through IDS
-M|Mont|it|[ ] New hires are shown the Scorecard in their first week
-M|Mont|it|[ ] Department-level scorecards cascade from the company Scorecard
+SRC agent-department/COO/diana/skills/marketplace/traction-eos/references/data.md
+ORIG_SIZE 12783
+SECTIONS 78
+ABBREVS 20
+INDEX_TERMS 602
+COMPILED 2026-06-13T19:23:24.907Z
+---
+DATA COMPONENT: SCORECARDS AND METRICS
+The Data Component replaces gut-feeling management with objective, weekly numbers. When everyone in the leadership team looks at the same 5-15 metrics every week, problems surface weeks earlier, accountability becomes automatic, and decision-making improves dramatically. This guide covers HT design a Scorecard, choose the right metrics, avoid common mistakes, and connect data to your Level 10 meetings. 
+THE WEEKLY SCORECARD
+A Scorecard is a one-page document that tracks 5-15 activity-based numbers weekly. It is reviewed in every Level 10 meeting. If a number is off track, it drops to the Issues List for IDS. 
+SCORECARD DESIGN PRINCIPLES
+Weekly cadence. Monthly financials are too slow. By the time you see a monthly miss, you have lost four weeks of correction time. Weekly numbers give you early warning. Activity-based metrics. Measure what people do (calls made, demos given), not just what happened (revenue, churn). Activities are leading indicators you can influence. Results are lagging indicators you can only observe. 5-15 numbers. Fewer than 5 means blind spots. More than 15 means noise. Most companies land on 8-12. Every number has an owner. One person is accountable for each metric. Not a department. A name. Every number has a goal. A number without a goal is just a data point. The goal creates the standard for red/green tracking. 
+HT CHOOSE YOUR METRICS
+THE VACATION TEST
+ASK_YOURSELF "If I went on vacation for four weeks with no phone or email, what 5-15 numbers would I want to see when I got back to know exactly how the business performed?"
+This question forces you to identify the vital few numbers that genuinely indicate business health. 
+METRIC SELECTION BY CATEGORY
+Category What to Measure Example Metrics **Revenue** Money coming in Weekly revenue, new deal value, average deal size **Pipeline** Future revenue New leads generated, qualified opportunities, proposals sent **Sales Activity** Effort going in Calls made, demos completed, meetings booked **Customer Health** Retention and satisfaction CR, NPS, support tickets resolved, renewal rate **Operations** Delivery quality On-time delivery %, defect rate, utilization rate **Financial** Cash and profitability Cash balance, AR over 60 days, GM **People** Team health Open positions, employee satisfaction score, training hours 
+LEADING VS. LAGGING INDICATORS
+Understanding the difference between leading and lagging indicators is critical to building an effective Scorecard. 
+Type Definition Response Time Examples **Leading** Measures input activities that drive future results Can be corrected this week Calls made, proposals sent, content published **Lagging** Measures output results that have already occurred Can only be observed, not changed retroactively Revenue, churn, profit margin 
+The ideal Scorecard is 70% leading indicators and 30% lagging indicators. Leading indicators let you course-correct before lagging indicators go red. 
+BUILDING THE METRIC CHAIN
+Great Scorecards show the cause-and-effect chain from activity to result: 
+CODE  180CHARS
+When revenue drops, you can trace back through the chain to find where the breakdown occurred. Was it fewer emails? Lower meeting conversion? Longer sales cycles? The Scorecard tells you. 
+EVERY NUMBER HAS AN OWNER
+THE OWNERSHIP RULE
+Each metric on the Scorecard is assigned to one person. That person: 
+Reports the number weekly in the Level 10 meeting Explains when the number is off track Owns the plan to get it back on track Drops it to the Issues List when help is needed 
+Ownership does not mean they do all the work. The VP of Sales owns the "demos completed" metric even though individual reps give the demos. Ownership means accountability for the result. 
+ASSIGNING OWNERS
+Metric Owner Why Weekly revenue HO Sales Directly manages the revenue-generating team New leads HO Marketing Responsible for lead generation strategy On-time delivery HO Operations Manages delivery team and processes Cash balance HO Finance Manages cash flow and collections Employee satisfaction HO People/Integrator Responsible for culture and retention 
+EVERY NUMBER HAS A GOAL
+SETTING GOALS
+Goals should be based on: 
+Historical performance: What have you averaged over the past 13 weeks? Growth targets: What does the 1-Year Plan require? Capacity: What is realistically achievable with current resources? 
+GOAL-SETTING TEMPLATE
+Metric 13-Week Average 1-Year Plan Requires Goal Weekly revenue $42K $60K/week by Q4 $45K (Q1), $50K (Q2), $55K (Q3), $60K (Q4) New leads 80 120/week 90 (Q1), 100 (Q2), 110 (Q3), 120 (Q4) Demos completed 15 25/week 18 (Q1), 20 (Q2), 22 (Q3), 25 (Q4) 
+Goals can be updated quarterly during the Quarterly Session. Do not change them mid-quarter unless the BM fundamentally changes. 
+RED/GREEN TRACKING
+HIW
+Each week, every metric is marked as green (on track) or red (off track): 
+Green: Number meets or exceeds the goal Red: Number misses the goal 
+When a number is red, the owner has two options: 
+Explain and fix: The issue is understood and a correction is underway Drop to IDS: The issue needs the team's input to solve 
+TRACKING FORMAT
+Metric Owner Goal W1 W2 W3 W4 W5 W6 W7 W8 W9 W10 W11 W12 W13 Revenue Pat $50K G G R G G G R G G G G G G Leads Alex 100 G R R G G G G G G R G G G Demos Jordan 20 G G G G R G G G G G G R G 
+The 13-week trailing view is essential. It shows trends, not just snapshots. Three consecutive red weeks on the same metric is a systemic issue that must be IDS'd. 
+SCORECARD TEMPLATES BY DEPARTMENT
+SALES SCORECARD
+Metric Owner Goal Frequency New qualified leads SDR Manager 50/week Weekly Discovery calls completed Sales Manager 25/week Weekly Proposals sent Sales Manager 10/week Weekly Deals closed Sales Manager 5/week Weekly New revenue booked VP Sales $75K/week Weekly Pipeline value VP Sales $500K+ Weekly Win rate VP Sales >25% Weekly 
+MARKETING SCORECARD
+Metric Owner Goal Frequency Website visitors Marketing Manager 5,000/week Weekly Content pieces published Content Lead 3/week Weekly MQLs generated Demand Gen Lead 100/week Weekly Email open rate Email Manager >25% Weekly Social engagement Social Lead 500 interactions/week Weekly Cost per lead VP Marketing <$50 Weekly 
+OPERATIONS SCORECARD
+Metric Owner Goal Frequency Projects delivered on time Project Manager >90% Weekly Customer satisfaction (CSAT) Support Lead >4.5/5 Weekly Support tickets resolved Support Lead <24hr avg Weekly Utilization rate Operations Manager 75-85% Weekly Quality issues QA Lead <3/week Weekly Capacity available Operations Manager >15% buffer Weekly 
+FINANCE SCORECARD
+Metric Owner Goal Frequency Cash balance Controller >$300K Weekly AR over 60 days AR Manager <$50K Weekly Weekly cash burn CFO <$40K Weekly Invoices sent within 48hr AR Manager 100% Weekly Payroll accuracy Payroll Lead 100% Weekly 
+COMMON SCORECARD MISTAKES
+Mistake Why It Hurts Fix **Too many metrics (>15)** Information overload, no focus Cut to the vital few that indicate health **All lagging indicators** Cannot course-correct, only observe Add leading indicators: activities and inputs **No owner assigned** "Someone will handle it" means nobody does One name per metric, NE **Goals too easy** Scorecard is always green, masks problems Set goals that require effort but are achievable **Goals too hard** Scorecard is always red, creates learned helplessness Base goals on 13-week average plus realistic stretch **Not reviewed weekly** Data goes stale, accountability disappears Scorecard is agenda item #2 in every Level 10 meeting **Monthly IO weekly** Lose 4 weeks of correction time Convert monthly MT weekly proxies **Vanity metrics** Numbers that look good but do not drive the business Replace with metrics tied to revenue or customer outcomes **No trending view** See this week but miss the pattern Always show 13 trailing weeks **Changing MTo often** No baseline for comparison Lock metrics for at least one full quarter 
+ACTIVITY-BASED VS. RESULTS-BASED METRICS
+WTU EACH
+Activity-based metrics are best when: 
+You need early warning signals You want to influence behavior The sales cycle is long (weeks or months) You are building new processes 
+Results-based metrics are best when: 
+You need to confirm the activities are producing outcomes You are reporting to a board or investors The metric is a business health vital sign (cash, churn, revenue) 
+BALANCED SCORECARD EXAMPLE
+CODE  299CHARS
+A healthy Scorecard has both types in roughly a 70/30 split favoring leading indicators. 
+HOW THE SCORECARD CONNECTS TO LEVEL 10 MEETINGS
+The Scorecard is reviewed in the first 5 minutes of the Level 10 meeting, right after the Segue. Here IT protocol: 
+SCORECARD REVIEW PROTOCOL
+Display the Scorecard so all attendees can see it (projector, shared screen, or printed) Go metric by metric. The owner reads the number and states "on track" or "off track." No discussion during review. If a number is off track, the owner simply states the number and says "dropping to Issues List." Time limit: 5 minutes. TI a quick scan, not a deep dive. Deep dives happen during IDS. Pattern recognition. If the same metric is red three weeks in a row, it is automatically the top issue for IDS. 
+FROM SCORECARD TO IDS
+When a metric is off track, the flow is: 
+CODE  250CHARS
+This weekly cycle ensures no problem goes unaddressed for more than one week. The Scorecard IT early warning system. The Level 10 meeting IT response mechanism. 
+BUILDING YOUR FIRST SCORECARD
+WEEK 1 CHECKLIST
+[ ] Brainstorm 20-30 possible metrics with the leadership team [ ] Apply the vacation test to narrow to 5-15 [ ] Assign one owner per metric [ ] Set goals based on 13-week historical average plus 10% stretch [ ] Create a simple spreadsheet with 13 trailing weeks [ ] Commit to reviewing it in the next Level 10 meeting 
+WEEKS 2-4: REFINE
+[ ] Remove metrics that are always green (too easy or not meaningful) [ ] Replace metrics that nobody understands [ ] Adjust goals that were set too high or too low [ ] Ensure every department has at least one metric on the Scorecard 
+MONTH 2+: MATURE
+[ ] Everyone can recite the Scorecard metrics from memory [ ] The team looks forward to Scorecard review (it creates clarity) [ ] Off-track metrics are solved quickly through IDS [ ] New hires are shown the Scorecard in their first week [ ] Department-level scorecards cascade from the company Scorecard 

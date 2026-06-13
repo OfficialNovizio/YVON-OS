@@ -1,520 +1,195 @@
-#MEM id=milestone source=/root/yvon/agent-department/COO/diana/skills/marketplace/milestone/SKILL.md savings=15%
-M||tx|---
-M||name|milestone
-M||desc|Drive implementation forward incrementally w/ automatic progress tracking, LOC monitoring, and milestone checkpoint creation
-M||tx|---
-M|Mile|tx|This skill is a core cp for implementing large features incrementally, providing transparent context through LOC tracking, tst execution, and milestone checkpoint creation when the 800 LOC threshold is reached w/o completion.
-M|Skil|The |
-M|Skil|- **|Works in chunks of 100-200 LOC per iteration
-M|Skil|- **|Monitors total LOC count across the sn
-M|Skil|- **|Executes tests after each implementation chunk
-M|Skil|- **|Generates milestone documents at 800 LOC threshold
-M|Skil|- **|Returns sc when all tests pass
-M|Skil|tx|This skill is the core implementation driver used by `/issue-to-impl` and `/miles2miles` commands.
-M|Phil|- **|Small, testable chunks beat large rewrites
-M|Phil|it|Provide unobvious tc in and ds decisions you made during this chunk of implementation
-M|Phil|- **|Milestone documents provide clear progress visibility
-M|Phil|- **|Use lines of code (not time) to determine when to checkpoint
-M|Phil|- **|** You are allowed to have some tst failures at milestones, which particularly means you **are REQUIRED** to run a thorough tst suite after each chunk of implementation, and before creating a milestone.
-M|Phil|it|The milestone document will record the status of all the tests, inc passed and failed tests.
-M|Phil|it|**Example**
-M|Phil|- **|** 5/8 tests Passed
-M|Phil|- **|** 6/8 tests Passed
-M|Phil|- **|** Fix remaining 2 tests in nx milestone
-M|Phil|it|You shd dynamically adjust our plan w/ the whole plan and the current status of milestone.
-M|Phil|it|Did you incrementally finish some tests that were failing in the previous milestone?
-M|Phil|it|Did you find some new edge cases that require new tests to be written?
-M|Phil|it|Did you unexpectedly break some tst cases that were passing before? Is it related or unrelated to the current implementation plan?
-M|Phil|tx|---
-M|Inpu|The |
-M|Inpu|tx|1. **Current branch context**
-M|Inpu|- Br|`git branch --show-current`)
-M|Inpu|- Mu|`issue-{N}` or `issue-{N}-*` (wildcard for backward compatibility)
-M|Inpu|it|Issue number extracted from branch name
-M|Inpu|tx|2. **Plan reference**
-M|Inpu|- **|Read plan from GitHub issue using `gh issue view {N}`
-M|Inpu|- **|Read from latest milestone document in `.tmp/milestones/issue-{N}-milestone-*.md`
-M|Inpu|- Pl|implementation steps, file changes, LOC estimates, tst st
-M|Inpu|tx|3. **Starting LOC count** (optional, for resume scenarios)
-M|Inpu|it|When resuming from a milestone, start from the LOC count in that milestone
-M|Inpu|it|When starting fresh (first milestone), start from 0
-M|Inpu|tx|4. **Current tst status** (determined by running tests)
-M|Inpu|it|You do not need to pass all the tests before creating a milestone, but you **MUST** run the tests after each implementation chunk to determine current status.
-M|Inpu|- Yo|
-M|Inpu|it|tst passed as expected by this chunk of implementation
-M|Inpu|it|tst failed as expected by this chunk of implementation
-M|Inpu|it|tst unexpectedly broken by this chunk of implementation
-M|Inpu|it|What is planned to be worked on in the immediately nx milestone
-M|Inpu|tx|---
-M|LOC |tx|The AI ag **MUST** track LOC count accurately to determine when to cr milestones.
-M|How |Use |
-M|How |tx|```bash
-M|Get |tx|git diff --stat
-M|2 fi|tx|```
-M|LOC |Extr|
-M|LOC |- Pa|`X files changed, Y insertions(+), Z deletions(-)`
-M|LOC |it|**Total LOC = Y (insertions) + Z (deletions)**
-M|LOC |- Ex|`343 insertions(+), 25 deletions(-)` → **Total LOC = 368**
-M|Accu|ct|Track cumulative LOC across multiple implementation chunks:
-M|Accu|tx|```python
-M|Pseu|tx|cumulative_loc = starting_loc  # From milestone or 0
-M|Pseu|whil|
-M|Pseu|tx|implement_next_chunk()  # im 100-200 LOC
-M|Pseu|tx|current_chunk_loc = get_git_diff_stat()
-M|Pseu|tx|cumulative_loc += current_chunk_loc
-M|Pseu|tx|run_tests()
-M|Pseu|tx|test_status = parse_test_results()
-M|Chec|if c|
-M|Chec|tx|create_milestone(cumulative_loc, test_status)
-M|Chec|tx|stop_and_inform_user()
-M|Chec|tx|break
-M|Chec|if a|
-M|Chec|tx|signal_completion()
-M|Chec|tx|break
-M|Chec|tx|```
-M|Stop|- **|`cumulative_loc >= 800` AND tests are not all passing
-M|Stop|- **|`cumulative_loc < 800` OR all tests pass (nearing completion)
-M|Stop|- **|If very close to completion (> 750 LOC and > 90% tests pass), continue to finish
-M|Stop|tx|---
-M|Impl|The |
-M|1. R|**Fi|
-M|1. R|tx|```bash
-M|1. R|tx|gh issue view {issue-number} --json body --jq '.body'
-M|1. R|tx|```
-M|1. R|it|Extract "Proposed Solution" section (contains the plan)
-M|1. R|it|Identify implementation steps from the plan
-M|1. R|it|Note files to modify/cr w/ LOC estimates
-M|1. R|**Re|
-M|1. R|tx|```bash
-M|Find|tx|ls -1 .tmp/milestones/issue-{N}-milestone-*.md \| sort -V \| tail -n 1
-M|Find|tx|```
-M|Find|it|Read the latest milestone file
-M|Find|it|Extract "Work Remaining" section
-M|Find|it|Extract "nx File Changes" section
-M|Find|it|Extract "tst Status" to understand current state
-M|2. D|From|
-M|2. D|it|Identify the nx incomplete implementation step
-M|2. D|it|Determine which files need changes
-M|2. D|it|Understand what to im in the nx chunk
-M|2. D|it|Provide unobvious tc in and ds decisions you made for this chunk of implementation
-M|2. D|**Ch|Aim for 100-200 LOC per chunk
-M|2. D|it|If a step is > 200 LOC, break it into substeps
-M|2. D|it|im one substep per iteration
-M|3. I|Impl|
-M|3. I|tx|```
-M|3. I|ag|Implementing [description of what's being implemented]
-M|3. I|tx|[Uses Edit/Write tools to modify code]
-M|3. I|ag|Changes made:
-M|3. I|- pa|Added feature X logic (~120 LOC)
-M|3. I|- pa|Updated helper functions (~45 LOC)
-M|3. I|tx|```
-M|3. I|**Be|**
-M|3. I|it|Focus on one logical unit per chunk
-M|3. I|it|Write clean, readable code
-M|3. I|it|Follow existing code patterns and conventions
-M|3. I|it|Add comments where logic is not self-evident
-M|4. C|Afte|
-M|4. C|tx|```bash
-M|4. C|tx|git diff --stat
-M|4. C|tx|```
-M|4. C|Pars|
-M|4. C|tx|```
-M|4. C|ag|Chunk complete: ~165 LOC added
-M|4. C|ag|Cumulative LOC: 615 (starting from 450)
-M|4. C|tx|```
-M|5. R|Exec|
-M|5. R|tx|```bash
-M|If p|tx|make tst
-M|Or r|tx|bash tests/tst-feature.sh
-M|Or r|tx|bash tests/tst-all.sh
-M|Or r|tx|```
-M|Or r|**Ca|
-M|Or r|tx|```
-M|Or r|ag|Running tests...
-M|Or r|tx|[tst output]
-M|Or r|ag|tst results: 5/8 tests passed
-M|Or r|tx|```
-M|6. P|Extr|
-M|6. P|**Pa|
-M|6. P|it|`✓` symbol
-M|6. P|it|"passed" keyword
-M|6. P|it|"OK" status
-M|6. P|it|Exit code 0 for individual tests
-M|6. P|**Fa|
-M|6. P|it|`✗` symbol
-M|6. P|it|"failed" keyword
-M|6. P|it|"er" or "FAILED" status
-M|6. P|it|Exit code non-zero
-M|6. P|**Ex|**
-M|6. P|tx|```
-M|6. P|Test|
-M|6. P|✓ Te|Feature initialization
-M|6. P|✓ Te|Config loading
-M|6. P|✗ Te|Edge case handling
-M|6. P|✓ Te|er recovery
-M|6. P|✗ Te|Integration tst
-M|6. P|✓ Te|Cleanup
-M|6. P|Pars|
-M|6. P|Pass|Tests 1, 2, 4, 6 (4 tests)
-M|6. P|Fail|Tests 3, 5 (2 tests)
-M|6. P|Tota|6 tests
-M|6. P|Perc|67% (4/6)
-M|6. P|tx|```
-M|7. C|Afte|
-M|7. C|**Co|All tests pass**
-M|7. C|tx|```
-M|7. C|if t|
-M|7. C|tx|signal_completion()
-M|7. C|tx|return sc
-M|7. C|tx|```
-M|7. C|tx|→ Implementation is complete, ready for PR
-M|7. C|**Co|LOC threshold reached w/o completion**
-M|7. C|tx|```
-M|7. C|if c|
-M|7. C|tx|create_milestone()
-M|7. C|tx|inform_user_to_run_miles2miles()
-M|7. C|tx|return MILESTONE_CREATED
-M|7. C|tx|```
-M|7. C|tx|→ Checkpoint needed, stop for us intervention
-M|7. C|**Co|Continue implementation**
-M|7. C|tx|```
-M|7. C|if c|
-M|7. C|tx|continue_loop()  # Go back to step 2
-M|7. C|tx|```
-M|7. C|tx|→ Keep implementing nx chunk
-M|7. C|**Co|Near completion exception**
-M|7. C|tx|```
-M|7. C|if c|
-M|7. C|tx|continue_loop()  # Push to finish
-M|7. C|tx|```
-M|7. C|tx|→ Close enough to completion, don't cr milestone
-M|7. C|tx|---
-M|Mile|tx|When the stop threshold is reached (Condition B), cr a milestone document.
-M|Step|tx|```bash
-M|Coun|tx|ls -1 .tmp/milestones/issue-{N}-milestone-*.md 2>/dv/null \| wc -l
-M|Coun|tx|```
-M|Coun|tx|Milestone number = count + 1
-M|Step|From|
-M|Step|**Or|**
-M|Step|tx|```
-M|Step|Step|up doc (150 LOC) ✓ DONE
-M|Step|Step|cr tests (100 LOC) ✓ DONE
-M|Step|Step|im core logic (250 LOC) ← IN PROGRESS (partial)
-M|Step|Step|Add edge case handling (150 LOC) ← NOT STARTED
-M|Step|Step|Integration (100 LOC) ← NOT STARTED
-M|Step|tx|```
-M|Step|**Wo|**
-M|Step|tx|```markdown
-M|Work|- St|im core logic (Estimated: ~100 LOC remaining)
-M|Work|- Fi|src/core.py - Complete validation logic
-M|Work|- Fi|src/utils.py - Add helper methods
-M|Work|- St|Add edge case handling (Estimated: 150 LOC)
-M|Work|- Fi|src/core.py - Handle edge cases
-M|Work|- Fi|tests/test_edge_cases.sh - Verify edge case handling
-M|Work|- St|Integration (Estimated: 100 LOC)
-M|Work|- Fi|src/main.py - ig w/ existing sy
-M|Work|tx|```
-M|Step|Base|
-M|Step|tx|```markdown
-M|Next|- `s|Complete validation logic and add edge case handling (~180 LOC)
-M|Next|- `s|Add helper methods for validation (~45 LOC)
-M|Next|- `t|Verify edge case handling (~60 LOC)
-M|Next|**To|** ~285 LOC
-M|Next|tx|```
-M|Step|List|
-M|Step|tx|```markdown
-M|Test|**Pa|**
-M|Test|- te|All 6 tests passed
-M|Test|- te|All tests passed
-M|Test|- te|4/6 tests passed
-M|Test|- Te|Feature initialization
-M|Test|- Te|Config loading
-M|Test|- Te|er recovery
-M|Test|- Te|Cleanup
-M|Test|**No|**
-M|Test|- te|2/6 tests failing
-M|Test|- Te|Edge case handling (FAILED)
-M|Test|- Er|Validation logic incomplete
-M|Test|- Te|Integration tst (FAILED)
-M|Test|- Er|Integration code not yet implemented
-M|Test|tx|```
-M|Step|Crea|
-M|Step|tx|```markdown
-M|Mile|**Br|** issue-{N}
-M|Mile|**Cr|** {current-datetime}
-M|Mile|**LO|** ~{cumulative_loc} lines
-M|Mile|**Te|** {passed}/{total} tests passed
-M|Mile|tx|[Work Remaining section from Step 2]
-M|Mile|tx|[nx File Changes section from Step 3]
-M|Mile|tx|[tst Status section from Step 4]
-M|Mile|tx|```
-M|Mile|ct|Local-Only Checkpoint Files**
-M|Mile|Mile|
-M|Mile|- **|`git add .tmp/milestones/` is FORBIDDEN
-M|Mile|- **|`git add -f .tmp/milestones/*` is FORBIDDEN
-M|Mile|it|**DO NOT** commit these files under any circumstances
-M|Mile|it|These files are automatically excluded by `.gitignore` when using `git add .`
-M|Mile|**Wh|**
-M|Mile|tx|1. They are working notes for resuming implementation btw sn
-M|Mile|tx|2. They contain partial progress states not suitable for repository history
-M|Mile|tx|3. `.gitignore` already excludes them to prevent accidental staging
-M|Mile|tx|4. Only done implementation code/tests/doc shd be committed
-M|Mile|**Ve|** Before creating any commit, verify staged files:
-M|Mile|tx|```bash
-M|Mile|tx|git diff --cached --name-only
-M|Mile|tx|```
-M|Mile|If y|
-M|Mile|tx|```bash
-M|Mile|tx|git restore --staged .tmp/milestones/
-M|Mile|tx|```
-M|Step|Use |
-M|Step|**CR|**
-M|Step|Befo|
-M|Step|tx|```bash
-M|Stag|tx|git add .
-M|Veri|tx|git diff --cached --name-only
-M|Veri|tx|```
-M|Veri|**Re|**
-M|Veri|- **|Implementation code, tests, doc
-M|Veri|- **|`.tmp/milestones/issue-{N}-milestone-{M}.md` (local checkpoint only)
-M|Veri|- If|
-M|Veri|tx|```bash
-M|Veri|tx|git restore --staged .tmp/milestones/
-M|Veri|tx|```
-M|Veri|**In|**
-M|Veri|- Pu|milestone
-M|Veri|- St|all implementation changes (code, tests, doc)
-M|Veri|- EX|`.tmp/milestones/issue-{N}-milestone-{M}.md` (keep this local only)
-M|Veri|- Is|{N}
-M|Veri|- Te|"{passed}/{total} tests passed"
-M|Veri|The |
-M|Veri|it|cr commit message w/ `[milestone][tag]` prefix
-M|Veri|it|Include tst status in message
-M|Veri|it|Use `git commit --no-verify` to bypass pre-commit hooks
-M|Veri|it|Reference the issue number
-M|Veri|**Ex|**
-M|Veri|tx|```
-M|Veri|[mil|Milestone 2 for issue #42
-M|Veri|.cla|im LOC tracking and tst parsing logic
-M|Veri|docs|Add workflow doc
-M|Veri|Mile|820 LOC implemented, 5/8 tests passed.
-M|Veri|Test|edge case handling, integration tests.
-M|Veri|NOTE|Milestone document (.tmp/milestones/issue-42-milestone-2.md) is NOT committed - it remains local for resumption.
-M|Veri|tx|```
-M|Step|Disp|
-M|Step|tx|```
-M|Step|tx|Milestone {M} created at {cumulative_loc} LOC ({passed}/{total} tests passed).
-M|Step|Work|~{estimated_remaining_loc} LOC
-M|Step|tx|```
-M|Step|**Ne|**
-M|Step|To r|
-M|Step|tx|```
-M|Step|us|Resume from the latest milestone
-M|Step|us|Continue implementation
-M|Step|us|Continue from .tmp/milestones/issue-{N}-milestone-{M}.md
-M|Step|tx|```
-M|Step|tx|The sy will auto-detect the latest milestone on the current branch.
-M|Step|tx|---
-M|Comp|When|
-M|Comp|tx|```
-M|Comp|tx|All tests passed ({total}/{total})!
-M|Comp|Impl|
-M|Comp|- To|~{cumulative_loc}
-M|Comp|it|All {total} tests passing
-M|Comp|Next|
-M|Comp|1. C|
-M|Comp|- St|git add .
-M|Comp|it|cr commit w/ purpose=delivery (runs pre-commit hooks)
-M|Comp|it|All tests must pass for commit to succeed
-M|Comp|tx|2. rv and cr PR w/ /pull-request --open
-M|Comp|it|Or use /code-rv then /open-pr for manual workflow
-M|Comp|tx|```
-M|Comp|**CR|**
-M|Comp|When|
-M|Comp|1. *|**
-M|Comp|tx|```bash
-M|Comp|tx|git add .
-M|Comp|tx|git diff --cached --name-only  # Verify staged files
-M|Comp|tx|```
-M|Comp|2. *|**
-M|Comp|- Pu|`delivery` (NOT milestone)
-M|Comp|it|No `--no-verify` flag (normal pre-commit hooks run)
-M|Comp|it|All tests must pass for commit to succeed
-M|Comp|it|Commit message has NO `[milestone]` tag
-M|Comp|3. *|**
-M|Comp|it|Milestone commits = intermediate checkpoints w/ incomplete tests
-M|Comp|it|Delivery commits = done work w/ all tests passing
-M|Comp|it|Only delivery commits shd be merged to main branch
-M|Comp|**Ex|**
-M|Comp|tx|```
-M|Comp|[fea|Add ts support to bd sy
-M|Comp|src/|im ts compilation pipeline
-M|Comp|test|Add ts validation tests
-M|Comp|tx|All 8 tests passing. Ready for code rv.
-M|Comp|tx|```
-M|Comp|tx|---
-M|Not |tx|```bash
-M|Not |tx|git branch --show-current
-M|Not |tx|```
-M|Not |If b|
-M|Not |tx|```
-M|Not |er|Not on a dv branch.
-M|Not |Curr|{branch-name}
-M|Not |tx|You must be on a dv branch (issue-{N}) to use the milestone skill.
-M|Not |tx|Please run /issue-to-impl to start implementation on a proper dv branch.
-M|Not |tx|```
-M|Not |tx|Stop execution.
-M|No P|If u|
-M|No P|tx|```
-M|No P|er|No implementation plan found.
-M|No P|Chec|
-M|No P|- Gi|No "Proposed Solution" section
-M|No P|- Mi|No .tmp/milestones/issue-{N}-milestone-*.md found
-M|No P|Plea|
-M|No P|tx|1. The issue has a plan
-M|No P|tx|2. You're running /issue-to-impl to start implementation
-M|No P|tx|Cannot proceed w/o a plan.
-M|No P|tx|```
-M|No P|tx|Stop execution.
-M|Test|If t|
-M|Test|tx|```bash
-M|Test|tx|make tst
-M|Outp|tx|```
-M|Outp|Crea|
-M|Outp|tx|```markdown
-M|Test|**Cr|**
-M|Test|- Sy|45
-M|Test|- Im|md 'utils' not found
-M|Test|**Te|** Failed to run tests due to ct er.
-M|Test|**Ne|**
-M|Test|tx|1. Fix syntax er
-M|Test|tx|2. Resolve import issues
-M|Test|tx|3. Resume w/ /miles2miles
-M|Test|tx|```
-M|Test|Then|
-M|Test|tx|```
-M|Test|tx|ct er detected. Milestone {M} created w/ er notes.
-M|Test|er|
-M|Test|- Sy|45
-M|Test|- Im|md 'utils' not found
-M|Test|Plea|"Continue from the latest milestone"
-M|Test|tx|```
-M|Mile|If u|
-M|Mile|tx|```
-M|Mile|er|Failed to cr milestone file at .tmp/milestones/issue-{N}-milestone-{M}.md
-M|Mile|Poss|
-M|Mile|it|.tmp/milestones/ directory does not exist
-M|Mile|it|Permission issues
-M|Mile|tx|Please ensure .tmp/milestones/ directory exists and is writable.
-M|Mile|tx|```
-M|Mile|Try |
-M|Mile|tx|```bash
-M|Mile|tx|mkdir -p .milestones
-M|Mile|tx|```
-M|Mile|tx|Then retry creating the milestone file.
-M|Mile|tx|If still fails, stop and rp er to us.
-M|Mile|tx|---
-M|Exam|**Co|** us runs `/issue-to-impl 42` for a feature w/ 8 tst cases.
-M|Exam|**Ag|**
-M|Exam|tx|```
-M|Exam|ag|Starting implementation for issue #42...
-M|Exam|ag|Reading plan from issue...
-M|Exam|ag|Plan loaded: 5 implementation steps, estimated 950 LOC total
-M|Exam|ag|Step 1 complete: doc updated
-M|Exam|ag|Step 2 complete: tst cases created (8 tests)
-M|Exam|ag|Creating Milestone 1...
-M|Exam|ag|Milestone 1 created (0/8 tests passed)
-M|Exam|ag|Starting implementation loop...
-M|Exam|ag|Implementing Step 3: Core logic...
-M|Exam|[imp|~180 LOC]
-M|Exam|ag|Cumulative LOC: 180
-M|Exam|ag|Running tests... 2/8 tests passed
-M|Exam|ag|Implementing Step 3: Validation logic...
-M|Exam|[imp|~150 LOC]
-M|Exam|ag|Cumulative LOC: 330
-M|Exam|ag|Running tests... 3/8 tests passed
-M|Exam|ag|Implementing Step 4: Edge cases...
-M|Exam|[imp|~200 LOC]
-M|Exam|ag|Cumulative LOC: 530
-M|Exam|ag|Running tests... 5/8 tests passed
-M|Exam|ag|Implementing Step 4: er handling...
-M|Exam|[imp|~180 LOC]
-M|Exam|ag|Cumulative LOC: 710
-M|Exam|ag|Running tests... 6/8 tests passed
-M|Exam|ag|Implementing Step 5: Integration...
-M|Exam|[imp|~140 LOC]
-M|Exam|ag|Cumulative LOC: 850
-M|Exam|ag|Running tests... 6/8 tests passed
-M|Exam|ag|LOC threshold reached (850 >= 800), creating Milestone 2...
-M|Exam|tx|Milestone 2 created at 850 LOC (6/8 tests passed).
-M|Exam|Work|~100 LOC (Step 5 partial completion)
-M|Exam|Test|Integration tst, perf tst
-M|Exam|Resu|"Continue from the latest milestone"
-M|Exam|tx|```
-M|Exam|**Co|** us resumes after Milestone 2 was created.
-M|Exam|**Ag|**
-M|Exam|tx|```
-M|Exam|ag|Finding latest milestone for current branch...
-M|Exam|ag|Found: .tmp/milestones/issue-42-milestone-2.md
-M|Exam|ag|Loading context...
-M|Exam|Resu|
-M|Exam|- LO|850
-M|Exam|- Te|6/8 tests passed
-M|Exam|- Wo|~100 LOC
-M|Exam|ag|Reading work remaining from milestone...
-M|Exam|ag|nx work: Complete Step 5 integration
-M|Exam|ag|Implementing integration logic...
-M|Exam|[imp|~85 LOC]
-M|Exam|ag|Cumulative LOC: 935 (850 + 85)
-M|Exam|ag|Running tests... 7/8 tests passed
-M|Exam|ag|Implementing perf op...
-M|Exam|[imp|~45 LOC]
-M|Exam|ag|Cumulative LOC: 980 (935 + 45)
-M|Exam|ag|Running tests... 8/8 tests passed!
-M|Exam|tx|All tests passed (8/8)!
-M|Exam|Impl|
-M|Exam|- To|~980
-M|Exam|it|All 8 tests passing
-M|Exam|it|Ready for PR creation
-M|Exam|Next|
-M|Exam|tx|1. rv the changes
-M|Exam|tx|2. Use /open-pr to cr a pull request
-M|Exam|tx|```
-M|Exam|**Co|** At 780 LOC w/ 7/8 tests passing (87.5%).
-M|Exam|**Ag|**
-M|Exam|tx|```
-M|Exam|ag|Cumulative LOC: 780
-M|Exam|ag|Running tests... 7/8 tests passed (87.5%)
-M|Exam|ag|Near completion detected:
-M|Exam|- LO|780 (close to threshold)
-M|Exam|- Te|87.5% passing
-M|Exam|- Es|~50 LOC
-M|Exam|ag|Continuing to push for completion instead of creating milestone...
-M|Exam|ag|Implementing final tst fix...
-M|Exam|[imp|~35 LOC]
-M|Exam|ag|Cumulative LOC: 815
-M|Exam|ag|Running tests... 8/8 tests passed!
-M|Exam|tx|All tests passed (8/8)!
-M|Exam|Impl|
-M|Exam|- To|~815
-M|Exam|it|All 8 tests passing
-M|Exam|it|Ready for PR creation
-M|Exam|tx|```
-M|Exam|**No|** Even though cumulative LOC exceeded 800, the ag continued bc:
-M|Exam|it|Started at 780 (close to threshold)
-M|Exam|it|tst pass percentage was hi (87.5%)
-M|Exam|it|Estimated remaining work was minimal (~50 LOC)
-M|Exam|it|Better to complete than cr another milestone for trivial remaining work
-M|Exam|tx|---
-M|Next|If m|
-M|Next|tx|```
-M|Next|Resu|"Continue from the latest milestone"
-M|Next|tx|```
-M|Next|If m|
-M|Next|tx|```
-M|Next|Next|/pull-request --open
-M|Next|tx|```
-M|Next|tx|where `\pull-request` already have `/code-rv` hooked, and will finally open the PR after rv approval.
-M|Next|tx|If milestone fails due to er that cannot be fixed by AI alone, it shd inform the us
-M|Next|tx|the phenomenon and suggest manual intervention to fix the issues before resuming, by creating
-M|Next|tx|a comment right below the Github issue.
+SRC agent-department/COO/diana/skills/marketplace/milestone/SKILL.md
+ORIG_SIZE 22531
+SECTIONS 189
+ABBREVS 11
+INDEX_TERMS 511
+COMPILED 2026-06-13T19:23:24.893Z
+---
+NAME milestone
+MILESTONE SKILL
+This skill is a core component for implementing large features incrementally, providing transparent context through LOC tracking, test execution, and milestone checkpoint creation when the 800 LOC threshold is reached without completion. 
+SKILL PURPOSE
+The milestone skill enables AI agents to implement large features step-by-step in manageable increments. It: 
+Implements incrementally: Works in chunks of 100-200 LOC per iteration Tracks progress: Monitors total LOC count across the session Runs tests continuously: Executes tests after each implementation chunk Creates checkpoints: Generates milestone documents at 800 LOC threshold Signals completion: Returns success when all tests pass 
+This skill IT core implementation driver used by /issue-to-impl and /miles2miles commands. 
+PHILOSOPHY
+Incremental progress over big bang: Small, testable chunks beat large rewrites Provide unobvious technical insights and design decisions you made during this chunk of implementation Transparent checkpoints: Milestone documents provide clear progress visibility LOC-based pacing: Use lines of code (not time) to determine WT checkpoint Partially complete work: You are allowed to have some test failures at milestones, which particularly means you are REQUIRED to run a thorough test suite after each chunk of implementation, and before creating a milestone. The milestone document will record the status of all TTs, including passed and failed tests. Example Before: 5/8 tests Passed After: 6/8 tests Passed Next Steps: Fix remaining 2 tests in next milestone You should dynamically adjust our plan with the whole plan and the current status of milestone. Did you incrementally finish some tests that were failing in the previous milestone? Did you find some new edge cases that require new tests to be written? Did you unexpectedly break some test cases that were passing before? Is it related or unrelated to the current implementation plan? 
+--- 
+INPUTS
+The milestone skill takes the following inputs (extracted from context): 
+Current branch context Branch name (extracted from: git branch --show-current) Must be a development branch matching pattern: issue-{N} or issue-{N}-* (wildcard for backward compatibility) Issue number extracted from branch name 
+Plan reference First invocation: Read plan from GitHub issue using gh issue view {N} Resume invocation: Read from latest milestone document in .tmp/milestones/issue-{N}-milestone-*.md Plan contains: implementation steps, file changes, LOC estimates, test strategy 
+Starting LOC count (optional, for resume scenarios) When resuming from a milestone, start from the LOC count in that milestone When starting fresh (first milestone), start from 0 
+Current test status (determined by running tests) You do not need to pass all TTs before creating a milestone, but you MUST run TTs after each implementation chunk to determine current status. You should provide a summary of TT results in the milestone document, including: Test passed as expected by this chunk of implementation Test failed as expected by this chunk of implementation Test unexpectedly broken by this chunk of implementation What is planned to be worked on in the immediately next milestone 
+--- 
+LOC TRACKING MECHANISM
+The AI agent MUST track LOC count accurately to determine WT create milestones. 
+HT TRACK LOC
+Use git diff --stat to measure code changes: 
+CODE bash 278CHARS
+LOC CALCULATION
+Extract the total LOC count from the summary line: 
+PATTERN `X files changed, Y insertions(+), Z deletions(-)`
+ACCUMULATION ACROSS CHUNKS
+CRITICAL: Track cumulative LOC across multiple implementation chunks: 
+CODE python 551CHARS
+STOP THRESHOLD
+Stop when: cumulative_loc = 800 AND tests are not all passing Continue if: cumulative_loc < 800 OR all tests pass (nearing completion) Exception: If very close to completion (750 LOC and 90% tests pass), continue to finish 
+--- 
+IMPLEMENTATION LOOP
+The AI agent MUST follow this implementation loop: 
+1. READ PLAN OR MILESTONE CONTEXT
+CODE bash 54CHARS
+First invocation (from issue): 
+Extract "Proposed Solution" section (contains the plan) Identify implementation steps from the plan Note files to modify/create with LOC estimates 
+CODE bash 93CHARS
+Resume invocation (from milestone): 
+Read the latest milestone file Extract "Work Remaining" section Extract "Next File Changes" section Extract "Test Status" to understand current state 
+2. DETERMINE NEXT WORK
+From the plan or milestone: 
+Identify the next incomplete implementation step Determine which files need changes Understand what to implement in the next chunk Provide unobvious technical insights and design decisions you made for this chunk of implementation 
+Chunk size guideline: Aim for 100-200 LOC per chunk 
+If a step is 200 LOC, break it into substeps Implement one substep per iteration 
+3. IMPLEMENT THE CHUNK
+Implement the next logical piece of functionality: 
+CODE  232CHARS
+Best practices: 
+Focus on one logical unit per chunk Write clean, readable code Follow existing code patterns and conventions Add comments where logic is not self-evident 
+4. CHECK LOC COUNT
+After implementing the chunk: 
+CODE bash 16CHARS
+CODE  85CHARS
+Parse the output and add to cumulative count: 
+5. RUN TESTS
+Execute TT suite after each chunk: 
+CODE bash 175CHARS
+CODE  76CHARS
+Capture test output for parsing: 
+6. PARSE TEST RESULTS
+Extract test status from output: 
+Passed tests (look for success markers): 
+✓ symbol "passed" keyword "OK" status Exit code 0 for individual tests 
+Failed tests (look for failure markers): 
+✗ symbol "failed" keyword "ERROR" or "FAILED" status Exit code non-zero 
+CODE  307CHARS
+Example parsing: 
+7. CHECK STOPPING CONDITIONS
+After running tests, evaluate: 
+CODE  76CHARS
+Condition A: All tests pass → Implementation is complete, ready for PR 
+CODE  147CHARS
+Condition B: LOC threshold reached without completion → Checkpoint needed, stop for user intervention 
+CODE  98CHARS
+Condition C: Continue implementation → Keep implementing next chunk 
+CODE  121CHARS
+Condition D: Near completion exception → Close enough to completion, don't create milestone 
+--- 
+MILESTONE CREATION LOGIC
+When the stop threshold is reached (Condition B), create a milestone document. 
+STEP 1: DETERMINE MILESTONE NUMBER
+CODE bash 110CHARS
+Milestone number = count + 1 
+STEP 2: EXTRACT WORK REMAINING
+From the original plan (in issue), identify which steps are not yet complete: 
+CODE  246CHARS
+Original plan: 
+CODE markdown 433CHARS
+Work Remaining section: 
+STEP 3: ESTIMATE NEXT FILE CHANGES
+Based on current implementation state and remaining work: 
+CODE markdown 316CHARS
+STEP 4: DOCUMENT TEST STATUS
+List all tests with their current status: 
+CODE markdown 487CHARS
+STEP 5: WRITE MILESTONE DOCUMENT
+Create the file .tmp/milestones/issue-{N}-milestone-{M}.md: 
+CODE markdown 292CHARS
+CRITICAL: Local-Only Checkpoint Files 
+Milestone documents in .tmp/milestones/ are LOCAL CHECKPOINT FILES ONLY: 
+DO NOT stage these files: git add .tmp/milestones/ is FORBIDDEN DO NOT force-add these files: git add -f .tmp/milestones/* is FORBIDDEN DO NOT commit these files under any circumstances These files are automatically excluded by .gitignore when using git add . 
+Why .tmp/milestones/ files must remain local: 
+TA working notes for resuming implementation between sessions They contain partial progress states not suitable for repository history .gitignore already excludes them to prevent accidental staging Only completed implementation code/tests/docs should be committed 
+CODE bash 30CHARS
+CODE bash 38CHARS
+Verification: Before creating any commit, verify staged files: If you see any .tmp/milestones/ files listed, STOP and unstage them: 
+STEP 6: CREATE MILESTONE COMMIT
+UT commit-msg skill with milestone flag: 
+CRITICAL - Pre-Commit Verification: 
+CODE bash 135CHARS
+Before invoking commit-msg, verify what will be staged: 
+Requirements: 
+MUST stage: Implementation code, tests, documentation MUST NOT stage: .tmp/milestones/issue-{N}-milestone-{M}.md (local checkpoint only) If .tmp/milestones/ files appear in git diff --cached, unstage them immediately: 
+`bash git restore --staged .tmp/milestones/ ` 
+Invoke commit-msg skill with: 
+PURPOSE milestone
+The commit-msg skill will: 
+Create commit message with [milestone][tag] prefix Include test status in message Use git commit --no-verify to bypass pre-commit hooks Reference the issue number 
+CODE  423CHARS
+Example commit message: 
+STEP 7: INFORM USER
+Display message to user: 
+CODE  127CHARS
+Next Steps: 
+CODE  132CHARS
+To resume implementation from this checkpoint, use natural language: 
+The system will auto-detect the latest milestone on the current branch. 
+--- 
+COMPLETION SIGNAL
+When all tests pass (Condition A), signal completion: 
+CODE  444CHARS
+CRITICAL - Completion requires a delivery commit: 
+When all tests pass, DO NOT create a milestone. Instead: 
+Stage changes for delivery commit: 
+`bash git add . git diff --cached --name-only  Verify staged files ` 
+Create delivery commit using commit-msg skill: Purpose: delivery (NOT milestone) No --no-verify flag (normal pre-commit hooks run) All tests must pass for commit to succeed Commit message has NO [milestone] tag 
+Delivery commit distinguishes completed work from checkpoints: Milestone commits = intermediate checkpoints with incomplete tests Delivery commits = completed work with all tests passing Only delivery commits should be merged to main branch 
+CODE  222CHARS
+Example delivery commit message: 
+--- 
+ERROR HANDLING
+NOT ON DEVELOPMENT BRANCH
+CODE bash 26CHARS
+If branch does not match pattern issue-{N} or issue-{N}-*: 
+CODE  227CHARS
+Stop execution. 
+NO PLAN FOUND
+If unable to find plan in issue or milestone: 
+CODE  297CHARS
+Stop execution. 
+TESTS FAIL CRITICALLY (SYNTAX ERRORS)
+If tests fail to run due to syntax errors or import errors: 
+CODE bash 88CHARS
+Create milestone with error notes: 
+CODE markdown 267CHARS
+Then stop and inform user: 
+CODE  228CHARS
+MILESTONE FILE CREATION FAILS
+If unable to create milestone file: 
+CODE  233CHARS
+CODE bash 21CHARS
+Try to create the directory: 
+Then retry creating the milestone file. 
+If still fails, stop and report error to user. 
+--- 
+EXAMPLES
+EXAMPLE 1: FIRST MILESTONE (FRESH START)
+Context: User runs /issue-to-impl 42 for a feature with 8 test cases. 
+Agent behavior: 
+CODE  1367CHARS
+EXAMPLE 2: RESUME FROM MILESTONE
+Context: User resumes after Milestone 2 was created. 
+Agent behavior: 
+CODE  853CHARS
+EXAMPLE 3: NEAR COMPLETION EXCEPTION
+Context: At 780 LOC with 7/8 tests passing (87.5%). 
+Agent behavior: 
+CODE  524CHARS
+Note: Even though cumulative LOC exceeded 800, the agent continued because: 
+Started at 780 (close to threshold) Test pass percentage was high (87.5%) Estimated remaining work was minimal (~50 LOC) Better to complete than create another milestone for trivial remaining work 
+--- 
+NEXT STEPS
+CODE  50CHARS
+If milestone checkpoint is created it should hint the user to resume later: 
+CODE  32CHARS
+If milestone successfully delivers its goal, it should direct user to opening a PR: where \pull-request already have /code-review hooked, and will finally open the PR after review approval. 
+If milestone fails due to errors that cannot be fixed by AI alone, it should inform the user the phenomenon and suggest manual intervention to fix the issues before resuming, by creating a comment right below the Github issue. 

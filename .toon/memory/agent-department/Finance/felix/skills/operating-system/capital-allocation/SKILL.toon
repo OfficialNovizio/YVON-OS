@@ -1,39 +1,30 @@
-#MEM id=capital-allocation source=/root/yvon/agent-department/Finance/felix/skills/operating-system/capital-allocation/SKILL.md savings=12%
-M||tx|---
-M||name|capital-allocation
-M||desc|Buffett's concentration doctrine for yv's budget. When to double down on one vt vs. split resources. Prevents default equal allocation when ROI data points clearly in one direction.
-M||vers|1.0.0
-M||tx|---
-M|Purp|tx|Buffett doesn't diversify by default — he concentrates capital on the highest-conviction opportunity. Equal budget allocation btw two vt w/ unequal ROI is not neutral. It is a choice to underinvest in what's working and keep alive what isn't.
-M|Purp|tx|fx applies this doctrine every time budget is discussed across vt or channels.
-M|Purp|tx|---
-M|When|it|Any cross-vt budget discussion
-M|When|it|Quarterly budget reviews
-M|When|it|When mc asks how to split budget btw nz and hb
-M|When|it|When one vt is significantly outperforming the other on ROI signals
-M|When|it|When a channel is clearly outperforming others within a single vt
-M|When|tx|---
-M|Step|Comp|
-M|Step|tx|\| Signal \| nz \| hb \|
-M|Step|tx|\|--------\|---------\|----------\|
-M|Step|| RO|CAC \| \| \|
-M|Step|tx|\| CAC payback period \| \| \|
-M|Step|tx|\| MoM growth rate \| \| \|
-M|Step|tx|\| Gross margin \| \| \|
-M|Step|tx|\| Runway consumption per dollar \| \| \|
-M|Step|tx|**Is one vt clearly outperforming on ≥ 3 of 5 signals?**
-M|Step|- **|"The data supports increasing [vt] budget by $X and reducing [vt] budget by $X. Rationale: [which signals and by how much]."
-M|Step|- **|"Equal or proportional split is defensible. Rerun this tst in [timeframe] as signals develop."
-M|Step|tx|What specific metric change wld cause the current allocation to shift? Pre-name it before mc acts on the recommendation.
-M|Step|Exam|
-M|Step|- "I|CAC drops below 3:1 for 2 consecutive months → reallocate to nz."
-M|Step|it|"If nz ROAS exceeds 4x for a full quarter → increase paid acquisition budget by 30%."
-M|Step|tx|Pre-named triggers prevent reactive allocation decisions made under pressure.
-M|Step|tx|fx recommends. mc decides. fx never makes the cross-vt priority call unilaterally.
-M|Step|tx|```
-M|Step|Conc|[vt] outperforms on [N] of 5 signals
-M|Step|Reco|Increase [vt] budget $X / Reduce [vt] budget $X
-M|Step|What|[what the underinvested vt loses]
-M|Step|Real|[metric + threshold + timeframe that reverses this]
-M|Step|Deci|mc
-M|Step|tx|```
+SRC agent-department/Finance/felix/skills/operating-system/capital-allocation/SKILL.md
+ORIG_SIZE 2590
+SECTIONS 24
+ABBREVS 6
+INDEX_TERMS 153
+COMPILED 2026-06-13T19:23:24.978Z
+---
+NAME capital-allocation
+PURPOSE
+Buffett doesn't diversify by default — he concentrates capital on the highest-conviction opportunity. Equal budget allocation between two ventures with unequal ROI is not neutral. It is a choice to underinvest in what's working and keep alive what isn't. 
+Felix applies this doctrine every time budget is discussed across ventures or channels. 
+--- 
+WHEN IT RUNS
+Any cross-venture budget discussion Quarterly budget reviews When Marcus asks HT split budget between NA Hourbour When one venture is significantly outperforming the other on ROI signals When a channel is clearly outperforming others within a single venture 
+--- 
+THE ALLOCATION PROTOCOL
+STEP 1 — PULL COMPARATIVE ROI SIGNALS
+Compare ventures on the five core signals: 
+Signal Novizio Hourbour ROAS / LTV:CAC CAC PP MoM growth rate GM Runway consumption per dollar 
+STEP 2 — CONCENTRATION TEST
+Is one venture clearly outperforming on ≥ 3 of 5 signals? 
+YES → Recommend concentration. State explicitly: "The data supports increasing [venture] budget by $X and reducing [venture] budget by $X. Rationale: [which signals and by how much]." NO → Both ventures are competitive. State explicitly: "Equal or proportional split is defensible. Rerun this test in [timeframe] as signals develop." 
+STEP 3 — NAME THE REALLOCATION TRIGGER
+What specific metric change would caUT current allocation to shift? Pre-name it before Marcus acts on the recommendation. 
+Examples: 
+"If Hourbour's LTV:CAC drops below 3:1 for 2 consecutive months → reallocate to Novizio." "If Novizio ROAS exceeds 4x for a full quarter → increase paid acquisition budget by 30%." 
+Pre-named triggers prevent reactive allocation DM under pressure. 
+STEP 4 — PRESENT THE TRADE-OFF TO MARCUS
+Felix recommends. Marcus decides. Felix never makes the cross-venture priority call unilaterally. 
+CODE  301CHARS

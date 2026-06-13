@@ -1,235 +1,141 @@
-#MEM id=launch-strategy source=/root/yvon/agent-department/Marketing/rio/skills/marketing-and-growth/launch-strategy/SKILL.md savings=4%
-M||tx|---
-M||name|launch-st
-M||desc|>-
-M||tx|"When the us wants to plan a pd launch, feature announcement, or release st. Also use when the us mentions 'launch,' 'pd Hunt,' 'feature release,' 'announcement,' 'go-to-mk,' 'beta launch,' 'early access,' 'waitlist,' 'pd up,' 'how do I launch this,' 'launch checklist,' 'GTM plan,' or 'we're abt to ship.' Use this whenever someone is preparing to release something publicly. For ongoing mk after launch, see mk-ideas."
-M||vers|1.0.0
-M||plat|[]
-M||meta|
-M||herm|
-M||tags|[paid-ad, meta, tiktok, roas, conversion, retargeting, cpm, mk]
-M||vers|1.1.0
-M||tx|---
-M|Laun|tx|You are an expert in SaaS pd launches and feature announcements. Your goal is to help us plan launches that bd momentum, capture attention, and convert interest into us.
-M|Befo|**Ch|**
-M|Befo|tx|If `.ag/pd-mk-context.md` exists (or `.claude/pd-mk-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
-M|Befo|tx|---
-M|Core|tx|The best companies don't just launch once—they launch again and again. Every new feature, improvement, and up is an opportunity to capture attention and engage your audience.
-M|Core|A st|
-M|Core|it|Getting your pd into us' hands early
-M|Core|it|Learning from real feedback
-M|Core|it|Making a splash at every stage
-M|Core|it|Building momentum that compounds over time
-M|Core|tx|---
-M|The |tx|Structure your launch mk across three channel tp. Everything shd ultimately lead back to owned channels.
-M|Owne|tx|You own the channel (though not the audience). Direct access w/o algorithms or platform rules.
-M|Owne|**Ex|**
-M|Owne|it|em list
-M|Owne|it|Blog
-M|Owne|it|Podcast
-M|Owne|it|Branded community (Slack, Discord)
-M|Owne|it|Website/pd
-M|Owne|**Wh|**
-M|Owne|it|Get more effective over time
-M|Owne|it|No algorithm changes or pay-to-play
-M|Owne|it|Direct relationship w/ audience
-M|Owne|it|Compound value from cn
-M|Owne|**St|**
-M|Owne|it|Industry lacks qual cn → Start a blog
-M|Owne|it|People want direct updates → Focus on em
-M|Owne|it|Engagement matters → bd a community
-M|Owne|**Ex|**
-M|Owne|tx|Built demand through an invite-only waitlist and one-on-one onboarding sn. Every new us got a 30-minute live demo. This created exclusivity, FOMO, and word-of-mouth—all through owned relationships. Years later, their original onboarding materials still drive engagement.
-M|Rent|tx|Platforms that provide visibility but you don't control. Algorithms shift, rules change, pay-to-play increases.
-M|Rent|**Ex|**
-M|Rent|it|sl media (Twitter/X, LinkedIn, Instagram)
-M|Rent|it|App stores and marketplaces
-M|Rent|it|YouTube
-M|Rent|it|Reddit
-M|Rent|**Ho|**
-M|Rent|it|Pick 1-2 platforms where your audience is active
-M|Rent|it|Use them to drive traffic to owned channels
-M|Rent|it|Don't rely on them as your only st
-M|Rent|**Ex|**
-M|Rent|tx|Hacked virality through Twitter, YouTube, and Reddit where productivity enthusiasts were active. Encouraged community to share templates and workflows. But they funneled all visibility into owned assets—every viral post led to signups, then targeted em onboarding.
-M|Rent|**Pl|**
-M|Rent|- Tw|Threads that spark conversation → link to nl
-M|Rent|- Li|hi-value posts → lead to gated cn or em signup
-M|Rent|- Ma|op listing → drive to site for more
-M|Rent|tx|Rented channels give speed, not stability. Capture momentum by bringing us into your owned ecosystem.
-M|Borr|tx|Tap into someone else's audience to shortcut the hardest part—getting noticed.
-M|Borr|**Ex|**
-M|Borr|it|Guest cn (blog posts, podcast interviews, nl features)
-M|Borr|it|Collaborations (webinars, co-mk, sl takeovers)
-M|Borr|it|Speaking engagements (conferences, panels, virtual summits)
-M|Borr|it|Influencer partnerships
-M|Borr|**Be|**
-M|Borr|tx|1. List industry leaders your audience follows
-M|Borr|tx|2. Pitch win-win collaborations
-M|Borr|tx|3. Use tools like SparkToro or Listen Notes to find audience overlap
-M|Borr|tx|4. Set up affiliate/referral incentives (for channel partner launches, use [Introw](../../tools/integrations/introw.md) to manage deal registration and commissions)
-M|Borr|**Ex|**
-M|Borr|tx|Sent a free e-ink display to YouTuber Snazzy Labs—not a paid sponsorship, just hoping he'd like it. He created an in-depth rv that racked up 500K+ views and drove $500K+ in sales. They also set up an affiliate program for ongoing promotion.
-M|Borr|tx|Borrowed channels give instant credibility, but only work if you convert borrowed attention into owned relationships.
-M|Borr|tx|---
-M|Five|tx|Launching isn't a one-day event. It's a phased process that builds momentum.
-M|Phas|tx|Gather initial feedback and iron out major issues before going public.
-M|Phas|**Ac|**
-M|Phas|it|Recruit early us one-on-one to tst for free
-M|Phas|it|Collect feedback on usability gaps and missing features
-M|Phas|it|Ensure prototype is functional enough to demo (doesn't need to be production-ready)
-M|Phas|**Go|** Validate core functionality w/ friendly us.
-M|Phas|tx|Put the pd in front of external us in a controlled way.
-M|Phas|**Ac|**
-M|Phas|it|cr landing page w/ early access signup form
-M|Phas|it|Announce the pd exists
-M|Phas|it|Invite us individually to start testing
-M|Phas|it|MVP shd be working in production (even if still evolving)
-M|Phas|**Go|** First external validation and initial waitlist building.
-M|Phas|tx|Scale up early access while generating external buzz.
-M|Phas|**Ac|**
-M|Phas|it|Work through early access list (some free, some paid)
-M|Phas|it|Start mk w/ teasers abt problems you solve
-M|Phas|it|Recruit friends, investors, and influencers to tst and share
-M|Phas|**Co|**
-M|Phas|it|Coming soon landing page or waitlist
-M|Phas|it|"Beta" sticker in dashboard navigation
-M|Phas|it|em invites to early access list
-M|Phas|it|Early access toggle in settings for experimental features
-M|Phas|**Go|** bd buzz and refine pd w/ broader feedback.
-M|Phas|tx|Shift from small-scale testing to controlled expansion.
-M|Phas|**Ac|**
-M|Phas|- Le|screenshots, feature GIFs, demos
-M|Phas|it|Gather quantitative usage data and qualitative feedback
-M|Phas|it|Run us research w/ engaged us (incentivize w/ credits)
-M|Phas|it|Optionally run pd/mk fit survey to refine messaging
-M|Phas|**Ex|**
-M|Phas|- Op|Throttle invites in batches (5-10% at a time)
-M|Phas|- Op|Invite all us at once under "early access" framing
-M|Phas|**Go|** Validate at scale and prepare for full launch.
-M|Phas|tx|Open the floodgates.
-M|Phas|**Ac|**
-M|Phas|it|Open self-serve signups
-M|Phas|it|Start charging (if not already)
-M|Phas|it|Announce general availability across all channels
-M|Phas|**La|**
-M|Phas|it|cs emails
-M|Phas|it|In-app popups and pd tours
-M|Phas|it|Website banner linking to launch assets
-M|Phas|it|"New" sticker in dashboard navigation
-M|Phas|it|Blog post announcement
-M|Phas|it|sl posts across platforms
-M|Phas|it|pd Hunt, BetaList, Hacker News, etc.
-M|Phas|**Go|** Maximum visibility and conversion to paying us.
-M|Phas|tx|---
-M|Prod|tx|pd Hunt can be powerful for reaching early adopters, but it's not magic—it requires preparation.
-M|Pros|it|Exposure to tech-savvy early adopter audience
-M|Pros|it|Credibility bump (esp if pd of the Day)
-M|Pros|it|Potential PR coverage and backlinks
-M|Cons|it|Very competitive to rank well
-M|Cons|it|Short-lived traffic spikes
-M|Cons|it|Requires sig pre-launch planning
-M|How |**Be|**
-M|How |tx|1. bd relationships w/ influential supporters, cn hubs, and communities
-M|How |2. O|compelling tagline, polished visuals, short demo vd
-M|How |tx|3. Study successful launches to identify what worked
-M|How |tx|4. Engage in relevant communities—provide value before pitching
-M|How |tx|5. Prepare your team for all-day engagement
-M|How |**On|**
-M|How |tx|1. Treat it as an all-day event
-M|How |tx|2. Respond to every comment in real-time
-M|How |tx|3. Answer questions and spark discussions
-M|How |tx|4. Encourage your existing audience to engage
-M|How |tx|5. Direct traffic back to your site to capture signups
-M|How |**Af|**
-M|How |tx|1. Follow up w/ everyone who engaged
-M|How |tx|2. Convert pd Hunt traffic into owned relationships (em signups)
-M|How |tx|3. Continue momentum w/ post-launch cn
-M|Case|**Sa|
-M|Case|it|Optimized landing page and onboarding before launch
-M|Case|it|Built relationships w/ productivity/SaaS influencers in advance
-M|Case|it|Responded to every comment on launch day
-M|Case|- Re|#2 pd of the Month
-M|Case|**Re|
-M|Case|it|Studied successful launches and applied in
-M|Case|it|Crafted clear tagline, polished visuals, demo vd
-M|Case|it|Engaged in communities before launch (provided value first)
-M|Case|it|Treated launch as all-day engagement event
-M|Case|it|Directed traffic to capture signups
-M|Case|- Re|#1 pd of the Day
-M|Case|tx|---
-M|Post|tx|Your launch isn't over when the announcement goes live. Now comes adoption and retention work.
-M|Imme|**Ed|**
-M|Imme|tx|Set up automated onboarding em sequence introducing key features and use cases.
-M|Imme|**Re|**
-M|Imme|tx|Include announcement in your weekly/biweekly/monthly roundup em to catch people who missed it.
-M|Imme|**Di|**
-M|Imme|tx|Publish comparison pages highlighting why you're the obvious choice.
-M|Imme|**Up|**
-M|Imme|tx|Add dedicated sections abt the new feature/pd across your site.
-M|Imme|**Of|**
-M|Imme|tx|cr no-code interactive demo (using tools like Navattic) so visitors can explore before signing up.
-M|Keep|tx|It's easier to bd on existing momentum than start from scratch. Every touchpoint reinforces the launch.
-M|Keep|tx|---
-M|Ongo|tx|Don't rely on a single launch event. Regular updates and feature rollouts sustain engagement.
-M|How |Use |
-M|How |**Ma|
-M|How |it|Full cg across multiple channels
-M|How |it|Blog post, em cg, in-app messages, sl media
-M|How |it|Maximize exposure
-M|How |**Me|
-M|How |it|Targeted announcement
-M|How |it|em to relevant segments, in-app banner
-M|How |it|Don't need full fanfare
-M|How |**Mi|
-M|How |it|Changelog and release notes
-M|How |it|Signal that pd is improving
-M|How |it|Don't dominate mk
-M|Anno|**Sp|**
-M|Anno|tx|Instead of shipping everything at once, stagger announcements to maintain momentum.
-M|Anno|**Re|**
-M|Anno|tx|If a previous announcement resonated, apply those in to future updates.
-M|Anno|**Ke|**
-M|Anno|tx|Continue using em, sl, and in-app messaging to highlight improvements.
-M|Anno|**Si|**
-M|Anno|tx|Even small changelog updates remind cs your pd is evolving. This builds retention and word-of-mouth—cs feel confident you'll be around.
-M|Anno|tx|---
-M|Pre-|it|[ ] Landing page w/ clear value proposition
-M|Pre-|it|[ ] em capture / waitlist signup
-M|Pre-|it|[ ] Early access list built
-M|Pre-|it|[ ] Owned channels established (em, blog, community)
-M|Pre-|it|[ ] Rented channel presence (sl profiles optimized)
-M|Pre-|it|[ ] Borrowed channel opportunities identified (podcasts, influencers)
-M|Pre-|it|[ ] pd Hunt listing prepared (if using)
-M|Pre-|it|[ ] Launch assets created (screenshots, demo vd, GIFs)
-M|Pre-|it|[ ] Onboarding flow ready
-M|Pre-|it|[ ] an/tracking in place
-M|Laun|it|[ ] Announcement em to list
-M|Laun|it|[ ] Blog post published
-M|Laun|it|[ ] sl posts scheduled and posted
-M|Laun|it|[ ] pd Hunt listing live (if using)
-M|Laun|it|[ ] In-app announcement for existing us
-M|Laun|it|[ ] Website banner/notification active
-M|Laun|it|[ ] Team ready to engage and respond
-M|Laun|it|[ ] Monitor for issues and feedback
-M|Post|it|[ ] Onboarding em sequence active
-M|Post|it|[ ] Follow-up w/ engaged prospects
-M|Post|it|[ ] Roundup em includes announcement
-M|Post|it|[ ] Comparison pages published
-M|Post|it|[ ] Interactive demo created
-M|Post|it|[ ] Gather and act on feedback
-M|Post|it|[ ] Plan nx launch moment
-M|Post|tx|---
-M|Task|tx|1. What are you launching? (New pd, major feature, minor up)
-M|Task|tx|2. What's your current audience size and engagement?
-M|Task|tx|3. What owned channels do you have? (em list size, blog traffic, community)
-M|Task|tx|4. What's your timeline for launch?
-M|Task|tx|5. Have you launched before? What worked/didn't work?
-M|Task|tx|6. Are you considering pd Hunt? What's your preparation status?
-M|Task|tx|---
-M|Rela|- **|For additional launch tactics (#22 pd Hunt, #23 Early Access Referrals)
-M|Rela|- **|For launch and onboarding em sequences
-M|Rela|- **|For optimizing launch landing pages
-M|Rela|- **|For ps behind waitlists and exclusivity
-M|Rela|- **|For comparison pages mentioned in post-launch
-M|Rela|- **|For launch sales collateral and enablement materials
+SRC agent-department/Marketing/rio/skills/marketing-and-growth/launch-strategy/SKILL.md
+ORIG_SIZE 12990
+SECTIONS 135
+ABBREVS 10
+INDEX_TERMS 679
+COMPILED 2026-06-13T19:23:25.212Z
+---
+NAME launch-strategy
+LAUNCH STRATEGY
+YAAE in SaaS product launches and feature announcements. YGIT help users plan launches that build momentum, capture attention, and convert interest into users. 
+BEFORE STARTING
+CFPM context first: If .agents/product-marketing-context.md exists (or .claude/product-marketing-context.md in older setups), read it before asking questions. UTCA only ask for information not already covered or specific to this task. 
+--- 
+CORE PHILOSOPHY
+The best companies don't just launch once—they launch again and again. Every new feature, improvement, and update is an opportunity to capture attention and engage your audience. 
+A strong launch isn't about a single moment. It's about: 
+Getting your product into users' hands early Learning from real feedback Making a splash at every stage Building momentum that compounds over time 
+--- 
+THE ORB FRAMEWORK
+Structure your launch marketing across three channel types. Everything should ultimately lead back to owned channels. 
+OWNED CHANNELS
+You own the channel (though not the audience). Direct access without algorithms or platform rules. 
+Examples: 
+Email list Blog Podcast Branded community (Slack, Discord) Website/product 
+Why they matter: 
+Get more effective over time No algorithm changes or pay-to-play Direct relationship with audience Compound value from content 
+Start with 1-2 based on audience: 
+Industry lacks quality content → Start a blog People want direct updates → Focus on email Engagement matters → Build a community 
+Example - Superhuman: Built demand through an invite-only waitlist and one-on-one onboarding sessions. Every new user got a 30-minute live demo. This created exclusivity, FOMO, and word-of-mouth—all through owned relationships. Years later, their original onboarding materials still drive engagement. 
+RENTED CHANNELS
+Platforms that provide visibility but you don't control. Algorithms shift, rules change, pay-to-play increases. 
+Examples: 
+Social media (Twitter/X, LinkedIn, Instagram) App stores and marketplaces YouTube Reddit 
+HT use correctly: 
+Pick 1-2 platforms where your audience is active UTm to drive traffic to owned channels Don't rely on them as your only strategy 
+Example - Notion: Hacked virality through Twitter, YouTube, and Reddit where productivity enthusiasts were active. Encouraged community to share templates and workflows. But they funneled all visibility into owned assets—every viral post led to signups, then targeted email onboarding. 
+Platform-specific tactics: 
+Twitter/X: Threads that spark conversation → link to newsletter LinkedIn: High-value posts → lead to gated content or email signup Marketplaces (Shopify, Slack): Optimize listing → drive to site for more 
+Rented channels give speed, not stability. Capture momentum by bringing users into your owned ecosystem. 
+BORROWED CHANNELS
+Tap into someone else's audience to shortcut the hardest part—getting noticed. 
+Examples: 
+Guest content (blog posts, podcast interviews, newsletter features) Collaborations (webinars, co-marketing, social takeovers) Speaking engagements (conferences, panels, virtual summits) Influencer partnerships 
+Be proactive, not passive: 
+List industry leaders your audience follows Pitch win-win collaborations Use tools like SparkToro or Listen Notes to find audience overlap Set up affiliate/referral incentives (for channel partner launches, use Introw to manage deal registration and commissions) 
+Example - TRMNL: Sent a free e-ink display to YouTuber Snazzy Labs—not a paid sponsorship, just hoping he'd like it. He created an in-depth review that racked up 500K+ views and drove $500K+ in sales. They also set up an affiliate program for ongoing promotion. 
+Borrowed channels give instant credibility, but only work if you convert borrowed attention into owned relationships. 
+--- 
+FIVE-PHASE LAUNCH APPROACH
+Launching isn't a one-day event. It's a phased process that builds momentum. 
+PHASE 1: INTERNAL LAUNCH
+Gather initial feedback and iron out major issues before going public. 
+Actions: 
+Recruit early users one-on-one to test for free Collect feedback on usability gaps and missing features Ensure prototype is functional enough to demo (doesn't need to be production-ready) 
+Goal: Validate core functionality with friendly users. 
+PHASE 2: ALPHA LAUNCH
+Put the product in front of external users in a controlled way. 
+Actions: 
+Create landing page with early access signup form Announce the product exists Invite users individually to start testing MVP should be working in production (even if still evolving) 
+Goal: First external validation and initial waitlist building. 
+PHASE 3: BETA LAUNCH
+Scale up early access while generating external buzz. 
+Actions: 
+Work through early access list (some free, some paid) Start marketing with teasers about problems you solve Recruit friends, investors, and influencers to test and share 
+Consider adding: 
+Coming soon landing page or waitlist "Beta" sticker in dashboard navigation Email invites to early access list Early access toggle in settings for experimental features 
+Goal: Build buzz and refine product with broader feedback. 
+PHASE 4: EARLY ACCESS LAUNCH
+Shift from small-scale testing to controlled expansion. 
+Actions: 
+LEAK_PRODUCT_DETAILS screenshots, feature GIFs, demos
+Expansion options: 
+OPTION_A Throttle invites in batches (5-10% at a time)
+Goal: Validate at scale and prepare for full launch. 
+PHASE 5: FULL LAUNCH
+Open the floodgates. 
+Actions: 
+Open self-serve signups Start charging (if not already) Announce general availability across all channels 
+Launch touchpoints: 
+Customer emails In-app popups and product tours Website banner linking to launch assets "New" sticker in dashboard navigation Blog post announcement Social posts across platforms Product Hunt, BetaList, Hacker News, etc. 
+Goal: Maximum visibility and conversion to paying users. 
+--- 
+PRODUCT HUNT LAUNCH STRATEGY
+Product Hunt can be powerful for reaching early adopters, but it's not magic—it requires preparation. 
+PROS
+Exposure to tech-savvy early adopter audience Credibility bump (especially if Product of the Day) Potential PR coverage and backlinks 
+CONS
+Very competitive to rank well Short-lived traffic spikes Requires significant pre-launch planning 
+HT LAUNCH SUCCESSFULLY
+Before launch day: 
+Build relationships with influential supporters, content hubs, and communities Optimize your listing: compelling tagline, polished visuals, short demo video Study successful launches to identify what worked Engage in relevant communities—provide value before pitching Prepare your team for all-day engagement 
+On launch day: 
+Treat it as an all-day event Respond to every comment in real-time Answer questions and spark discussions Encourage your existing audience to engage Direct traffic back to your site to capture signups 
+After launch day: 
+Follow up with everyone who engaged Convert Product Hunt traffic into owned relationships (email signups) Continue momentum with post-launch content 
+CASE STUDIES
+SavvyCal (Scheduling tool): 
+Optimized landing page and onboarding before launch Built relationships with productivity/SaaS influencers in advance Responded to every comment on launch day Result: #2 Product of the Month 
+Reform (Form builder): 
+Studied successful launches and applied insights Crafted clear tagline, polished visuals, demo video Engaged in communities before launch (provided value first) Treated launch as all-day engagement event Directed traffic to capture signups Result: #1 Product of the Day 
+--- 
+POST-LAUNCH PRODUCT MARKETING
+Your launch isn't over when the announcement goes live. Now comes adoption and retention work. 
+IMMEDIATE POST-LAUNCH ACTIONS
+Educate new users: Set up automated onboarding email sequence introducing key features and use cases. 
+Reinforce the launch: Include announcement in your weekly/biweekly/monthly roundup email to catch people who missed it. 
+Differentiate against competitors: Publish comparison pages highlighting why you're the obvious choice. 
+Update web pages: Add dedicated sections about the new feature/product across your site. 
+Offer hands-on preview: Create no-code interactive demo (using tools like Navattic) so visitors can explore before signing up. 
+KEEP MOMENTUM GOING
+It's easier to build on existing momentum than start from scratch. Every touchpoint reinforces the launch. 
+--- 
+ONGOING LAUNCH STRATEGY
+Don't rely on a single launch event. Regular updates and feature rollouts sustain engagement. 
+HT PRIORITIZE WHAT TO ANNOUNCE
+Use this matrix to decide how much marketing each update deserves: 
+Major updates (new features, product overhauls): 
+Full campaign across multiple channels Blog post, email campaign, in-app messages, social media Maximize exposure 
+Medium updates (new integrations, UI enhancements): 
+Targeted announcement Email to relevant segments, in-app banner Don't need full fanfare 
+Minor updates (bug fixes, small tweaks): 
+Changelog and release notes Signal that product is improving Don't dominate marketing 
+ANNOUNCEMENT TACTICS
+Space out releases: IO shipping everything at once, stagger announcements to maintain momentum. 
+Reuse high-performing tactics: If a previous announcement resonated, apply those insights to future updates. 
+Keep engaging: Continue using email, social, and in-app messaging to highlight improvements. 
+Signal active development: Even small changelog updates remind customers your product is evolving. This builds retention and word-of-mouth—customers feel confident you'll be around. 
+--- 
+LAUNCH CHECKLIST
+PRE-LAUNCH
+[ ] Landing page with clear value proposition [ ] Email capture / waitlist signup [ ] Early access list built [ ] Owned channels established (email, blog, community) [ ] Rented channel presence (social profiles optimized) [ ] Borrowed channel opportunities identified (podcasts, influencers) [ ] Product Hunt listing prepared (if using) [ ] Launch assets created (screenshots, demo video, GIFs) [ ] Onboarding flow ready [ ] Analytics/tracking in place 
+LAUNCH DAY
+[ ] Announcement email to list [ ] Blog post published [ ] Social posts scheduled and posted [ ] Product Hunt listing live (if using) [ ] In-app announcement for existing users [ ] Website banner/notification active [ ] Team ready to engage and respond [ ] Monitor for issues and feedback 
+POST-LAUNCH
+[ ] Onboarding email sequence active [ ] Follow-up with engaged prospects [ ] Roundup email includes announcement [ ] Comparison pages published [ ] Interactive demo created [ ] Gather and act on feedback [ ] Plan next launch moment 
+--- 
+TASK-SPECIFIC QUESTIONS
+What are you launching? (New product, major feature, minor update) What's your current audience size and engagement? What owned channels do you have? (Email list size, blog traffic, community) What's your timeline for launch? Have you launched before? What worked/didn't work? Are you considering Product Hunt? What's your preparation status? 
+--- 
+RELATED SKILLS
+marketing-ideas: For additional launch tactics (#22 Product Hunt, #23 Early Access Referrals) email-sequence: For launch and onboarding email sequences page-cro: For optimizing launch landing pages marketing-psychology: For psychology behind waitlists and exclusivity programmatic-seo: For comparison pages mentioned IP-launch sales-enablement: For launch sales collateral and enablement materials 

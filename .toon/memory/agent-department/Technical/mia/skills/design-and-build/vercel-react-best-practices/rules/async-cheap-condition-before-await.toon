@@ -1,27 +1,17 @@
-#MEM id=rules source=/root/yvon/agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/async-cheap-condition-before-await.md savings=0%
-M||tx|---
-M||titl|Check Cheap Conditions Before Async Flags
-M||impa|hi
-M||impa|avoids unnecessary async work when a synchronous guard already fails
-M||tags|async, await, feature-flags, short-circuit, conditional
-M||tx|---
-M|Chec|tx|When a branch uses `await` for a flag or remote value and also requires a **cheap synchronous** condition (local props, request metadata, already-loaded state), evaluate the cheap condition **first**. Otherwise you pay for the async call even when the compound condition can never be true.
-M|Chec|tx|This is a specialization of [Defer Await Until Needed](./async-defer-await.md) for `flag && cheapCondition` style checks.
-M|Chec|**In|**
-M|Chec|tx|```ts
-M|Chec|tx|const someFlag = await getFlag()
-M|Chec|tx|if (someFlag && someCondition) {
-M|Chec|tx|// ...
-M|Chec|tx|}
-M|Chec|tx|```
-M|Chec|**Co|**
-M|Chec|tx|```ts
-M|Chec|tx|if (someCondition) {
-M|Chec|tx|const someFlag = await getFlag()
-M|Chec|tx|if (someFlag) {
-M|Chec|tx|// ...
-M|Chec|tx|}
-M|Chec|tx|}
-M|Chec|tx|```
-M|Chec|This|skipping it when `someCondition` is false removes that cost on the cold path.
-M|Chec|tx|Keep the original order if `someCondition` is expensive, depends on the flag, or you must run side effects in a fixed order.
+SRC agent-department/Technical/mia/skills/design-and-build/vercel-react-best-practices/rules/async-cheap-condition-before-await.md
+ORIG_SIZE 1220
+SECTIONS 11
+ABBREVS 1
+INDEX_TERMS 79
+COMPILED 2026-06-13T19:23:25.439Z
+---
+TITLE Check Cheap Conditions Before Async Flags
+CHECK CHEAP CONDITIONS BEFORE ASYNC FLAGS
+When a branch uses await for a flag or remote value and also requires a cheap synchronous condition (local props, request metadata, already-loaded state), evaluate the cheap condition first. Otherwise you pay for the async call even when the compound condition can never be true. 
+TI a specialization of Defer Await Until Needed for flag && cheapCondition style checks. 
+Incorrect: 
+CODE typescript 78CHARS
+Correct: 
+CODE typescript 91CHARS
+This matters when getFlag hits the network, a feature-flag service, or React.cache / DB work: skipping it when someCondition is false removes that cost on the cold path. 
+Keep the original order if someCondition is expensive, depends on the flag, or you must run side effects in a fixed order. 
