@@ -8,7 +8,7 @@
 //   - Ventures table
 
 import { createClient } from '@supabase/supabase-js'
-import { toon } from 'yvon-engine/toon'
+import { toon } from 'toongine/toon'
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -192,7 +192,7 @@ export async function GET(request: Request): Promise<Response> {
       ventures,
     }
 
-    // TOON response format — auto-injected by yvon-engine v1.4.0
+    // TOON response format — auto-injected by ToonGine v1.5.4
     try {
       const acceptHeader = request.headers.get('accept') || ''
       if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {

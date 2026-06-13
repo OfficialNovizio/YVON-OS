@@ -80,7 +80,7 @@ There are always two separate codebases in scope. The venture app can be accesse
 
 | Codebase | What it is | GitHub mode tools | Local mode tools |
 |----------|-----------|-------------------|------------------|
-| **YVON OS** | The AI operating system — Next.js at `/Users/novysingh/StudioProjects/YVON2.0/` | `Read`, `Bash`, `Glob`, `Grep` | `Read`, `Bash`, `Glob`, `Grep` |
+| **YVON OS** | The AI operating system — Next.js at `/Users/novysingh/StudioProjects/YVON-OS/` | `Read`, `Bash`, `Glob`, `Grep` | `Read`, `Bash`, `Glob`, `Grep` |
 | **Venture app** | The actual product (Hourbour Flutter, Novizio store, etc.) | `Github(action=...)` only | `Read`/`Glob`/`Grep` for reading · `Github(action=write_file)` for writing |
 
 **When active venture = Hourbour (or any non-YVON venture) — GITHUB MODE:**

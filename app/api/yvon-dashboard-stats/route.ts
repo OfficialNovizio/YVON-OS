@@ -6,7 +6,7 @@ import { join } from 'path'
 let _engine: any = undefined
 async function loadEngine(): Promise<any> {
   if (_engine === undefined) {
-    try { _engine = await import('yvon-engine') } catch { _engine = null }
+    try { _engine = await import('toongine') } catch { _engine = null }
   }
   return _engine
 }
@@ -42,7 +42,7 @@ function getModuleStatus() {
     { name: 'Codegraph', connected: existsSync(join(process.cwd(), 'graphify-out', 'CODEGRAPH_REPORT.md')), details: 'Built-in' },
     { name: 'Code-Review-Graph', connected: true, details: 'Built-in regex engine' },
     { name: 'Hermes', connected: existsSync(join(process.env.HOME || '/root', '.hermes', 'memories', 'USER.md')), details: 'Agent sync' },
-    { name: 'yvon-engine', connected: true, details: 'v1.3.1' },
+    { name: 'toongine', connected: true, details: 'v1.3.1' },
   ]
   return modules
 }
@@ -64,7 +64,7 @@ function getAgentSummary(engine: any) {
     { agentId: 'felix-finance', name: 'Felix', department: 'Finance', status: 'online' },
   ]
 
-  // Try loading yvon-engine metrics if available
+  // Try loading ToonGine metrics if available
   if (engine?.metrics?.getAllAgentActivities) {
     const activities = engine.metrics.getAllAgentActivities()
     if (activities.length > 0) {

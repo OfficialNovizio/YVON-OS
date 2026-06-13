@@ -26,7 +26,7 @@ async function main() {
   const candidates = [
     { owner: 'OfficialNovizio', repo: 'hourbour' },
     { owner: 'stark-labs',      repo: 'hourbour' },
-    { owner: 'OfficialNovizio', repo: 'YVON2.0' },
+    { owner: 'OfficialNovizio', repo: 'YVON-OS' },
   ]
   for (const { owner, repo } of candidates) {
     const r = await probe(owner, repo)

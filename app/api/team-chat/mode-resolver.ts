@@ -133,7 +133,7 @@ ALLOWED for venture questions:
   Github(action=file/tree/commits/issues/prs/branches/search/write_file/delete_file) — the ONLY way to read or write the venture codebase
 
 NOT ALLOWED for venture questions:
-  Read / Bash / Glob / Grep — these access the YVON OS dashboard (/YVON2.0/), a completely separate Next.js codebase. It has NOTHING to do with this venture.
+  Read / Bash / Glob / Grep — these access the YVON OS dashboard (/YVON-OS/), a completely separate Next.js codebase. It has NOTHING to do with this venture.
   Bash git commands (git log, git status, git diff) — these query YVON's git history, NOT the venture's. Using them to answer questions about the venture produces wrong data.
 
 Read / Bash / Glob / Grep are ONLY permitted for: loading your own MEMORY.md, YVON system docs (WORKFLOW.md, SESSION.md), and YVON agent config. For everything else about the venture, use Github tools.

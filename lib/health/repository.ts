@@ -9,7 +9,7 @@ export interface RepoHealthResult {
 export async function checkRepositoryHealth(): Promise<RepoHealthResult> {
   const details: Record<string, { status: string; value: any }> = {}
   const token = await getSecret('GITHUB_TOKEN')
-  const repo = process.env.GITHUB_REPO || 'OfficialNovizio/YVON2.0'
+  const repo = process.env.GITHUB_REPO || 'OfficialNovizio/YVON-OS'
 
   // Open PRs
   try {

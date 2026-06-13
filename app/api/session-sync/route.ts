@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import { toon } from 'yvon-engine/toon'
+import { toon } from 'toongine/toon'
 import { getSecret } from '@/lib/secrets'
 
 const GH_API   = 'https://api.github.com'

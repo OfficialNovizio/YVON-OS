@@ -3,10 +3,10 @@ import type { ClaudeRequestBody, AgentId } from '@/lib/types'
 import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
-import { buildCieContext } from 'yvon-engine/cie'
+import { buildCieContext } from 'toongine/cie'
 
-import { autoToonMiddleware } from 'yvon-engine/toon/auto/middleware'
-import { decodeToonResponse } from 'yvon-engine/toon/auto/decoder'
+import { autoToonMiddleware } from 'toongine/toon/auto/middleware'
+import { decodeToonResponse } from 'toongine/toon/auto/decoder'
 // DeepSeek via Anthropic endpoint — auto-configure base URL
 const isDeepSeek = !!process.env.DEEPSEEK_API_KEY
 const client = new Anthropic({
