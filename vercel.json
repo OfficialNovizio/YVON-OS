@@ -55,19 +55,19 @@
     },
     {
       "path": "/api/agent-cron/henry-filter",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 2 * * *"
     },
     {
       "path": "/api/agent-cron/nexus-code",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 3 * * *"
     },
     {
       "path": "/api/agent-cron/steve-qa",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 4 * * *"
     },
     {
       "path": "/api/agent-cron/knox-security",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 5 * * *"
     }
   ]
 }
