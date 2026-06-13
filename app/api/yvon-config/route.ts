@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
-const CONFIG_PATH = join(process.cwd(), 'yvon.config.json')
+const CONFIG_PATH = join(process.cwd(), 'toongine.config.json')
+const LEGACY_CONFIG_PATH = join(process.cwd(), 'yvon.config.json')
 
 const DEFAULTS = {
   dashboard: { showInSettings: true, autoStartOnDev: true, port: 4200, theme: 'dark' },
@@ -14,6 +15,10 @@ const DEFAULTS = {
 function loadConfig() {
   if (existsSync(CONFIG_PATH)) {
     try { return JSON.parse(readFileSync(CONFIG_PATH, 'utf-8')) } catch {}
+  }
+  // Fallback to legacy config file
+  if (existsSync(LEGACY_CONFIG_PATH)) {
+    try { return JSON.parse(readFileSync(LEGACY_CONFIG_PATH, 'utf-8')) } catch {}
   }
   return { ...DEFAULTS }
 }

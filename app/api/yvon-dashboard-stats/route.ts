@@ -42,7 +42,7 @@ function getModuleStatus() {
     { name: 'Codegraph', connected: existsSync(join(process.cwd(), 'graphify-out', 'CODEGRAPH_REPORT.md')), details: 'Built-in' },
     { name: 'Code-Review-Graph', connected: true, details: 'Built-in regex engine' },
     { name: 'Hermes', connected: existsSync(join(process.env.HOME || '/root', '.hermes', 'memories', 'USER.md')), details: 'Agent sync' },
-    { name: 'toongine', connected: true, details: 'v1.3.1' },
+    { name: 'toongine', connected: true, details: 'v1.5.4' },
   ]
   return modules
 }

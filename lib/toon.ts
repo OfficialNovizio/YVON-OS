@@ -1,5 +1,9 @@
 // lib/toon.ts — Token-Optimized Object Notation
 //
+// ⚠️ DEPRECATED — All routes now use `toongine/toon` (ToonGine v1.5.4).
+// This file is retained for reference only. Do not add new imports.
+// Remove after verifying no remaining consumers (last checked: 2026-06-15).
+//
 // Three format variants optimized for different consumers:
 //   toon.claude()  → Claude-optimized (natural language markers, 80%+ savings)
 //   toon.dense()   → Minimal pipe-delimited (LLM system prompts, 27-40% savings)
