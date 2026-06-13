@@ -195,10 +195,10 @@ async function loadOsContext(ventureSlug?: string): Promise<OsContext> {
     ventureSlug && ventureSlug !== 'yvon-dashboard'
       ? safeRead(path.join(root, `docs/ventures/${ventureSlug}/SESSION.md`), 3000)
       : Promise.resolve(''),
-    safeRead(path.join(root, 'agent-department/shared/skills/coding/01-karpathy.md'), 3000),
-    safeRead(path.join(root, 'agent-department/shared/skills/agents/01-memory.md'), 2000),
-    safeRead(path.join(root, 'agent-department/shared/skills/operating-system/session-protocol/SKILL.md'), 2000),
-    safeRead(path.join(root, 'agent-department/shared/skills/operating-system/reflection-protocol/SKILL.md'), 2000),
+    safeRead(path.join(root, '.toon/memory/agent-department/shared/skills/coding/01-karpathy.md'), 3000),
+    safeRead(path.join(root, '.toon/memory/agent-department/shared/skills/agents/01-memory.md'), 2000),
+    safeRead(path.join(root, '.toon/memory/agent-department/shared/skills/operating-system/session-protocol/SKILL.md'), 2000),
+    safeRead(path.join(root, '.toon/memory/agent-department/shared/skills/operating-system/reflection-protocol/SKILL.md'), 2000),
   ])
   return { workflowSummary, sessionState, feedbackRules, ventureSession, skillKarpathy, skillMemory, skillSessionProtocol, skillReflection }
 }

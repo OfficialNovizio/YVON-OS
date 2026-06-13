@@ -364,7 +364,7 @@ async function execGlob(input: { pattern: string; path?: string }, ctx?: ToolCon
     }
     // Node 22+ built-in glob — handles ** correctly, no shell dependency
     const paths: string[] = []
-    const exclude = (p: string) => /\/(node_modules|\.next|\.git|dist|build|graphify-out|tsconfig\.tsbuildinfo)(\/|$)/.test(p)
+    const exclude = (p: string) => /\/(node_modules|\.next|\.git|dist|build|\.toon\/graphs|tsconfig\.tsbuildinfo)(\/|$)/.test(p)
     const fsAny = fs as unknown as { glob: (pattern: string, opts: { cwd: string; exclude: (p: string) => boolean }) => AsyncIterable<string> }
     for await (const p of fsAny.glob(input.pattern, { cwd: root, exclude })) {
       paths.push(p)
@@ -423,7 +423,7 @@ async function execGrep(input: {
     let re: RegExp
     try { re = new RegExp(input.pattern, reFlags) } catch { return err(`Invalid regex: ${input.pattern}`) }
 
-    const EXCLUDED = /[\\/](node_modules|\.next|\.git|dist|build|graphify-out)([\\/]|$)/
+    const EXCLUDED = /[\\/](node_modules|\.next|\.git|dist|build|\.toon\/graphs)([\\/]|$)/
 
     // ── Collect candidate files ───────────────────────────────────────────────
     const stat = await fs.stat(target).catch(() => null)

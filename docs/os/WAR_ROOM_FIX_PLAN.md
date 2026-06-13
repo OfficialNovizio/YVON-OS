@@ -15,7 +15,7 @@
 | D3 | **Fail-closed QA** — no parseable verdict → FAIL → **re-validate (never edit good code)**; lenient status parsing | `validate-stage.ts` | tsc ✓ |
 | D4 | **Spaced-path regex** — extension-anchored so `Working UI/Shift/Shift Screen.dart` is captured whole | `synthesize-stage.ts`, `validate-stage.ts` | empirically ✓ |
 | D5 | **Persist agent work** — tool_calls + turn_index stored; agent cards (with tools) restore on refresh / history | migration 049, `types.ts`, `execute-stage.ts`, `validate-stage.ts`, `route.ts`, `db.ts`, `page.tsx` | tsc ✓, migration applied ✓ |
-| D6 | **Hermes skills pulled** — 6 MIT packs (17 files) + weekly sync + tracking docs | `scripts/hermes-sync.mjs`, `docs/hermes/*`, `agent-department/shared/skills/hermes/*` | sync ran ✓ |
+| D6 | **Hermes skills pulled** — 6 MIT packs (17 files) + weekly sync + tracking docs | `scripts/hermes-sync.mjs`, `docs/hermes/*`, `.toon/memory/agent-department/shared/skills/hermes/*` | sync ran ✓ |
 
 ---
 
@@ -46,7 +46,7 @@
 ### Workstream B — Capability (agents use their powers) + Hermes connection
 - **B1 Wire memory + skills into every brief.** Merge `buildSpecialistBrief`'s recall (agent MEMORY.md, `searchSkills`, venture memories, OS-context) into analyzer/fixer/validator briefs; retire the dead path. **Size-cap + cache recall to avoid prompt bloat [crit].**
 - **B2 Quinn gets snapshot + QA memory** (stops re-exploration, catches known bug patterns).
-- **B3 Connect Hermes packs.** Index the pulled `agent-department/shared/skills/hermes/*` packs into the skill-recall store and map each to its agent (registry table) so the right pack surfaces (e.g. Quinn ← adversarial-ux-test). **Without B1/B3 the pulled files are inert [crit].**
+- **B3 Connect Hermes packs.** Index the pulled `.toon/memory/agent-department/shared/skills/hermes/*` packs into the skill-recall store and map each to its agent (registry table) so the right pack surfaces (e.g. Quinn ← adversarial-ux-test). **Without B1/B3 the pulled files are inert [crit].**
 
 ### Workstream E — Reasoning (thinking toggle)
 - **E1** Top-bar toggle, default ON, all agents. tool-loop **catches the specific thinking-rejection error and retries once without thinking [crit]**. Reliable on Claude, best-effort on DeepSeek. **Note: thinking adds latency/tokens — toggle lets you trade speed vs depth [crit].**

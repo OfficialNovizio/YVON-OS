@@ -1,5 +1,5 @@
 // ── GET /api/graph-summary ────────────────────────────────────────────────────
-// Reads graphify-out/graph.json and returns the top 30 nodes by degree
+// Reads .toon/graphs/graph.json and returns the top 30 nodes by degree
 // plus their inter-edges. Keeps response under ~5KB for the CEO dashboard panel.
 
 import { promises as fs } from 'fs'
@@ -57,7 +57,7 @@ export async function GET(): Promise<Response> {
   }
 
   try {
-    const graphPath = path.join(process.cwd(), 'graphify-out', 'graph.json')
+    const graphPath = path.join(process.cwd(), '.toon/graphs', 'graph.json')
     const raw = await fs.readFile(graphPath, 'utf-8')
     const graph = JSON.parse(raw) as RawGraph
 

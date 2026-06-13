@@ -15,7 +15,7 @@ import type { AgentMemoryRules, TaskType } from '../types'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const DEPT_ROOT = resolve('/root/yvon/agent-department')
+const DEPT_ROOT = resolve('/root/yvon/.toon/memory/agent-department')
 
 /** Maps agent short-names and hyphenated IDs to department/folder paths. */
 const AGENT_PATH_MAP: Record<string, string> = {

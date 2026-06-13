@@ -50,7 +50,7 @@ Hermes is a persistent **Python** service. Vercel serverless **cannot** host it,
 
 ## PART C — Memory Fabric (graph + learned + skills, unified)
 *Three memory types, one recall interface every agent uses.*
-1. **Graph memory (NEW agent tool).** Server-side reader over `graphify-out/graph.json` (+ code-review graph) exposed as a `GraphQuery` tool: "what depends on X", "callers of Y", "impact radius of editing Z". Agents query the graph **before** editing → fewer half-applied refactors (the 7-regression bug). *(Note: the `graphify` CLI paths in package.json are Windows-only; runtime querying reads `graph.json` directly in Node — no CLI dependency [crit].)*
+1. **Graph memory (NEW agent tool).** Server-side reader over `.toon/graphs/graph.json` (+ code-review graph) exposed as a `GraphQuery` tool: "what depends on X", "callers of Y", "impact radius of editing Z". Agents query the graph **before** editing → fewer half-applied refactors (the 7-regression bug). *(Note: the `graphify` CLI paths in package.json are Windows-only; runtime querying reads `graph.json` directly in Node — no CLI dependency [crit].)*
 2. **Learned memory (Hermes).** Experience/skills from the learning loop (Part B).
 3. **Skills.** Static OS skills + pulled Hermes packs + learned skills. **Fix the dead recall** (`buildSpecialistBrief`/`searchSkills` never called) and **index the Hermes packs per agent** so they actually load.
 - **Unified `recall(agent, task, venture)`** → returns {graph facts, learned memory, matched skills}, size-capped + cached per session [crit]. Injected into every brief (analyzer/fixer/validator — closing the current gap where fixers/Quinn get almost nothing).

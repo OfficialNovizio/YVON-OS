@@ -1,7 +1,7 @@
 # Hourbour — Agent Roster
 > Who does what for Hourbour.
 > Load when: assigning work, checking ownership, routing a SaaS or campaign task.
-> Agent identities → agent-department/[Dept]/[agent]/SKILLS.md
+> Agent identities → .toon/memory/agent-department/[Dept]/[agent]/SKILLS.md
 
 ---
 

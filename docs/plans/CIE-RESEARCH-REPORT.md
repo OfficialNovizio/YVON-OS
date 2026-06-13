@@ -32,7 +32,7 @@
 
 | Layer | Storage | Content | Updates |
 |-------|---------|---------|---------|
-| **MEMORY.md** (13 agents) | Git-tracked files in `agent-department/` | Personality baseline, Never Again rules, architecture decisions, rejected patterns | Manual — edited during session reflection |
+| **MEMORY.md** (13 agents) | Git-tracked files in `.toon/memory/agent-department/` | Personality baseline, Never Again rules, architecture decisions, rejected patterns | Manual — edited during session reflection |
 | **SESSION.md** (13 agents × 3 ventures) | Git-tracked per-venture files | In-flight work, open items, last 3 sessions, current state | Every session end |
 | **`agent_memory` table** | Supabase DB | Runtime corrections, Quinn self-learning entries | Automatic from agent cron |
 | **`venture_agent_memories` table** | Supabase DB | Structured per-venture memories with importance/tags | Automatic — capped at 50 rows per venture-agent |
@@ -290,7 +290,7 @@ lib/cie/
 └── sources/
     ├── graphify.ts     # queryGraphify(taskKeywords) → community summaries
     ├── codegraph.ts    # queryCodegraph(taskKeywords) → dependency paths
-    ├── agent-memory.ts # getAgentRules(agentId, taskType) → Never Again + architecture
+    ├── .toon/memory.ts # getAgentRules(agentId, taskType) → Never Again + architecture
     ├── hermes-memory.ts# getHermesContext(taskKeywords) → relevant USER.md/MEMORY.md entries
     └── project-docs.ts # getProjectContext(taskType, venture) → CLAUDE.md/DESIGN.md
 ```
@@ -352,7 +352,7 @@ const finalDataBlock = (dataBlock ?? '') + cieContext.dataBlock
 - For frontend_ui tasks: return component import paths
 - For general tasks: return no codegraph (avoid noise)
 
-**agent-memory source:**
+**.toon/memory source:**
 - Read active agent's MEMORY.md → extract Never Again rules + architecture locks
 - For strategy tasks: always include marcus's Never Again rules
 - For all tasks: include felix's "never use hardcoded credentials" rule

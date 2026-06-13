@@ -9,7 +9,7 @@
 ## Active Right Now
 - **Status:** War Room Pipeline Overhaul — COMPLETE ✅
 - **Completed this session:**
-  - `agent-department/shared/skills/coding/01-karpathy.md`: Mode-aware tool boundaries — local mode + GitHub mode documented, "no local write access" absolute removed
+  - `.toon/memory/agent-department/shared/skills/coding/01-karpathy.md`: Mode-aware tool boundaries — local mode + GitHub mode documented, "no local write access" absolute removed
   - `lib/types.ts`: Added CommandType, WarRoomPhase, PhaseStatus, PhaseEvent, IntentClassification, 6 new WarRoomEvent discriminants (phase_enter, phase_complete, qa_pass_result, escalation, agent_empty_output, agent_retry)
   - `lib/ai-client.ts`: Added classifyIntentSemantic() with Haiku primary + Sonnet fallback, 60s cache, all HARD RULES preserved in system prompt
   - `app/api/route-intent/route.ts`: Replaced keyword-only classifier with semantic primary path + legacy fallback, mapSemanticToRouting for specialist assignment

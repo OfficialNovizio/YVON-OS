@@ -1,7 +1,7 @@
 # Novizio — Agent Roster
 > Who does what for Novizio.
 > Load when: assigning work, checking ownership, routing a campaign or product task.
-> Agent identities → agent-department/[Dept]/[agent]/SKILLS.md
+> Agent identities → .toon/memory/agent-department/[Dept]/[agent]/SKILLS.md
 
 ---
 

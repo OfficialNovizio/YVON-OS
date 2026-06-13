@@ -10,9 +10,9 @@
 
 arch|app/|Next.js App Router; provides layout, pages, and API endpoints for YVON OS UI and backend logic. Routes: (dashboard), (marketing), (settings), api/*.
 arch|lib/|Core shared utilities: database clients (Supabase), type definitions, validation schemas, Hermes agent wrappers, and common helpers. Key file: lib/types.ts (line 72 critical dependency).
-arch|agent-department/|Contains departmental agent modules: marketing/. finance/. growth/. operations/. Each exports agent configuration and prompt templates for Hermes engine.
-arch|agent-department/marketing/|Includes agents for campaign creation, content generation, and user segmentation. Connects to lib/marketing/ and app/api/agent/.
-arch|agent-department/finance/|Handles revenue forecasting, budget allocation, and cost reports. Reads from lib/finance/ and writes to Supabase predictions table.
+arch|.toon/memory/agent-department/|Contains departmental agent modules: marketing/. finance/. growth/. operations/. Each exports agent configuration and prompt templates for Hermes engine.
+arch|.toon/memory/agent-department/marketing/|Includes agents for campaign creation, content generation, and user segmentation. Connects to lib/marketing/ and app/api/agent/.
+arch|.toon/memory/agent-department/finance/|Handles revenue forecasting, budget allocation, and cost reports. Reads from lib/finance/ and writes to Supabase predictions table.
 arch|components/|Located under app/; reusable React components for dashboards, forms, charts. Examples: ChatPanel, DataTable, MetricCard.
 
 api|POST /api/agent/execute|Calls Hermes agent (DeepSeek v4). Uses middleware auth (session check). Returns {success, data, error}. Missing error handling for agent timeouts.
@@ -45,7 +45,7 @@ bug|components/ChatPanel.tsx:89|useEffect missing cleanup for AbortController �
 bug|app/api/polymarket/markets.ts:32|No try/catch around fetch call; if Polymarket is down, route throws 500 with unhandled rejection. Add error boundary.
 bug|components/DataTable.tsx:16|Sort state uses direct mutation (data.sort()) which mutates props — breaks React’s immutable update pattern. Should return sorted copy.
 bug|lib/types.ts:72|Critical dependency on agent names as string literals — typos in agent names cause silent failures in routing. Enforce with const enum or union type.
-bug|agent-department/marketing/prompts.ts:10|Prompt template uses deprecated DeepSeek v3 format — will fail when v4 rolls out. Update to v4 chat completion format.
+bug|.toon/memory/agent-department/marketing/prompts.ts:10|Prompt template uses deprecated DeepSeek v3 format — will fail when v4 rolls out. Update to v4 chat completion format.
 bug|app/api/campaigns/create.ts:28|User input directly interpolated into LLM prompt without sanitization — potential prompt injection. Escape angles and markdown.
 bug|components/MetricCard.tsx:41|Trend arrow renders even when trend is null — UI shows empty icon. Guard with `{trend && <Arrow />}`.
 bug|app/layout.tsx:15|Hardcoded font import from Google Fonts without preconnect — negative

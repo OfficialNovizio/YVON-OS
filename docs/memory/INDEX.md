@@ -26,7 +26,7 @@ Marcus reads this at every FORMING stage. If a rule is here, it is enforced — 
 
 ```
 docs/memory/feedback.md       ← rules that affect ALL agents (Marcus reads + broadcasts)
-agent-department/X/MEMORY.md  ← rules specific to one agent (that agent reads directly)
+.toon/memory/agent-department/X/MEMORY.md  ← rules specific to one agent (that agent reads directly)
 ```
 
 Never save the same rule to both. Pick one location. If in doubt → feedback.md (Marcus will route it).

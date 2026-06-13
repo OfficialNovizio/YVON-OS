@@ -76,7 +76,7 @@ export interface HermesAgentResult {
 // ─── Graph Memory Loader ──────────────────────────────────────────────────────
 
 async function loadGraphContext(workdir: string): Promise<string> {
-  const codegraphPath = join(workdir, 'graphify-out', 'CODEGRAPH_REPORT.md')
+  const codegraphPath = join(workdir, '.toon/graphs', 'CODEGRAPH_REPORT.md')
   try {
     const content = await fs.readFile(codegraphPath, 'utf-8')
     // Take the topology summary — the most actionable part

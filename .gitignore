@@ -37,3 +37,9 @@ hermes/vendor/
 
 # TOON build artifacts — auto-generated from .md sources (npm install / postinstall)
 .toon/
+
+# Raw agent/memory/graph dirs — migrated to .toon/ (TOON-compressed)
+# These are deployment artifacts from ToonGine, not source of truth
+agent-department/
+agent-memory/
+graphify-out/

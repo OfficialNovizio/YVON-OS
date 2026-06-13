@@ -6,7 +6,7 @@ import type { AgentId } from '@/lib/types'
 
 export const maxDuration = 60
 
-// Persona memory is now pulled live from Supabase via lib/agent-memory.
+// Persona memory is now pulled live from Supabase via lib/.toon/memory.
 async function agentSystem(agentId: string): Promise<string> {
   const agent = getAgent(agentId as AgentId)
   const mem   = await getAgentMemory(agentId, undefined, 800)

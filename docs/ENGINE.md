@@ -56,7 +56,7 @@ The TOON Engine is the context intelligence layer of YVON OS. It sits between ag
 
 **Algorithm:**
 ```
-INPUT:  agent-department/CEO/marcus/MEMORY.md (2,000 chars)
+INPUT:  .toon/memory/agent-department/CEO/marcus/MEMORY.md (2,000 chars)
         │
         ▼
 PHASE 1: STRUCTURAL PARSE
@@ -110,8 +110,8 @@ ASK: "Get marcus's MEMORY.md"
      │   HUMAN MODE    │         │   LLM MODE       │
      │                 │         │                  │
      │ Read .md from:  │         │ Read .toon from: │
-     │ agent-department│         │ .toon/memory/    │
-     │ /CEO/marcus/    │         │ agent-department │
+     │ .toon/memory/agent-department│         │ .toon/memory/    │
+     │ /CEO/marcus/    │         │ .toon/memory/agent-department │
      │ MEMORY.md       │         │ /CEO/marcus/     │
      │                 │         │ MEMORY.toon      │
      │ 2,000 chars     │         │ 350 chars        │
@@ -120,10 +120,10 @@ ASK: "Get marcus's MEMORY.md"
 
 **Path mapping:**
 ```
-agent-department/CEO/marcus/MEMORY.md  →  .toon/memory/agent-department/CEO/marcus/MEMORY.toon
+.toon/memory/agent-department/CEO/marcus/MEMORY.md  →  .toon/memory/.toon/memory/agent-department/CEO/marcus/MEMORY.toon
 docs/CONSTITUTION.md                   →  .toon/docs/CONSTITUTION.toon
 CLAUDE.md                              →  .toon/project/CLAUDE.md
-graphify-out/GRAPH_REPORT.md           →  .toon/graphs/GRAPH_REPORT.md
+.toon/graphs/GRAPH_REPORT.md           →  .toon/graphs/GRAPH_REPORT.md
 ```
 
 ---
@@ -410,7 +410,7 @@ METRICS
 │   └── hourbour/
 │       └── ...
 ├── memory/                     ← TOON-compressed agent memories
-│   └── agent-department/
+│   └── .toon/memory/agent-department/
 │       ├── CEO/marcus/
 │       │   ├── AGENT.toon
 │       │   ├── MEMORY.toon

@@ -68,9 +68,9 @@
     "estimatedSavings": "80%",
     "compressedAt": "2026-06-12T14:14:42.517Z"
   },
-  "graphifyReport": "/root/yvon/graphify-out/GRAPH_REPORT.md",
-  "codegraphReport": "/root/yvon/graphify-out/CODEGRAPH_REPORT.md",
-  "agentMemoryDir": "/root/yvon/agent-memory",
+  "graphifyReport": "/root/yvon/.toon/graphs/GRAPH_REPORT.md",
+  "codegraphReport": "/root/yvon/.toon/graphs/CODEGRAPH_REPORT.md",
+  "agentMemoryDir": "/root/yvon/.toon/memory",
   "hermesMemoryDir": "/root/.hermes/memories",
   "projectClaudePath": "/root/yvon/CLAUDE.md",
   "ventureDocsDir": "/root/yvon/docs/ventures",

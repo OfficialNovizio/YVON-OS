@@ -1,7 +1,7 @@
 # YVON Dashboard — Agent Roster
 > Who does what for the YVON platform itself.
 > Load when: assigning work to agents, checking ownership, routing a task across departments.
-> Agent identities → agent-department/[Dept]/[agent]/SKILLS.md
+> Agent identities → .toon/memory/agent-department/[Dept]/[agent]/SKILLS.md
 
 ---
 

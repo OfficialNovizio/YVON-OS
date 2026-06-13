@@ -14,7 +14,7 @@ import type { CodegraphHub } from '../types'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const REPORT_PATH = resolve('/root/yvon/graphify-out/CODEGRAPH_REPORT.md')
+const REPORT_PATH = resolve('/root/yvon/.toon/graphs/CODEGRAPH_REPORT.md')
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

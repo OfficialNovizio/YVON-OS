@@ -479,7 +479,7 @@ Each page was audited for feature coverage against its briefing spec. Features c
 
 ## 10. AGENT SYSTEM (cross-cutting)
 
-### 10.1 Agent Personalities (from agent-department/MEMORY.md)
+### 10.1 Agent Personalities (from .toon/memory/agent-department/MEMORY.md)
 | Agent | Personality Baseline | Implemented? |
 |-------|-------------------|:-----------:|
 | Marcus (CEO) | Steve Jobs — conviction, triple-pass, taste over data | ❌ Not in system prompts |

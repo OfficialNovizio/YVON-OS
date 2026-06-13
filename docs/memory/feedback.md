@@ -77,7 +77,7 @@ Defaults: maxHeight: 360–420px, scrollbarWidth: thin. Header and stats bar sta
 
 **Marcus enforcement:** Always verify: "Did I use Github tools for this venture question, or Bash?" If Bash was used, the answer is wrong — re-run with Github tools.
 
-**Source:** `agent-department/shared/skills/coding/01-karpathy.md` § "Two codebases — never confuse them"
+**Source:** `.toon/memory/agent-department/shared/skills/coding/01-karpathy.md` § "Two codebases — never confuse them"
 
 ---
 
@@ -96,7 +96,7 @@ Defaults: maxHeight: 360–420px, scrollbarWidth: thin. Header and stats bar sta
 
 **Marcus enforcement:** If a specialist produces output claiming a local write, flag it in synthesis: "Note: [agent] claimed to edit a file locally — this is not possible. Use War Room → Github write_file to actually commit changes."
 
-**Source:** `agent-department/shared/skills/coding/01-karpathy.md` § "Tool Boundaries — NEVER HALLUCINATE WRITES"
+**Source:** `.toon/memory/agent-department/shared/skills/coding/01-karpathy.md` § "Tool Boundaries — NEVER HALLUCINATE WRITES"
 
 ---
 
