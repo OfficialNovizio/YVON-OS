@@ -86,6 +86,28 @@ export default function AdvisoryCouncilPage() {
 
   const stopAudio = useCallback(() => { if (audioRef.current) { audioRef.current.pause(); audioRef.current = null } setSpeaking(null) }, [])
 
+  // ─── Demo data loader (dev only, delete-safe) ─────────────────────
+  const [isDemo, setIsDemo] = useState(false)
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return
+    setIsDemo(true)
+    import('@/feed-data/council').then(mod => {
+      const demo = mod.default
+      setTopic(demo.topic)
+      setContext(demo.context)
+      setDecisionType(demo.decisionType as DecisionType)
+      setUrgency(demo.urgency as 'routine' | 'high' | 'critical')
+      setResult(demo.result as CouncilResult)
+      const msgs: DebateMessage[] = demo.debate.map(d => ({
+        agent: d.agent, role: d.role, text: d.text, timestamp: Date.now() + d.delay,
+      }))
+      setDebate(msgs)
+    }).catch(() => {
+      // feed-data folder deleted — proceed with live API, no crash
+      setIsDemo(false)
+    })
+  }, [])
+
   const conveneCouncil = useCallback(async () => {
     if (!topic.trim()) return
     setLoading(true); setError(null); setResult(null); setDebate([]); setWarRoom(true)
