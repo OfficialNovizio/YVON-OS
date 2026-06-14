@@ -2,20 +2,16 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { Card, PageHeader, StatusBadge } from '@/components/ui'
-import { Radio, Send, Loader2, Shield, Brain, Zap, Users, Gavel, Scale, FileText, Lock, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+import { Radio, Send, Loader2, Shield, Brain, Zap, Users, Gavel, Scale, FileText, Lock } from 'lucide-react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface CouncilAgent {
   id: string; name: string; role: string; department: string; level: number
   color: string; initials: string; status: 'idle' | 'thinking' | 'done'
-  isLegal?: boolean; isBoard?: boolean; isValidator?: boolean
 }
 
-interface DebateMessage {
-  agent: string; role: string; text: string; timestamp: number
-  type?: 'position' | 'legal' | 'synthesis' | 'bias' | 'board' | 'next_steps' | 'system'
-}
+interface DebateMessage { agent: string; role: string; text: string; timestamp: number }
 
 interface LegalFinding {
   agent: string; role: string; finding: string
@@ -24,9 +20,7 @@ interface LegalFinding {
 }
 
 interface BoardRuling {
-  passed: boolean
-  violations: string[]
-  required_fixes: string[]
+  passed: boolean; violations: string[]; required_fixes: string[]
   ruling: 'APPROVED' | 'CONDITIONAL' | 'REJECTED' | 'ESCALATED'
 }
 
@@ -41,89 +35,57 @@ interface CouncilDecision {
 
 type DecisionType = 'product_launch' | 'contracts' | 'open_source' | 'compliance' | 'general'
 
-// ─── Council Configuration ────────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────────────────
 
-const EXECUTIVE_SEATS: CouncilAgent[] = [
+const COUNCIL_SEATS: CouncilAgent[] = [
   { id: 'marcus-ceo', name: 'Marcus', role: 'CEO', department: 'Command', level: 1, color: '#abc7ff', initials: 'MC', status: 'idle' },
   { id: 'diana-coo', name: 'Diana', role: 'COO', department: 'Command', level: 1, color: '#5ee0ff', initials: 'DC', status: 'idle' },
   { id: 'felix-finance', name: 'Felix', role: 'CFO', department: 'Finance', level: 2, color: '#5fd0b4', initials: 'FX', status: 'idle' },
   { id: 'kai-marketing', name: 'Kai', role: 'CMO', department: 'Marketing', level: 3, color: '#c08bff', initials: 'KA', status: 'idle' },
 ]
 
-const LEGAL_AGENTS: Record<DecisionType, CouncilAgent[]> = {
-  product_launch: [
-    { id: 'comply-legal', name: 'Comply', role: 'Compliance', department: 'Legal', level: 2, color: '#ffa726', initials: 'CP', status: 'idle', isLegal: true },
-  ],
+const VALIDATORS = [{ id: 'kahneman-psychology', name: 'Kahneman', role: 'Bias Validator', color: '#ffb693', initials: 'KN' }]
+const GOVERNANCE = [{ id: 'board-command', name: 'Board', role: 'Governance', color: '#ff8a80', initials: 'BR' }]
+
+const LEGAL_AGENTS: Record<DecisionType, Array<{ id: string; name: string; role: string; color: string; initials: string }>> = {
+  product_launch: [{ id: 'comply-legal', name: 'Comply', role: 'Compliance', color: '#ffa726', initials: 'CP' }],
   contracts: [
-    { id: 'docs-legal', name: 'Docs', role: 'Documentation', department: 'Legal', level: 2, color: '#66bb6a', initials: 'DC', status: 'idle', isLegal: true },
-    { id: 'comply-legal', name: 'Comply', role: 'Compliance', department: 'Legal', level: 2, color: '#ffa726', initials: 'CP', status: 'idle', isLegal: true },
+    { id: 'docs-legal', name: 'Docs', role: 'Documentation', color: '#66bb6a', initials: 'DC' },
+    { id: 'comply-legal', name: 'Comply', role: 'Compliance', color: '#ffa726', initials: 'CP' },
   ],
-  open_source: [
-    { id: 'guard-legal', name: 'Guard', role: 'IP Protection', department: 'Legal', level: 2, color: '#ef5350', initials: 'GD', status: 'idle', isLegal: true },
-  ],
-  compliance: [
-    { id: 'comply-legal', name: 'Comply', role: 'Compliance', department: 'Legal', level: 2, color: '#ffa726', initials: 'CP', status: 'idle', isLegal: true },
-  ],
-  general: [
-    { id: 'comply-legal', name: 'Comply', role: 'Compliance', department: 'Legal', level: 2, color: '#ffa726', initials: 'CP', status: 'idle', isLegal: true },
-  ],
+  open_source: [{ id: 'guard-legal', name: 'Guard', role: 'IP Protection', color: '#ef5350', initials: 'GD' }],
+  compliance: [{ id: 'comply-legal', name: 'Comply', role: 'Compliance', color: '#ffa726', initials: 'CP' }],
+  general: [{ id: 'comply-legal', name: 'Comply', role: 'Compliance', color: '#ffa726', initials: 'CP' }],
 }
 
-const VALIDATORS: CouncilAgent[] = [
-  { id: 'kahneman-psychology', name: 'Kahneman', role: 'Bias Validator', department: 'Psychology', level: 2, color: '#ffb693', initials: 'KN', status: 'idle', isValidator: true },
+const DECISION_TYPES: { value: DecisionType; label: string; icon: React.ReactNode }[] = [
+  { value: 'general', label: 'General', icon: <Zap size={13} /> },
+  { value: 'product_launch', label: 'Launch', icon: <Send size={13} /> },
+  { value: 'contracts', label: 'Contracts', icon: <FileText size={13} /> },
+  { value: 'open_source', label: 'Open Source', icon: <Lock size={13} /> },
+  { value: 'compliance', label: 'Compliance', icon: <Scale size={13} /> },
 ]
 
-const GOVERNANCE: CouncilAgent[] = [
-  { id: 'board-command', name: 'Board', role: 'Governance Gate', department: 'Command', level: 1, color: '#ff8a80', initials: 'BR', status: 'idle', isBoard: true },
-]
-
-const DECISION_TYPES: { value: DecisionType; label: string; icon: React.ReactNode; desc: string }[] = [
-  { value: 'general', label: 'General', icon: <Zap size={14} />, desc: 'Light compliance scan' },
-  { value: 'product_launch', label: 'Product Launch', icon: <Send size={14} />, desc: 'Regulatory check' },
-  { value: 'contracts', label: 'Contracts', icon: <FileText size={14} />, desc: 'Legal doc review' },
-  { value: 'open_source', label: 'Open Source', icon: <Lock size={14} />, desc: 'IP + license check' },
-  { value: 'compliance', label: 'Compliance', icon: <Scale size={14} />, desc: 'Full regulatory audit' },
-]
-
-// ─── Risk Badge ───────────────────────────────────────────────────────────────
-
-function RiskBadge({ level }: { level: string }) {
-  const config: Record<string, { color: string; icon: React.ReactNode; label: string }> = {
-    none: { color: '#4caf50', icon: <CheckCircle size={12} />, label: 'None' },
-    low: { color: '#8bc34a', icon: <CheckCircle size={12} />, label: 'Low' },
-    medium: { color: '#ff9800', icon: <AlertTriangle size={12} />, label: 'Medium' },
-    high: { color: '#f44336', icon: <XCircle size={12} />, label: 'High' },
-    critical: { color: '#b71c1c', icon: <XCircle size={12} />, label: 'Critical' },
-  }
-  const c = config[level] || config.none
-  return (
-    <span style={{ color: c.color, fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 3, fontWeight: 600 }}>
-      {c.icon} {c.label}
-    </span>
-  )
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function AdvisoryCouncilPage() {
-  const [decisionType, setDecisionType] = useState<DecisionType>('general')
-  const [executives, setExecutives] = useState<CouncilAgent[]>(EXECUTIVE_SEATS.map(a => ({ ...a })))
-  const [legalAgents, setLegalAgents] = useState<CouncilAgent[]>(LEGAL_AGENTS.general.map(a => ({ ...a })))
+  const [agents, setAgents] = useState<CouncilAgent[]>(COUNCIL_SEATS.map(a => ({ ...a })))
   const [topic, setTopic] = useState('')
   const [context, setContext] = useState('')
   const [urgency, setUrgency] = useState<'routine' | 'high' | 'critical'>('routine')
+  const [decisionType, setDecisionType] = useState<DecisionType>('general')
   const [loading, setLoading] = useState(false)
   const [debate, setDebate] = useState<DebateMessage[]>([])
   const [decision, setDecision] = useState<CouncilDecision | null>(null)
+  const [warRoom, setWarRoom] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [phase, setPhase] = useState<'idle' | 'executives' | 'legal' | 'synthesis' | 'bias' | 'board' | 'done'>('idle')
   const transcriptRef = useRef<HTMLDivElement>(null)
+
+  const currentLegal = LEGAL_AGENTS[decisionType]
 
   useEffect(() => {
     fetch('/api/council/convene').then(r => r.json()).then(data => {
-      if (data.status === 'live') {
-        setExecutives(prev => prev.map(a => ({ ...a, status: 'idle' as const })))
-      }
+      if (data.status === 'live') setAgents(prev => prev.map(a => ({ ...a, status: 'idle' as const })))
     }).catch(() => {})
   }, [])
 
@@ -131,22 +93,13 @@ export default function AdvisoryCouncilPage() {
     if (transcriptRef.current) transcriptRef.current.scrollTop = transcriptRef.current.scrollHeight
   }, [debate])
 
-  useEffect(() => {
-    setLegalAgents(LEGAL_AGENTS[decisionType].map(a => ({ ...a })))
-  }, [decisionType])
-
   const conveneCouncil = useCallback(async () => {
     if (!topic.trim()) return
-    setLoading(true); setError(null); setDecision(null); setDebate([]); setPhase('executives')
-    setExecutives(prev => prev.map(a => ({ ...a, status: 'thinking' })))
-    setLegalAgents(prev => prev.map(a => ({ ...a, status: 'idle' })))
+    setLoading(true); setError(null); setDecision(null); setDebate([]); setWarRoom(true)
+    setAgents(prev => prev.map(a => ({ ...a, status: 'thinking' })))
 
-    const legalLabel = DECISION_TYPES.find(d => d.value === decisionType)?.desc || 'Light scan'
-    setDebate([{
-      agent: 'system', role: 'Council', type: 'system',
-      text: `Convening v2 Council: "${topic}"\nUrgency: ${urgency} · Type: ${decisionType} (${legalLabel})\nExecutives: Marcus (CEO), Diana (COO), Felix (CFO), Kai (CMO)\nLegal: ${legalAgents.map(a => a.name).join(', ') || 'none'}\nValidators: Kahneman · Board Gate: ACTIVE`,
-      timestamp: Date.now(),
-    }])
+    const legalNames = currentLegal.map(l => l.name).join(', ')
+    setDebate([{ agent: 'system', role: 'Council', text: `Convening: "${topic}"\nUrgency: ${urgency} · Type: ${decisionType}\nCouncil: Marcus (CEO), Diana (COO), Felix (CFO), Kai (CMO)${legalNames ? `\nLegal: ${legalNames}` : ''}\nValidator: Kahneman · Gate: Board`, timestamp: Date.now() }])
 
     try {
       const res = await fetch('/api/council/convene', {
@@ -154,444 +107,331 @@ export default function AdvisoryCouncilPage() {
         body: JSON.stringify({ topic, context, urgency, decision_type: decisionType }),
       })
       const data = await res.json()
-      if (data.error) {
-        setError(data.error)
-        setExecutives(prev => prev.map(a => ({ ...a, status: 'idle' })))
-        setLoading(false)
-        return
-      }
+      if (data.error) { setError(data.error); setAgents(prev => prev.map(a => ({ ...a, status: 'idle' }))); setLoading(false); return }
 
       const cd = data as CouncilDecision
 
-      // Show executive positions
+      // Executive positions
       for (let i = 0; i < cd.positions.length; i++) {
-        const pos = cd.positions[i]
-        setExecutives(prev => prev.map((a, idx) => idx === i ? { ...a, status: 'done' } : a))
-        setDebate(prev => [...prev, {
-          agent: pos.agent, role: `${pos.role} → ${pos.recommendation}${pos.score ? ` (${pos.score}/10)` : ''}`,
-          text: pos.thesis, timestamp: Date.now() + i * 600, type: 'position',
-        }])
+        const pos = cd.positions[i]; const agent = agents[i]; if (!agent) continue
+        setAgents(prev => prev.map((a, idx) => idx === i ? { ...a, status: 'done' } : a))
+        setDebate(prev => [...prev, { agent: agent.id, role: `${pos.role} → ${pos.recommendation}${pos.score ? ` (${pos.score}/10)` : ''}`, text: pos.thesis, timestamp: Date.now() + i * 1000 }])
         await new Promise(r => setTimeout(r, 400))
       }
 
-      // Show legal findings
+      // Legal findings
       if (cd.legal_findings && cd.legal_findings.length > 0) {
-        setPhase('legal')
-        for (let i = 0; i < cd.legal_findings.length; i++) {
-          const lf = cd.legal_findings[i]
-          setLegalAgents(prev => prev.map((a, idx) => idx === i ? { ...a, status: 'done' } : a))
-          setDebate(prev => [...prev, {
-            agent: lf.agent, role: `⚖ ${lf.role} — Risk: ${lf.risk_level.toUpperCase()}`,
-            text: `${lf.finding}\n\n→ ${lf.recommendation}`,
-            timestamp: Date.now() + cd.positions.length * 600 + i * 500, type: 'legal',
-          }])
-          await new Promise(r => setTimeout(r, 400))
+        for (const lf of cd.legal_findings) {
+          setDebate(prev => [...prev, { agent: lf.agent, role: `⚖ ${lf.role} — Risk: ${lf.risk_level.toUpperCase()}`, text: `${lf.finding}\n\n→ ${lf.recommendation}`, timestamp: Date.now() + 3000 }])
+          await new Promise(r => setTimeout(r, 300))
         }
       }
 
       // Synthesis
-      setPhase('synthesis')
-      setDebate(prev => [...prev, {
-        agent: 'marcus-ceo', role: 'CEO — SYNTHESIS',
-        text: `DECISION: ${cd.decision}\n${cd.rationale}${cd.conditions.length > 0 ? `\n\nConditions: ${cd.conditions.map(c => `• ${c}`).join('\n')}` : ''}`,
-        timestamp: Date.now() + 3000, type: 'synthesis',
-      }])
+      setDebate(prev => [...prev, { agent: 'marcus-ceo', role: 'CEO — SYNTHESIS', text: `DECISION: ${cd.decision}\n${cd.rationale}`, timestamp: Date.now() + 4000 }])
 
       // Bias audit
       if (cd.bias_audit) {
-        setPhase('bias')
-        setDebate(prev => [...prev, {
-          agent: 'kahneman-psychology', role: '🧠 Bias Audit',
-          text: cd.bias_audit!, timestamp: Date.now() + 4000, type: 'bias',
-        }])
+        setDebate(prev => [...prev, { agent: 'kahneman-psychology', role: '🧠 Bias Audit', text: cd.bias_audit!, timestamp: Date.now() + 5000 }])
       }
 
-      // Board ruling
+      // Board ruling (real data from API, not hardcoded)
       if (cd.board_ruling) {
-        setPhase('board')
         const br = cd.board_ruling
-        const rulingEmoji = br.ruling === 'APPROVED' ? '✅' : br.ruling === 'CONDITIONAL' ? '⚠️' : br.ruling === 'ESCALATED' ? '🚨' : '❌'
-        const boardText = [
-          `Ruling: ${rulingEmoji} ${br.ruling}`,
-          br.violations.length > 0 ? `Violations: ${br.violations.map(v => `Law ${v}`).join(', ')}` : 'No constitutional violations.',
-          br.required_fixes.length > 0 ? `Required fixes:\n${br.required_fixes.map(f => `• ${f}`).join('\n')}` : '',
-        ].filter(Boolean).join('\n')
-
+        const parts: string[] = []
+        if (br.violations.length > 0) parts.push(`Violations: ${br.violations.map(v => `Law ${v}`).join(', ')}`)
+        if (br.required_fixes.length > 0) parts.push(`Fixes: ${br.required_fixes.map(f => `• ${f}`).join(' | ')}`)
+        const text = parts.length > 0 ? parts.join('\n') : `Board ${br.ruling.toLowerCase()}. All clear.`
+        setDebate(prev => [...prev, { agent: 'board-command', role: `🏛 Board Gate — ${br.ruling}`, text, timestamp: Date.now() + 6000 }])
+      } else {
+        // Fallback for v1 API responses
         setDebate(prev => [...prev, {
-          agent: 'board-command', role: '🏛 Board Governance Gate',
-          text: boardText, timestamp: Date.now() + 5000, type: 'board',
-        }])
-      }
-
-      // Next steps
-      if (cd.next_steps.length > 0) {
-        setPhase('done')
-        setDebate(prev => [...prev, {
-          agent: 'diana-coo', role: '📋 Next Steps',
-          text: cd.next_steps.map(s => `→ ${s}`).join('\n'),
-          timestamp: Date.now() + 6000, type: 'next_steps',
+          agent: 'board-command', role: 'Governance',
+          text: cd.decision === 'APPROVED' ? 'Board approves. Risk thresholds within bounds.'
+            : cd.decision === 'CONDITIONAL' ? `Board approves with ${cd.conditions.length} conditions.` : 'Board rejects.',
+          timestamp: Date.now() + 6000,
         }])
       }
 
       setDecision(cd)
-      setPhase('done')
-    } catch (err: any) {
-      setError(err.message || 'Council failed to convene')
-      setExecutives(prev => prev.map(a => ({ ...a, status: 'idle' })))
-      setLegalAgents(prev => prev.map(a => ({ ...a, status: 'idle' })))
-    } finally {
-      setLoading(false)
-      setExecutives(prev => prev.map(a => a.status === 'thinking' ? { ...a, status: 'idle' } : a))
-      setLegalAgents(prev => prev.map(a => a.status === 'thinking' ? { ...a, status: 'idle' } : a))
-    }
-  }, [topic, context, urgency, decisionType, legalAgents])
-
-  const reset = useCallback(() => {
-    setDecision(null); setDebate([]); setError(null); setPhase('idle')
-    setExecutives(EXECUTIVE_SEATS.map(a => ({ ...a })))
-    setLegalAgents(LEGAL_AGENTS[decisionType].map(a => ({ ...a })))
-  }, [decisionType])
-
-  const [steerInput, setSteerInput] = useState('')
-  const steerCouncil = useCallback(() => {
-    if (!steerInput.trim() || loading) return
-    const newContext = context ? `${context}\n\nUser steer: ${steerInput}` : `User steer: ${steerInput}`
-    setContext(newContext)
-    setSteerInput('')
-    // Re-convene with updated context
-    setLoading(true); setError(null); setDecision(null)
-    setExecutives(prev => prev.map(a => ({ ...a, status: 'thinking' })))
-    setLegalAgents(prev => prev.map(a => ({ ...a, status: 'idle' })))
-    fetch('/api/council/convene', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, context: newContext, urgency, decision_type: decisionType }),
-    }).then(r => r.json()).then(data => {
-      if (data.error) { setError(data.error); setExecutives(prev => prev.map(a => ({ ...a, status: 'idle' }))); return }
-      const cd = data as CouncilDecision
-      // Append to existing debate
-      setDebate(prev => [...prev, { agent: 'system', role: '🔄 Steered', text: steerInput, timestamp: Date.now(), type: 'system' }])
-      for (let i = 0; i < cd.positions.length; i++) {
-        const pos = cd.positions[i]
-        setExecutives(prev => prev.map((a, idx) => idx === i ? { ...a, status: 'done' } : a))
-        setDebate(prev => [...prev, { agent: pos.agent, role: `${pos.role} → ${pos.recommendation}`, text: pos.thesis, timestamp: Date.now() + i * 400, type: 'position' }])
-      }
-      if (cd.legal_findings) {
-        cd.legal_findings.forEach((lf, i) => {
-          setDebate(prev => [...prev, { agent: lf.agent, role: `⚖ ${lf.role}`, text: `${lf.finding}\n→ ${lf.recommendation}`, timestamp: Date.now() + 2000 + i * 400, type: 'legal' }])
-        })
-      }
-      setDebate(prev => [...prev, { agent: 'marcus-ceo', role: 'CEO — SYNTHESIS', text: `DECISION: ${cd.decision}\n${cd.rationale}`, timestamp: Date.now() + 3500, type: 'synthesis' }])
-      setDecision(cd); setPhase('done')
-    }).catch(err => setError(err.message))
-    .finally(() => { setLoading(false); setExecutives(prev => prev.map(a => ({ ...a, status: 'done' }))); setLegalAgents(prev => prev.map(a => ({ ...a, status: 'done' }))) })
-  }, [steerInput, loading, context, topic, urgency, decisionType])
-
-  const totalAgents = executives.length + legalAgents.length + VALIDATORS.length + GOVERNANCE.length
-  const phaseLabel = phase === 'idle' ? 'Ready' : phase === 'executives' ? 'Deliberating' : phase === 'legal' ? 'Legal Review' : phase === 'synthesis' ? 'Synthesizing' : phase === 'bias' ? 'Bias Audit' : phase === 'board' ? 'Board Gate' : 'Complete'
+    } catch (err: any) { setError(err.message || 'Failed'); setAgents(prev => prev.map(a => ({ ...a, status: 'idle' }))) }
+    finally { setLoading(false); setAgents(prev => prev.map(a => a.status === 'thinking' ? { ...a, status: 'idle' } : a)) }
+  }, [topic, context, urgency, decisionType, currentLegal, agents])
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div>
       <PageHeader
-        title="Advisory Council v2"
-        subtitle={`${executives.length} executives · ${legalAgents.length} legal · ${VALIDATORS.length} validator · ${GOVERNANCE.length} governance · ${totalAgents} total agents`}
+        title="Advisory Council"
+        subtitle={`${COUNCIL_SEATS.length} seats · ${currentLegal.length} legal · ${VALIDATORS.length} validator · ${GOVERNANCE.length} governance · Powered by Hermes`}
         actions={
-          <div style={{ display: 'flex', gap: 8 }}>
-            {decision && (
-              <button className="btn-ghost !py-2 !text-sm" onClick={reset}>
-                New Session
-              </button>
-            )}
-            <button className="btn-accent !py-2 !text-sm" onClick={conveneCouncil} disabled={loading || !topic.trim()}>
-              {loading ? <Loader2 size={15} className="animate-spin" /> : <Radio size={15} />}
-              {loading ? phaseLabel + '...' : 'Convene Council'}
-            </button>
-          </div>
+          <button className="btn-accent !py-2 !text-sm" onClick={conveneCouncil} disabled={loading || !topic.trim()}>
+            {loading ? <Loader2 size={15} className="animate-spin" /> : <Radio size={15} />}
+            {loading ? 'Convening...' : 'Convene Council'}
+          </button>
         }
       />
 
-      {/* ─── Topic Input ─────────────────────────────────────────────── */}
-      <Card className="mb-4">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input
-              type="text" placeholder="What should the council decide? (e.g., 'Launch Hourbour without SOC2')"
-              value={topic} onChange={e => setTopic(e.target.value)}
-              disabled={loading}
-              style={{ flex: 1, padding: '10px 14px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#fff', fontSize: 14 }}
-            />
+      {/* Topic + Decision Type */}
+      <Card className="mb-5 p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="mb-1 block text-xs font-semibold text-on-surface-variant">What should the council decide?</label>
+            <input value={topic} onChange={e => setTopic(e.target.value)}
+              placeholder="e.g. Launch Hourbour MVP without SOC2?"
+              className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-white/20 focus:outline-none"
+              onKeyDown={e => e.key === 'Enter' && conveneCouncil()} />
           </div>
-
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            {/* Decision Type */}
-            <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: 2 }}>
-              {DECISION_TYPES.map(dt => (
-                <button
-                  key={dt.value}
-                  onClick={() => setDecisionType(dt.value)}
-                  disabled={loading}
-                  title={dt.desc}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '6px 10px', borderRadius: 6, border: 'none',
-                    background: decisionType === dt.value ? 'rgba(94,224,255,0.15)' : 'transparent',
-                    color: decisionType === dt.value ? '#5ee0ff' : 'rgba(255,255,255,0.5)',
-                    fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                  }}
-                >
-                  {dt.icon} {dt.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Urgency */}
-            <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.03)', borderRadius: 8, padding: 2 }}>
-              {(['routine', 'high', 'critical'] as const).map(u => (
-                <button
-                  key={u}
-                  onClick={() => setUrgency(u)}
-                  disabled={loading}
-                  style={{
-                    padding: '6px 10px', borderRadius: 6, border: 'none',
-                    background: urgency === u ? 'rgba(255,183,77,0.15)' : 'transparent',
-                    color: urgency === u ? '#ffb74d' : 'rgba(255,255,255,0.5)',
-                    fontSize: 12, fontWeight: 600, cursor: 'pointer', textTransform: 'capitalize',
-                  }}
-                >
-                  {u === 'critical' ? '🚨 ' : u === 'high' ? '⚠️ ' : ''}{u}
-                </button>
-              ))}
-            </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-on-surface-variant">Urgency</label>
+            <select value={urgency} onChange={e => setUrgency(e.target.value as any)}
+              className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-on-surface focus:outline-none">
+              <option value="routine">Routine</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
           </div>
-
-          <input
-            type="text" placeholder="Additional context, research brief, or task details..."
-            value={context} onChange={e => setContext(e.target.value)}
-            disabled={loading}
-            style={{ padding: '8px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 6, color: '#fff', fontSize: 13, width: '100%' }}
-          />
         </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {DECISION_TYPES.map(dt => (
+            <button key={dt.value} onClick={() => setDecisionType(dt.value)}
+              className={`flex items-center gap-1 rounded-md px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                decisionType === dt.value
+                  ? 'bg-white/10 text-on-surface'
+                  : 'bg-white/[0.03] text-on-surface-variant/60 hover:bg-white/[0.06]'
+              }`}
+            >
+              {dt.icon} {dt.label}
+            </button>
+          ))}
+        </div>
+        <input value={context} onChange={e => setContext(e.target.value)}
+          placeholder="Additional context (optional)..."
+          className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-on-surface-variant placeholder:text-on-surface-variant/40 focus:border-white/20 focus:outline-none" />
       </Card>
 
-      {/* ─── Council Chamber ──────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-        {/* Executives */}
-        <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
-            👥 Executive Council ({executives.length})
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {executives.map(a => (
-              <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', background: 'rgba(255,255,255,0.02)', borderRadius: 6 }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: a.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#111' }}>
-                  {a.initials}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>{a.name} <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>· {a.role}</span></div>
-                </div>
-                <StatusBadge tone={a.status === 'thinking' ? 'yellow' : a.status === 'done' ? 'green' : 'muted'}>{a.status === 'thinking' ? 'busy' : a.status === 'done' ? 'done' : 'idle'}</StatusBadge>
+      {/* Agent Grid */}
+      <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {agents.map(agent => (
+          <Card key={agent.id} className="p-4">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-black/80" style={{ background: agent.color }}>{agent.initials}</span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-on-surface">{agent.name}</p>
+                <p className="text-[11px] text-on-surface-variant">{agent.role} · L{agent.level}</p>
               </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* Legal + Validators + Board */}
-        <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
-            ⚖ Legal · 🧠 Validator · 🏛 Governance
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {legalAgents.map(a => (
-              <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', background: 'rgba(255,255,255,0.02)', borderRadius: 6 }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: a.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#111' }}>
-                  {a.initials}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>{a.name} <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>· {a.role}</span></div>
-                </div>
-                <StatusBadge tone={a.status === 'thinking' ? 'yellow' : a.status === 'done' ? 'green' : 'muted'}>{a.status === 'thinking' ? 'busy' : a.status === 'done' ? 'done' : 'idle'}</StatusBadge>
+              <div className="ml-auto">
+                {agent.status === 'thinking' ? <Loader2 size={14} className="animate-spin" style={{ color: agent.color }} />
+                  : agent.status === 'done' ? <span className="text-xs" style={{ color: agent.color }}>✓</span>
+                  : <span className="h-2 w-2 rounded-full bg-white/20" />}
               </div>
-            ))}
-            {VALIDATORS.map(a => (
-              <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', background: 'rgba(255,255,255,0.02)', borderRadius: 6 }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: a.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#111' }}>
-                  {a.initials}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>{a.name} <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>· {a.role}</span></div>
-                </div>
-                <StatusBadge tone="muted">idle</StatusBadge>
+            </div>
+          </Card>
+        ))}
+        {/* Legal Agents */}
+        {currentLegal.map(l => (
+          <Card key={l.id} className="p-4 opacity-80">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-black/80" style={{ background: l.color }}>{l.initials}</span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-on-surface">{l.name}</p>
+                <p className="text-[11px] text-on-surface-variant">{l.role}</p>
               </div>
-            ))}
-            {GOVERNANCE.map(a => (
-              <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', background: 'rgba(255,255,255,0.02)', borderRadius: 6 }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: a.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#111' }}>
-                  {a.initials}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>{a.name} <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 400 }}>· {a.role}</span></div>
-                </div>
-                <StatusBadge tone="muted">idle</StatusBadge>
-              </div>
-            ))}
-          </div>
-        </Card>
+              <Scale size={14} className="ml-auto text-on-surface-variant/40" />
+            </div>
+          </Card>
+        ))}
+        {VALIDATORS.map(v => (
+          <Card key={v.id} className="p-4 opacity-70">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-black/80" style={{ background: v.color }}>{v.initials}</span>
+              <div><p className="text-sm font-semibold text-on-surface">{v.name}</p><p className="text-[11px] text-on-surface-variant">{v.role}</p></div>
+              <Brain size={14} className="ml-auto text-on-surface-variant/40" />
+            </div>
+          </Card>
+        ))}
+        {GOVERNANCE.map(g => (
+          <Card key={g.id} className="p-4 opacity-70">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold text-black/80" style={{ background: g.color }}>{g.initials}</span>
+              <div><p className="text-sm font-semibold text-on-surface">{g.name}</p><p className="text-[11px] text-on-surface-variant">{g.role}</p></div>
+              <Gavel size={14} className="ml-auto text-on-surface-variant/40" />
+            </div>
+          </Card>
+        ))}
       </div>
 
-      {/* ─── Legal Findings Summary ────────────────────────────────────── */}
+      {/* Error */}
+      {error && <Card className="mb-5 p-4"><p className="text-sm text-error">{error}</p></Card>}
+
+      {/* Legal Findings Summary */}
       {decision?.legal_findings && decision.legal_findings.length > 0 && (
-        <Card className="mb-4">
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
-            ⚖ Legal Findings
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <Card className="mb-5 p-4">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-on-surface"><Scale size={14} style={{ color: '#ffa726' }} /> Legal Findings</h3>
+          <div className="space-y-2">
             {decision.legal_findings.map((lf, i) => (
-              <div key={i} style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 6, borderLeft: `3px solid ${lf.risk_level === 'critical' ? '#b71c1c' : lf.risk_level === 'high' ? '#f44336' : lf.risk_level === 'medium' ? '#ff9800' : '#4caf50'}` }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600 }}>{lf.role}</span>
-                  <RiskBadge level={lf.risk_level} />
+              <div key={i} className="rounded-lg border border-white/5 bg-white/[0.02] p-3" style={{ borderLeftWidth: 3, borderLeftColor: lf.risk_level === 'critical' ? '#b71c1c' : lf.risk_level === 'high' ? '#f44336' : lf.risk_level === 'medium' ? '#ff9800' : '#4caf50' }}>
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-[12px] font-semibold text-on-surface">{lf.role}</span>
+                  <span className="text-[10px] font-bold uppercase" style={{ color: lf.risk_level === 'critical' || lf.risk_level === 'high' ? '#f44336' : lf.risk_level === 'medium' ? '#ff9800' : '#4caf50' }}>{lf.risk_level}</span>
                 </div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>{lf.finding}</div>
-                <div style={{ fontSize: 11, color: '#5ee0ff', marginTop: 4 }}>→ {lf.recommendation}</div>
+                <p className="text-[12px] leading-relaxed text-on-surface-variant">{lf.finding}</p>
+                <p className="mt-1 text-[11px]" style={{ color: 'var(--ws-accent)' }}>→ {lf.recommendation}</p>
               </div>
             ))}
           </div>
         </Card>
       )}
 
-      {/* ─── Board Ruling ──────────────────────────────────────────────── */}
+      {/* Board Ruling */}
       {decision?.board_ruling && (decision.board_ruling.ruling !== 'APPROVED' || decision.board_ruling.violations.length > 0) && (
-        <div className="mb-4" style={{ border: `1px solid ${decision.board_ruling.ruling === 'ESCALATED' ? '#f44336' : decision.board_ruling.ruling === 'CONDITIONAL' ? '#ff9800' : 'transparent'}`, borderRadius: 8, padding: 1 }}>
-        <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
-            🏛 Board Ruling — {decision.board_ruling.ruling}
-          </div>
+        <div className="mb-5 rounded-xl border p-5" style={{ borderLeft: `3px solid ${decision.board_ruling.ruling === 'ESCALATED' ? '#f44336' : decision.board_ruling.ruling === 'CONDITIONAL' ? '#ff9800' : 'transparent'}`, background: 'rgba(255,255,255,0.02)' }}>
+          <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-on-surface"><Gavel size={14} style={{ color: '#ff8a80' }} /> Board Ruling — {decision.board_ruling.ruling}</h3>
           {decision.board_ruling.violations.length > 0 && (
-            <div style={{ marginBottom: 6, fontSize: 13, color: '#f44336' }}>
-              Violations: {decision.board_ruling.violations.map(v => `Law ${v}`).join(', ')}
-            </div>
+            <p className="text-[12px] text-red-400">Violations: {decision.board_ruling.violations.map(v => `Law ${v}`).join(', ')}</p>
           )}
           {decision.board_ruling.required_fixes.length > 0 && (
-            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
-              Required fixes:{decision.board_ruling.required_fixes.map((f, i) => (
-                <div key={i} style={{ marginTop: 2 }}>• {f}</div>
-              ))}
+            <div className="mt-1">
+              <p className="text-[11px] font-semibold text-on-surface-variant">Required fixes:</p>
+              <ul className="mt-0.5 space-y-0.5">{decision.board_ruling.required_fixes.map((f, i) => <li key={i} className="text-[11px] text-on-surface-variant">• {f}</li>)}</ul>
             </div>
           )}
-        </Card>
         </div>
       )}
 
-      {/* ─── Decision Summary ──────────────────────────────────────────── */}
+      {/* Decision */}
       {decision && (
-        <div className="mb-4" style={{
-          borderLeft: `4px solid ${decision.decision === 'APPROVED' ? '#4caf50' : decision.decision === 'CONDITIONAL' ? '#ff9800' : '#f44336'}`,
-          borderRadius: 8,
+        <div className="mb-5 rounded-xl border p-5" style={{
+          borderColor: decision.decision === 'APPROVED' ? 'rgba(95,208,180,0.3)' : decision.decision === 'CONDITIONAL' ? 'rgba(255,182,147,0.3)' : 'rgba(255,138,128,0.3)',
         }}>
-        <Card>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: decision.decision === 'APPROVED' ? '#4caf50' : decision.decision === 'CONDITIONAL' ? '#ff9800' : '#f44336' }}>
-              {decision.decision === 'APPROVED' ? '✅ APPROVED' : decision.decision === 'CONDITIONAL' ? '⚠️ CONDITIONAL' : '❌ REJECTED'}
-            </div>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-              {decision.mode.toUpperCase()} · {decision.total_tokens.toLocaleString()} tokens · {(decision.duration_ms / 1000).toFixed(1)}s
-            </div>
+          <div className="mb-3 flex items-center gap-3">
+            <StatusBadge tone={decision.decision === 'APPROVED' ? 'green' : decision.decision === 'CONDITIONAL' ? 'yellow' : 'red'}>{decision.decision}</StatusBadge>
+            <span className="text-[11px] text-on-surface-variant">{decision.mode === 'live' ? '🟢 Live Hermes' : '🟡 Simulated'}</span>
+            <span className="ml-auto text-[11px] text-on-surface-variant tabular-nums">{(decision.total_tokens/1000).toFixed(1)}K tokens · {(decision.duration_ms/1000).toFixed(1)}s</span>
           </div>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', lineHeight: 1.6, marginBottom: 8 }}>{decision.rationale}</div>
+          <p className="text-sm text-on-surface">{decision.rationale}</p>
           {decision.conditions.length > 0 && (
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: 4 }}>CONDITIONS</div>
-              {decision.conditions.map((c, i) => (
-                <div key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', paddingLeft: 8 }}>• {c}</div>
-              ))}
+            <div className="mt-3">
+              <p className="text-xs font-semibold text-on-surface-variant">Conditions:</p>
+              <ul className="mt-1 space-y-1">{decision.conditions.map((c,i) => <li key={i} className="text-[12px] text-on-surface-variant">• {c}</li>)}</ul>
             </div>
           )}
           {decision.risks_accepted.length > 0 && (
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: '#ff9800', marginBottom: 4 }}>RISKS ACCEPTED</div>
-              {decision.risks_accepted.map((r, i) => (
-                <div key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', paddingLeft: 8 }}>• {r}</div>
-              ))}
+            <div className="mt-2">
+              <p className="text-xs font-semibold text-on-surface-variant" style={{ color: '#ff9800' }}>Risks Accepted:</p>
+              <ul className="mt-1 space-y-1">{decision.risks_accepted.map((r,i) => <li key={i} className="text-[12px] text-on-surface-variant">• {r}</li>)}</ul>
             </div>
           )}
-          {decision.next_steps.length > 0 && (
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: 4 }}>NEXT STEPS (Generated by Diana)</div>
-              {decision.next_steps.map((s, i) => (
-                <div key={i} style={{ fontSize: 12, color: '#5ee0ff', paddingLeft: 8 }}>→ {s}</div>
-              ))}
-            </div>
-          )}
-        </Card>
+          <div className="mt-4 flex flex-wrap gap-2">{decision.next_steps.map((s,i) => <span key={i} className="rounded-full bg-white/[0.04] px-3 py-1 text-[11px] text-on-surface-variant">{s}</span>)}</div>
         </div>
       )}
 
-      {/* ─── Error ─────────────────────────────────────────────────────── */}
-      {error && (
-        <div className="mb-4" style={{ border: '1px solid #f44336', borderRadius: 8, padding: 1 }}>
-        <Card>
-          <div style={{ fontSize: 13, color: '#f44336' }}>⚠ {error}</div>
-        </Card>
-        </div>
-      )}
-
-      {/* ─── Steer Input ─────────────────────────────────────────────────── */}
-      {debate.length > 0 && !loading && (
-        <Card className="mb-4">
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <input
-              type="text"
-              placeholder="Steer the council — add a task, question, or challenge..."
-              value={steerInput}
-              onChange={e => setSteerInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && steerCouncil()}
-              style={{ flex: 1, padding: '10px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(94,224,255,0.2)', borderRadius: 8, color: '#fff', fontSize: 13 }}
-            />
-            <button
-              className="btn-accent !py-2 !text-sm"
-              onClick={steerCouncil}
-              disabled={!steerInput.trim()}
-            >
-              <Send size={14} /> Send
-            </button>
-          </div>
-        </Card>
-      )}
-
-      {/* ─── Debate Transcript ─────────────────────────────────────────── */}
+      {/* Transcript */}
       {debate.length > 0 && (
-        <Card>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.5)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>
-            📜 Council Transcript ({debate.length} messages)
-          </div>
-          <div ref={transcriptRef} style={{ maxHeight: 400, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {debate.map((msg, i) => {
-              const isLegal = msg.type === 'legal'
-              const isBoard = msg.type === 'board'
-              const isBias = msg.type === 'bias'
-              const isSynthesis = msg.type === 'synthesis'
-              const isSystem = msg.type === 'system'
-
-              const bgColor = isSystem ? 'transparent'
-                : isSynthesis ? 'rgba(171,199,255,0.08)'
-                : isBias ? 'rgba(255,182,147,0.08)'
-                : isBoard ? 'rgba(255,138,128,0.08)'
-                : isLegal ? 'rgba(255,167,38,0.08)'
-                : 'rgba(255,255,255,0.02)'
-
-              return (
-                <div key={i} style={{ padding: '8px 12px', background: bgColor, borderRadius: 6, borderLeft: isLegal ? '2px solid #ffa726' : isBoard ? '2px solid #ff8a80' : isBias ? '2px solid #ffb693' : isSynthesis ? '2px solid #abc7ff' : '2px solid transparent' }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.4)', marginBottom: 3, textTransform: 'uppercase' }}>
-                    {msg.role}
-                  </div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>
-                    {msg.text}
-                  </div>
+        <Card className="p-4">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-on-surface"><Radio size={14} style={{ color: 'var(--ws-accent)' }} /> Council Transcript</h3>
+          <div ref={transcriptRef} className="max-h-80 space-y-3 overflow-y-auto">
+            {debate.map((msg, i) => (
+              <div key={i} className="rounded-lg bg-white/[0.02] p-3">
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="text-[11px] font-semibold" style={{ color: agents.find(a => a.id === msg.agent)?.color || currentLegal.find(l => l.id === msg.agent)?.color || VALIDATORS.find(v => v.id === msg.agent)?.color || GOVERNANCE.find(g => g.id === msg.agent)?.color || 'var(--ws-accent)' }}>{msg.role}</span>
+                  <span className="text-[10px] text-on-surface-variant/50 tabular-nums">{new Date(msg.timestamp).toLocaleTimeString()}</span>
                 </div>
-              )
-            })}
+                <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-on-surface-variant">{msg.text}</p>
+              </div>
+            ))}
           </div>
         </Card>
       )}
+
+      {/* War Room */}
+      {warRoom && <WarRoomModal agents={agents} debate={debate} topic={topic} loading={loading} decision={decision} decisionType={decisionType} onClose={() => setWarRoom(false)} onSubmit={conveneCouncil} setTopic={setTopic} legalAgents={currentLegal} />}
+    </div>
+  )
+}
+
+// ─── War Room Modal ───────────────────────────────────────────────────────────
+
+function WarRoomModal({ agents, debate, topic, loading, decision, decisionType, onClose, onSubmit, setTopic, legalAgents }: {
+  agents: CouncilAgent[]; debate: DebateMessage[]; topic: string; loading: boolean
+  decision: CouncilDecision | null; decisionType: DecisionType
+  onClose: () => void; onSubmit: () => void; setTopic: (t: string) => void
+  legalAgents: Array<{ id: string; name: string; role: string; color: string; initials: string }>
+}) {
+  const [input, setInput] = useState('')
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col bg-black/90 backdrop-blur-sm">
+      <div className="flex items-center gap-4 border-b border-white/10 px-5 py-3">
+        <span className="flex items-center gap-2 text-sm font-bold tracking-wide text-on-surface"><Radio size={16} style={{ color: 'var(--ws-accent)' }} /> WAR ROOM</span>
+        {loading ? <span className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--ws-accent)' }}><Loader2 size={12} className="animate-spin" /> CONVENING</span>
+          : decision ? <span className="flex items-center gap-1.5 text-xs" style={{ color: decision.decision === 'APPROVED' ? '#5fd0b4' : decision.decision === 'CONDITIONAL' ? '#ffb693' : '#ff8a80' }}><span className="h-2 w-2 rounded-full" style={{ background: decision.decision === 'APPROVED' ? '#5fd0b4' : decision.decision === 'CONDITIONAL' ? '#ffb693' : '#ff8a80' }} />{decision.decision}</span>
+          : <span className="flex items-center gap-1.5 text-xs text-on-surface-variant"><Users size={12} />Ready</span>}
+        <span className="truncate text-sm text-on-surface-variant">{topic || 'Set a topic'}</span>
+        <span className="text-[10px] text-on-surface-variant/40">{decisionType}</span>
+        <div className="ml-auto"><button className="btn-ghost !py-1.5 !text-xs" onClick={onClose}>Close</button></div>
+      </div>
+      <div className="flex min-h-0 flex-1">
+        <div className="scroll-y w-[360px] shrink-0 overflow-y-auto border-r border-white/10 p-4">
+          {debate.length === 0 ? (
+            <div className="py-8 text-center">
+              <Zap size={32} className="mx-auto mb-3 text-on-surface-variant/30" />
+              <p className="text-sm text-on-surface-variant">Council chamber ready</p>
+            </div>
+          ) : debate.map((msg, i) => (
+            <div key={i} className="mb-3">
+              <p className="mb-0.5 text-[11px] font-semibold" style={{ color: agents.find(a => a.id === msg.agent)?.color || legalAgents.find(l => l.id === msg.agent)?.color || 'var(--ws-accent)' }}>{msg.role}</p>
+              <p className="whitespace-pre-wrap text-[13px] leading-relaxed text-on-surface-variant">{msg.text.slice(0, 300)}</p>
+            </div>
+          ))}
+        </div>
+        <div className="relative flex flex-1 items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 opacity-90" style={{ background: 'radial-gradient(120% 90% at 50% 0%, rgba(40,60,110,0.5), transparent 60%), radial-gradient(100% 80% at 50% 100%, var(--ws-accent-soft), #07080d 70%)' }} />
+          <div className="relative text-center">
+            <div className="relative mx-auto mb-8">
+              <div className="relative mx-auto h-48 w-80">
+                <div className="absolute inset-0 rounded-[50%] border" style={{ borderColor: 'var(--ws-glow)', background: 'rgba(255,255,255,0.02)' }} />
+                {agents.map((agent, i) => {
+                  const angle = (i / agents.length) * Math.PI * 2 - Math.PI / 2; const radius = 140
+                  const x = Math.cos(angle) * radius + 160; const y = Math.sin(angle) * radius + 96
+                  return <span key={agent.id} className="absolute flex h-10 w-10 items-center justify-center rounded-full text-[11px] font-bold text-black/80 shadow-lg transition-all duration-500"
+                    style={{ background: agent.color, left: x - 20, top: y - 20, transform: agent.status === 'thinking' ? 'scale(1.15)' : 'scale(1)', boxShadow: agent.status === 'done' ? `0 0 20px ${agent.color}40` : undefined }}
+                    title={`${agent.name} — ${agent.role}`}>{agent.status === 'thinking' ? <Loader2 size={14} className="animate-spin text-black/60" /> : agent.initials}</span>
+                })}
+                <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/10 bg-black/40">
+                  <Shield size={18} style={{ color: 'var(--ws-accent)' }} /><span className="mt-0.5 text-[9px] font-semibold" style={{ color: 'var(--ws-accent)' }}>10 LAWS</span>
+                </div>
+              </div>
+            </div>
+            {decision && <p className="mt-4 text-sm text-on-surface-variant"><span className="font-semibold text-on-surface">{decision.decision === 'APPROVED' ? '✅' : decision.decision === 'CONDITIONAL' ? '⚠️' : '❌'}</span> {decision.rationale.slice(0,200)}</p>}
+            {loading && <p className="mt-4 animate-pulse text-sm text-on-surface-variant">Council deliberating...</p>}
+          </div>
+          {decision && (
+            <div className="absolute bottom-5 left-1/2 w-[min(560px,90%)] -translate-x-1/2">
+              <div className="rounded-xl border bg-surface p-4" style={{ borderColor: decision.decision === 'APPROVED' ? 'rgba(95,208,180,0.3)' : decision.decision === 'CONDITIONAL' ? 'rgba(255,182,147,0.3)' : 'rgba(255,138,128,0.3)' }}>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide" style={{ color: 'var(--ws-accent)' }}>The council {decision.decision === 'CONDITIONAL' ? 'conditionally approves' : decision.decision === 'APPROVED' ? 'approves' : 'rejects'}</p>
+                <p className="text-sm text-on-surface">{decision.rationale}</p>
+                {decision.board_ruling && decision.board_ruling.ruling !== 'APPROVED' && (
+                  <p className="mt-2 text-[11px]" style={{ color: '#ff8a80' }}>
+                    Board: {decision.board_ruling.ruling}{decision.board_ruling.required_fixes.length > 0 ? ` — ${decision.board_ruling.required_fixes.length} fixes required` : ''}
+                  </p>
+                )}
+                <div className="mt-3 flex gap-2">
+                  <button className="btn-accent !py-1.5 !text-xs" onClick={onClose}>Accept & Close</button>
+                  <button className="btn-ghost !py-1.5 !text-xs" onClick={() => { setTopic(''); onClose() }}>New Topic</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="border-t border-white/10 p-3">
+        <div className="mx-auto flex max-w-2xl items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
+          <input value={input} onChange={e => setInput(e.target.value)} placeholder="Jump in — steer the debate…"
+            className="flex-1 bg-transparent text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none"
+            onKeyDown={e => { if (e.key === 'Enter' && input.trim()) { setTopic(input); setInput(''); onSubmit() } }}
+            disabled={loading} />
+          <button className="btn-accent !py-1.5 !text-xs" onClick={() => { if (input.trim()) { setTopic(input); setInput(''); onSubmit() } }} disabled={loading || !input.trim()}><Send size={13} /> Send</button>
+        </div>
+      </div>
     </div>
   )
 }
