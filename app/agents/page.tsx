@@ -152,7 +152,7 @@ export default function AgentsPage() {
 
       {/* ── TAB 1 + 2: ToonGine Dashboard ───────────────────────────────── */}
       {(tab === 'burn' || tab === 'health') && (
-        <ToonGineDashboard tokenBurnData={burnData} projectHealthData={healthData} />
+        <ToonGineDashboard tab={tab} tokenBurnData={burnData} projectHealthData={healthData} />
       )}
 
       {/* ── TAB 3: Agent Ops ─────────────────────────────────────────────── */}
