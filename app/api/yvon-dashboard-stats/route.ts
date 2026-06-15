@@ -17,7 +17,8 @@ export async function GET(): Promise<Response> {
       .select('*')
       .gte('date', new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0])
       .order('date', { ascending: true })
-      .maybeSingle() // don't error if table doesn't exist
+
+    if (!tokenData) { /* table may not exist yet */ }
 
     // Fetch provider health
     const { data: providers } = await supabase
