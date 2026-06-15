@@ -22,8 +22,9 @@ const csp = [
 ].join('; ')
 
 const nextConfig: NextConfig = {
+  // Required for outputFileTracingIncludes to work
+  output: 'standalone',
   // Include .toon agent filesystem in Vercel/serverless builds
-  // Agent data (skills, memory, departments) lives here and the API routes read it at runtime.
   outputFileTracingIncludes: {
     '/api/**': ['./.toon/**/*'],
   },
