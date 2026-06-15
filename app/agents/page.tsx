@@ -56,27 +56,46 @@ export default function AgentsPage() {
   const [savingAgent, setSavingAgent] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
 
-  // ─── Demo data loader (dev only, delete-safe) ──────────────────────────
+  // ─── Data loader — dev loads demo directly; prod tries API, falls back to demo ──
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'development') { setLoading(false); return }
+    const isDev = process.env.NODE_ENV === 'development'
+
+    if (isDev) {
+      // Dev: load demo data directly (fast, always works)
+      import('@/feed-data/agents').then(mod => {
+        const demo = mod.default as DemoData
+        setOpsData({ agents: demo.agents, departments: demo.departments, skillsTotal: demo.skillsTotal, activity: demo.activity })
+        setBurnData(demo.tokenBurnData)
+        setHealthData(demo.projectHealthData)
+        setIsDemo(true)
+        setLoading(false)
+      }).catch(() => setLoading(false))
+      return
+    }
+
+    // Production: try live APIs, then fall back to demo data
+    let settled = 0
+    const done = () => { settled++; if (settled >= 2) setLoading(false) }
+
+    // Load demo data first as base (always available in bundle), then override with live API
     import('@/feed-data/agents').then(mod => {
       const demo = mod.default as DemoData
       setOpsData({ agents: demo.agents, departments: demo.departments, skillsTotal: demo.skillsTotal, activity: demo.activity })
       setBurnData(demo.tokenBurnData)
       setHealthData(demo.projectHealthData)
       setIsDemo(true)
-      setLoading(false)
-    }).catch(() => setLoading(false))
-  }, [])
+      done()
+    }).catch(() => done())
 
-  // ─── Live data fetcher (production) ───────────────────────────────────
-  useEffect(() => {
-    if (isDemo || process.env.NODE_ENV === 'development') return
-    // Fetch agent ops data
+    // Try live agent-ops API (will enrich/replace demo data if successful)
     fetch('/api/agent-ops').then(r => r.json()).then(d => {
-      if (!d.error) setOpsData(d)
+      if (!d.error && d.agents?.length > 0) {
+        setOpsData(d)
+        setIsDemo(false)
+      }
     }).catch(() => {})
-    // Fetch dashboard data for Token Burn + Project Health
+
+    // Try live dashboard stats API
     fetch('/api/yvon-dashboard-stats').then(r => r.json()).then(d => {
       if (d.toon) {
         setBurnData({
@@ -95,9 +114,9 @@ export default function AgentsPage() {
           issues: [], docCoverage: [],
         })
       }
-    }).catch(() => {})
-    setLoading(false)
-  }, [isDemo])
+      done()
+    }).catch(() => done())
+  }, [])
 
   // ─── Configure handlers ───────────────────────────────────────────────
   const expandAgent = useCallback(async (agentId: string) => {

@@ -18,7 +18,7 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 const ALLOWED_ORIGINS = ['https://yvon.in', 'http://localhost:3000']
 
 /** API paths that are publicly accessible (no auth required). */
-const PUBLIC_API_PATHS = ['/api/health', '/api/auth']
+const PUBLIC_API_PATHS = ['/api/health', '/api/auth', '/api/agent-ops', '/api/yvon-dashboard-stats']
 
 // ---------------------------------------------------------------------------
 // Helpers
