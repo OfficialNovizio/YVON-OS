@@ -57,10 +57,11 @@ const READ_PUBLIC_APIS = [
   '/api/yvon-config',
   '/api/skills',
   '/api/session-sync',
+  '/api/skill-workshop',
 ]
 
 function isReadPublicApi(pathname: string): boolean {
-  return READ_PUBLIC_APIS.some((p) => pathname === p || pathname.startsWith(p + '?'))
+  return READ_PUBLIC_APIS.some((p) => pathname === p || pathname.startsWith(p + '/') || pathname.startsWith(p + '?'))
 }
 
 /** Check if the request comes from the app's own frontend (trusted origin). */
