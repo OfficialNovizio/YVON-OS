@@ -1,8 +1,8 @@
 // YVON OS production middleware — auth gate + rate limiting + CORS.
 //
-// Protects all /api/* routes except /api/health and /api/auth/*.
+// GET requests from the app's own origin are allowed on read-public APIs.
 // CRON_SECRET allows full bypass for scheduled agent cron jobs.
-// Dashboard access requires x-api-key or Bearer token matching SUPABASE_SERVICE_ROLE_KEY.
+// State-changing methods (POST/PUT/DELETE) and external callers require token auth.
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
@@ -19,6 +19,57 @@ const ALLOWED_ORIGINS = ['https://yvon.in', 'http://localhost:3000']
 
 /** API paths that are publicly accessible (no auth required). */
 const PUBLIC_API_PATHS = ['/api/health', '/api/auth', '/api/agent-ops', '/api/yvon-dashboard-stats']
+
+/** APIs that require token auth only for state-changing methods (POST/PUT/PATCH/DELETE).
+ *  GET requests from allowed origins pass through — the client just reads data. */
+const READ_PUBLIC_APIS = [
+  '/api/dashboard',
+  '/api/decision-queue',
+  '/api/task-board',
+  '/api/social-approvals',
+  '/api/people',
+  '/api/projects',
+  '/api/org-chart',
+  '/api/scheduler',
+  '/api/logs',
+  '/api/content-feed',
+  '/api/social-stats',
+  '/api/token-usage',
+  '/api/deepseek-balance',
+  '/api/activity',
+  '/api/agent-memory',
+  '/api/agent-personality',
+  '/api/agent-session-memory',
+  '/api/agent-status',
+  '/api/agent-log',
+  '/api/settings',
+  '/api/ventures',
+  '/api/deliverables',
+  '/api/decisions',
+  '/api/insights',
+  '/api/brand-health',
+  '/api/brand-score',
+  '/api/brand-intelligence',
+  '/api/content-performance',
+  '/api/industry-radar',
+  '/api/market-intelligence',
+  '/api/council',
+  '/api/yvon-config',
+  '/api/skills',
+  '/api/session-sync',
+]
+
+function isReadPublicApi(pathname: string): boolean {
+  return READ_PUBLIC_APIS.some((p) => pathname === p || pathname.startsWith(p + '?'))
+}
+
+/** Check if the request comes from the app's own frontend (trusted origin). */
+function isOwnOrigin(request: NextRequest): boolean {
+  const origin = request.headers.get('origin')
+  const referer = request.headers.get('referer')
+  const isAllowedOrigin = (o: string | null): boolean => !!o && ALLOWED_ORIGINS.some((allowed) => o.startsWith(allowed))
+  return isAllowedOrigin(origin) || isAllowedOrigin(referer)
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -108,7 +159,14 @@ export function middleware(request: NextRequest) {
       return response
     }
 
-    // 2. Token auth — dashboard / programmatic access
+    // 2. Read-public APIs — allow GET requests from the app's own frontend
+    if (isReadPublicApi(pathname) && request.method === 'GET' && isOwnOrigin(request)) {
+      const response = NextResponse.next()
+      setCorsHeaders(response, origin)
+      return response
+    }
+
+    // 3. Token auth — required for state-changing methods or external callers
     if (!isTokenAuthorized(request)) {
       const ip = getClientIp(request)
       console.log(
@@ -128,7 +186,7 @@ export function middleware(request: NextRequest) {
       return response
     }
 
-    // 3. Rate limiting — per-IP on selected endpoints
+    // 4. Rate limiting — per-IP on selected endpoints
     const ip = getClientIp(request)
     const rateLimitResult = checkRateLimit(ip, pathname, API_RATE_LIMITS)
 
