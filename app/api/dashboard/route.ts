@@ -69,10 +69,11 @@ export async function GET(request: Request): Promise<Response> {
       })
       if (dsRes.ok) {
         const dsData = await dsRes.json()
-        deepseekBalance = dsData.total_balance ?? dsData.balance ?? null
-        // total_balance is in CNY — convert to approximate USD cents
-        if (deepseekBalance && deepseekBalance > 10) {
-          deepseekBalance = parseFloat((deepseekBalance / 100).toFixed(2))
+        // DeepSeek returns { balance_infos: [{ currency: "USD", total_balance: "4.27", ... }] }
+        const balanceInfo = dsData.balance_infos?.[0]
+        if (balanceInfo) {
+          const raw = parseFloat(balanceInfo.total_balance)
+          if (!isNaN(raw)) deepseekBalance = parseFloat(raw.toFixed(2))
         }
       }
     } catch {
