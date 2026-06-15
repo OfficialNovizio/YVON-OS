@@ -47,7 +47,6 @@ export default function AgentsPage() {
   const [burnData, setBurnData] = useState<TokenBurnData | null>(null)
   const [healthData, setHealthData] = useState<ProjectHealthData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [isDemo, setIsDemo] = useState(false)
 
   // Configure tab state
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null)
@@ -56,63 +55,53 @@ export default function AgentsPage() {
   const [savingAgent, setSavingAgent] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
 
-  // ─── Data loader — dev loads demo directly; prod tries API, falls back to demo ──
+  // ─── Data loader ───────────────────────────────────────────────────────────
   useEffect(() => {
     const isDev = process.env.NODE_ENV === 'development'
 
     if (isDev) {
-      // Dev: load demo data directly (fast, always works)
       import('@/feed-data/agents').then(mod => {
         const demo = mod.default as DemoData
         setOpsData({ agents: demo.agents, departments: demo.departments, skillsTotal: demo.skillsTotal, activity: demo.activity })
         setBurnData(demo.tokenBurnData)
         setHealthData(demo.projectHealthData)
-        setIsDemo(true)
         setLoading(false)
       }).catch(() => setLoading(false))
       return
     }
 
-    // Production: try live APIs, then fall back to demo data
+    // Production: live data from Supabase-backed APIs
     let settled = 0
     const done = () => { settled++; if (settled >= 2) setLoading(false) }
 
-    // Load demo data first as base (always available in bundle), then override with live API
-    import('@/feed-data/agents').then(mod => {
-      const demo = mod.default as DemoData
-      setOpsData({ agents: demo.agents, departments: demo.departments, skillsTotal: demo.skillsTotal, activity: demo.activity })
-      setBurnData(demo.tokenBurnData)
-      setHealthData(demo.projectHealthData)
-      setIsDemo(true)
-      done()
-    }).catch(() => done())
-
-    // Try live agent-ops API (will enrich/replace demo data if successful)
-    fetch('/api/agent-ops').then(r => r.json()).then(d => {
-      if (!d.error && d.agents?.length > 0) {
-        setOpsData(d)
-        setIsDemo(false)
-      }
-    }).catch(() => {})
-
-    // Try live dashboard stats API
+    // Token Burn + Project Health from /api/yvon-dashboard-stats
     fetch('/api/yvon-dashboard-stats').then(r => r.json()).then(d => {
-      if (d.toon) {
+      if (!d.error) {
         setBurnData({
-          tokenUsage: d.cost?.tokenUsage || [],
-          costByDept: [],
-          costTrend: [],
-          perAgentBurn: [],
-          providerHealth: [{ provider: 'DeepSeek', usagePercent: 82, balance: d.systemHealth?.deepseekBalance || null, configured: true }],
+          tokenUsage: d.tokenUsage || [],
+          costByDept: d.costByDept || [],
+          costTrend: d.costTrend || [],
+          perAgentBurn: d.perAgentBurn || [],
+          providerHealth: d.providerHealth || [],
         })
         setHealthData({
-          kpi: { toonAvg: d.toon?.avgSavingsPercent || 94, bundleSize: d.cie?.totalTicks || 208, apiSuccess: 99.2, issuesOpen: 3, issuesCritical: 0 },
-          toonQuality: [], savingsTrend: [], topKMatch: { chunksMatched: 4.2, chunksInjected: 3.8, l1: 82, l2: 14, ref: 4 },
-          codebase: { lastCompile: '—', duration: '—', files: 0, chunks: 0, terms: 0, bpe: 0, corpusSize: '—', compressedSize: '—', compressionPercent: 0, delta: '—', tsErrors: 0 },
+          kpi: { toonAvg: d.toonAvg || 94, bundleSize: d.bundleSize || 208, apiSuccess: d.apiSuccess || 99, issuesOpen: 3, issuesCritical: 0 },
+          toonQuality: d.toonQuality || [],
+          savingsTrend: d.savingsTrend || [],
+          topKMatch: { chunksMatched: d.chunksMatched || 4, chunksInjected: d.chunksInjected || 4, l1: 82, l2: 14, ref: 4 },
+          codebase: { lastCompile: d.lastCompile || '—', duration: d.compileDuration || '—', files: d.files || 0, chunks: d.chunks || 0, terms: d.terms || 0, bpe: 0, corpusSize: d.corpusSize || '—', compressedSize: d.compressedSize || '—', compressionPercent: d.compressionPct || 0, delta: '—', tsErrors: d.tsErrors || 0 },
           apiHealth: { status200: 99, status400: 1, status500: 0, total24h: 0, errors: 0, topError: '' },
           promptQuality: { avgContext: '—', avgInjected: '—', reduction: 0, cacheHits: 62, bestAgent: '—', worstAgent: '—' },
           issues: [], docCoverage: [],
         })
+      }
+      done()
+    }).catch(() => done())
+
+    // Agent Ops from /api/agent-ops
+    fetch('/api/agent-ops').then(r => r.json()).then(d => {
+      if (!d.error && d.agents) {
+        setOpsData(d)
       }
       done()
     }).catch(() => done())
