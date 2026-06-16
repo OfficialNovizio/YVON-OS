@@ -35,11 +35,16 @@ Thumbs.db
 # Hermes runtime clone (aux-tools sidecar) — large, fetched via npm run hermes:setup
 hermes/vendor/
 
-# TOON build artifacts — auto-generated from .md sources (npm install / postinstall)
-.toon/
-
-# Raw agent/memory/graph dirs — migrated to .toon/ (TOON-compressed)
-# These are deployment artifacts from ToonGine, not source of truth
-agent-department/
-agent-memory/
-graphify-out/
+# TOON — track source of truth, ignore build artifacts
+.toon/*
+# Re-include agent source files (source of truth)
+!.toon/dictionary.toon
+!.toon/schemas.toon
+!.toon/memory/
+.toon/memory/*
+!.toon/memory/agent-department/
+# Re-include graph reports (human-readable)
+!.toon/graphs/
+.toon/graphs/*
+!.toon/graphs/*.md
+# Everything else under .toon is a build artifact
