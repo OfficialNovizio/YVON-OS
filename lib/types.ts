@@ -1,3 +1,4 @@
+// ⚠️ TOONGINE-HIGH-BLAST-RADIUS: High blast radius — 67 importers. Consider splitting.
 // ─── Social Stats ───────────────────────────────────────────────────────────
 
 export interface InstagramStats {

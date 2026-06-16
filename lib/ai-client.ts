@@ -1,3 +1,4 @@
+// ⚠️ TOONGINE-HIGH-BLAST-RADIUS: High blast radius — 53 importers. Consider splitting.
 /**
  * lib/ai-client.ts — Unified AI provider client factory.
  *
