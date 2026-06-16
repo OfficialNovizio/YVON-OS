@@ -65,7 +65,7 @@ const WORKSHOP_TITLES: Record<string, string> = {
 
 function getAgentNameMap(): Map<string, { name: string; dept: string }> {
   const map = new Map<string, { name: string; dept: string }>()
-  const basePath = join(process.cwd(), '.toon', 'memory', 'agent-department')
+  const basePath = join(process.cwd(), '.toon', 'agents')
   if (!existsSync(basePath)) return map
 
   for (const dept of readdirSync(basePath, { withFileTypes: true }).filter(d => d.isDirectory())) {
@@ -128,7 +128,7 @@ export async function GET(): Promise<Response> {
       for (const aid of ws.agentIds) {
         const info = agentMap.get(aid)
         if (info) {
-          const skillsDir = join(process.cwd(), '.toon', 'memory', 'agent-department', info.dept, aid, 'skills')
+          const skillsDir = join(process.cwd(), '.toon', 'agents', info.dept, aid, 'skills')
           if (existsSync(skillsDir)) {
             function countSkills(dir: string) {
               if (!existsSync(dir)) return

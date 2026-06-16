@@ -30,7 +30,7 @@ export async function POST(request: Request): Promise<Response> {
 
     // Find the agent directory
     const agentNameLower = agentName.toLowerCase()
-    const basePath = join(process.cwd(), '.toon', 'memory', 'agent-department')
+    const basePath = join(process.cwd(), '.toon', 'agents')
 
     if (!existsSync(basePath)) {
       return NextResponse.json({ error: 'Agent department directory not found' }, { status: 500 })

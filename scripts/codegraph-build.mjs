@@ -14,12 +14,12 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
-const OUT = path.join(ROOT, 'graphify-out', 'CODEGRAPH_REPORT.md');
+const OUT = path.join(ROOT, '.toon', 'codegraph', 'CODEGRAPH_REPORT.md');
 
 // ── Config ─────────────────────────────────────────────────────────────────
 
 const SCAN_DIRS = ['app', 'lib', 'src'];
-const SKIP_DIRS = new Set(['node_modules', '.next', 'graphify-out', '.git', '__tests__', 'public']);
+const SKIP_DIRS = new Set(['node_modules', '.next', '.toon', '.git', '__tests__', 'public']);
 const CODE_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx', '.mjs']);
 
 // ── File walker ─────────────────────────────────────────────────────────────
@@ -214,6 +214,6 @@ const lines = [
 
 fs.writeFileSync(OUT, lines.join('\n'));
 
-console.log(`✓ CODEGRAPH_REPORT.md written → graphify-out/`);
+console.log(`✓ CODEGRAPH_REPORT.md written → .toon/codegraph/`);
 console.log(`  ${allFiles.length} files · ${totalEdges} edges · ${hubs.length} hubs · ${apiRoutes.length} API routes · ${orphans.length} orphans`);
 if (cycles.length > 0) console.warn(`  ⚠️  ${cycles.length} circular dependencies detected — see report`);

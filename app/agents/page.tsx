@@ -16,7 +16,6 @@ interface AgentOpsAgent {
 }
 interface ActivityEntry { time: string; agent: string; task: string; tokens: number; duration: string; status: string }
 interface AgentOpsData { agents: AgentOpsAgent[]; departments: { name: string; agentCount: number; skillsTotal: number }[]; skillsTotal: number; activity: ActivityEntry[] }
-interface DemoData extends AgentOpsData { tokenBurnData: TokenBurnData; projectHealthData: ProjectHealthData }
 
 type TabKey = 'burn' | 'health' | 'ops'
 
@@ -56,24 +55,27 @@ export default function AgentsPage() {
   const [saveMsg, setSaveMsg] = useState('')
 
   // ─── Data loader ───────────────────────────────────────────────────────────
+
   useEffect(() => {
-    const isDev = process.env.NODE_ENV === 'development'
-
-    if (isDev) {
-      import('@/feed-data/agents').then(mod => {
-        const demo = mod.default as DemoData
-        setOpsData({ agents: demo.agents, departments: demo.departments, skillsTotal: demo.skillsTotal, activity: demo.activity })
-        setBurnData(demo.tokenBurnData)
-        setHealthData(demo.projectHealthData)
-        setLoading(false)
-      }).catch(() => setLoading(false))
-      return
-    }
-
-    // Production: live data from Supabase-backed APIs
     let settled = 0
     const done = () => { settled++; if (settled >= 2) setLoading(false) }
 
+    // Default fallback data (empty arrays, zero values) — always have something to show
+    const defaultBurn: TokenBurnData = {
+      tokenUsage: [], costByDept: [], costTrend: [], perAgentBurn: [], providerHealth: []
+    }
+    const defaultHealth: ProjectHealthData = {
+      kpi: { toonAvg: 94, bundleSize: 0, apiSuccess: 99, issuesOpen: 0, issuesCritical: 0 },
+      toonQuality: [], savingsTrend: [],
+      topKMatch: { chunksMatched: 0, chunksInjected: 0, l1: 0, l2: 0, ref: 0 },
+      codebase: { lastCompile: '—', duration: '—', files: 0, chunks: 0, terms: 0, bpe: 0, corpusSize: '—', compressedSize: '—', compressionPercent: 0, delta: '—', tsErrors: 0 },
+      apiHealth: { status200: 99, status400: 1, status500: 0, total24h: 0, errors: 0, topError: '' },
+      promptQuality: { avgContext: '—', avgInjected: '—', reduction: 0, cacheHits: 0, bestAgent: '—', worstAgent: '—' },
+      issues: [], docCoverage: []
+    }
+    const defaultOps: AgentOpsData = { agents: [], departments: [], skillsTotal: 0, activity: [] }
+
+    // Always fetch real data — both APIs work in dev and production
     // Token Burn + Project Health from /api/yvon-dashboard-stats
     fetch('/api/yvon-dashboard-stats').then(r => r.json()).then(d => {
       if (!d.error) {
@@ -85,26 +87,28 @@ export default function AgentsPage() {
           providerHealth: d.providerHealth || [],
         })
         setHealthData({
-          kpi: { toonAvg: d.toonAvg || 94, bundleSize: d.bundleSize || 208, apiSuccess: d.apiSuccess || 99, issuesOpen: 3, issuesCritical: 0 },
+          kpi: { toonAvg: d.toonAvg || 94, bundleSize: d.bundleSize || 0, apiSuccess: d.apiSuccess || 99, issuesOpen: d.issuesOpen ?? 0, issuesCritical: d.issuesCritical ?? 0 },
           toonQuality: d.toonQuality || [],
           savingsTrend: d.savingsTrend || [],
-          topKMatch: { chunksMatched: d.chunksMatched || 4, chunksInjected: d.chunksInjected || 4, l1: 82, l2: 14, ref: 4 },
+          topKMatch: { chunksMatched: d.chunksMatched || 0, chunksInjected: d.chunksInjected || 0, l1: 0, l2: 0, ref: 0 },
           codebase: { lastCompile: d.lastCompile || '—', duration: d.compileDuration || '—', files: d.files || 0, chunks: d.chunks || 0, terms: d.terms || 0, bpe: 0, corpusSize: d.corpusSize || '—', compressedSize: d.compressedSize || '—', compressionPercent: d.compressionPct || 0, delta: '—', tsErrors: d.tsErrors || 0 },
-          apiHealth: { status200: 99, status400: 1, status500: 0, total24h: 0, errors: 0, topError: '' },
-          promptQuality: { avgContext: '—', avgInjected: '—', reduction: 0, cacheHits: 62, bestAgent: '—', worstAgent: '—' },
-          issues: [], docCoverage: [],
+          apiHealth: { status200: d.api200 || 99, status400: d.api400 || 1, status500: d.api500 || 0, total24h: d.apiTotal || 0, errors: d.apiErrors || 0, topError: d.topError || '' },
+          promptQuality: { avgContext: '—', avgInjected: '—', reduction: 0, cacheHits: 0, bestAgent: '—', worstAgent: '—' },
+          issues: d.issues || [], docCoverage: d.docCoverage || [],
         })
+      } else {
+        setBurnData(defaultBurn)
+        setHealthData(defaultHealth)
       }
       done()
-    }).catch(() => done())
+    }).catch(() => { setBurnData(defaultBurn); setHealthData(defaultHealth); done() })
 
-    // Agent Ops from /api/agent-ops
+    // Agent Ops from /api/agent-ops (reads .toon/ filesystem + Supabase)
     fetch('/api/agent-ops').then(r => r.json()).then(d => {
-      if (!d.error && d.agents) {
-        setOpsData(d)
-      }
+      if (!d.error && d.agents) setOpsData(d)
+      else setOpsData(defaultOps)
       done()
-    }).catch(() => done())
+    }).catch(() => { setOpsData(defaultOps); done() })
   }, [])
 
   // ─── Configure handlers ───────────────────────────────────────────────

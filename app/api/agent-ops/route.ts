@@ -21,7 +21,7 @@ interface ActivityEntry {
 }
 
 function scanAgents(): { agents: AgentOpsAgent[]; departments: { name: string; agentCount: number; skillsTotal: number }[]; skillsTotal: number } {
-  const agentDeptPath = join(process.cwd(), '.toon', 'memory', 'agent-department')
+  const agentDeptPath = join(process.cwd(), '.toon', 'agents')
   const agents: AgentOpsAgent[] = []
   const deptMap = new Map<string, { agentCount: number; skillsTotal: number }>()
 

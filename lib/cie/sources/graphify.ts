@@ -13,7 +13,7 @@ import type { GraphifyCommunity } from '../types'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const REPORT_PATH = resolve('/root/yvon/.toon/graphs/GRAPH_REPORT.md')
+const REPORT_PATH = resolve('/root/yvon/.toon/graphify/GRAPH_REPORT.md')
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

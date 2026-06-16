@@ -190,7 +190,7 @@ const ID_TO_DIR: Record<string, string> = {
 
 function scanAgent(def: AgentDef): OrgChartAgent {
   const dirName = ID_TO_DIR[def.id] || def.id
-  const basePath = join(process.cwd(), '.toon', 'memory', 'agent-department')
+  const basePath = join(process.cwd(), '.toon', 'agents')
   const agentPath = join(basePath, def.department, dirName)
 
   let skillsCount = 0

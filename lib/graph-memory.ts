@@ -15,7 +15,7 @@ import { resolve, relative, sep } from 'path'
 
 const SKIP_DIRS = new Set([
   'node_modules', '.git', '.dart_tool', 'build', '.next', 'dist',
-  '.idea', '.vscode', 'android', 'ios', '.toon/graphs', '.code-review-graph',
+  '.idea', '.vscode', 'android', 'ios', '.toon/codegraph', '.toon/graphify', '.code-review-graph',
 ])
 const CODE_EXT = /\.(dart|kt|kts|java|swift|ts|tsx|js|jsx|py|go|rb|rs|c|cc|cpp|h|hpp|cs|php|vue|svelte)$/i
 const MAX_FILES = 4000

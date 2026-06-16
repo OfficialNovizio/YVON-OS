@@ -14,8 +14,8 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
-const GRAPH_JSON = path.join(ROOT, 'graphify-out', 'graph.json');
-const REPORT_OUT = path.join(ROOT, 'graphify-out', 'GRAPH_REPORT.md');
+const GRAPH_JSON = path.join(ROOT, '.toon', 'graphify', 'graph.json');
+const REPORT_OUT = path.join(ROOT, '.toon', 'graphify', 'GRAPH_REPORT.md');
 
 if (!fs.existsSync(GRAPH_JSON)) {
   console.error('graph.json not found — run graphify:build first');
@@ -164,7 +164,7 @@ const lines = [
   '',
   '## Codegraph (Import Dependency Map)',
   '',
-  'See `graphify-out/CODEGRAPH_REPORT.md` for file-level import analysis.',
+  'See `.toon/codegraph/CODEGRAPH_REPORT.md` for file-level import analysis.',
   'Rebuild: `npm run codegraph:build`',
 ];
 
