@@ -1,8 +1,6 @@
 // GET /api/org-chart
-// Returns real agent org structure from the .toon/ filesystem.
-// Groups agents into 4 tiers + workshop connections to /skill-workshop.
-//
-// Data source: .toon/memory/agent-department/* (same as /api/agent-ops)
+// Returns the full agent company hierarchy as a proper org tree.
+// 24 agents · 8 departments · reporting lines · flat department tiers
 
 import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
@@ -12,18 +10,28 @@ import { join } from 'path'
 
 export interface OrgChartAgent {
   id: string; name: string; role: string; department: string
-  color: string; initials: string
-  workspaceTags: string[]; status: 'active' | 'idle' | 'offline'
-  reportsTo: string; memoryAccess: string
+  color: string; initials: string; status: string
   skillsCount: number; memoryHealth: number; level: number
+  reportsTo: string; memoryAccess: string
+  workspaceTags: string[]
+}
+
+export interface OrgChartNode {
+  agent: OrgChartAgent
+  children: OrgChartNode[]
 }
 
 export interface OrgChartTier {
-  title: string; sub: string; agents: OrgChartAgent[]
+  title: string; sub: string
+  agents: OrgChartAgent[]         // flat list for card view
+  nodes?: OrgChartNode[]           // optional tree for expandable view
 }
 
 export interface OrgChartResponse {
-  tiers: OrgChartTier[]; totalAgents: number; departments: number
+  tree: OrgChartNode               // full hierarchy tree
+  tiers: OrgChartTier[]             // department-grouped tiers
+  totalAgents: number
+  departments: number
   workshops: WorkshopInfo[]
 }
 
@@ -32,230 +40,330 @@ export interface WorkshopInfo {
   improving: string; agentIds: string[]
 }
 
-// ─── Department colors ────────────────────────────────────────────────────────
+// ─── Colors ───────────────────────────────────────────────────────────────────
 
 const DEPT_COLORS: Record<string, string> = {
-  CEO: '#abc7ff', COO: '#5ee0ff', Command: '#abc7ff',
+  CEO: '#abc7ff', COO: '#5ee0ff', Command: '#c084fc',
   Technical: '#9db5e7', Marketing: '#5fd0b4',
-  Finance: '#8b919f', Legal: '#f59e0b',
-  Psychology: '#ffb693', Research: '#c084fc', Sense: '#34d399',
+  Finance: '#fbbf24', Legal: '#f59e0b',
+  Psychology: '#ffb693', Research: '#a78bfa', Sense: '#34d399',
 }
 
-const DEPT_REPORTS_TO: Record<string, string> = {
-  CEO: 'You', COO: 'Marcus', Command: 'Marcus',
-  Technical: 'Diana', Marketing: 'Diana',
-  Finance: 'Diana', Legal: 'Marcus',
-  Psychology: 'Marcus', Research: 'Kai', Sense: 'Dev',
+// ─── Department config (display name, subtitle) ──────────────────────────────
+
+const DEPT_META: Record<string, { label: string; sub: string }> = {
+  Executive:   { label: 'Executive Office',    sub: 'CEO · COO — serves you directly' },
+  Governance:  { label: 'Governance',          sub: 'Board oversight & risk thresholds' },
+  Technical:   { label: 'Technology',          sub: 'Everything that ships — build, deploy, QA' },
+  Marketing:   { label: 'Marketing & Growth',  sub: 'Revenue, brand, content, growth' },
+  Finance:     { label: 'Finance',             sub: 'Financial intelligence & planning' },
+  Legal:       { label: 'Legal & Compliance',  sub: 'Compliance, contracts, guard rails' },
+  Psychology:  { label: 'Psychology',          sub: 'Behavioral validation & cognitive bias review' },
+  Research:    { label: 'Research',            sub: 'Deep research, synthesis, fact-checking' },
+  Sense:       { label: 'Sense & Monitoring',  sub: 'Detection, reconnaissance, tooling' },
 }
 
-const DEPT_MEMORY: Record<string, string> = {
-  CEO: 'full — cross-workspace', COO: 'full — cross-workspace',
-  Command: 'full — cross-workspace',
-  Technical: 'workspace + cross-WS', Marketing: 'workspace-scoped',
-  Finance: 'full — cross-workspace', Legal: 'workspace-scoped',
-  Psychology: 'full — cross-workspace', Research: 'workspace-scoped',
-  Sense: 'workspace-scoped',
+// ─── Agent registry — every agent with full metadata ─────────────────────────
+
+interface AgentDef {
+  id: string; name: string; role: string; department: string
+  reportsTo: string; memoryAccess: string
+  workspaceTags: string[]; level: number; status: string
 }
 
-const WORKSPACE_TAGS: Record<string, string[]> = {
-  CEO: ['all'], COO: ['all'], Command: ['all'],
-  Technical: ['all'], Finance: ['all'], Legal: ['all'],
-  Psychology: ['all'], Sense: ['all'],
-  Marketing: ['novizio', 'hourbour'],
-  Research: ['novizio', 'hourbour'],
-}
+const ALL_AGENTS: AgentDef[] = [
+  // ── EXECUTIVE ──
+  { id: 'marcus', name: 'Marcus', role: 'CEO', department: 'CEO',
+    reportsTo: 'You', memoryAccess: 'full — cross-workspace',
+    workspaceTags: ['all'], level: 1, status: 'active' },
+  { id: 'diana', name: 'Diana', role: 'COO', department: 'COO',
+    reportsTo: 'Marcus', memoryAccess: 'full — cross-workspace',
+    workspaceTags: ['all'], level: 1, status: 'active' },
 
-// ─── Workshop definitions ─────────────────────────────────────────────────────
+  // ── GOVERNANCE ──
+  { id: 'board', name: 'Board', role: 'Board of Directors', department: 'Command',
+    reportsTo: 'You', memoryAccess: 'oversight — cross-workspace',
+    workspaceTags: ['all'], level: 0, status: 'active' },
+
+  // ── TECHNICAL ──
+  { id: 'dev', name: 'Dev', role: 'Lead Developer', department: 'Technical',
+    reportsTo: 'Diana', memoryAccess: 'workspace + cross-WS',
+    workspaceTags: ['all'], level: 3, status: 'active' },
+  { id: 'raj', name: 'Raj', role: 'Backend Engineer', department: 'Technical',
+    reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+  { id: 'mia', name: 'Mia', role: 'Frontend Engineer', department: 'Technical',
+    reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+  { id: 'quinn', name: 'Quinn', role: 'QA Engineer', department: 'Technical',
+    reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS',
+    workspaceTags: ['all'], level: 2, status: 'idle' },
+
+  // ── MARKETING ──
+  { id: 'lena', name: 'Lena', role: 'Brand Strategist', department: 'Marketing',
+    reportsTo: 'Diana', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 3, status: 'active' },
+  { id: 'kai', name: 'Kai', role: 'Analyst', department: 'Marketing',
+    reportsTo: 'Lena', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 3, status: 'active' },
+  { id: 'rio', name: 'Rio', role: 'Ads Manager', department: 'Marketing',
+    reportsTo: 'Lena', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'active' },
+  { id: 'nate', name: 'Nate', role: 'Growth Hacker', department: 'Marketing',
+    reportsTo: 'Lena', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'active' },
+  { id: 'atlas', name: 'Atlas', role: 'Art Director', department: 'Marketing',
+    reportsTo: 'Lena', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'active' },
+  { id: 'pixel', name: 'Pixel', role: 'Production Artist', department: 'Marketing',
+    reportsTo: 'Atlas', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'idle' },
+
+  // ── FINANCE ──
+  { id: 'felix', name: 'Felix', role: 'Financial Intelligence', department: 'Finance',
+    reportsTo: 'Diana', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 3, status: 'active' },
+
+  // ── LEGAL ──
+  { id: 'comply', name: 'Comply', role: 'Compliance Officer', department: 'Legal',
+    reportsTo: 'Diana', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'active' },
+  { id: 'guard', name: 'Guard', role: 'Legal Guardian', department: 'Legal',
+    reportsTo: 'Comply', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'active' },
+  { id: 'docs', name: 'Docs', role: 'Documentation & Contracts', department: 'Legal',
+    reportsTo: 'Comply', memoryAccess: 'workspace-scoped',
+    workspaceTags: ['novizio', 'hourbour'], level: 2, status: 'active' },
+
+  // ── PSYCHOLOGY ──
+  { id: 'Daniel_Kahneman', name: 'Kahneman', role: 'Cognitive Bias Validator', department: 'Psychology',
+    reportsTo: 'Diana', memoryAccess: 'cross-workspace validator',
+    workspaceTags: ['all'], level: 3, status: 'active' },
+
+  // ── RESEARCH ──
+  { id: 'depth', name: 'Depth', role: 'Deep Researcher', department: 'Research',
+    reportsTo: 'Diana', memoryAccess: 'cross-workspace',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+  { id: 'synth', name: 'Synth', role: 'Synthesis', department: 'Research',
+    reportsTo: 'Depth', memoryAccess: 'cross-workspace',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+  { id: 'vette', name: 'Vette', role: 'Fact-Checker', department: 'Research',
+    reportsTo: 'Depth', memoryAccess: 'cross-workspace',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+
+  // ── SENSE ──
+  { id: 'forge', name: 'Forge', role: 'Toolsmith', department: 'Sense',
+    reportsTo: 'Diana', memoryAccess: 'cross-workspace',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+  { id: 'radar', name: 'Radar', role: 'Monitoring', department: 'Sense',
+    reportsTo: 'Forge', memoryAccess: 'cross-workspace',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+  { id: 'scout', name: 'Scout', role: 'Reconnaissance', department: 'Sense',
+    reportsTo: 'Forge', memoryAccess: 'cross-workspace',
+    workspaceTags: ['all'], level: 2, status: 'active' },
+]
+
+// ─── Workshops ────────────────────────────────────────────────────────────────
 
 const WORKSHOPS: WorkshopInfo[] = [
-  { id: 'william', name: "William's Workshop", icon: '✍️', color: '#a78bfa', improving: 'Copywriting & brand voice', agentIds: ['lena', 'rio', 'nate'] },
-  { id: 'leonardo', name: "Leonardo's Workshop", icon: '🎨', color: '#f472b6', improving: 'Image generation & brand kit', agentIds: ['atlas', 'pixel', 'mia'] },
-  { id: 'isaac', name: "Isaac's Workshop", icon: '🔬', color: '#34d399', improving: 'Research quality & sources', agentIds: ['kai', 'depth', 'synth', 'vette'] },
-  { id: 'nexus', name: "Nexus's Workshop", icon: '💻', color: '#60a5fa', improving: 'Code quality & PR reviews', agentIds: ['dev', 'raj', 'quinn'] },
-  { id: 'lena-ws', name: "Lena's Workshop", icon: '💫', color: '#fbbf24', improving: 'Brand strategy & tone', agentIds: ['lena', 'diana'] },
-  { id: 'kai-ws', name: "Kai's Workshop", icon: '📊', color: '#fb923c', improving: 'Analytics & intelligence', agentIds: ['kai', 'felix'] },
+  { id: 'william', name: "William's Workshop", icon: '✍️', color: '#a78bfa',
+    improving: 'Copywriting & brand voice', agentIds: ['lena', 'rio', 'nate'] },
+  { id: 'leonardo', name: "Leonardo's Workshop", icon: '🎨', color: '#f472b6',
+    improving: 'Image generation & brand kit', agentIds: ['atlas', 'pixel', 'mia'] },
+  { id: 'isaac', name: "Isaac's Workshop", icon: '🔬', color: '#34d399',
+    improving: 'Research quality & sources', agentIds: ['kai', 'depth', 'synth', 'vette'] },
+  { id: 'nexus', name: "Nexus's Workshop", icon: '💻', color: '#60a5fa',
+    improving: 'Code quality & PR reviews', agentIds: ['dev', 'raj', 'quinn'] },
+  { id: 'lena-ws', name: "Lena's Workshop", icon: '💫', color: '#fbbf24',
+    improving: 'Brand strategy & tone', agentIds: ['lena', 'diana'] },
+  { id: 'kai-ws', name: "Kai's Workshop", icon: '📊', color: '#fb923c',
+    improving: 'Analytics & intelligence', agentIds: ['kai', 'felix'] },
 ]
 
-// ─── Tier definitions — which departments go where ────────────────────────────
+// ─── Filesystem scanner ───────────────────────────────────────────────────────
 
-const TIER_MAP: Record<string, number> = {
-  CEO: 0, COO: 0, Command: 0,           // Personal Layer
-  Technical: 1,                           // Workspace Masters
-  Marketing: 2,                           // Venture Teams
-  Finance: 3, Legal: 3, Psychology: 3, Research: 3, Sense: 3, // Specialized
+// Agent ID → directory name (some folders use full names)
+const ID_TO_DIR: Record<string, string> = {
+  Daniel_Kahneman: 'Daniel_Kahneman',
+  // most agents use short IDs matching their directory name
 }
 
-const TIER_LABELS = [
-  { title: 'Personal Layer', sub: 'Serves you directly · cross-workspace' },
-  { title: 'Workspace Masters', sub: 'Shared masters · serve every workspace' },
-  { title: 'Venture Teams', sub: 'Per-workspace teams · marketing & growth' },
-  { title: 'Specialized', sub: 'Finance, Legal, Research, Psychology, Sense' },
-]
+function scanAgent(def: AgentDef): OrgChartAgent {
+  const dirName = ID_TO_DIR[def.id] || def.id
+  const basePath = join(process.cwd(), '.toon', 'memory', 'agent-department')
+  const agentPath = join(basePath, def.department, dirName)
 
-// ─── Fallback data (used when .toon filesystem is not available) ─────────────
-
-const FALLBACK_TIERS: OrgChartTier[] = [
-  {
-    title: 'Personal Layer', sub: 'Serves you directly · cross-workspace',
-    agents: [
-      { id: 'marcus', name: 'Marcus', role: 'CEO', department: 'CEO', color: '#abc7ff', initials: 'MC', workspaceTags: ['all'], status: 'active', reportsTo: 'You', memoryAccess: 'full — cross-workspace', skillsCount: 14, memoryHealth: 41, level: 1 },
-      { id: 'diana', name: 'Diana', role: 'COO', department: 'COO', color: '#5ee0ff', initials: 'DC', workspaceTags: ['all'], status: 'active', reportsTo: 'Marcus', memoryAccess: 'full — cross-workspace', skillsCount: 23, memoryHealth: 35, level: 1 },
-    ],
-  },
-  {
-    title: 'Workspace Masters', sub: 'Shared masters · serve every workspace',
-    agents: [
-      { id: 'dev', name: 'Dev', role: 'Lead Developer', department: 'Technical', color: '#9db5e7', initials: 'DV', workspaceTags: ['all'], status: 'active', reportsTo: 'Diana', memoryAccess: 'workspace + cross-WS', skillsCount: 22, memoryHealth: 24, level: 3 },
-      { id: 'raj', name: 'Raj', role: 'Backend Engineer', department: 'Technical', color: '#9db5e7', initials: 'RJ', workspaceTags: ['all'], status: 'active', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 15, memoryHealth: 24, level: 2 },
-      { id: 'mia', name: 'Mia', role: 'Frontend Engineer', department: 'Technical', color: '#9db5e7', initials: 'MI', workspaceTags: ['all'], status: 'active', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 17, memoryHealth: 27, level: 2 },
-      { id: 'quinn', name: 'Quinn', role: 'QA Engineer', department: 'Technical', color: '#9db5e7', initials: 'QN', workspaceTags: ['all'], status: 'idle', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 17, memoryHealth: 18, level: 2 },
-    ],
-  },
-  {
-    title: 'Venture Teams', sub: 'Per-workspace teams · marketing & growth',
-    agents: [
-      { id: 'kai', name: 'Kai', role: 'Analyst', department: 'Marketing', color: '#5fd0b4', initials: 'KA', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 13, memoryHealth: 39, level: 3 },
-      { id: 'lena', name: 'Lena', role: 'Brand Strategist', department: 'Marketing', color: '#5fd0b4', initials: 'LN', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Diana', memoryAccess: 'workspace-scoped', skillsCount: 14, memoryHealth: 34, level: 3 },
-      { id: 'rio', name: 'Rio', role: 'Ads Manager', department: 'Marketing', color: '#5ee0ff', initials: 'RO', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 14, memoryHealth: 19, level: 2 },
-      { id: 'nate', name: 'Nate', role: 'Growth Hacker', department: 'Marketing', color: '#5ee0ff', initials: 'NT', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 11, memoryHealth: 32, level: 2 },
-      { id: 'atlas', name: 'Atlas', role: 'Art Director', department: 'Marketing', color: '#c08bff', initials: 'AT', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 13, memoryHealth: 16, level: 2 },
-      { id: 'pixel', name: 'Pixel', role: 'Production', department: 'Marketing', color: '#c08bff', initials: 'PX', workspaceTags: ['novizio', 'hourbour'], status: 'idle', reportsTo: 'Atlas', memoryAccess: 'workspace-scoped', skillsCount: 12, memoryHealth: 15, level: 2 },
-    ],
-  },
-]
-
-// ─── Scanner ──────────────────────────────────────────────────────────────────
-
-function scanAgents(): OrgChartAgent[] {
-  const agentDeptPath = join(process.cwd(), '.toon', 'memory', 'agent-department')
-  const agents: OrgChartAgent[] = []
-
-  if (!existsSync(agentDeptPath)) return agents
-
-  const depts = readdirSync(agentDeptPath, { withFileTypes: true }).filter(d => d.isDirectory())
-
-  for (const dept of depts) {
-    const deptPath = join(agentDeptPath, dept.name)
-    const agentDirs = readdirSync(deptPath, { withFileTypes: true }).filter(a => {
-      // Skip special directories that aren't agents
-      if (a.name === 'docs' || a.name === 'shared') return false
-      return a.isDirectory()
-    })
-
-    for (const agentDir of agentDirs) {
-      const agentPath = join(deptPath, agentDir.name)
-      const manifestPath = join(agentPath, 'manifest.toon')
-      const skillsDir = join(agentPath, 'skills')
-      const memoryPath = join(agentPath, 'MEMORY.md')
-
-      let role = '', level = 1
-      if (existsSync(manifestPath)) {
-        try {
-          const content = readFileSync(manifestPath, 'utf-8')
-          const roleMatch = content.match(/title:\s*(.+)/)
-          const levelMatch = content.match(/level:\s*(\d+)/)
-          if (roleMatch) role = roleMatch[1].trim()
-          if (levelMatch) level = parseInt(levelMatch[1])
-        } catch {}
-      }
-
-      // Count skills
-      let skillsCount = 0
-      if (existsSync(skillsDir)) {
-        function countSkills(dir: string) {
-          if (!existsSync(dir)) return
-          for (const entry of readdirSync(dir, { withFileTypes: true })) {
-            if (entry.isDirectory()) {
-              if (existsSync(join(dir, entry.name, 'SKILL.md'))) skillsCount++
-              countSkills(join(dir, entry.name))
-            }
+  let skillsCount = 0
+  if (existsSync(agentPath)) {
+    const skillsDir = join(agentPath, 'skills')
+    if (existsSync(skillsDir)) {
+      function countSkills(dir: string) {
+        if (!existsSync(dir)) return
+        for (const entry of readdirSync(dir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            if (existsSync(join(dir, entry.name, 'SKILL.md'))) skillsCount++
+            countSkills(join(dir, entry.name))
           }
         }
-        countSkills(skillsDir)
       }
-
-      // Memory health
-      let memoryHealth = 0
-      if (existsSync(memoryPath)) {
-        try {
-          const kb = statSync(memoryPath).size / 1024
-          memoryHealth = Math.min(100, Math.round((kb / 20) * 100))
-        } catch {}
-      }
-
-      const name = agentDir.name.charAt(0).toUpperCase() + agentDir.name.slice(1)
-      const deptName = dept.name
-
-      agents.push({
-        id: agentDir.name,
-        name,
-        role: role || deptName,
-        department: deptName,
-        color: DEPT_COLORS[deptName] || '#8b919f',
-        initials: name.length > 3 ? name.slice(0, 2).toUpperCase() : name.slice(0, 2),
-        workspaceTags: WORKSPACE_TAGS[deptName] || ['all'],
-        status: 'idle',
-        reportsTo: DEPT_REPORTS_TO[deptName] || 'Marcus',
-        memoryAccess: DEPT_MEMORY[deptName] || 'workspace-scoped',
-        skillsCount,
-        memoryHealth,
-        level,
-      })
+      countSkills(skillsDir)
     }
   }
 
-  return agents
+  let memoryHealth = 0
+  if (existsSync(agentPath)) {
+    const memPath = join(agentPath, 'MEMORY.md')
+    if (existsSync(memPath)) {
+      try {
+        const kb = statSync(memPath).size / 1024
+        memoryHealth = Math.min(100, Math.round((kb / 20) * 100))
+      } catch {}
+    }
+  }
+
+  // Override role/level from manifest if available
+  let role = def.role, level = def.level
+  if (existsSync(agentPath)) {
+    const manifestPath = join(agentPath, 'manifest.toon')
+    if (existsSync(manifestPath)) {
+      try {
+        const content = readFileSync(manifestPath, 'utf-8')
+        const roleMatch = content.match(/title:\s*(.+)/)
+        const levelMatch = content.match(/level:\s*(\d+)/)
+        if (roleMatch && roleMatch[1].trim() !== '--') role = roleMatch[1].trim()
+        if (levelMatch) level = parseInt(levelMatch[1])
+      } catch {}
+    }
+  }
+
+  return {
+    id: def.id, name: def.name, role, department: def.department,
+    color: DEPT_COLORS[def.department] || '#8b919f',
+    initials: def.name.length > 3 ? def.name.slice(0, 2).toUpperCase() : def.name.slice(0, 2).toUpperCase(),
+    skillsCount, memoryHealth, level,
+    status: def.status, reportsTo: def.reportsTo,
+    memoryAccess: def.memoryAccess, workspaceTags: def.workspaceTags,
+  }
+}
+
+// ─── Tree builder ─────────────────────────────────────────────────────────────
+
+function buildFullTree(): { tree: OrgChartNode; allAgents: OrgChartAgent[] } {
+  // Fresh maps on every call — no module-level state accumulation
+  const agentMap = new Map<string, OrgChartAgent>()
+  const childrenMap = new Map<string, string[]>()
+
+  for (const def of ALL_AGENTS) {
+    const agent = scanAgent(def)
+    agentMap.set(def.id, agent)
+
+    const parentId = def.reportsTo === 'You' ? 'root' : def.reportsTo.toLowerCase()
+    if (!childrenMap.has(parentId)) childrenMap.set(parentId, [])
+    childrenMap.get(parentId)!.push(def.id)
+  }
+
+  // Recursively build tree nodes
+  function buildNode(id: string): OrgChartNode | null {
+    const agent = agentMap.get(id)
+    if (!agent) return null
+
+    const childIds = childrenMap.get(id) || []
+    const children = childIds
+      .map(cid => buildNode(cid))
+      .filter(Boolean) as OrgChartNode[]
+
+    return { agent, children }
+  }
+
+  const marcusNode = buildNode('marcus')!
+  const boardAgent = agentMap.get('board')
+
+  // Collect all unique agents from the tree + board
+  const allAgents: OrgChartAgent[] = []
+
+  function collectAll(node: OrgChartNode) {
+    allAgents.push(node.agent)
+    for (const child of node.children) collectAll(child)
+  }
+  collectAll(marcusNode)
+
+  // Board is a peer of Marcus at root level
+  if (boardAgent) allAgents.push(boardAgent)
+
+  return { tree: marcusNode, allAgents }
+}
+
+// ─── Tier builder (flat department groups) ────────────────────────────────────
+
+// Grouping: which departments map to which display tiers
+const TIER_GROUPS: { tierId: string; depts: string[] }[] = [
+  { tierId: 'Executive',  depts: ['CEO', 'COO'] },
+  { tierId: 'Governance', depts: ['Command'] },
+  { tierId: 'Technical',  depts: ['Technical'] },
+  { tierId: 'Marketing',  depts: ['Marketing'] },
+  { tierId: 'Finance',    depts: ['Finance'] },
+  { tierId: 'Legal',      depts: ['Legal'] },
+  { tierId: 'Psychology', depts: ['Psychology'] },
+  { tierId: 'Research',   depts: ['Research'] },
+  { tierId: 'Sense',      depts: ['Sense'] },
+]
+
+function buildTiers(agents: OrgChartAgent[]): OrgChartTier[] {
+  const tiers: OrgChartTier[] = []
+
+  for (const group of TIER_GROUPS) {
+    const tierAgents = agents.filter(a => group.depts.includes(a.department))
+    if (tierAgents.length === 0) continue
+
+    const meta = DEPT_META[group.tierId] || { label: group.tierId, sub: '' }
+    tiers.push({
+      title: meta.label,
+      sub: `${meta.sub} · ${tierAgents.length} agent${tierAgents.length !== 1 ? 's' : ''}`,
+      agents: tierAgents,
+    })
+  }
+
+  return tiers
+}
+
+// ─── Fallback (when filesystem scan fails) ────────────────────────────────────
+
+function buildFallbackAgents(): OrgChartAgent[] {
+  return ALL_AGENTS.map(def => ({
+    id: def.id, name: def.name, role: def.role, department: def.department,
+    color: DEPT_COLORS[def.department] || '#8b919f',
+    initials: def.name.length > 3 ? def.name.slice(0, 2).toUpperCase() : def.name.slice(0, 2).toUpperCase(),
+    skillsCount: 0, memoryHealth: 50, level: def.level,
+    status: def.status, reportsTo: def.reportsTo,
+    memoryAccess: def.memoryAccess, workspaceTags: def.workspaceTags,
+  }))
 }
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 
 export async function GET(): Promise<Response> {
   try {
-    const allAgents = scanAgents()
+    const { tree, allAgents } = buildFullTree()
 
-    // Fallback: if filesystem scan finds nothing, return static mock data
-    // so the UI never shows "0 agents"
-    if (allAgents.length === 0) {
-      return NextResponse.json({
-        tiers: FALLBACK_TIERS,
-        totalAgents: 12,
-        departments: 4,
-        workshops: WORKSHOPS,
-      } as OrgChartResponse)
-    }
-
-    // Group into tiers
-    const tierBuckets: Map<number, OrgChartAgent[]> = new Map()
-    for (const a of allAgents) {
-      const t = TIER_MAP[a.department] ?? 3
-      if (!tierBuckets.has(t)) tierBuckets.set(t, [])
-      tierBuckets.get(t)!.push(a)
-    }
-
-    const tiers: OrgChartTier[] = []
-    for (let i = 0; i < TIER_LABELS.length; i++) {
-      const agents = tierBuckets.get(i) || []
-      if (agents.length > 0) {
-        tiers.push({ ...TIER_LABELS[i], agents })
-      }
-    }
-
-    // Workshop tier (displayed as a separate section on the page)
-    tiers.push({
-      title: 'Skill Workshops',
-      sub: 'Continuously improves the masters',
-      agents: [],
-    })
-
+    const tiers = buildTiers(allAgents)
     const departments = new Set(allAgents.map(a => a.department)).size
 
     return NextResponse.json({
+      tree,
       tiers,
       totalAgents: allAgents.length,
       departments,
       workshops: WORKSHOPS,
     } as OrgChartResponse)
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+    console.error('Org chart error:', err)
+    const fallbackAgents = buildFallbackAgents()
+    return NextResponse.json({
+      tree: { agent: fallbackAgents[0], children: [] },
+      tiers: buildTiers(fallbackAgents),
+      totalAgents: fallbackAgents.length,
+      departments: new Set(fallbackAgents.map(a => a.department)).size,
+      workshops: WORKSHOPS,
+    } as OrgChartResponse)
   }
 }

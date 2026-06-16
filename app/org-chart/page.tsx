@@ -4,39 +4,89 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { PageHeader, Card } from '@/components/ui'
 import { Modal } from '@/components/Modal'
-import { MessageSquare, Terminal, ArrowRight, Brain, Wrench } from 'lucide-react'
+import { MessageSquare, Terminal, ArrowRight, Brain, Wrench, ChevronRight, ChevronDown, Users } from 'lucide-react'
 import { useLiveData } from '@/lib/use-live-data'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import type { OrgChartAgent, OrgChartTier, WorkshopInfo } from '@/app/api/org-chart/route'
+import type { OrgChartAgent, OrgChartTier, OrgChartNode, WorkshopInfo } from '@/app/api/org-chart/route'
 
-// ── Fallback mock data (shows while API loads or on error) ────────────────
+// ── Full fallback mock — all 24 agents, 9 department tiers ────────────────
+
+const MOCK_AGENT = (id: string, name: string, role: string, dept: string, color: string,
+  reportsTo: string, mem: string, tags: string[], lvl: number, st: string, skills: number): OrgChartAgent => ({
+  id, name, role, department: dept, color,
+  initials: name.length > 3 ? name.slice(0, 2).toUpperCase() : name.slice(0, 2),
+  skillsCount: skills, memoryHealth: 50, level: lvl,
+  status: st, reportsTo, memoryAccess: mem, workspaceTags: tags,
+})
 
 const MOCK_TIERS: OrgChartTier[] = [
   {
-    title: 'Personal Layer', sub: 'Serves you directly · cross-workspace',
+    title: 'Executive Office', sub: 'CEO · COO — serves you directly · 2 agents',
     agents: [
-      { id: 'marcus', name: 'Marcus', role: 'CEO', department: 'CEO', color: '#abc7ff', initials: 'MC', workspaceTags: ['all'], status: 'active', reportsTo: 'You', memoryAccess: 'full — cross-workspace', skillsCount: 14, memoryHealth: 41, level: 1 },
-      { id: 'diana', name: 'Diana', role: 'COO', department: 'COO', color: '#5ee0ff', initials: 'DC', workspaceTags: ['all'], status: 'active', reportsTo: 'Marcus', memoryAccess: 'full — cross-workspace', skillsCount: 23, memoryHealth: 35, level: 1 },
+      MOCK_AGENT('marcus', 'Marcus', 'CEO', 'CEO', '#abc7ff', 'You', 'full — cross-workspace', ['all'], 1, 'active', 14),
+      MOCK_AGENT('diana', 'Diana', 'COO', 'COO', '#5ee0ff', 'Marcus', 'full — cross-workspace', ['all'], 1, 'active', 23),
     ],
   },
   {
-    title: 'Workspace Masters', sub: 'Shared masters · serve every workspace',
+    title: 'Governance', sub: 'Board oversight & risk thresholds · 1 agent',
     agents: [
-      { id: 'dev', name: 'Dev', role: 'Lead Developer', department: 'Technical', color: '#9db5e7', initials: 'DV', workspaceTags: ['all'], status: 'active', reportsTo: 'Diana', memoryAccess: 'workspace + cross-WS', skillsCount: 22, memoryHealth: 24, level: 3 },
-      { id: 'raj', name: 'Raj', role: 'Backend Engineer', department: 'Technical', color: '#9db5e7', initials: 'RJ', workspaceTags: ['all'], status: 'active', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 15, memoryHealth: 24, level: 2 },
-      { id: 'mia', name: 'Mia', role: 'Frontend Engineer', department: 'Technical', color: '#9db5e7', initials: 'MI', workspaceTags: ['all'], status: 'active', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 17, memoryHealth: 27, level: 2 },
-      { id: 'quinn', name: 'Quinn', role: 'QA Engineer', department: 'Technical', color: '#9db5e7', initials: 'QN', workspaceTags: ['all'], status: 'idle', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 17, memoryHealth: 18, level: 2 },
+      MOCK_AGENT('board', 'Board', 'Board of Directors', 'Command', '#c084fc', 'You', 'oversight — cross-workspace', ['all'], 0, 'active', 0),
     ],
   },
   {
-    title: 'Venture Teams', sub: 'Per-workspace teams · marketing & growth',
+    title: 'Technology', sub: 'Everything that ships — build, deploy, QA · 4 agents',
     agents: [
-      { id: 'kai', name: 'Kai', role: 'Analyst', department: 'Marketing', color: '#5fd0b4', initials: 'KA', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 13, memoryHealth: 39, level: 3 },
-      { id: 'lena', name: 'Lena', role: 'Brand Strategist', department: 'Marketing', color: '#5fd0b4', initials: 'LN', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Diana', memoryAccess: 'workspace-scoped', skillsCount: 14, memoryHealth: 34, level: 3 },
-      { id: 'rio', name: 'Rio', role: 'Ads Manager', department: 'Marketing', color: '#5ee0ff', initials: 'RO', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 14, memoryHealth: 19, level: 2 },
-      { id: 'nate', name: 'Nate', role: 'Growth Hacker', department: 'Marketing', color: '#5ee0ff', initials: 'NT', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 11, memoryHealth: 32, level: 2 },
-      { id: 'atlas', name: 'Atlas', role: 'Art Director', department: 'Marketing', color: '#c08bff', initials: 'AT', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 13, memoryHealth: 16, level: 2 },
-      { id: 'pixel', name: 'Pixel', role: 'Production', department: 'Marketing', color: '#c08bff', initials: 'PX', workspaceTags: ['novizio', 'hourbour'], status: 'idle', reportsTo: 'Atlas', memoryAccess: 'workspace-scoped', skillsCount: 12, memoryHealth: 15, level: 2 },
+      MOCK_AGENT('dev', 'Dev', 'Lead Developer', 'Technical', '#9db5e7', 'Diana', 'workspace + cross-WS', ['all'], 3, 'active', 22),
+      MOCK_AGENT('raj', 'Raj', 'Backend Engineer', 'Technical', '#9db5e7', 'Dev', 'workspace + cross-WS', ['all'], 2, 'active', 15),
+      MOCK_AGENT('mia', 'Mia', 'Frontend Engineer', 'Technical', '#9db5e7', 'Dev', 'workspace + cross-WS', ['all'], 2, 'active', 17),
+      MOCK_AGENT('quinn', 'Quinn', 'QA Engineer', 'Technical', '#9db5e7', 'Dev', 'workspace + cross-WS', ['all'], 2, 'idle', 17),
+    ],
+  },
+  {
+    title: 'Marketing & Growth', sub: 'Revenue, brand, content, growth · 6 agents',
+    agents: [
+      MOCK_AGENT('lena', 'Lena', 'Brand Strategist', 'Marketing', '#5fd0b4', 'Diana', 'workspace-scoped', ['novizio', 'hourbour'], 3, 'active', 14),
+      MOCK_AGENT('kai', 'Kai', 'Analyst', 'Marketing', '#5fd0b4', 'Lena', 'workspace-scoped', ['novizio', 'hourbour'], 3, 'active', 13),
+      MOCK_AGENT('rio', 'Rio', 'Ads Manager', 'Marketing', '#5ee0ff', 'Lena', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'active', 14),
+      MOCK_AGENT('nate', 'Nate', 'Growth Hacker', 'Marketing', '#5ee0ff', 'Lena', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'active', 11),
+      MOCK_AGENT('atlas', 'Atlas', 'Art Director', 'Marketing', '#c08bff', 'Lena', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'active', 13),
+      MOCK_AGENT('pixel', 'Pixel', 'Production Artist', 'Marketing', '#c08bff', 'Atlas', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'idle', 12),
+    ],
+  },
+  {
+    title: 'Finance', sub: 'Financial intelligence & planning · 1 agent',
+    agents: [
+      MOCK_AGENT('felix', 'Felix', 'Financial Intelligence', 'Finance', '#fbbf24', 'Diana', 'workspace-scoped', ['novizio', 'hourbour'], 3, 'active', 16),
+    ],
+  },
+  {
+    title: 'Legal & Compliance', sub: 'Compliance, contracts, guard rails · 3 agents',
+    agents: [
+      MOCK_AGENT('comply', 'Comply', 'Compliance Officer', 'Legal', '#f59e0b', 'Diana', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'active', 8),
+      MOCK_AGENT('guard', 'Guard', 'Legal Guardian', 'Legal', '#f59e0b', 'Comply', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'active', 6),
+      MOCK_AGENT('docs', 'Docs', 'Documentation & Contracts', 'Legal', '#f59e0b', 'Comply', 'workspace-scoped', ['novizio', 'hourbour'], 2, 'active', 5),
+    ],
+  },
+  {
+    title: 'Psychology', sub: 'Behavioral validation & cognitive bias review · 1 agent',
+    agents: [
+      MOCK_AGENT('Daniel_Kahneman', 'Kahneman', 'Cognitive Bias Validator', 'Psychology', '#ffb693', 'Diana', 'cross-workspace validator', ['all'], 3, 'active', 12),
+    ],
+  },
+  {
+    title: 'Research', sub: 'Deep research, synthesis, fact-checking · 3 agents',
+    agents: [
+      MOCK_AGENT('depth', 'Depth', 'Deep Researcher', 'Research', '#a78bfa', 'Diana', 'cross-workspace', ['all'], 2, 'active', 10),
+      MOCK_AGENT('synth', 'Synth', 'Synthesis', 'Research', '#a78bfa', 'Depth', 'cross-workspace', ['all'], 2, 'active', 8),
+      MOCK_AGENT('vette', 'Vette', 'Fact-Checker', 'Research', '#a78bfa', 'Depth', 'cross-workspace', ['all'], 2, 'active', 7),
+    ],
+  },
+  {
+    title: 'Sense & Monitoring', sub: 'Detection, reconnaissance, tooling · 3 agents',
+    agents: [
+      MOCK_AGENT('forge', 'Forge', 'Toolsmith', 'Sense', '#34d399', 'Diana', 'cross-workspace', ['all'], 2, 'active', 9),
+      MOCK_AGENT('radar', 'Radar', 'Monitoring', 'Sense', '#34d399', 'Forge', 'cross-workspace', ['all'], 2, 'active', 6),
+      MOCK_AGENT('scout', 'Scout', 'Reconnaissance', 'Sense', '#34d399', 'Forge', 'cross-workspace', ['all'], 2, 'active', 5),
     ],
   },
 ]
@@ -50,9 +100,9 @@ const MOCK_WORKSHOPS: WorkshopInfo[] = [
   { id: 'kai-ws', name: "Kai's Workshop", icon: '📊', color: '#fb923c', improving: 'Analytics & intelligence', agentIds: ['kai', 'felix'] },
 ]
 
-const MOCK_RESPONSE = { tiers: MOCK_TIERS, totalAgents: 12, departments: 4, workshops: MOCK_WORKSHOPS }
+const MOCK_RESPONSE = { tiers: MOCK_TIERS, totalAgents: 24, departments: 9, workshops: MOCK_WORKSHOPS, tree: null as any }
 
-// ── Status dot ────────────────────────────────────────────────────────
+// ── Status dot ────────────────────────────────────────────────────────────────
 
 const STATUS_DOT: Record<string, string> = {
   active: 'bg-emerald-400 shadow-[0_0_6px_rgba(74,222,128,0.5)]',
@@ -60,86 +110,128 @@ const STATUS_DOT: Record<string, string> = {
   offline: 'bg-neutral-600',
 }
 
-const WS_BORDER: Record<string, string> = {
-  novizio: 'border-l-[3px] border-l-[#a78bfa]',
-  hourbour: 'border-l-[3px] border-l-[#2dd4bf]',
+// ── Reporting line connector colors ──────────────────────────────────────────
+
+const REPORTING_COLORS: Record<string, string> = {
+  'You': '#ffffff',
+  'Marcus': '#abc7ff',
+  'Diana': '#5ee0ff',
+  'Dev': '#9db5e7',
+  'Lena': '#5fd0b4',
+  'Atlas': '#c08bff',
+  'Comply': '#f59e0b',
+  'Depth': '#a78bfa',
+  'Forge': '#34d399',
 }
 
-// ── Page ───────────────────────────────────────────────────────────────
+// ── Pages ─────────────────────────────────────────────────────────────────────
 
 export default function OrgChartPage() {
   const { workspace } = useWorkspace()
-  const activeVenture = workspace.key // 'novizio' | 'hourbour'
+  const activeVenture = workspace.key
+  const ventureLabel = workspace.name
   const [sel, setSel] = useState<OrgChartAgent | null>(null)
+  const [view, setView] = useState<'tiers' | 'tree'>('tiers')
 
   const { data, loading } = useLiveData<{
-    tiers: OrgChartTier[]; totalAgents: number; departments: number; workshops: WorkshopInfo[]
+    tiers: OrgChartTier[]; totalAgents: number; departments: number; workshops: WorkshopInfo[]; tree: OrgChartNode
   }>({
     url: '/api/org-chart',
     mockData: MOCK_RESPONSE,
   })
 
-  const rawTiers = data?.tiers ?? []
-  const rawWorkshops = data?.workshops ?? []
+  const tiers = data?.tiers ?? []
+  const workshops = data?.workshops ?? []
+  const totalAgents = data?.totalAgents ?? 0
   const departments = data?.departments ?? 0
+  const tree = data?.tree
 
-  // Filter agents by active venture
-  const ventureTiers = rawTiers
-    .filter(t => t.title === 'Venture Teams')
-    .map(t => ({
-      ...t,
-      agents: t.agents.filter(a =>
-        a.workspaceTags.includes('all') || a.workspaceTags.includes(activeVenture)
-      ),
-    }))
-    .filter(t => t.agents.length > 0)
+  // ── Agent card (shared) ──
 
-  // Non-venture tiers: show all (they're cross-workspace)
-  const mainTiers = rawTiers.filter(t => t.title !== 'Venture Teams' && t.title !== 'Skill Workshops')
-  const workshopTier = rawTiers.find(t => t.title === 'Skill Workshops')
-
-  // Count total visible agents
-  const allVisible = [
-    ...mainTiers.flatMap(t => t.agents),
-    ...ventureTiers.flatMap(t => t.agents),
-  ]
-  const totalAgents = allVisible.length
-
-  const ventureLabel = workspace.name // 'Novizio' | 'Hourbour'
-
-  function AgentCard({ agent }: { agent: OrgChartAgent }) {
+  function AgentCard({ agent, compact }: { agent: OrgChartAgent; compact?: boolean }) {
     return (
       <button
         onClick={() => setSel(agent)}
-        className="glass-card-hover flex items-center gap-2.5 rounded-xl border border-white/8 bg-white/[0.02] py-2 pl-2 pr-4"
+        className={`glass-card-hover flex items-center gap-2.5 rounded-xl border border-white/8 bg-white/[0.02] py-2 pl-2 pr-4 ${compact ? '!py-1.5 !pl-1.5 !pr-2.5' : ''}`}
       >
         <span
-          className="flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-bold text-black/80"
+          className={`flex items-center justify-center rounded-full text-[11px] font-bold text-black/80 ${compact ? 'h-6 w-6 !text-[9px]' : 'h-8 w-8'}`}
           style={{ background: agent.color }}
         >
           {agent.initials || agent.name.slice(0, 2)}
         </span>
         <span className="text-left">
           <span className="flex items-center gap-1.5">
-            <span className="block text-[12px] font-semibold text-on-surface">{agent.name}</span>
-            <span className={`inline-block w-1.5 h-1.5 rounded-full ${STATUS_DOT[agent.status]}`} />
+            <span className={`block font-semibold text-on-surface ${compact ? 'text-[11px]' : 'text-[12px]'}`}>{agent.name}</span>
+            <span className={`inline-block rounded-full ${STATUS_DOT[agent.status] || STATUS_DOT.idle} ${compact ? 'w-1 h-1' : 'w-1.5 h-1.5'}`} />
           </span>
-          <span className="block text-[10px] text-on-surface-variant">
-            {agent.role} {agent.skillsCount > 0 && `· ${agent.skillsCount} skills`}
+          <span className={`block text-on-surface-variant ${compact ? 'text-[9px]' : 'text-[10px]'}`}>
+            {agent.role}{agent.skillsCount > 0 && ` · ${agent.skillsCount} skills`}
           </span>
         </span>
       </button>
     )
   }
 
+  // ── Tree node (recursive) ──
+
+  function TreeNode({ node, depth = 0 }: { node: OrgChartNode; depth?: number }) {
+    const [expanded, setExpanded] = useState(depth < 3) // auto-expand top 3 levels
+    const hasChildren = node.children && node.children.length > 0
+    const agent = node.agent
+
+    return (
+      <div className="ml-0">
+        <div className="flex items-center gap-1.5 group">
+          {/* Connector line */}
+          {depth > 0 && (
+            <div className="flex items-center">
+              <div className="w-4 h-px opacity-30" style={{ background: REPORTING_COLORS[agent.reportsTo] || '#ffffff40' }} />
+            </div>
+          )}
+
+          {/* Expand/collapse */}
+          {hasChildren ? (
+            <button onClick={() => setExpanded(!expanded)} className="p-0.5 rounded hover:bg-white/10 transition-colors">
+              {expanded ? <ChevronDown size={12} className="text-on-surface-variant/50" /> : <ChevronRight size={12} className="text-on-surface-variant/50" />}
+            </button>
+          ) : (
+            <span className="w-5" />
+          )}
+
+          <AgentCard agent={agent} compact={depth > 1} />
+
+          {/* Reports-to tag */}
+          {depth > 0 && (
+            <span className="text-[9px] text-on-surface-variant/30 hidden group-hover:inline transition-opacity">
+              → {agent.reportsTo}
+            </span>
+          )}
+        </div>
+
+        {hasChildren && expanded && (
+          <div className="ml-5 border-l border-white/[0.06] pl-4 pt-1 pb-1 space-y-1">
+            {node.children.map(child => (
+              <TreeNode key={child.agent.id} node={child} depth={depth + 1} />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // ── Loading state ──
+
   if (loading && totalAgents === 0) {
     return (
       <div>
-        <PageHeader title="Org Chart" subtitle={`Loading agent structure for ${ventureLabel}…`} />
+        <PageHeader title="Org Chart" subtitle="Loading agent structure…" />
         <div className="flex items-center justify-center h-48 text-on-surface-variant">Loading agents…</div>
       </div>
     )
   }
+
+  // ── Render ──
 
   return (
     <div>
@@ -148,45 +240,64 @@ export default function OrgChartPage() {
         subtitle={`${totalAgents} agents across ${departments} departments · active venture: ${ventureLabel}`}
       />
 
-      <div className="space-y-3">
-        {/* ── Main tiers: Personal Layer, Workspace Masters, Specialized ── */}
-        {mainTiers.map(t => (
-          <Card key={t.title} className="p-4">
-            <div className="mb-3">
-              <h3 className="text-sm font-semibold text-on-surface">{t.title}</h3>
-              <p className="text-[11px] text-on-surface-variant">
-                {t.sub} · {t.agents.length} agent{t.agents.length !== 1 ? 's' : ''}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2.5">
-              {t.agents.map(a => <AgentCard key={a.id} agent={a} />)}
-            </div>
-          </Card>
-        ))}
-
-        {/* ── Venture Teams — color-coded per active venture ── */}
-        {ventureTiers.map(t => (
-          <Card key={t.title} className="overflow-hidden p-4">
-            <div className="mb-3">
-              <h3 className="text-sm font-semibold text-on-surface">{t.title}</h3>
-              <p className="text-[11px] text-on-surface-variant">{t.sub} · {t.agents.length} agents</p>
-            </div>
-
-            <div className={`rounded-lg border border-white/5 bg-white/[0.01] p-3 ${WS_BORDER[activeVenture] || ''}`}>
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em]"
-                style={{ color: activeVenture === 'novizio' ? '#a78bfa' : '#2dd4bf' }}>
-                {ventureLabel} Team
-              </p>
-              <div className="flex flex-wrap gap-2.5">
-                {t.agents.map(a => <AgentCard key={`${activeVenture}-${a.id}`} agent={a} />)}
-              </div>
-            </div>
-          </Card>
-        ))}
+      {/* ── View toggle ── */}
+      <div className="flex items-center gap-3 mb-6">
+        <button
+          onClick={() => setView('tiers')}
+          className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${view === 'tiers' ? 'bg-white/10 text-on-surface' : 'text-on-surface-variant hover:text-on-surface'}`}
+        >
+          <Users size={13} className="inline mr-1.5" />
+          Department View
+        </button>
+        <button
+          onClick={() => setView('tree')}
+          className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${view === 'tree' ? 'bg-white/10 text-on-surface' : 'text-on-surface-variant hover:text-on-surface'}`}
+        >
+          <ChevronRight size={13} className="inline mr-1.5" />
+          Tree View
+        </button>
       </div>
 
+      {/* ── TIERS VIEW (department cards) ── */}
+      {view === 'tiers' && (
+        <div className="space-y-3">
+          {tiers.map(t => (
+            <Card key={t.title} className="p-4">
+              <div className="mb-3">
+                <h3 className="text-sm font-semibold text-on-surface">{t.title}</h3>
+                <p className="text-[11px] text-on-surface-variant">{t.sub}</p>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {t.agents.map(a => <AgentCard key={a.id} agent={a} />)}
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* ── TREE VIEW (hierarchical) ── */}
+      {view === 'tree' && tree && (
+        <Card className="p-6">
+          <div className="mb-4 pb-3 border-b border-white/[0.06]">
+            <h3 className="text-sm font-semibold text-on-surface">Company Hierarchy</h3>
+            <p className="text-[11px] text-on-surface-variant">Reporting lines · click to expand/collapse departments</p>
+          </div>
+          <TreeNode node={tree} depth={0} />
+
+          {/* Board — peer of Marcus, shown separately */}
+          {tiers.find(t => t.title === 'Governance')?.agents.map(a => (
+            <div key={a.id} className="mt-3 pt-3 border-t border-white/[0.04]">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] text-on-surface-variant/40 italic w-16 text-right pr-2">governance</span>
+                <AgentCard agent={a} />
+              </div>
+            </div>
+          ))}
+        </Card>
+      )}
+
       {/* ── Skill Workshops ── */}
-      {rawWorkshops.length > 0 && (
+      {workshops.length > 0 && (
         <div className="mt-10">
           <div className="mb-4">
             <h2 className="text-xl font-bold text-on-surface">Skill Workshops</h2>
@@ -200,7 +311,7 @@ export default function OrgChartPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {rawWorkshops.map(ws => (
+            {workshops.map(ws => (
               <Link key={ws.id} href={`/skill-workshop?workshop=${ws.id}`}>
                 <Card hover className="p-4 h-full">
                   <div className="mb-3 flex items-center gap-2.5">
@@ -265,16 +376,22 @@ export default function OrgChartPage() {
                 <p className="text-[11px]">{sel.role}</p>
               </div>
             </div>
-            <p><span className="text-on-surface">Status:</span> {sel.status}</p>
-            <p><span className="text-on-surface">Reports to:</span> {sel.reportsTo}</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+              <p><span className="text-on-surface">Status:</span> <span className="inline-flex items-center gap-1"><span className={`inline-block w-1.5 h-1.5 rounded-full ${STATUS_DOT[sel.status]}`} />{sel.status}</span></p>
+              <p><span className="text-on-surface">Reports to:</span> {sel.reportsTo}</p>
+              <p><span className="text-on-surface">Department:</span> {sel.department}</p>
+              <p><span className="text-on-surface">Level:</span> {sel.level}</p>
+              <p><span className="text-on-surface">Skills:</span> {sel.skillsCount}</p>
+              <p><span className="text-on-surface">Memory:</span> {sel.memoryHealth}%</p>
+            </div>
             <p><span className="text-on-surface">Memory access:</span> {sel.memoryAccess}</p>
-            <p><span className="text-on-surface">Skills:</span> {sel.skillsCount}</p>
-            <p><span className="text-on-surface">Level:</span> {sel.level}</p>
             {sel.workspaceTags.length > 0 && (
               <p>
                 <span className="text-on-surface">Workspaces:</span>{' '}
                 {sel.workspaceTags.map(tag => (
-                  <span key={tag} className="inline-block mr-1 px-1.5 py-0.5 rounded bg-white/10 text-[11px]">{tag}</span>
+                  <span key={tag} className="inline-block mr-1 px-1.5 py-0.5 rounded bg-white/10 text-[11px]">
+                    {tag === 'all' ? '🌐 all' : tag}
+                  </span>
                 ))}
               </p>
             )}
