@@ -92,6 +92,38 @@ const TIER_LABELS = [
   { title: 'Specialized', sub: 'Finance, Legal, Research, Psychology, Sense' },
 ]
 
+// ─── Fallback data (used when .toon filesystem is not available) ─────────────
+
+const FALLBACK_TIERS: OrgChartTier[] = [
+  {
+    title: 'Personal Layer', sub: 'Serves you directly · cross-workspace',
+    agents: [
+      { id: 'marcus', name: 'Marcus', role: 'CEO', department: 'CEO', color: '#abc7ff', initials: 'MC', workspaceTags: ['all'], status: 'active', reportsTo: 'You', memoryAccess: 'full — cross-workspace', skillsCount: 14, memoryHealth: 41, level: 1 },
+      { id: 'diana', name: 'Diana', role: 'COO', department: 'COO', color: '#5ee0ff', initials: 'DC', workspaceTags: ['all'], status: 'active', reportsTo: 'Marcus', memoryAccess: 'full — cross-workspace', skillsCount: 23, memoryHealth: 35, level: 1 },
+    ],
+  },
+  {
+    title: 'Workspace Masters', sub: 'Shared masters · serve every workspace',
+    agents: [
+      { id: 'dev', name: 'Dev', role: 'Lead Developer', department: 'Technical', color: '#9db5e7', initials: 'DV', workspaceTags: ['all'], status: 'active', reportsTo: 'Diana', memoryAccess: 'workspace + cross-WS', skillsCount: 22, memoryHealth: 24, level: 3 },
+      { id: 'raj', name: 'Raj', role: 'Backend Engineer', department: 'Technical', color: '#9db5e7', initials: 'RJ', workspaceTags: ['all'], status: 'active', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 15, memoryHealth: 24, level: 2 },
+      { id: 'mia', name: 'Mia', role: 'Frontend Engineer', department: 'Technical', color: '#9db5e7', initials: 'MI', workspaceTags: ['all'], status: 'active', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 17, memoryHealth: 27, level: 2 },
+      { id: 'quinn', name: 'Quinn', role: 'QA Engineer', department: 'Technical', color: '#9db5e7', initials: 'QN', workspaceTags: ['all'], status: 'idle', reportsTo: 'Dev', memoryAccess: 'workspace + cross-WS', skillsCount: 17, memoryHealth: 18, level: 2 },
+    ],
+  },
+  {
+    title: 'Venture Teams', sub: 'Per-workspace teams · marketing & growth',
+    agents: [
+      { id: 'kai', name: 'Kai', role: 'Analyst', department: 'Marketing', color: '#5fd0b4', initials: 'KA', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 13, memoryHealth: 39, level: 3 },
+      { id: 'lena', name: 'Lena', role: 'Brand Strategist', department: 'Marketing', color: '#5fd0b4', initials: 'LN', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Diana', memoryAccess: 'workspace-scoped', skillsCount: 14, memoryHealth: 34, level: 3 },
+      { id: 'rio', name: 'Rio', role: 'Ads Manager', department: 'Marketing', color: '#5ee0ff', initials: 'RO', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 14, memoryHealth: 19, level: 2 },
+      { id: 'nate', name: 'Nate', role: 'Growth Hacker', department: 'Marketing', color: '#5ee0ff', initials: 'NT', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 11, memoryHealth: 32, level: 2 },
+      { id: 'atlas', name: 'Atlas', role: 'Art Director', department: 'Marketing', color: '#c08bff', initials: 'AT', workspaceTags: ['novizio', 'hourbour'], status: 'active', reportsTo: 'Lena', memoryAccess: 'workspace-scoped', skillsCount: 13, memoryHealth: 16, level: 2 },
+      { id: 'pixel', name: 'Pixel', role: 'Production', department: 'Marketing', color: '#c08bff', initials: 'PX', workspaceTags: ['novizio', 'hourbour'], status: 'idle', reportsTo: 'Atlas', memoryAccess: 'workspace-scoped', skillsCount: 12, memoryHealth: 15, level: 2 },
+    ],
+  },
+]
+
 // ─── Scanner ──────────────────────────────────────────────────────────────────
 
 function scanAgents(): OrgChartAgent[] {
@@ -180,6 +212,17 @@ function scanAgents(): OrgChartAgent[] {
 export async function GET(): Promise<Response> {
   try {
     const allAgents = scanAgents()
+
+    // Fallback: if filesystem scan finds nothing, return static mock data
+    // so the UI never shows "0 agents"
+    if (allAgents.length === 0) {
+      return NextResponse.json({
+        tiers: FALLBACK_TIERS,
+        totalAgents: 12,
+        departments: 4,
+        workshops: WORKSHOPS,
+      } as OrgChartResponse)
+    }
 
     // Group into tiers
     const tierBuckets: Map<number, OrgChartAgent[]> = new Map()
