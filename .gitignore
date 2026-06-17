@@ -43,6 +43,8 @@ hermes/vendor/
 !.toon/memory/
 .toon/memory/*
 !.toon/memory/agent-department/
+# Explicitly block Hermes sync cache (may contain sensitive data)
+.toon/memory/hermes/
 # Re-include graph reports (human-readable)
 !.toon/graphs/
 .toon/graphs/*

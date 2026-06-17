@@ -1,9 +1,0 @@
-SKILL|gif-search|"Search/download GIFs from Tenor via curl + jq."
-STEP|1|`curl` and `jq` (both standard on macOS/Linux)
-STEP|2|`TENOR_API_KEY` environment variable
-STEP|3|URL-encode the query: spaces as `+`, special chars as `%XX`
-STEP|4|For sending in chat, `tinygif` URLs are lighter weight
-STEP|5|GIF URLs can be used directly in markdown: `![alt](url)`
-PIT|URL-encode the query: spaces as `+`, special chars as `%XX`
-PIT|For sending in chat, `tinygif` URLs are lighter weight
-PIT|GIF URLs can be used directly in markdown: `![alt](url)`
