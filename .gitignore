@@ -50,3 +50,7 @@ hermes/vendor/
 .toon/graphs/*
 !.toon/graphs/*.md
 # Everything else under .toon is a build artifact
+# Explicit blocks for build output that was previously tracked
+.toon/v3/
+.toon/codegraph/
+.toon/graphify/
