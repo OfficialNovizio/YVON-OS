@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { createClient } from '@supabase/supabase-js'
+import { getAgentRegistry } from '@/lib/agent-registry'
 
 interface AgentSkill { name: string; category: string }
 
@@ -103,8 +104,21 @@ function scanAgents(): { agents: AgentOpsAgent[]; departments: { name: string; a
 
 export async function GET(): Promise<Response> {
   try {
-    // Agent roster from .toon/ filesystem (real, deployed in bundle)
-    const { agents, departments, skillsTotal } = scanAgents()
+    // Agent roster — filesystem first (VPS/dev), embedded snapshot fallback (Vercel)
+    let { agents, departments, skillsTotal } = scanAgents()
+
+    if (agents.length === 0) {
+      // Vercel: no .toon/ — use build-time embedded snapshot with defaults
+      const registry = getAgentRegistry()
+      agents = registry.agents.map(a => ({
+        ...a,
+        status: 'idle' as const,
+        skills: [] as AgentSkill[],
+        lastActive: null,
+      }))
+      departments = registry.departments
+      skillsTotal = registry.skillsTotal
+    }
 
     // Activity feed from Supabase (live, written by Hermes cron)
     const activity: ActivityEntry[] = []
