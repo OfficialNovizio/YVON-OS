@@ -47,9 +47,10 @@ YVON OS (Next.js 15 App Router)
 │   └── supabase.ts               # Database client
 │
 ├── .toon/                        # TOON-compressed data (build artifact, gitignored)
-│   ├── memory/agent-department/  # 24 agents from ToonGine (918 files)
-│   ├── memory/agent-memory/      # TOON-compiled agent memories (658 files)
-│   ├── graphs/                   # graphify + codegraph knowledge graphs
+│   ├── agents/                    # 24 agents from ToonGine (source of truth)
+│   ├── memory/hermes/             # Hermes sync cache (gitignored)
+│   ├── graphify/                  # Graphify knowledge graph output
+│   ├── codegraph/                 # Codegraph dependency graph output
 │   └── docs/                     # CONSTITUTION.toon + ENGINE.toon
 │
 ├── docs/                         # Human-readable documentation (55 files)
