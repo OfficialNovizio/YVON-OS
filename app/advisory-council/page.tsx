@@ -28,17 +28,63 @@ interface CouncilResult {
 
 interface DebateMessage { agent: string; role: string; text: string; timestamp: number }
 
-type DecisionType = 'product_launch' | 'contracts' | 'open_source' | 'compliance' | 'general'
+type DecisionType = 'product_launch' | 'contracts' | 'open_source' | 'compliance' | 'general' | 'strategy' | 'research'
 
-// ─── Real Agents ──────────────────────────────────────────────────────────────
+// ─── Agent Registry (from ToonGine — 24 agents, 10 departments) ───────────────
 
-const council = [
-  { id: 'marcus-ceo', initials: 'MC', name: 'Marcus', role: 'CEO', color: '#abc7ff' },
-  { id: 'diana-coo', initials: 'DC', name: 'Diana', role: 'COO', color: '#5ee0ff' },
-  { id: 'felix-finance', initials: 'FX', name: 'Felix', role: 'CFO', color: '#5fd0b4' },
-  { id: 'kai-marketing', initials: 'KA', name: 'Kai', role: 'CMO', color: '#c08bff' },
-  { id: 'kahneman-psychology', initials: 'KN', name: 'Kahneman', role: 'Bias Validator', color: '#ffb693' },
+interface CouncilAgent { id: string; initials: string; name: string; role: string; department: string; color: string }
+
+const ALL_AGENTS: CouncilAgent[] = [
+  // Command
+  { id: 'marcus-ceo', initials: 'MC', name: 'Marcus', role: 'CEO', department: 'CEO', color: '#abc7ff' },
+  { id: 'diana-coo', initials: 'DC', name: 'Diana', role: 'COO', department: 'COO', color: '#5ee0ff' },
+  { id: 'board-command', initials: 'BR', name: 'Board', role: 'Governance Board', department: 'Command', color: '#c084fc' },
+  // Finance
+  { id: 'felix-finance', initials: 'FX', name: 'Felix', role: 'CFO', department: 'Finance', color: '#5fd0b4' },
+  // Legal
+  { id: 'comply-legal', initials: 'CP', name: 'Comply', role: 'Compliance Officer', department: 'Legal', color: '#fb923c' },
+  { id: 'docs-legal', initials: 'DC', name: 'Docs', role: 'Documentation Officer', department: 'Legal', color: '#fbbf24' },
+  { id: 'guard-legal', initials: 'GD', name: 'Guard', role: 'IP Protection Officer', department: 'Legal', color: '#f87171' },
+  // Marketing
+  { id: 'kai-marketing', initials: 'KA', name: 'Kai', role: 'CMO', department: 'Marketing', color: '#c08bff' },
+  { id: 'lena-marketing', initials: 'LN', name: 'Lena', role: 'Brand Strategist', department: 'Marketing', color: '#f472b6' },
+  { id: 'nate-marketing', initials: 'NT', name: 'Nate', role: 'Growth Lead', department: 'Marketing', color: '#34d399' },
+  { id: 'rio-marketing', initials: 'RO', name: 'Rio', role: 'Ads Manager', department: 'Marketing', color: '#facc15' },
+  { id: 'atlas-marketing', initials: 'AT', name: 'Atlas', role: 'Art Director', department: 'Marketing', color: '#e879f9' },
+  { id: 'pixel-marketing', initials: 'PX', name: 'Pixel', role: 'Production', department: 'Marketing', color: '#22d3ee' },
+  // Psychology
+  { id: 'kahneman-psychology', initials: 'KN', name: 'Kahneman', role: 'Bias Validator', department: 'Psychology', color: '#ffb693' },
+  // Research
+  { id: 'depth-research', initials: 'DP', name: 'Depth', role: 'Deep Researcher', department: 'Research', color: '#a78bfa' },
+  { id: 'synth-research', initials: 'SY', name: 'Synth', role: 'Synthesis Lead', department: 'Research', color: '#818cf8' },
+  { id: 'vette-research', initials: 'VT', name: 'Vette', role: 'Fact Verifier', department: 'Research', color: '#6366f1' },
+  // Sense
+  { id: 'forge-sense', initials: 'FG', name: 'Forge', role: 'Method Discovery', department: 'Sense', color: '#14b8a6' },
+  { id: 'radar-sense', initials: 'RD', name: 'Radar', role: 'Market Intelligence', department: 'Sense', color: '#06b6d4' },
+  { id: 'scout-sense', initials: 'SC', name: 'Scout', role: 'Tool Discovery', department: 'Sense', color: '#0ea5e9' },
+  // Technical
+  { id: 'dev-technical', initials: 'DV', name: 'Dev', role: 'Tech Lead', department: 'Technical', color: '#3b82f6' },
+  { id: 'mia-technical', initials: 'MI', name: 'Mia', role: 'Frontend Lead', department: 'Technical', color: '#ec4899' },
+  { id: 'raj-technical', initials: 'RJ', name: 'Raj', role: 'Backend Lead', department: 'Technical', color: '#f97316' },
+  { id: 'quinn-technical', initials: 'QN', name: 'Quinn', role: 'QA Lead', department: 'Technical', color: '#84cc16' },
 ]
+
+// ─── Council composition per decision type ─────────────────────────────────────
+
+const COUNCIL_COMPOSITION: Record<DecisionType, string[]> = {
+  general:       ['marcus-ceo', 'diana-coo', 'felix-finance', 'kai-marketing', 'kahneman-psychology'],
+  strategy:      ['marcus-ceo', 'diana-coo', 'felix-finance', 'board-command', 'radar-sense', 'depth-research', 'kahneman-psychology'],
+  product_launch:['marcus-ceo', 'diana-coo', 'felix-finance', 'kai-marketing', 'comply-legal', 'board-command', 'kahneman-psychology'],
+  contracts:     ['marcus-ceo', 'diana-coo', 'docs-legal', 'comply-legal', 'board-command', 'kahneman-psychology'],
+  open_source:   ['marcus-ceo', 'guard-legal', 'docs-legal', 'board-command', 'kahneman-psychology'],
+  compliance:    ['marcus-ceo', 'comply-legal', 'docs-legal', 'guard-legal', 'board-command', 'kahneman-psychology'],
+  research:      ['depth-research', 'synth-research', 'vette-research', 'forge-sense', 'scout-sense', 'kahneman-psychology', 'marcus-ceo'],
+}
+
+function getCouncil(type: DecisionType): CouncilAgent[] {
+  const ids = COUNCIL_COMPOSITION[type] || COUNCIL_COMPOSITION.general
+  return ids.map(id => ALL_AGENTS.find(a => a.id === id)!).filter(Boolean)
+}
 
 const decisionTypes: { value: DecisionType; label: string }[] = [
   { value: 'general', label: 'General' },
@@ -46,6 +92,8 @@ const decisionTypes: { value: DecisionType; label: string }[] = [
   { value: 'contracts', label: 'Contracts' },
   { value: 'open_source', label: 'Open Source' },
   { value: 'compliance', label: 'Compliance' },
+  { value: 'strategy', label: 'Strategy' },
+  { value: 'research', label: 'Research' },
 ]
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -152,7 +200,7 @@ export default function AdvisoryCouncilPage() {
     <div>
       <PageHeader
         title="Advisory Council"
-        subtitle={`${council.length} agents debate, recommend, and convene into a live War Room. Real Hermes agents with tool access and 31 domain skills.`}
+        subtitle={`${getCouncil(decisionType).length} agents debate, recommend, and convene into a live War Room. Real Hermes agents with tool access and 31 domain skills.`}
         actions={
           <>
             <button className="btn-ghost" onClick={() => setWarRoom(true)}>
@@ -233,7 +281,7 @@ export default function AdvisoryCouncilPage() {
 
               {/* Council avatars */}
               <div className="mt-2 flex -space-x-1.5">
-                {council.map((c) => (
+                {getCouncil(decisionType).map((c) => (
                   <span key={c.name} title={c.name} className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-surface text-[10px] font-bold text-black/80" style={{ background: c.color }}>{c.initials}</span>
                 ))}
               </div>
@@ -318,15 +366,15 @@ export default function AdvisoryCouncilPage() {
         </div>
       </div>
 
-      {warRoom && <WarRoom debate={debate} topic={topic} loading={loading} result={result} onClose={() => setWarRoom(false)} onSteer={(text: string) => { setTopic(text); conveneCouncil() }} />}
+      {warRoom && <WarRoom debate={debate} topic={topic} loading={loading} result={result} council={getCouncil(decisionType)} onClose={() => setWarRoom(false)} onSteer={(text: string) => { setTopic(text); conveneCouncil() }} />}
     </div>
   )
 }
 
 // ─── War Room ─────────────────────────────────────────────────────────────────
 
-function WarRoom({ debate, topic, loading, result, onClose, onSteer }: {
-  debate: DebateMessage[]; topic: string; loading: boolean; result: CouncilResult | null
+function WarRoom({ debate, topic, loading, result, council, onClose, onSteer }: {
+  debate: DebateMessage[]; topic: string; loading: boolean; result: CouncilResult | null; council: CouncilAgent[]
   onClose: () => void; onSteer: (text: string) => void
 }) {
   const [input, setInput] = useState('')
@@ -350,7 +398,7 @@ function WarRoom({ debate, topic, loading, result, onClose, onSteer }: {
             <div className="py-8 text-center"><p className="text-sm text-on-surface-variant">Council chamber ready</p></div>
           ) : debate.map((msg, i) => (
             <div key={i} className="mb-3">
-              <p className="mb-0.5 text-[11px] font-semibold" style={{ color: council.find(c => c.id === msg.agent)?.color || 'var(--ws-accent)' }}>{msg.role}</p>
+              <p className="mb-0.5 text-[11px] font-semibold" style={{ color: ALL_AGENTS.find(c => c.id === msg.agent)?.color || 'var(--ws-accent)' }}>{msg.role}</p>
               <p className="text-[13px] leading-relaxed text-on-surface-variant">{msg.text.slice(0, 300)}</p>
             </div>
           ))}

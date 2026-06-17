@@ -6,7 +6,7 @@ import { spawnHermesAgent, type HermesAgentResult } from '@/lib/hermes-spawn'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type DecisionType = 'product_launch' | 'contracts' | 'open_source' | 'compliance' | 'general'
+type DecisionType = 'product_launch' | 'contracts' | 'open_source' | 'compliance' | 'general' | 'strategy' | 'research'
 
 interface CouncilRequest {
   topic: string
@@ -192,6 +192,92 @@ RECOMMENDATION: [action only if risk > low]
 `,
     }],
   },
+  strategy: {
+    label: 'Board + Research — strategic review',
+    agents: [
+      {
+        agentId: 'yvon/board-command',
+        role: 'Governance Board',
+        prompt: (topic, context) => `You are the Board of YVON. Strategic review on: "${topic}"
+
+Context: ${context || 'None provided'}
+
+Evaluate:
+1. Constitution alignment — does this violate any YVON Constitution laws?
+2. Strategic fit — does this align with our 5-year vision?
+3. Risk assessment — what are the systemic risks?
+4. Precedent — does this set a dangerous precedent?
+
+Respond with EXACTLY this format:
+FINDING: [board assessment]
+RISK_LEVEL: [none | low | medium | high | critical]
+RECOMMENDATION: [strategic guidance]
+`,
+      },
+      {
+        agentId: 'yvon/radar-sense',
+        role: 'Market Intelligence',
+        prompt: (topic, context) => `You are Radar, YVON's Market Intelligence agent. Strategic review on: "${topic}"
+
+Context: ${context || 'None provided'}
+
+Evaluate:
+1. Market sizing — TAM/SAM/SOM for this strategy?
+2. Trend alignment — macro trends supporting or opposing?
+3. Competitor positioning — who else is doing this?
+4. Timing — optimal window for execution?
+
+Respond with EXACTLY this format:
+FINDING: [market intelligence assessment]
+RISK_LEVEL: [none | low | medium | high | critical]
+RECOMMENDATION: [market strategy recommendation]
+`,
+      },
+    ],
+  },
+  research: {
+    label: 'Research + Sense — deep analysis',
+    agents: [
+      {
+        agentId: 'yvon/depth-research',
+        role: 'Deep Researcher',
+        prompt: (topic, context) => `You are Depth, YVON's Deep Researcher. Research review on: "${topic}"
+
+Context: ${context || 'None provided'}
+
+Evaluate:
+1. Literature review — what's the state of the art?
+2. Methodology — what research methods apply?
+3. Evidence quality — how strong is the supporting evidence?
+4. Gaps — what do we NOT know?
+
+Respond with EXACTLY this format:
+FINDING: [research assessment]
+RISK_LEVEL: [none | low | medium | high | critical]
+RECOMMENDATION: [research direction]
+`,
+      },
+      {
+        agentId: 'yvon/vette-research',
+        role: 'Fact Verifier',
+        prompt: (topic, context) => `You are Vette, YVON's Fact Verifier. Research review on: "${topic}"
+
+Context: ${context || 'None provided'}
+
+Evaluate:
+1. Source credibility — how reliable are the claims?
+2. Misinformation risk — any red flags?
+3. Cross-referencing — do multiple sources agree?
+4. Confidence score — how certain are the conclusions?
+
+Respond with EXACTLY this format:
+FINDING: [verification assessment]
+RISK_LEVEL: [none | low | medium | high | critical]
+RECOMMENDATION: [verification actions]
+`,
+      },
+    ],
+  },
 }
 
 // ─── Executive Council Seats ──────────────────────────────────────────────────
@@ -281,6 +367,27 @@ Respond with EXACTLY this format:
 THESIS: [your position in 2-3 sentences]
 SCORE: [1-10 market readiness]
 RECOMMENDATION: [PROCEED | DEFER | REJECT]
+`,
+  },
+  {
+    agentId: 'yvon/kahneman-psychology',
+    role: 'Bias Validator',
+    prompt: (topic, context, urgency) => `You are Kahneman, YVON's Psychology Auditor. Council convened on: "${topic}"
+
+Context: ${context || 'None provided'}
+Urgency: ${urgency}
+
+As Psychology Auditor, evaluate for cognitive biases:
+1. Overconfidence — are positions overconfident in their assumptions?
+2. Anchoring — is the council anchored to a specific outcome?
+3. Loss aversion — is fear of loss driving decisions?
+4. Groupthink — is the council converging too quickly?
+5. Framing — is the topic framed to favor one outcome?
+
+Respond with EXACTLY this format:
+BIAS_AUDIT: [specific biases detected and their impact, or "No significant biases detected"]
+SCORE: [1-10 bias risk score — higher = more biased]
+RECOMMENDATION: [PROCEED | DEFER — specify if biases warrant reconsideration]
 `,
   },
 ]
