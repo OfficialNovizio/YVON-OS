@@ -1,6 +1,6 @@
 // lib/cie/sources/agent-memory.ts — Agent MEMORY.md parser and cross-agent rules
 //
-// Reads /root/yvon/agent-department/[Dept]/[agent]/MEMORY.md files and extracts:
+// Reads /root/yvon/.toon/agents/[Dept]/[agent]/MEMORY.md files and extracts:
 //   Never Again rules, Architecture Decisions, Rejected Patterns, and Personality.
 //
 // Exports:
@@ -15,7 +15,7 @@ import type { AgentMemoryRules, TaskType } from '../types'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const DEPT_ROOT = resolve('/root/yvon/.toon/memory/agent-department')
+const DEPT_ROOT = resolve('/root/yvon/.toon/agents')
 
 /** Maps agent short-names and hyphenated IDs to department/folder paths. */
 const AGENT_PATH_MAP: Record<string, string> = {
