@@ -41,11 +41,12 @@ npm run build        # production build (runs type-check)
 npm run lint         # ESLint via next lint
 npm run db:migrate   # run Supabase migrations (scripts/migrate.mjs)
 
-# Knowledge graph (AST-only, no API cost)
-npm run graphify:build   # rebuild graph after code changes
-npm run graphify:query -- "<question>"  # query the graph
-npm run codegraph:build  # rebuild code-review dependency graph
-npm run codegraph:serve  # open graph web UI
+# Knowledge graph (Tree-sitter AST, no API cost)
+npm run graphify:build   # rebuild graph + HTML UI (code-review-graph)
+npm run graphify:serve   # open interactive D3 graph at localhost:8765
+npm run graphify:query   # show graph stats
+npm run codegraph:build  # rebuild code-review import dependency graph
+npm run codegraph:serve  # serve interactive import dependency graph
 ```
 
 No test runner is configured — QA is manual + Quinn's weekly Pulse check.
