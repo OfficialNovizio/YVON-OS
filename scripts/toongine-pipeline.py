@@ -425,9 +425,9 @@ def sample_codebase():
         ts_errors = 0
 
     try:
-        # Count source files
+        # Count source files (Next.js App Router: app/ + lib/ + components/)
         result = subprocess.run(
-            ["find", "src", "-name", "*.ts", "-o", "-name", "*.tsx"],
+            ["find", "app", "lib", "components", "-name", "*.ts", "-o", "-name", "*.tsx"],
             capture_output=True, text=True, timeout=10, cwd="/root/yvon"
         )
         files_total = len([l for l in result.stdout.splitlines() if l.strip()])
