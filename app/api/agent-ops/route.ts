@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { getAgentRegistry } from '@/lib/agent-registry'
-import { getAgents, getDepartments, getActivity, isConfigured } from '@/lib/toongine'
+import { getAgents, getDepartments, getActivity, isConfigured } from 'toongine/plugins/supabase'
 
 interface AgentSkill { name: string; category: string }
 
