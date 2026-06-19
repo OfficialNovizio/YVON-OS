@@ -401,6 +401,187 @@ def update_project_heartbeat():
     )
 
 
+# ── 4. Codebase Sampler ──────────────────────────────────────────────────────
+
+def sample_codebase():
+    """Sample TypeScript errors + file count, write to ring buffer."""
+    now = datetime.now(timezone.utc)
+    slot = (now - timedelta(days=1)).day % 30  # simple ring
+
+    ts_errors = 0
+    files_total = 0
+    try:
+        import subprocess
+        # Count TS errors
+        result = subprocess.run(
+            ["npx", "tsc", "--noEmit"],
+            capture_output=True, text=True, timeout=30, cwd="/root/yvon"
+        )
+        # Count errors from stderr/stdout
+        import re
+        errors_found = re.findall(r'error TS\d+', result.stdout + result.stderr)
+        ts_errors = len(errors_found)
+    except Exception:
+        ts_errors = 0
+
+    try:
+        # Count source files
+        result = subprocess.run(
+            ["find", "src", "-name", "*.ts", "-o", "-name", "*.tsx"],
+            capture_output=True, text=True, timeout=10, cwd="/root/yvon"
+        )
+        files_total = len([l for l in result.stdout.splitlines() if l.strip()])
+    except Exception:
+        files_total = 0
+
+    snapshot = {
+        "repo_id": REPO_ID,
+        "slot": slot,
+        "sampled_at": now.isoformat(),
+        "ts_errors": ts_errors,
+        "ts_error_free": ts_errors == 0,
+        "files_total": files_total,
+        "lines_total": 0,
+        "build_duration_ms": 0,
+        "dependencies": 0,
+        "outdated_deps": 0,
+    }
+
+    # Delete old slot, then insert
+    try:
+        del_params = f"?repo_id=eq.{REPO_ID}&slot=eq.{slot}"
+        del_req = Request(
+            f"{SUPABASE_URL}/rest/v1/toongine_codebase_snapshots{del_params}",
+            headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+            method="DELETE"
+        )
+        urlopen(del_req, timeout=10)
+    except:
+        pass
+
+    supabase_post("toongine_codebase_snapshots", snapshot)
+    print(f"   Codebase: {ts_errors} TS errors, {files_total} files")
+
+
+# ── 5. Health Engine ─────────────────────────────────────────────────────────
+
+def run_health_engine():
+    """Generate health events and recommendations from current state."""
+    now = datetime.now(timezone.utc)
+
+    # Fetch current state
+    api_entries = []
+    try:
+        url = f"{SUPABASE_URL}/rest/v1/toongine_api_health"
+        params = f"?repo_id=eq.{REPO_ID}&order=created_at.desc&limit=500"
+        req = Request(f"{url}{params}", headers={
+            "apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"
+        })
+        with urlopen(req, timeout=10) as resp:
+            api_entries = json.loads(resp.read().decode())
+    except:
+        pass
+
+    codebase_entries = []
+    try:
+        url = f"{SUPABASE_URL}/rest/v1/toongine_codebase_snapshots"
+        params = f"?repo_id=eq.{REPO_ID}&order=slot.asc&limit=7"
+        req = Request(f"{url}{params}", headers={
+            "apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"
+        })
+        with urlopen(req, timeout=10) as resp:
+            codebase_entries = json.loads(resp.read().decode())
+    except:
+        pass
+
+    # ── Anomaly: API error rate spike ──
+    if api_entries:
+        total = len(api_entries)
+        errors = sum(1 for e in api_entries if e.get("status_code", 200) >= 500)
+        error_rate = (errors / total * 100) if total > 0 else 0
+        if error_rate > 5:
+            supabase_post("toongine_health_events", {
+                "repo_id": REPO_ID,
+                "event_type": "anomaly",
+                "severity": 2 if error_rate > 10 else 1,
+                "title": f"API error rate spike: {error_rate:.1f}%",
+                "detail": f"{errors} errors in last {total} requests",
+                "health_impact": -5,
+                "occurred_at": now.isoformat(),
+            })
+
+    # ── Anomaly: TS errors detected ──
+    if codebase_entries:
+        latest = codebase_entries[-1] if codebase_entries else None
+        if latest and latest.get("ts_errors", 0) > 0:
+            supabase_post("toongine_health_events", {
+                "repo_id": REPO_ID,
+                "event_type": "error_spike",
+                "severity": 2,
+                "title": f"TypeScript errors: {latest['ts_errors']}",
+                "detail": f"Build produced {latest['ts_errors']} errors. Run 'npx tsc --noEmit' to inspect.",
+                "health_impact": -8,
+                "occurred_at": now.isoformat(),
+            })
+
+    # ── Recommendations ──
+    # Clear old recommendations
+    try:
+        clear_params = f"?repo_id=eq.{REPO_ID}"
+        clear_req = Request(
+            f"{SUPABASE_URL}/rest/v1/toongine_recommendations{clear_params}",
+            headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+            method="DELETE"
+        )
+        urlopen(clear_req, timeout=10)
+    except:
+        pass
+
+    recs = []
+
+    # Recommendation: API errors
+    if api_entries:
+        errors = [e for e in api_entries if e.get("status_code", 200) >= 500]
+        if errors:
+            error_endpoints = {}
+            for e in errors:
+                ep = e.get("endpoint", "unknown")
+                error_endpoints[ep] = error_endpoints.get(ep, 0) + 1
+            top_ep = max(error_endpoints, key=error_endpoints.get)
+            recs.append({
+                "repo_id": REPO_ID, "priority": 0, "category": "api",
+                "title": f"Fix {top_ep} errors",
+                "detail": f"{error_endpoints[top_ep]} 500 errors from {top_ep}. Add retry logic or circuit breaker.",
+                "impact_points": 4.8, "effort_minutes": 30,
+            })
+
+    # Recommendation: TS errors
+    if codebase_entries:
+        latest = codebase_entries[-1] if codebase_entries else None
+        if latest and latest.get("ts_errors", 0) > 0:
+            recs.append({
+                "repo_id": REPO_ID, "priority": 1, "category": "codebase",
+                "title": f"Fix {latest['ts_errors']} TypeScript errors",
+                "detail": "Run 'npx tsc --noEmit' to see details. Clean build required for health score.",
+                "impact_points": 3.0, "effort_minutes": 20,
+            })
+
+    # Recommendation: Stale codebase (no samples in 3 days)
+    if len(codebase_entries) < 2:
+        recs.append({
+            "repo_id": REPO_ID, "priority": 2, "category": "codebase",
+            "title": "Run codebase health sample",
+            "detail": "No recent codebase samples. Pipeline will auto-sample hourly when running.",
+            "impact_points": 0.5, "effort_minutes": 5,
+        })
+
+    for rec in recs:
+        supabase_post("toongine_recommendations", rec)
+
+    event_count = len(recs)
+    print(f"   Health engine: {event_count} recommendations generated")
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
@@ -418,7 +599,13 @@ def main():
     # 2. Roll snapshots
     roll_all_snapshots()
 
-    # 3. Project heartbeat
+    # 3. Sample codebase health
+    sample_codebase()
+
+    # 4. Generate health events + recommendations
+    run_health_engine()
+
+    # 5. Project heartbeat
     update_project_heartbeat()
     print("   Heartbeat: updated")
 
