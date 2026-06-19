@@ -404,35 +404,95 @@ def update_project_heartbeat():
 # ── 4. Codebase Sampler ──────────────────────────────────────────────────────
 
 def sample_codebase():
-    """Sample TypeScript errors + file count, write to ring buffer."""
+    """Sample TypeScript errors + file count, build time, deps, lint."""
     now = datetime.now(timezone.utc)
     slot = (now - timedelta(days=1)).day % 30  # simple ring
 
     ts_errors = 0
     files_total = 0
+    lines_total = 0
+    build_duration_ms = 0
+    dep_count = 0
+    outdated_count = 0
+    lint_errors = 0
+    lint_warnings = 0
+
+    import subprocess
+    import re
+
+    # Count TS errors + measure build time
+    build_start = time.time()
     try:
-        import subprocess
-        # Count TS errors
         result = subprocess.run(
             ["npx", "tsc", "--noEmit"],
-            capture_output=True, text=True, timeout=30, cwd="/root/yvon"
+            capture_output=True, text=True, timeout=60, cwd="/root/yvon"
         )
-        # Count errors from stderr/stdout
-        import re
+        build_duration_ms = int((time.time() - build_start) * 1000)
         errors_found = re.findall(r'error TS\d+', result.stdout + result.stderr)
         ts_errors = len(errors_found)
     except Exception:
+        build_duration_ms = 0
         ts_errors = 0
 
+    # Count source files + estimate lines
     try:
-        # Count source files (Next.js App Router: app/ + lib/ + components/)
         result = subprocess.run(
             ["find", "app", "lib", "components", "-name", "*.ts", "-o", "-name", "*.tsx"],
             capture_output=True, text=True, timeout=10, cwd="/root/yvon"
         )
-        files_total = len([l for l in result.stdout.splitlines() if l.strip()])
+        files = [l for l in result.stdout.splitlines() if l.strip()]
+        files_total = len(files)
+        # Rough line count via wc
+        for f in files[:200]:  # sample up to 200 files
+            try:
+                with open(f"/root/yvon/{f}", "r") as fh:
+                    lines_total += sum(1 for _ in fh)
+            except:
+                pass
     except Exception:
         files_total = 0
+        lines_total = 0
+
+    # Count npm dependencies + outdated
+    try:
+        result = subprocess.run(
+            ["npm", "ls", "--depth=0", "--json"],
+            capture_output=True, text=True, timeout=15, cwd="/root/yvon"
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            pkg = json.loads(result.stdout)
+            deps = pkg.get("dependencies", {})
+            dep_count = len(deps)
+    except:
+        pass
+
+    try:
+        result = subprocess.run(
+            ["npm", "outdated", "--json"],
+            capture_output=True, text=True, timeout=15, cwd="/root/yvon"
+        )
+        if result.stdout.strip():
+            outdated = json.loads(result.stdout)
+            outdated_count = len(outdated) if isinstance(outdated, dict) else 0
+    except:
+        pass
+
+    # ESLint check (if available)
+    try:
+        result = subprocess.run(
+            ["npx", "eslint", "app/", "lib/", "components/", "--format=json"],
+            capture_output=True, text=True, timeout=30, cwd="/root/yvon"
+        )
+        if result.stdout.strip():
+            lint_results = json.loads(result.stdout)
+            for file_result in lint_results:
+                for msg in file_result.get("messages", []):
+                    if msg.get("severity") == 2:
+                        lint_errors += 1
+                    else:
+                        lint_warnings += 1
+    except:
+        pass
 
     snapshot = {
         "repo_id": REPO_ID,
@@ -441,10 +501,12 @@ def sample_codebase():
         "ts_errors": ts_errors,
         "ts_error_free": ts_errors == 0,
         "files_total": files_total,
-        "lines_total": 0,
-        "build_duration_ms": 0,
-        "dependencies": 0,
-        "outdated_deps": 0,
+        "lines_total": lines_total,
+        "build_duration_ms": build_duration_ms,
+        "dependencies": dep_count,
+        "outdated_deps": outdated_count,
+        "lint_errors": lint_errors,
+        "lint_warnings": lint_warnings,
     }
 
     # Delete old slot, then insert
@@ -582,6 +644,194 @@ def run_health_engine():
     print(f"   Health engine: {event_count} recommendations generated")
 
 
+# ── 6. TOON Health Sampler ────────────────────────────────────────────────────
+
+def sample_toon_health():
+    """Sample TOON engine health: graph DB stats, compile cache, skillfish coverage."""
+    import subprocess
+    import os as _os
+
+    result = {
+        "repo_id": REPO_ID,
+        "sampled_at": datetime.now(timezone.utc).isoformat(),
+        "files_cached": 0, "cache_size_bytes": 0,
+        "graph_nodes": 0, "graph_edges": 0, "graph_size_bytes": 0,
+        "total_docs": 0, "total_files": 0, "toon_dir_size_bytes": 0,
+        "agents_with_skills": 0, "total_skills": 0, "avg_skills_per_agent": 0.0,
+        "cache_stale": False, "graph_orphaned": False, "compression_ratio": 0.0,
+        "compile_errors": 0, "graph_errors": 0,
+    }
+
+    toon_dir = "/root/yvon/.toon"
+    if not _os.path.exists(toon_dir):
+        supabase_post("toongine_toon_health", result)
+        print("   TOON: no .toon directory")
+        return
+
+    # Compile cache
+    cache_path = f"{toon_dir}/.compile-cache.json"
+    if _os.path.exists(cache_path):
+        try:
+            with open(cache_path) as f:
+                cache = json.load(f)
+            result["files_cached"] = len(cache.get("files", {}))
+            result["cache_size_bytes"] = _os.path.getsize(cache_path)
+            # Check if cache is stale (>24h since last modification)
+            mtime = _os.path.getmtime(cache_path)
+            age_hours = (time.time() - mtime) / 3600
+            result["cache_stale"] = age_hours > 24
+        except Exception as e:
+            result["compile_errors"] += 1
+
+    # Graph DB
+    graph_db = f"{toon_dir}/graph/unified.db"
+    if _os.path.exists(graph_db):
+        try:
+            import sqlite3
+            result["graph_size_bytes"] = _os.path.getsize(graph_db)
+            conn = sqlite3.connect(graph_db)
+            result["graph_nodes"] = conn.execute("SELECT COUNT(*) FROM unified_nodes").fetchone()[0]
+            result["graph_edges"] = conn.execute("SELECT COUNT(*) FROM unified_edges").fetchone()[0]
+
+            # Orphan check: nodes with no edges
+            orphaned = conn.execute("""
+                SELECT COUNT(*) FROM unified_nodes n
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM unified_edges e
+                    WHERE e.source_id = n.id OR e.target_id = n.id
+                )
+            """).fetchone()[0]
+            if result["graph_nodes"] > 0:
+                orphan_rate = orphaned / result["graph_nodes"]
+                result["graph_orphaned"] = orphan_rate > 0.10
+            conn.close()
+        except Exception as e:
+            result["graph_errors"] += 1
+
+    # Agent skillfish coverage
+    agents_dir = f"{toon_dir}/agents"
+    if _os.path.exists(agents_dir):
+        import glob
+        skillfish_files = glob.glob(f"{agents_dir}/**/.skillfish.json", recursive=True)
+        result["total_skills"] = len(skillfish_files)
+        # Count unique agent dirs with skillfish
+        agent_dirs = set()
+        for sf in skillfish_files:
+            parts = sf.replace(agents_dir + "/", "").split("/")
+            # First dir after agents/ is department, second is agent name
+            if len(parts) >= 2:
+                agent_dirs.add(parts[0] + "/" + parts[1])
+        result["agents_with_skills"] = len(agent_dirs)
+        if result["agents_with_skills"] > 0:
+            result["avg_skills_per_agent"] = round(result["total_skills"] / result["agents_with_skills"], 1)
+
+    # Total TOON directory stats
+    try:
+        du_result = subprocess.run(
+            ["du", "-sb", toon_dir],
+            capture_output=True, text=True, timeout=10
+        )
+        result["toon_dir_size_bytes"] = int(du_result.stdout.split()[0])
+    except:
+        pass
+
+    try:
+        find_result = subprocess.run(
+            ["find", toon_dir, "-type", "f"],
+            capture_output=True, text=True, timeout=10
+        )
+        result["total_files"] = len(find_result.stdout.splitlines())
+    except:
+        pass
+
+    try:
+        find_docs = subprocess.run(
+            ["find", toon_dir, "-name", "*.md"],
+            capture_output=True, text=True, timeout=10
+        )
+        result["total_docs"] = len(find_docs.stdout.splitlines())
+    except:
+        pass
+
+    # Compression ratio: estimated from graph nodes vs raw tokens
+    if result["graph_nodes"] > 0 and result["total_docs"] > 0:
+        # Rough estimate: each doc ~2K tokens, graph node ~50 tokens
+        est_raw_tokens = result["total_docs"] * 2000
+        est_toon_tokens = result["graph_nodes"] * 50
+        if est_raw_tokens > 0:
+            result["compression_ratio"] = round(1 - (est_toon_tokens / est_raw_tokens), 4)
+
+    supabase_post("toongine_toon_health", result)
+    print(f"   TOON: {result['graph_nodes']} nodes, {result['graph_edges']} edges, "
+          f"{result['agents_with_skills']} agents with skills, "
+          f"{result['compression_ratio']*100:.1f}% compression")
+
+
+# ── 7. Issues Detector ───────────────────────────────────────────────────────
+
+def detect_issues():
+    """Auto-detect issues from build, lint, and dependency outputs."""
+    import subprocess
+    import re
+
+    # Clear old auto-detected issues for this repo
+    try:
+        clear_params = f"?repo_id=eq.{REPO_ID}&source=in.(tsc,lint,npm)"
+        clear_req = Request(
+            f"{SUPABASE_URL}/rest/v1/toongine_issues{clear_params}",
+            headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+            method="DELETE"
+        )
+        urlopen(clear_req, timeout=10)
+    except:
+        pass
+
+    issues = []
+
+    # Detect TS errors
+    try:
+        result = subprocess.run(
+            ["npx", "tsc", "--noEmit"],
+            capture_output=True, text=True, timeout=60, cwd="/root/yvon"
+        )
+        errors = re.findall(r'(.+?)\((\d+),\d+\): error TS(\d+): (.+)', result.stdout + result.stderr)
+        for filepath, line, code, msg in errors[:20]:  # cap at 20
+            issues.append({
+                "repo_id": REPO_ID, "priority": 1, "category": "bug",
+                "source": "tsc", "file_path": filepath, "line_number": int(line),
+                "title": f"TS{code}: {msg[:80]}",
+                "detail": f"TypeScript error in {filepath}:{line} — {msg}",
+                "severity": 2, "impact_points": 3.0, "effort_minutes": 15,
+            })
+    except:
+        pass
+
+    # Detect outdated deps
+    try:
+        result = subprocess.run(
+            ["npm", "outdated", "--json"],
+            capture_output=True, text=True, timeout=15, cwd="/root/yvon"
+        )
+        if result.stdout.strip():
+            outdated = json.loads(result.stdout)
+            if isinstance(outdated, dict):
+                for pkg_name, info in list(outdated.items())[:10]:
+                    issues.append({
+                        "repo_id": REPO_ID, "priority": 2, "category": "dependency",
+                        "source": "npm", "file_path": "package.json",
+                        "title": f"Update {pkg_name}: {info.get('current', '?')} → {info.get('latest', '?')}",
+                        "detail": f"Package {pkg_name} is outdated.",
+                        "severity": 1, "impact_points": 0.5, "effort_minutes": 10,
+                    })
+    except:
+        pass
+
+    for issue in issues:
+        supabase_post("toongine_issues", issue)
+
+    print(f"   Issues: {len(issues)} auto-detected")
+
+
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
@@ -602,10 +852,16 @@ def main():
     # 3. Sample codebase health
     sample_codebase()
 
-    # 4. Generate health events + recommendations
+    # 4. Sample TOON health
+    sample_toon_health()
+
+    # 5. Detect issues
+    detect_issues()
+
+    # 6. Generate health events + recommendations
     run_health_engine()
 
-    # 5. Project heartbeat
+    # 7. Project heartbeat
     update_project_heartbeat()
     print("   Heartbeat: updated")
 

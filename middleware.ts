@@ -8,6 +8,48 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { checkRateLimit, API_RATE_LIMITS } from '@/lib/rate-limit'
 
+// ── API Health Logger (fire-and-forget to Supabase) ────────────────────────
+const TOONGINE_URL = process.env.TOONGINE_SUPABASE_URL || ''
+const TOONGINE_KEY = process.env.TOONGINE_SUPABASE_KEY || ''
+const REPO_ID = process.env.TOONGINE_REPO || 'OfficialNovizio/YVON-OS'
+
+async function logApiRequest(
+  endpoint: string, method: string, statusCode: number,
+  latencyMs: number, ipHash: string,
+): Promise<void> {
+  if (!TOONGINE_URL || !TOONGINE_KEY) return
+  try {
+    await fetch(`${TOONGINE_URL}/rest/v1/toongine_api_health`, {
+      method: 'POST',
+      headers: {
+        'apikey': TOONGINE_KEY,
+        'Authorization': `Bearer ${TOONGINE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({
+        repo_id: REPO_ID,
+        endpoint,
+        method,
+        status_code: statusCode,
+        latency_ms: Math.round(latencyMs),
+        ip_hash: ipHash,
+        created_at: new Date().toISOString(),
+      }),
+      // Fire-and-forget: don't block the response
+    }).catch(() => { /* silently ignore logging failures */ })
+  } catch { /* noop */ }
+}
+
+function hashIp(ip: string): string {
+  let hash = 0
+  for (let i = 0; i < ip.length; i++) {
+    hash = ((hash << 5) - hash) + ip.charCodeAt(i)
+    hash |= 0
+  }
+  return 'ip_' + Math.abs(hash).toString(16).padStart(8, '0')
+}
+
 // ---------------------------------------------------------------------------
 // Configuration
 // ---------------------------------------------------------------------------
@@ -146,6 +188,13 @@ export function middleware(request: NextRequest) {
   const isApiRoute = pathname.startsWith('/api/')
 
   if (isApiRoute) {
+    const apiStart = Date.now()
+    const clientIp = getClientIp(request)
+    const ipHash = hashIp(clientIp)
+
+    // Log the API request (fire-and-forget, non-blocking)
+    logApiRequest(pathname, request.method, 200, 0, ipHash)
+
     // Allow public API paths through without auth
     if (isPublicApiPath(pathname)) {
       const response = NextResponse.next()
