@@ -5,8 +5,8 @@
 import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
 import { join } from 'path'
-import { createClient } from '@supabase/supabase-js'
 import { getAgentRegistry } from '@/lib/agent-registry'
+import { getAgents, getDepartments, getActivity, isConfigured } from '@/lib/toongine'
 
 interface AgentSkill { name: string; category: string }
 
@@ -104,11 +104,35 @@ function scanAgents(): { agents: AgentOpsAgent[]; departments: { name: string; a
 
 export async function GET(): Promise<Response> {
   try {
-    // Agent roster — filesystem first (VPS/dev), embedded snapshot fallback (Vercel)
+    // Agent roster — 3-tier: filesystem (VPS/dev) → ToonGine Supabase → embedded (Vercel)
     let { agents, departments, skillsTotal } = scanAgents()
 
+    if (agents.length === 0 && isConfigured()) {
+      // No .toon/ filesystem — try ToonGine Supabase plugin
+      try {
+        const toonAgents = await getAgents()
+        if (toonAgents.length > 0) {
+          agents = toonAgents.map(a => ({
+            id: a.id,
+            name: a.name,
+            role: a.role,
+            department: a.department,
+            level: a.level,
+            status: a.status,
+            skillsCount: a.skills_count,
+            skills: a.skills,
+            memorySize: a.memory_size,
+            memoryHealth: a.memory_health,
+            lastActive: a.last_active,
+          }))
+          departments = await getDepartments()
+          skillsTotal = agents.reduce((s, a) => s + a.skillsCount, 0)
+        }
+      } catch {}
+    }
+
     if (agents.length === 0) {
-      // Vercel: no .toon/ — use build-time embedded snapshot with defaults
+      // ToonGine not configured or empty — Vercel embedded snapshot
       const registry = getAgentRegistry()
       agents = registry.agents.map(a => ({
         ...a,
@@ -120,29 +144,47 @@ export async function GET(): Promise<Response> {
       skillsTotal = registry.skillsTotal
     }
 
-    // Activity feed from Supabase (live, written by Hermes cron)
-    const activity: ActivityEntry[] = []
+    // Activity feed — try ToonGine Supabase first, then YVON Supabase
+    let activity: ActivityEntry[] = []
     try {
-      const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
-      const { data: liveActivity } = await supabase
-        .from('agent_activity')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(20)
-
-      if (liveActivity && Array.isArray(liveActivity)) {
-        for (const a of liveActivity) {
-          activity.push({
-            time: new Date(a.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-            agent: a.agent_name,
-            task: a.task,
-            tokens: Number(a.tokens),
-            duration: a.duration_sec ? `${Math.round(Number(a.duration_sec))}s` : '—',
-            status: a.status || 'completed',
-          })
-        }
+      if (isConfigured()) {
+        const toonActivity = await getActivity(20)
+        activity = toonActivity.map(a => ({
+          time: new Date(a.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          agent: a.agent_name,
+          task: a.task,
+          tokens: a.tokens,
+          duration: a.duration_sec ? `${Math.round(a.duration_sec)}s` : '—',
+          status: a.status || 'completed',
+        }))
       }
     } catch {}
+
+    // Fallback: YVON's own Supabase activity table (legacy)
+    if (activity.length === 0) {
+      try {
+        const { createClient } = await import('@supabase/supabase-js')
+        const supabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+        const { data: liveActivity } = await supabaseClient
+          .from('agent_activity')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(20)
+
+        if (liveActivity && Array.isArray(liveActivity)) {
+          for (const a of liveActivity) {
+            activity.push({
+              time: new Date(a.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+              agent: a.agent_name,
+              task: a.task,
+              tokens: Number(a.tokens),
+              duration: a.duration_sec ? `${Math.round(Number(a.duration_sec))}s` : '—',
+              status: a.status || 'completed',
+            })
+          }
+        }
+      } catch {}
+    }
 
     return NextResponse.json({ agents, departments, skillsTotal, activity })
   } catch (err: any) {
