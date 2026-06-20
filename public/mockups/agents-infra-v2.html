@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YVON OS — Agents Infrastructure Dashboard v2</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a0a; color: #e2e2e2; padding: 32px; min-height: 100vh;
+  }
+  .container { max-width: 1460px; margin: 0 auto; }
+
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .page-header p { margin-top: 4px; font-size: 13px; color: #8b8fa3; }
+  .header-stats { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .header-stat { font-size: 11px; color: #6b7280; padding: 3px 10px; background: rgba(255,255,255,0.03); border-radius: 999px; border: 1px solid rgba(255,255,255,0.05); }
+
+  .glass { background: rgba(19,19,19,0.72); backdrop-filter: blur(18px) saturate(140%); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 22px 60px -28px rgba(0,0,0,0.7); }
+  .glass-light { background: rgba(28,28,30,0.6); backdrop-filter: blur(14px) saturate(120%); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; }
+  .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
+
+  /* KPI cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi-card { padding: 15px; cursor: default; }
+  .kpi-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 8px; }
+  .kpi-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin-bottom: 3px; }
+  .kpi-value { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpi-sub { font-size: 9px; color: #4b5563; margin-top: 2px; }
+  .icon-memory { background: rgba(168,85,247,0.15); color: #a855f7; }
+  .icon-success { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .icon-graph { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .icon-skills { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .icon-plugins { background: rgba(236,72,153,0.15); color: #ec4899; }
+  .icon-sessions { background: rgba(20,184,166,0.15); color: #14b8a6; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+  .section-pad { padding: 18px 20px; }
+
+  /* Memory bars */
+  .mem-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .mem-row:last-child { border-bottom: none; }
+  .mem-name { font-size: 11px; font-weight: 600; min-width: 80px; color: #d4d4d8; }
+  .mem-track { flex:1; height:5px; background:rgba(255,255,255,0.04); border-radius:999px; overflow:hidden; }
+  .mem-fill { height:100%; border-radius:999px; }
+  .mem-stats { font-size: 9px; color: #6b7280; min-width: 65px; text-align:right; font-variant-numeric:tabular-nums; }
+
+  /* Efficiency */
+  .eff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .eff-card { padding: 12px; text-align: center; }
+  .eff-value { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .eff-label { font-size: 9px; color: #6b7280; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .eff-change { font-size: 9px; margin-top: 3px; }
+  .eff-change.down { color: #22c55e; }.eff-change.up { color: #ef4444; }
+
+  /* Error inline */
+  .error-item { display: flex; align-items: flex-start; gap: 6px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 10px; }
+  .error-item:last-child { border-bottom: none; }
+  .error-time { color: #6b7280; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .error-agent { color: #f87171; font-weight: 600; }
+  .error-msg { color: #9ca3af; }
+
+  /* ── GRAPHIFY NODE EXPLORER ────────────────────────────────────── */
+  .graph-section { display: flex; gap: 16px; }
+  .graph-ring-col { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .graph-ring { position: relative; width: 140px; height: 140px; }
+  .graph-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .graph-ring-value { font-size: 26px; font-weight: 700; }
+  .graph-ring-label { font-size: 9px; color: #6b7280; }
+  .graph-stats-box { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+  .graph-stat-mini { padding: 8px 10px; text-align: center; }
+  .gsm-val { font-size: 16px; font-weight: 700; }
+  .gsm-lbl { font-size: 9px; color: #6b7280; }
+
+  /* ── NODE LIST (clickable) ──────────────────────────────────────── */
+  .node-explorer { flex: 1; display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow-y: auto; }
+  .node-community { border-radius: 10px; overflow: hidden; }
+  .node-comm-header {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    background: rgba(255,255,255,0.02); cursor: pointer; transition: background 0.15s;
+    border: 1px solid rgba(255,255,255,0.04); border-radius: 10px;
+  }
+  .node-comm-header:hover { background: rgba(255,255,255,0.05); }
+  .node-comm-header.active { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); }
+  .node-comm-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .node-comm-name { font-size: 11px; font-weight: 600; flex: 1; }
+  .node-comm-count { font-size: 10px; color: #6b7280; }
+  .node-comm-cohesion { font-size: 9px; color: #4b5563; }
+  .node-comm-arrow { font-size: 10px; color: #6b7280; transition: transform 0.2s; }
+  .node-comm-header.active .node-comm-arrow { transform: rotate(180deg); }
+
+  .node-comm-body { display: none; padding: 8px 12px 10px; max-height: 160px; overflow-y: auto; }
+  .node-comm-body.open { display: block; }
+  .node-file {
+    display: flex; align-items: center; gap: 6px; padding: 4px 6px;
+    font-size: 10px; border-radius: 6px; cursor: pointer; transition: background 0.12s;
+    color: #9ca3af;
+  }
+  .node-file:hover { background: rgba(59,130,246,0.08); color: #93c5fd; }
+  .node-file-icon { font-size: 10px; width: 14px; text-align: center; }
+  .node-file-path { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .node-file-badge { font-size: 8px; color: #4b5563; padding: 1px 5px; background: rgba(255,255,255,0.03); border-radius: 999px; }
+
+  /* ── NODE DETAIL MODAL ──────────────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: rgba(22,22,24,0.96); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 28px; max-width: 620px; width: 90%;
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.8); position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; width: 32px; height: 32px;
+    border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+    color: #9ca3af; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.08); color: #e2e2e2; }
+  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .modal-path { font-size: 12px; color: #6b7280; font-family: 'SF Mono', 'Fira Code', monospace; margin-bottom: 16px; word-break: break-all; }
+  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .modal-stat { padding: 12px; }
+  .modal-stat-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; }
+  .modal-stat-value { font-size: 15px; font-weight: 700; margin-top: 2px; }
+  .modal-section { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-weight: 700; }
+  .modal-links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .modal-link {
+    font-size: 10px; padding: 4px 10px; border-radius: 999px;
+    background: rgba(59,130,246,0.08); color: #93c5fd;
+    border: 1px solid rgba(59,130,246,0.15); cursor: pointer; text-decoration: none;
+    transition: background 0.15s;
+  }
+  .modal-link:hover { background: rgba(59,130,246,0.15); }
+
+  /* Plugin health */
+  .pl-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .pl-row:last-child { border-bottom: none; }
+  .pl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .pl-dot.online { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+  .pl-dot.degraded { background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.4); }
+  .pl-name { font-size: 11px; font-weight: 600; flex: 1; }
+  .pl-status { font-size: 9px; padding: 2px 7px; border-radius: 999px; font-weight: 600; }
+  .pl-status.online { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+  .pl-status.degraded { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+  .pl-latency { font-size: 9px; color: #6b7280; font-variant-numeric: tabular-nums; }
+
+  /* Hermes connection */
+  .hermes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  @media (max-width: 1200px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 768px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } .grid-2 { grid-template-columns: 1fr; } .eff-grid { grid-template-columns: repeat(2, 1fr); } .graph-section { flex-direction: column; } }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .modal-overlay.open .modal { animation: fadeIn 0.2s ease; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── HEADER ────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <h1>Agents</h1>
+    <p>24 agents · 10 departments · 51 skills · Hermes v0.16 · DeepSeek v4 Pro</p>
+    <div class="header-stats">
+      <span class="header-stat">🏠 OfficialNovizio/YVON-OS</span>
+      <span class="header-stat">🟢 Supabase connected</span>
+      <span class="header-stat">🟢 Hermes running</span>
+      <span class="header-stat">🟢 MCP bridge · 5 tools</span>
+      <span class="header-stat">📐 TOON v3 · 99.97% compression</span>
+    </div>
+  </div>
+
+  <!-- ── KPI ROW ───────────────────────────────────────────────────── -->
+  <div class="kpi-grid">
+    <div class="kpi-card glass"><div class="kpi-icon icon-memory">🧠</div><div class="kpi-label">Agent Memories</div><div class="kpi-value">15</div><div class="kpi-sub">79.6 KB total</div></div>
+    <div class="kpi-card glass"><div class="kpi-icon icon-success">✓</div><div class="kpi-label">Completion Rate</div><div class="kpi-value">84.2%</div><div class="kpi-sub">last 7 days</div></div>
+    <div class="kpi-card glass"><div class="kpi-icon icon-graph">🔗</div><div class="kpi-label">Graph Nodes</div><div class="kpi-value">1,452</div><div class="kpi-sub">376,483 edges · 13 communities</div></div>
+    <div class="kpi-card glass"><div class="kpi-icon icon-skills">⭐</div><div class="kpi-label">Skills Loaded</div><div class="kpi-value">51</div><div class="kpi-sub">3 local · 48 builtin</div></div>
+    <div class="kpi-card glass"><div class="kpi-icon icon-plugins">🔌</div><div class="kpi-label">Integrations</div><div class="kpi-value">6</div><div class="kpi-sub">MCP · Supabase · Graphify · TOON · Pipeline · CIE</div></div>
+    <div class="kpi-card glass"><div class="kpi-icon icon-sessions">📊</div><div class="kpi-label">Session Activity</div><div class="kpi-value">448</div><div class="kpi-sub">10.4M tokens · $4.29</div></div>
+  </div>
+
+  <!-- ── ROW 1: Memory Health + Efficiency ─────────────────────────── -->
+  <div class="grid-2">
+    <div class="glass section-pad">
+      <div class="section-label">🧠 Memory Health</div>
+      <div class="mem-row"><span class="mem-name">Lena</span><div class="mem-track"><div class="mem-fill" style="width:100%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div><span class="mem-stats">19 KB · 100%</span></div>
+      <div class="mem-row"><span class="mem-name">Kahneman</span><div class="mem-track"><div class="mem-fill" style="width:95%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div><span class="mem-stats">18 KB · 95%</span></div>
+      <div class="mem-row"><span class="mem-name">Dev</span><div class="mem-track"><div class="mem-fill" style="width:56%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="mem-stats">11 KB · 56%</span></div>
+      <div class="mem-row"><span class="mem-name">Rio</span><div class="mem-track"><div class="mem-fill" style="width:52%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="mem-stats">10 KB · 52%</span></div>
+      <div class="mem-row"><span class="mem-name">Marcus</span><div class="mem-track"><div class="mem-fill" style="width:41%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="mem-stats">8 KB · 41%</span></div>
+      <div class="mem-row"><span class="mem-name">Kai</span><div class="mem-track"><div class="mem-fill" style="width:41%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="mem-stats">8 KB · 41%</span></div>
+      <div class="mem-row"><span class="mem-name">Diana</span><div class="mem-track"><div class="mem-fill" style="width:42%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="mem-stats">8 KB · 42%</span></div>
+      <div class="mem-row"><span class="mem-name">Nate</span><div class="mem-track"><div class="mem-fill" style="width:40%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><span class="mem-stats">8 KB · 40%</span></div>
+    </div>
+
+    <div class="glass section-pad">
+      <div class="section-label">⚡ Efficiency</div>
+      <div class="eff-grid">
+        <div class="eff-card glass-light"><div class="eff-value">23,120</div><div class="eff-label">Avg Tokens/Task</div><div class="eff-change down">↓ 12% vs last week</div></div>
+        <div class="eff-card glass-light"><div class="eff-value">$0.0096</div><div class="eff-label">Avg Cost/Task</div><div class="eff-change down">↓ 8% vs last week</div></div>
+        <div class="eff-card glass-light"><div class="eff-value">99.97%</div><div class="eff-label">TOON Savings</div><div class="eff-change down">saved $1,247 this month</div></div>
+        <div class="eff-card glass-light"><div class="eff-value">1.8s</div><div class="eff-label">Avg Response</div><div class="eff-change up">↑ 0.2s vs last week</div></div>
+      </div>
+      <div class="section-label" style="margin-top:16px;">⚠️ Recent Errors</div>
+      <div class="glass-light" style="padding:12px;border-left:3px solid #ef4444;">
+        <div class="error-item"><span class="error-time">14:22</span><span class="error-agent">Raj</span><span class="error-msg">Supabase timeout — retry succeeded after 3.2s</span></div>
+        <div class="error-item"><span class="error-time">11:45</span><span class="error-agent">Kai</span><span class="error-msg">Anthropic 429 — provider fallback to DeepSeek</span></div>
+        <div class="error-item"><span class="error-time">09:18</span><span class="error-agent">Graphify</span><span class="error-msg">12 nodes stale — partial rebuild in 5m</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ROW 2: GRAPHIFY NODE EXPLORER + Plugin Health ─────────────── -->
+  <div class="grid-2">
+    <div class="glass section-pad">
+      <div class="section-label">🔗 Graphify · Node Explorer <span style="font-weight:400;color:#6b7280;font-size:9px;text-transform:none;letter-spacing:0;">— click any community to expand, click a file for details</span></div>
+      <div class="graph-section">
+        <!-- Ring stats -->
+        <div class="graph-ring-col">
+          <div class="graph-ring">
+            <svg width="140" height="140" viewBox="0 0 140 140" style="transform:rotate(-90deg)">
+              <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+              <circle cx="70" cy="70" r="58" fill="none" stroke="#3b82f6" stroke-width="8" stroke-dasharray="364.4" stroke-dashoffset="91.1" stroke-linecap="round"/>
+              <circle cx="70" cy="70" r="42" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="6"/>
+              <circle cx="70" cy="70" r="42" fill="none" stroke="#8b5cf6" stroke-width="6" stroke-dasharray="263.9" stroke-dashoffset="52.8" stroke-linecap="round"/>
+            </svg>
+            <div class="graph-ring-center"><div class="graph-ring-value" style="color:#3b82f6">75%</div><div class="graph-ring-label">Density</div></div>
+          </div>
+          <div class="graph-stats-box">
+            <div class="graph-stat-mini glass-light"><div class="gsm-val">1,452</div><div class="gsm-lbl">Nodes</div></div>
+            <div class="graph-stat-mini glass-light"><div class="gsm-val">376K</div><div class="gsm-lbl">Edges</div></div>
+            <div class="graph-stat-mini glass-light"><div class="gsm-val">13</div><div class="gsm-lbl">Communities</div></div>
+            <div class="graph-stat-mini glass-light"><div class="gsm-val">5</div><div class="gsm-lbl">MCP Tools</div></div>
+          </div>
+        </div>
+
+        <!-- Node community list -->
+        <div class="node-explorer">
+          <!-- Community 3: .toon (largest) -->
+          <div class="node-community">
+            <div class="node-comm-header" onclick="toggleComm(this)">
+              <span class="node-comm-dot" style="background:#8b5cf6"></span>
+              <span class="node-comm-name">.toon</span>
+              <span class="node-comm-count">808 nodes</span>
+              <span class="node-comm-cohesion">cohesion: 0.57</span>
+              <span class="node-comm-arrow">▾</span>
+            </div>
+            <div class="node-comm-body">
+              <div class="node-file" onclick="openDetail(event, '.toon/agents/CEO/marcus/MEMORY.md', 'CEO', 'Memory file for Marcus — executive decision tracking. 8 KB, last updated 2026-06-18.', [{l:'Marcus',c:'CEO'},{l:'Diana',c:'COO'},{l:'Board',c:'Command'},{l:'Decision Queue',c:'api/decision-queue'}])"><span class="node-file-icon">📄</span><span class="node-file-path">.toon/agents/CEO/marcus/MEMORY.md</span><span class="node-file-badge">8 KB</span></div>
+              <div class="node-file" onclick="openDetail(event, '.toon/agents/CEO/marcus/SESSION.md', 'CEO', 'Active session state for Marcus. Tracks in-flight tasks, pending decisions, and context handoff.', [{l:'Marcus',c:'CEO'},{l:'Task Board',c:'api/task-board'},{l:'Kai',c:'Marketing'}])"><span class="node-file-icon">📄</span><span class="node-file-path">.toon/agents/CEO/marcus/SESSION.md</span><span class="node-file-badge">2 KB</span></div>
+              <div class="node-file" onclick="openDetail(event, '.toon/agents/COO/diana/MEMORY.md', 'COO', 'Diana operations memory — workflows, sprint plans, dependency tracking.', [{l:'Diana',c:'COO'},{l:'Marcus',c:'CEO'},{l:'Dev',c:'Technical'},{l:'Raj',c:'Technical'}])"><span class="node-file-icon">📄</span><span class="node-file-path">.toon/agents/COO/diana/MEMORY.md</span><span class="node-file-badge">7 KB</span></div>
+              <div class="node-file" onclick="openDetail(event, '.toon/agents/Technical/dev/MEMORY.md', 'Technical', 'Dev technical memory — architecture decisions, deployment notes, tech stack.', [{l:'Dev',c:'Technical'},{l:'Raj',c:'Technical'},{l:'Mia',c:'Technical'},{l:'app/layout.tsx',c:'root'},{l:'middleware.ts',c:'root'}])"><span class="node-file-icon">📄</span><span class="node-file-path">.toon/agents/Technical/dev/MEMORY.md</span><span class="node-file-badge">5 KB</span></div>
+              <div class="node-file" onclick="openDetail(event, '.toon/agents/Marketing/lena/MEMORY.md', 'Marketing', 'Lena brand voice memory — brand guidelines, content style, audience profiles.', [{l:'Lena',c:'Marketing'},{l:'Kai',c:'Marketing'},{l:'Atlas',c:'Marketing'}])"><span class="node-file-icon">📄</span><span class="node-file-path">.toon/agents/Marketing/lena/MEMORY.md</span><span class="node-file-badge">19 KB</span></div>
+              <div style="text-align:center;font-size:9px;color:#4b5563;padding:4px;">+ 803 more files</div>
+            </div>
+          </div>
+          <!-- Community 6: app -->
+          <div class="node-community">
+            <div class="node-comm-header" onclick="toggleComm(this)">
+              <span class="node-comm-dot" style="background:#3b82f6"></span>
+              <span class="node-comm-name">app</span>
+              <span class="node-comm-count">252 nodes</span>
+              <span class="node-comm-cohesion">cohesion: 0.18</span>
+              <span class="node-comm-arrow">▾</span>
+            </div>
+            <div class="node-comm-body">
+              <div class="node-file" onclick="openDetail(event, 'app/agents/page.tsx', 'app', 'Agents dashboard page — 3 tabs (Token Burn, Project Health, Agent Ops). 32 KB, Next.js client component.', [{l:'app/agents/layout.tsx',c:'app'},{l:'app/api/agent-ops/route.ts',c:'app/api'},{l:'components/ui.tsx',c:'components'}])"><span class="node-file-icon">📄</span><span class="node-file-path">app/agents/page.tsx</span><span class="node-file-badge">32 KB</span></div>
+              <div class="node-file" onclick="openDetail(event, 'app/api/claude/route.ts', 'app/api', 'Central AI proxy — routes all agent LLM calls through Anthropic/DeepSeek. 263 lines.', [{l:'lib/agents.ts',c:'lib'},{l:'lib/cie/index.ts',c:'lib/cie'},{l:'lib/token-cost.ts',c:'lib'}])"><span class="node-file-icon">📄</span><span class="node-file-path">app/api/claude/route.ts</span><span class="node-file-badge">10 KB</span></div>
+              <div class="node-file" onclick="openDetail(event, 'app/api/toongine/token-burn/route.ts', 'app/api/toongine', 'Token burn metrics API — KPI cards, hourly chart, leaderboard, provider health.', [{l:'toongine/plugins/supabase',c:'toongine'},{l:'Supabase',c:'external'}])"><span class="node-file-icon">📄</span><span class="node-file-path">app/api/toongine/token-burn/route.ts</span><span class="node-file-badge">2 KB</span></div>
+              <div style="text-align:center;font-size:9px;color:#4b5563;padding:4px;">+ 249 more files</div>
+            </div>
+          </div>
+          <!-- Community 8: docs -->
+          <div class="node-community">
+            <div class="node-comm-header" onclick="toggleComm(this)">
+              <span class="node-comm-dot" style="background:#22c55e"></span>
+              <span class="node-comm-name">docs</span>
+              <span class="node-comm-count">144 nodes</span>
+              <span class="node-comm-cohesion">cohesion: 0.11</span>
+              <span class="node-comm-arrow">▾</span>
+            </div>
+            <div class="node-comm-body">
+              <div class="node-file" onclick="openDetail(event, 'docs/CONSTITUTION.md', 'docs', 'YVON Constitution — governance rules, agent charters, operational principles.', [{l:'docs/INDEX.md',c:'docs'},{l:'.toon/agents/CEO/marcus',c:'CEO'},{l:'docs/WORKFLOW.md',c:'docs'}])"><span class="node-file-icon">📄</span><span class="node-file-path">docs/CONSTITUTION.md</span></div>
+              <div class="node-file" onclick="openDetail(event, 'docs/WORKFLOW.md', 'docs', 'Session workflow protocol — session start, engagement, adjourning procedures.', [{l:'docs/CONSTITUTION.md',c:'docs'},{l:'docs/os/SESSION.md',c:'docs/os'}])"><span class="node-file-icon">📄</span><span class="node-file-path">docs/WORKFLOW.md</span></div>
+              <div style="text-align:center;font-size:9px;color:#4b5563;padding:4px;">+ 142 more files</div>
+            </div>
+          </div>
+          <!-- Community 10: lib -->
+          <div class="node-community">
+            <div class="node-comm-header" onclick="toggleComm(this)">
+              <span class="node-comm-dot" style="background:#f59e0b"></span>
+              <span class="node-comm-name">lib</span>
+              <span class="node-comm-count">117 nodes</span>
+              <span class="node-comm-cohesion">cohesion: 0.09</span>
+              <span class="node-comm-arrow">▾</span>
+            </div>
+            <div class="node-comm-body">
+              <div class="node-file" onclick="openDetail(event, 'lib/agents.ts', 'lib', 'Agent registry and routing — maps agent IDs to departments, skills, and config.', [{l:'lib/agent-registry.ts',c:'lib'},{l:'lib/agent-personalities.ts',c:'lib'},{l:'app/api/claude/route.ts',c:'app/api'}])"><span class="node-file-icon">📄</span><span class="node-file-path">lib/agents.ts</span></div>
+              <div class="node-file" onclick="openDetail(event, 'lib/cie/index.ts', 'lib/cie', 'Context Intelligence Engine — classifies tasks, retrieves relevant context, ranks, builds injection.', [{l:'lib/cie/classifier.ts',c:'lib/cie'},{l:'lib/cie/retriever.ts',c:'lib/cie'},{l:'app/api/claude/route.ts',c:'app/api'}])"><span class="node-file-icon">📄</span><span class="node-file-path">lib/cie/index.ts</span></div>
+              <div style="text-align:center;font-size:9px;color:#4b5563;padding:4px;">+ 115 more files</div>
+            </div>
+          </div>
+          <!-- Community 1: .code-review-graph -->
+          <div class="node-community">
+            <div class="node-comm-header" onclick="toggleComm(this)">
+              <span class="node-comm-dot" style="background:#ec4899"></span>
+              <span class="node-comm-name">.code-review-graph</span>
+              <span class="node-comm-count">43 nodes</span>
+              <span class="node-comm-cohesion">cohesion: 0.04</span>
+              <span class="node-comm-arrow">▾</span>
+            </div>
+            <div class="node-comm-body">
+              <div class="node-file" onclick="openDetail(event, '.code-review-graph/wiki/agents-agents.md', '.code-review-graph', 'Graph wiki for agents page — cross-references to app/agents/page.tsx.', [{l:'app/agents/page.tsx',c:'app'},{l:'docs/briefs',c:'docs'}])"><span class="node-file-icon">📄</span><span class="node-file-path">.code-review-graph/wiki/agents-agents.md</span></div>
+              <div style="text-align:center;font-size:9px;color:#4b5563;padding:4px;">+ 42 more files</div>
+            </div>
+          </div>
+          <!-- Summary line -->
+          <div style="font-size:9px;color:#4b5563;padding:6px;text-align:center;">+ 8 more communities (188 nodes)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plugin Health -->
+    <div class="glass section-pad">
+      <div class="section-label">🔌 Plugin Health</div>
+      <div class="pl-row"><span class="pl-dot online"></span><span class="pl-name">MCP Bridge</span><span class="pl-status online">active</span><span class="pl-latency">12ms</span></div>
+      <div class="pl-row"><span class="pl-dot online"></span><span class="pl-name">Supabase</span><span class="pl-status online">connected</span><span class="pl-latency">85ms</span></div>
+      <div class="pl-row"><span class="pl-dot online"></span><span class="pl-name">TOON Compiler v3</span><span class="pl-status online">operational</span><span class="pl-latency">—</span></div>
+      <div class="pl-row"><span class="pl-dot online"></span><span class="pl-name">Graphify (unified)</span><span class="pl-status online">1,452 nodes</span><span class="pl-latency">4ms</span></div>
+      <div class="pl-row"><span class="pl-dot online"></span><span class="pl-name">Pipeline (cron)</span><span class="pl-status online">every 5m</span><span class="pl-latency">$0 cost</span></div>
+      <div class="pl-row"><span class="pl-dot online"></span><span class="pl-name">CIE (Context Engine)</span><span class="pl-status online">5-stage pipeline</span><span class="pl-latency">—</span></div>
+      <div class="pl-row"><span class="pl-dot degraded"></span><span class="pl-name">DeepSeek API</span><span class="pl-status degraded">$4.29 left</span><span class="pl-latency">480ms</span></div>
+    </div>
+  </div>
+
+  <!-- ── ROW 3: Hermes Connection + Error Log ──────────────────────── -->
+  <div class="grid-2">
+    <div class="glass section-pad">
+      <div class="section-label">📡 Hermes Connection</div>
+      <div class="hermes-grid">
+        <div class="graph-stat-mini glass-light"><div class="gsm-val" style="color:#22c55e;font-size:14px;">🟢 Connected</div><div class="gsm-lbl">Status</div></div>
+        <div class="graph-stat-mini glass-light"><div class="gsm-val">v0.16</div><div class="gsm-lbl">Version</div></div>
+        <div class="graph-stat-mini glass-light"><div class="gsm-val">DeepSeek v4</div><div class="gsm-lbl">Provider</div></div>
+        <div class="graph-stat-mini glass-light"><div class="gsm-val">deepseek-v4-pro</div><div class="gsm-lbl">Model</div></div>
+        <div class="graph-stat-mini glass-light"><div class="gsm-val">~/.hermes/skills/</div><div class="gsm-lbl">Skills Path</div></div>
+        <div class="graph-stat-mini glass-light"><div class="gsm-val">448 sessions</div><div class="gsm-lbl">State DB</div></div>
+      </div>
+    </div>
+
+    <div class="glass section-pad">
+      <div class="section-label">📋 Error Log (last 24h)</div>
+      <div style="max-height:200px;overflow-y:auto;">
+        <div class="error-item"><span class="error-time">14:22</span><span class="error-agent">Raj</span><span class="error-msg">Supabase connection timeout (3.2s) — auto-retry OK</span></div>
+        <div class="error-item"><span class="error-time">11:45</span><span class="error-agent">Kai</span><span class="error-msg">Anthropic API 429 — provider fallback to DeepSeek</span></div>
+        <div class="error-item"><span class="error-time">10:31</span><span class="error-agent">Pipeline</span><span class="error-msg">toongine_issues table not found — v4 schema pending</span></div>
+        <div class="error-item"><span class="error-time">09:18</span><span class="error-agent">Graphify</span><span class="error-msg">unified.db schema drift — 12 nodes marked stale</span></div>
+        <div class="error-item"><span class="error-time">08:05</span><span class="error-agent">Felix</span><span class="error-msg">DeepSeek balance API unreachable — using cached $4.29</span></div>
+        <div class="error-item"><span class="error-time">03:47</span><span class="error-agent">Marcus</span><span class="error-msg">Decision queue timeout — retry in 5m cycle</span></div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:12px;">
+        <span style="font-size:9px;color:#ef4444;">6 errors</span>
+        <span style="font-size:9px;color:#f59e0b;">2 warnings</span>
+        <span style="font-size:9px;color:#22c55e;">83.3% resolved</span>
+        <span style="font-size:9px;color:#6b7280;margin-left:auto;">Pipeline runs every 5m</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── NODE DETAIL MODAL ────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">
+      <span id="modal-icon">📄</span>
+      <span id="modal-name">node-file.md</span>
+    </div>
+    <div class="modal-path" id="modal-path">/path/to/file</div>
+    <div class="section-label" style="font-size:9px;">Community</div>
+    <span id="modal-community" style="display:inline-block;padding:3px 10px;border-radius:999px;background:rgba(139,92,246,0.12);color:#a78bfa;border:1px solid rgba(139,92,246,0.2);font-size:10px;font-weight:600;margin-bottom:14px;">.toon</span>
+    <p id="modal-desc" style="font-size:12px;color:#9ca3af;margin-bottom:14px;line-height:1.5;">File description goes here.</p>
+    <div class="modal-section">Connected Nodes</div>
+    <div class="modal-links" id="modal-links"></div>
+  </div>
+</div>
+
+<script>
+  // Toggle community expand
+  function toggleComm(header) {
+    header.classList.toggle('active');
+    header.nextElementSibling.classList.toggle('open');
+  }
+
+  // Open node detail modal
+  function openDetail(event, path, community, description, links) {
+    event.stopPropagation();
+    const parts = path.split('/');
+    const name = parts[parts.length - 1];
+
+    document.getElementById('modal-icon').textContent = path.endsWith('.tsx') ? '⚛️' : path.endsWith('.ts') ? '🔷' : path.endsWith('.md') ? '📄' : '📁';
+    document.getElementById('modal-name').textContent = name;
+    document.getElementById('modal-path').textContent = path;
+    document.getElementById('modal-community').textContent = community;
+    document.getElementById('modal-desc').textContent = description;
+
+    const colors = {'.toon':'#8b5cf6', 'app':'#3b82f6', 'docs':'#22c55e', 'lib':'#f59e0b', 'CEO':'#a855f7', 'COO':'#ec4899', 'Technical':'#3b82f6', 'Marketing':'#22c55e', 'app/api':'#06b6d4', 'lib/cie':'#f59e0b', 'root':'#6b7280', 'external':'#ef4444', '.code-review-graph':'#ec4899', 'components':'#14b8a6', 'docs/os':'#22c55e'};
+    const cColor = colors[community] || '#6b7280';
+    document.getElementById('modal-community').style.background = cColor + '20';
+    document.getElementById('modal-community').style.color = cColor;
+    document.getElementById('modal-community').style.borderColor = cColor + '33';
+
+    let linksHtml = '';
+    links.forEach(l => {
+      const lc = colors[l.c] || '#6b7280';
+      linksHtml += `<span class="modal-link" style="background:${lc}15;color:${lc};border-color:${lc}33">${l.l} <span style="font-size:8px;opacity:0.6">${l.c}</span></span>`;
+    });
+    document.getElementById('modal-links').innerHTML = linksHtml;
+
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  // Close modal
+  function closeModal(e) {
+    if (e && e.target !== document.getElementById('modal-overlay')) return;
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { document.getElementById('modal-overlay').classList.remove('open'); } });
+
+  // Auto-open first community
+  document.querySelector('.node-comm-header').click();
+</script>
+
+</body>
+</html>
