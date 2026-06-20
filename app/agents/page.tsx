@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { PageHeader, Card, StatusBadge } from '@/components/ui'
-import { Settings, Save, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Settings, Save, Loader2, ChevronDown, ChevronUp, Zap, RefreshCw, AlertTriangle, CheckCircle, TrendingUp, DollarSign, Activity, Cpu } from 'lucide-react'
 
-// ─── Agent Ops types ──────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 interface AgentSkill { name: string; category: string }
 interface AgentOpsAgent {
@@ -14,6 +14,27 @@ interface AgentOpsAgent {
 }
 interface ActivityEntry { time: string; agent: string; task: string; tokens: number; duration: string; status: string }
 interface AgentOpsData { agents: AgentOpsAgent[]; departments: { name: string; agentCount: number; skillsTotal: number }[]; skillsTotal: number; activity: ActivityEntry[] }
+
+interface TokenBurnData {
+  initialized: boolean
+  kpi?: { totalTokens: number; totalCost: number; totalSessions: number; avgTokens: number }
+  hourlyBurn?: { hour: string; tokens: number; cost: number }[]
+  leaderboard?: { agent: string; tokens: number; cost: number; sessions: number }[]
+  providers?: { name: string; calls: number; tokens: number; cost: number; errors: number; health: string }[]
+  error?: string
+}
+
+interface ProjectHealthData {
+  initialized: boolean
+  score?: { overall: number; codebase: number; api: number; toon: number; issues_score: number; burn: number }
+  issues?: { total: number; critical: number; high: number; open: number; items: any[] }
+  toon?: { nodes: number; edges: number; compressionRatio: number; healthPct: number }
+  codebase?: { files: number; lines: number; languages: number }
+  apiTimeline?: { time: string; latency: number; errors: number }[]
+  healthEvents?: { time: string; type: string; message: string }[]
+  recommendations?: { priority: string; text: string }[]
+  error?: string
+}
 
 type TabKey = 'burn' | 'health' | 'ops'
 
@@ -36,12 +57,67 @@ const STATUS_DOT: Record<string, string> = {
 
 const AVAILABLE_MODELS = ['deepseek-chat', 'deepseek-reasoner', 'gpt-4o', 'gpt-4o-mini', 'claude-sonnet-4-20250514', 'claude-opus-4-20250514', 'gemini-2.5-pro', 'gemini-2.5-flash']
 
+// ─── Sub-components ──────────────────────────────────────────────────────────
+
+function KPICard({ icon: Icon, label, value, sub, accent }: { icon: any; label: string; value: string; sub?: string; accent?: string }) {
+  return (
+    <div className="glass-card p-4 flex items-start gap-3">
+      <div className={`mt-0.5 p-2 rounded-xl ${accent || 'bg-white/[0.04]'}`}>
+        <Icon size={18} className={accent ? 'text-white' : 'text-on-surface-variant'} />
+      </div>
+      <div>
+        <div className="text-[11px] text-on-surface-variant/60 uppercase tracking-wider">{label}</div>
+        <div className="text-xl font-bold text-on-surface tabular-nums mt-0.5">{value}</div>
+        {sub && <div className="text-[11px] text-on-surface-variant/50 mt-0.5">{sub}</div>}
+      </div>
+    </div>
+  )
+}
+
+function BurnChart({ data }: { data: { hour: string; tokens: number }[] }) {
+  const maxTokens = Math.max(...data.map(d => d.tokens), 1)
+  return (
+    <div className="flex items-end gap-1 h-32">
+      {data.map((d, i) => (
+        <div key={i} className="flex-1 flex flex-col items-center gap-1 min-w-0" title={`${d.hour}: ${d.tokens.toLocaleString()} tokens`}>
+          <div className="w-full bg-gradient-to-t from-emerald-500/40 to-emerald-400 rounded-t-sm transition-all duration-300"
+            style={{ height: `${Math.max((d.tokens / maxTokens) * 100, 2)}%`, minHeight: d.tokens > 0 ? '4px' : '1px' }} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ScoreRing({ score, size = 100, label }: { score: number; size?: number; label: string }) {
+  const radius = (size - 8) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (score / 100) * circumference
+  const color = score >= 80 ? '#4ade80' : score >= 50 ? '#f59e0b' : '#f87171'
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="6" />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth="6"
+          strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round"
+          className="transition-all duration-1000 ease-out" />
+      </svg>
+      <span className="text-2xl font-bold tabular-nums -mt-12">{score}%</span>
+      <span className="text-[10px] text-on-surface-variant/60 uppercase tracking-wider">{label}</span>
+    </div>
+  )
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function AgentsPage() {
   const [tab, setTab] = useState<TabKey>('burn')
   const [opsData, setOpsData] = useState<AgentOpsData | null>(null)
+  const [burnData, setBurnData] = useState<TokenBurnData | null>(null)
+  const [healthData, setHealthData] = useState<ProjectHealthData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [initializing, setInitializing] = useState(false)
+  const [initMsg, setInitMsg] = useState('')
+  const [initSteps, setInitSteps] = useState<string[]>([])
 
   // Configure tab state
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null)
@@ -54,19 +130,53 @@ export default function AgentsPage() {
 
   useEffect(() => {
     let settled = 0
-    const done = () => { settled++; if (settled >= 1) setLoading(false) }
-
+    const done = () => { settled++; if (settled >= 3) setLoading(false) }
     const defaultOps: AgentOpsData = { agents: [], departments: [], skillsTotal: 0, activity: [] }
 
-    // Agent Ops from /api/agent-ops (reads .toon/ filesystem + Supabase)
     fetch('/api/agent-ops').then(r => r.json()).then(d => {
-      if (!d.error && d.agents) setOpsData(d)
-      else setOpsData(defaultOps)
+      if (!d.error && d.agents) setOpsData(d); else setOpsData(defaultOps)
       done()
     }).catch(() => { setOpsData(defaultOps); done() })
+
+    fetch('/api/toongine/token-burn').then(r => r.json()).then(d => {
+      setBurnData(d as TokenBurnData); done()
+    }).catch(() => { setBurnData({ initialized: false }); done() })
+
+    fetch('/api/toongine/project-health').then(r => r.json()).then(d => {
+      setHealthData(d as ProjectHealthData); done()
+    }).catch(() => { setHealthData({ initialized: false }); done() })
   }, [])
 
-  // ─── Configure handlers ───────────────────────────────────────────────
+  // ─── Init handler ──────────────────────────────────────────────────────────
+
+  const handleInitialize = async () => {
+    setInitializing(true)
+    setInitMsg('Initializing ToonGine...')
+    setInitSteps([])
+    try {
+      const res = await fetch('/api/toongine/init', { method: 'POST' })
+      const data = await res.json()
+      if (data.success) {
+        setInitMsg('✓ Initialized! Reloading data...')
+        setInitSteps(data.steps || [])
+        // Refetch all data
+        setTimeout(() => {
+          fetch('/api/toongine/token-burn').then(r => r.json()).then(d => setBurnData(d as TokenBurnData))
+          fetch('/api/toongine/project-health').then(r => r.json()).then(d => setHealthData(d as ProjectHealthData))
+          fetch('/api/agent-ops').then(r => r.json()).then(d => { if (!d.error && d.agents) setOpsData(d) })
+          setInitMsg('')
+          setInitSteps([])
+        }, 1500)
+      } else {
+        setInitMsg(`✗ Error: ${data.error || 'Unknown error'}`)
+      }
+    } catch (e: any) {
+      setInitMsg(`✗ Network error: ${e.message}`)
+    }
+    setInitializing(false)
+  }
+
+  // ─── Configure handlers ────────────────────────────────────────────────────
   const expandAgent = useCallback(async (agentId: string) => {
     if (expandedAgent === agentId) { setExpandedAgent(null); return }
     setExpandedAgent(agentId); setSaveMsg('')
@@ -117,19 +227,182 @@ export default function AgentsPage() {
         ))}
       </div>
 
-      {/* ── TAB 1 + 2: Token Burn & Project Health ──────────────────────── */}
-      {(tab === 'burn' || tab === 'health') && (
-        <Card className="p-8 text-center">
-          <div className="text-4xl mb-4">📦</div>
-          <h3 className="text-lg font-semibold mb-2">ToonGine Not Installed</h3>
-          <p className="text-sm text-muted max-w-md mx-auto">
-            Token burn tracking and project health require ToonGine.
-            Run <code className="bg-white/[0.06] px-1.5 py-0.5 rounded text-xs">npm install github:OfficialNovizio/ToonGine</code> to enable.
+      {/* ── INITIALIZE BANNER ─────────────────────────────────────────────── */}
+      {!burnData?.initialized && !healthData?.initialized && (tab === 'burn' || tab === 'health') && (
+        <Card className="p-6 text-center">
+          <div className="text-4xl mb-3">🚀</div>
+          <h3 className="text-lg font-semibold mb-2">Initialize ToonGine</h3>
+          <p className="text-sm text-on-surface-variant/70 max-w-md mx-auto mb-4">
+            One click to enable token tracking, project health monitoring, graph intelligence, and real-time agent analytics.
           </p>
+          {initSteps.length > 0 && (
+            <div className="mb-4 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] text-left max-w-md mx-auto">
+              {initSteps.map((s, i) => (
+                <div key={i} className="text-xs text-on-surface-variant/80 py-0.5 font-mono">{s}</div>
+              ))}
+            </div>
+          )}
+          <button onClick={handleInitialize} disabled={initializing}
+            className="btn-accent px-6 py-3 text-sm">
+            {initializing ? <Loader2 size={16} className="animate-spin mr-2" /> : <Zap size={16} className="mr-2" />}
+            {initializing ? 'Initializing...' : 'Initialize ToonGine'}
+          </button>
+          {initMsg && !initMsg.startsWith('✓') && (
+            <p className="text-xs text-red-400 mt-3">{initMsg}</p>
+          )}
         </Card>
       )}
 
-      {/* ── TAB 3: Agent Ops ─────────────────────────────────────────────── */}
+      {/* ── TAB 1: TOKEN BURN ─────────────────────────────────────────────── */}
+      {tab === 'burn' && burnData?.initialized && (
+        <div className="space-y-4">
+          {/* KPI Row */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <KPICard icon={Zap} label="Total Tokens" value={burnData.kpi!.totalTokens.toLocaleString()} sub={`${burnData.kpi!.totalSessions} sessions`} accent="bg-amber-500/20" />
+            <KPICard icon={DollarSign} label="Total Cost" value={`$${burnData.kpi!.totalCost.toFixed(2)}`} accent="bg-emerald-500/20" />
+            <KPICard icon={Activity} label="Avg Tokens/Session" value={burnData.kpi!.avgTokens.toLocaleString()} accent="bg-blue-500/20" />
+            <KPICard icon={TrendingUp} label="Cash Burn Rate" value={`$${(burnData.kpi!.totalCost / Math.max(burnData.kpi!.totalSessions, 1)).toFixed(4)}`} sub="per session avg" accent="bg-purple-500/20" />
+          </div>
+
+          {/* Hourly Burn Chart */}
+          <Card className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">📊 Hourly Token Burn (24h)</span>
+              <span className="text-[10px] text-on-surface-variant/50 tabular-nums">
+                Peak: {Math.max(...(burnData.hourlyBurn || []).map(d => d.tokens)).toLocaleString()} tokens
+              </span>
+            </div>
+            <BurnChart data={burnData.hourlyBurn || []} />
+            <div className="flex justify-between mt-2 text-[9px] text-on-surface-variant/40">
+              <span>24h ago</span><span>Now</span>
+            </div>
+          </Card>
+
+          {/* Leaderboard + Providers */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">🏆 Agent Leaderboard</div>
+              <div className="space-y-2">
+                {(burnData.leaderboard || []).slice(0, 8).map((a, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-lg bg-white/[0.02] p-2.5">
+                    <span className="text-xs font-bold text-on-surface-variant/40 w-5 tabular-nums">#{i + 1}</span>
+                    <span className="text-sm text-on-surface font-medium flex-1">{a.agent}</span>
+                    <span className="text-xs text-on-surface-variant/70 tabular-nums">{a.tokens.toLocaleString()} tok</span>
+                    <span className="text-xs text-emerald-400/80 tabular-nums w-16 text-right">{a.sessions} sess</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="p-4">
+              <div className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">🔌 Provider Health</div>
+              <div className="space-y-2">
+                {(burnData.providers || []).map((p, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-lg bg-white/[0.02] p-2.5">
+                    <span className={`w-2 h-2 rounded-full ${p.errors > 0 ? 'bg-amber-400' : 'bg-emerald-400'}`} />
+                    <span className="text-sm text-on-surface font-medium flex-1">{p.name}</span>
+                    <span className="text-xs text-on-surface-variant/70 tabular-nums">{p.calls.toLocaleString()} calls</span>
+                    {p.errors > 0 && <span className="text-[10px] text-amber-400">{p.errors} err</span>}
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* ── TAB 2: PROJECT HEALTH ─────────────────────────────────────────── */}
+      {tab === 'health' && healthData?.initialized && (
+        <div className="space-y-4">
+          {/* Score Rings */}
+          <Card className="p-5">
+            <div className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-4">❤️ Health Score</div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 justify-items-center">
+              <ScoreRing score={healthData.score!.overall} size={90} label="Overall" />
+              <ScoreRing score={healthData.score!.codebase} size={80} label="Codebase" />
+              <ScoreRing score={healthData.score!.api} size={80} label="API" />
+              <ScoreRing score={healthData.score!.toon} size={80} label="TOON" />
+              <ScoreRing score={healthData.score!.burn} size={80} label="Burn" />
+            </div>
+          </Card>
+
+          {/* TOON Health + Codebase */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">🧠 TOON Intelligence</div>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: 'Nodes', value: healthData.toon!.nodes.toLocaleString() },
+                  { label: 'Edges', value: healthData.toon!.edges.toLocaleString() },
+                  { label: 'Compression', value: `${healthData.toon!.compressionRatio}%` },
+                  { label: 'Health', value: `${healthData.toon!.healthPct}%` },
+                ].map((m, i) => (
+                  <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-3 text-center">
+                    <div className="text-xl font-bold text-on-surface tabular-nums">{m.value}</div>
+                    <div className="text-[10px] text-on-surface-variant/60">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="p-4">
+              <div className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">📁 Codebase</div>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: 'Files', value: healthData.codebase!.files.toLocaleString() },
+                  { label: 'Lines', value: healthData.codebase!.lines.toLocaleString() },
+                  { label: 'Languages', value: healthData.codebase!.languages },
+                ].map((m, i) => (
+                  <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-3 text-center">
+                    <div className="text-xl font-bold text-on-surface tabular-nums">{m.value}</div>
+                    <div className="text-[10px] text-on-surface-variant/60">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Issues + Recommendations */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">🐛 Issues</span>
+                <span className="text-[10px] text-on-surface-variant/50">{healthData.issues!.total} total</span>
+              </div>
+              {healthData.issues!.critical > 0 && (
+                <div className="flex items-center gap-2 mb-2 p-2 rounded-lg bg-red-500/5 border border-red-500/10">
+                  <AlertTriangle size={14} className="text-red-400" />
+                  <span className="text-xs text-red-300">{healthData.issues!.critical} critical</span>
+                </div>
+              )}
+              <div className="space-y-1.5 mt-3">
+                {(healthData.issues?.items || []).map((iss: any, i: number) => (
+                  <div key={i} className="flex items-center gap-2 text-[11px] py-1.5 border-b border-white/[0.03] last:border-0">
+                    <span className={`status-pill ${iss.priority === 'critical' ? 'status-pill-critical' : iss.priority === 'high' ? 'status-pill-warning' : 'status-pill-info'}`}>{iss.priority || iss.severity}</span>
+                    <span className="text-on-surface flex-1 truncate">{iss.title || iss.message || iss.description}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            <Card className="p-4">
+              <div className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-3">💡 Recommendations</div>
+              <div className="space-y-2">
+                {(healthData.recommendations || []).map((r, i) => (
+                  <div key={i} className="flex items-start gap-2 rounded-lg bg-white/[0.02] p-2.5">
+                    <span className={`mt-0.5 ${r.priority === 'critical' ? 'text-red-400' : r.priority === 'high' ? 'text-amber-400' : 'text-blue-400'}`}>
+                      {r.priority === 'critical' ? <AlertTriangle size={12} /> : <CheckCircle size={12} />}
+                    </span>
+                    <span className="text-xs text-on-surface-variant/80">{r.text}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* ── TAB 3: AGENT OPS ─────────────────────────────────────────────── */}
       {tab === 'ops' && opsData && (
         <div className="space-y-4">
           {/* Agent Roster */}
@@ -173,7 +446,6 @@ export default function AgentsPage() {
                 </div>
               ))}
             </div>
-            {/* Expandable per-agent skills */}
             <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
               {opsData.agents.filter(a => a.skills.length > 0).slice(0, 10).map(a => (
                 <div key={a.id} className="rounded-lg border border-white/[0.04] bg-white/[0.01] p-2.5">
@@ -213,21 +485,25 @@ export default function AgentsPage() {
           {/* Activity Feed */}
           <Card className="p-4">
             <div className="text-xs font-semibold text-on-surface-variant mb-3 uppercase tracking-wider">📜 Activity Feed</div>
-            <div className="space-y-2 max-h-[400px] overflow-y-auto">
-              {opsData.activity.map((entry, i) => (
-                <div key={i} className="flex items-start gap-3 rounded-lg bg-white/[0.02] p-2.5 text-[12px]">
-                  <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${entry.status === 'completed' ? 'bg-emerald-400' : 'bg-red-400'}`} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-on-surface-variant/60 tabular-nums">{entry.time}</span>
-                      <span className="text-on-surface font-medium">{entry.agent}</span>
-                      <span className="text-on-surface-variant truncate">· {entry.task}</span>
+            {opsData.activity.length === 0 ? (
+              <p className="text-xs text-on-surface-variant/40 py-4 text-center">No activity yet — start using agents to populate this feed</p>
+            ) : (
+              <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                {opsData.activity.map((entry, i) => (
+                  <div key={i} className="flex items-start gap-3 rounded-lg bg-white/[0.02] p-2.5 text-[12px]">
+                    <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${entry.status === 'completed' ? 'bg-emerald-400' : 'bg-red-400'}`} />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-on-surface-variant/60 tabular-nums">{entry.time}</span>
+                        <span className="text-on-surface font-medium">{entry.agent}</span>
+                        <span className="text-on-surface-variant truncate">· {entry.task}</span>
+                      </div>
+                      <div className="text-[10px] text-on-surface-variant/50 mt-0.5">{entry.tokens.toLocaleString()} tok · {entry.duration}</div>
                     </div>
-                    <div className="text-[10px] text-on-surface-variant/50 mt-0.5">{entry.tokens.toLocaleString()} tok · {entry.duration}</div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </Card>
 
           {/* Configure */}

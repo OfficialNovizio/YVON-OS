@@ -1,3 +1,4 @@
+// ⚠️ TOONGINE-HIGH-BLAST-RADIUS: High blast radius — 82 importers. Consider splitting.
 // High blast radius — 82 importers. Consider splitting.
 import 'server-only'
 import { createClient } from '@supabase/supabase-js'

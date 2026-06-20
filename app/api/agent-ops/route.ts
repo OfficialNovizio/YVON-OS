@@ -1,17 +1,23 @@
 // app/api/agent-ops/route.ts — Agent roster, skills, memory health, activity
-// Reads from .toon/ filesystem for roster + skills, Supabase for activity
-// Falls back gracefully when Supabase tables aren't populated yet
+// Reads from .toon/ filesystem for roster + skills, ToonGine Supabase for live data
+// Falls back to embedded agent registry when offline
 
 import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { getAgentRegistry } from '@/lib/agent-registry'
 
-// toongine removed — Supabase plugin not available
-const getAgents = async () => [] as any[]
-const getDepartments = async () => [] as any[]
-const getActivity = async () => [] as any[]
-const isConfigured = () => false
+// Dynamic import — works when toongine IS installed, graceful when not
+let toonPlugin: any = null
+async function getToonPlugin() {
+  if (toonPlugin) return toonPlugin
+  try {
+    toonPlugin = await import('toongine/plugins/supabase')
+  } catch {
+    toonPlugin = { isConfigured: () => false }
+  }
+  return toonPlugin
+}
 
 interface AgentSkill { name: string; category: string }
 
@@ -109,37 +115,46 @@ function scanAgents(): { agents: AgentOpsAgent[]; departments: { name: string; a
 
 export async function GET(): Promise<Response> {
   try {
-    // Agent roster — 3-tier: filesystem (VPS/dev) → ToonGine Supabase → embedded (Vercel)
+    const plugin = await getToonPlugin()
+
+    // Layer 1: Filesystem (.toon/agents/)
     let { agents, departments, skillsTotal } = scanAgents()
 
-    if (agents.length === 0 && isConfigured()) {
-      // No .toon/ filesystem — try ToonGine Supabase plugin
+    // Layer 2: ToonGine Supabase (live agent data)
+    if (agents.length === 0 && plugin.isConfigured()) {
       try {
-        const toonAgents = await getAgents()
+        const toonAgents = await plugin.getAgents()
         if (toonAgents.length > 0) {
-          agents = toonAgents.map(a => ({
+          agents = toonAgents.map((a: any) => ({
             id: a.id,
             name: a.name,
             role: a.role,
             department: a.department,
             level: a.level,
-            status: a.status,
-            skillsCount: a.skills_count,
-            skills: a.skills,
-            memorySize: a.memory_size,
-            memoryHealth: a.memory_health,
-            lastActive: a.last_active,
+            status: a.status || 'idle',
+            skillsCount: a.skills_count || 0,
+            skills: a.skills || [],
+            memorySize: a.memory_size || '0 KB',
+            memoryHealth: a.memory_health || 0,
+            lastActive: a.last_active || null,
           }))
-          departments = await getDepartments()
-          skillsTotal = agents.reduce((s, a) => s + a.skillsCount, 0)
+          const toonDepts = await plugin.getDepartments()
+          if (toonDepts.length > 0) {
+            departments = toonDepts.map((d: any) => ({
+              name: d.name,
+              agentCount: d.agent_count || 0,
+              skillsTotal: d.skills_total || 0,
+            }))
+          }
+          skillsTotal = agents.reduce((s: number, a: AgentOpsAgent) => s + a.skillsCount, 0)
         }
       } catch {}
     }
 
+    // Layer 3: Embedded registry (static fallback)
     if (agents.length === 0) {
-      // ToonGine not configured or empty — Vercel embedded snapshot
       const registry = getAgentRegistry()
-      agents = registry.agents.map(a => ({
+      agents = registry.agents.map((a: any) => ({
         ...a,
         status: 'idle' as const,
         skills: [] as AgentSkill[],
@@ -149,45 +164,19 @@ export async function GET(): Promise<Response> {
       skillsTotal = registry.skillsTotal
     }
 
-    // Activity feed — try ToonGine Supabase first, then YVON Supabase
+    // Activity feed — ToonGine Supabase (real token-tracked activity)
     let activity: ActivityEntry[] = []
-    try {
-      if (isConfigured()) {
-        const toonActivity = await getActivity(20)
-        activity = toonActivity.map(a => ({
+    if (plugin.isConfigured()) {
+      try {
+        const toonActivity = await plugin.getActivity(20)
+        activity = toonActivity.map((a: any) => ({
           time: new Date(a.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-          agent: a.agent_name,
-          task: a.task,
-          tokens: a.tokens,
-          duration: a.duration_sec ? `${Math.round(a.duration_sec)}s` : '—',
+          agent: a.agent_name || 'Unknown',
+          task: a.task || '—',
+          tokens: Number(a.tokens) || 0,
+          duration: a.duration_sec ? `${Math.round(Number(a.duration_sec))}s` : '—',
           status: a.status || 'completed',
         }))
-      }
-    } catch {}
-
-    // Fallback: YVON's own Supabase activity table (legacy)
-    if (activity.length === 0) {
-      try {
-        const { createClient } = await import('@supabase/supabase-js')
-        const supabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
-        const { data: liveActivity } = await supabaseClient
-          .from('agent_activity')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(20)
-
-        if (liveActivity && Array.isArray(liveActivity)) {
-          for (const a of liveActivity) {
-            activity.push({
-              time: new Date(a.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-              agent: a.agent_name,
-              task: a.task,
-              tokens: Number(a.tokens),
-              duration: a.duration_sec ? `${Math.round(Number(a.duration_sec))}s` : '—',
-              status: a.status || 'completed',
-            })
-          }
-        }
       } catch {}
     }
 

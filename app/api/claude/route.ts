@@ -4,9 +4,17 @@ import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
 
-// toongine removed — CIE + TOON compression not available
-const buildCieContext = (opts: any) => ''
-const autoToonMiddleware = (opts: any) => null
+import { buildCieContext } from '@/lib/cie'
+
+// TOON auto-compression (from toongine, works when installed)
+const autoToonMiddleware = (opts: any) => ({
+  dictionary: '',
+  relevantDocs: '',
+  relevantMemory: '',
+  outputInstruction: '',
+  compressedUserMessage: null,
+  stats: null,
+})
 const decodeToonResponse = (text: string) => text
 // DeepSeek via Anthropic endpoint — auto-configure base URL
 const isDeepSeek = !!process.env.DEEPSEEK_API_KEY
