@@ -56,3 +56,5 @@ hermes/vendor/
 .toon/v3/
 .toon/codegraph/
 .toon/graphify/
+.env.toongine
+graphify-out/

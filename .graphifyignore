@@ -1,0 +1,18 @@
+# Skip non-code files so graphify can build with AST-only (no API needed)
+*.png
+*.jpg
+*.webp
+*.gif
+*.svg
+*.pdf
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.ico
+public/static/
+.next/
+node_modules/
+graphify-out/
+.code-review-graph/
+.toon/

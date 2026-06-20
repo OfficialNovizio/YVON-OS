@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YVON OS — Agents (Redesigned)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #080c14; color: #e4e8f0;
+  min-height: 100vh; padding: 32px 40px;
+}
+h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.sub { font-size: 13px; color: #5a6478; margin-bottom: 20px; }
+
+/* ── Tabs ── */
+.tabs {
+  display: flex; gap: 4px; margin-bottom: 24px;
+  background: rgba(255,255,255,0.03); border-radius: 12px;
+  padding: 4px; width: fit-content;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.tab-btn {
+  border: none; background: transparent; color: #5a6478;
+  padding: 8px 18px; border-radius: 8px; font-size: 13px;
+  font-weight: 500; cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 8px;
+}
+.tab-btn.active { background: rgba(255,255,255,0.08); color: #e4e8f0; font-weight: 600; }
+.tab-btn:hover:not(.active) { color: #9aa0b0; }
+.badge {
+  background: rgba(0,212,255,0.15); color: #00d4ff;
+  padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 600;
+}
+
+/* ── Cards ── */
+.card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 20px; margin-bottom: 16px;
+  backdrop-filter: blur(16px);
+}
+.card-title {
+  font-size: 11px; font-weight: 600; color: #5a6478;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+}
+
+/* ── Roster ── */
+.roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.dept-card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px; padding: 14px;
+}
+.dept-header {
+  font-size: 11px; font-weight: 600; color: #5a6478;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+  display: flex; justify-content: space-between;
+}
+.agent-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 0; font-size: 12px;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.dot.working { background: #4ade80; box-shadow: 0 0 6px rgba(74,222,128,0.5); }
+.dot.standup { background: #c08bff; }
+.dot.idle { background: #8b919f; }
+.dot.offline { background: #3a3f4a; }
+.agent-name { color: #e4e8f0; font-weight: 500; }
+.agent-role { color: #5a6478; font-size: 10px; }
+.agent-time { margin-left: auto; font-size: 10px; color: #5a6478; white-space: nowrap; }
+
+/* ── Search ── */
+.search-bar {
+  display: flex; gap: 10px; margin-bottom: 16px; align-items: center;
+}
+.search-input {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 8px 14px; font-size: 12px; color: #e4e8f0;
+  width: 240px; outline: none;
+}
+.search-input::placeholder { color: #3a3f4a; }
+.filter-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 4px 10px; border-radius: 6px; font-size: 11px;
+  font-weight: 500; cursor: pointer; border: 1px solid;
+  transition: all 0.15s;
+}
+.chip.active { background: rgba(0,212,255,0.12); color: #00d4ff; border-color: rgba(0,212,255,0.3); }
+.chip:not(.active) { background: transparent; color: #5a6478; border-color: rgba(255,255,255,0.06); }
+
+/* ── Skills & Memory ── */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.skill-agent {
+  background: rgba(255,255,255,0.02); border-radius: 10px; padding: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.skill-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.skill-name { font-size: 12px; font-weight: 600; color: #e4e8f0; }
+.skill-count { font-size: 10px; color: #5a6478; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.skill-tag {
+  padding: 2px 7px; border-radius: 4px; font-size: 9px;
+  background: rgba(255,255,255,0.04); color: rgba(228,232,240,0.6);
+}
+.memory-bar-bg { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.04); margin-top: 4px; }
+.memory-bar { height: 100%; border-radius: 2px; transition: width 0.3s; }
+.memory-label { font-size: 9px; color: #5a6478; margin-top: 2px; }
+.warning { font-size: 9px; color: #f59e0b; margin-top: 2px; }
+
+/* ── Activity Feed ── */
+.activity-list { max-height: 420px; overflow-y: auto; }
+.activity-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: 8px; background: rgba(255,255,255,0.02);
+  margin-bottom: 6px; font-size: 12px;
+}
+.activity-time { color: #5a6478; font-size: 11px; white-space: nowrap; min-width: 48px; }
+.activity-agent { font-weight: 600; color: #e4e8f0; min-width: 80px; }
+.activity-task { color: #9aa0b0; flex: 1; }
+.activity-meta { color: #5a6478; font-size: 10px; white-space: nowrap; }
+.activity-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.activity-dot.done { background: #4ade80; }
+.activity-dot.fail { background: #f87171; }
+.empty-state {
+  text-align: center; padding: 48px 0; color: #3a3f4a; font-size: 13px;
+}
+
+/* ── Configure ── */
+.config-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.config-card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px; padding: 12px;
+}
+.config-agent { font-size: 12px; font-weight: 600; color: #e4e8f0; margin-bottom: 2px; }
+.config-role { font-size: 10px; color: #5a6478; margin-bottom: 8px; }
+.config-select {
+  width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px; padding: 6px 8px; font-size: 11px; color: #e4e8f0;
+  margin-bottom: 6px; cursor: pointer;
+}
+.config-textarea {
+  width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px; padding: 6px 8px; font-size: 11px; color: #e4e8f0;
+  resize: none; height: 48px; margin-bottom: 6px;
+}
+.config-save {
+  width: 100%; background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 6px; padding: 6px; font-size: 11px; color: #00d4ff;
+  cursor: pointer; font-weight: 600;
+}
+
+/* ── Refresh bar ── */
+.refresh-bar {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  font-size: 11px; color: #5a6478;
+}
+.refresh-btn {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px; padding: 4px 10px; font-size: 11px; color: #9aa0b0;
+  cursor: pointer;
+}
+.pulse { animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body>
+
+<h1>Agents</h1>
+<p class="sub">24 agents · 10 departments · 284 skills · Refreshing every 30s</p>
+
+<!-- ── Tabs ── -->
+<div class="tabs">
+  <button class="tab-btn active">💰 Token Burn</button>
+  <button class="tab-btn">🏥 Project Health</button>
+  <button class="tab-btn">👥 Agent Ops <span class="badge">3 active</span></button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- TAB 3: AGENT OPS (shown as active) -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+<div class="refresh-bar">
+  <span class="pulse" style="color: #4ade80;">●</span> Auto-refreshing · Last: 2s ago
+  <button class="refresh-btn">↻ Refresh now</button>
+</div>
+
+<!-- Search + Filter -->
+<div class="search-bar">
+  <input class="search-input" placeholder="🔍  Search agents…" />
+  <div class="filter-chips">
+    <span class="chip active">All</span>
+    <span class="chip">CEO</span><span class="chip">Technical</span>
+    <span class="chip">Marketing</span><span class="chip">Finance</span>
+    <span class="chip">Research</span><span class="chip">Legal</span>
+  </div>
+</div>
+
+<!-- ── Agent Roster ── -->
+<div class="card">
+  <div class="card-title">Agent Roster · 24 Agents</div>
+  <div class="roster-grid">
+    <!-- CEO -->
+    <div class="dept-card">
+      <div class="dept-header"><span>CEO</span><span>2 agents</span></div>
+      <div class="agent-row">
+        <span class="dot working"></span>
+        <span class="agent-name">Marcus</span>
+        <span class="agent-role">Chief Executive</span>
+        <span class="agent-time">just now</span>
+      </div>
+      <div class="agent-row">
+        <span class="dot working"></span>
+        <span class="agent-name">Diana</span>
+        <span class="agent-role">Chief Operating</span>
+        <span class="agent-time">2m ago</span>
+      </div>
+    </div>
+    <!-- Technical -->
+    <div class="dept-card">
+      <div class="dept-header"><span>Technical</span><span>4 agents</span></div>
+      <div class="agent-row">
+        <span class="dot standup"></span>
+        <span class="agent-name">Dev</span>
+        <span class="agent-role">Dev Lead</span>
+        <span class="agent-time">8m ago</span>
+      </div>
+      <div class="agent-row">
+        <span class="dot working"></span>
+        <span class="agent-name">Raj</span>
+        <span class="agent-role">Backend</span>
+        <span class="agent-time">1m ago</span>
+      </div>
+      <div class="agent-row">
+        <span class="dot idle"></span>
+        <span class="agent-name">Mia</span>
+        <span class="agent-role">Frontend</span>
+        <span class="agent-time">2h ago</span>
+      </div>
+      <div class="agent-row">
+        <span class="dot idle"></span>
+        <span class="agent-name">Quinn</span>
+        <span class="agent-role">QA</span>
+        <span class="agent-time">6h ago</span>
+      </div>
+    </div>
+    <!-- Marketing -->
+    <div class="dept-card">
+      <div class="dept-header"><span>Marketing</span><span>4 agents</span></div>
+      <div class="agent-row">
+        <span class="dot idle"></span>
+        <span class="agent-name">Kai</span>
+        <span class="agent-role">Analyst</span>
+        <span class="agent-time">1h ago</span>
+      </div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Lena</span><span class="agent-role">Brand</span><span class="agent-time">45m ago</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Rio</span><span class="agent-role">Ads</span><span class="agent-time">3h ago</span></div>
+      <div class="agent-row"><span class="dot offline"></span><span class="agent-name">Nate</span><span class="agent-role">Growth</span><span class="agent-time">offline</span></div>
+    </div>
+    <!-- Finance -->
+    <div class="dept-card">
+      <div class="dept-header"><span>Finance</span><span>1 agent</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Felix</span><span class="agent-role">Finance</span><span class="agent-time">4h ago</span></div>
+    </div>
+    <!-- Research -->
+    <div class="dept-card">
+      <div class="dept-header"><span>Research</span><span>3 agents</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Depth</span><span class="agent-role">Deep Research</span><span class="agent-time">30m ago</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Synth</span><span class="agent-role">Synthesis</span><span class="agent-time">1h ago</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Vette</span><span class="agent-role">Vetting</span><span class="agent-time">2h ago</span></div>
+    </div>
+    <!-- Legal -->
+    <div class="dept-card">
+      <div class="dept-header"><span>Legal</span><span>2 agents</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Comply</span><span class="agent-role">Compliance</span><span class="agent-time">8h ago</span></div>
+      <div class="agent-row"><span class="dot idle"></span><span class="agent-name">Guard</span><span class="agent-role">Security</span><span class="agent-time">12h ago</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Skills & Memory ── -->
+<div class="card">
+  <div class="card-title">Skills & Memory · 284 Skills Total</div>
+  <div class="skills-grid">
+    <div class="skill-agent">
+      <div class="skill-header"><span class="skill-name">Marcus</span><span class="skill-count">18 skills</span></div>
+      <div class="skill-tags">
+        <span class="skill-tag">executive-brief</span><span class="skill-tag">strategy</span>
+        <span class="skill-tag">war-room</span><span class="skill-tag">okr-planning</span>
+      </div>
+      <div class="memory-bar-bg"><div class="memory-bar" style="width:72%; background:#34d399;"></div></div>
+      <div class="memory-label">12 KB · 72%</div>
+    </div>
+    <div class="skill-agent">
+      <div class="skill-header"><span class="skill-name">Raj</span><span class="skill-count">14 skills</span></div>
+      <div class="skill-tags">
+        <span class="skill-tag">supabase</span><span class="skill-tag">database</span>
+        <span class="skill-tag">api-design</span><span class="skill-tag">migrations</span>
+      </div>
+      <div class="memory-bar-bg"><div class="memory-bar" style="width:45%; background:#f59e0b;"></div></div>
+      <div class="memory-label">8 KB · 45%</div>
+    </div>
+    <div class="skill-agent">
+      <div class="skill-header"><span class="skill-name">Nate</span><span class="skill-count">6 skills</span></div>
+      <div class="skill-tags">
+        <span class="skill-tag">growth</span><span class="skill-tag">analytics</span>
+      </div>
+      <div class="memory-bar-bg"><div class="memory-bar" style="width:8%; background:#f87171;"></div></div>
+      <div class="memory-label">2 KB · 8%</div>
+      <div class="warning">⚠️ Stale — run npm update toongine</div>
+    </div>
+    <div class="skill-agent">
+      <div class="skill-header"><span class="skill-name">Dev</span><span class="skill-count">22 skills</span></div>
+      <div class="skill-tags">
+        <span class="skill-tag">nextjs</span><span class="skill-tag">typescript</span>
+        <span class="skill-tag">vercel</span><span class="skill-tag">deployment</span>
+        <span class="skill-tag">architecture</span><span class="skill-tag">review</span>
+      </div>
+      <div class="memory-bar-bg"><div class="memory-bar" style="width:88%; background:#34d399;"></div></div>
+      <div class="memory-label">18 KB · 88%</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Activity Feed ── -->
+<div class="card">
+  <div class="card-title">Activity Feed · Last 24h</div>
+  <div class="activity-list">
+    <div class="activity-item">
+      <span class="activity-dot done"></span>
+      <span class="activity-time">14:32</span>
+      <span class="activity-agent">Raj</span>
+      <span class="activity-task">Fixed Supabase RLS policy for agent_activity table</span>
+      <span class="activity-meta">1.2K tok · 12s</span>
+    </div>
+    <div class="activity-item">
+      <span class="activity-dot done"></span>
+      <span class="activity-time">14:18</span>
+      <span class="activity-agent">Marcus</span>
+      <span class="activity-task">Reviewed Hourbour pricing strategy brief</span>
+      <span class="activity-meta">3.4K tok · 45s</span>
+    </div>
+    <div class="activity-item">
+      <span class="activity-dot done"></span>
+      <span class="activity-time">13:55</span>
+      <span class="activity-agent">Dev</span>
+      <span class="activity-task">Merged PR #142 — toongine v1.5.5 release</span>
+      <span class="activity-meta">890 tok · 8s</span>
+    </div>
+    <div class="activity-item">
+      <span class="activity-dot fail"></span>
+      <span class="activity-time">13:40</span>
+      <span class="activity-agent">Kai</span>
+      <span class="activity-task">Instagram scrape failed — rate limited</span>
+      <span class="activity-meta">2.1K tok · err</span>
+    </div>
+    <div class="activity-item">
+      <span class="activity-dot done"></span>
+      <span class="activity-time">13:22</span>
+      <span class="activity-agent">Diana</span>
+      <span class="activity-task">Updated sprint board — Phase 4 ready</span>
+      <span class="activity-meta">450 tok · 5s</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Configure ── -->
+<div class="card">
+  <div class="card-title">Configure Agent · All 24 Agents</div>
+  <div class="config-grid">
+    <div class="config-card">
+      <div class="config-agent">Marcus</div>
+      <div class="config-role">Chief Executive · CEO</div>
+      <select class="config-select"><option>deepseek-chat</option><option>deepseek-reasoner</option><option>claude-opus-4</option></select>
+      <textarea class="config-textarea" placeholder="System prompt extension…">CEO directives v3 — always think strategically</textarea>
+      <button class="config-save">💾 Save</button>
+    </div>
+    <div class="config-card">
+      <div class="config-agent">Raj</div>
+      <div class="config-role">Backend · Technical</div>
+      <select class="config-select"><option>deepseek-chat</option><option>deepseek-reasoner</option><option>claude-sonnet-4</option></select>
+      <textarea class="config-textarea" placeholder="System prompt extension…"></textarea>
+      <button class="config-save">💾 Save</button>
+    </div>
+    <div class="config-card">
+      <div class="config-agent">Mia</div>
+      <div class="config-role">Frontend · Technical</div>
+      <select class="config-select"><option>deepseek-chat</option><option>gemini-2.5-flash</option></select>
+      <textarea class="config-textarea" placeholder="System prompt extension…">Tailwind CSS + glass-morphism design system</textarea>
+      <button class="config-save">💾 Save</button>
+    </div>
+    <div class="config-card">
+      <div class="config-agent">Lena</div>
+      <div class="config-role">Brand · Marketing</div>
+      <select class="config-select"><option>deepseek-chat</option><option>claude-opus-4</option></select>
+      <textarea class="config-textarea" placeholder="System prompt extension…"></textarea>
+      <button class="config-save">💾 Save</button>
+    </div>
+    <div class="config-card">
+      <div class="config-agent">Quinn</div>
+      <div class="config-role">QA · Technical</div>
+      <select class="config-select"><option>deepseek-chat</option></select>
+      <textarea class="config-textarea" placeholder="System prompt extension…"></textarea>
+      <button class="config-save">💾 Save</button>
+    </div>
+    <div class="config-card">
+      <div class="config-agent">Felix</div>
+      <div class="config-role">Finance · Finance</div>
+      <select class="config-select"><option>deepseek-chat</option><option>deepseek-reasoner</option></select>
+      <textarea class="config-textarea" placeholder="System prompt extension…"></textarea>
+      <button class="config-save">💾 Save</button>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top:10px; font-size:11px; color:#5a6478;">
+    Scroll for all 24 agents · Saved to Supabase
+  </p>
+</div>
+
+</body>
+</html>

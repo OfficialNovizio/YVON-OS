@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Health — ToonGine Engine</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter',-apple-system,sans-serif; background: #040a14; color: #e4e8f0; padding: 24px 32px; line-height: 1.5; }
+.section { margin-bottom: 36px; }
+.section-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+.section-sub { font-size: 12px; color: #4a5568; margin-bottom: 14px; }
+.divider { height: 1px; background: rgba(255,255,255,0.04); margin: 28px 0; }
+
+.ds-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.ds-card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px; padding: 16px;
+}
+.ds-card h5 { font-size: 12px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.badge {
+  padding: 1px 7px; border-radius: 8px; font-size: 9px; font-weight: 600;
+}
+.badge-ring  { background: rgba(139,92,246,0.10); color: #8b5cf6; }
+.badge-slide { background: rgba(0,212,255,0.10); color: #00d4ff; }
+.badge-heap  { background: rgba(245,158,11,0.10); color: #f59e0b; }
+.badge-comp  { background: rgba(52,211,153,0.10); color: #34d399; }
+
+.table-mini { width: 100%; border-collapse: collapse; font-family: 'SF Mono','Fira Code',monospace; font-size: 10px; }
+.table-mini th { text-align: left; color: #4a5568; font-weight: 600; padding: 4px 6px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.table-mini td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+.table-mini .pk { color: #f59e0b; }
+.table-mini .fk { color: #00d4ff; }
+
+.arch { display: flex; gap: 16px; align-items: stretch; flex-wrap: wrap; }
+.arch-box {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 18px 20px; min-width: 160px;
+}
+.arch-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.arch-box .item { font-size: 11px; color: #8890a4; padding: 3px 0; font-family: 'SF Mono','Fira Code',monospace; }
+.arch-arrow { display: flex; align-items: center; font-size: 20px; color: #00d4ff; flex-shrink: 0; }
+
+/* Dashboard preview */
+.dash { 
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px; padding: 20px; margin-top: 12px;
+}
+.dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.dash-header select {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; color: #e4e8f0; font-size: 12px; padding: 6px 12px;
+}
+.kpi-mini { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.kpi-mini div {
+  background: rgba(255,255,255,0.02); border-radius: 8px; padding: 10px 12px; text-align: center;
+}
+.kpi-mini .val { font-size: 20px; font-weight: 700; }
+.kpi-mini .lbl { font-size: 9px; color: #4a5568; text-transform: uppercase; margin-top: 2px; }
+
+.col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.col3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+.code { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 16px; font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; line-height: 1.6; overflow-x: auto; margin-top: 8px; }
+.code .c { color: #4a5568; } .code .k { color: #f59e0b; } .code .s { color: #34d399; } .code .n { color: #e4e8f0; }
+
+/* Score ring */
+.score-ring {
+  width: 100px; height: 100px; border-radius: 50%;
+  border: 6px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px; position: relative;
+}
+.score-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+.score-label { font-size: 10px; color: #4a5568; text-align: center; }
+
+/* Health bar */
+.health-bar { 
+  height: 4px; border-radius: 2px; background: rgba(255,255,255,0.04);
+  margin: 6px 0; overflow: hidden;
+}
+.health-fill { height: 100%; border-radius: 2px; }
+
+/* Spark */
+.spark { display: flex; align-items: flex-end; gap: 1px; height: 32px; }
+.spark div { flex: 1; border-radius: 1px; }
+.spark .hi { background: #00d4ff; } .spark .lo { background: rgba(0,212,255,0.12); }
+.spark .g  { background: #34d399; } .spark .r  { background: #f87171; } .spark .y  { background: #f59e0b; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: What Project Health Tracks -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">1. What Project Health Measures</h2>
+  <p class="section-sub">Five health pillars. Each independently weighted. Composite score = project pulse.</p>
+
+  <div class="arch">
+    <div class="arch-box">
+      <h4 style="color:#00d4ff;">🧬 Codebase</h4>
+      <div class="item">TypeScript errors</div>
+      <div class="item">Build success rate</div>
+      <div class="item">File count trend</div>
+      <div class="item">Last compile age</div>
+      <div class="item">Lines changed / day</div>
+    </div>
+    <div class="arch-arrow">+</div>
+    <div class="arch-box">
+      <h4 style="color:#34d399;">🌐 API Health</h4>
+      <div class="item">200/400/500 split</div>
+      <div class="item">P95 latency</div>
+      <div class="item">Error rate (24h)</div>
+      <div class="item">Top failing endpoint</div>
+      <div class="item">Total requests</div>
+    </div>
+    <div class="arch-arrow">+</div>
+    <div class="arch-box">
+      <h4 style="color:#8b5cf6;">🧠 TOON Quality</h4>
+      <div class="item">Compression ratio</div>
+      <div class="item">Bundle size</div>
+      <div class="item">Chunk count</div>
+      <div class="item">Index term count</div>
+      <div class="item">BPE token count</div>
+    </div>
+    <div class="arch-arrow">+</div>
+    <div class="arch-box">
+      <h4 style="color:#f59e0b;">🐛 Issues</h4>
+      <div class="item">Open bugs</div>
+      <div class="item">Critical issues</div>
+      <div class="item">Avg resolution time</div>
+      <div class="item">Stale issues (>7d)</div>
+    </div>
+    <div class="arch-arrow">+</div>
+    <div class="arch-box">
+      <h4 style="color:#ec4899;">📚 Docs</h4>
+      <div class="item">Coverage %</div>
+      <div class="item">Stale docs (>30d)</div>
+      <div class="item">Missing modules</div>
+    </div>
+    <div class="arch-arrow">=</div>
+    <div class="arch-box" style="border-color: rgba(0,212,255,0.2);">
+      <h4 style="color:#00d4ff;">Health Score</h4>
+      <div class="score-ring">
+        <div class="score-value" style="color:#34d399;">87</div>
+      </div>
+      <div class="score-label">out of 100 · Healthy</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: DSA Architecture -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">2. Data Architecture — Four Structures</h2>
+  <p class="section-sub">Each pillar uses a different data structure optimized for its access pattern.</p>
+
+  <div class="ds-grid">
+
+    <!-- Codebase Snapshots: Ring Buffer -->
+    <div class="ds-card">
+      <h5>🧬 Codebase Snapshots <span class="badge badge-ring">Ring Buffer · 30 slots</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Sampled on every build. Last 30 daily snapshots.<br>
+        <strong>DSA: Ring Buffer — overwrites oldest. O(1) trend read.</strong>
+      </p>
+      <table class="table-mini">
+        <tr><th>Col</th><th>Type</th><th>Role</th></tr>
+        <tr><td class="fk">repo_id</td><td>TEXT</td><td>Tenant</td></tr>
+        <tr><td>slot</td><td>INT</td><td>Ring index 0–29</td></tr>
+        <tr><td>sampled_at</td><td>TIMESTAMPTZ</td><td>When build ran</td></tr>
+        <tr><td>ts_errors</td><td>INT</td><td>npx tsc --noEmit count</td></tr>
+        <tr><td>ts_error_free</td><td>BOOL</td><td>Clean build?</td></tr>
+        <tr><td>files_total</td><td>INT</td><td>Source files</td></tr>
+        <tr><td>lines_total</td><td>INT</td><td>Total lines</td></tr>
+        <tr><td>build_duration_ms</td><td>INT</td><td>Compile time</td></tr>
+        <tr><td>dependencies</td><td>INT</td><td>npm ls count</td></tr>
+        <tr><td>outdated_deps</td><td>INT</td><td>npm outdated count</td></tr>
+      </table>
+    </div>
+
+    <!-- API Health: Sliding Window -->
+    <div class="ds-card">
+      <h5>🌐 API Health <span class="badge badge-slide">Sliding Window · 24h</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Middleware logs every API call. Window aggregates last 24h.<br>
+        <strong>DSA: Sliding Window — O(1) per request, O(W) aggregate.</strong>
+      </p>
+      <table class="table-mini">
+        <tr><th>Col</th><th>Type</th><th>Role</th></tr>
+        <tr><td class="fk">repo_id</td><td>TEXT</td><td>Tenant</td></tr>
+        <tr><td>endpoint</td><td>TEXT</td><td>/api/agent-ops</td></tr>
+        <tr><td>status_code</td><td>INT</td><td>200/400/500</td></tr>
+        <tr><td>duration_ms</td><td>INT</td><td>Latency</td></tr>
+        <tr><td>error_message</td><td>TEXT</td><td>Stack trace if 500</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMPTZ</td><td>↓ Clustered</td></tr>
+      </table>
+      <div style="font-size:10px;color:#4a5568;margin-top:6px;">
+        Window: SELECT COUNT(*) WHERE created_at > now() - 24h.<br>
+        Aggregate by status_code GROUP BY hourly for trend chart.
+      </div>
+    </div>
+
+    <!-- Issues: Priority Queue -->
+    <div class="ds-card">
+      <h5>🐛 Issues <span class="badge badge-heap">Priority Queue</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Ordered by severity × age. Critical issues bubble to top.<br>
+        <strong>DSA: Priority Queue — ORDER BY severity DESC, age DESC.</strong>
+      </p>
+      <table class="table-mini">
+        <tr><th>Col</th><th>Type</th><th>Role</th></tr>
+        <tr><td class="fk">repo_id</td><td>TEXT</td><td>Tenant</td></tr>
+        <tr><td>severity</td><td>INT</td><td>1=critical 2=high 3=medium 4=low</td></tr>
+        <tr><td>title</td><td>TEXT</td><td>Issue title</td></tr>
+        <tr><td>source</td><td>TEXT</td><td>tsc / build / api / manual</td></tr>
+        <tr><td>resolved</td><td>BOOL</td><td>Closed?</td></tr>
+        <tr><td>resolution_time_h</td><td>FLOAT</td><td>Time to close</td></tr>
+        <tr><td>opened_at</td><td>TIMESTAMPTZ</td><td>Created</td></tr>
+        <tr><td>resolved_at</td><td>TIMESTAMPTZ</td><td>Closed</td></tr>
+      </table>
+      <div style="font-size:10px;color:#4a5568;margin-top:6px;">
+        Query: ORDER BY severity ASC, opened_at DESC WHERE resolved=false.<br>
+        Avg resolution: AVG(resolution_time_h) WHERE resolved=true (last 30d).
+      </div>
+    </div>
+
+    <!-- TOON Quality: Composite Index -->
+    <div class="ds-card">
+      <h5>🧠 TOON Quality <span class="badge badge-comp">Composite Index</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Weighted score from 4 metrics. Normalized to 0–100.<br>
+        <strong>DSA: Weighted Composite — 4 inputs → 1 health score.</strong>
+      </p>
+      <table class="table-mini">
+        <tr><th>Metric</th><th>Weight</th><th>Source</th></tr>
+        <tr><td>Compression %</td><td>40%</td><td>Engine stats</td></tr>
+        <tr><td>Bundle size</td><td>25%</td><td>.toon/ size</td></tr>
+        <tr><td>Corpus freshness</td><td>20%</td><td>Last compile age</td></tr>
+        <tr><td>Index coverage</td><td>15%</td><td>Chunks / files ratio</td></tr>
+      </table>
+      <div style="font-size:10px;color:#00d4ff;margin-top:8px;">
+        score = (comp% × 0.4) + (size_score × 0.25) + (fresh_score × 0.2) + (cov_score × 0.15)
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: Schema -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">3. Schema — 3 New Tables</h2>
+  <p class="section-sub">Added to the existing v2 schema. All repo-scoped.</p>
+
+  <div class="code">
+<span class="c">-- Codebase snapshots (ring buffer, 30 daily slots per repo)</span>
+<span class="k">CREATE TABLE</span> toongine_codebase_snapshots (
+  repo_id         <span class="k">TEXT NOT NULL</span>,
+  slot            <span class="k">INT NOT NULL</span>,              <span class="c">-- 0–29, overwrites oldest</span>
+  sampled_at      <span class="k">TIMESTAMPTZ DEFAULT</span> now(),
+  ts_errors       <span class="k">INT DEFAULT</span> 0,
+  ts_error_free   <span class="k">BOOLEAN DEFAULT</span> true,
+  files_total     <span class="k">INT DEFAULT</span> 0,
+  lines_total     <span class="k">INT DEFAULT</span> 0,
+  build_duration_ms <span class="k">INT DEFAULT</span> 0,
+  dependencies    <span class="k">INT DEFAULT</span> 0,
+  outdated_deps   <span class="k">INT DEFAULT</span> 0
+);
+
+<span class="c">-- API health log (append-only, sliding window query)</span>
+<span class="k">CREATE TABLE</span> toongine_api_health (
+  id              <span class="k">BIGSERIAL PRIMARY KEY</span>,
+  repo_id         <span class="k">TEXT NOT NULL</span>,
+  endpoint        <span class="k">TEXT NOT NULL</span>,
+  status_code     <span class="k">INT NOT NULL</span>,
+  duration_ms     <span class="k">INT DEFAULT</span> 0,
+  error_message   <span class="k">TEXT DEFAULT</span> '',
+  created_at      <span class="k">TIMESTAMPTZ DEFAULT</span> now()
+);
+
+<span class="c">-- Issues tracker (priority queue)</span>
+<span class="k">CREATE TABLE</span> toongine_issues (
+  id              <span class="k">BIGSERIAL PRIMARY KEY</span>,
+  repo_id         <span class="k">TEXT NOT NULL</span>,
+  severity        <span class="k">INT NOT NULL</span>,           <span class="c">-- 1=critical,2=high,3=medium,4=low</span>
+  source          <span class="k">TEXT DEFAULT</span> 'manual',  <span class="c">-- tsc|build|api|manual</span>
+  title           <span class="k">TEXT NOT NULL</span>,
+  detail          <span class="k">TEXT DEFAULT</span> '',
+  resolved        <span class="k">BOOLEAN DEFAULT</span> false,
+  resolution_time_h <span class="k">FLOAT</span>,
+  opened_at       <span class="k">TIMESTAMPTZ DEFAULT</span> now(),
+  resolved_at     <span class="k">TIMESTAMPTZ</span>
+);
+
+<span class="c">-- Indexes</span>
+<span class="k">CREATE INDEX</span> idx_codebase_repo  <span class="k">ON</span> toongine_codebase_snapshots(repo_id, slot);
+<span class="k">CREATE INDEX</span> idx_api_repo_time   <span class="k">ON</span> toongine_api_health(repo_id, created_at <span class="k">DESC</span>);
+<span class="k">CREATE INDEX</span> idx_issues_open     <span class="k">ON</span> toongine_issues(repo_id, severity) <span class="k">WHERE</span> resolved=false;
+
+<span class="c">-- RLS</span>
+<span class="k">ALTER TABLE</span> toongine_codebase_snapshots <span class="k">ENABLE ROW LEVEL SECURITY</span>;
+<span class="k">ALTER TABLE</span> toongine_api_health <span class="k">ENABLE ROW LEVEL SECURITY</span>;
+<span class="k">ALTER TABLE</span> toongine_issues <span class="k">ENABLE ROW LEVEL SECURITY</span>;
+<span class="k">CREATE POLICY</span> "anon read" <span class="k">ON</span> toongine_codebase_snapshots <span class="k">FOR SELECT TO</span> anon <span class="k">USING</span>(true);
+<span class="k">CREATE POLICY</span> "anon read" <span class="k">ON</span> toongine_api_health <span class="k">FOR SELECT TO</span> anon <span class="k">USING</span>(true);
+<span class="k">CREATE POLICY</span> "anon read" <span class="k">ON</span> toongine_issues <span class="k">FOR SELECT TO</span> anon <span class="k">USING</span>(true);
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: Data Collection Pipeline -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">4. Data Collection Pipeline</h2>
+  <p class="section-sub">How each pillar gets data — automated where possible, manual entry for issues.</p>
+
+  <div class="ds-grid">
+    <div class="ds-card">
+      <h5 style="color:#00d4ff;">🧬 Codebase Sampler</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Trigger:</strong> Post-build hook OR daily cron<br>
+        <strong>Input:</strong> <code>npx tsc --noEmit</code> output, file count<br>
+        <strong>Output:</strong> UPSERT toongine_codebase_snapshots[slot]
+      </p>
+      <div class="code" style="font-size:10px; margin-top:6px;">
+<span class="c"># scripts/sample-codebase.py</span>
+ts_errors=$(npx tsc --noEmit <span class="n">2>&1</span> | grep <span class="s">"error TS"</span> | wc -l)
+files=$(find src -name <span class="s">"*.ts"</span> -o -name <span class="s">"*.tsx"</span> | wc -l)
+<span class="c"># → POST to Supabase</span>
+      </div>
+    </div>
+    <div class="ds-card">
+      <h5 style="color:#34d399;">🌐 API Logger Middleware</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Trigger:</strong> Every API request (Next.js middleware)<br>
+        <strong>Input:</strong> Request URL, status code, duration<br>
+        <strong>Output:</strong> INSERT toongine_api_health
+      </p>
+      <div class="code" style="font-size:10px; margin-top:6px;">
+<span class="c">// middleware.ts</span>
+<span class="k">export function</span> <span class="n">middleware</span>(req) {
+  <span class="k">const</span> start = Date.now()
+  <span class="k">const</span> res = NextResponse.next()
+  res.headers.set(<span class="s">'X-Health-Log'</span>, <span class="s">'true'</span>)
+  <span class="c">// After response: POST to Supabase</span>
+}
+      </div>
+    </div>
+    <div class="ds-card">
+      <h5 style="color:#8b5cf6;">🧠 TOON Quality Snapshot</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Trigger:</strong> On every toongine compile<br>
+        <strong>Input:</strong> Compression ratio, bundle size, chunks<br>
+        <strong>Output:</strong> Reuses toongine_snapshots + health score
+      </p>
+      <div class="code" style="font-size:10px; margin-top:6px;">
+<span class="c"># Already tracked in toongine_snapshots.efficiency_pct</span>
+<span class="c"># Just query + compute the composite score</span>
+      </div>
+    </div>
+    <div class="ds-card">
+      <h5 style="color:#f59e0b;">🐛 Issues (Manual + Auto)</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Auto:</strong> TypeScript errors → issues table<br>
+        <strong>Manual:</strong> Via dashboard "Add Issue" button<br>
+        <strong>Output:</strong> INSERT toongine_issues
+      </p>
+      <div class="code" style="font-size:10px; margin-top:6px;">
+<span class="c"># Auto: if ts_errors > 0 → create issue</span>
+INSERT INTO toongine_issues(severity,title,source)
+VALUES (2, <span class="s">'TypeScript errors found'</span>, <span class="s">'tsc'</span>)
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: Dashboard Preview -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">5. Dashboard — Health at a Glance</h2>
+  <p class="section-sub">One score. Five breakdowns. Repo-scoped. Same design ethics as Token Burn.</p>
+
+  <div class="dash">
+    <div class="dash-header">
+      <h3 style="font-size:15px;">🏥 Project Health</h3>
+      <select><option>OfficialNovizio/YVON-OS</option><option>OfficialNovizio/ToonGine</option></select>
+    </div>
+
+    <!-- Health Score + KPI row -->
+    <div style="display:flex; gap:20px; align-items:center; margin-bottom:14px;">
+      <div style="text-align:center;">
+        <div class="score-ring" style="border-top-color:#34d399; border-right-color:#34d399;">
+          <div class="score-value" style="color:#34d399;">87</div>
+        </div>
+        <div style="font-size:10px; color:#34d399; font-weight:600;">Healthy</div>
+      </div>
+      <div class="kpi-mini" style="flex:1; margin-bottom:0;">
+        <div><div class="val" style="color:#34d399;">0</div><div class="lbl">TS Errors</div></div>
+        <div><div class="val" style="color:#34d399;">99.8%</div><div class="lbl">API Success</div></div>
+        <div><div class="val">94.2%</div><div class="lbl">TOON Quality</div></div>
+        <div><div class="val" style="color:#f59e0b;">3</div><div class="lbl">Open Issues</div></div>
+        <div><div class="val">68%</div><div class="lbl">Doc Coverage</div></div>
+      </div>
+    </div>
+
+    <!-- Codebase + API row -->
+    <div class="col2" style="margin-bottom:10px;">
+      <div class="ds-card">
+        <h5>🧬 Codebase · Last 7 Days <span style="font-size:9px;color:#4a5568;">ring buffer</span></h5>
+        <div class="spark" style="margin-bottom:8px;">
+          <div class="lo" style="height:100%"></div><div class="lo" style="height:80%"></div>
+          <div class="hi" style="height:100%"></div><div class="lo" style="height:60%"></div>
+          <div class="lo" style="height:40%"></div><div class="hi" style="height:100%"></div><div class="lo" style="height:50%"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:9px; color:#4a5568;">
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+        <div class="health-bar" style="margin-top:10px;">
+          <div class="health-fill" style="width:100%; background:#34d399;"></div>
+        </div>
+        <div style="font-size:10px; color:#4a5568;">0 TS errors · 847 files · Last build: 2h ago · 3.2s compile</div>
+      </div>
+      <div class="ds-card">
+        <h5>🌐 API · Last 24h <span style="font-size:9px;color:#4a5568;">sliding window</span></h5>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <div style="flex:1; height:8px; border-radius:4px; background:#34d399; width:82%"></div>
+          <div style="flex:1; height:8px; border-radius:4px; background:#f59e0b; width:17%"></div>
+          <div style="flex:1; height:8px; border-radius:4px; background:#f87171; width:1%"></div>
+        </div>
+        <div style="display:flex; gap:12px; font-size:10px; color:#4a5568;">
+          <span style="color:#34d399;">● 82% 200</span>
+          <span style="color:#f59e0b;">● 17% 400</span>
+          <span style="color:#f87171;">● 1% 500</span>
+        </div>
+        <div style="font-size:10px; color:#4a5568; margin-top:8px;">1.2K requests · P95: 184ms · Top error: /api/scrape (timeout)</div>
+      </div>
+    </div>
+
+    <!-- Issues + TOON -->
+    <div class="col2" style="margin-bottom:10px;">
+      <div class="ds-card">
+        <h5>🐛 Issues <span style="font-size:9px;color:#4a5568;">priority queue</span></h5>
+        <table class="table-mini">
+          <tr><th>S</th><th>Title</th><th>Source</th><th>Age</th></tr>
+          <tr><td style="color:#f87171;">🔴</td><td>API /scrape timeout > 10s</td><td>api</td><td>2d</td></tr>
+          <tr><td style="color:#f59e0b;">🟡</td><td>Memory health < 30% on 3 agents</td><td>manual</td><td>1d</td></tr>
+          <tr><td style="color:#f59e0b;">🟡</td><td>TypeScript strict mode warnings</td><td>tsc</td><td>5d</td></tr>
+          <tr><td style="color:#4a5568;">⚪</td><td>Update README for v2 schema</td><td>manual</td><td>14d</td></tr>
+        </table>
+        <div style="font-size:10px; color:#4a5568; margin-top:6px;">3 open · Avg resolution: 2.4d · <span style="color:#f87171;">1 critical</span></div>
+      </div>
+      <div class="ds-card">
+        <h5>🧠 TOON Quality <span style="font-size:9px;color:#4a5568;">composite index</span></h5>
+        <div style="display:flex; justify-content:space-around; text-align:center; margin-bottom:8px;">
+          <div><div style="font-size:16px; font-weight:700; color:#34d399;">99.97%</div><div style="font-size:9px; color:#4a5568;">Compression</div></div>
+          <div><div style="font-size:16px; font-weight:700;">3.2MB</div><div style="font-size:9px; color:#4a5568;">Bundle</div></div>
+          <div><div style="font-size:16px; font-weight:700;">2h</div><div style="font-size:9px; color:#4a5568;">Freshness</div></div>
+          <div><div style="font-size:16px; font-weight:700;">847</div><div style="font-size:9px; color:#4a5568;">Chunks</div></div>
+        </div>
+        <div class="health-bar"><div class="health-fill" style="width:94%; background:#34d399;"></div></div>
+        <div style="font-size:10px; color:#4a5568;">Score: 94.2/100 · Excellent compression · Fresh corpus</div>
+      </div>
+    </div>
+
+    <!-- Sparkline trends at bottom -->
+    <div class="ds-card" style="text-align:center; font-size:10px; color:#4a5568;">
+      ⚡ Health score calculated from 4 weighted components · Codebase (30%) + API (30%) + TOON (25%) + Issues (15%)
+      · Historical trend ↓
+      <div class="spark" style="justify-content:center; margin-top:6px;">
+        <div class="g" style="height:100%;width:8px;"></div><div class="g" style="height:100%;width:8px;"></div>
+        <div class="g" style="height:85%;width:8px;"></div><div class="y" style="height:70%;width:8px;"></div>
+        <div class="g" style="height:90%;width:8px;"></div><div class="g" style="height:100%;width:8px;"></div>
+        <div class="g" style="height:100%;width:8px;"></div>
+      </div>
+      <span>Mon</span><span style="margin:0 20px;">Wed</span><span style="margin:0 20px;">Fri</span><span>Today</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: Implementation Plan -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">6. Implementation Order</h2>
+  <p class="section-sub">7 layers. Each unlocks the next. Reuses existing Token Burn infrastructure.</p>
+
+  <table class="table-mini" style="font-size:11px;">
+    <tr><th style="width:30px;">#</th><th>Layer</th><th>Files</th><th>What</th></tr>
+    <tr>
+      <td style="color:#00d4ff;">1</td>
+      <td><strong>Schema migration</strong></td>
+      <td style="color:#8890a4;">supabase/toongine_schema_v3.sql</td>
+      <td>3 tables: codebase_snapshots, api_health, issues. All repo-scoped. RLS.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">2</td>
+      <td><strong>Plugin queries</strong></td>
+      <td style="color:#8890a4;">src/plugins/supabase/index.ts</td>
+      <td>getCodebaseSnapshots(), getApiHealth(), getIssues(), getHealthScore()</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">3</td>
+      <td><strong>Codebase sampler</strong></td>
+      <td style="color:#8890a4;">scripts/sample-codebase.py</td>
+      <td>Runs tsc --noEmit, counts files/errors, writes to Supabase ring buffer</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">4</td>
+      <td><strong>API logger middleware</strong></td>
+      <td style="color:#8890a4;">middleware.ts</td>
+      <td>Logs every API request to toongine_api_health</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">5</td>
+      <td><strong>Pipeline extension</strong></td>
+      <td style="color:#8890a4;">scripts/toongine-pipeline.py</td>
+      <td>Add codebase sampling + issue auto-detection to existing pipeline</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">6</td>
+      <td><strong>ProjectHealth dashboard</strong></td>
+      <td style="color:#8890a4;">src/dashboard/ui/src/pages/ProjectHealth.tsx</td>
+      <td>Health score ring + 4 breakdown panels. Same design ethics as TokenBurn.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">7</td>
+      <td><strong>Cron + wire</strong></td>
+      <td style="color:#8890a4;">App.tsx + cronjob</td>
+      <td>Wire into dashboard tab. Cron for daily codebase sample.</td>
+    </tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 7: Weighted Score Formula -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">7. Health Score Formula</h2>
+  <p class="section-sub">Weighted composite index. Each pillar normalized to 0–100 before weighting.</p>
+
+  <table class="table-mini" style="font-size:11px;">
+    <tr><th>Pillar</th><th>Weight</th><th>How It's Calculated</th></tr>
+    <tr>
+      <td>🧬 Codebase</td><td style="color:#00d4ff;">30%</td>
+      <td style="color:#8890a4;">100 if ts_errors=0, -10 per error (floor 0). -5 per outdated dep (cap -20).</td>
+    </tr>
+    <tr>
+      <td>🌐 API</td><td style="color:#34d399;">30%</td>
+      <td style="color:#8890a4;">SUCCESS_RATE_24H × 100. &lt;95% = yellow, &lt;90% = red.</td>
+    </tr>
+    <tr>
+      <td>🧠 TOON</td><td style="color:#8b5cf6;">25%</td>
+      <td style="color:#8890a4;">efficiency_pct from snapshots. Already computed by pipeline.</td>
+    </tr>
+    <tr>
+      <td>🐛 Issues</td><td style="color:#f59e0b;">15%</td>
+      <td style="color:#8890a4;">100 if 0 critical, -15 per critical, -5 per high, -2 per medium. Floor 0.</td>
+    </tr>
+  </table>
+
+  <div class="code" style="margin-top:12px;">
+<span class="n">health_score</span> = <span class="n">codebase</span> × <span class="s">0.30</span> + <span class="n">api</span> × <span class="s">0.30</span> + <span class="n">toon</span> × <span class="s">0.25</span> + <span class="n">issues</span> × <span class="s">0.15</span>
+
+<span class="c">// Color thresholds</span>
+<span class="n">score</span> ≥ <span class="s">80</span> → <span class="k" style="color:#34d399;">🟢 Healthy</span>
+<span class="n">score</span> ≥ <span class="s">50</span> → <span class="k" style="color:#f59e0b;">🟡 Degraded</span>
+<span class="n">score</span> &lt; <span class="s">50</span> → <span class="k" style="color:#f87171;">🔴 Critical</span>
+  </div>
+</div>
+
+</body>
+</html>

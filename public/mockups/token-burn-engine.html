@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Burn — ToonGine Native Analytics Engine</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter',-apple-system,sans-serif; background: #040a14; color: #e4e8f0; padding: 24px 32px; line-height: 1.5; }
+
+/* Sections */
+.section { margin-bottom: 36px; }
+.section-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+.section-sub { font-size: 12px; color: #4a5568; margin-bottom: 14px; }
+.divider { height: 1px; background: rgba(255,255,255,0.04); margin: 28px 0; }
+
+/* Architecture diagram */
+.arch { display: flex; gap: 16px; align-items: stretch; flex-wrap: wrap; }
+.arch-box {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px; padding: 18px 20px; min-width: 180px;
+}
+.arch-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.arch-box .item { font-size: 11px; color: #8890a4; padding: 3px 0; font-family: 'SF Mono','Fira Code',monospace; }
+.arch-arrow { display: flex; align-items: center; font-size: 20px; color: #00d4ff; flex-shrink: 0; }
+
+/* Data structure */
+.ds-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+.ds-card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px; padding: 16px;
+}
+.ds-card h5 { font-size: 12px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.ds-card .badge {
+  padding: 1px 7px; border-radius: 8px; font-size: 9px; font-weight: 600;
+}
+.badge-append { background: rgba(0,212,255,0.10); color: #00d4ff; }
+.badge-ring  { background: rgba(139,92,246,0.10); color: #8b5cf6; }
+.badge-state { background: rgba(245,158,11,0.10); color: #f59e0b; }
+.badge-heap  { background: rgba(52,211,153,0.10); color: #34d399; }
+
+.table-mini { width: 100%; border-collapse: collapse; font-family: 'SF Mono','Fira Code',monospace; font-size: 10px; }
+.table-mini th { text-align: left; color: #4a5568; font-weight: 600; padding: 4px 6px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.table-mini td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+.table-mini .pk { color: #f59e0b; }
+.table-mini .fk { color: #00d4ff; }
+.table-mini .idx { color: #8b5cf6; text-decoration: underline; }
+
+/* Code blocks */
+.code { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 16px; font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; line-height: 1.6; overflow-x: auto; margin-top: 8px; }
+.code .c { color: #4a5568; } .code .k { color: #f59e0b; } .code .s { color: #34d399; } .code .n { color: #e4e8f0; } .code .t { color: #00d4ff; }
+
+/* State machine */
+.state-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 11px; }
+.state-node {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 8px 14px; text-align: center;
+}
+.state-node.active { border-color: rgba(0,212,255,0.3); }
+.state-arrow { color: #4a5568; font-size: 16px; }
+
+/* Dashboard preview */
+.dash { 
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px; padding: 20px; margin-top: 12px;
+}
+.dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.dash-header select {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; color: #e4e8f0; font-size: 12px; padding: 6px 12px;
+}
+.kpi-mini { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.kpi-mini div {
+  background: rgba(255,255,255,0.02); border-radius: 8px; padding: 10px 12px; text-align: center;
+}
+.kpi-mini .val { font-size: 22px; font-weight: 700; }
+.kpi-mini .lbl { font-size: 9px; color: #4a5568; text-transform: uppercase; margin-top: 2px; }
+
+/* Two column */
+.col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 2px; background: rgba(255,255,255,0.02); border-radius: 10px; padding: 3px; width: fit-content; border: 1px solid rgba(255,255,255,0.04); }
+.tab { padding: 6px 14px; border-radius: 7px; font-size: 11px; cursor: pointer; font-weight: 500; border: none; background: transparent; color: #4a5568; }
+.tab.active { background: rgba(0,212,255,0.08); color: #00d4ff; font-weight: 600; }
+
+/* Sparkline */
+.spark { display: flex; align-items: flex-end; gap: 1px; height: 36px; }
+.spark div { flex: 1; border-radius: 1px; }
+.spark .hi { background: #00d4ff; } .spark .lo { background: rgba(0,212,255,0.15); }
+
+/* Info box */
+.info { background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.10); border-radius: 8px; padding: 10px 14px; font-size: 11px; color: #00d4ff; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: Auto-provisioning flow -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">1. Auto-Provisioning — Zero Config per Project</h2>
+  <p class="section-sub">When any project installs ToonGine, it auto-registers in Supabase. No manual SQL. No setup.</p>
+  
+  <div class="arch">
+    <div class="arch-box">
+      <h4 style="color:#f59e0b;">① npm install toongine</h4>
+      <div class="item">postinstall.js runs</div>
+      <div class="item">→ reads package.json name</div>
+      <div class="item">→ sets TOONGINE_PROJECT</div>
+      <div class="item">→ writes .toongine.json</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box">
+      <h4 style="color:#00d4ff;">② Register Project</h4>
+      <div class="item">POST /rest/v1/toongine_projects</div>
+      <div class="item">{ project: "my-app" }</div>
+      <div class="item">→ upsert, idempotent</div>
+      <div class="item">→ auto-creates tenant partition</div>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box">
+      <h4 style="color:#34d399;">③ Ready</h4>
+      <div class="item">All writes scoped</div>
+      <div class="item">to project "my-app"</div>
+      <div class="item">Reads return only</div>
+      <div class="item">this project's data</div>
+    </div>
+  </div>
+
+  <div class="code" style="margin-top:14px;">
+<span class="c">// .toongine.json — auto-generated by postinstall</span>
+{
+  <span class="s">"project"</span>: <span class="s">"my-app"</span>,
+  <span class="s">"supabase_url"</span>: <span class="s">"https://mcejxdjrwzjxafciuely.supabase.co"</span>,
+  <span class="s">"created_at"</span>: <span class="s">"2026-06-19T14:32:00Z"</span>
+}
+<span class="c">// Also auto-sets: process.env.TOONGINE_PROJECT = "my-app"</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: DSA-driven data architecture -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">2. Data Architecture — DSA-Inspired Design</h2>
+  <p class="section-sub">Four structures, each optimized for its access pattern. Write-heavy vs read-heavy separated.</p>
+
+  <div class="ds-grid">
+    
+    <!-- Activity Log: Append-Only Log -->
+    <div class="ds-card">
+      <h5>📋 Activity Log <span class="badge badge-append">Append-Only</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Write-heavy. Every agent run appends 1 row. Never updated. Never deleted.<br>
+        <strong>DSA: Log-Structured Merge (LSM) — optimized for sequential writes.</strong>
+      </p>
+      <table class="table-mini">
+        <tr><th>Col</th><th>Type</th><th>Role</th></tr>
+        <tr><td class="pk">run_id</td><td>UUID</td><td>PK — unique per execution</td></tr>
+        <tr><td class="fk">project</td><td>TEXT</td><td>Tenant shard key</td></tr>
+        <tr><td class="fk">agent_id</td><td>TEXT</td><td>Which agent ran</td></tr>
+        <tr><td>tokens_in</td><td>INT</td><td>Raw tokens before TOON</td></tr>
+        <tr><td>tokens_out</td><td>INT</td><td>Compressed tokens</td></tr>
+        <tr><td>provider</td><td>TEXT</td><td>deepseek / anthropic</td></tr>
+        <tr><td>model</td><td>TEXT</td><td>deepseek-chat / opus-4</td></tr>
+        <tr><td>cost_usd</td><td>DECIMAL</td><td>Actual $ charged</td></tr>
+        <tr><td>duration_ms</td><td>INT</td><td>Response time</td></tr>
+        <tr><td>task</td><td>TEXT</td><td>What the agent did</td></tr>
+        <tr><td class="idx">created_at</td><td>TIMESTAMPTZ</td><td>↓ Clustered index</td></tr>
+      </table>
+      <div style="margin-top:8px; font-size:10px; color:#8b5cf6;">
+        Index: (project, created_at DESC) — covers 95% of queries
+      </div>
+    </div>
+
+    <!-- Snapshots: Ring Buffer -->
+    <div class="ds-card">
+      <h5>💾 Snapshots <span class="badge badge-ring">Ring Buffer</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Read-heavy. Pre-computed hourly/daily/monthly aggregates.<br>
+        <strong>DSA: Fixed-size circular buffer — overwrites oldest slot.</strong>
+      </p>
+      <table class="table-mini">
+        <tr><th>Col</th><th>Type</th><th>Role</th></tr>
+        <tr><td class="fk">project</td><td>TEXT</td><td>Tenant</td></tr>
+        <tr><td>granularity</td><td>TEXT</td><td>hour | day | month</td></tr>
+        <tr><td>slot</td><td>INT</td><td>Ring index (0–23 for hourly)</td></tr>
+        <tr><td>period_start</td><td>TIMESTAMPTZ</td><td>Start of this bucket</td></tr>
+        <tr><td>tokens_total</td><td>INT</td><td>Sum of all runs</td></tr>
+        <tr><td>cost_total</td><td>DECIMAL</td><td>Sum of all costs</td></tr>
+        <tr><td>run_count</td><td>INT</td><td>Number of executions</td></tr>
+        <tr><td>active_agents</td><td>INT</td><td>Unique agents this period</td></tr>
+        <tr><td>top_agent</td><td>TEXT</td><td>Most active agent</td></tr>
+        <tr><td class="idx">created_at</td><td>TIMESTAMPTZ</td><td>Last computed</td></tr>
+      </table>
+      <div style="margin-top:8px; font-size:10px; color:#8b5cf6;">
+        Ring: 24 hourly + 30 daily + 12 monthly = 66 rows per project.<br>
+        <span style="color:#34d399;">O(1) dashboard load — no aggregation at query time.</span>
+      </div>
+    </div>
+
+    <!-- Provider Ledger: State Machine -->
+    <div class="ds-card">
+      <h5>🏦 Provider Ledger <span class="badge badge-state">State Machine</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Tracks provider lifecycle. Balance changes are events.<br>
+        <strong>DSA: Finite State Machine — 4 valid states, 5 transitions.</strong>
+      </p>
+      <table class="table-mini" style="margin-bottom:10px;">
+        <tr><th>Col</th><th>Type</th></tr>
+        <tr><td class="fk">project</td><td>TEXT</td></tr>
+        <tr><td>provider</td><td>TEXT</td></tr>
+        <tr><td>state</td><td>TEXT</td></tr>
+        <tr><td>balance_start</td><td>DECIMAL</td></tr>
+        <tr><td>balance_current</td><td>DECIMAL</td></tr>
+        <tr><td>total_spent</td><td>DECIMAL</td></tr>
+        <tr><td>activated_at</td><td>TIMESTAMPTZ</td></tr>
+        <tr><td>depleted_at</td><td>TIMESTAMPTZ</td></tr>
+      </table>
+      <div class="state-flow">
+        <div class="state-node">🔵 Activated</div>
+        <div class="state-arrow">→</div>
+        <div class="state-node active">🟢 Active</div>
+        <div class="state-arrow">→</div>
+        <div class="state-node">🟡 Low</div>
+        <div class="state-arrow">→</div>
+        <div class="state-node">🔴 Depleted</div>
+        <div class="state-arrow">→</div>
+        <div class="state-node">🔄 Switched</div>
+      </div>
+      <div style="font-size:10px;color:#4a5568;margin-top:8px;">
+        On switch: old provider → Switched, new provider → Activated.<br>
+        History preserved — always comparable.
+      </div>
+    </div>
+
+    <!-- Leaderboard: Min-Heap -->
+    <div class="ds-card">
+      <h5>🏆 Cost Leaderboard <span class="badge badge-heap">Top-K Heap</span></h5>
+      <p style="font-size:10px;color:#4a5568;margin-bottom:8px;">
+        Most expensive tasks per project. Maintained as a bounded priority queue.<br>
+        <strong>DSA: Min-Heap of size K — O(N log K) inserts, O(1) top-K reads.</strong>
+      </p>
+      <table class="table-mini" style="margin-bottom:10px;">
+        <tr><th>Col</th><th>Type</th></tr>
+        <tr><td class="fk">project</td><td>TEXT</td></tr>
+        <tr><td class="pk">run_id</td><td>UUID</td></tr>
+        <tr><td>agent_id</td><td>TEXT</td></tr>
+        <tr><td>cost_usd</td><td>DECIMAL</td></tr>
+        <tr><td>tokens_in</td><td>INT</td></tr>
+        <tr><td>task</td><td>TEXT</td></tr>
+        <tr><td>period</td><td>TEXT</td></tr>
+      </table>
+      <div style="font-size:10px;color:#4a5568;">
+        Implemented as: <span style="color:#34d399;">ORDER BY cost_usd DESC LIMIT 10</span><br>
+        PostgreSQL B-tree does the heap work. No application-level heap needed.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: Snapshot ring buffer visual -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">3. Ring Buffer — How Snapshots Work</h2>
+  <p class="section-sub">Each project gets a fixed number of pre-computed slots. Cron rolls them forward. Dashboard reads are instant.</p>
+  
+  <div class="col2">
+    <div class="ds-card">
+      <h5>Hourly Ring (24 slots)</h5>
+      <div style="display:grid;grid-template-columns:repeat(24,1fr);gap:2px;margin-bottom:8px;">
+        <!-- Filled slots -->
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.9;" title="00:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.35;" title="01:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.20;" title="02:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.10;" title="03:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.05;" title="04:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.08;" title="05:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.25;" title="06:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.55;" title="07:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.70;" title="08:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.85;" title="09:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.90;" title="10:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.95;" title="11:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:1.0;" title="12:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:0.88;" title="13:00"></div>
+        <div style="background:#00d4ff;height:28px;border-radius:2px;opacity:1.0;" title="14:00"></div>
+        <!-- Current slot (15:00) — highlighted -->
+        <div style="background:#34d399;height:28px;border-radius:2px;box-shadow:0 0 8px rgba(52,211,153,0.5);position:relative;" title="15:00 (now)">
+          <div style="position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:7px;color:#34d399;white-space:nowrap;">now</div>
+        </div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="16:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="17:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="18:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="19:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="20:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="21:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="22:00"></div>
+        <div style="background:#4a5568;height:28px;border-radius:2px;opacity:0.2;" title="23:00"></div>
+      </div>
+      <div style="font-size:10px;color:#4a5568;">
+        <span style="color:#00d4ff;">■</span> Filled 
+        <span style="color:#34d399;margin-left:8px;">■</span> Current 
+        <span style="color:#4a5568;margin-left:8px;">■</span> Future (empty)<br>
+        Cron runs at :05 each hour → computes last slot → overwrites.
+      </div>
+    </div>
+    <div class="ds-card">
+      <h5>Daily Ring (30 slots) + Monthly Ring (12 slots)</h5>
+      <div style="display:grid;grid-template-columns:repeat(30,1fr);gap:1px;margin-bottom:10px;">
+        <script>
+          for(let i=0;i<30;i++) document.write('<div style="background:#8b5cf6;height:18px;border-radius:1px;opacity:'+(0.2+Math.random()*0.8)+'"></div>');
+        </script>
+      </div>
+      <div style="font-size:10px;color:#4a5568;">30 daily slots — last 30 days for weekly/monthly views</div>
+      <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:2px;margin-top:10px;">
+        <script>
+          for(let i=0;i<12;i++) document.write('<div style="background:#f59e0b;height:22px;border-radius:2px;opacity:'+(0.3+Math.random()*0.7)+'"></div>');
+        </script>
+      </div>
+      <div style="font-size:10px;color:#4a5568;margin-top:4px;">12 monthly slots — year-over-year comparison</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: Dashboard Preview -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">4. Dashboard — Project-Isolated, Auto-Wired</h2>
+  <p class="section-sub">The Token Burn dashboard reads ONLY this project's data. Project selector for multi-tenant views.</p>
+
+  <div class="dash">
+    <div class="dash-header">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <h3 style="font-size:15px;">💰 Token Burn</h3>
+        <select>
+          <option>my-app</option>
+          <option>novizio</option>
+          <option>hourbour</option>
+          <option>yvon-os</option>
+        </select>
+      </div>
+      <div class="tabs">
+        <button class="tab active">24H</button>
+        <button class="tab">7D</button>
+        <button class="tab">30D</button>
+      </div>
+    </div>
+
+    <div class="kpi-mini">
+      <div><div class="val" style="color:#00d4ff;">847K</div><div class="lbl">Tokens</div></div>
+      <div><div class="val">$4.23</div><div class="lbl">Cost Today</div></div>
+      <div><div class="val" style="color:#34d399;">8</div><div class="lbl">Active Now</div></div>
+      <div><div class="val">99.97%</div><div class="lbl">TOON Efficiency</div></div>
+      <div><div class="val" style="color:#f59e0b;">$31.58</div><div class="lbl">Credits Left</div></div>
+    </div>
+
+    <div class="col2">
+      <!-- Hourly burn -->
+      <div class="ds-card">
+        <h5 style="margin-bottom:6px;">Hourly Burn <span style="font-size:9px;color:#4a5568;font-weight:400;">from snapshot ring</span></h5>
+        <div style="display:flex;align-items:flex-end;gap:2px;height:80px;">
+          <script>
+            for(let i=0;i<24;i++) document.write('<div style="flex:1;background:#00d4ff;border-radius:2px 2px 0 0;opacity:'+(0.05+(i>=6&&i<=17?Math.random()*0.95:Math.random()*0.25))+';min-height:1px;height:'+(2+Math.random()*78)+'px"></div>');
+          </script>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:8px;color:#4a5568;margin-top:2px;">
+          <span>00</span><span>06</span><span>12</span><span>18</span><span>23</span>
+        </div>
+      </div>
+      <!-- Active tasks -->
+      <div class="ds-card">
+        <h5 style="margin-bottom:6px;">Active Now <span style="font-size:9px;color:#34d399;">● 3 running</span></h5>
+        <table class="table-mini" style="font-size:10px;">
+          <tr><td style="color:#00d4ff;">Raj</td><td>Schema migration</td><td style="color:#f59e0b;">$0.06</td><td style="text-align:right;">
+            <span class="spark" style="display:inline-flex;width:40px;vertical-align:middle;"><div class="hi" style="height:100%"></div><div class="lo" style="height:60%"></div><div class="hi" style="height:85%"></div><div class="lo" style="height:40%"></div></span>
+          </td></tr>
+          <tr><td style="color:#8b5cf6;">Marcus</td><td>Strategy review</td><td style="color:#f59e0b;">$0.04</td><td style="text-align:right;">
+            <span class="spark" style="display:inline-flex;width:40px;"><div class="lo" style="height:50%"></div><div class="hi" style="height:90%"></div><div class="hi" style="height:100%"></div><div class="lo" style="height:70%"></div></span>
+          </td></tr>
+          <tr><td style="color:#00d4ff;">Dev</td><td>PR merge</td><td>$0.02</td><td style="text-align:right;">
+            <span class="spark" style="display:inline-flex;width:40px;"><div class="hi" style="height:100%"></div><div class="hi" style="height:80%"></div><div class="lo" style="height:30%"></div><div class="lo" style="height:20%"></div></span>
+          </td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Provider row -->
+    <div class="col2" style="margin-top:10px;">
+      <div class="ds-card">
+        <h5>Provider · DeepSeek <span style="font-size:10px;color:#34d399;font-weight:400;">Active</span></h5>
+        <table class="table-mini">
+          <tr><td style="color:#4a5568;">Credits</td><td style="color:#f59e0b;">$31.58</td><td style="color:#4a5568;">/ $50.00</td></tr>
+          <tr><td style="color:#4a5568;">Used</td><td>$18.42</td><td style="color:#4a5568;">(37%)</td></tr>
+          <tr><td style="color:#4a5568;">Est. exhaust</td><td style="color:#f59e0b;">187 days</td><td></td></tr>
+          <tr><td style="color:#4a5568;">Previous</td><td style="color:#8b5cf6;">Anthropic</td><td style="color:#34d399;">↓ 99.07% cheaper</td></tr>
+        </table>
+      </div>
+      <div class="ds-card">
+        <h5>Cost Leaderboard · Top 5 <span style="font-size:9px;color:#4a5568;">min-heap K=5</span></h5>
+        <table class="table-mini">
+          <tr><td style="color:#f87171;">1.</td><td>Raj</td><td>Schema migration</td><td style="color:#f87171;">$1.24</td></tr>
+          <tr><td style="color:#f59e0b;">2.</td><td>Marcus</td><td>War Room Q3</td><td style="color:#f59e0b;">$0.98</td></tr>
+          <tr><td>3.</td><td>Kai</td><td>Competitor deep-dive</td><td>$0.74</td></tr>
+          <tr><td>4.</td><td>Depth</td><td>Architecture paper</td><td>$0.62</td></tr>
+          <tr><td>5.</td><td>Dev</td><td>Cross-repo refactor</td><td>$0.51</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:10px;">
+      ⚡ Dashboard reads from snapshots (ring buffer) — O(1) load time. Activity log queried only for "Active Now" and leaderboard.
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: Implementation plan -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">5. Implementation Order</h2>
+  <p class="section-sub">Built in layers. Each layer unlocks the next.</p>
+
+  <table class="table-mini" style="font-size:11px;">
+    <tr>
+      <th style="width:30px;">#</th><th>Layer</th><th>Files</th><th>What ships</th>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">1</td>
+      <td><strong>Schema migration</strong></td>
+      <td style="color:#8890a4;">supabase/toongine_schema_v2.sql</td>
+      <td>4 tables: activity_log, snapshots, provider_ledger, projects. All with <code>project</code> tenant key.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">2</td>
+      <td><strong>Plugin tenant-aware</strong></td>
+      <td style="color:#8890a4;">src/plugins/supabase/index.ts</td>
+      <td>All queries auto-scoped to <code>TOONGINE_PROJECT</code>. Defaults to package.json name.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">3</td>
+      <td><strong>Postinstall auto-register</strong></td>
+      <td style="color:#8890a4;">scripts/postinstall.js</td>
+      <td>On <code>npm install</code>: writes .toongine.json, upserts project row in Supabase.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">4</td>
+      <td><strong>Activity recorder (Hermes skill)</strong></td>
+      <td style="color:#8890a4;">.toon/agents/Tools/activity-recorder/</td>
+      <td>Hermes agent writes to activity_log after EVERY run. Uses project from .toongine.json.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">5</td>
+      <td><strong>Snapshot cron</strong></td>
+      <td style="color:#8890a4;">scripts/roll-snapshots.py</td>
+      <td>Runs hourly: aggregates activity_log → snapshots ring buffer. O(N) per project.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">6</td>
+      <td><strong>Provider balance checker</strong></td>
+      <td style="color:#8890a4;">scripts/check-balance.py</td>
+      <td>Cron every 30 min: hits DeepSeek API, updates provider_ledger balance.</td>
+    </tr>
+    <tr>
+      <td style="color:#00d4ff;">7</td>
+      <td><strong>Token Burn dashboard</strong></td>
+      <td style="color:#8890a4;">src/dashboard/ui/src/pages/TokenIntel.tsx</td>
+      <td>Reads from snapshots (O(1)). Project selector dropdown. Ships in toongine npm.</td>
+    </tr>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: Technical summary -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">6. DSA Summary — Why This Structure</h2>
+
+  <div class="ds-grid">
+    <div class="ds-card">
+      <h5>Append-Only Log</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Problem:</strong> Writes happen 100x more than reads. Updates would fragment.<br>
+        <strong>Solution:</strong> Only INSERT. Never UPDATE. Never DELETE. Immutable audit trail.<br>
+        <strong>Query:</strong> SELECT with composite index (project, created_at). O(log N).
+      </p>
+    </div>
+    <div class="ds-card">
+      <h5>Ring Buffer Snapshots</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Problem:</strong> Dashboard aggregates 10K+ rows on every load. Slow.<br>
+        <strong>Solution:</strong> Pre-compute fixed-size windows. Overwrite oldest slot.<br>
+        <strong>Query:</strong> SELECT 24 rows. O(1) dashboard load. 66 rows per project total.
+      </p>
+    </div>
+    <div class="ds-card">
+      <h5>State Machine Provider</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Problem:</strong> Provider changes break comparison. No history.<br>
+        <strong>Solution:</strong> FSM with 5 valid transitions. Old providers stay as "Switched".<br>
+        <strong>Query:</strong> SELECT WHERE is_current=true for active. WHERE state='switched' for history.
+      </p>
+    </div>
+    <div class="ds-card">
+      <h5>Min-Heap Leaderboard</h5>
+      <p style="font-size:11px;color:#8890a4;">
+        <strong>Problem:</strong> Finding top-5 most expensive from 100K rows is expensive.<br>
+        <strong>Solution:</strong> PostgreSQL ORDER BY + LIMIT uses B-tree internally (heap property).<br>
+        <strong>Query:</strong> SELECT ... ORDER BY cost_usd DESC LIMIT 5. O(N log K) internally.
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

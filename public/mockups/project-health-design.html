@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Health — YVON OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', -apple-system, 'SF Pro Display', sans-serif;
+  background: #080c14; color: #e4e8f0; min-height: 100vh;
+  padding: 28px 36px; line-height: 1.4;
+}
+
+/* Header */
+.header { margin-bottom: 20px; }
+.header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+.header .sub { font-size: 12px; color: #4a5568; margin-top: 2px; }
+
+/* Repo selector */
+.repo-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.repo-select {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; color: #e4e8f0; font-size: 12px; padding: 6px 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace; cursor: pointer;
+}
+.last-updated { font-size: 11px; color: #3a3f4a; }
+.pulse { color: #34d399; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+/* Card */
+.card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 18px; backdrop-filter: blur(16px);
+}
+.card-sm {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px; padding: 14px;
+}
+.section-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.8px; color: #4a5568; margin-bottom: 10px;
+}
+
+/* Top row: Score + Insights */
+.top-row {
+  display: grid; grid-template-columns: 220px 1fr; gap: 12px; margin-bottom: 14px;
+}
+
+/* Score gauge */
+.score-card { text-align: center; }
+.score-ring {
+  width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 8px;
+  background: conic-gradient(from 0deg, #34d399 0deg, #34d399 270deg, rgba(255,255,255,0.04) 270deg, rgba(255,255,255,0.04) 360deg);
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.score-inner {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: #080c14; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.score-value { font-size: 34px; font-weight: 800; letter-spacing: -1px; color: #34d399; line-height: 1; }
+.score-label { font-size: 10px; color: #34d399; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+.score-trend { font-size: 11px; margin-top: 6px; }
+.score-trend.up { color: #34d399; }
+.score-trend.down { color: #f87171; }
+
+.insight-list { display: flex; flex-direction: column; gap: 8px; }
+.insight {
+  padding: 10px 14px; border-radius: 8px; font-size: 11px; line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.insight-good { background: rgba(52,211,153,0.04); border: 1px solid rgba(52,211,153,0.10); color: #34d399; }
+.insight-warn { background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.10); color: #f59e0b; }
+.insight-crit { background: rgba(248,113,113,0.04); border: 1px solid rgba(248,113,113,0.10); color: #f87171; }
+.insight-info { background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.10); color: #00d4ff; }
+.insight-icon { font-size: 16px; flex-shrink: 0; margin-top: 0px; }
+
+/* Panels row */
+.panels-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
+}
+
+/* Sparkline bars */
+.bars { display: flex; align-items: flex-end; gap: 3px; height: 48px; margin-bottom: 6px; }
+.bars div { flex: 1; border-radius: 2px 2px 0 0; min-height: 2px; transition: height 0.3s; }
+.bar-good { background: rgba(52,211,153,0.6); }
+.bar-warn { background: rgba(245,158,11,0.6); }
+.bar-crit { background: rgba(248,113,113,0.6); }
+.bar-future { background: rgba(255,255,255,0.04); }
+
+.stat-row { display: flex; justify-content: space-between; font-size: 11px; padding: 3px 0; }
+.stat-label { color: #4a5568; }
+.stat-value { color: #e4e8f0; font-weight: 500; }
+.stat-good { color: #34d399; font-weight: 600; }
+.stat-warn { color: #f59e0b; font-weight: 600; }
+.stat-crit { color: #f87171; font-weight: 600; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 22px; max-height: 300px; overflow-y: auto; }
+.timeline::before {
+  content: ''; position: absolute; left: 9px; top: 8px; bottom: 8px;
+  width: 1px; background: rgba(255,255,255,0.05);
+}
+.tl-event { position: relative; margin-bottom: 12px; font-size: 11px; }
+.tl-event::before {
+  content: ''; position: absolute; left: -17px; top: 4px;
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.tl-deploy::before { background: #00d4ff; }
+.tl-fix::before    { background: #34d399; box-shadow: 0 0 5px rgba(52,211,153,0.3); }
+.tl-warn::before   { background: #f59e0b; }
+.tl-error::before  { background: #f87171; box-shadow: 0 0 5px rgba(248,113,113,0.3); }
+.tl-time { font-size: 10px; color: #3a3f4a; }
+.tl-title { font-weight: 600; }
+.tl-detail { font-size: 10px; color: #5a6478; margin-top: 1px; }
+.tl-impact { font-size: 9px; margin-top: 2px; }
+
+/* Recommendations */
+.rec-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.rec-priority {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.rec-p0 { background: rgba(248,113,113,0.12); color: #f87171; }
+.rec-p1 { background: rgba(245,158,11,0.12); color: #f59e0b; }
+.rec-p2 { background: rgba(0,212,255,0.10); color: #00d4ff; }
+.rec-body { flex: 1; min-width: 0; }
+.rec-title { font-size: 12px; font-weight: 600; }
+.rec-detail { font-size: 10px; color: #5a6478; margin-top: 2px; }
+.rec-meta { font-size: 9px; color: #4a5568; margin-top: 3px; }
+.rec-impact { flex-shrink: 0; text-align: right; }
+.rec-impact-val { font-size: 13px; font-weight: 700; color: #34d399; }
+.rec-impact-label { font-size: 9px; color: #4a5568; }
+.rec-effort { font-size: 10px; color: #4a5568; margin-top: 2px; }
+
+/* Issue table */
+.issue-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 11px; }
+.issue-sev { width: 20px; text-align: center; font-size: 14px; }
+.issue-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.issue-source { font-size: 9px; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.04); color: #5a6478; }
+.issue-age { font-size: 10px; color: #4a5568; white-space: nowrap; }
+
+/* Bottom bar */
+.bottom-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 10px; color: #3a3f4a; margin-top: 14px;
+}
+
+/* Colored text */
+.t-accent { color: #00d4ff; }
+.t-green  { color: #34d399; }
+.t-yellow { color: #f59e0b; }
+.t-red    { color: #f87171; }
+.t-purple { color: #8b5cf6; }
+.t-mono   { font-family: 'SF Mono', 'Fira Code', monospace; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>🏥 Project Health</h1>
+  <p class="sub">Intelligence engine — trends, root causes, anomalies, and what to fix first</p>
+</div>
+
+<!-- Repo + Refresh -->
+<div class="repo-bar">
+  <select class="repo-select">
+    <option>OfficialNovizio/YVON-OS</option>
+    <option>OfficialNovizio/ToonGine</option>
+  </select>
+  <span class="last-updated"><span class="pulse">●</span> Updated 2 min ago · recomputed hourly</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TOP ROW: Score + Insights -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="top-row">
+
+  <!-- Score Card -->
+  <div class="card score-card">
+    <div class="score-ring">
+      <div class="score-inner">
+        <div class="score-value">87</div>
+        <div class="score-label">Healthy</div>
+      </div>
+    </div>
+    <div class="score-trend up">▲ 3 points this week</div>
+    <div style="font-size:10px; color:#4a5568; margin-top:4px;">Projected 92 by Friday</div>
+  </div>
+
+  <!-- Insights Feed -->
+  <div class="insight-list">
+    <div class="insight insight-good">
+      <span class="insight-icon">📈</span>
+      <div>
+        <strong>Trending up</strong> — health improving +3/week. API success 97→99.8% after Raj's middleware fix. Compounding: 3 weeks of continuous improvement.
+      </div>
+    </div>
+    <div class="insight insight-warn">
+      <span class="insight-icon">⚠️</span>
+      <div>
+        <strong>1 deteriorating metric</strong> — TOON compression drifting -0.01%/day since <span class="t-mono">PR #142</span>. Will cross 99.9% threshold in <strong>7 days</strong>. Dev's refactor added 47 files — consider bundle split.
+      </div>
+    </div>
+    <div class="insight insight-info">
+      <span class="insight-icon">🔗</span>
+      <div>
+        <strong>Last dip root cause:</strong> Jun 18 TS errors (0→7) from commit <span class="t-mono">d751303</span> by <strong>Dev</strong>. Fixed in 4h by <span class="t-mono">6f0b3cb</span>. Recovery time: 4h (↓ from 8h avg last month).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- MIDDLE ROW: 4 Health Pillars -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="panels-row">
+
+  <!-- Codebase Health -->
+  <div class="card">
+    <div class="section-label">🧬 Codebase · Last 7 Days</div>
+    <div class="bars">
+      <div class="bar-good" style="height:100%"></div>
+      <div class="bar-good" style="height:100%"></div>
+      <div class="bar-good" style="height:85%"></div>
+      <div class="bar-crit" style="height:40%"></div>
+      <div class="bar-good" style="height:100%"></div>
+      <div class="bar-good" style="height:100%"></div>
+      <div class="bar-good" style="height:100%"></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:9px; color:#3a3f4a;">
+      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="stat-row"><span class="stat-label">TypeScript errors</span><span class="stat-good">0</span></div>
+      <div class="stat-row"><span class="stat-label">Build status</span><span class="stat-good">Clean · 3.2s</span></div>
+      <div class="stat-row"><span class="stat-label">Source files</span><span class="stat-value">847 · +2 this week</span></div>
+      <div class="stat-row"><span class="stat-label">Outdated deps</span><span class="stat-warn">3 · 2 minor, 1 patch</span></div>
+      <div class="stat-row"><span class="stat-label">Last compile</span><span class="stat-value">2 hours ago</span></div>
+    </div>
+    <div style="font-size:9px; color:#34d399; margin-top:8px;">7 days clean streak · Longest: 14 days</div>
+  </div>
+
+  <!-- API Health -->
+  <div class="card">
+    <div class="section-label">🌐 API Health · Last 24 Hours</div>
+    
+    <!-- Status code bar -->
+    <div style="display:flex; height:8px; border-radius:4px; overflow:hidden; margin-bottom:8px;">
+      <div style="width:82%; background:#34d399;"></div>
+      <div style="width:17%; background:#f59e0b;"></div>
+      <div style="width:1%; background:#f87171;"></div>
+    </div>
+    <div style="display:flex; gap:14px; font-size:10px; margin-bottom:10px;">
+      <span><span class="stat-good">●</span> 82% 200</span>
+      <span><span class="stat-warn">●</span> 17% 400</span>
+      <span><span class="stat-crit">●</span> 1% 500</span>
+    </div>
+
+    <div class="stat-row"><span class="stat-label">Total requests</span><span class="stat-value">1,247</span></div>
+    <div class="stat-row"><span class="stat-label">P95 latency</span><span class="stat-value">184ms</span></div>
+    <div class="stat-row"><span class="stat-label">P99 latency</span><span class="stat-value">412ms</span></div>
+    <div class="stat-row"><span class="stat-label">Error rate</span><span class="stat-warn">1.2% (↑0.3%)</span></div>
+    <div class="stat-row"><span class="stat-label">Top failing endpoint</span><span class="stat-crit">/api/scrape (40% of errors)</span></div>
+
+    <!-- Anomaly flag -->
+    <div style="margin-top:10px; padding:8px 10px; border-radius:6px; background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.10); font-size:10px;">
+      <span style="color:#f59e0b;">⚠ Anomaly:</span> /api/scrape spikes 300% at 08:00 daily. <span style="color:#34d399;">Pattern learned</span> — auto-dismissed as expected.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- BOTTOM ROW: Issues + TOON + Timeline + Recommendations -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="panels-row">
+
+  <!-- Left column: Issues + TOON -->
+  <div style="display:flex; flex-direction:column; gap:12px;">
+
+    <!-- Issues -->
+    <div class="card">
+      <div class="section-label">🐛 Issues · Priority Queue <span style="font-weight:400;color:#f87171;">1 critical</span></div>
+      <div class="issue-row">
+        <span class="issue-sev" style="color:#f87171;">🔴</span>
+        <span class="issue-title" style="color:#e4e8f0;font-weight:500;">API /api/scrape timeout > 10s</span>
+        <span class="issue-source">api</span>
+        <span class="issue-age">2 days</span>
+      </div>
+      <div class="issue-row">
+        <span class="issue-sev" style="color:#f59e0b;">🟡</span>
+        <span class="issue-title">Memory health < 30% on 3 agents</span>
+        <span class="issue-source">manual</span>
+        <span class="issue-age">1 day</span>
+      </div>
+      <div class="issue-row">
+        <span class="issue-sev" style="color:#f59e0b;">🟡</span>
+        <span class="issue-title">TOON compression drifting -0.01%/day</span>
+        <span class="issue-source">system</span>
+        <span class="issue-age">6 hours</span>
+      </div>
+      <div class="issue-row">
+        <span class="issue-sev" style="color:#4a5568;">⚪</span>
+        <span class="issue-title" style="color:#5a6478;">Update README for v2 schema</span>
+        <span class="issue-source">docs</span>
+        <span class="issue-age" style="color:#f59e0b;">14 days</span>
+      </div>
+    </div>
+
+    <!-- TOON Quality -->
+    <div class="card">
+      <div class="section-label">🧠 TOON Quality · Composite Index</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px; text-align:center; margin-bottom:10px;">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#34d399;">99.97%</div>
+          <div style="font-size:9px;color:#4a5568;">Compression</div>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:700;">3.2MB</div>
+          <div style="font-size:9px;color:#4a5568;">Bundle</div>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#34d399;">2h</div>
+          <div style="font-size:9px;color:#4a5568;">Freshness</div>
+        </div>
+        <div>
+          <div style="font-size:16px;font-weight:700;">847</div>
+          <div style="font-size:9px;color:#4a5568;">Chunks</div>
+        </div>
+      </div>
+      <div style="height:4px; background:rgba(255,255,255,0.04); border-radius:2px; overflow:hidden; margin-bottom:6px;">
+        <div style="width:94%; height:100%; background:#34d399; border-radius:2px;"></div>
+      </div>
+      <div style="font-size:10px; color:#34d399;">Score: 94.2/100 · Top 5% across all projects</div>
+      <div style="font-size:9px; color:#f59e0b; margin-top:3px;">⚠ Drift detected: -0.01%/day since PR #142</div>
+    </div>
+  </div>
+
+  <!-- Right column: Recommendations -->
+  <div class="card">
+    <div class="section-label">💡 What to Fix First</div>
+    
+    <div class="rec-item">
+      <div class="rec-priority rec-p0">P0</div>
+      <div class="rec-body">
+        <div class="rec-title" style="color:#f87171;">Fix /api/scrape timeout</div>
+        <div class="rec-detail">40% of 500 errors. $0.12/day in retries. Drags API score from 99.8→95.1% during spikes.</div>
+        <div class="rec-meta">Suggested: Add exponential backoff + circuit breaker to Apify call</div>
+      </div>
+      <div class="rec-impact">
+        <div class="rec-impact-val">+4.8</div>
+        <div class="rec-impact-label">health pts</div>
+        <div class="rec-effort">~30 min</div>
+      </div>
+    </div>
+
+    <div class="rec-item">
+      <div class="rec-priority rec-p1">P1</div>
+      <div class="rec-body">
+        <div class="rec-title" style="color:#f59e0b;">Close stale README issue</div>
+        <div class="rec-detail">Open 14 days — dragging avg resolution time to 2.4d. Low effort, quick win.</div>
+      </div>
+      <div class="rec-impact">
+        <div class="rec-impact-val">+1.2</div>
+        <div class="rec-impact-label">health pts</div>
+        <div class="rec-effort">~15 min</div>
+      </div>
+    </div>
+
+    <div class="rec-item">
+      <div class="rec-priority rec-p2">P2</div>
+      <div class="rec-body">
+        <div class="rec-title" style="color:#00d4ff;">Review bundle split post PR #142</div>
+        <div class="rec-detail">47 new files dropped compression 0.04%. Lazy-load the bridge module.</div>
+      </div>
+      <div class="rec-impact">
+        <div class="rec-impact-val">+0.4</div>
+        <div class="rec-impact-label">health pts</div>
+        <div class="rec-effort">~1 hour</div>
+      </div>
+    </div>
+
+    <div class="rec-item">
+      <div class="rec-priority rec-p2">P2</div>
+      <div class="rec-body">
+        <div class="rec-title" style="color:#00d4ff;">Update 3 outdated dependencies</div>
+        <div class="rec-detail">2 minor + 1 patch behind. No CVEs. Low risk.</div>
+      </div>
+      <div class="rec-impact">
+        <div class="rec-impact-val">+0.2</div>
+        <div class="rec-impact-label">health pts</div>
+        <div class="rec-effort">~20 min</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TIMELINE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="card" style="margin-top:12px;">
+  <div class="section-label">📅 Health Timeline · This Week</div>
+  <div class="timeline">
+    <div class="tl-event tl-deploy">
+      <div class="tl-time">Today 14:32</div>
+      <div class="tl-title" style="color:#00d4ff;">Dev merged PR #142</div>
+      <div class="tl-detail">+47 files, -2 files. TS clean. Build 3.2s.</div>
+      <div class="tl-impact" style="color:#4a5568;">Health impact: 0</div>
+    </div>
+    <div class="tl-event tl-fix">
+      <div class="tl-time">Today 13:15</div>
+      <div class="tl-title" style="color:#34d399;">Raj fixed /api/scrape backoff</div>
+      <div class="tl-detail">Added exponential retry. 500 errors dropped 40%.</div>
+      <div class="tl-impact" style="color:#34d399;">▲ +2 health pts</div>
+    </div>
+    <div class="tl-event tl-warn">
+      <div class="tl-time">Yesterday 16:45</div>
+      <div class="tl-title" style="color:#f59e0b;">Build anomaly detected</div>
+      <div class="tl-detail">Duration 47.8s (4.8σ). V3 recompile. Auto-dismissed.</div>
+      <div class="tl-impact" style="color:#4a5568;">No impact · expected</div>
+    </div>
+    <div class="tl-event tl-error">
+      <div class="tl-time">Jun 18 14:32</div>
+      <div class="tl-title" style="color:#f87171;">TS errors spiked 0 → 7</div>
+      <div class="tl-detail">Root cause: commit <span class="t-mono">d751303</span> by Dev (VPS bridge). Recovered in 4h.</div>
+      <div class="tl-impact" style="color:#f87171;">▼ -8 health pts</div>
+    </div>
+    <div class="tl-event tl-fix">
+      <div class="tl-time">Jun 18 18:30</div>
+      <div class="tl-title" style="color:#34d399;">Dev reverted VPS bridge</div>
+      <div class="tl-detail">Commit <span class="t-mono">6f0b3cb</span>. TS clean. Health restored.</div>
+      <div class="tl-impact" style="color:#34d399;">▲ +8 health pts · recovered</div>
+    </div>
+    <div class="tl-event tl-deploy">
+      <div class="tl-time">Jun 17 09:00</div>
+      <div class="tl-title" style="color:#00d4ff;">Quinn — weekly Pulse check</div>
+      <div class="tl-detail">All 24 agents nominal. No issues found.</div>
+      <div class="tl-impact" style="color:#4a5568;">Health: 90 · baseline</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom bar -->
+<div class="bottom-bar">
+  <span>⚡ 7 DSA structures active: Ring Buffer · Sliding Window · Priority Queue · Linear Regression · Hash-Map Join · Z-Score · Rule Engine</span>
+  <span>Recomputed hourly · 5 tables · 2 repos tracked</span>
+</div>
+
+</body>
+</html>

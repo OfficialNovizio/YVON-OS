@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Health v2 — Insight Engine</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter',-apple-system,sans-serif; background: #040a14; color: #e4e8f0; padding: 24px 32px; line-height: 1.5; }
+.section { margin-bottom: 36px; }
+.section-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+.section-sub { font-size: 12px; color: #4a5568; margin-bottom: 14px; }
+.divider { height: 1px; background: rgba(255,255,255,0.04); margin: 28px 0; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.card {
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px; padding: 16px;
+}
+.card h5 { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+.muted { color: #4a5568; font-size: 11px; }
+.accent { color: #00d4ff; }
+.green { color: #34d399; }
+.yellow { color: #f59e0b; }
+.red { color: #f87171; }
+.purple { color: #8b5cf6; }
+
+/* Insight cards */
+.insight {
+  background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.10);
+  border-radius: 8px; padding: 10px 14px; font-size: 11px; margin-bottom: 8px;
+}
+.insight.warn { background: rgba(245,158,11,0.04); border-color: rgba(245,158,11,0.10); color: #f59e0b; }
+.insight.good { background: rgba(52,211,153,0.04); border-color: rgba(52,211,153,0.10); color: #34d399; }
+.insight.crit { background: rgba(248,113,113,0.04); border-color: rgba(248,113,113,0.10); color: #f87171; }
+
+/* Trend mini */
+.trend-up { color: #f87171; }
+.trend-down { color: #34d399; }
+.trend-stable { color: #4a5568; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before {
+  content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+  width: 1px; background: rgba(255,255,255,0.06);
+}
+.timeline-event {
+  position: relative; margin-bottom: 12px; font-size: 11px;
+}
+.timeline-event::before {
+  content: ''; position: absolute; left: -16px; top: 4px;
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.timeline-event.deploy::before { background: #00d4ff; }
+.timeline-event.error::before  { background: #f87171; box-shadow: 0 0 6px rgba(248,113,113,0.3); }
+.timeline-event.fix::before    { background: #34d399; }
+.timeline-event.warn::before   { background: #f59e0b; }
+
+/* Score change */
+.score-delta { font-size: 13px; font-weight: 600; }
+.score-delta.up { color: #34d399; }
+.score-delta.down { color: #f87171; }
+
+/* Code */
+.code { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; font-family: 'SF Mono','Fira Code',monospace; font-size: 10px; overflow-x: auto; }
+.code .c { color: #4a5568; }
+
+/* Comparison table */
+.cmp { width: 100%; border-collapse: collapse; font-size: 10px; }
+.cmp th { text-align: left; color: #4a5568; font-weight: 600; padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.cmp td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+
+/* Sparkline bar */
+.spark { display: flex; align-items: flex-end; gap: 2px; height: 24px; }
+.spark div { flex: 1; border-radius: 1px; min-height: 1px; }
+.spark .s-ok  { background: #34d399; } .spark .s-warn { background: #f59e0b; } .spark .s-crit { background: #f87171; }
+
+/* Score gauge */
+.gauge-bg { 
+  width: 140px; height: 70px; border-radius: 70px 70px 0 0;
+  background: conic-gradient(from 180deg, #f87171 0deg, #f59e0b 90deg, #34d399 180deg);
+  position: relative; margin: 0 auto;
+}
+.gauge-mask {
+  width: 100px; height: 50px; border-radius: 50px 50px 0 0;
+  background: #040a14; position: absolute; bottom: 0; left: 20px;
+}
+.gauge-needle {
+  position: absolute; bottom: -2px; left: 50%;
+  width: 2px; height: 55px; background: #e4e8f0;
+  transform-origin: bottom center; transform: rotate(-70deg);
+  transition: transform 0.5s ease;
+}
+.gauge-value { text-align: center; font-size: 28px; font-weight: 800; margin-top: -10px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: What "Insightful" Means -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">1. From Dashboard → Intelligence Engine</h2>
+  <p class="section-sub">A dashboard shows numbers. An intelligence engine tells you what to do about them.</p>
+
+  <div class="grid2">
+    <div class="card" style="border-color: rgba(248,113,113,0.15);">
+      <h5 style="color:#f87171;">❌ Dashboard (Current Plan)</h5>
+      <div style="font-size:11px;color:#8890a4;">
+        "Health score: 87"<br>
+        "3 issues open"<br>
+        "API success: 99.8%"<br>
+        "0 TS errors"<br><br>
+        <em>Ok. Now what?</em>
+      </div>
+    </div>
+    <div class="card" style="border-color: rgba(52,211,153,0.15);">
+      <h5 style="color:#34d399;">✅ Intelligence Engine (v2)</h5>
+      <div style="font-size:11px;color:#8890a4;">
+        "Health score: 87 <span style='color:#34d399'>↑3 this week</span>. <span style='color:#f59e0b'>1 issue aging (14d)</span> is dragging you down. Fix it to reach 92."<br><br>
+        "API /scrape timeout → <span style='color:#f87171'>40% of 500 errors</span>, costing $0.12/day in retries. Root cause: Apify rate limit. <span style='color:#00d4ff;'>Suggested: add retry with backoff.</span>"<br><br>
+        "TOON compression dropped from 99.98% → 99.94% after PR #142. <span style='color:#00d4ff;'>Dev's refactor added 47 files.</span> Review bundle split."
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: Six Insight Layers -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">2. Six Insight Layers — Stacked on Top of the Data</h2>
+  <p class="section-sub">Each layer adds intelligence. Layer 1 is the data. Layer 6 is the recommendation engine.</p>
+
+  <!-- Layer 1 -->
+  <div class="card" style="margin-bottom:12px;">
+    <h5>🔢 Layer 1: Raw Metrics <span class="muted">— the numbers</span></h5>
+    <div style="font-size:11px;color:#8890a4;">
+      Health score, TS errors, API success rate, open issues, compression %. <em>What the original plan already does.</em>
+    </div>
+  </div>
+
+  <!-- Layer 2 -->
+  <div class="card" style="margin-bottom:12px;">
+    <h5>📈 Layer 2: Trend Analysis <span class="muted">— direction + velocity</span></h5>
+    <div class="insight good">
+      Health score <strong>↑3 this week</strong> (82→85→87). Projected: <strong>92 by Friday</strong> if current velocity holds. Top contributor: <strong>API success improved from 97% → 99.8%</strong> after middleware fix.
+    </div>
+    <div class="insight warn">
+      TOON compression <strong>↓0.04% since Monday</strong>. Drift rate: -0.01%/day. At this rate, falls below 99.9% threshold in 7 days. <strong>Triggered by PR #142</strong> (47 new files).
+    </div>
+    <div class="muted" style="margin-top:4px;">
+      <strong>DSA:</strong> Linear regression on snapshot ring buffer. Slope = velocity. R² = confidence. Simple math, no ML needed.
+    </div>
+  </div>
+
+  <!-- Layer 3 -->
+  <div class="card" style="margin-bottom:12px;">
+    <h5>🔗 Layer 3: Root Cause Linking <span class="muted">— what caused the dip?</span></h5>
+    <div class="insight crit">
+      <strong>TS errors spiked from 0→7 on Jun 18 14:32.</strong> Linked to commit <code style="color:#00d4ff;">d751303</code> by <strong>Dev</strong> (feat: VPS bridge). Files changed: lib/hermes-vps.ts, app/api/agent-ops/route.ts. <strong>Reverted in 6f0b3cb at 18:30.</strong> Recovery time: 4h.
+    </div>
+    <div class="insight">
+      <strong>API 500 spike on /api/scrape:</strong> 12 errors in 3 minutes at 08:00 UTC. Correlation: <strong>Apify rate limit</strong> (429 upstream). Agent: <strong>Kai</strong> (Instagram scrape). <strong>This endpoint accounts for 40% of all 500 errors this week.</strong>
+    </div>
+    <div class="muted" style="margin-top:4px;">
+      <strong>DSA:</strong> Event correlation — join health dips with commit timestamps, agent activity, and deploy events. Hash-map lookup: commit SHA → agent → files changed.
+    </div>
+  </div>
+
+  <!-- Layer 4 -->
+  <div class="card" style="margin-bottom:12px;">
+    <h5>🚨 Layer 4: Anomaly Detection <span class="muted">— what's unusual?</span></h5>
+    <div class="insight warn">
+      <strong>Build duration anomaly:</strong> 3.2s → 47.8s at 02:00 UTC. <strong>Z-score: 4.8σ</strong> (threshold: 2.5σ). Caused by: V3 engine recompile with 512 merge iterations. <strong>Expected.</strong> Not an issue — flag dismissed.
+    </div>
+    <div class="insight warn">
+      <strong>API call volume spike:</strong> 1.2K → 4.7K requests between 14:00-15:00. <strong>Z-score: 3.1σ.</strong> Normal pattern: peak during working hours. <strong>Expected.</strong> Flag auto-dismissed by pattern learning.
+    </div>
+    <div class="muted" style="margin-top:4px;">
+      <strong>DSA:</strong> Z-score on sliding window. μ and σ computed from last 7 days. |z| > 2.5 = anomaly. Pattern learning: if anomaly repeats at same time ±1h twice → auto-dismiss as "expected pattern."
+    </div>
+  </div>
+
+  <!-- Layer 5 -->
+  <div class="card" style="margin-bottom:12px;">
+    <h5>📊 Layer 5: Comparative Context <span class="muted">— how do you stack up?</span></h5>
+    <div class="insight good">
+      <strong>TOON compression: 99.97%</strong> — top 5% across all tracked projects. Average: 99.5%. <strong>YVON-OS leads in token efficiency.</strong>
+    </div>
+    <div class="insight warn">
+      <strong>Issue resolution time: 2.4 days</strong> — below target of 1 day. <strong>3 of 8 tracked projects resolve faster.</strong> Bottleneck: issues opened by Kai (marketing) take 4.2 days avg vs Dev (tech) at 0.8 days.
+    </div>
+    <div class="muted" style="margin-top:4px;">
+      <strong>DSA:</strong> Cross-project percentile ranking. SELECT PERCENT_RANK() OVER (ORDER BY metric) FROM all repos. Updated hourly via snapshot roll.
+    </div>
+  </div>
+
+  <!-- Layer 6 -->
+  <div class="card" style="margin-bottom:12px; border-color: rgba(0,212,255,0.15);">
+    <h5>💡 Layer 6: Actionable Recommendations <span class="muted">— what should you do?</span></h5>
+    <table class="cmp">
+      <tr><th>Priority</th><th>Recommendation</th><th>Impact</th><th>Effort</th></tr>
+      <tr>
+        <td style="color:#f87171;">🔴 P0</td>
+        <td><strong>Fix /api/scrape timeout</strong> — 40% of 500 errors, $0.12/day in retries, drags API score from 99.8% → 95.1% during spikes. Add exponential backoff + circuit breaker.</td>
+        <td style="color:#34d399;">+4.8 health points</td>
+        <td>30 min</td>
+      </tr>
+      <tr>
+        <td style="color:#f59e0b;">🟡 P1</td>
+        <td><strong>Close stale issue #1</strong> — "Update README for v2 schema" open for 14 days. Only low-priority issue but dragging resolution time avg.</td>
+        <td style="color:#34d399;">+1.2 health points</td>
+        <td>15 min</td>
+      </tr>
+      <tr>
+        <td style="color:#00d4ff;">🔵 P2</td>
+        <td><strong>Review bundle split</strong> — PR #142 added 47 files, dropped compression 0.04%. Consider lazy-loading the new bridge module. Estimated recovery: 99.98%.</td>
+        <td style="color:#34d399;">+0.4 health points</td>
+        <td>1 hour</td>
+      </tr>
+    </table>
+    <div class="muted" style="margin-top:6px;">
+      <strong>DSA:</strong> Rule engine. Each health component has weighted fix suggestions. Impact = component_weight × improvement_potential. Ranked by impact/effort ratio.
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: Health Timeline -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">3. Health Timeline — Events Overlaid on Score</h2>
+  <p class="section-sub">See what happened and WHEN. Not just "health was 82 on Monday" but "health dropped because Dev pushed at 2pm."</p>
+
+  <div class="card">
+    <!-- Simplified timeline chart -->
+    <div style="position:relative; height:80px; border-bottom:1px solid rgba(255,255,255,0.04); margin-bottom:8px;">
+      <!-- Score line approximation -->
+      <div style="position:absolute; top:10px; left:5%; width:90%; height:3px; background:rgba(255,255,255,0.04); border-radius:2px;"></div>
+      <svg style="position:absolute; top:0; left:0; width:100%; height:80px;">
+        <polyline points="20,30 100,35 180,28 260,50 340,45 420,20 500,18 580,15 660,12" 
+          fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <!-- Event markers -->
+      <div style="position:absolute; left:32%; top:55px; font-size:9px; color:#f87171;">▼</div>
+      <div style="position:absolute; left:31%; top:68px; font-size:8px; color:#f87171;">PR merged</div>
+      <div style="position:absolute; left:52%; top:25px; font-size:9px; color:#34d399;">▲</div>
+      <div style="position:absolute; left:50%; top:38px; font-size:8px; color:#34d399;">Fix deployed</div>
+    </div>
+    <div style="font-size:9px; color:#4a5568; display:flex; justify-content:space-between; width:90%; margin:0 auto;">
+      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+    </div>
+    
+    <div class="timeline" style="margin-top:14px;">
+      <div class="timeline-event deploy">
+        <strong style="color:#00d4ff;">Today 14:32</strong> · Dev merged PR #142
+        <div class="muted">+47 files, -2 files. TS clean. Build: 3.2s. Health unchanged.</div>
+      </div>
+      <div class="timeline-event fix">
+        <strong style="color:#34d399;">Today 13:15</strong> · Raj fixed scrape timeout
+        <div class="muted">Added exponential backoff. API 500 rate dropped 40%. Health ↑2.</div>
+      </div>
+      <div class="timeline-event warn">
+        <strong style="color:#f59e0b;">Yesterday 16:45</strong> · Anomaly: build 47.8s
+        <div class="muted">V3 recompile triggered. Auto-dismissed as expected. No health impact.</div>
+      </div>
+      <div class="timeline-event error">
+        <strong style="color:#f87171;">Jun 18 14:32</strong> · TS errors: 0 → 7
+        <div class="muted">Root cause: VPS bridge commit (d751303). Recovery in 4h. Health ↓8.</div>
+      </div>
+      <div class="timeline-event deploy">
+        <strong style="color:#00d4ff;">Jun 18 09:00</strong> · Quinn ran Pulse check
+        <div class="muted">All agents nominal. No issues found. Health: 90.</div>
+      </div>
+    </div>
+    <div class="muted" style="margin-top:8px;">
+      <strong>DSA:</strong> Health snapshots joined with commit log, deploy events, and agent activity. Hash-map of timestamps → events. Timeline rendered as merged sorted list.
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: New Schema Additions -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">4. Schema — What's New for v2 Insights</h2>
+  <p class="section-sub">The 3 base tables stay. We add 2 intelligence tables + a recommendations view.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h5>📋 Health Events Log</h5>
+      <p class="muted">Every health-relevant event — commits, deploys, error spikes, fixes. Powers the timeline.</p>
+      <div class="code">
+<span class="c">CREATE TABLE</span> toongine_health_events (
+  id              BIGSERIAL PRIMARY KEY,
+  repo_id         TEXT NOT NULL,
+  event_type      TEXT NOT NULL,   <span class="c">-- commit|deploy|error_spike|fix|anomaly|pulse</span>
+  severity        INT DEFAULT 0,   <span class="c">-- 0=info 1=warn 2=critical</span>
+  title           TEXT NOT NULL,
+  detail          TEXT DEFAULT '',
+  linked_commit   TEXT,            <span class="c">-- commit SHA (nullable)</span>
+  linked_agent    TEXT,            <span class="c">-- agent who triggered it</span>
+  health_impact   FLOAT DEFAULT 0, <span class="c">-- ± health points</span>
+  occurred_at     TIMESTAMPTZ DEFAULT now()
+);
+<span class="c">CREATE INDEX</span> idx_events_repo_time ON toongine_health_events(repo_id, occurred_at DESC);
+      </div>
+    </div>
+    <div class="card">
+      <h5>💡 Recommendations Cache</h5>
+      <p class="muted">Pre-computed fix suggestions. Regenerated on every health score change.</p>
+      <div class="code">
+<span class="c">CREATE TABLE</span> toongine_recommendations (
+  id              BIGSERIAL PRIMARY KEY,
+  repo_id         TEXT NOT NULL,
+  priority        INT NOT NULL,    <span class="c">-- 0=P0 1=P1 2=P2</span>
+  category        TEXT NOT NULL,   <span class="c">-- codebase|api|toon|issues</span>
+  title           TEXT NOT NULL,
+  detail          TEXT DEFAULT '',
+  impact_points   FLOAT DEFAULT 0, <span class="c">-- estimated health gain</span>
+  effort_minutes  INT DEFAULT 30,
+  generated_at    TIMESTAMPTZ DEFAULT now(),
+  dismissed       BOOLEAN DEFAULT false
+);
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: Implementation Plan v2 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">5. Implementation Plan — v2 with Insights</h2>
+  <p class="section-sub">12 layers. Layers 1-4 are the data foundation. Layers 5-12 are the intelligence engine.</p>
+
+  <table class="cmp">
+    <tr><th style="width:30px;">#</th><th>Layer</th><th>DSA</th><th>Auto?</th><th>Time</th></tr>
+    <tr>
+      <td class="accent">1</td>
+      <td><strong>Schema v3 migration</strong></td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">10m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">5 tables: codebase_snapshots, api_health, issues, health_events, recommendations</td></tr>
+    <tr>
+      <td class="accent">2</td>
+      <td><strong>Plugin queries</strong></td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td class="muted">10m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">getCodebaseSnapshots, getApiHealth, getIssues, getHealthEvents, getRecommendations, getHealthScore</td></tr>
+    <tr>
+      <td class="accent">3</td>
+      <td><strong>Codebase sampler script</strong></td>
+      <td class="muted">Ring Buffer</td>
+      <td>✅</td>
+      <td class="muted">15m</td>
+    </tr>
+    <tr>
+      <td class="accent">4</td>
+      <td><strong>API logger middleware</strong></td>
+      <td class="muted">Sliding Window</td>
+      <td>✅</td>
+      <td class="muted">10m</td>
+    </tr>
+    <tr style="border-top:1px solid rgba(0,212,255,0.10);">
+      <td class="accent">5</td>
+      <td><strong>Trend Analyzer</strong></td>
+      <td>Linear Regression</td>
+      <td>✅</td>
+      <td class="muted">20m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Computes slope + projection from ring buffer snapshots. Outputs "↑3 this week, projected 92 by Friday"</td></tr>
+    <tr>
+      <td class="accent">6</td>
+      <td><strong>Root Cause Linker</strong></td>
+      <td>Hash-Map Join</td>
+      <td>✅</td>
+      <td class="muted">20m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Links health dips to commits, agents, and deploy events. Writes to health_events table.</td></tr>
+    <tr>
+      <td class="accent">7</td>
+      <td><strong>Anomaly Detector</strong></td>
+      <td>Z-Score</td>
+      <td>✅</td>
+      <td class="muted">15m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Computes μ and σ from 7-day window. Flags |z| > 2.5 with pattern learning to auto-dismiss expected spikes.</td></tr>
+    <tr>
+      <td class="accent">8</td>
+      <td><strong>Comparative Ranker</strong></td>
+      <td>Percentile</td>
+      <td>✅</td>
+      <td class="muted">10m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">PERCENT_RANK() across all repos. "Top 5% in TOON compression." Shows where you lead and lag.</td></tr>
+    <tr>
+      <td class="accent">9</td>
+      <td><strong>Recommendation Engine</strong></td>
+      <td>Rule Engine</td>
+      <td>✅</td>
+      <td class="muted">25m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Rule-based: if ts_errors > 0 → suggest tsc --fix. If api_500_ratio > 5% → suggest endpoint fix. Ranked by impact/effort.</td></tr>
+    <tr>
+      <td class="accent">10</td>
+      <td><strong>Pipeline extension</strong></td>
+      <td class="muted">—</td>
+      <td>✅</td>
+      <td class="muted">15m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Add trend analysis + root cause linking + anomaly detection to the existing toongine-pipeline.py</td></tr>
+    <tr>
+      <td class="accent">11</td>
+      <td><strong>ProjectHealth dashboard</strong></td>
+      <td class="muted">—</td>
+      <td>—</td>
+      <td class="muted">45m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Health score gauge + trend + insights feed + timeline + recommendations. YVON design ethics.</td></tr>
+    <tr>
+      <td class="accent">12</td>
+      <td><strong>Cron + wire</strong></td>
+      <td class="muted">—</td>
+      <td>—</td>
+      <td class="muted">10m</td>
+    </tr>
+    <tr><td colspan="5" class="muted" style="padding-left:20px;">Wire into dashboard. Cron: codebase sample (daily) + health compute (hourly).</td></tr>
+  </table>
+
+  <div style="display:flex; gap:8px; margin-top:12px; font-size:10px;">
+    <div class="card" style="flex:1; text-align:center;">
+      <span style="color:#34d399;">Layers 1-4</span><br>
+      <span class="muted">Data foundation</span><br>
+      <strong>45 min</strong>
+    </div>
+    <div class="card" style="flex:1; text-align:center;">
+      <span style="color:#00d4ff;">Layers 5-9</span><br>
+      <span class="muted">Intelligence engine</span><br>
+      <strong>90 min</strong>
+    </div>
+    <div class="card" style="flex:1; text-align:center;">
+      <span style="color:#8b5cf6;">Layers 10-12</span><br>
+      <span class="muted">Integration + UI</span><br>
+      <strong>70 min</strong>
+    </div>
+    <div class="card" style="flex:1; text-align:center; border-color: rgba(0,212,255,0.15);">
+      <span style="color:#00d4ff; font-weight:700;">Total</span><br>
+      <span class="muted">12 layers</span><br>
+      <strong>~3.5 hours</strong>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: What Changes from v1 Plan -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">6. What Changed from v1 → v2</h2>
+
+  <table class="cmp">
+    <tr><th>Aspect</th><th style="color:#f87171;">v1 (Dashboard)</th><th style="color:#34d399;">v2 (Intelligence Engine)</th></tr>
+    <tr>
+      <td>Health score</td>
+      <td class="muted">"87" — just a number</td>
+      <td class="green">"87, ↑3 this week, projected 92. Fix /scrape to reach 95."</td>
+    </tr>
+    <tr>
+      <td>TS errors</td>
+      <td class="muted">"0 errors" — static count</td>
+      <td class="green">"0 now. Last error spike: Jun 18 (commit d751303). Recovered in 4h. Trend: 7 days clean."</td>
+    </tr>
+    <tr>
+      <td>API health</td>
+      <td class="muted">"99.8% success"</td>
+      <td class="green">"99.8%. 40% of failures from 1 endpoint. Z-score anomaly on /scrape at 08:00 daily. Pattern learned — auto-dismissed."</td>
+    </tr>
+    <tr>
+      <td>Issues</td>
+      <td class="muted">"3 open"</td>
+      <td class="green">"3 open (1 aging 14d). Resolution: 2.4d avg. Marketing issues take 5x longer than Tech. Kai's issues are the bottleneck."</td>
+    </tr>
+    <tr>
+      <td>TOON quality</td>
+      <td class="muted">"94.2/100"</td>
+      <td class="green">"94.2. Top 5% across all projects. Drifting -0.01%/day since PR #142. Will cross threshold in 7 days."</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td class="muted">None — user must interpret</td>
+      <td class="green">"P0: Fix /scrape (+4.8 pts, 30m). P1: Close stale issue (+1.2 pts, 15m). P2: Review bundle (+0.4 pts, 1h)."</td>
+    </tr>
+    <tr>
+      <td>Timeline</td>
+      <td class="muted">None</td>
+      <td class="green">Health events timeline: commits, deploys, errors, fixes — all overlaid on score trend.</td>
+    </tr>
+    <tr>
+      <td>New tables</td>
+      <td class="muted">3 (codebase, api, issues)</td>
+      <td class="green">5 (above + health_events, recommendations)</td>
+    </tr>
+    <tr>
+      <td>New DSA</td>
+      <td class="muted">4 structures</td>
+      <td class="green">7 structures: +Linear Regression, Hash-Map Join, Z-Score, Percentile Rank, Rule Engine</td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>
