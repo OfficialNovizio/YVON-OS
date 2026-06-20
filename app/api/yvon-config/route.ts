@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
-const CONFIG_PATH = join(process.cwd(), 'toongine.config.json')
+const CONFIG_PATH = join(process.cwd(), 'yvon.config.json')
 const LEGACY_CONFIG_PATH = join(process.cwd(), 'yvon.config.json')
 
 const DEFAULTS = {

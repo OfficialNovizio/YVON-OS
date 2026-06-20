@@ -3,8 +3,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { PageHeader, Card, StatusBadge } from '@/components/ui'
 import { Settings, Save, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
-import { ToonGineDashboard } from 'toongine/dashboard'
-import type { TokenBurnData, ProjectHealthData } from 'toongine/dashboard'
 
 // ─── Agent Ops types ──────────────────────────────────────────────────────────
 
@@ -43,8 +41,6 @@ const AVAILABLE_MODELS = ['deepseek-chat', 'deepseek-reasoner', 'gpt-4o', 'gpt-4
 export default function AgentsPage() {
   const [tab, setTab] = useState<TabKey>('burn')
   const [opsData, setOpsData] = useState<AgentOpsData | null>(null)
-  const [burnData, setBurnData] = useState<TokenBurnData | null>(null)
-  const [healthData, setHealthData] = useState<ProjectHealthData | null>(null)
   const [loading, setLoading] = useState(true)
 
   // Configure tab state
@@ -58,50 +54,9 @@ export default function AgentsPage() {
 
   useEffect(() => {
     let settled = 0
-    const done = () => { settled++; if (settled >= 2) setLoading(false) }
+    const done = () => { settled++; if (settled >= 1) setLoading(false) }
 
-    // Default fallback data (empty arrays, zero values) — always have something to show
-    const defaultBurn: TokenBurnData = {
-      tokenUsage: [], costByDept: [], costTrend: [], perAgentBurn: [], providerHealth: []
-    }
-    const defaultHealth: ProjectHealthData = {
-      kpi: { toonAvg: 94, bundleSize: 0, apiSuccess: 99, issuesOpen: 0, issuesCritical: 0 },
-      toonQuality: [], savingsTrend: [],
-      topKMatch: { chunksMatched: 0, chunksInjected: 0, l1: 0, l2: 0, ref: 0 },
-      codebase: { lastCompile: '—', duration: '—', files: 0, chunks: 0, terms: 0, bpe: 0, corpusSize: '—', compressedSize: '—', compressionPercent: 0, delta: '—', tsErrors: 0 },
-      apiHealth: { status200: 99, status400: 1, status500: 0, total24h: 0, errors: 0, topError: '' },
-      promptQuality: { avgContext: '—', avgInjected: '—', reduction: 0, cacheHits: 0, bestAgent: '—', worstAgent: '—' },
-      issues: [], docCoverage: []
-    }
     const defaultOps: AgentOpsData = { agents: [], departments: [], skillsTotal: 0, activity: [] }
-
-    // Always fetch real data — both APIs work in dev and production
-    // Token Burn + Project Health from /api/yvon-dashboard-stats
-    fetch('/api/yvon-dashboard-stats').then(r => r.json()).then(d => {
-      if (!d.error) {
-        setBurnData({
-          tokenUsage: d.tokenUsage || [],
-          costByDept: d.costByDept || [],
-          costTrend: d.costTrend || [],
-          perAgentBurn: d.perAgentBurn || [],
-          providerHealth: d.providerHealth || [],
-        })
-        setHealthData({
-          kpi: { toonAvg: d.toonAvg || 94, bundleSize: d.bundleSize || 0, apiSuccess: d.apiSuccess || 99, issuesOpen: d.issuesOpen ?? 0, issuesCritical: d.issuesCritical ?? 0 },
-          toonQuality: d.toonQuality || [],
-          savingsTrend: d.savingsTrend || [],
-          topKMatch: { chunksMatched: d.chunksMatched || 0, chunksInjected: d.chunksInjected || 0, l1: 0, l2: 0, ref: 0 },
-          codebase: { lastCompile: d.lastCompile || '—', duration: d.compileDuration || '—', files: d.files || 0, chunks: d.chunks || 0, terms: d.terms || 0, bpe: 0, corpusSize: d.corpusSize || '—', compressedSize: d.compressedSize || '—', compressionPercent: d.compressionPct || 0, delta: '—', tsErrors: d.tsErrors || 0 },
-          apiHealth: { status200: d.api200 || 99, status400: d.api400 || 1, status500: d.api500 || 0, total24h: d.apiTotal || 0, errors: d.apiErrors || 0, topError: d.topError || '' },
-          promptQuality: { avgContext: '—', avgInjected: '—', reduction: 0, cacheHits: 0, bestAgent: '—', worstAgent: '—' },
-          issues: d.issues || [], docCoverage: d.docCoverage || [],
-        })
-      } else {
-        setBurnData(defaultBurn)
-        setHealthData(defaultHealth)
-      }
-      done()
-    }).catch(() => { setBurnData(defaultBurn); setHealthData(defaultHealth); done() })
 
     // Agent Ops from /api/agent-ops (reads .toon/ filesystem + Supabase)
     fetch('/api/agent-ops').then(r => r.json()).then(d => {
@@ -162,9 +117,16 @@ export default function AgentsPage() {
         ))}
       </div>
 
-      {/* ── TAB 1 + 2: ToonGine Dashboard ───────────────────────────────── */}
+      {/* ── TAB 1 + 2: Token Burn & Project Health ──────────────────────── */}
       {(tab === 'burn' || tab === 'health') && (
-        <ToonGineDashboard tab={tab} tokenBurnData={burnData} projectHealthData={healthData} />
+        <Card className="p-8 text-center">
+          <div className="text-4xl mb-4">📦</div>
+          <h3 className="text-lg font-semibold mb-2">ToonGine Not Installed</h3>
+          <p className="text-sm text-muted max-w-md mx-auto">
+            Token burn tracking and project health require ToonGine.
+            Run <code className="bg-white/[0.06] px-1.5 py-0.5 rounded text-xs">npm install github:OfficialNovizio/ToonGine</code> to enable.
+          </p>
+        </Card>
       )}
 
       {/* ── TAB 3: Agent Ops ─────────────────────────────────────────────── */}
@@ -242,7 +204,7 @@ export default function AgentsPage() {
                   <div className="h-1.5 w-full rounded-full bg-white/[0.04]">
                     <div className="h-1.5 rounded-full" style={{ width: `${a.memoryHealth}%`, background: a.memoryHealth > 60 ? '#34d399' : a.memoryHealth > 30 ? '#f59e0b' : '#f87171' }} />
                   </div>
-                  {a.memoryHealth <= 30 && <div className="text-[10px] text-amber-400 mt-0.5">⚠️ needs npm update toongine</div>}
+                  {a.memoryHealth <= 30 && <div className="text-[10px] text-amber-400 mt-0.5">⚠️ low memory health</div>}
                 </div>
               ))}
             </div>

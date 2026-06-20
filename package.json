@@ -55,7 +55,6 @@
     "server-only": "^0.0.1",
     "skillfish": "^1.0.37",
     "stripe": "^22.0.1",
-    "toongine": "github:OfficialNovizio/ToonGine#master",
     "zod": "^4.3.6"
   },
   "devDependencies": {

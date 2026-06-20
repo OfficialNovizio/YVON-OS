@@ -6,7 +6,12 @@ import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { getAgentRegistry } from '@/lib/agent-registry'
-import { getAgents, getDepartments, getActivity, isConfigured } from 'toongine/plugins/supabase'
+
+// toongine removed — Supabase plugin not available
+const getAgents = async () => [] as any[]
+const getDepartments = async () => [] as any[]
+const getActivity = async () => [] as any[]
+const isConfigured = () => false
 
 interface AgentSkill { name: string; category: string }
 

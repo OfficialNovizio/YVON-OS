@@ -3,10 +3,11 @@ import type { ClaudeRequestBody, AgentId } from '@/lib/types'
 import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
-import { buildCieContext } from 'toongine/cie'
 
-import { autoToonMiddleware } from 'toongine/toon/auto/middleware'
-import { decodeToonResponse } from 'toongine/toon/auto/decoder'
+// toongine removed — CIE + TOON compression not available
+const buildCieContext = (opts: any) => ''
+const autoToonMiddleware = (opts: any) => null
+const decodeToonResponse = (text: string) => text
 // DeepSeek via Anthropic endpoint — auto-configure base URL
 const isDeepSeek = !!process.env.DEEPSEEK_API_KEY
 const client = new Anthropic({

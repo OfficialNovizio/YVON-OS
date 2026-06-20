@@ -8,7 +8,9 @@
 //   - Ventures table
 
 import { createClient } from '@supabase/supabase-js'
-import { toon } from 'toongine/toon'
+
+// toongine removed — TOON compression not available
+const toon = { api: null as any }
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
