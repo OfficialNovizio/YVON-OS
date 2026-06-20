@@ -6,18 +6,7 @@ import { NextResponse } from 'next/server'
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { getAgentRegistry } from '@/lib/agent-registry'
-
-// Dynamic import — works when toongine IS installed, graceful when not
-let toonPlugin: any = null
-async function getToonPlugin() {
-  if (toonPlugin) return toonPlugin
-  try {
-    toonPlugin = await import('toongine/plugins/supabase')
-  } catch {
-    toonPlugin = { isConfigured: () => false }
-  }
-  return toonPlugin
-}
+import { supabase } from '@/lib/supabase'
 
 interface AgentSkill { name: string; category: string }
 
@@ -115,16 +104,18 @@ function scanAgents(): { agents: AgentOpsAgent[]; departments: { name: string; a
 
 export async function GET(): Promise<Response> {
   try {
-    const plugin = await getToonPlugin()
-
     // Layer 1: Filesystem (.toon/agents/)
     let { agents, departments, skillsTotal } = scanAgents()
 
-    // Layer 2: ToonGine Supabase (live agent data)
-    if (agents.length === 0 && plugin.isConfigured()) {
+    // Layer 2: Supabase (live agent data from toongine)
+    if (agents.length === 0) {
       try {
-        const toonAgents = await plugin.getAgents()
-        if (toonAgents.length > 0) {
+        const { data: toonAgents } = await supabase
+          .from('toongine_hermes_agents')
+          .select('*')
+          .order('last_active', { ascending: false })
+        
+        if (toonAgents && toonAgents.length > 0) {
           agents = toonAgents.map((a: any) => ({
             id: a.id,
             name: a.name,
@@ -138,17 +129,21 @@ export async function GET(): Promise<Response> {
             memoryHealth: a.memory_health || 0,
             lastActive: a.last_active || null,
           }))
-          const toonDepts = await plugin.getDepartments()
-          if (toonDepts.length > 0) {
-            departments = toonDepts.map((d: any) => ({
-              name: d.name,
-              agentCount: d.agent_count || 0,
-              skillsTotal: d.skills_total || 0,
-            }))
+
+          // Aggregate departments from agents
+          const deptMap = new Map<string, { agentCount: number; skillsTotal: number }>()
+          for (const a of toonAgents) {
+            const cur = deptMap.get(a.department) || { agentCount: 0, skillsTotal: 0 }
+            cur.agentCount++
+            cur.skillsTotal += a.skills_count || 0
+            deptMap.set(a.department, cur)
           }
-          skillsTotal = agents.reduce((s: number, a: AgentOpsAgent) => s + a.skillsCount, 0)
+          departments = Array.from(deptMap.entries()).map(([name, data]) => ({ name, ...data }))
+          skillsTotal = agents.reduce((s: number, a: any) => s + a.skillsCount, 0)
         }
-      } catch {}
+      } catch (e) {
+        console.warn('[agent-ops] Supabase agent fetch failed:', e)
+      }
     }
 
     // Layer 3: Embedded registry (static fallback)
@@ -164,11 +159,15 @@ export async function GET(): Promise<Response> {
       skillsTotal = registry.skillsTotal
     }
 
-    // Activity feed — ToonGine Supabase (real token-tracked activity)
+    // Activity feed — Supabase (real token-tracked activity)
     let activity: ActivityEntry[] = []
-    if (plugin.isConfigured()) {
-      try {
-        const toonActivity = await plugin.getActivity(20)
+    try {
+      const { data: toonActivity } = await supabase
+        .from('toongine_activity_log')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20)
+      if (toonActivity) {
         activity = toonActivity.map((a: any) => ({
           time: new Date(a.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
           agent: a.agent_name || 'Unknown',
@@ -177,8 +176,8 @@ export async function GET(): Promise<Response> {
           duration: a.duration_sec ? `${Math.round(Number(a.duration_sec))}s` : '—',
           status: a.status || 'completed',
         }))
-      } catch {}
-    }
+      }
+    } catch {}
 
     return NextResponse.json({ agents, departments, skillsTotal, activity })
   } catch (err: any) {

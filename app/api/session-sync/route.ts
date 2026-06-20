@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/supabase'
-import { toon } from 'toongine/toon'
 // toongine removed
 import { getSecret } from '@/lib/secrets'
 

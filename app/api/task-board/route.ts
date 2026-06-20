@@ -5,8 +5,8 @@
 // Proposed tasks are those awaiting CEO approval.
 // Review tasks are completed agent work awaiting CEO sign-off.
 
+import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { toon } from 'toongine/toon'
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
