@@ -4,7 +4,7 @@ import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
 
-import { buildCieContext } from '@/lib/cie'
+import { buildCieContext } from 'toongine/cie'
 
 // TOON auto-compression (from toongine, works when installed)
 const autoToonMiddleware = (opts: any) => ({

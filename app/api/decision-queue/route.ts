@@ -12,6 +12,7 @@
 // The learning state is stored in Supabase: agent_memory table.
 
 import { createClient } from '@supabase/supabase-js'
+import { toon } from 'toongine/toon'
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
