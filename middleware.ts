@@ -58,6 +58,7 @@ const READ_PUBLIC_APIS = [
   '/api/skills',
   '/api/session-sync',
   '/api/skill-workshop',
+  '/api/ventures-health',
 ]
 
 function isReadPublicApi(pathname: string): boolean {
