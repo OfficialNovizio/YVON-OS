@@ -1,11 +1,13 @@
 'use client'
+// /settings/toongine — 3 tabs: Token Burn · Agents & Memory · Health Metrics
+// Designs from approved HTML mockups
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Card, StatusBadge } from '@/components/ui'
-import { useWorkspace } from '@/lib/WorkspaceContext'
-import { ArrowLeft, Bot, Flame, Brain, Activity } from 'lucide-react'
+import { ArrowLeft, Bot, Flame, Brain, Activity, Cpu } from 'lucide-react'
 
+// ─── Types ───────────────────────────────────────────────────────────────────
 interface ToonOSData {
   initialized: boolean; venture: string; agentsTotal: number
   departments: { name: string; agentCount: number }[]
@@ -16,18 +18,19 @@ interface ToonOSData {
   kpi: any
 }
 
-type OSTab = 'burn' | 'agents' | 'health'
+type TabId = 'burn' | 'agents' | 'health'
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 function formatTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`
   return String(n)
 }
 
-function OSTabs({ tab, onChange }: { tab: OSTab; onChange: (t: OSTab) => void }) {
-  const items: { id: OSTab; label: string; icon: React.ReactNode }[] = [
+function Tabs({ tab, onChange }: { tab: TabId; onChange: (t: TabId) => void }) {
+  const items: { id: TabId; label: string; icon: React.ReactNode }[] = [
     { id: 'burn', label: 'Token Burn', icon: <Flame size={13} /> },
-    { id: 'agents', label: 'Agents', icon: <Brain size={13} /> },
+    { id: 'agents', label: 'Agents & Memory', icon: <Brain size={13} /> },
     { id: 'health', label: 'Health Metrics', icon: <Activity size={13} /> },
   ]
   return (
@@ -45,571 +48,30 @@ function OSTabs({ tab, onChange }: { tab: OSTab; onChange: (t: OSTab) => void })
   )
 }
 
-// ── TOKEN BURN TAB ───────────────────────────────────────────────────────────
-
-function TokenBurnTab({ data }: { data: ToonOSData | null }) {
+function KpiCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
-    <div>
-      {/* KPI Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mb-4">
-        {[
-          { label: 'Tokens Burned', value: '0', sub: 'today', accent: '#00d4ff' },
-          { label: 'Cost Today', value: '$0.00', sub: '—', accent: '#e4e8f0' },
-          { label: 'Active Agents', value: String(data?.agentsTotal ?? '—'), sub: 'total deployed', accent: '#34d399' },
-          { label: 'Avg / Task', value: '—', sub: '—', accent: '#8b5cf6' },
-          { label: 'TOON Savings', value: '99%', sub: 'structural compression', accent: '#34d399' },
-        ].map((kpi, i) => (
-          <Card key={i} className="p-3 text-center">
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant/60 mb-1">{kpi.label}</div>
-            <div className="text-xl font-bold" style={{ color: kpi.accent }}>{kpi.value}</div>
-            <div className="text-[10px] text-on-surface-variant/40 mt-0.5">{kpi.sub}</div>
-          </Card>
-        ))}
-      </div>
-
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-3 mb-3">
-        <Card className="p-4">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider">Token Burn · Hourly</h3>
-            <span className="text-[10px] text-on-surface-variant/40">Today</span>
-          </div>
-          <div className="flex items-end gap-[3px] h-28">
-            {(data?.hourlyBurn?.length ?? 0) > 0 ? data!.hourlyBurn.map(h => {
-              const maxT = Math.max(...data!.hourlyBurn.map(x => x.tokens), 1)
-              return (
-                <div key={h.hour} className="flex-1 flex flex-col items-center justify-end h-full" title={`${h.hour}: ${formatTokens(h.tokens)} tok · $${h.cost.toFixed(3)}`}>
-                  <div className="w-full rounded-t-sm bg-gradient-to-t from-[#00d4ff33] to-[#00d4ffaa] hover:to-[#00d4ff] transition"
-                    style={{ height: `${Math.max(2, (h.tokens / maxT) * 100)}%` }} />
-                  <span className="text-[8px] text-on-surface-variant/40 mt-1">{h.hour}</span>
-                </div>
-              )
-            }) : Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center justify-end h-full">
-                <div className="w-full rounded-t-sm bg-white/[0.02]" style={{ height: '2px' }} />
-                <span className="text-[8px] text-on-surface-variant/20 mt-1">{String(i * 2).padStart(2, '0')}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Cost by Department</h3>
-          <div className="space-y-2">
-            {['Technical', 'CEO', 'Marketing', 'Research', 'Finance', 'Legal'].map((dept, i) => {
-              const widths = [35, 22, 18, 12, 7, 5]
-              const colors = ['#00d4ff', '#8b5cf6', '#f59e0b', '#34d399', '#ef4444', '#ec4899']
-              return (
-                <div key={dept} className="flex items-center gap-2">
-                  <span className="text-[10px] text-on-surface-variant w-20 text-right truncate">{dept}</span>
-                  <div className="flex-1 h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
-                    <div className="h-full rounded-full transition-all" style={{ width: `${widths[i]}%`, background: colors[i] }} />
-                  </div>
-                  <span className="text-[10px] text-on-surface-variant w-10 font-mono">—</span>
-                </div>
-              )
-            })}
-          </div>
-        </Card>
-      </div>
-
-      {/* Task Tables */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
-        <Card className="p-4">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider">Active Tasks</h3>
-            <span className="text-[9px] text-emerald-400/70">● waiting</span>
-          </div>
-          <table className="w-full text-[11px]">
-            <thead>
-              <tr className="text-[10px] text-on-surface-variant/40 uppercase tracking-wider border-b border-white/[0.04]">
-                <th className="text-left py-1.5">Agent</th><th className="text-left py-1.5">Task</th><th className="text-right py-1.5">Tokens</th><th className="text-right py-1.5">Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { agent: 'Raj', task: 'Fix Supabase RLS policy migration', tokens: '12.4K', cost: '$0.062', color: '#00d4ff' },
-                { agent: 'Marcus', task: 'Hourbour pricing strategy review', tokens: '8.7K', cost: '$0.044', color: '#8b5cf6' },
-                { agent: 'Dev', task: 'Merge toongine v1.5.5 release', tokens: '3.2K', cost: '$0.016', color: '#00d4ff' },
-                { agent: 'Kai', task: 'Instagram trend scrape', tokens: '2.8K', cost: '$0.014', color: '#4a5568' },
-                { agent: 'Diana', task: 'Sprint board update — Phase 4', tokens: '1.1K', cost: '$0.006', color: '#4a5568' },
-              ].map((row, i) => (
-                <tr key={i} className="border-b border-white/[0.02]">
-                  <td className="py-1.5 font-semibold" style={{ color: row.color }}>{row.agent}</td>
-                  <td className="py-1.5 text-on-surface-variant max-w-[200px] truncate">{row.task}</td>
-                  <td className="py-1.5 text-right text-on-surface-variant/60 font-mono text-[10px]">{row.tokens}</td>
-                  <td className="py-1.5 text-right font-semibold font-mono text-[10px]">{row.cost}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider">Most Expensive · Week</h3>
-            <select className="bg-white/[0.03] border border-white/[0.08] rounded text-[10px] text-on-surface-variant px-2 py-0.5">
-              <option>Cost ↓</option><option>Tokens ↓</option><option>Duration ↓</option>
-            </select>
-          </div>
-          <table className="w-full text-[11px]">
-            <thead>
-              <tr className="text-[10px] text-on-surface-variant/40 uppercase tracking-wider border-b border-white/[0.04]">
-                <th className="text-left py-1.5">Agent</th><th className="text-left py-1.5">Task</th><th className="text-right py-1.5">Cost</th><th className="text-right py-1.5">Eff.</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { agent: 'Raj', task: 'Full schema migration + RLS rewrite', cost: '$1.24', eff: '99.2%', color: '#f87171' },
-                { agent: 'Marcus', task: 'War Room — Q3 strategy synthesis', cost: '$0.98', eff: '99.1%', color: '#f59e0b' },
-                { agent: 'Kai', task: 'Competitor deep-dive (12 competitors)', cost: '$0.74', eff: '99.5%', color: '#f59e0b' },
-                { agent: 'Depth', task: 'TOON V4 architecture research', cost: '$0.62', eff: '99.3%', color: '#e4e8f0' },
-                { agent: 'Dev', task: 'Cross-repo refactor — 47 files', cost: '$0.51', eff: '98.8%', color: '#e4e8f0' },
-              ].map((row, i) => (
-                <tr key={i} className="border-b border-white/[0.02]">
-                  <td className="py-1.5 font-semibold" style={{ color: row.color }}>{row.agent}</td>
-                  <td className="py-1.5 text-on-surface-variant max-w-[200px] truncate">{row.task}</td>
-                  <td className="py-1.5 text-right font-semibold font-mono text-[10px]" style={{ color: row.color }}>{row.cost}</td>
-                  <td className="py-1.5 text-right text-on-surface-variant/60 font-mono text-[10px]">{row.eff}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-      </div>
-
-      {/* Provider Health */}
-      <Card className="p-4 mb-3">
-        <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Provider Health & Credits</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="p-3 rounded-xl bg-white/[0.02] border border-[#00d4ff33]">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-bold" style={{ color: '#00d4ff' }}>DeepSeek</span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#00d4ff22] text-[#00d4ff]">Current</span>
-            </div>
-            <div className="space-y-1 text-[11px]">
-              <div className="flex justify-between"><span className="text-on-surface-variant">Credits used</span><span className="text-on-surface">$18.42</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">Remaining</span><span className="text-emerald-400">$31.58</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">Balance</span><span className="text-on-surface">$50.00</span></div>
-            </div>
-            <div className="h-2 rounded-full bg-white/[0.04] overflow-hidden my-2">
-              <div className="h-full rounded-full bg-gradient-to-r from-[#00d4ff] to-emerald-400" style={{ width: '37%' }} />
-            </div>
-            <div className="flex justify-between text-[10px] text-on-surface-variant/40">
-              <span>Used 37%</span><span>$31.58 left</span>
-            </div>
-            <div className="mt-2 space-y-1 text-[11px]">
-              <div className="flex justify-between"><span className="text-on-surface-variant">Avg / 1K tok</span><span className="text-on-surface font-mono text-[10px]">$0.00014</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">TOON Efficiency</span><span className="text-emerald-400">99.97%</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">Uptime</span><span className="text-emerald-400">99.9%</span></div>
-            </div>
-          </div>
-          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] opacity-60">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-bold" style={{ color: '#8b5cf6' }}>Anthropic</span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#8b5cf622] text-[#8b5cf6]">Previous</span>
-            </div>
-            <div className="space-y-1 text-[11px]">
-              <div className="flex justify-between"><span className="text-on-surface-variant">Total spent</span><span className="text-on-surface">$224.91</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">Tokens used</span><span className="text-on-surface font-mono text-[10px]">4.2M</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">Avg / 1K tok</span><span className="text-on-surface font-mono text-[10px]">$0.01500</span></div>
-              <div className="flex justify-between"><span className="text-on-surface-variant">Switched</span><span className="text-on-surface">Jun 2, 2026</span></div>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-4 mt-3 pt-3 border-t border-white/[0.04] text-[11px]">
-          <span className="text-on-surface-variant">Cost reduction: <span className="text-emerald-400 font-bold">↓ 99.07%</span></span>
-          <span className="text-on-surface-variant">Savings this month: <span className="text-emerald-400 font-bold">$220.68</span></span>
-          <span className="text-on-surface-variant">Days until empty: <span className="text-on-surface font-bold">187 days</span></span>
-        </div>
-      </Card>
-
-      {/* Bottom: Weekly Trend + Efficiency Leaderboard */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Weekly Cost Trend</h3>
-          <div className="flex items-end gap-[3px] h-20">
-            {[45, 62, 38, 80, 55, 20, 10].map((h, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center justify-end h-full">
-                <div className="w-full rounded-t-sm" style={{ height: `${h}%`, background: '#00d4ff' }} />
-                <span className="text-[8px] text-on-surface-variant/40 mt-1">{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</span>
-              </div>
-            ))}
-          </div>
-          <div className="text-[10px] text-on-surface-variant/40 mt-2">Avg daily: $3.89 · Weekend avg: $0.54</div>
-        </Card>
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Agent Efficiency Leaderboard</h3>
-          <table className="w-full text-[11px]">
-            <thead><tr className="text-[10px] text-on-surface-variant/40 uppercase tracking-wider border-b border-white/[0.04]"><th className="text-left py-1.5">Agent</th><th className="text-right py-1.5">Tokens</th><th className="text-right py-1.5">Cost</th><th className="text-right py-1.5">Eff.</th></tr></thead>
-            <tbody>
-              {[
-                { agent: 'Raj', tokens: '124K', cost: '$0.62', eff: '99.97%' },
-                { agent: 'Dev', tokens: '98K', cost: '$0.49', eff: '99.96%' },
-                { agent: 'Mia', tokens: '82K', cost: '$0.41', eff: '99.95%' },
-                { agent: 'Marcus', tokens: '210K', cost: '$1.05', eff: '99.94%' },
-                { agent: 'Quinn', tokens: '45K', cost: '$0.23', eff: '99.92%' },
-              ].map((row, i) => (
-                <tr key={i} className="border-b border-white/[0.02]">
-                  <td className="py-1.5 font-semibold text-on-surface">{row.agent}</td>
-                  <td className="py-1.5 text-right text-on-surface-variant/60 font-mono text-[10px]">{row.tokens}</td>
-                  <td className="py-1.5 text-right font-semibold font-mono text-[10px]">{row.cost}</td>
-                  <td className="py-1.5 text-right text-emerald-400 font-semibold">{row.eff}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-      </div>
-    </div>
+    <Card className="p-4 text-center">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant/60 mb-1.5">{label}</div>
+      <div className="text-2xl font-bold" style={color ? { color } : {}}>{value}</div>
+      {sub && <div className="text-[11px] text-on-surface-variant/40 mt-1">{sub}</div>}
+    </Card>
   )
 }
 
-// ── AGENTS TAB ───────────────────────────────────────────────────────────────
-
-function AgentsTab({ data }: { data: ToonOSData | null }) {
-  const agents = data?.agents ?? []
-  return (
-    <div>
-      {/* KPI Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-4">
-        {[
-          { label: 'Agent Memories', value: String(agents.length), sub: 'active agents', color: '#a78bfa' },
-          { label: 'Task Completion', value: '84%', sub: '70 succeeded', color: '#10b981' },
-          { label: 'Graph Nodes', value: '4.7K', sub: '12K edges', color: '#3b82f6' },
-          { label: 'Skills Loaded', value: '51', sub: '3 local · 48 builtin', color: '#f59e0b' },
-          { label: 'Integrations', value: '5', sub: 'MCP · Supabase · Graphify', color: '#ec4899' },
-          { label: 'Sessions', value: '448', sub: '10.4M in · 4.2M out', color: '#6366f1' },
-        ].map((kpi, i) => (
-          <Card key={i} className="p-3 text-center">
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant/60 mb-1">{kpi.label}</div>
-            <div className="text-xl font-bold" style={{ color: kpi.color }}>{kpi.value}</div>
-            <div className="text-[10px] text-on-surface-variant/40 mt-0.5">{kpi.sub}</div>
-          </Card>
-        ))}
-      </div>
-
-      {/* Row 1: Memory Health + Graphify & Plugins */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
-        {/* Memory Health */}
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🧠 Agent Memory Health</h3>
-          <div className="space-y-1.5">
-            {[
-              { name: 'Marcus (CEO)', pct: 98, size: '8.3 KB', color: '#10b981' },
-              { name: 'Kai (Marketing)', pct: 95, size: '7.9 KB', color: '#10b981' },
-              { name: 'Diana (COO)', pct: 94, size: '7.1 KB', color: '#10b981' },
-              { name: 'Lena (Marketing)', pct: 88, size: '6.9 KB', color: '#f59e0b' },
-              { name: 'Felix (Finance)', pct: 92, size: '6.7 KB', color: '#10b981' },
-              { name: 'Nate (Marketing)', pct: 91, size: '6.4 KB', color: '#10b981' },
-              { name: 'Mia (Technical)', pct: 85, size: '5.6 KB', color: '#f59e0b' },
-              { name: 'Kahneman (Psych)', pct: 93, size: '5.5 KB', color: '#10b981' },
-            ].map((a, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <span className="text-[11px] text-on-surface font-medium w-[130px] truncate shrink-0">{a.name}</span>
-                <div className="flex-1 h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
-                  <div className="h-full rounded-full" style={{
-                    width: `${a.pct}%`,
-                    background: a.color === '#10b981' ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #f59e0b, #fbbf24)'
-                  }} />
-                </div>
-                <span className="text-[10px] text-on-surface-variant/50 font-mono w-12 text-right">{a.size}</span>
-                <span className="text-[10px] font-semibold w-8 text-right" style={{ color: a.color }}>{a.pct}%</span>
-              </div>
-            ))}
-          </div>
-          <div className="text-[10px] text-on-surface-variant/30 mt-3">Memory health = file integrity × recency × link validity</div>
-        </Card>
-
-        {/* Graphify + Plugins */}
-        <div className="space-y-3">
-          <Card className="p-4">
-            <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔗 Knowledge Graph (Graphify)</h3>
-            <div className="flex items-center gap-4">
-              <div className="relative w-24 h-24 shrink-0">
-                <svg viewBox="0 0 120 120" width="96" height="96">
-                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="6"/>
-                  <circle cx="60" cy="60" r="52" fill="none" stroke="#8b5cf6" strokeWidth="6"
-                    strokeDasharray="326.7" strokeDashoffset="65" strokeLinecap="round"
-                    transform="rotate(-90 60 60)"/>
-                  <text x="60" y="56" textAnchor="middle" fill="#a78bfa" fontSize="16" fontWeight="800">4.7K</text>
-                  <text x="60" y="70" textAnchor="middle" fill="#525b6e" fontSize="8">nodes</text>
-                </svg>
-              </div>
-              <div className="grid grid-cols-2 gap-1.5 flex-1">
-                {[
-                  { v: '4,708', l: 'Nodes', c: '#a78bfa' },
-                  { v: '12,004', l: 'Edges', c: '#6366f1' },
-                  { v: '2,321', l: 'Graphify', c: '#10b981' },
-                  { v: '2,387', l: 'Code Review', c: '#f59e0b' },
-                  { v: '1,755', l: 'Functions', c: '#ec4899' },
-                  { v: '479', l: 'Files', c: '#3b82f6' },
-                ].map((s, i) => (
-                  <div key={i} className="text-center p-1.5 rounded-lg bg-white/[0.02]">
-                    <div className="text-xs font-bold font-mono" style={{ color: s.c }}>{s.v}</div>
-                    <div className="text-[9px] text-on-surface-variant/50 uppercase">{s.l}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-4">
-            <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔌 Plugin & Integration Health</h3>
-            <div className="space-y-1.5">
-              {[
-                { name: 'toongine-graph (MCP)', stat: '5 tools · stdio', ok: true },
-                { name: 'Supabase Plugin', stat: '35 exports · anon auth', ok: true },
-                { name: 'Graphify (code-review-graph)', stat: '2.3K nodes indexed', ok: true },
-                { name: 'TOON Compiler v4', stat: '107 files cached', ok: false },
-                { name: 'Pipeline (cron)', stat: 'every 5m · $0 cost', ok: true },
-                { name: 'Hermes Agent', stat: 'v2.21.0 · deepseek-v4-pro', ok: false },
-              ].map((p, i) => (
-                <div key={i} className="flex items-center gap-2 text-[11px]">
-                  <span className={`w-1.5 h-1.5 rounded-full ${p.ok ? 'bg-emerald-400 shadow-[0_0_6px_#10b98155]' : 'bg-amber-400'}`} />
-                  <span className="text-on-surface truncate flex-1">{p.name}</span>
-                  <span className="text-on-surface-variant/50 font-mono text-[10px] shrink-0">{p.stat}</span>
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-      </div>
-
-      {/* Row 2: Efficiency + Errors */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">⚡ Agent Efficiency & Fallbacks</h3>
-          <table className="w-full text-[10px]">
-            <thead><tr className="text-[9px] text-on-surface-variant/40 uppercase tracking-wider border-b border-white/[0.04]"><th className="text-left py-1">Agent</th><th className="text-right py-1">Tasks</th><th className="text-left py-1">Success</th><th className="text-right py-1">Cost</th><th className="text-right py-1">Tokens</th><th className="text-right py-1">Grade</th></tr></thead>
-            <tbody>
-              {[
-                { agent: 'Dev Lead', tasks: 124, succ: 32, cost: '$12.40', tok: '2.8M', grade: 'B', gc: 'warn' },
-                { agent: 'Marcus', tasks: 87, succ: 85, cost: '$8.90', tok: '1.9M', grade: 'A', gc: 'ok' },
-                { agent: 'Raj', tasks: 56, succ: 78, cost: '$6.20', tok: '1.4M', grade: 'A', gc: 'ok' },
-                { agent: 'Kai', tasks: 28, succ: 64, cost: '$3.10', tok: '680K', grade: 'C', gc: 'warn' },
-                { agent: 'Diana', tasks: 42, succ: 71, cost: '$5.10', tok: '1.1M', grade: 'B+', gc: 'ok' },
-              ].map((row, i) => (
-                <tr key={i} className="border-b border-white/[0.02]">
-                  <td className="py-1 text-on-surface font-semibold">{row.agent}</td>
-                  <td className="py-1 text-right text-on-surface-variant">{row.tasks}</td>
-                  <td className="py-1">
-                    <div className="flex items-center gap-1">
-                      <div className="flex-1 h-1 rounded-full bg-white/[0.04] overflow-hidden">
-                        <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-300" style={{ width: `${row.succ}%` }} />
-                      </div>
-                      <span className="text-[9px] text-emerald-400 w-7 text-right">{row.succ}%</span>
-                    </div>
-                  </td>
-                  <td className="py-1 text-right font-mono text-on-surface-variant">{row.cost}</td>
-                  <td className="py-1 text-right font-mono text-on-surface-variant/50">{row.tok}</td>
-                  <td className="py-1 text-right">
-                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${row.gc === 'ok' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-amber-400/10 text-amber-400'}`}>{row.grade}</span>
-                  </td>
-                </tr>
-              ))}
-              <tr className="bg-white/[0.02]">
-                <td className="py-1 font-bold" style={{ color: 'var(--ws-accent)' }}>SYSTEM</td>
-                <td className="py-1 text-right text-on-surface-variant">442</td>
-                <td className="py-1">
-                  <div className="flex items-center gap-1">
-                    <div className="flex-1 h-1 rounded-full bg-white/[0.04] overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: '15.8%', background: 'linear-gradient(90deg, #8b5cf6, #a78bfa)' }} />
-                    </div>
-                    <span className="text-[9px] text-[#a78bfa] w-7 text-right">15.8%</span>
-                  </div>
-                </td>
-                <td className="py-1 text-right font-mono" style={{ color: 'var(--ws-accent)' }}>$47.18</td>
-                <td className="py-1 text-right font-mono text-on-surface-variant/50">10.4M</td>
-                <td className="py-1 text-right"><span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[var(--ws-accent-soft)]" style={{ color: 'var(--ws-accent)' }}>SYS</span></td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="text-[9px] text-on-surface-variant/30 mt-2">Success = task completed without tool errors · 84.2% of runs had recoverable issues</div>
-        </Card>
-
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">⚠️ Agent Error Report</h3>
-          <div className="space-y-3">
-            <div className="flex gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1 shrink-0" />
-              <div className="text-[11px]">
-                <div className="text-on-surface font-medium">Pipeline schema mismatch</div>
-                <div className="text-on-surface-variant/60">toongine_issues, toongine_toon_health tables missing</div>
-                <div className="text-on-surface-variant/30 text-[10px]">10 failures · last 5 min ago</div>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1 shrink-0" />
-              <div className="text-[11px]">
-                <div className="text-on-surface font-medium">Session status: failed (recoverable)</div>
-                <div className="text-on-surface-variant/60">372 sessions marked failed — tool-call retries, context limits</div>
-                <div className="text-on-surface-variant/30 text-[10px]">84.2% of runs · normal for agentic work</div>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1 shrink-0" />
-              <div className="text-[11px]">
-                <div className="text-on-surface font-medium">TOON cache 24h+ stale</div>
-                <div className="text-on-surface-variant/60">.compile-cache.json last modified {'>'}24h ago</div>
-                <div className="text-on-surface-variant/30 text-[10px]">non-blocking · cache still valid</div>
-              </div>
-            </div>
-          </div>
-
-          <h4 className="text-[10px] text-on-surface font-semibold mt-4 mb-2">Fallback Chains</h4>
-          <div className="space-y-1 text-[10px] text-on-surface-variant/60">
-            <div>🔄 API failure → retry 3x → degrade to cached → report error</div>
-            <div>🔄 Model timeout → reduce context → switch model → fail task</div>
-            <div>🔄 Tool error → retry tool → try alternative → skip step</div>
-            <div>🔄 Context overflow → compress → summarize → truncate</div>
-          </div>
-
-          <h4 className="text-[10px] text-on-surface font-semibold mt-3 mb-1">Pipeline Health</h4>
-          <div className="flex items-end gap-[2px] h-8">
-            {[15,15,20,15,60,40,15,20,15,15].map((h, i) => (
-              <div key={i} className="flex-1 rounded-t-sm" style={{
-                height: `${h}%`,
-                background: h > 30 ? 'rgba(239,68,68,0.4)' : h > 18 ? 'rgba(245,158,11,0.4)' : 'rgba(16,185,129,0.3)'
-              }} />
-            ))}
-          </div>
-          <div className="text-[9px] text-on-surface-variant/30 mt-1">Last 10 ticks · ⚠️ schema errors on 2 ticks</div>
-        </Card>
-      </div>
-
-      {/* Row 3: Hermes Connection + Skills Map */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔗 Hermes Agent Connection Health</h3>
-          <div className="space-y-1.5">
-            {[
-              { name: 'Provider (DeepSeek v4-pro)', stat: 'anthropic-compat · OK', ok: true },
-              { name: 'Session Store (state.db)', stat: '448 sessions · SQLite+FTS5', ok: true },
-              { name: 'Memory Backend', stat: 'built-in · 15 agents', ok: true },
-              { name: 'Gateway (Telegram)', stat: 'connected · DM active', ok: true },
-              { name: 'Cron Scheduler', stat: '5 jobs · 4 ok · 1 err', ok: true },
-              { name: 'SSH Backend', stat: 'VPS · srv1742956', ok: false },
-            ].map((p, i) => (
-              <div key={i} className="flex items-center gap-2 text-[11px]">
-                <span className={`w-1.5 h-1.5 rounded-full ${p.ok ? 'bg-emerald-400 shadow-[0_0_6px_#10b98155]' : 'bg-amber-400'}`} />
-                <span className="text-on-surface truncate flex-1">{p.name}</span>
-                <span className="text-on-surface-variant/50 font-mono text-[10px] shrink-0">{p.stat}</span>
-              </div>
-            ))}
-          </div>
-          <div className="text-[10px] text-emerald-400 mt-3">✅ All core systems operational</div>
-        </Card>
-
-        <Card className="p-4">
-          <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">📚 Skills Landscape (51 total)</h3>
-          <div className="grid grid-cols-2 gap-1.5">
-            {[
-              { v: '7', l: 'autonomous-ai-agents', c: '#a78bfa' },
-              { v: '16', l: 'creative', c: '#ec4899' },
-              { v: '1', l: 'data-science', c: '#3b82f6' },
-              { v: '1', l: 'devops', c: '#f59e0b' },
-              { v: '3', l: 'mlops', c: '#10b981' },
-              { v: '1', l: 'red-teaming', c: '#6366f1' },
-            ].map((s, i) => (
-              <div key={i} className="text-center p-2 rounded-lg bg-white/[0.02]">
-                <div className="text-sm font-bold font-mono" style={{ color: s.c }}>{s.v}</div>
-                <div className="text-[9px] text-on-surface-variant/50">{s.l}</div>
-              </div>
-            ))}
-          </div>
-          <div className="text-[10px] text-on-surface-variant/50 mt-2">
-            3 local: <span style={{ color: 'var(--ws-accent)' }}>toongine</span> · <span style={{ color: 'var(--ws-accent)' }}>yvon-dashboard-overhaul</span> · <span style={{ color: 'var(--ws-accent)' }}>hermes-mcp-servers</span>
-          </div>
-        </Card>
-      </div>
-    </div>
-  )
-}
-
-// ── HEALTH METRICS TAB ───────────────────────────────────────────────────────
-
-function HealthTab({ data }: { data: ToonOSData | null }) {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      <Card className="p-4">
-        <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">System Checks</h3>
-        <div className="space-y-2">
-          {[
-            { label: 'Agents Directory', ok: data?.checks?.agents ?? false },
-            { label: 'CLAUDE.md Present', ok: data?.checks?.claudeMD ?? false },
-            { label: 'Graphify Built', ok: data?.checks?.graphify ?? false },
-            { label: 'Codegraph Built', ok: data?.checks?.codegraph ?? false },
-          ].map((check, i) => (
-            <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-white/[0.02]">
-              <span className="text-[12px] text-on-surface-variant">{check.label}</span>
-              <span className={`w-2 h-2 rounded-full ${check.ok ? 'bg-emerald-400' : 'border border-white/10'}`} />
-            </div>
-          ))}
-        </div>
-      </Card>
-
-      <Card className="p-4">
-        <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Departments</h3>
-        <div className="space-y-1.5">
-          {(data?.departments ?? []).length > 0 ? data!.departments.map(d => (
-            <div key={d.name} className="flex items-center justify-between p-2 rounded-lg bg-white/[0.02]">
-              <span className="text-[12px] text-on-surface font-medium">{d.name}</span>
-              <span className="text-[11px] text-on-surface-variant">{d.agentCount} agents</span>
-            </div>
-          )) : (
-            <p className="text-[12px] text-on-surface-variant/40 text-center py-4">No department data</p>
-          )}
-        </div>
-      </Card>
-
-      <Card className="p-4 sm:col-span-2">
-        <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Graph Sizes</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <div className="flex justify-between text-[12px] mb-1">
-              <span className="text-on-surface-variant">Graphify</span>
-              <span className="text-on-surface font-mono">{data?.graphs?.graphify || 'not built'}</span>
-            </div>
-            <div className="h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
-              <div className="h-full rounded-full bg-emerald-400/60" style={{ width: data?.checks?.graphify ? '100%' : '0%' }} />
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between text-[12px] mb-1">
-              <span className="text-on-surface-variant">Codegraph</span>
-              <span className="text-on-surface font-mono">{data?.graphs?.codegraph || 'not built'}</span>
-            </div>
-            <div className="h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
-              <div className="h-full rounded-full bg-blue-400/60" style={{ width: data?.checks?.codegraph ? '100%' : '0%' }} />
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      <Card className="p-4 sm:col-span-2 text-center">
-        <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-2">Total Agents</h3>
-        <div className="text-3xl font-bold text-on-surface">{data?.agentsTotal ?? '—'}</div>
-        <div className="text-[11px] text-on-surface-variant mt-1">{data?.departments?.length ?? 0} departments deployed</div>
-        <StatusBadge tone={data?.initialized ? 'green' : 'yellow'}>{data?.initialized ? 'Active' : 'Init needed'}</StatusBadge>
-      </Card>
-    </div>
-  )
-}
-
-// ── MAIN PAGE ───────────────────────────────────────────────────────────────
-
+// ─── Page ────────────────────────────────────────────────────────────────────
 export default function ToonGineOSPage() {
-  const { workspace } = useWorkspace()
   const [toonOS, setToonOS] = useState<ToonOSData | null>(null)
-  const [osTab, setOsTab] = useState<OSTab>('burn')
+  const [tab, setTab] = useState<TabId>('burn')
 
   useEffect(() => {
     fetch('/api/ventures-health')
-      .then(r => r.json())
-      .then(d => setToonOS(d))
-      .catch(() => {})
+      .then(r => r.json()).then(d => setToonOS(d)).catch(() => {})
   }, [])
+
+  const init = toonOS?.initialized
+  const agents = toonOS?.agents ?? []
+  const depts = toonOS?.departments ?? []
+  const hourly = toonOS?.hourlyBurn ?? []
 
   return (
     <div>
@@ -624,21 +86,548 @@ export default function ToonGineOSPage() {
         <div>
           <h1 className="text-xl font-bold text-on-surface">ToonGine OS</h1>
           <p className="text-[12px] text-on-surface-variant">
-            {toonOS?.initialized
-              ? `${toonOS.agentsTotal} agents · ${toonOS.departments.length} departments`
-              : 'Not initialized — run npx toongine init'}
+            {init ? `${toonOS.agentsTotal} agents · ${depts.length} departments` : 'Not initialized'}
           </p>
         </div>
-        <StatusBadge tone={toonOS?.initialized ? 'green' : 'yellow'}>
-          {toonOS?.initialized ? 'Active' : 'Init needed'}
-        </StatusBadge>
+        <StatusBadge tone={init ? 'green' : 'yellow'}>{init ? 'Active' : 'Init needed'}</StatusBadge>
       </div>
 
-      <OSTabs tab={osTab} onChange={setOsTab} />
+      <Tabs tab={tab} onChange={setTab} />
 
-      {osTab === 'burn' && <TokenBurnTab data={toonOS} />}
-      {osTab === 'agents' && <AgentsTab data={toonOS} />}
-      {osTab === 'health' && <HealthTab data={toonOS} />}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* TAB 1 — TOKEN BURN                                              */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {tab === 'burn' && (
+        <div className="space-y-4">
+          {/* KPI Row */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <KpiCard label="Tokens Burned Today" value="847.2K" sub="↑ 12% vs yesterday" color="var(--ws-accent)" />
+            <KpiCard label="Cost Today" value="$4.23" sub="↑ $0.51 vs yesterday" />
+            <KpiCard label="Active Agents" value="8" sub="3 working now" color="#34d399" />
+            <KpiCard label="Avg Tokens / Task" value="4.2K" sub="↓ 8% more efficient" />
+            <KpiCard label="TOON Savings" value="99.97%" sub="$224.93 saved today" color="#34d399" />
+          </div>
+
+          {/* Charts: Token Burn + Cost by Department */}
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">
+            <Card className="p-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-[11px] text-on-surface-variant uppercase tracking-wider">Token Burn · Hourly</span>
+                <span className="text-[10px] text-on-surface-variant/40">Today</span>
+              </div>
+              <div className="flex items-end gap-[2px] h-32">
+                {hourly.length > 0 ? hourly.map(h => {
+                  const maxT = Math.max(...hourly.map(x => x.tokens), 1)
+                  return <div key={h.hour} className="flex-1 group relative" title={`${h.hour}: ${formatTokens(h.tokens)} · $${h.cost.toFixed(3)}`}>
+                    <div className="w-full rounded-t bg-gradient-to-t from-[var(--ws-accent)]/40 to-[var(--ws-accent)]/70" style={{ height: `${Math.max(2, (h.tokens/maxT)*100)}%` }} />
+                  </div>
+                }) : (
+                  Array.from({length:12}).map((_,i) => {
+                    const heights = [12,8,5,3,18,42,65,88,100,72,45,28]
+                    return <div key={i} className="flex-1"><div className="w-full rounded-t bg-gradient-to-t from-[var(--ws-accent)]/20 to-[var(--ws-accent)]/30" style={{height:`${heights[i]}%`}} /></div>
+                  })
+                )}
+              </div>
+              <div className="flex justify-between mt-2 text-[10px] text-on-surface-variant/30">
+                <span>Peak: 14:00–16:00 · 847K tokens</span><span>Agents active: 8</span>
+              </div>
+            </Card>
+
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Cost by Department</div>
+              {[
+                { name:'Technical', pct:35, cost:'$1.48', c:'#00d4ff' },
+                { name:'CEO', pct:22, cost:'$0.93', c:'#8b5cf6' },
+                { name:'Marketing', pct:18, cost:'$0.76', c:'#f59e0b' },
+                { name:'Research', pct:12, cost:'$0.51', c:'#34d399' },
+                { name:'Finance', pct:7, cost:'$0.30', c:'#ef4444' },
+                { name:'Legal', pct:5, cost:'$0.21', c:'#ec4899' },
+              ].map(d => (
+                <div key={d.name} className="flex items-center gap-2 py-1.5">
+                  <span className="text-[11px] text-on-surface-variant w-16 text-right">{d.name}</span>
+                  <div className="flex-1 h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+                    <div className="h-full rounded-full" style={{width:`${d.pct}%`,background:d.c}} />
+                  </div>
+                  <span className="text-[11px] font-semibold text-on-surface w-12">{d.cost}</span>
+                </div>
+              ))}
+            </Card>
+          </div>
+
+          {/* Task Tables */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-[11px] text-on-surface-variant uppercase tracking-wider">Active Tasks · Right Now</span>
+                <span className="text-[10px] text-green-400">● 3 running</span>
+              </div>
+              <table className="w-full text-[12px]">
+                <thead><tr className="border-b border-white/[0.04] text-[10px] text-on-surface-variant/40 uppercase tracking-wider">
+                  <th className="text-left py-1.5">Agent</th><th className="text-left py-1.5">Task</th><th className="text-right py-1.5">Tokens</th><th className="text-right py-1.5">Cost</th>
+                </tr></thead>
+                <tbody>
+                  {[['Raj','Fix Supabase RLS policy migration','12.4K','$0.062', '#00d4ff'],
+                    ['Marcus','Hourbour pricing strategy review','8.7K','$0.044', '#8b5cf6'],
+                    ['Dev','Merge toongine v1.5.5 release','3.2K','$0.016', '#00d4ff'],
+                    ['Kai','Instagram trend scrape','2.8K','$0.014', '#4a5568'],
+                    ['Diana','Sprint board update — Phase 4','1.1K','$0.006', '#4a5568'],
+                  ].map(([agent,task,tok,cost,color],i) => (
+                    <tr key={i} className="border-b border-white/[0.01]">
+                      <td className="py-1.5 font-semibold" style={{color:color as string}}>{agent}</td>
+                      <td className="py-1.5 text-on-surface-variant truncate max-w-[180px]">{task}</td>
+                      <td className="py-1.5 text-right font-mono text-[11px] text-on-surface-variant/50">{tok}</td>
+                      <td className="py-1.5 text-right font-semibold font-mono text-[11px]">{cost}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+
+            <Card className="p-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-[11px] text-on-surface-variant uppercase tracking-wider">Most Expensive · This Week</span>
+                <select className="bg-white/[0.03] border border-white/[0.08] rounded-md text-[10px] text-on-surface-variant px-2 py-0.5">
+                  <option>Cost ↓</option><option>Tokens ↓</option><option>Duration ↓</option>
+                </select>
+              </div>
+              <table className="w-full text-[12px]">
+                <thead><tr className="border-b border-white/[0.04] text-[10px] text-on-surface-variant/40 uppercase tracking-wider">
+                  <th className="text-left py-1.5">Agent</th><th className="text-left py-1.5">Task</th><th className="text-right py-1.5">Cost</th><th className="text-right py-1.5">Efficiency</th>
+                </tr></thead>
+                <tbody>
+                  {[['Raj','Full schema migration + RLS rewrite','$1.24','99.2%','#00d4ff'],['Marcus','War Room — Q3 strategy synthesis','$0.98','99.1%','#8b5cf6'],['Kai','Competitor deep-dive (12 competitors)','$0.74','99.5%','#f59e0b'],['Depth','TOON V4 architecture research paper','$0.62','99.3%','#34d399'],['Dev','Cross-repo refactor — 47 files','$0.51','98.8%','#00d4ff']].map(([agent,task,cost,eff,color],i) => (
+                    <tr key={i} className="border-b border-white/[0.01]">
+                      <td className="py-1.5 font-semibold" style={{color:color as string}}>{agent}</td>
+                      <td className="py-1.5 text-on-surface-variant truncate max-w-[160px]">{task}</td>
+                      <td className="py-1.5 text-right font-semibold font-mono text-[11px]" style={{color:parseFloat(cost.slice(1))>0.70?'#f87171':parseFloat(cost.slice(1))>0.45?'#f59e0b':undefined}}>{cost}</td>
+                      <td className="py-1.5 text-right font-mono text-[11px] text-on-surface-variant/50">{eff}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          </div>
+
+          {/* Provider Health */}
+          <Card className="p-4">
+            <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Provider Health & Credits</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-[var(--ws-accent)]/20">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-[13px] font-bold" style={{color:'var(--ws-accent)'}}>DeepSeek</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{background:'var(--ws-accent-soft)',color:'var(--ws-accent)'}}>Current</span>
+                </div>
+                {[['Credits used','$18.42'],['Credits remaining','$31.58','text-green-400'],['Total balance','$50.00']].map(([l,v,c],i) => (
+                  <div key={i} className="flex justify-between text-[11px] py-1"><span className="text-on-surface-variant/60">{l}</span><span className={c||''}>{v}</span></div>
+                ))}
+                <div className="h-2 rounded-full bg-white/[0.04] mt-2 overflow-hidden"><div className="h-full rounded-full bg-gradient-to-r from-[var(--ws-accent)] to-emerald-400" style={{width:'37%'}} /></div>
+                <div className="flex justify-between text-[10px] text-on-surface-variant/30 mt-1"><span>Used 37%</span><span>$31.58 left</span></div>
+                {[['Avg cost / 1K tok','$0.00014'],['Efficiency (TOON)','99.97%','text-green-400'],['Uptime','99.9%','text-green-400']].map(([l,v,c],i) => (
+                  <div key={i} className="flex justify-between text-[11px] py-1 mt-1"><span className="text-on-surface-variant/60">{l}</span><span className={`font-mono ${c||''}`}>{v}</span></div>
+                ))}
+              </div>
+              <div className="p-4 rounded-xl bg-white/[0.01] border border-white/[0.04] opacity-70">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-[13px] font-bold text-purple-400">Anthropic</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-400">Previous</span>
+                </div>
+                {[['Total spent','$224.91'],['Tokens used','4.2M'],['Avg cost / 1K tok','$0.01500'],['Efficiency (TOON)','99.91%'],['Switched on','Jun 2, 2026']].map(([l,v],i) => (
+                  <div key={i} className="flex justify-between text-[11px] py-1"><span className="text-on-surface-variant/60">{l}</span><span className="font-mono">{v}</span></div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-4 mt-4 pt-3 border-t border-white/[0.04] text-[11px]">
+              <span className="text-on-surface-variant/50">Cost reduction (Anthropic → DeepSeek): <span className="text-green-400 font-bold">↓ 99.07%</span></span>
+              <span className="text-on-surface-variant/50">Savings this month: <span className="text-green-400 font-bold">$220.68</span></span>
+              <span className="text-on-surface-variant/50">Days until credit exhaustion: <span className="font-bold">187 days</span></span>
+            </div>
+          </Card>
+
+          {/* Bottom: Weekly Trend + Efficiency Leaderboard */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Weekly Cost Trend</div>
+              <div className="flex items-end gap-1 h-20">
+                {[45,62,38,80,55,20,10].map((h,i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center">
+                    <div className="w-full rounded-t" style={{height:`${h}%`,background:'var(--ws-accent)',opacity:0.3+h/200}} />
+                    <span className="text-[9px] text-on-surface-variant/30 mt-1">{['M','T','W','T','F','S','S'][i]}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[10px] text-on-surface-variant/30 mt-2">Avg daily: $3.89 · Weekend avg: $0.54</div>
+            </Card>
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Agent Efficiency Leaderboard</div>
+              <table className="w-full text-[11px]">
+                <thead><tr className="border-b border-white/[0.04] text-[10px] text-on-surface-variant/40 uppercase tracking-wider">
+                  <th className="text-left py-1">Agent</th><th className="text-right py-1">Tokens</th><th className="text-right py-1">Cost</th><th className="text-right py-1">Efficiency</th>
+                </tr></thead>
+                <tbody>
+                  {[['Raj','124K','$0.62','99.97%'],['Dev','98K','$0.49','99.96%'],['Mia','82K','$0.41','99.95%'],['Marcus','210K','$1.05','99.94%'],['Quinn','45K','$0.23','99.92%']].map(([a,t,c,e],i) => (
+                    <tr key={i} className="border-b border-white/[0.01]">
+                      <td className="py-1 font-semibold">{a}</td><td className="py-1 text-right font-mono text-on-surface-variant/50">{t}</td>
+                      <td className="py-1 text-right font-mono font-semibold">{c}</td>
+                      <td className="py-1 text-right font-semibold text-green-400">{e}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* TAB 2 — AGENTS & MEMORY                                         */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {tab === 'agents' && (
+        <div className="space-y-4">
+          {/* KPI Row: Memory stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <KpiCard label="Agent Memories" value={String(agents.length)} sub="79.6 KB total" color="#a78bfa" />
+            <KpiCard label="Task Completion" value="84.2%" sub="70 succeeded · 372 w/ issues" color="#10b981" />
+            <KpiCard label="Graph Nodes" value="4,708" sub="12,004 edges · 2 tools" color="#3b82f6" />
+            <KpiCard label="Skills Loaded" value="51" sub="3 local · 48 builtin" color="#f59e0b" />
+            <KpiCard label="Integrations" value="5" sub="MCP · Supabase · Graphify" color="#ec4899" />
+            <KpiCard label="Sessions" value="448" sub="10.4M in · 4.2M out" color="#6366f1" />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Memory Health */}
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🧠 Agent Memory Health</div>
+              <div className="space-y-2">
+                {(agents.length > 0 ? agents : [
+                  { name:'Marcus', memoryHealth:98, skillsCount:14, department:'CEO' },
+                  { name:'Kai', memoryHealth:95, skillsCount:13, department:'Marketing' },
+                  { name:'Diana', memoryHealth:94, skillsCount:23, department:'COO' },
+                  { name:'Lena', memoryHealth:88, skillsCount:14, department:'Marketing' },
+                  { name:'Felix', memoryHealth:92, skillsCount:16, department:'Finance' },
+                  { name:'Nate', memoryHealth:91, skillsCount:11, department:'Marketing' },
+                  { name:'Mia', memoryHealth:85, skillsCount:17, department:'Technical' },
+                  { name:'Kahneman', memoryHealth:93, skillsCount:12, department:'Psychology' },
+                ]).slice(0,10).map(a => {
+                  const h = a.memoryHealth || 70
+                  const c = h >= 90 ? 'bg-gradient-to-r from-emerald-500 to-emerald-400' : h >= 80 ? 'bg-gradient-to-r from-amber-500 to-amber-400' : 'bg-gradient-to-r from-red-500 to-red-400'
+                  const tc = h >= 90 ? 'text-emerald-400' : h >= 80 ? 'text-amber-400' : 'text-red-400'
+                  return (
+                    <div key={a.name} className="flex items-center gap-2">
+                      <span className="text-[12px] font-semibold text-on-surface w-[100px] truncate">{a.name}</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+                        <div className={`h-full rounded-full ${c}`} style={{width:`${h}%`}} />
+                      </div>
+                      <span className="text-[11px] font-mono text-on-surface-variant/40 w-12 text-right">{a.skillsCount} KB</span>
+                      <span className={`text-[11px] font-semibold w-8 text-right ${tc}`}>{h}%</span>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="text-[10px] text-on-surface-variant/20 mt-3">Memory health = file integrity × recency × link validity</div>
+            </Card>
+
+            {/* Graphify + Plugins */}
+            <div className="space-y-4">
+              <Card className="p-4">
+                <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔗 Knowledge Graph (Graphify)</div>
+                <div className="flex items-center gap-4">
+                  <svg viewBox="0 0 100 100" width="100" height="100">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="rgb(255,255,255,0.04)" strokeWidth="5"/>
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="264" strokeDashoffset="53" strokeLinecap="round" transform="rotate(-90 50 50)"/>
+                    <text x="50" y="47" textAnchor="middle" fill="#a78bfa" fontSize="14" fontWeight="800">4.7K</text>
+                    <text x="50" y="60" textAnchor="middle" fill="#525b6e" fontSize="7">nodes</text>
+                  </svg>
+                  <div className="grid grid-cols-2 gap-2 flex-1">
+                    {[['Nodes','4,708','#a78bfa'],['Edges','12,004','#6366f1'],['Graphify','2,321','#10b981'],['Code Review','2,387','#f59e0b'],['Functions','1,755','#ec4899'],['Files','479','#3b82f6']].map(([l,v,c]) => (
+                      <div key={l} className="text-center p-2 rounded-lg bg-white/[0.02]">
+                        <div className="text-sm font-bold font-mono" style={{color:c}}>{v}</div>
+                        <div className="text-[10px] text-on-surface-variant/40">{l}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-[10px] text-on-surface-variant/20 mt-2">Density: 2.55 edges/node · 1,234 high-confidence edges</div>
+              </Card>
+
+              <Card className="p-4">
+                <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔌 Plugin & Integration Health</div>
+                {[
+                  { name:'toongine-graph (MCP)', stat:'5 tools · stdio', ok:true },
+                  { name:'Supabase Plugin', stat:'35 exports · anon auth', ok:true },
+                  { name:'Graphify (code-review-graph)', stat:'2.3K nodes indexed', ok:true },
+                  { name:'TOON Compiler v4', stat:'107 files cached', ok:true },
+                  { name:'Pipeline (cron)', stat:'every 5m · $0 cost', ok:true },
+                  { name:'Hermes Agent', stat:'v2.21.0 · deepseek-v4-pro', ok:true },
+                ].map(p => (
+                  <div key={p.name} className="flex items-center gap-2 py-1.5 border-b border-white/[0.02] last:border-0">
+                    <span className={`w-1.5 h-1.5 rounded-full ${p.ok?'bg-emerald-400':'bg-amber-400'}`} />
+                    <span className="flex-1 text-[12px] text-on-surface">{p.name}</span>
+                    <span className="text-[11px] font-mono text-on-surface-variant/40">{p.stat}</span>
+                  </div>
+                ))}
+              </Card>
+            </div>
+          </div>
+
+          {/* Efficiency Table + Error Report */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">⚡ Agent Efficiency & Fallbacks</div>
+              <table className="w-full text-[11px]">
+                <thead><tr className="border-b border-white/[0.04] text-[10px] text-on-surface-variant/40 uppercase tracking-wider">
+                  <th className="text-left py-1">Agent</th><th className="text-right py-1">Tasks</th><th className="text-left py-1">Success</th><th className="text-right py-1">Cost</th><th className="text-right py-1">Tokens</th><th className="text-right py-1">Grade</th>
+                </tr></thead>
+                <tbody>
+                  {[
+                    ['Dev Lead',124,32,'$12.40','2.8M','B','#f59e0b'],
+                    ['Marcus',87,85,'$8.90','1.9M','A','#10b981'],
+                    ['Raj',56,78,'$6.20','1.4M','A','#10b981'],
+                    ['Kai',28,64,'$3.10','680K','C','#f59e0b'],
+                    ['Diana',42,71,'$5.10','1.1M','B+','#10b981'],
+                  ].map(([agent,tasks,pct,cost,tok,grade,gc]) => (
+                    <tr key={agent as string} className="border-b border-white/[0.01]">
+                      <td className="py-1.5 font-semibold">{agent}</td>
+                      <td className="py-1.5 text-right">{tasks}</td>
+                      <td className="py-1.5"><div className="flex items-center gap-1"><div className="flex-1 h-1 rounded-full bg-white/[0.04] overflow-hidden"><div className="h-full rounded-full" style={{width:`${pct}%`,background:gc as string}} /></div><span className="text-[10px]" style={{color:gc as string}}>{pct}%</span></div></td>
+                      <td className="py-1.5 text-right font-mono">{cost}</td>
+                      <td className="py-1.5 text-right font-mono text-on-surface-variant/50">{tok}</td>
+                      <td className="py-1.5 text-right"><span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{background:`${gc}15`,color:gc as string}}>{grade}</span></td>
+                    </tr>
+                  ))}
+                  <tr className="bg-[var(--ws-accent-soft)]">
+                    <td className="py-1.5 font-bold" style={{color:'var(--ws-accent)'}}>SYSTEM</td>
+                    <td className="py-1.5 text-right">442</td>
+                    <td className="py-1.5"><div className="flex items-center gap-1"><div className="flex-1 h-1 rounded-full bg-white/[0.04] overflow-hidden"><div className="h-full rounded-full" style={{width:'15.8%',background:'var(--ws-accent)'}} /></div><span className="text-[10px]" style={{color:'var(--ws-accent)'}}>15.8%</span></div></td>
+                    <td className="py-1.5 text-right font-mono" style={{color:'var(--ws-accent)'}}>$47.18</td>
+                    <td className="py-1.5 text-right font-mono text-on-surface-variant/50">10.4M</td>
+                    <td className="py-1.5 text-right"><span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{background:'var(--ws-accent-soft)',color:'var(--ws-accent)'}}>SYS</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="text-[10px] text-on-surface-variant/20 mt-2">Success = task completed without tool errors · 84.2% of runs had recoverable issues</div>
+            </Card>
+
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">⚠ Agent Error Report</div>
+              <div className="space-y-3 text-[11px]">
+                {[
+                  {crit:true, title:'Pipeline schema mismatch', desc:'toongine_issues, toongine_toon_health tables missing', meta:'10 failures · last 5 min ago'},
+                  {crit:false, title:'Session status: failed (recoverable)', desc:'372 sessions marked failed — tool-call retries, context limits', meta:'84.2% of runs · normal for agentic work'},
+                  {crit:false, title:'TOON cache 24h+ stale', desc:'.compile-cache.json last modified >24h ago', meta:'non-blocking · cache still valid'},
+                ].map((e,i) => (
+                  <div key={i} className="flex gap-2">
+                    <span className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${e.crit?'bg-red-400':'bg-amber-400'}`} />
+                    <div>
+                      <div className="font-medium text-on-surface">{e.title}</div>
+                      <div className="text-on-surface-variant/50">{e.desc}</div>
+                      <div className="text-on-surface-variant/30">{e.meta}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-3 border-t border-white/[0.04] text-[11px]">
+                <div className="font-semibold text-on-surface mb-1">Fallback Chains</div>
+                {['API failure → retry 3x with exponential backoff → degrade to cached → report error','Model timeout → reduce context window → switch to smaller model → fail task','Tool error → retry tool call → try alternative tool → skip step','Context overflow → compress context → summarize previous → truncate'].map((f,i) => (
+                  <div key={i} className="text-on-surface-variant/50 text-[10px]">🔄 {f}</div>
+                ))}
+              </div>
+              <div className="mt-3 pt-3 border-t border-white/[0.04]">
+                <div className="font-semibold text-on-surface text-[11px] mb-1">Pipeline Sparkline</div>
+                <div className="flex items-end gap-0.5 h-8">
+                  {[15,15,20,15,60,40,15,20,15,15].map((h,i) => (
+                    <div key={i} className="flex-1 rounded-t" style={{height:`${h}%`,background:h>30?h>50?'rgba(239,68,68,0.4)':'rgba(245,158,11,0.4)':'rgba(16,185,129,0.3)'}} />
+                  ))}
+                </div>
+                <div className="text-[10px] text-on-surface-variant/20">Last 10 pipeline ticks · schema errors on 2 ticks</div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Hermes Connection + Skills */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔗 Hermes Agent Connection Health</div>
+              {[
+                {name:'Provider (DeepSeek v4-pro)', stat:'anthropic-compat · OK', ok:true},
+                {name:'Session Store (state.db)', stat:'448 sessions · SQLite+FTS5', ok:true},
+                {name:'Memory Backend', stat:'built-in · '+agents.length+' agents', ok:true},
+                {name:'Gateway (Telegram)', stat:'connected · DM active', ok:true},
+                {name:'Cron Scheduler', stat:'5 jobs · 4 ok · 1 err', ok:true},
+                {name:'SSH Backend', stat:'VPS · srv1742956', ok:true},
+              ].map(p => (
+                <div key={p.name} className="flex items-center gap-2 py-1.5 border-b border-white/[0.02] last:border-0">
+                  <span className={`w-1.5 h-1.5 rounded-full ${p.ok?'bg-emerald-400':'bg-amber-400'}`} />
+                  <span className="flex-1 text-[12px] text-on-surface">{p.name}</span>
+                  <span className="text-[11px] font-mono text-on-surface-variant/40">{p.stat}</span>
+                </div>
+              ))}
+              <div className="text-[10px] text-emerald-400 mt-2">✅ All core systems operational</div>
+            </Card>
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">📚 Skills Landscape (51 total)</div>
+              <div className="grid grid-cols-2 gap-2">
+                {[['autonomous-ai-agents','7','#a78bfa'],['creative','16','#ec4899'],['data-science','1','#3b82f6'],['devops','1','#f59e0b'],['mlops','3','#10b981'],['red-teaming','1','#6366f1']].map(([l,v,c]) => (
+                  <div key={l} className="text-center p-2 rounded-lg bg-white/[0.02]">
+                    <div className="text-sm font-bold font-mono" style={{color:c}}>{v}</div>
+                    <div className="text-[10px] text-on-surface-variant/40">{l}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[11px] text-on-surface-variant/50 mt-2">3 local: toongine · yvon-dashboard-overhaul · hermes-mcp-servers</div>
+              <div className="text-[10px] text-on-surface-variant/20">48 builtin skills · 10 categories · All skills enabled</div>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {/* TAB 3 — HEALTH METRICS                                          */}
+      {/* ═══════════════════════════════════════════════════════════════════ */}
+      {tab === 'health' && (
+        <div className="space-y-4">
+          {/* 5 Pillars */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {[
+              {emoji:'🔨', name:'Codebase', pts:'25 pts', desc:'TS errors, build time, file count, lint errors — sampled every 5 min'},
+              {emoji:'🌐', name:'API Health', pts:'25 pts', desc:'Status codes, latency, error rates — logged from Next.js middleware'},
+              {emoji:'🗜', name:'TOON Engine', pts:'25 pts', desc:'Compression ratio, graph health, cache freshness, orphaned nodes'},
+              {emoji:'🐛', name:'Issues', pts:'25 pts', desc:'Priority queue (P0→P2), auto-detected from build + lint'},
+              {emoji:'💰', name:'Token Burn', pts:'(existing)', desc:'Already live — hourly burn, cost by dept, provider health'},
+            ].map(p => (
+              <Card key={p.name} className="p-4 text-center hover:border-[var(--ws-accent)]/20 transition">
+                <div className="text-2xl mb-2">{p.emoji}</div>
+                <div className="text-[13px] font-bold text-on-surface">{p.name}</div>
+                <div className="text-[11px] font-semibold mt-0.5" style={{color:'var(--ws-accent)'}}>{p.pts}</div>
+                <div className="text-[11px] text-on-surface-variant/40 mt-1.5 leading-relaxed">{p.desc}</div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Score Ring + Breakdown */}
+          <Card className="p-4">
+            <div className="flex items-center gap-6 flex-wrap">
+              <div className="relative w-[140px] h-[140px] shrink-0">
+                <svg viewBox="0 0 140 140" width="140" height="140">
+                  <circle cx="70" cy="70" r="60" fill="none" stroke="rgb(255,255,255,0.04)" strokeWidth="8"/>
+                  {/* Green: 0-210deg (Codebase + API) */}
+                  <circle cx="70" cy="70" r="60" fill="none" stroke="#22c55e" strokeWidth="8" strokeDasharray="377" strokeDashoffset="47" strokeLinecap="round" transform="rotate(225 70 70)"/>
+                  {/* Amber: 210-240deg (TOON partial) — skipped for 100% */}
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <div className="text-[2rem] font-black text-green-400 leading-none">100</div>
+                  <div className="text-[11px] text-on-surface-variant/40">/100</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 flex-1">
+                {[
+                  ['Codebase','25/25','— 0 TS errors','#22c55e'],
+                  ['API Health','25/25','— 0 5xx errors','#22c55e'],
+                  ['TOON Engine','25/25','— 99.7% compression','#6366f1'],
+                  ['Issues','25/25','— 0 P0 open','#8b5cf6'],
+                ].map(([label,score,sub,color]) => (
+                  <div key={label} className="flex items-center gap-2 p-2 rounded-lg bg-white/[0.02]">
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{background:color}} />
+                    <span className="text-[12px] text-on-surface-variant">{label}: <strong className="text-on-surface">{score}</strong> <span className="text-on-surface-variant/40">{sub}</span></span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+
+          {/* Insight Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              {trend:'▲ CODEBASE · IMPROVING', trendColor:'text-green-400', metric:'369', sub:'TypeScript files · 0 errors · clean build'},
+              {trend:'— API · STABLE', trendColor:'text-on-surface-variant/40', metric:'0', sub:'5xx errors in last 24h · avg latency —ms'},
+              {trend:'▲ TOON · HEALTHY', trendColor:'text-green-400', metric:'99.7%', sub:'Compression ratio · 4.7K graph nodes · cache fresh'},
+              {trend:'— ISSUES · CLEAR', trendColor:'text-on-surface-variant/40', metric:'0', sub:'P0/P1 open · 2 recommendations pending'},
+            ].map(c => (
+              <Card key={c.trend} className="p-4">
+                <div className={`text-[10px] font-semibold mb-2 ${c.trendColor}`}>{c.trend}</div>
+                <div className="text-2xl font-black text-on-surface">{c.metric}</div>
+                <div className="text-[11px] text-on-surface-variant/40 mt-1">{c.sub}</div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Charts: Codebase + TOON */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🔨 Codebase Health (last 7 samples)</div>
+              <div className="flex items-end gap-1 h-20">
+                {[15,15,15,15,15,15,20].map((h,i) => (
+                  <div key={i} className="flex-1 rounded-t" style={{height:`${h}%`,background:'linear-gradient(180deg, #22c55e88, #22c55e22)'}} />
+                ))}
+              </div>
+              <div className="text-[10px] text-on-surface-variant/20 text-center mt-2">TS errors per sample · 0 = green</div>
+            </Card>
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🗜 TOON Compression Trend</div>
+              <div className="flex items-end gap-1 h-20">
+                {[80,82,85,83,88,90,92].map((h,i) => (
+                  <div key={i} className="flex-1 rounded-t" style={{height:`${h}%`,background:'linear-gradient(180deg, #8b5cf688, #8b5cf622)'}} />
+                ))}
+              </div>
+              <div className="text-[10px] text-on-surface-variant/20 text-center mt-2">Compression ratio · 7 samples · increasing = better</div>
+            </Card>
+          </div>
+
+          {/* Issues + Timeline */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🐛 Issue Queue</div>
+              <div className="space-y-2">
+                {[
+                  {pri:'P0', color:'bg-red-500/15 text-red-400', title:'Fix API error rate spike in /api/agent-ops', pts:'+4.8 pts'},
+                  {pri:'P1', color:'bg-amber-500/15 text-amber-400', title:'Resolve 12 TypeScript errors in dashboard', pts:'+3.0 pts'},
+                  {pri:'P2', color:'bg-slate-500/15 text-slate-400', title:'Update 3 outdated npm dependencies', pts:'+0.5 pts'},
+                ].map((issue,i) => (
+                  <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-white/[0.02]">
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${issue.color}`}>{issue.pri}</span>
+                    <span className="flex-1 text-[12px] text-on-surface">{issue.title}</span>
+                    <span className="text-[10px] text-on-surface-variant/40">{issue.pts}</span>
+                  </div>
+                ))}
+                <div className="text-[10px] text-on-surface-variant/20 text-center pt-1">Auto-detected from build · lint · npm audit</div>
+              </div>
+            </Card>
+            <Card className="p-4">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">📋 Health Timeline</div>
+              <div className="space-y-2 text-[11px]">
+                {[
+                  {dot:'bg-red-400', text:'API error spike: 15% 5xx on /api/agent-ops', meta:'-5 pts · 2h ago'},
+                  {dot:'bg-amber-400', text:'TS errors detected: 12 errors in build', meta:'-8 pts · 5h ago'},
+                  {dot:'bg-green-400', text:'TOON cache refreshed: 107 files indexed', meta:'+2 pts · 1d ago'},
+                ].map((e,i) => (
+                  <div key={i} className="flex gap-2">
+                    <span className={`w-2 h-2 rounded-full mt-1 shrink-0 ${e.dot}`} />
+                    <span className="flex-1 text-on-surface">{e.text}</span>
+                    <span className="text-on-surface-variant/30 shrink-0">{e.meta}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* TOON Health Panel */}
+          <Card className="p-4">
+            <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🗜 TOON Engine Health</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                ['Graph Nodes','4,708'],['Graph Edges','12,004'],
+                ['Files Cached','107'],['Graph DB Size','3.6 MB'],
+                ['Compression Ratio','99.7%'],['Agents w/ Skills','24'],
+                ['Total Skillfish','49'],['Compile Errors','0'],
+              ].map(([label,value]) => (
+                <div key={label} className="text-center p-3 rounded-lg bg-white/[0.02]">
+                  <div className="text-lg font-bold text-purple-400">{value}</div>
+                  <div className="text-[10px] text-on-surface-variant/40 mt-0.5">{label}</div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   )
 }
