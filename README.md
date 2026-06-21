@@ -107,6 +107,86 @@ Live at `localhost:3000` (dev) or `yvon.in` (production). Glass-morphism dark th
 | Sim | Simulation sandbox |
 | System | Config, env vars, database status |
 
+## How Agents Work
+
+Every agent session follows a clean three-phase pipeline. Context loads once from GitHub, commands run through Hermes on VPS, results write back on session end.
+
+```
+PHASE 1 — SESSION START (one-time)
+────────────────────────────────────
+  GitHub API
+    │
+    ├─ .toon/config.json          ← venture metadata, department map
+    ├─ .toon/agents/*/MEMORY.md   ← agent identity, permanent knowledge
+    ├─ CLAUDE.md                  ← project rules
+    └─ DESIGN.md                  ← design tokens (colors, fonts, spacing)
+         │
+         ▼
+  TOON encode → dictionary + templates (structural, not lossy)
+     │  ↳ 65-82% smaller, 100% information preserved
+     │  ↳ Dictionary maps recurring values to short codes
+     │  ↳ Templates collapse patterns to IDs with variable substitution
+         │
+         ▼
+  Inject into Hermes (VPS) as system prompt
+     │  ↳ Loaded once per session, not re-read until context changes
+
+
+PHASE 2 — USER COMMAND
+────────────────────────
+  "Build summer collection page for Novizio"
+       │
+       ▼
+  Hermes (VPS 2.25.189.22)
+    │  ├─ Agent + compressed TOON context
+    │  ├─ Hermes memory (persistent learning across sessions)
+    │  ├─ Hermes skills (reusable procedures from past tasks)
+    │  ├─ Hermes kanban (task state tracking)
+    │  └─ Tools (terminal, file, web, GitHub API, Supabase)
+    │
+    ├─ Hermes down? → Claude SDK fallback (direct API call)
+    │
+    ▼
+  AI output: code, PRs, decisions, content
+
+
+PHASE 3 — SESSION END
+──────────────────────
+  Results written:
+    ├─ GitHub API → PRs, commits, file changes
+    ├─ Supabase   → live metrics (token burn, leaderboard, activity)
+    └─ Kanban     → task status updates (done, blocked, in review)
+
+  Dashboard updates in real-time from Supabase.
+```
+
+### Data Source Split
+
+| Data | Home | Why |
+|------|------|-----|
+| `.toon/` agent brains | **GitHub** | Single source of truth, versioned, free reads |
+| Live metrics (tokens, leaderboard) | **Supabase** | Fast queries, real-time dashboard |
+| Task state (kanban) | **Hermes kanban** | Built-in, durable, multi-agent |
+| Agent learning | **Hermes memory + skills** | Persistent, auto-loaded each session |
+
+### Venture Scoping
+
+Same YVON OS, different venture context. Switching workspace in the sidebar filters every API call by venture slug:
+
+```
+Novizio selected    → agents pull Novizio brand voice, audience data
+Hourbour selected   → agents pull Hourbour compliance rules, fintech tone
+YVON Dashboard      → OS-level agents (Marcus, Diana, Dev) visible in Settings
+```
+
+### AI Provider Stack
+
+```
+Primary:   Hermes (VPS)  → DeepSeek v4 Pro
+Fallback:  Claude SDK    → Anthropic API (direct)
+Config:    Settings → AI Provider card shows balance, status
+```
+
 ## Advisory Council
 
 Real multi-agent decision system. `POST /api/council/convene` spawns 4 Hermes agents (Marcus, Diana, Felix, Kai) in sequence, synthesizes with Marcus, runs Kahneman bias audit.
