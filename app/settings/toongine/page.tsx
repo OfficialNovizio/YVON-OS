@@ -608,8 +608,43 @@ export default function ToonGineOSPage() {
               </div>
             </Card>
           </div>
+          {/* TOON Health Panel + Graph */}
 
-          {/* TOON Health Panel */}
+          {/* Graphify Node Visual — Clickable */}
+          <Link href="/settings/toongine/graph">
+            <Card className="p-4 cursor-pointer hover:border-[var(--ws-accent)]/30 transition group mb-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-[11px] text-on-surface-variant uppercase tracking-wider">🔗 Knowledge Graph Explorer</div>
+                <span className="text-[10px] text-on-surface-variant/30 group-hover:text-[var(--ws-accent)] transition">Click to open full view →</span>
+              </div>
+              <div className="flex items-center gap-5">
+                <div className="relative w-[120px] h-[120px] shrink-0 rounded-xl bg-white/[0.02] border border-white/[0.04] overflow-hidden">
+                  <svg viewBox="0 0 120 120" width="120" height="120" className="opacity-60 group-hover:opacity-100 transition">
+                    <line x1="20" y1="100" x2="55" y2="55" stroke="rgb(255 255 255 / 0.04)" strokeWidth="0.5"/>
+                    <line x1="55" y1="55" x2="30" y2="20" stroke="rgb(255 255 255 / 0.04)" strokeWidth="0.5"/>
+                    <line x1="55" y1="55" x2="80" y2="25" stroke="rgb(255 255 255 / 0.04)" strokeWidth="0.5"/>
+                    <line x1="55" y1="55" x2="100" y2="45" stroke="rgb(255 255 255 / 0.04)" strokeWidth="0.5"/>
+                    <line x1="55" y1="55" x2="95" y2="80" stroke="rgb(255 255 255 / 0.04)" strokeWidth="0.5"/>
+                    <line x1="55" y1="55" x2="60" y2="100" stroke="rgb(255 255 255 / 0.04)" strokeWidth="0.5"/>
+                    <circle cx="55" cy="55" r="10" fill="#6366f130" stroke="#6366f1" strokeWidth="1"/>
+                    <circle cx="20" cy="100" r="6" fill="#e9456030" stroke="#e94560" strokeWidth="1"/>
+                    <circle cx="30" cy="20" r="5" fill="#3b82f630" stroke="#3b82f6" strokeWidth="1"/>
+                    <circle cx="80" cy="25" r="7" fill="#8b5cf630" stroke="#8b5cf6" strokeWidth="1"/>
+                    <circle cx="100" cy="45" r="4" fill="#10b98130" stroke="#10b981" strokeWidth="1"/>
+                    <circle cx="95" cy="80" r="5" fill="#f59e0b30" stroke="#f59e0b" strokeWidth="1"/>
+                    <circle cx="60" cy="100" r="6" fill="#ec489930" stroke="#ec4899" strokeWidth="1"/>
+                    <text x="55" y="58" textAnchor="middle" fill="#a5b4fc" fontSize="6" fontWeight="700">YVON</text>
+                  </svg>
+                </div>
+                <div className="grid grid-cols-2 gap-2 flex-1">
+                  {[['4,708','Nodes','#a78bfa'],['12,004','Edges','#6366f1'],['2.55','Density','#10b981'],['479','Files','#f59e0b']].map(([v,l,c]) => (
+                    <div key={l} className="text-center p-2 rounded-lg bg-white/[0.02]"><div className="text-sm font-bold" style={{color:c}}>{v}</div><div className="text-[10px] text-on-surface-variant/40">{l}</div></div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          </Link>
+
           <Card className="p-4">
             <div className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">🗜 TOON Engine Health</div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
