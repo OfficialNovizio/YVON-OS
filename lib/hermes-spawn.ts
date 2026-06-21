@@ -306,6 +306,13 @@ async function spawnHermesOnce(params: {
 }): Promise<{ stdout: string; stderr: string }> {
   const { agentId, prompt, workdir, timeoutMs } = params
 
+  // SSH bridge mode — when YVON OS runs on Vercel, Hermes runs on VPS
+  const vpsHost = process.env.HERMES_VPS_HOST
+  if (vpsHost) {
+    return spawnHermesViaSSH({ agentId, prompt, workdir, timeoutMs, vpsHost })
+  }
+
+  // Local mode — Hermes is on the same machine
   return new Promise((resolve, reject) => {
     const child = spawn('hermes', [
       '--profile', 'yvon',
@@ -331,6 +338,77 @@ async function spawnHermesOnce(params: {
         resolve({ stdout, stderr })
       } else {
         resolve({ stdout, stderr: stderr || `Hermes exited with code ${code}` })
+      }
+    })
+
+    child.on('error', (err) => {
+      reject(err)
+    })
+  })
+}
+
+// ─── SSH Bridge (Vercel → VPS) ────────────────────────────────────────────
+
+async function spawnHermesViaSSH(params: {
+  agentId: string
+  prompt: string
+  workdir: string
+  timeoutMs: number
+  vpsHost: string
+}): Promise<{ stdout: string; stderr: string }> {
+  const { agentId, prompt, workdir, timeoutMs, vpsHost } = params
+  const vpsUser = process.env.HERMES_VPS_USER || 'root'
+  const vpsKey = process.env.HERMES_VPS_KEY_PATH
+  const vpsKeyData = process.env.HERMES_VPS_KEY  // raw key for Vercel (no file system)
+  const sshTimeout = Math.floor(timeoutMs / 1000)
+
+  // Escape the prompt for safe shell passing
+  const safePrompt = prompt
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\$/g, '\\$')
+    .replace(/`/g, '\\`')
+
+  // Build SSH identity args — supports file path OR raw key via temp file
+  let identityArgs: string[] = []
+  if (vpsKey) {
+    identityArgs = ['-i', vpsKey]
+  } else if (vpsKeyData) {
+    // Vercel mode: write key to temp file
+    const tmpKey = `/tmp/hermes_key_${Date.now()}`
+    try {
+      await fs.writeFile(tmpKey, vpsKeyData.trim() + '\n', { mode: 0o600 })
+      identityArgs = ['-i', tmpKey]
+    } catch {
+      // Fallback: try without key
+    }
+  }
+
+  const sshArgs = [
+    '-o', 'StrictHostKeyChecking=accept-new',
+    '-o', `ConnectTimeout=${Math.min(sshTimeout, 30)}`,
+    ...identityArgs,
+    `${vpsUser}@${vpsHost}`,
+    `cd ${workdir} && hermes --profile yvon -s ${agentId} -s yvon-os --yolo chat -q "${safePrompt}"`,
+  ]
+
+  return new Promise((resolve, reject) => {
+    const child = spawn('ssh', sshArgs, {
+      timeout: timeoutMs,
+      env: { ...process.env },
+    })
+
+    let stdout = ''
+    let stderr = ''
+
+    child.stdout!.on('data', (chunk: Buffer) => { stdout += chunk.toString() })
+    child.stderr!.on('data', (chunk: Buffer) => { stderr += chunk.toString() })
+
+    child.on('close', (code) => {
+      if (code === 0 || stdout.length > 0) {
+        resolve({ stdout, stderr })
+      } else {
+        resolve({ stdout, stderr: stderr || `SSH exited with code ${code}` })
       }
     })
 
