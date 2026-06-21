@@ -24,10 +24,6 @@ const csp = [
 const nextConfig: NextConfig = {
   // Required for outputFileTracingIncludes to work
   output: 'standalone',
-  // Include .toon agent filesystem in Vercel/serverless builds
-  outputFileTracingIncludes: {
-    '/api/**': ['./.toon/**/*'],
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
