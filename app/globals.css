@@ -35,6 +35,11 @@
   --ws-accent-soft: rgba(94, 224, 255, 0.14);
   --ws-glow: rgba(94, 224, 255, 0.32);
 }
+[data-workspace='yvon-os'] {
+  --ws-accent: #6366F1;
+  --ws-accent-soft: rgba(99, 102, 241, 0.16);
+  --ws-glow: rgba(99, 102, 241, 0.35);
+}
 [data-workspace='novizio'] {
   --ws-accent: #E94560;
   --ws-accent-soft: rgba(233, 69, 96, 0.16);
