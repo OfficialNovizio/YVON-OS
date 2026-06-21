@@ -17,7 +17,7 @@
 YVON OS orchestrates 24 AI agents across 10 departments, manages multiple ventures (Novizio fashion e-commerce + Hourbour fintech SaaS), and provides a glass-morphism dashboard with real-time agent council decisions — all powered by ToonGine under the hood.
 
 ```bash
-npm install          # install deps (includes toongine)
+npm install          # install deps
 npm run dev          # → localhost:3000
 npm run build        # production build
 ```
@@ -197,7 +197,6 @@ npm run reflect             # post-session reflection (agent learning)
 ```bash
 npm info yvon-os version     # check version
 npm ls --depth=0             # list direct dependencies
-npm ls toongine              # check ToonGine version
 ```
 
 ```

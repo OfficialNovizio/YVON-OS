@@ -4,7 +4,11 @@ import { calcCostUsd } from '@/lib/token-cost'
 import { getAgent } from '@/lib/agents'
 import { getPersonalityExtension } from '@/lib/agent-personalities'
 
-import { buildCieContext } from 'toongine/cie'
+// CIE context builder (previously from toongine/cie — now local stub)
+// Falls through gracefully when no context is available
+function buildCieContext(_opts: { agentId: string; task: string; venture: string }) {
+  return { systemExtension: null as string | null, dataBlock: null as string | null, itemsInjected: 0 }
+}
 
 // TOON auto-compression (from toongine, works when installed)
 const autoToonMiddleware = (opts: any) => ({

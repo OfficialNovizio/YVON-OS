@@ -48,7 +48,7 @@ if (require.main === module) {
   const agentDeptPath = join(process.cwd(), '.toon', 'agents')
 
   if (!existsSync(agentDeptPath)) {
-    console.log('  ⚠️  No .toon/agents/ found — install toongine first: npm install github:OfficialNovizio/ToonGine')
+    console.log('  ⚠️  No .toon/agents/ found — agent registry snapshot not updated')
     process.exit(0)
   }
 

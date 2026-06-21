@@ -147,11 +147,6 @@ export default function AgentsPage() {
           <p className="text-[12px] text-on-surface-variant/40 mb-6 font-mono">
             Repo: {data?.repoId || 'unknown'}
           </p>
-          <div className="flex flex-col gap-2 text-left text-[12px] text-on-surface-variant/60 bg-white/[0.03] rounded-xl p-4 mb-4">
-            <p>1. Clone the venture repo: <code className="text-[11px] bg-white/[0.04] px-1 rounded">git clone https://github.com/{data?.repoId}.git</code></p>
-            <p>2. In the project root: <code className="text-[11px] bg-white/[0.04] px-1 rounded">npm install github:OfficialNovizio/ToonGine</code></p>
-            <p>3. Run: <code className="text-[11px] bg-white/[0.04] px-1 rounded">npx toongine init</code> to start telemetry</p>
-          </div>
           <a href="/settings" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.10] text-sm text-on-surface transition">
             <Settings size={14} /> Settings
           </a>

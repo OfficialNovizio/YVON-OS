@@ -108,9 +108,6 @@ export default function SettingsPage() {
           </Card>
         </Link>
 
-        {/* ToonGine — install/manage */}
-        <ToongineCard />
-
         {/* Preferences */}
         <Card className="p-4">
           <div className="flex items-center gap-2 mb-3"><Bell size={16} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold text-on-surface">Preferences</h3></div>
@@ -175,84 +172,4 @@ export default function SettingsPage() {
   )
 }
 
-// ─── ToonGine Install Card ──────────────────────────────────────────────────
-
-function ToongineCard() {
-  const [status, setStatus] = useState<'checking' | 'installed' | 'not-installed'>('checking')
-  const [installing, setInstalling] = useState(false)
-  const [msg, setMsg] = useState('')
-
-  useEffect(() => {
-    fetch('/api/toongine-install')
-      .then(r => r.json())
-      .then(d => setStatus(d.installed ? 'installed' : 'not-installed'))
-      .catch(() => setStatus('not-installed'))
-  }, [])
-
-  const handleInstall = async () => {
-    setInstalling(true)
-    setMsg('Installing...')
-    try {
-      const res = await fetch('/api/toongine-install', { method: 'POST' })
-      const d = await res.json()
-      if (d.success) {
-        setStatus('installed')
-        setMsg('Installed ✓')
-      } else {
-        setMsg(d.error || 'Install failed')
-      }
-    } catch (e: any) {
-      setMsg(e.message || 'Network error')
-    } finally {
-      setInstalling(false)
-    }
-  }
-
-  return (
-    <Card className="p-4 border-l-2 border-l-purple-500/40">
-      <div className="flex items-center gap-2 mb-3">
-        <Package size={16} className="text-purple-400" />
-        <h3 className="text-sm font-semibold text-on-surface flex-1">ToonGine</h3>
-        {status === 'installed' && <CheckCircle2 size={16} className="text-emerald-400" />}
-        {status === 'not-installed' && <AlertTriangle size={16} className="text-amber-400/60" />}
-        {status === 'checking' && <Loader2 size={16} className="animate-spin text-on-surface-variant" />}
-      </div>
-
-      {status === 'checking' && (
-        <p className="text-[13px] text-on-surface-variant">Checking installation...</p>
-      )}
-
-      {status === 'not-installed' && (
-        <>
-          <p className="text-[13px] text-on-surface mb-1">Agent telemetry for ventures</p>
-          <p className="text-[12px] text-on-surface-variant/60 mb-3">
-            Installs locally — never committed to repo
-          </p>
-          <button
-            onClick={handleInstall}
-            disabled={installing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 text-[12px] font-medium transition disabled:opacity-50"
-          >
-            {installing ? (
-              <Loader2 size={14} className="animate-spin" />
-            ) : (
-              <Download size={14} />
-            )}
-            {installing ? 'Installing...' : 'Install ToonGine'}
-          </button>
-          {msg && <p className="text-[11px] text-on-surface-variant/60 mt-2">{msg}</p>}
-        </>
-      )}
-
-      {status === 'installed' && (
-        <>
-          <p className="text-[13px] text-on-surface mb-1">Connected — monitoring ventures</p>
-          <p className="text-[12px] text-on-surface-variant/60">
-            Agents tab now shows cross-venture health
-          </p>
-          <StatusBadge tone="green">Installed</StatusBadge>
-        </>
-      )}
-    </Card>
-  )
-}
+// ─── 
