@@ -107,7 +107,10 @@ export default function AgentsPage() {
   const fetchData = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch(`/api/ventures-health?venture=${workspace.key}`)
+      // YVON OS → show OS agents (no venture param)
+      const isOS = workspace.key === 'yvon-os' || !workspace.isVenture
+      const url = isOS ? '/api/ventures-health' : `/api/ventures-health?venture=${workspace.key}`
+      const res = await fetch(url)
       const json = await res.json()
       setData(json)
     } catch (e: any) {

@@ -14,6 +14,7 @@ interface Venture {
 
 // Color → accent mapping for the live dot
 const VENTURE_ACCENTS: Record<string, string> = {
+  'yvon-os': '#6366F1',
   novizio: '#E94560',
   hourbour: '#3B82F6',
 }
@@ -40,8 +41,9 @@ export function WorkspaceSwitcher() {
         }
       })
       .catch(() => {
-        // Fallback to hardcoded ventures
+        // Fallback to hardcoded workspaces
         setVentures([
+          { slug: 'yvon-os', name: 'YVON OS', color: '#6366F1' },
           { slug: 'novizio', name: 'Novizio', color: '#E94560' },
           { slug: 'hourbour', name: 'Hourbour', color: '#3B82F6' },
         ])
@@ -66,7 +68,7 @@ export function WorkspaceSwitcher() {
           />
           <span className="min-w-0">
             <span className="block text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant/60">
-              Venture
+              {workspace.key === 'yvon-os' ? 'Workspace' : 'Venture'}
             </span>
             <span className="block text-sm font-semibold text-on-surface truncate">
               {loading ? (

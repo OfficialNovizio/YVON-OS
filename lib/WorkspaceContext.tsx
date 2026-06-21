@@ -4,13 +4,13 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { WORKSPACE_MAP, type WorkspaceKey, type Workspace } from './workspaces'
 
 const STORAGE_KEY = 'yvon_active_workspace'
-const DEFAULT: WorkspaceKey = 'novizio'
+const DEFAULT: WorkspaceKey = 'yvon-os'
 
 function getStoredWorkspace(): WorkspaceKey {
   if (typeof window === 'undefined') return DEFAULT
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'novizio' || stored === 'hourbour') {
+    if (stored === 'yvon-os' || stored === 'novizio' || stored === 'hourbour') {
       return stored as WorkspaceKey
     }
   } catch { /* localStorage blocked */ }
