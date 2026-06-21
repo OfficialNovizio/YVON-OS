@@ -21,11 +21,17 @@ last-updated: 2026-05-14
 
 ## What is YVON
 
-YVON is an AI operating system. It orchestrates **13 agents** across **4 departments**:
-- **CEO** (marcus-ceo, diana-coo) — Direction + Accountability
-- **Technical** (dev-lead, raj-backend, mia-frontend, quinn-qa) — Everything That Ships
-- **Marketing** (kai-analyst, lena-brand, rio-ads, nate-growth, atlas-art-director, pixel-production) — Revenue + Content
+YVON is an AI operating system. It orchestrates **24 agents** across **10 departments**:
+- **CEO** (marcus-ceo) — Direction + Orchestration
+- **COO** (diana-coo) — Operations + Sprints
+- **Command** (board-command) — Governance
 - **Finance** (felix-finance) — Financial Intelligence
+- **Legal** (comply-legal, docs-legal, guard-legal) — Compliance + IP Protection
+- **Psychology** (kahneman-psychology) — Bias Audit + Decision Review
+- **Research** (depth-research, synth-research, vette-research) — Deep Research
+- **Sense** (forge-sense, radar-sense, scout-sense) — Discovery + Intel
+- **Marketing** (kai-analyst, lena-brand, rio-ads, nate-growth, atlas-art-director, pixel-production) — Revenue + Content
+- **Technical** (dev-lead, raj-backend, mia-frontend, quinn-qa) — Everything That Ships
 
 **Current ventures:** Novizio (fashion e-commerce) · Hourbour (fintech SaaS)
 
