@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight, LayoutDashboard, Package, Download, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight, LayoutDashboard, CheckCircle2, Bot, GitBranch } from 'lucide-react'
 
 interface SystemInfo {
   systemHealth: {
@@ -13,6 +13,13 @@ interface SystemInfo {
   }
   greeting: string
   ventures: { slug: string; name: string; decisionsPending: number }[]
+}
+
+interface ToonOSData {
+  initialized: boolean; venture: string; agentsTotal: number
+  departments: { name: string; agentCount: number }[]
+  checks: { agents: boolean; graphify: boolean; codegraph: boolean; claudeMD: boolean }
+  graphs: { graphify: string; codegraph: string }
 }
 
 const LS = {
@@ -35,6 +42,7 @@ export default function SettingsPage() {
   const [autoApprove, setAutoApproveState] = useState(false)
   const [darkMode, setDarkModeState] = useState(true)
   const [compactSidebar, setCompactSidebarState] = useState(false)
+  const [toonOS, setToonOS] = useState<ToonOSData | null>(null)
 
   useEffect(() => {
     setNotificationsState(load(LS.notifications, true))
@@ -53,6 +61,14 @@ export default function SettingsPage() {
       .then((r) => r.json())
       .then((d) => { setInfo(d); setLoading(false) })
       .catch(() => setLoading(false))
+  }, [])
+
+  // Fetch ToonGine OS agents
+  useEffect(() => {
+    fetch('/api/ventures-health')
+      .then(r => r.json())
+      .then(d => setToonOS(d))
+      .catch(() => {})
   }, [])
 
   const s = info?.systemHealth
@@ -107,6 +123,36 @@ export default function SettingsPage() {
             <StatusBadge tone="green">Active</StatusBadge>
           </Card>
         </Link>
+
+        {/* ToonGine OS Agents */}
+        <Card className="p-4 border-l-2 border-l-emerald-400/60">
+          <div className="flex items-center gap-2 mb-3">
+            <Bot size={16} style={{ color: 'var(--ws-accent)' }} />
+            <h3 className="text-sm font-semibold text-on-surface">ToonGine OS</h3>
+            <StatusBadge tone={toonOS?.initialized ? 'green' : 'yellow'}>
+              {toonOS?.initialized ? 'Active' : 'Init needed'}
+            </StatusBadge>
+          </div>
+          <p className="text-[13px] text-on-surface">
+            {toonOS?.agentsTotal ?? '—'} agents · {toonOS?.departments?.length ?? 0} departments
+          </p>
+          <div className="flex gap-2 mt-2 text-[11px] text-on-surface-variant/60">
+            <span className={toonOS?.checks?.graphify ? 'text-emerald-400' : ''}>
+              {toonOS?.checks?.graphify ? '●' : '○'} Graphify
+            </span>
+            <span className={toonOS?.checks?.codegraph ? 'text-emerald-400' : ''}>
+              {toonOS?.checks?.codegraph ? '●' : '○'} Codegraph
+            </span>
+            <span className={toonOS?.checks?.claudeMD ? 'text-emerald-400' : ''}>
+              {toonOS?.checks?.claudeMD ? '●' : '○'} CLAUDE.md
+            </span>
+          </div>
+          {toonOS?.initialized && (
+            <a href="/settings/dashboard" className="inline-flex items-center gap-1 mt-3 text-[12px]" style={{ color: 'var(--ws-accent)' }}>
+              <LayoutDashboard size={12} /> View Dashboard <ChevronRight size={12} />
+            </a>
+          )}
+        </Card>
 
         {/* Preferences */}
         <Card className="p-4">

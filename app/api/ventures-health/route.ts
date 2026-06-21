@@ -1,8 +1,9 @@
-// app/api/ventures-health/route.ts — v4 local-first
-// Reads from local .toon/ directory (created by npx toongine init)
-// Falls back to Supabase if credentials are configured
+// app/api/ventures-health/route.ts — v5
+// OS agents (no venture param) → Settings page
+// Venture agents (?venture=novizio) → Agents tab in sidebar
 
 import { NextRequest, NextResponse } from 'next/server'
+import { PROJECTS, ProjectConfig } from '@/lib/projects'
 import fs from 'fs'
 import path from 'path'
 
@@ -29,7 +30,7 @@ function countAgents(agentsDir: string): { total: number; departments: Record<st
         if (fs.statSync(agentPath).isDirectory()) {
           count++
           const memory = safeRead(path.join(agentPath, 'MEMORY.md'))
-          const skills = fs.readdirSync(agentPath).filter(f => f.endsWith('.md'))
+          const skills = fs.readdirSync(agentPath).filter(f => f.endsWith('.md') || f === 'SKILL.md')
           agents.push({
             name: agent,
             role: dept,
@@ -40,77 +41,175 @@ function countAgents(agentsDir: string): { total: number; departments: Record<st
           })
         }
       }
-      departments[dept] = count
+      if (count > 0) departments[dept] = count
     }
   } catch {}
   return { total: agents.length, departments, agents }
 }
 
-function getGraphStats(cwd: string) {
-  const graphifyReport = safeRead(path.join(cwd, '.toon', 'graphify', 'GRAPH_REPORT.md'))
-  const codegraphReport = safeRead(path.join(cwd, '.toon', 'codegraph', 'CODEGRAPH_REPORT.md'))
+function readLocalToon(projectPath: string) {
+  const config = safeJson(path.join(projectPath, '.toon', 'config.json'))
+  const toongineConfig = safeJson(path.join(projectPath, 'toongine.config.json'))
+  const venture = config?.venture || toongineConfig?.venture || path.basename(projectPath)
+  const agentsDir = path.join(projectPath, '.toon', 'agents')
+  const { total, departments, agents } = countAgents(agentsDir)
+  const graphify = safeRead(path.join(projectPath, '.toon', 'graphify', 'GRAPH_REPORT.md'))
+  const codegraph = safeRead(path.join(projectPath, '.toon', 'codegraph', 'CODEGRAPH_REPORT.md'))
+  const hasClaudeMD = !!safeRead(path.join(projectPath, 'CLAUDE.md'))
   return {
-    graphifySize: graphifyReport?.length || 0,
-    codegraphSize: codegraphReport?.length || 0,
-    hasGraphify: !!graphifyReport,
-    hasCodegraph: !!codegraphReport,
+    venture,
+    agentsTotal: total,
+    departments,
+    agents,
+    graphs: {
+      graphify: graphify ? `${(graphify.length / 1024).toFixed(1)} KB` : 'not built',
+      codegraph: codegraph ? `${(codegraph.length / 1024).toFixed(1)} KB` : 'not built',
+    },
+    checks: {
+      agents: total > 0,
+      graphify: !!graphify,
+      codegraph: !!codegraph,
+      claudeMD: hasClaudeMD,
+    },
+  }
+}
+
+async function fetchGitHubToon(owner: string, repo: string, branch: string) {
+  const token = process.env.GITHUB_TOKEN || process.env.YVON_GITHUB_TOKEN
+  const headers: Record<string, string> = { Accept: 'application/vnd.github.v3+json' }
+  if (token) headers.Authorization = `Bearer ${token}`
+
+  try {
+    // Fetch .toon/config.json from venture repo
+    const configRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/.toon/config.json?ref=${branch}`,
+      { headers }
+    )
+    const configData = configRes.ok ? await configRes.json() : null
+    const config = configData?.content
+      ? JSON.parse(Buffer.from(configData.content, 'base64').toString())
+      : null
+
+    // Fetch agent tree
+    const treeRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`,
+      { headers }
+    )
+    const treeData = treeRes.ok ? await treeRes.json() : null
+    const agentPaths = (treeData?.tree || [])
+      .filter((t: any) => t.path.startsWith('.toon/agents/') && t.path.endsWith('MEMORY.md'))
+      .map((t: any) => t.path)
+
+    const departments: Record<string, number> = {}
+    const agents: any[] = []
+    const seen = new Set<string>()
+    for (const p of agentPaths) {
+      const parts = p.split('/')
+      if (parts.length >= 4) {
+        const dept = parts[2]
+        const agent = parts[3]
+        const key = `${dept}/${agent}`
+        if (!seen.has(key)) {
+          seen.add(key)
+          departments[dept] = (departments[dept] || 0) + 1
+          agents.push({ name: agent, role: dept, department: dept, status: 'active', skillsCount: 0, memoryHealth: 0 })
+        }
+      }
+    }
+
+    return {
+      venture: repo,
+      agentsTotal: agents.length,
+      departments,
+      agents,
+      graphs: { graphify: 'unknown', codegraph: 'unknown' },
+      checks: { agents: agents.length > 0, graphify: false, codegraph: false, claudeMD: false },
+      source: 'github',
+    }
+  } catch {
+    return null
   }
 }
 
 export async function GET(req: NextRequest) {
-  const cwd = process.cwd()
-  const config = safeJson(path.join(cwd, '.toon', 'config.json'))
-  const toongineConfig = safeJson(path.join(cwd, 'toongine.config.json'))
+  const ventureParam = req.nextUrl.searchParams.get('venture') || ''
 
-  const venture = config?.venture || toongineConfig?.venture || 'yvon'
-  const agentsDir = path.join(cwd, '.toon', 'agents')
-  const { total: agentsTotal, departments, agents } = countAgents(agentsDir)
-  const graphs = getGraphStats(cwd)
+  // ── OS Agents (no venture param) → Settings page ──────────────────────
+  if (!ventureParam) {
+    const cwd = process.cwd()
+    const local = readLocalToon(cwd)
+    return NextResponse.json({
+      initialized: local.agentsTotal > 0,
+      venture: 'YVON OS',
+      source: 'local',
+      kpi: {
+        score: 85,
+        status: 'healthy',
+        tokensTotal: 0, costTotal: 0, sessionsTotal: 0,
+        avgTokensPerCall: 0, avgCostPerCall: 0,
+        agentsActive: local.agentsTotal,
+        agentsTotal: local.agentsTotal,
+        lastCheck: new Date().toISOString(),
+      },
+      ...local,
+      hourlyBurn: [], leaderboard: [], issues: { total: 0, critical: 0, high: 0, open: 0 },
+      providers: [], activity: [],
+    })
+  }
 
-  const hasClaudeMD = !!safeRead(path.join(cwd, 'CLAUDE.md'))
-  const hasHermes = !!safeRead(path.join(require('os').homedir(), '.hermes', 'memories', 'USER.md'))
+  // ── Venture Agents → Agents tab ───────────────────────────────────────
+  const project = PROJECTS.find(p => p.id === ventureParam)
+  if (!project) {
+    return NextResponse.json({ initialized: false, error: `Unknown venture: ${ventureParam}` })
+  }
 
-  // Try Supabase for live data
-  let supabaseData = null
-  try {
-    const { supabase } = await import('@/lib/supabase')
-    const { data } = await supabase.from('toongine_activity_log').select('*').limit(10)
-    if (data?.length) supabaseData = data
-  } catch {}
+  // Try local path first
+  if (project.localPath && fs.existsSync(project.localPath)) {
+    const local = readLocalToon(project.localPath)
+    return NextResponse.json({
+      initialized: local.agentsTotal > 0,
+      venture: ventureParam,
+      source: 'local',
+      kpi: {
+        score: 85, status: 'healthy',
+        tokensTotal: 0, costTotal: 0, sessionsTotal: 0,
+        avgTokensPerCall: 0, avgCostPerCall: 0,
+        agentsActive: local.agentsTotal,
+        agentsTotal: local.agentsTotal,
+        lastCheck: new Date().toISOString(),
+      },
+      ...local,
+      hourlyBurn: [], leaderboard: [], issues: { total: 0, critical: 0, high: 0, open: 0 },
+      providers: [], activity: [],
+    })
+  }
+
+  // Fall back to GitHub API
+  const [owner, repo] = project.githubRepo.split('/')
+  const github = await fetchGitHubToon(owner, repo, project.mainBranch)
+  if (github) {
+    return NextResponse.json({
+      initialized: true,
+      venture: ventureParam,
+      source: 'github',
+      kpi: {
+        score: 85, status: 'healthy',
+        tokensTotal: 0, costTotal: 0, sessionsTotal: 0,
+        avgTokensPerCall: 0, avgCostPerCall: 0,
+        agentsActive: github.agentsTotal,
+        agentsTotal: github.agentsTotal,
+        lastCheck: new Date().toISOString(),
+      },
+      ...github,
+      hourlyBurn: [], leaderboard: [], issues: { total: 0, critical: 0, high: 0, open: 0 },
+      providers: [], activity: [],
+    })
+  }
 
   return NextResponse.json({
-    initialized: true,
-    venture,
-    source: supabaseData ? 'supabase' : 'local',
-    kpi: {
-      score: 85,
-      status: 'healthy',
-      tokensTotal: supabaseData ? (supabaseData as any).reduce((s: number, a: any) => s + (a.tokens_in || 0) + (a.tokens_out || 0), 0) : 0,
-      costTotal: 0,
-      sessionsTotal: supabaseData?.length || 0,
-      avgTokensPerCall: 0,
-      avgCostPerCall: 0,
-      agentsActive: agentsTotal,
-      agentsTotal,
-      lastCheck: new Date().toISOString(),
-    },
-    hourlyBurn: [],
-    leaderboard: [],
-    agents,
-    departments: Object.entries(departments).map(([name, agentCount]) => ({ name, agentCount })),
-    issues: { total: 0, critical: 0, high: 0, open: 0 },
-    providers: [],
-    activity: [],
-    graphs: {
-      graphify: graphs.hasGraphify ? `${(graphs.graphifySize / 1024).toFixed(1)} KB` : 'not built',
-      codegraph: graphs.hasCodegraph ? `${(graphs.codegraphSize / 1024).toFixed(1)} KB` : 'not built',
-    },
-    checks: {
-      agents: agentsTotal > 0,
-      graphify: graphs.hasGraphify,
-      codegraph: graphs.hasCodegraph,
-      claudeMD: hasClaudeMD,
-      hermes: hasHermes,
-    },
+    initialized: false,
+    venture: ventureParam,
+    message: `Run "npx toongine init" inside the ${project.name} repo to activate agents.`,
+    kpi: null,
   })
 }
