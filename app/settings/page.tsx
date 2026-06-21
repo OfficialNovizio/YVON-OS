@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { PageHeader, StatusBadge, Card } from '@/components/ui'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight, LayoutDashboard, CheckCircle2, Bot, GitBranch } from 'lucide-react'
+import { Bell, Key, Palette, User, Server, Cpu, Database, Loader2, ToggleLeft, ToggleRight, ChevronRight, LayoutDashboard, Bot, GitBranch, Brain, Activity, CheckCircle2 } from 'lucide-react'
 
 interface SystemInfo {
   systemHealth: {
@@ -20,7 +20,10 @@ interface ToonOSData {
   departments: { name: string; agentCount: number }[]
   checks: { agents: boolean; graphify: boolean; codegraph: boolean; claudeMD: boolean }
   graphs: { graphify: string; codegraph: string }
+  agents: { name: string; role: string; department: string; status: string; skillsCount: number; memoryHealth: number }[]
 }
+
+type OSTab = 'overview' | 'agents' | 'health'
 
 const LS = {
   notifications: 'yvon_settings_notifications',
@@ -33,6 +36,27 @@ function load(k: string, fb: boolean): boolean {
 }
 function save(k: string, v: boolean) { try { localStorage.setItem(k, String(v)) } catch {} }
 
+function OSTabs({ tab, onChange }: { tab: OSTab; onChange: (t: OSTab) => void }) {
+  const items: { id: OSTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'overview', label: 'Overview', icon: <LayoutDashboard size={13} /> },
+    { id: 'agents', label: 'Agents', icon: <Bot size={13} /> },
+    { id: 'health', label: 'Health', icon: <Activity size={13} /> },
+  ]
+  return (
+    <div className="flex gap-1 border-b border-white/[0.06] mb-4">
+      {items.map(t => (
+        <button key={t.id} onClick={() => onChange(t.id)}
+          className={`flex items-center gap-1.5 px-3 py-2 text-[12px] font-semibold border-b-2 transition ${
+            tab === t.id ? 'border-current' : 'border-transparent text-on-surface-variant hover:text-on-surface'
+          }`}
+          style={tab === t.id ? { borderColor: 'var(--ws-accent)', color: 'var(--ws-accent)' } : {}}>
+          {t.icon} {t.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function SettingsPage() {
   const { workspace } = useWorkspace()
   const [info, setInfo] = useState<SystemInfo | null>(null)
@@ -43,6 +67,7 @@ export default function SettingsPage() {
   const [darkMode, setDarkModeState] = useState(true)
   const [compactSidebar, setCompactSidebarState] = useState(false)
   const [toonOS, setToonOS] = useState<ToonOSData | null>(null)
+  const [osTab, setOsTab] = useState<OSTab>('overview')
 
   useEffect(() => {
     setNotificationsState(load(LS.notifications, true))
@@ -63,7 +88,6 @@ export default function SettingsPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  // Fetch ToonGine OS agents
   useEffect(() => {
     fetch('/api/ventures-health')
       .then(r => r.json())
@@ -95,8 +119,9 @@ export default function SettingsPage() {
     <div>
       <PageHeader title="Settings" subtitle="System preferences, API connections, and profile." />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Venture Profile — clickable, opens detail page */}
+      {/* ── Card Grid ──────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+        {/* Venture Profile */}
         <Link href="/settings/venture">
           <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group">
             <div className="flex items-center gap-2 mb-3">
@@ -110,7 +135,7 @@ export default function SettingsPage() {
           </Card>
         </Link>
 
-        {/* YVON Dashboard — moved to top for visibility */}
+        {/* YVON Dashboard */}
         <Link href="/settings/dashboard">
           <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group border-l-2 border-l-[var(--ws-accent)]">
             <div className="flex items-center gap-2 mb-3">
@@ -123,36 +148,6 @@ export default function SettingsPage() {
             <StatusBadge tone="green">Active</StatusBadge>
           </Card>
         </Link>
-
-        {/* ToonGine OS Agents */}
-        <Card className="p-4 border-l-2 border-l-emerald-400/60">
-          <div className="flex items-center gap-2 mb-3">
-            <Bot size={16} style={{ color: 'var(--ws-accent)' }} />
-            <h3 className="text-sm font-semibold text-on-surface">ToonGine OS</h3>
-            <StatusBadge tone={toonOS?.initialized ? 'green' : 'yellow'}>
-              {toonOS?.initialized ? 'Active' : 'Init needed'}
-            </StatusBadge>
-          </div>
-          <p className="text-[13px] text-on-surface">
-            {toonOS?.agentsTotal ?? '—'} agents · {toonOS?.departments?.length ?? 0} departments
-          </p>
-          <div className="flex gap-2 mt-2 text-[11px] text-on-surface-variant/60">
-            <span className={toonOS?.checks?.graphify ? 'text-emerald-400' : ''}>
-              {toonOS?.checks?.graphify ? '●' : '○'} Graphify
-            </span>
-            <span className={toonOS?.checks?.codegraph ? 'text-emerald-400' : ''}>
-              {toonOS?.checks?.codegraph ? '●' : '○'} Codegraph
-            </span>
-            <span className={toonOS?.checks?.claudeMD ? 'text-emerald-400' : ''}>
-              {toonOS?.checks?.claudeMD ? '●' : '○'} CLAUDE.md
-            </span>
-          </div>
-          {toonOS?.initialized && (
-            <a href="/settings/dashboard" className="inline-flex items-center gap-1 mt-3 text-[12px]" style={{ color: 'var(--ws-accent)' }}>
-              <LayoutDashboard size={12} /> View Dashboard <ChevronRight size={12} />
-            </a>
-          )}
-        </Card>
 
         {/* Preferences */}
         <Card className="p-4">
@@ -195,7 +190,7 @@ export default function SettingsPage() {
           </div>
         </Card>
 
-        {/* Theme */}
+        {/* Active Venture */}
         <Card className="p-4">
           <div className="flex items-center gap-2 mb-3"><Palette size={16} style={{ color: 'var(--ws-accent)' }} /><h3 className="text-sm font-semibold text-on-surface">Active Venture</h3></div>
           <p className="text-[13px] text-on-surface">{workspace.name}</p>
@@ -214,8 +209,135 @@ export default function SettingsPage() {
           <StatusBadge tone="green">Production</StatusBadge>
         </Card>
       </div>
+
+      {/* ── ToonGine OS Section ─────────────────────────────────────────── */}
+      <div className="border-t border-white/[0.06] pt-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: 'var(--ws-accent-soft)' }}>
+            <Bot size={20} style={{ color: 'var(--ws-accent)' }} />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-on-surface">ToonGine OS</h2>
+            <p className="text-[12px] text-on-surface-variant">
+              {toonOS?.initialized
+                ? `${toonOS.agentsTotal} agents · ${toonOS.departments.length} departments`
+                : 'Not initialized — run npx toongine init'}
+            </p>
+          </div>
+          <StatusBadge tone={toonOS?.initialized ? 'green' : 'yellow'}>
+            {toonOS?.initialized ? 'Active' : 'Init needed'}
+          </StatusBadge>
+        </div>
+
+        <OSTabs tab={osTab} onChange={setOsTab} />
+
+        {/* OS Tab: Overview */}
+        {osTab === 'overview' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <Card className="p-4 text-center">
+              <Bot size={20} className="mx-auto mb-2" style={{ color: 'var(--ws-accent)' }} />
+              <div className="text-2xl font-bold text-on-surface">{toonOS?.agentsTotal ?? '—'}</div>
+              <div className="text-[11px] text-on-surface-variant mt-1">Agents Deployed</div>
+            </Card>
+            <Card className="p-4 text-center">
+              <GitBranch size={20} className="mx-auto mb-2" style={{ color: 'var(--ws-accent)' }} />
+              <div className="text-2xl font-bold text-on-surface">{toonOS?.departments?.length ?? '—'}</div>
+              <div className="text-[11px] text-on-surface-variant mt-1">Departments</div>
+            </Card>
+            <Card className="p-4 text-center">
+              <Brain size={20} className="mx-auto mb-2 text-emerald-400" />
+              <div className="text-2xl font-bold text-on-surface">{toonOS?.checks?.graphify ? '✓' : '—'}</div>
+              <div className="text-[11px] text-on-surface-variant mt-1">Graphify</div>
+            </Card>
+            <Card className="p-4 text-center">
+              <Activity size={20} className="mx-auto mb-2 text-blue-400" />
+              <div className="text-2xl font-bold text-on-surface">{toonOS?.checks?.codegraph ? '✓' : '—'}</div>
+              <div className="text-[11px] text-on-surface-variant mt-1">Codegraph</div>
+            </Card>
+          </div>
+        )}
+
+        {/* OS Tab: Agents */}
+        {osTab === 'agents' && (
+          <div className="space-y-2">
+            {toonOS?.agents && toonOS.agents.length > 0 ? toonOS.agents.map((a, i) => (
+              <Card key={`${a.name}-${i}`} className="p-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] flex items-center justify-center text-[10px] font-bold text-on-surface-variant">
+                    {a.name.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[13px] text-on-surface font-medium">{a.name}</div>
+                    <div className="text-[11px] text-on-surface-variant/50">{a.role} · {a.department}</div>
+                  </div>
+                  <div className="flex items-center gap-3 text-right">
+                    <div className="text-[11px] text-on-surface-variant/50">
+                      <span className="text-on-surface-variant">{a.skillsCount} skills</span>
+                    </div>
+                    <StatusBadge tone={a.status === 'active' ? 'green' : 'yellow'}>{a.status}</StatusBadge>
+                  </div>
+                </div>
+              </Card>
+            )) : (
+              <Card className="p-8 text-center">
+                <Bot size={28} className="text-on-surface-variant/20 mx-auto mb-3" />
+                <p className="text-[13px] text-on-surface-variant/60">
+                  {toonOS?.initialized ? 'Agent data loading...' : 'Run npx toongine init to deploy agents'}
+                </p>
+              </Card>
+            )}
+          </div>
+        )}
+
+        {/* OS Tab: Health */}
+        {osTab === 'health' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Card className="p-4">
+              <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Agent Checks</h3>
+              <div className="space-y-2.5">
+                {[
+                  { label: 'Agents Directory', ok: toonOS?.checks?.agents },
+                  { label: 'CLAUDE.md Present', ok: toonOS?.checks?.claudeMD },
+                  { label: 'Graphify Built', ok: toonOS?.checks?.graphify },
+                  { label: 'Codegraph Built', ok: toonOS?.checks?.codegraph },
+                ].map((check, i) => (
+                  <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-white/[0.02]">
+                    <span className="text-[13px] text-on-surface-variant">{check.label}</span>
+                    {check.ok ? (
+                      <CheckCircle2 size={16} className="text-emerald-400" />
+                    ) : (
+                      <span className="w-4 h-4 rounded-full border border-white/10" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Card>
+            <Card className="p-4">
+              <h3 className="text-[11px] text-on-surface-variant uppercase tracking-wider mb-3">Graph Sizes</h3>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-[12px] mb-1">
+                    <span className="text-on-surface-variant">Graphify</span>
+                    <span className="text-on-surface font-mono">{toonOS?.graphs?.graphify || 'not built'}</span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+                    <div className="h-full rounded-full bg-emerald-400/60" style={{ width: toonOS?.checks?.graphify ? '100%' : '0%' }} />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-[12px] mb-1">
+                    <span className="text-on-surface-variant">Codegraph</span>
+                    <span className="text-on-surface font-mono">{toonOS?.graphs?.codegraph || 'not built'}</span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-white/[0.04] overflow-hidden">
+                    <div className="h-full rounded-full bg-blue-400/60" style={{ width: toonOS?.checks?.codegraph ? '100%' : '0%' }} />
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
-
-// ─── 
