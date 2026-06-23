@@ -9,8 +9,6 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-// toongine removed — TOON compression not available
-const toon = { api: null as any }
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -195,16 +193,11 @@ export async function GET(request: Request): Promise<Response> {
       ventures,
     }
 
-    // TOON response format — auto-injected by ToonGine v1.5.4
     try {
       const acceptHeader = request.headers.get('accept') || ''
-      if (acceptHeader.includes('application/toon') || acceptHeader.includes('text/toon')) {
         const items = [data as unknown as Record<string, unknown>]
-        const toonResult = toon.api ? toon.api(items, 'dashboard') : JSON.stringify(data)
-        return new Response(toonResult, { headers: { 'Content-Type': 'application/toon' } })
       }
     } catch {
-      // TOON not available — fall through to JSON
     }
 
     return Response.json(data)

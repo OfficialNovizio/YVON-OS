@@ -55,11 +55,7 @@ const VENTURES: Record<string, { workdir: string; name: string }> = {
 async function fingerprintSources(workdir: string): Promise<string> {
   const hash = createHash('sha256')
   const sources = [
-    '.toon/docs/CONSTITUTION.toon',
-    '.toon/agents/CEO/marcus/MEMORY.md',
-    '.toon/graph/unified.db',
     'docs/',
-    '.toon/docs/',
   ]
   for (const src of sources) {
     const full = join(workdir, src)
@@ -135,7 +131,6 @@ export async function sendChatMessage(
   } else {
     // Context unchanged — no re-injection needed
     // Check for delta (files changed since last message)
-    const deltaSources = ['.toon/graph/unified.db', '.toon/docs/']
     for (const src of deltaSources) {
       const full = join(session.workdir, src)
       try {
@@ -187,15 +182,12 @@ export async function sendChatMessage(
 async function buildSystemContext(workdir: string, ventureName: string): Promise<CachedContext> {
   let constitution = '', memory = '', graph = ''
 
-  try { constitution = (await fs.readFile(join(workdir, '.toon/docs/CONSTITUTION.toon'), 'utf-8')).slice(0, 1500) }
   catch { try { constitution = (await fs.readFile(join(workdir, 'docs/CONSTITUTION.md'), 'utf-8')).slice(0, 1500) } catch {} }
 
-  try { memory = (await fs.readFile(join(workdir, '.toon/agents/CEO/marcus/MEMORY.md'), 'utf-8')).slice(0, 1000) } catch {}
 
   try {
     const { execSync } = require('child_process')
     graph = execSync(
-      `python3 -c "import sqlite3,json; db=sqlite3.connect('${join(workdir, '.toon/graph/unified.db').replace(/'/g, "\\'")}'); n=db.execute('SELECT COUNT(*) FROM unified_nodes').fetchone()[0]; e=db.execute('SELECT COUNT(*) FROM unified_edges').fetchone()[0]; db.close(); print(f'Graph: {n} nodes, {e} edges')"`,
       { encoding: 'utf-8', timeout: 3000 }
     ).trim()
   } catch { graph = 'Graph unavailable' }

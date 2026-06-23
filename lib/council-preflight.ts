@@ -326,20 +326,17 @@ export async function buildContextObject(
     const { join } = require('path')
 
     // Constitution
-    const constPath = join(session.workdir, '.toon/docs/CONSTITUTION.toon')
     if (existsSync(constPath)) {
       constitutionChars = readFileSync(constPath, 'utf-8').length
     }
 
     // Agent Memory
-    const memPath = join(session.workdir, '.toon/agents/CEO/marcus/MEMORY.md')
     if (existsSync(memPath)) {
       memoryChars = readFileSync(memPath, 'utf-8').length
       memoryAgent = 'marcus-ceo'
     }
 
     // Graph
-    const graphPath = join(session.workdir, '.toon/graph/unified.db')
     if (existsSync(graphPath)) {
       try {
         const result = execSync(
@@ -360,7 +357,6 @@ db.close()
     }
 
     // TOON Docs
-    const docsPath = join(session.workdir, '.toon/docs')
     if (existsSync(docsPath)) {
       try {
         const files = readdirSync(docsPath).filter((f: string) => f.endsWith('.toon') || f.endsWith('.md'))

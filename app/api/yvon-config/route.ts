@@ -9,7 +9,7 @@ const DEFAULTS = {
   dashboard: { showInSettings: true, autoStartOnDev: true, port: 4200, theme: 'dark' },
   cie: { enabled: true, contextCap: 2500, adaptiveInjection: true },
   toon: { enabled: true, bidirectional: true },
-  modules: ['graphify', 'codegraph', 'code-review-graph'],
+  modules: [],
 }
 
 function loadConfig() {

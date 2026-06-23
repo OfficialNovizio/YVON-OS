@@ -108,33 +108,6 @@ export default function SettingsPage() {
           </Card>
         </Link>
 
-        {/* ToonGine OS — opens dedicated page */}
-        <Link href="/settings/toongine">
-          <Card className="p-4 cursor-pointer hover:bg-white/[0.04] transition group border-l-2 border-l-emerald-400/60">
-            <div className="flex items-center gap-2 mb-3">
-              <Bot size={16} style={{ color: 'var(--ws-accent)' }} />
-              <h3 className="text-sm font-semibold text-on-surface flex-1">ToonGine OS</h3>
-              <ChevronRight size={14} className="text-on-surface-variant/30 group-hover:text-on-surface-variant transition" />
-            </div>
-            <p className="text-[13px] text-on-surface">
-              {toonOS?.initialized ? `${toonOS.agentsTotal} agents · ${toonOS.departments.length} departments` : 'Not initialized'}
-            </p>
-            <div className="flex gap-2 mt-2 text-[11px] text-on-surface-variant/60">
-              <span className={toonOS?.checks?.graphify ? 'text-emerald-400' : ''}>
-                {toonOS?.checks?.graphify ? '●' : '○'} Graphify
-              </span>
-              <span className={toonOS?.checks?.codegraph ? 'text-emerald-400' : ''}>
-                {toonOS?.checks?.codegraph ? '●' : '○'} Codegraph
-              </span>
-              <span className={toonOS?.checks?.claudeMD ? 'text-emerald-400' : ''}>
-                {toonOS?.checks?.claudeMD ? '●' : '○'} CLAUDE.md
-              </span>
-            </div>
-            <StatusBadge tone={toonOS?.initialized ? 'green' : 'yellow'}>
-              {toonOS?.initialized ? 'Active' : 'Init needed'}
-            </StatusBadge>
-          </Card>
-        </Link>
 
         {/* YVON Dashboard */}
         <Link href="/settings/dashboard">

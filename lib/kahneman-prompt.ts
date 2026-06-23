@@ -3,7 +3,6 @@
  * Condensed Kahneman 8-layer psychology framework (~800 tokens).
  * Used by the Content Intelligence pipeline to audit each proposal.
  *
- * Full source: .toon/agents/Psychology/Daniel_Kahneman/skills/02-kahneman.md
  * This is a compressed version for runtime use — never edit this without
  * cross-referencing the canonical skill file.
  */

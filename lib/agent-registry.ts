@@ -1,6 +1,4 @@
 // lib/agent-registry.ts — Agent data embedded at build time for Vercel
-// During `npm run build`, reads .toon/agents/ and embeds the full roster.
-// On Vercel (no .toon/), falls back to this build-time snapshot.
 //
 // Rebuild snapshot: npx tsx lib/agent-registry.ts
 
@@ -37,18 +35,15 @@ const EMBEDDED: AgentRegistry = {"agents":[{"id":"marcus-ceo","name":"Marcus","r
 
 // ═══════════════════════════════════════════════════════════════════
 
-// Runtime accessor — uses embedded snapshot (works on Vercel with no .toon/)
 export function getAgentRegistry(): AgentRegistry {
   return EMBEDDED as unknown as AgentRegistry
 }
 
-// CLI: regenerate the embedded snapshot from .toon/agents/
 if (require.main === module) {
   const fs = require('fs')
   const agentDeptPath = join(process.cwd(), '.toon', 'agents')
 
   if (!existsSync(agentDeptPath)) {
-    console.log('  ⚠️  No .toon/agents/ found — agent registry snapshot not updated')
     process.exit(0)
   }
 

@@ -76,16 +76,8 @@ export interface HermesAgentResult {
 // ─── Graph Memory Loader ──────────────────────────────────────────────────────
 
 async function loadGraphContext(workdir: string): Promise<string> {
-  const codegraphPath = join(workdir, '.toon/codegraph', 'CODEGRAPH_REPORT.md')
-  try {
-    const content = await fs.readFile(codegraphPath, 'utf-8')
-    // Take the topology summary — the most actionable part
-    const sections = content.split(/\n## /)
-    const topology = sections.find(s => s.startsWith('Topology')) ?? sections[0] ?? ''
-    return `\n\n## Codebase Graph Memory\n${topology.slice(0, 3000)}\n\nBefore editing any symbol, use grep/search to find ALL references.`
-  } catch {
-    return ''
-  }
+  // TOON graph context — will be available after npx toongine init
+  return ''
 }
 
 // ─── Main Spawn Function ──────────────────────────────────────────────────────

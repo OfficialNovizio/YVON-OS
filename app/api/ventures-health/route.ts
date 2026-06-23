@@ -49,8 +49,6 @@ function countAgents(agentsDir: string): { total: number; departments: Record<st
 
 function readLocalToon(projectPath: string) {
   const config = safeJson(path.join(projectPath, '.toon', 'config.json'))
-  const toongineConfig = safeJson(path.join(projectPath, 'toongine.config.json'))
-  const venture = config?.venture || toongineConfig?.venture || path.basename(projectPath)
   const agentsDir = path.join(projectPath, '.toon', 'agents')
   const { total, departments, agents } = countAgents(agentsDir)
   const graphify = safeRead(path.join(projectPath, '.toon', 'graphify', 'GRAPH_REPORT.md'))
@@ -80,9 +78,7 @@ async function fetchGitHubToon(owner: string, repo: string, branch: string) {
   if (token) headers.Authorization = `Bearer ${token}`
 
   try {
-    // Fetch .toon/config.json from venture repo
     const configRes = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/.toon/config.json?ref=${branch}`,
       { headers }
     )
     const configData = configRes.ok ? await configRes.json() : null
@@ -97,7 +93,6 @@ async function fetchGitHubToon(owner: string, repo: string, branch: string) {
     )
     const treeData = treeRes.ok ? await treeRes.json() : null
     const agentPaths = (treeData?.tree || [])
-      .filter((t: any) => t.path.startsWith('.toon/agents/') && t.path.endsWith('MEMORY.md'))
       .map((t: any) => t.path)
 
     const departments: Record<string, number> = {}
@@ -209,7 +204,6 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     initialized: false,
     venture: ventureParam,
-    message: `Run "npx toongine init" inside the ${project.name} repo to activate agents.`,
     kpi: null,
   })
 }

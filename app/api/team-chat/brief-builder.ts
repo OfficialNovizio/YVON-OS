@@ -64,10 +64,6 @@ export interface OsContext {
 // This is structural enforcement. Like breathing for humans — not optional.
 
 const MANDATORY_SKILL_PATHS = [
-  '.toon/agents/shared/skills/coding/01-karpathy.md',
-  '.toon/agents/shared/skills/agents/01-memory.md',
-  '.toon/agents/shared/skills/operating-system/session-protocol/SKILL.md',
-  '.toon/agents/shared/skills/operating-system/reflection-protocol/SKILL.md',
   'PROJECT.md',  // ← Living project knowledge base — structure, workflow, ventures, rules
 ]
 

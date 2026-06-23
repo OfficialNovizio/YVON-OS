@@ -1,5 +1,5 @@
 // app/api/agent-ops/route.ts — Agent roster, skills, memory health, activity
-// Reads from .toon/ filesystem for roster + skills, ToonGine Supabase for live data
+// Reads from Supabase for live agent data
 // Falls back to embedded agent registry when offline
 
 import { NextResponse } from 'next/server'
@@ -104,14 +104,11 @@ function scanAgents(): { agents: AgentOpsAgent[]; departments: { name: string; a
 
 export async function GET(): Promise<Response> {
   try {
-    // Layer 1: Filesystem (.toon/agents/)
     let { agents, departments, skillsTotal } = scanAgents()
 
-    // Layer 2: Supabase (live agent data from toongine)
     if (agents.length === 0) {
       try {
         const { data: toonAgents } = await supabase
-          .from('toongine_hermes_agents')
           .select('*')
           .order('last_active', { ascending: false })
         
@@ -163,7 +160,6 @@ export async function GET(): Promise<Response> {
     let activity: ActivityEntry[] = []
     try {
       const { data: toonActivity } = await supabase
-        .from('toongine_activity_log')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(20)
