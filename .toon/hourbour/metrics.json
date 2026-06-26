@@ -1,0 +1,49 @@
+{
+  "tokens_total": 1317879,
+  "cost_total": 0.298112,
+  "sessions": 4,
+  "agents": {
+    "kai": {
+      "tokens": 795821,
+      "cost": 0.14494049,
+      "sessions": 1
+    },
+    "quinn": {
+      "tokens": 294300,
+      "cost": 0.10096814,
+      "sessions": 1
+    },
+    "rio": {
+      "tokens": 227758,
+      "cost": 0.0522036,
+      "sessions": 1
+    }
+  },
+  "providers": {
+    "deepseek": {
+      "tokens": 1317879,
+      "cost": 0.29811223
+    }
+  },
+  "hourly": [
+    {
+      "hour": 0,
+      "tokens": 795821,
+      "cost": 0.14494049,
+      "sessions": 1
+    },
+    {
+      "hour": 1,
+      "tokens": 227758,
+      "cost": 0.0522036,
+      "sessions": 1
+    },
+    {
+      "hour": 2,
+      "tokens": 294300,
+      "cost": 0.10096814,
+      "sessions": 1
+    }
+  ],
+  "last_updated": "2026-06-26T16:21:55.068862+00:00"
+}
