@@ -1,203 +1,151 @@
-// app/api/ventures-health/route.ts — v5
-// OS agents (no venture param) → Settings page
-// Venture agents (?venture=novizio) → Agents tab in sidebar
+// app/api/ventures-health/route.ts — v6
+// OS agents (no venture param) → aggregate all projects from VPS
+// Venture agents (?venture=novizio) → per-project from VPS
+// VPS: http://2.25.189.22:4201 — real metrics from Hermes state.db
 
 import { NextRequest, NextResponse } from 'next/server'
-import { PROJECTS, ProjectConfig } from '@/lib/projects'
-import fs from 'fs'
-import path from 'path'
 
 export const dynamic = 'force-dynamic'
 
-function safeRead(filePath: string): string | null {
-  try { return fs.readFileSync(filePath, 'utf-8') } catch { return null }
+const VPS_URL = process.env.VPS_METRICS_URL || 'http://2.25.189.22:4201'
+
+interface VpsMetrics {
+  tokens_total: number; cost_total: number; sessions: number
+  agents: Record<string, { tokens: number; cost: number; sessions: number }>
+  providers: Record<string, { tokens: number; cost: number }>
+  hourly: { hour: number; tokens: number; cost: number; sessions: number }[]
+  last_updated?: string
+  projects?: { name: string; tokens: number; cost: number; sessions: number }[]
 }
 
-function safeJson(filePath: string): any | null {
-  try { return JSON.parse(safeRead(filePath) || '') } catch { return null }
+interface VpsAgent {
+  name: string; department: string
+  memory_size: number; memory_updated: string | null
 }
 
-function countAgents(agentsDir: string): { total: number; departments: Record<string, number>; agents: any[] } {
-  const departments: Record<string, number> = {}
-  const agents: any[] = []
+async function vpsGet(path: string): Promise<any | null> {
   try {
-    for (const dept of fs.readdirSync(agentsDir)) {
-      const deptPath = path.join(agentsDir, dept)
-      if (!fs.statSync(deptPath).isDirectory()) continue
-      let count = 0
-      for (const agent of fs.readdirSync(deptPath)) {
-        const agentPath = path.join(deptPath, agent)
-        if (fs.statSync(agentPath).isDirectory()) {
-          count++
-          const memory = safeRead(path.join(agentPath, 'MEMORY.md'))
-          const skills = fs.readdirSync(agentPath).filter(f => f.endsWith('.md') || f === 'SKILL.md')
-          agents.push({
-            name: agent,
-            role: dept,
-            department: dept,
-            status: 'active',
-            skillsCount: skills.length,
-            memoryHealth: memory ? Math.min(100, Math.round(memory.length / 100)) : 0,
-          })
-        }
-      }
-      if (count > 0) departments[dept] = count
-    }
-  } catch {}
-  return { total: agents.length, departments, agents }
-}
-
-function readLocalToon(projectPath: string) {
-  const config = safeJson(path.join(projectPath, '.toon', 'config.json'))
-  const agentsDir = path.join(projectPath, '.toon', 'agents')
-  const { total, departments, agents } = countAgents(agentsDir)
-  const graphify = safeRead(path.join(projectPath, '.toon', 'graphify', 'GRAPH_REPORT.md'))
-  const codegraph = safeRead(path.join(projectPath, '.toon', 'codegraph', 'CODEGRAPH_REPORT.md'))
-  const hasClaudeMD = !!safeRead(path.join(projectPath, 'CLAUDE.md'))
-  return {
-    venture,
-    agentsTotal: total,
-    departments,
-    agents,
-    graphs: {
-      graphify: graphify ? `${(graphify.length / 1024).toFixed(1)} KB` : 'not built',
-      codegraph: codegraph ? `${(codegraph.length / 1024).toFixed(1)} KB` : 'not built',
-    },
-    checks: {
-      agents: total > 0,
-      graphify: !!graphify,
-      codegraph: !!codegraph,
-      claudeMD: hasClaudeMD,
-    },
-  }
-}
-
-async function fetchGitHubToon(owner: string, repo: string, branch: string) {
-  const token = process.env.GITHUB_TOKEN || process.env.YVON_GITHUB_TOKEN
-  const headers: Record<string, string> = { Accept: 'application/vnd.github.v3+json' }
-  if (token) headers.Authorization = `Bearer ${token}`
-
-  try {
-    const configRes = await fetch(
-      { headers }
-    )
-    const configData = configRes.ok ? await configRes.json() : null
-    const config = configData?.content
-      ? JSON.parse(Buffer.from(configData.content, 'base64').toString())
-      : null
-
-    // Fetch agent tree
-    const treeRes = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`,
-      { headers }
-    )
-    const treeData = treeRes.ok ? await treeRes.json() : null
-    const agentPaths = (treeData?.tree || [])
-      .map((t: any) => t.path)
-
-    const departments: Record<string, number> = {}
-    const agents: any[] = []
-    const seen = new Set<string>()
-    for (const p of agentPaths) {
-      const parts = p.split('/')
-      if (parts.length >= 4) {
-        const dept = parts[2]
-        const agent = parts[3]
-        const key = `${dept}/${agent}`
-        if (!seen.has(key)) {
-          seen.add(key)
-          departments[dept] = (departments[dept] || 0) + 1
-          agents.push({ name: agent, role: dept, department: dept, status: 'active', skillsCount: 0, memoryHealth: 0 })
-        }
-      }
-    }
-
-    return {
-      venture: repo,
-      agentsTotal: agents.length,
-      departments,
-      agents,
-      graphs: { graphify: 'unknown', codegraph: 'unknown' },
-      checks: { agents: agents.length > 0, graphify: false, codegraph: false, claudeMD: false },
-      source: 'github',
-    }
+    const res = await fetch(`${VPS_URL}${path}`, { signal: AbortSignal.timeout(5000) })
+    if (!res.ok) return null
+    return await res.json()
   } catch {
     return null
   }
 }
 
+function computeScore(m: VpsMetrics, agentCount: number): { score: number; status: string } {
+  const tokensOk = m.tokens_total > 0
+  const agentsOk = agentCount >= 10
+  const hasHourly = m.hourly?.length > 0
+  const checks = [tokensOk, agentsOk, hasHourly].filter(Boolean).length
+  if (checks === 3) return { score: 95, status: 'healthy' }
+  if (checks === 2) return { score: 75, status: 'warming' }
+  if (checks === 1) return { score: 45, status: 'initializing' }
+  return { score: 10, status: 'offline' }
+}
+
+function transformMetrics(m: VpsMetrics, agentCount: number) {
+  const { score, status } = computeScore(m, agentCount)
+  return {
+    kpi: {
+      score,
+      status,
+      tokensTotal: m.tokens_total,
+      costTotal: m.cost_total,
+      sessionsTotal: m.sessions,
+      avgTokensPerCall: m.sessions > 0 ? Math.round(m.tokens_total / m.sessions) : 0,
+      avgCostPerCall: m.sessions > 0 ? m.cost_total / m.sessions : 0,
+      agentsActive: m.agents ? Object.keys(m.agents).length : 0,
+      agentsTotal: agentCount,
+      lastCheck: m.last_updated || null,
+    },
+    hourlyBurn: (m.hourly || []).map(h => ({
+      hour: `${String(h.hour).padStart(2, '0')}:00`,
+      tokens: h.tokens,
+      cost: h.cost,
+    })),
+    leaderboard: Object.entries(m.agents || {})
+      .map(([agent, d]) => ({ agent, tokens: d.tokens, cost: d.cost, sessions: d.sessions }))
+      .sort((a, b) => b.tokens - a.tokens),
+    providers: Object.entries(m.providers || {}).map(([name, d]) => ({
+      name, calls: 0, tokens: d.tokens, cost: d.cost, errors: 0,
+    })),
+  }
+}
+
+function transformAgents(agents: VpsAgent[]) {
+  return agents.map((a, i) => ({
+    id: `${a.department}-${a.name}`,
+    name: a.name,
+    role: a.department,
+    department: a.department,
+    status: 'active',
+    skillsCount: 0,
+    memoryHealth: a.memory_size > 0 ? Math.min(100, Math.max(10, Math.round(a.memory_size / 10))) : 50,
+  }))
+}
+
 export async function GET(req: NextRequest) {
   const ventureParam = req.nextUrl.searchParams.get('venture') || ''
 
-  // ── OS Agents (no venture param) → Settings page ──────────────────────
+  // ── OS Agents (no venture param) → aggregate all projects ─────────────
   if (!ventureParam) {
-    const cwd = process.cwd()
-    const local = readLocalToon(cwd)
+    const all = await vpsGet('/metrics/all') as VpsMetrics | null
+    const agentsData = await vpsGet('/agents?project=yvon-os') as { agents: VpsAgent[] } | null
+    const agentCount = agentsData?.agents?.length || 0
+
+    if (all) {
+      const { kpi, hourlyBurn, leaderboard, providers } = transformMetrics(all, agentCount)
+      return NextResponse.json({
+        initialized: true,
+        venture: 'YVON OS',
+        source: 'vps',
+        repoId: 'all',
+        kpi,
+        agents: agentsData ? transformAgents(agentsData.agents) : [],
+        agentsTotal: agentCount,
+        departments: {},
+        hourlyBurn,
+        leaderboard,
+        providers,
+        issues: { total: 0, critical: 0, high: 0, open: 0 },
+        activity: [],
+        projects: all.projects || [],
+      })
+    }
+
     return NextResponse.json({
-      initialized: local.agentsTotal > 0,
+      initialized: false,
       venture: 'YVON OS',
-      source: 'local',
-      kpi: {
-        score: 85,
-        status: 'healthy',
-        tokensTotal: 0, costTotal: 0, sessionsTotal: 0,
-        avgTokensPerCall: 0, avgCostPerCall: 0,
-        agentsActive: local.agentsTotal,
-        agentsTotal: local.agentsTotal,
-        lastCheck: new Date().toISOString(),
-      },
-      ...local,
-      hourlyBurn: [], leaderboard: [], issues: { total: 0, critical: 0, high: 0, open: 0 },
-      providers: [], activity: [],
+      source: 'vps',
+      kpi: { score: 10, status: 'offline', tokensTotal: 0, costTotal: 0, sessionsTotal: 0, avgTokensPerCall: 0, avgCostPerCall: 0, agentsActive: 0, agentsTotal: 0, lastCheck: null },
+      agents: [], hourlyBurn: [], leaderboard: [], providers: [], issues: null, activity: [],
     })
   }
 
   // ── Venture Agents → Agents tab ───────────────────────────────────────
-  const project = PROJECTS.find(p => p.id === ventureParam)
-  if (!project) {
-    return NextResponse.json({ initialized: false, error: `Unknown venture: ${ventureParam}` })
-  }
+  const m = await vpsGet(`/metrics?project=${ventureParam}`) as VpsMetrics | null
+  const a = await vpsGet(`/agents?project=${ventureParam}`) as { agents: VpsAgent[] } | null
 
-  // Try local path first
-  if (project.localPath && fs.existsSync(project.localPath)) {
-    const local = readLocalToon(project.localPath)
-    return NextResponse.json({
-      initialized: local.agentsTotal > 0,
-      venture: ventureParam,
-      source: 'local',
-      kpi: {
-        score: 85, status: 'healthy',
-        tokensTotal: 0, costTotal: 0, sessionsTotal: 0,
-        avgTokensPerCall: 0, avgCostPerCall: 0,
-        agentsActive: local.agentsTotal,
-        agentsTotal: local.agentsTotal,
-        lastCheck: new Date().toISOString(),
-      },
-      ...local,
-      hourlyBurn: [], leaderboard: [], issues: { total: 0, critical: 0, high: 0, open: 0 },
-      providers: [], activity: [],
-    })
-  }
+  const agents = a?.agents || []
+  const agentCount = agents.length
 
-  // Fall back to GitHub API
-  const [owner, repo] = project.githubRepo.split('/')
-  const github = await fetchGitHubToon(owner, repo, project.mainBranch)
-  if (github) {
+  if (m) {
+    const { kpi, hourlyBurn, leaderboard, providers } = transformMetrics(m, agentCount)
     return NextResponse.json({
       initialized: true,
       venture: ventureParam,
-      source: 'github',
-      kpi: {
-        score: 85, status: 'healthy',
-        tokensTotal: 0, costTotal: 0, sessionsTotal: 0,
-        avgTokensPerCall: 0, avgCostPerCall: 0,
-        agentsActive: github.agentsTotal,
-        agentsTotal: github.agentsTotal,
-        lastCheck: new Date().toISOString(),
-      },
-      ...github,
-      hourlyBurn: [], leaderboard: [], issues: { total: 0, critical: 0, high: 0, open: 0 },
-      providers: [], activity: [],
+      source: 'vps',
+      repoId: ventureParam,
+      kpi,
+      agents: transformAgents(agents),
+      agentsTotal: agentCount,
+      departments: {},
+      hourlyBurn,
+      leaderboard,
+      providers,
+      issues: { total: 0, critical: 0, high: 0, open: 0 },
+      activity: [],
     })
   }
 

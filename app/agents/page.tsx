@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { PageHeader, Card, StatusBadge } from '@/components/ui'
 import { useWorkspace } from '@/lib/WorkspaceContext'
-import { Loader2, Activity, DollarSign, Cpu, Zap, TrendingUp, AlertTriangle, CheckCircle, Settings, Flame, Brain, ArrowRight } from 'lucide-react'
+import { Loader2, Activity, DollarSign, Cpu, Zap, TrendingUp, AlertTriangle, CheckCircle, Settings, Flame, Brain } from 'lucide-react'
 
 interface AgentInfo {
   id: string; name: string; role: string; department: string
@@ -94,15 +94,13 @@ export default function AgentsPage() {
   const [tab, setTab] = useState<TabId>('overview')
 
   const fetchData = useCallback(async () => {
-    // OS workspace → show connect prompt, not venture data
-    if (workspace.key === 'yvon-os' || !workspace.isVenture) {
-      setData(null)
-      setLoading(false)
-      return
-    }
     setLoading(true)
     try {
-      const res = await fetch(`/api/ventures-health?venture=${workspace.key}`)
+      // OS workspace → aggregate all projects. Venture → per-project metrics.
+      const param = (workspace.key === 'yvon-os' || !workspace.isVenture)
+        ? ''  // no param → aggregate from VPS
+        : `?venture=${workspace.key}`
+      const res = await fetch(`/api/ventures-health${param}`)
       const json = await res.json()
       setData(json)
     } catch (e: any) {
@@ -113,28 +111,6 @@ export default function AgentsPage() {
   }, [workspace.key])
 
   useEffect(() => { fetchData() }, [fetchData])
-
-  // ── OS workspace → show connect prompt ──────────────────────────────────────
-  if (workspace.key === 'yvon-os' || !workspace.isVenture) {
-    return (
-      <div>
-        <PageHeader title="Agents" subtitle="Venture agent monitor · switch to a venture to view" />
-        <Card className="p-8 text-center max-w-lg mx-auto mt-8">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/[0.04] flex items-center justify-center">
-            <ArrowRight size={28} className="text-on-surface-variant/30" />
-          </div>
-          <h3 className="text-lg font-semibold text-on-surface mb-2">Switch to a Venture</h3>
-          <p className="text-[13px] text-on-surface-variant mb-4 leading-relaxed">
-            The Agents tab shows live venture agent data. Use the workspace switcher in the sidebar to select Novizio or Hourbour.
-          </p>
-          <p className="text-[12px] text-on-surface-variant/40 mb-6">
-            OS agents and health can be found in{' '}
-            <a href="/settings" className="underline" style={{ color: 'var(--ws-accent)' }}>Settings → ToonGine OS</a>
-          </p>
-        </Card>
-      </div>
-    )
-  }
 
   // ── Loading ────────────────────────────────────────────────────────────────
   if (loading) {
@@ -179,7 +155,8 @@ export default function AgentsPage() {
     { id: 'memory' as TabId, label: 'Agent Memory', icon: <Brain size={14} /> },
   ]
 
-  const ventureName = data.venture === 'novizio' ? 'Novizio' : 'Hourbour'
+  const ventureName = workspace.key === 'yvon-os' ? 'YVON OS' : (data.venture === 'novizio' ? 'Novizio' : 'Hourbour')
+  const isOs = workspace.key === 'yvon-os' || !workspace.isVenture
 
   return (
     <div>
@@ -211,6 +188,25 @@ export default function AgentsPage() {
           <div className="text-[11px] text-on-surface-variant/50 mt-0.5">${kpi.avgCostPerCall.toFixed(4)}/call</div>
         </Card>
       </div>
+
+      {/* OS Workspace — Project Breakdown */}
+      {isOs && (data as any).projects?.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+          {(data as any).projects.map((p: any) => (
+            <Card key={p.name} className="p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 rounded-full" style={{ background: p.name === 'yvon-os' ? '#60a5fa' : p.name === 'novizio' ? '#f87171' : '#34d399' }} />
+                <span className="text-[12px] text-on-surface font-semibold capitalize">{p.name}</span>
+              </div>
+              <div className="flex items-baseline gap-3">
+                <span className="text-lg font-bold text-on-surface tabular-nums">{formatTokens(p.tokens)}</span>
+                <span className="text-[12px] text-amber-400/70 tabular-nums">${p.cost.toFixed(3)}</span>
+              </div>
+              <div className="text-[11px] text-on-surface-variant/50 mt-1">{p.sessions} sessions</div>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <SubTabs tabs={TABS} active={tab} onChange={setTab} />
 
