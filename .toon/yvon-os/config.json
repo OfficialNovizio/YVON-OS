@@ -1,0 +1,137 @@
+{
+  "repo_id": "OfficialNovizio/YVON-OS",
+  "name": "yvon-os",
+  "created_at": "2026-06-26T16:04:13.503715+00:00",
+  "version": "5.3.0",
+  "hermes": {
+    "connected": true
+  },
+  "agent_memory": {
+    "docs": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.506689+00:00"
+    },
+    "comply": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.506689+00:00"
+    },
+    "guard": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.508689+00:00"
+    },
+    "marcus": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.504689+00:00"
+    },
+    "felix": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.506689+00:00"
+    },
+    "synth": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.510689+00:00"
+    },
+    "depth": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.510689+00:00"
+    },
+    "vette": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.510689+00:00"
+    },
+    "kahneman": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.508689+00:00"
+    },
+    "diana": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.504689+00:00"
+    },
+    "kai": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.514689+00:00"
+    },
+    "aria": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.516689+00:00"
+    },
+    "nate": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.516689+00:00"
+    },
+    "pixel": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.516689+00:00"
+    },
+    "rio": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.514689+00:00"
+    },
+    "atlas": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.516689+00:00"
+    },
+    "lena": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.514689+00:00"
+    },
+    "board": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.504689+00:00"
+    },
+    "scout": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.512689+00:00"
+    },
+    "forge": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.512689+00:00"
+    },
+    "radar": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.512689+00:00"
+    },
+    "quinn": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.520689+00:00"
+    },
+    "dev": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.518689+00:00"
+    },
+    "mia": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.518689+00:00"
+    },
+    "raj": {
+      "size_kb": 0.3,
+      "health": 100,
+      "last_modified": "2026-06-26T16:04:13.518689+00:00"
+    }
+  },
+  "last_pipeline_run": "2026-06-26T16:07:41.398217+00:00"
+}
