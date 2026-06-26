@@ -1,7 +1,7 @@
 {
-  "tokens_total": 1317879,
-  "cost_total": 0.298112,
-  "sessions": 4,
+  "tokens_total": 1340123,
+  "cost_total": 0.315094,
+  "sessions": 5,
   "agents": {
     "kai": {
       "tokens": 795821,
@@ -17,12 +17,17 @@
       "tokens": 227758,
       "cost": 0.0522036,
       "sessions": 1
+    },
+    "unknown": {
+      "tokens": 22244,
+      "cost": 0.01698205,
+      "sessions": 1
     }
   },
   "providers": {
     "deepseek": {
-      "tokens": 1317879,
-      "cost": 0.29811223
+      "tokens": 1340123,
+      "cost": 0.31509428
     }
   },
   "hourly": [
@@ -43,7 +48,13 @@
       "tokens": 294300,
       "cost": 0.10096814,
       "sessions": 1
+    },
+    {
+      "hour": 16,
+      "tokens": 22244,
+      "cost": 0.01698205,
+      "sessions": 1
     }
   ],
-  "last_updated": "2026-06-26T16:21:55.068862+00:00"
+  "last_updated": "2026-06-26T16:25:58.469188+00:00"
 }
