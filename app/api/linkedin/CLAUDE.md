@@ -24,6 +24,6 @@ Triggers an Apify LinkedIn Scraper run and returns follower and connection count
 
 ## Key notes
 
-- Apify actor: `apimaestro~linkedin-profile-scraper`.
+- Apify actor: `johnvc~linkedin-profile-api`.
 - Timeout: `maxDuration: 30s` in `vercel.json`.
 - LinkedIn rate-limits scraping — if runs start failing, increase polling delay in `lib/apify.ts`.

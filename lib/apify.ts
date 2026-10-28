@@ -385,7 +385,7 @@ export async function getSocialPosts(
 // Actor IDs from Apify Store
 const ACTORS = {
   instagram: 'apify~instagram-profile-scraper',
-  linkedin:  'apimaestro~linkedin-profile-scraper',
+  linkedin:  'johnvc~linkedin-profile-api',
   web:       'apify~web-scraper',
 }
 
@@ -455,8 +455,9 @@ export async function runInstagramScraper(handle: string): Promise<InstagramStat
 // ─── LinkedIn ────────────────────────────────────────────────────────────────
 
 interface ApifyLinkedInItem {
-  followersCount?: number
-  connectionsCount?: number
+  followers?: number
+  connections?: number
+  error_message?: string
 }
 
 export async function runLinkedInScraper(profileUrl: string): Promise<LinkedInStats> {
@@ -464,9 +465,10 @@ export async function runLinkedInScraper(profileUrl: string): Promise<LinkedInSt
   const datasetId = await waitForRun(runId)
   const items = await fetchDataset<ApifyLinkedInItem>(datasetId)
   const item = items[0] ?? {}
+  if (item.error_message) throw new Error(item.error_message)
   return {
-    followers: item.followersCount ?? 0,
-    connections: item.connectionsCount ?? 0,
+    followers: item.followers ?? 0,
+    connections: item.connections ?? 0,
     lastFetched: new Date().toISOString(),
   }
 }
@@ -503,9 +505,9 @@ interface ApifyTikTokPost {
 }
 
 interface ApifyLinkedInPost {
-  url?: string
+  postUrl?: string
   text?: string
-  postedAt?: string
+  datePosted?: string
 }
 
 export interface ScrapedPost {
@@ -548,17 +550,16 @@ export async function scrapeTikTokPosts(handle: string): Promise<ScrapedPost[]> 
 }
 
 export async function scrapeLinkedInPosts(profileUrl: string): Promise<ScrapedPost[]> {
-  const runId = await startRun('apimaestro~linkedin-profile-scraper', {
+  const runId = await startRun('johnvc~linkedin-posts-api', {
     profileUrls: [profileUrl],
-    getPosts: true,
-    postsLimit: 20,
+    maxPostsPerProfile: 20,
   })
   const datasetId = await waitForRun(runId)
   const items = await fetchDataset<ApifyLinkedInPost>(datasetId)
-  return items.map((item) => ({
-    postUrl: item.url ?? '',
+  return items.filter((item) => item.postUrl).map((item) => ({
+    postUrl: item.postUrl ?? '',
     caption: item.text ?? '',
-    postDate: item.postedAt ? item.postedAt.split('T')[0] : new Date().toISOString().split('T')[0],
+    postDate: item.datePosted ? item.datePosted.split('T')[0] : new Date().toISOString().split('T')[0],
     mediaType: 'Post',
   }))
 }
